@@ -1,0 +1,283 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN
+"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>
+org.joda.time.field.RemainderDateTimeField
+</title>
+<link href="prettify.css" type="text/css" rel="stylesheet" />
+<script type="text/javascript" src="prettify.js"></script>
+</head>
+<body onload="prettyPrint()">
+<h2>Javalanche report for class:<br/> org.joda.time.field.RemainderDateTimeField </h2><pre class="prettyprint" style="border: 1px solid #888;padding: 2px"><span class="nocode"><a name="1">  1: </a></span>/*
+<span class="nocode"><a name="2">  2: </a></span> *  Copyright 2001-2005 Stephen Colebourne
+<span class="nocode"><a name="3">  3: </a></span> *
+<span class="nocode"><a name="4">  4: </a></span> *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+<span class="nocode"><a name="5">  5: </a></span> *  you may not use this file except in compliance with the License.
+<span class="nocode"><a name="6">  6: </a></span> *  You may obtain a copy of the License at
+<span class="nocode"><a name="7">  7: </a></span> *
+<span class="nocode"><a name="8">  8: </a></span> *      http://www.apache.org/licenses/LICENSE-2.0
+<span class="nocode"><a name="9">  9: </a></span> *
+<span class="nocode"><a name="10"> 10: </a></span> *  Unless required by applicable law or agreed to in writing, software
+<span class="nocode"><a name="11"> 11: </a></span> *  distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+<span class="nocode"><a name="12"> 12: </a></span> *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+<span class="nocode"><a name="13"> 13: </a></span> *  See the License for the specific language governing permissions and
+<span class="nocode"><a name="14"> 14: </a></span> *  limitations under the License.
+<span class="nocode"><a name="15"> 15: </a></span> */
+<span class="nocode"><a name="16"> 16: </a></span>package org.joda.time.field;
+<span class="nocode"><a name="17"> 17: </a></span>
+<span class="nocode"><a name="18"> 18: </a></span>import org.joda.time.DateTimeField;
+<span class="nocode"><a name="19"> 19: </a></span>import org.joda.time.DateTimeFieldType;
+<span class="nocode"><a name="20"> 20: </a></span>import org.joda.time.DurationField;
+<span class="nocode"><a name="21"> 21: </a></span>
+<span class="nocode"><a name="22"> 22: </a></span>/**
+<span class="nocode"><a name="23"> 23: </a></span> * Counterpart remainder datetime field to {@link DividedDateTimeField}. The
+<span class="nocode"><a name="24"> 24: </a></span> * field's unit duration is unchanged, but the range duration is scaled
+<span class="nocode"><a name="25"> 25: </a></span> * accordingly.
+<span class="nocode"><a name="26"> 26: </a></span> * &lt;p&gt;
+<span class="nocode"><a name="27"> 27: </a></span> * RemainderDateTimeField is thread-safe and immutable.
+<span class="nocode"><a name="28"> 28: </a></span> *
+<span class="nocode"><a name="29"> 29: </a></span> * @see DividedDateTimeField
+<span class="nocode"><a name="30"> 30: </a></span> *
+<span class="nocode"><a name="31"> 31: </a></span> * @author Brian S O'Neill
+<span class="nocode"><a name="32"> 32: </a></span> * @since 1.0
+<span class="nocode"><a name="33"> 33: </a></span> */
+<span class="nocode"><a name="34"> 34: </a></span>public class RemainderDateTimeField extends DecoratedDateTimeField {
+<span class="nocode"><a name="35"> 35: </a></span>
+<span class="nocode"><a name="36"> 36: </a></span>    private static final long serialVersionUID = 5708241235177666790L;
+<span class="nocode"><a name="37"> 37: </a></span>
+<span class="nocode"><a name="38"> 38: </a></span>    // Shared with DividedDateTimeField.
+<span class="nocode"><a name="39"> 39: </a></span>    final int iDivisor;
+<span class="nocode"><a name="40"> 40: </a></span>    final DurationField iRangeField;
+<span class="nocode"><a name="41"> 41: </a></span>
+<span class="nocode"><a name="42"> 42: </a></span>    /**
+<span class="nocode"><a name="43"> 43: </a></span>     * Constructor.
+<span class="nocode"><a name="44"> 44: </a></span>     * 
+<span class="nocode"><a name="45"> 45: </a></span>     * @param field  the field to wrap, like &quot;year()&quot;.
+<span class="nocode"><a name="46"> 46: </a></span>     * @param type  the field type this field actually uses
+<span class="nocode"><a name="47"> 47: </a></span>     * @param divisor  divisor, such as 100 years in a century
+<span class="nocode"><a name="48"> 48: </a></span>     * @throws IllegalArgumentException if divisor is less than two
+<span class="nocode"><a name="49"> 49: </a></span>     */
+<span class="nocode"><a name="50"> 50: </a></span>    public RemainderDateTimeField(DateTimeField field,
+<span class="nocode"><a name="51"> 51: </a></span>                                  DateTimeFieldType type, int divisor) {
+<span class="nocode"><a name="52"> 52: </a></span>        super(field, type);
+<span class="nocode"><a name="53"> 53: </a></span>
+<span class="nocode"><a name="54"> 54: </a></span>        if (divisor &lt; 2) {
+<span class="nocode"><a name="55"> 55: </a></span>            throw new IllegalArgumentException(&quot;The divisor must be at least 2&quot;);
+<span class="nocode"><a name="56"> 56: </a></span>        }
+<span class="nocode"><a name="57"> 57: </a></span>
+<span class="nocode"><a name="58"> 58: </a></span>        DurationField rangeField = field.getDurationField();
+<span class="nocode"><a name="59"> 59: </a></span>        if (rangeField == null) {
+<span class="nocode"><a name="60"> 60: </a></span>            iRangeField = null;
+<span class="nocode"><a name="61"> 61: </a></span>        } else {
+<span class="nocode"><a name="62"> 62: </a></span>            iRangeField = new ScaledDurationField(
+<span class="nocode"><a name="63"> 63: </a></span>                rangeField, type.getRangeDurationType(), divisor);
+<span class="nocode"><a name="64"> 64: </a></span>        }
+<span class="nocode"><a name="65"> 65: </a></span>
+<span class="nocode"><a name="66"> 66: </a></span>        iDivisor = divisor;
+<span class="nocode"><a name="67"> 67: </a></span>    }
+<span class="nocode"><a name="68"> 68: </a></span>
+<span class="nocode"><a name="69"> 69: </a></span>    /**
+<span class="nocode"><a name="70"> 70: </a></span>     * Construct a RemainderDateTimeField that compliments the given
+<span class="nocode"><a name="71"> 71: </a></span>     * DividedDateTimeField.
+<span class="nocode"><a name="72"> 72: </a></span>     *
+<span class="nocode"><a name="73"> 73: </a></span>     * @param dividedField  complimentary divided field, like &quot;century()&quot;.
+<span class="nocode"><a name="74"> 74: </a></span>     */
+<span class="nocode"><a name="75"> 75: </a></span>    public RemainderDateTimeField(DividedDateTimeField dividedField) {
+<span class="nocode"><a name="76"> 76: </a></span>        this(dividedField, dividedField.getType());
+<span class="nocode"><a name="77"> 77: </a></span>    }
+<span class="nocode"><a name="78"> 78: </a></span>
+<span class="nocode"><a name="79"> 79: </a></span>    /**
+<span class="nocode"><a name="80"> 80: </a></span>     * Construct a RemainderDateTimeField that compliments the given
+<span class="nocode"><a name="81"> 81: </a></span>     * DividedDateTimeField.
+<span class="nocode"><a name="82"> 82: </a></span>     *
+<span class="nocode"><a name="83"> 83: </a></span>     * @param dividedField  complimentary divided field, like &quot;century()&quot;.
+<span class="nocode"><a name="84"> 84: </a></span>     * @param type  the field type this field actually uses
+<span class="nocode"><a name="85"> 85: </a></span>     */
+<span class="nocode"><a name="86"> 86: </a></span>    public RemainderDateTimeField(DividedDateTimeField dividedField, DateTimeFieldType type) {
+<span class="nocode"><a name="87"> 87: </a></span>        super(dividedField.getWrappedField(), type);
+<span class="nocode"><a name="88"> 88: </a></span>        iDivisor = dividedField.iDivisor;
+<span class="nocode"><a name="89"> 89: </a></span>        iRangeField = dividedField.iDurationField;
+<span class="nocode"><a name="90"> 90: </a></span>    }
+<span class="nocode"><a name="91"> 91: </a></span>
+<span class="nocode"><a name="92"> 92: </a></span>    //-----------------------------------------------------------------------
+<span class="nocode"><a name="93"> 93: </a></span>    /**
+<span class="nocode"><a name="94"> 94: </a></span>     * Get the remainder from the specified time instant.
+<span class="nocode"><a name="95"> 95: </a></span>     * 
+<span class="nocode"><a name="96"> 96: </a></span>     * @param instant  the time instant in millis to query.
+<span class="nocode"><a name="97"> 97: </a></span>     * @return the remainder extracted from the input.
+<span class="nocode"><a name="98"> 98: </a></span>     */
+<span class="nocode"><a name="99"> 99: </a></span>    public int get(long instant) {
+<span class="nocode"><a name="100">100: </a></span>        int value = getWrappedField().get(instant);
+<span class="nocode"><a name="101">101: </a></span>        if (value &gt;= 0) {
+<span class="nocode"><a name="102">102: </a></span>            return value % iDivisor;
+<span class="nocode"><a name="103">103: </a></span>        } else {
+<span class="nocode"><a name="104">104: </a></span>            return (iDivisor - 1) + ((value + 1) % iDivisor);
+<span class="nocode"><a name="105">105: </a></span>        }
+<span class="nocode"><a name="106">106: </a></span>    }
+<span class="nocode"><a name="107">107: </a></span>
+<span class="nocode"><a name="108">108: </a></span>    /**
+<span class="nocode"><a name="109">109: </a></span>     * Add the specified amount to the specified time instant, wrapping around
+<span class="nocode"><a name="110">110: </a></span>     * within the remainder range if necessary. The amount added may be
+<span class="nocode"><a name="111">111: </a></span>     * negative.
+<span class="nocode"><a name="112">112: </a></span>     * 
+<span class="nocode"><a name="113">113: </a></span>     * @param instant  the time instant in millis to update.
+<span class="nocode"><a name="114">114: </a></span>     * @param amount  the amount to add (can be negative).
+<span class="nocode"><a name="115">115: </a></span>     * @return the updated time instant.
+<span class="nocode"><a name="116">116: </a></span>     */
+<span class="nocode"><a name="117">117: </a></span>    public long addWrapField(long instant, int amount) {
+<span class="nocode"><a name="118">118: </a></span>        return set(instant, FieldUtils.getWrappedValue(get(instant), amount, 0, iDivisor - 1));
+<span class="nocode"><a name="119">119: </a></span>    }
+<span class="nocode"><a name="120">120: </a></span>
+<span class="nocode"><a name="121">121: </a></span>    /**
+<span class="nocode"><a name="122">122: </a></span>     * Set the specified amount of remainder units to the specified time instant.
+<span class="nocode"><a name="123">123: </a></span>     * 
+<span class="nocode"><a name="124">124: </a></span>     * @param instant  the time instant in millis to update.
+<span class="nocode"><a name="125">125: </a></span>     * @param value  value of remainder units to set.
+<span class="nocode"><a name="126">126: </a></span>     * @return the updated time instant.
+<span class="nocode"><a name="127">127: </a></span>     * @throws IllegalArgumentException if value is too large or too small.
+<span class="nocode"><a name="128">128: </a></span>     */
+<span class="nocode"><a name="129">129: </a></span>    public long set(long instant, int value) {
+<span class="nocode"><a name="130">130: </a></span>        FieldUtils.verifyValueBounds(this, value, 0, iDivisor - 1);
+<span class="nocode"><a name="131">131: </a></span>        int divided = getDivided(getWrappedField().get(instant));
+<span class="nocode"><a name="132">132: </a></span>        return getWrappedField().set(instant, divided * iDivisor + value);
+<span class="nocode"><a name="133">133: </a></span>    }
+<span class="nocode"><a name="134">134: </a></span>
+<span class="nocode"><a name="135">135: </a></span>    /**
+<span class="nocode"><a name="136">136: </a></span>     * Returns a scaled version of the wrapped field's unit duration field.
+<span class="nocode"><a name="137">137: </a></span>     */
+<span class="nocode"><a name="138">138: </a></span>    public DurationField getRangeDurationField() {
+<span class="nocode"><a name="139">139: </a></span>        return iRangeField;
+<span class="nocode"><a name="140">140: </a></span>    }
+<span class="nocode"><a name="141">141: </a></span>
+<span class="nocode"><a name="142">142: </a></span>    /**
+<span class="nocode"><a name="143">143: </a></span>     * Get the minimum value for the field, which is always zero.
+<span class="nocode"><a name="144">144: </a></span>     * 
+<span class="nocode"><a name="145">145: </a></span>     * @return the minimum value of zero.
+<span class="nocode"><a name="146">146: </a></span>     */
+<span class="nocode"><a name="147">147: </a></span>    public int getMinimumValue() {
+<span class="nocode"><a name="148">148: </a></span>        return 0;
+<span class="nocode"><a name="149">149: </a></span>    }
+<span class="nocode"><a name="150">150: </a></span>
+<span class="nocode"><a name="151">151: </a></span>    /**
+<span class="nocode"><a name="152">152: </a></span>     * Get the maximum value for the field, which is always one less than the
+<span class="nocode"><a name="153">153: </a></span>     * divisor.
+<span class="nocode"><a name="154">154: </a></span>     * 
+<span class="nocode"><a name="155">155: </a></span>     * @return the maximum value
+<span class="nocode"><a name="156">156: </a></span>     */
+<span class="nocode"><a name="157">157: </a></span>    public int getMaximumValue() {
+<span class="nocode"><a name="158">158: </a></span>        return iDivisor - 1;
+<span class="nocode"><a name="159">159: </a></span>    }
+<span class="nocode"><a name="160">160: </a></span>
+<span class="nocode"><a name="161">161: </a></span>    public long roundFloor(long instant) {
+<span class="nocode"><a name="162">162: </a></span>        return getWrappedField().roundFloor(instant);
+<span class="nocode"><a name="163">163: </a></span>    }
+<span class="nocode"><a name="164">164: </a></span>
+<span class="nocode"><a name="165">165: </a></span>    public long roundCeiling(long instant) {
+<span class="nocode"><a name="166">166: </a></span>        return getWrappedField().roundCeiling(instant);
+<span class="nocode"><a name="167">167: </a></span>    }
+<span class="nocode"><a name="168">168: </a></span>
+<span class="nocode"><a name="169">169: </a></span>    public long roundHalfFloor(long instant) {
+<span class="nocode"><a name="170">170: </a></span>        return getWrappedField().roundHalfFloor(instant);
+<span class="nocode"><a name="171">171: </a></span>    }
+<span class="nocode"><a name="172">172: </a></span>
+<span class="nocode"><a name="173">173: </a></span>    public long roundHalfCeiling(long instant) {
+<span class="nocode"><a name="174">174: </a></span>        return getWrappedField().roundHalfCeiling(instant);
+<span class="nocode"><a name="175">175: </a></span>    }
+<span class="nocode"><a name="176">176: </a></span>
+<span class="nocode"><a name="177">177: </a></span>    public long roundHalfEven(long instant) {
+<span class="nocode"><a name="178">178: </a></span>        return getWrappedField().roundHalfEven(instant);
+<span class="nocode"><a name="179">179: </a></span>    }
+<span class="nocode"><a name="180">180: </a></span>
+<span class="nocode"><a name="181">181: </a></span>    public long remainder(long instant) {
+<span class="nocode"><a name="182">182: </a></span>        return getWrappedField().remainder(instant);
+<span class="nocode"><a name="183">183: </a></span>    }
+<span class="nocode"><a name="184">184: </a></span>
+<span class="nocode"><a name="185">185: </a></span>    /**
+<span class="nocode"><a name="186">186: </a></span>     * Returns the divisor applied, in the field's units.
+<span class="nocode"><a name="187">187: </a></span>     * 
+<span class="nocode"><a name="188">188: </a></span>     * @return the divisor
+<span class="nocode"><a name="189">189: </a></span>     */
+<span class="nocode"><a name="190">190: </a></span>    public int getDivisor() {
+<span class="nocode"><a name="191">191: </a></span>        return iDivisor;
+<span class="nocode"><a name="192">192: </a></span>    }
+<span class="nocode"><a name="193">193: </a></span>
+<span class="nocode"><a name="194">194: </a></span>    private int getDivided(int value) {
+<span class="nocode"><a name="195">195: </a></span>        if (value &gt;= 0) {
+<span class="nocode"><a name="196">196: </a></span>            return value / iDivisor;
+<span class="nocode"><a name="197">197: </a></span>        } else {
+<span class="nocode"><a name="198">198: </a></span>            return ((value + 1) / iDivisor) - 1;
+<span class="nocode"><a name="199">199: </a></span>        }
+<span class="nocode"><a name="200">200: </a></span>    }
+<span class="nocode"><a name="201">201: </a></span>
+<span class="nocode"><a name="202">202: </a></span>}
+</pre><table class="mutation_table" summary="Mutations">
+<tr><th>ID</th><th>Line</th><th>Type</th><th>Detected</th></tr><tr><td>4516</td><td><a href="#54">54</a></td><td>Replace a constant (Replace 2 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>4514</td><td><a href="#54">54</a></td><td>Replace a constant (Replace 2 with 3(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>4515</td><td><a href="#54">54</a></td><td>Replace a constant (Replace 2 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>4517</td><td><a href="#54">54</a></td><td>Negate jump condition (Replace IF_ICMPGE with  IF_ICMPLT)</td><td><img src="detected.png"/></td></tr>
+<tr><td>4518</td><td><a href="#58">58</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>4519</td><td><a href="#59">59</a></td><td>Negate jump condition (Replace IFNONNULL with  IFNULL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>4520</td><td><a href="#62">62</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>4521</td><td><a href="#100">100</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>4522</td><td><a href="#100">100(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>4523</td><td><a href="#101">101</a></td><td>Negate jump condition (Replace IFLT with  IFGE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>4524</td><td><a href="#102">102</a></td><td>Replace arithmetic operator (Replace IREM with IDIV)</td><td><img src="detected.png"/></td></tr>
+<tr><td>4525</td><td><a href="#104">104</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>4526</td><td><a href="#104">104</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>4529</td><td><a href="#104">104(1)</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>4528</td><td><a href="#104">104(1)</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>4527</td><td><a href="#104">104</a></td><td>Replace arithmetic operator (Replace ISUB with IADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>4530</td><td><a href="#104">104(1)</a></td><td>Replace arithmetic operator (Replace IADD with ISUB)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>4531</td><td><a href="#104">104(2)</a></td><td>Replace arithmetic operator (Replace IREM with IDIV)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>4532</td><td><a href="#104">104(3)</a></td><td>Replace arithmetic operator (Replace IADD with ISUB)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>4535</td><td><a href="#118">118</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>4534</td><td><a href="#118">118</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>4536</td><td><a href="#118">118(1)</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>4537</td><td><a href="#118">118(1)</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>4538</td><td><a href="#118">118</a></td><td>Replace arithmetic operator (Replace ISUB with IADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>4533</td><td><a href="#118">118</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>4539</td><td><a href="#118">118(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>4540</td><td><a href="#118">118(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>4541</td><td><a href="#130">130</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>4542</td><td><a href="#130">130</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>4544</td><td><a href="#130">130(1)</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>4543</td><td><a href="#130">130(1)</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>4545</td><td><a href="#130">130</a></td><td>Replace arithmetic operator (Replace ISUB with IADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>4546</td><td><a href="#130">130</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>4547</td><td><a href="#131">131</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>4548</td><td><a href="#131">131(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>4549</td><td><a href="#131">131(2)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>4551</td><td><a href="#132">132</a></td><td>Replace arithmetic operator (Replace IMUL with IADD)</td><td><img src="detected.png"/></td></tr>
+<tr><td>4552</td><td><a href="#132">132(1)</a></td><td>Replace arithmetic operator (Replace IADD with ISUB)</td><td><img src="detected.png"/></td></tr>
+<tr><td>4550</td><td><a href="#132">132</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>4553</td><td><a href="#132">132(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>4555</td><td><a href="#148">148</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>4554</td><td><a href="#148">148</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>4556</td><td><a href="#158">158</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>4557</td><td><a href="#158">158</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>4558</td><td><a href="#158">158</a></td><td>Replace arithmetic operator (Replace ISUB with IADD)</td><td><img src="detected.png"/></td></tr>
+<tr><td>4559</td><td><a href="#162">162</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>4560</td><td><a href="#162">162(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>4561</td><td><a href="#166">166</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>4562</td><td><a href="#166">166(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>4563</td><td><a href="#170">170</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>4564</td><td><a href="#170">170(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>4565</td><td><a href="#174">174</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>4566</td><td><a href="#174">174(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>4567</td><td><a href="#178">178</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>4568</td><td><a href="#178">178(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>4569</td><td><a href="#182">182</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>4570</td><td><a href="#182">182(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>4571</td><td><a href="#195">195</a></td><td>Negate jump condition (Replace IFLT with  IFGE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>4572</td><td><a href="#196">196</a></td><td>Replace arithmetic operator (Replace IDIV with IMUL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>4573</td><td><a href="#198">198</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>4574</td><td><a href="#198">198</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>4577</td><td><a href="#198">198(1)</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>4578</td><td><a href="#198">198(1)</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>4575</td><td><a href="#198">198</a></td><td>Replace arithmetic operator (Replace IADD with ISUB)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>4576</td><td><a href="#198">198(1)</a></td><td>Replace arithmetic operator (Replace IDIV with IMUL)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>4579</td><td><a href="#198">198(2)</a></td><td>Replace arithmetic operator (Replace ISUB with IADD)</td><td><img src="not_detected.png"/></td></tr>
+</table>
+</body>
+</html>

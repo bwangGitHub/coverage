@@ -1,0 +1,626 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN
+"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>
+org.jfree.chart.block.FlowArrangement
+</title>
+<link href="prettify.css" type="text/css" rel="stylesheet" />
+<script type="text/javascript" src="prettify.js"></script>
+</head>
+<body onload="prettyPrint()">
+<h2>Javalanche report for class:<br/> org.jfree.chart.block.FlowArrangement </h2><pre class="prettyprint" style="border: 1px solid #888;padding: 2px"><span class="nocode"><a name="1">  1: </a></span>/* ===========================================================
+<span class="nocode"><a name="2">  2: </a></span> * JFreeChart : a free chart library for the Java(tm) platform
+<span class="nocode"><a name="3">  3: </a></span> * ===========================================================
+<span class="nocode"><a name="4">  4: </a></span> *
+<span class="nocode"><a name="5">  5: </a></span> * (C) Copyright 2000-2007, by Object Refinery Limited and Contributors.
+<span class="nocode"><a name="6">  6: </a></span> *
+<span class="nocode"><a name="7">  7: </a></span> * Project Info:  http://www.jfree.org/jfreechart/index.html
+<span class="nocode"><a name="8">  8: </a></span> *
+<span class="nocode"><a name="9">  9: </a></span> * This library is free software; you can redistribute it and/or modify it 
+<span class="nocode"><a name="10"> 10: </a></span> * under the terms of the GNU Lesser General Public License as published by 
+<span class="nocode"><a name="11"> 11: </a></span> * the Free Software Foundation; either version 2.1 of the License, or 
+<span class="nocode"><a name="12"> 12: </a></span> * (at your option) any later version.
+<span class="nocode"><a name="13"> 13: </a></span> *
+<span class="nocode"><a name="14"> 14: </a></span> * This library is distributed in the hope that it will be useful, but 
+<span class="nocode"><a name="15"> 15: </a></span> * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY 
+<span class="nocode"><a name="16"> 16: </a></span> * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public 
+<span class="nocode"><a name="17"> 17: </a></span> * License for more details.
+<span class="nocode"><a name="18"> 18: </a></span> *
+<span class="nocode"><a name="19"> 19: </a></span> * You should have received a copy of the GNU Lesser General Public
+<span class="nocode"><a name="20"> 20: </a></span> * License along with this library; if not, write to the Free Software
+<span class="nocode"><a name="21"> 21: </a></span> * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, 
+<span class="nocode"><a name="22"> 22: </a></span> * USA.  
+<span class="nocode"><a name="23"> 23: </a></span> *
+<span class="nocode"><a name="24"> 24: </a></span> * [Java is a trademark or registered trademark of Sun Microsystems, Inc. 
+<span class="nocode"><a name="25"> 25: </a></span> * in the United States and other countries.]
+<span class="nocode"><a name="26"> 26: </a></span> *
+<span class="nocode"><a name="27"> 27: </a></span> * --------------------
+<span class="nocode"><a name="28"> 28: </a></span> * FlowArrangement.java
+<span class="nocode"><a name="29"> 29: </a></span> * --------------------
+<span class="nocode"><a name="30"> 30: </a></span> * (C) Copyright 2004-2007, by Object Refinery Limited.
+<span class="nocode"><a name="31"> 31: </a></span> *
+<span class="nocode"><a name="32"> 32: </a></span> * Original Author:  David Gilbert (for Object Refinery Limited);
+<span class="nocode"><a name="33"> 33: </a></span> * Contributor(s):   -;
+<span class="nocode"><a name="34"> 34: </a></span> *
+<span class="nocode"><a name="35"> 35: </a></span> * Changes:
+<span class="nocode"><a name="36"> 36: </a></span> * --------
+<span class="nocode"><a name="37"> 37: </a></span> * 22-Oct-2004 : Version 1 (DG);
+<span class="nocode"><a name="38"> 38: </a></span> * 04-Feb-2005 : Implemented equals() and made serializable (DG);
+<span class="nocode"><a name="39"> 39: </a></span> * 08-Feb-2005 : Updated for changes in RectangleConstraint (DG);
+<span class="nocode"><a name="40"> 40: </a></span> * 
+<span class="nocode"><a name="41"> 41: </a></span> */
+<span class="nocode"><a name="42"> 42: </a></span>
+<span class="nocode"><a name="43"> 43: </a></span>package org.jfree.chart.block;
+<span class="nocode"><a name="44"> 44: </a></span>
+<span class="nocode"><a name="45"> 45: </a></span>import java.awt.Graphics2D;
+<span class="nocode"><a name="46"> 46: </a></span>import java.awt.geom.Rectangle2D;
+<span class="nocode"><a name="47"> 47: </a></span>import java.io.Serializable;
+<span class="nocode"><a name="48"> 48: </a></span>import java.util.ArrayList;
+<span class="nocode"><a name="49"> 49: </a></span>import java.util.List;
+<span class="nocode"><a name="50"> 50: </a></span>
+<span class="nocode"><a name="51"> 51: </a></span>import org.jfree.ui.HorizontalAlignment;
+<span class="nocode"><a name="52"> 52: </a></span>import org.jfree.ui.Size2D;
+<span class="nocode"><a name="53"> 53: </a></span>import org.jfree.ui.VerticalAlignment;
+<span class="nocode"><a name="54"> 54: </a></span>
+<span class="nocode"><a name="55"> 55: </a></span>/**
+<span class="nocode"><a name="56"> 56: </a></span> * Arranges blocks in a flow layout.  This class is immutable.
+<span class="nocode"><a name="57"> 57: </a></span> */
+<span class="nocode"><a name="58"> 58: </a></span>public class FlowArrangement implements Arrangement, Serializable {
+<span class="nocode"><a name="59"> 59: </a></span>
+<span class="nocode"><a name="60"> 60: </a></span>    /** For serialization. */
+<span class="nocode"><a name="61"> 61: </a></span>    private static final long serialVersionUID = 4543632485478613800L;
+<span class="nocode"><a name="62"> 62: </a></span>    
+<span class="nocode"><a name="63"> 63: </a></span>    /** The horizontal alignment of blocks. */
+<span class="nocode"><a name="64"> 64: </a></span>    private HorizontalAlignment horizontalAlignment;
+<span class="nocode"><a name="65"> 65: </a></span>    
+<span class="nocode"><a name="66"> 66: </a></span>    /** The vertical alignment of blocks within each row. */
+<span class="nocode"><a name="67"> 67: </a></span>    private VerticalAlignment verticalAlignment;
+<span class="nocode"><a name="68"> 68: </a></span>    
+<span class="nocode"><a name="69"> 69: </a></span>    /** The horizontal gap between items within rows. */
+<span class="nocode"><a name="70"> 70: </a></span>    private double horizontalGap;
+<span class="nocode"><a name="71"> 71: </a></span>    
+<span class="nocode"><a name="72"> 72: </a></span>    /** The vertical gap between rows. */
+<span class="nocode"><a name="73"> 73: </a></span>    private double verticalGap;
+<span class="nocode"><a name="74"> 74: </a></span>    
+<span class="nocode"><a name="75"> 75: </a></span>    /**
+<span class="nocode"><a name="76"> 76: </a></span>     * Creates a new instance.
+<span class="nocode"><a name="77"> 77: </a></span>     */
+<span class="nocode"><a name="78"> 78: </a></span>    public FlowArrangement() {   
+<span class="nocode"><a name="79"> 79: </a></span>        this(HorizontalAlignment.CENTER, VerticalAlignment.CENTER, 2.0, 2.0);
+<span class="nocode"><a name="80"> 80: </a></span>    }
+<span class="nocode"><a name="81"> 81: </a></span>     
+<span class="nocode"><a name="82"> 82: </a></span>    /**
+<span class="nocode"><a name="83"> 83: </a></span>     * Creates a new instance.
+<span class="nocode"><a name="84"> 84: </a></span>     * 
+<span class="nocode"><a name="85"> 85: </a></span>     * @param hAlign  the horizontal alignment (currently ignored).
+<span class="nocode"><a name="86"> 86: </a></span>     * @param vAlign  the vertical alignment (currently ignored).
+<span class="nocode"><a name="87"> 87: </a></span>     * @param hGap  the horizontal gap.
+<span class="nocode"><a name="88"> 88: </a></span>     * @param vGap  the vertical gap.
+<span class="nocode"><a name="89"> 89: </a></span>     */
+<span class="nocode"><a name="90"> 90: </a></span>    public FlowArrangement(HorizontalAlignment hAlign, VerticalAlignment vAlign,
+<span class="nocode"><a name="91"> 91: </a></span>                           double hGap, double vGap) {   
+<span class="nocode"><a name="92"> 92: </a></span>        this.horizontalAlignment = hAlign;
+<span class="nocode"><a name="93"> 93: </a></span>        this.verticalAlignment = vAlign;
+<span class="nocode"><a name="94"> 94: </a></span>        this.horizontalGap = hGap;
+<span class="nocode"><a name="95"> 95: </a></span>        this.verticalGap = vGap;
+<span class="nocode"><a name="96"> 96: </a></span>    }
+<span class="nocode"><a name="97"> 97: </a></span>    
+<span class="nocode"><a name="98"> 98: </a></span>    /**
+<span class="nocode"><a name="99"> 99: </a></span>     * Adds a block to be managed by this instance.  This method is usually 
+<span class="nocode"><a name="100">100: </a></span>     * called by the {@link BlockContainer}, you shouldn't need to call it 
+<span class="nocode"><a name="101">101: </a></span>     * directly.
+<span class="nocode"><a name="102">102: </a></span>     * 
+<span class="nocode"><a name="103">103: </a></span>     * @param block  the block.
+<span class="nocode"><a name="104">104: </a></span>     * @param key  a key that controls the position of the block.
+<span class="nocode"><a name="105">105: </a></span>     */
+<span class="nocode"><a name="106">106: </a></span>    public void add(Block block, Object key) {
+<span class="nocode"><a name="107">107: </a></span>        // since the flow layout is relatively straightforward, 
+<span class="nocode"><a name="108">108: </a></span>        // no information needs to be recorded here
+<span class="nocode"><a name="109">109: </a></span>    }
+<span class="nocode"><a name="110">110: </a></span>    
+<span class="nocode"><a name="111">111: </a></span>    /**
+<span class="nocode"><a name="112">112: </a></span>     * Calculates and sets the bounds of all the items in the specified 
+<span class="nocode"><a name="113">113: </a></span>     * container, subject to the given constraint.  The &lt;code&gt;Graphics2D&lt;/code&gt;
+<span class="nocode"><a name="114">114: </a></span>     * can be used by some items (particularly items containing text) to 
+<span class="nocode"><a name="115">115: </a></span>     * calculate sizing parameters.
+<span class="nocode"><a name="116">116: </a></span>     * 
+<span class="nocode"><a name="117">117: </a></span>     * @param container  the container whose items are being arranged.
+<span class="nocode"><a name="118">118: </a></span>     * @param constraint  the size constraint.
+<span class="nocode"><a name="119">119: </a></span>     * @param g2  the graphics device.
+<span class="nocode"><a name="120">120: </a></span>     * 
+<span class="nocode"><a name="121">121: </a></span>     * @return The size of the container after arrangement of the contents.
+<span class="nocode"><a name="122">122: </a></span>     */
+<span class="nocode"><a name="123">123: </a></span>    public Size2D arrange(BlockContainer container, Graphics2D g2,
+<span class="nocode"><a name="124">124: </a></span>                          RectangleConstraint constraint) {
+<span class="nocode"><a name="125">125: </a></span>        
+<span class="nocode"><a name="126">126: </a></span>        LengthConstraintType w = constraint.getWidthConstraintType();
+<span class="nocode"><a name="127">127: </a></span>        LengthConstraintType h = constraint.getHeightConstraintType();
+<span class="nocode"><a name="128">128: </a></span>        if (w == LengthConstraintType.NONE) {
+<span class="nocode"><a name="129">129: </a></span>            if (h == LengthConstraintType.NONE) {
+<span class="nocode"><a name="130">130: </a></span>                return arrangeNN(container, g2);  
+<span class="nocode"><a name="131">131: </a></span>            }
+<span class="nocode"><a name="132">132: </a></span>            else if (h == LengthConstraintType.FIXED) {
+<span class="nocode"><a name="133">133: </a></span>                return arrangeNF(container, g2, constraint);  
+<span class="nocode"><a name="134">134: </a></span>            }
+<span class="nocode"><a name="135">135: </a></span>            else if (h == LengthConstraintType.RANGE) {
+<span class="nocode"><a name="136">136: </a></span>                throw new RuntimeException(&quot;Not implemented.&quot;);  
+<span class="nocode"><a name="137">137: </a></span>            }
+<span class="nocode"><a name="138">138: </a></span>        }
+<span class="nocode"><a name="139">139: </a></span>        else if (w == LengthConstraintType.FIXED) {
+<span class="nocode"><a name="140">140: </a></span>            if (h == LengthConstraintType.NONE) {
+<span class="nocode"><a name="141">141: </a></span>                return arrangeFN(container, g2, constraint);  
+<span class="nocode"><a name="142">142: </a></span>            }
+<span class="nocode"><a name="143">143: </a></span>            else if (h == LengthConstraintType.FIXED) {
+<span class="nocode"><a name="144">144: </a></span>                return arrangeFF(container, g2, constraint);  
+<span class="nocode"><a name="145">145: </a></span>            }
+<span class="nocode"><a name="146">146: </a></span>            else if (h == LengthConstraintType.RANGE) {
+<span class="nocode"><a name="147">147: </a></span>                return arrangeFR(container, g2, constraint);  
+<span class="nocode"><a name="148">148: </a></span>            }
+<span class="nocode"><a name="149">149: </a></span>        }
+<span class="nocode"><a name="150">150: </a></span>        else if (w == LengthConstraintType.RANGE) {
+<span class="nocode"><a name="151">151: </a></span>            if (h == LengthConstraintType.NONE) {
+<span class="nocode"><a name="152">152: </a></span>                return arrangeRN(container, g2, constraint);  
+<span class="nocode"><a name="153">153: </a></span>            }
+<span class="nocode"><a name="154">154: </a></span>            else if (h == LengthConstraintType.FIXED) {
+<span class="nocode"><a name="155">155: </a></span>                return arrangeRF(container, g2, constraint);  
+<span class="nocode"><a name="156">156: </a></span>            }
+<span class="nocode"><a name="157">157: </a></span>            else if (h == LengthConstraintType.RANGE) {
+<span class="nocode"><a name="158">158: </a></span>                return arrangeRR(container, g2, constraint);   
+<span class="nocode"><a name="159">159: </a></span>            }
+<span class="nocode"><a name="160">160: </a></span>        }
+<span class="nocode"><a name="161">161: </a></span>        throw new RuntimeException(&quot;Unrecognised constraint type.&quot;);
+<span class="nocode"><a name="162">162: </a></span>        
+<span class="nocode"><a name="163">163: </a></span>    }
+<span class="nocode"><a name="164">164: </a></span>
+<span class="nocode"><a name="165">165: </a></span>    /**
+<span class="nocode"><a name="166">166: </a></span>     * Arranges the blocks in the container with a fixed width and no height 
+<span class="nocode"><a name="167">167: </a></span>     * constraint.
+<span class="nocode"><a name="168">168: </a></span>     * 
+<span class="nocode"><a name="169">169: </a></span>     * @param container  the container.
+<span class="nocode"><a name="170">170: </a></span>     * @param constraint  the constraint.
+<span class="nocode"><a name="171">171: </a></span>     * @param g2  the graphics device.
+<span class="nocode"><a name="172">172: </a></span>     * 
+<span class="nocode"><a name="173">173: </a></span>     * @return The size.
+<span class="nocode"><a name="174">174: </a></span>     */
+<span class="nocode"><a name="175">175: </a></span>    protected Size2D arrangeFN(BlockContainer container, Graphics2D g2,
+<span class="nocode"><a name="176">176: </a></span>                               RectangleConstraint constraint) {
+<span class="nocode"><a name="177">177: </a></span>        
+<span class="nocode"><a name="178">178: </a></span>        List blocks = container.getBlocks();
+<span class="nocode"><a name="179">179: </a></span>        double width = constraint.getWidth();
+<span class="nocode"><a name="180">180: </a></span>        
+<span class="nocode"><a name="181">181: </a></span>        double x = 0.0;
+<span class="nocode"><a name="182">182: </a></span>        double y = 0.0;
+<span class="nocode"><a name="183">183: </a></span>        double maxHeight = 0.0;
+<span class="nocode"><a name="184">184: </a></span>        List itemsInRow = new ArrayList();
+<span class="nocode"><a name="185">185: </a></span>        for (int i = 0; i &lt; blocks.size(); i++) {
+<span class="nocode"><a name="186">186: </a></span>            Block block = (Block) blocks.get(i);
+<span class="nocode"><a name="187">187: </a></span>            Size2D size = block.arrange(g2, RectangleConstraint.NONE);
+<span class="nocode"><a name="188">188: </a></span>            if (x + size.width &lt;= width) {
+<span class="nocode"><a name="189">189: </a></span>                itemsInRow.add(block);
+<span class="nocode"><a name="190">190: </a></span>                block.setBounds(
+<span class="nocode"><a name="191">191: </a></span>                    new Rectangle2D.Double(x, y, size.width, size.height)
+<span class="nocode"><a name="192">192: </a></span>                );
+<span class="nocode"><a name="193">193: </a></span>                x = x + size.width + this.horizontalGap;
+<span class="nocode"><a name="194">194: </a></span>                maxHeight = Math.max(maxHeight, size.height);
+<span class="nocode"><a name="195">195: </a></span>            }
+<span class="nocode"><a name="196">196: </a></span>            else {
+<span class="nocode"><a name="197">197: </a></span>                if (itemsInRow.isEmpty()) {
+<span class="nocode"><a name="198">198: </a></span>                    // place in this row (truncated) anyway
+<span class="nocode"><a name="199">199: </a></span>                    block.setBounds(
+<span class="nocode"><a name="200">200: </a></span>                        new Rectangle2D.Double(
+<span class="nocode"><a name="201">201: </a></span>                            x, y, Math.min(size.width, width - x), size.height
+<span class="nocode"><a name="202">202: </a></span>                        )
+<span class="nocode"><a name="203">203: </a></span>                    );
+<span class="nocode"><a name="204">204: </a></span>                    x = 0.0;
+<span class="nocode"><a name="205">205: </a></span>                    y = y + size.height + this.verticalGap;
+<span class="nocode"><a name="206">206: </a></span>                }
+<span class="nocode"><a name="207">207: </a></span>                else {
+<span class="nocode"><a name="208">208: </a></span>                    // start new row
+<span class="nocode"><a name="209">209: </a></span>                    itemsInRow.clear();
+<span class="nocode"><a name="210">210: </a></span>                    x = 0.0;
+<span class="nocode"><a name="211">211: </a></span>                    y = y + maxHeight + this.verticalGap;
+<span class="nocode"><a name="212">212: </a></span>                    maxHeight = size.height;
+<span class="nocode"><a name="213">213: </a></span>                    block.setBounds(
+<span class="nocode"><a name="214">214: </a></span>                        new Rectangle2D.Double(
+<span class="nocode"><a name="215">215: </a></span>                            x, y, Math.min(size.width, width), size.height
+<span class="nocode"><a name="216">216: </a></span>                        )
+<span class="nocode"><a name="217">217: </a></span>                    );
+<span class="nocode"><a name="218">218: </a></span>                    x = size.width + this.horizontalGap;
+<span class="nocode"><a name="219">219: </a></span>                    itemsInRow.add(block);
+<span class="nocode"><a name="220">220: </a></span>                }
+<span class="nocode"><a name="221">221: </a></span>            }
+<span class="nocode"><a name="222">222: </a></span>        }
+<span class="nocode"><a name="223">223: </a></span>        return new Size2D(constraint.getWidth(), y + maxHeight);  
+<span class="nocode"><a name="224">224: </a></span>    }
+<span class="nocode"><a name="225">225: </a></span>    
+<span class="nocode"><a name="226">226: </a></span>    /**
+<span class="nocode"><a name="227">227: </a></span>     * Arranges the blocks in the container with a fixed width and a range
+<span class="nocode"><a name="228">228: </a></span>     * constraint on the height.
+<span class="nocode"><a name="229">229: </a></span>     * 
+<span class="nocode"><a name="230">230: </a></span>     * @param container  the container.
+<span class="nocode"><a name="231">231: </a></span>     * @param constraint  the constraint.
+<span class="nocode"><a name="232">232: </a></span>     * @param g2  the graphics device.
+<span class="nocode"><a name="233">233: </a></span>     * 
+<span class="nocode"><a name="234">234: </a></span>     * @return The size following the arrangement.
+<span class="nocode"><a name="235">235: </a></span>     */
+<span class="nocode"><a name="236">236: </a></span>    protected Size2D arrangeFR(BlockContainer container, Graphics2D g2,
+<span class="nocode"><a name="237">237: </a></span>                               RectangleConstraint constraint) {
+<span class="nocode"><a name="238">238: </a></span>
+<span class="nocode"><a name="239">239: </a></span>        Size2D s = arrangeFN(container, g2, constraint);
+<span class="nocode"><a name="240">240: </a></span>        if (constraint.getHeightRange().contains(s.height)) {
+<span class="nocode"><a name="241">241: </a></span>            return s;   
+<span class="nocode"><a name="242">242: </a></span>        }
+<span class="nocode"><a name="243">243: </a></span>        else {
+<span class="nocode"><a name="244">244: </a></span>            RectangleConstraint c = constraint.toFixedHeight(
+<span class="nocode"><a name="245">245: </a></span>                constraint.getHeightRange().constrain(s.getHeight())
+<span class="nocode"><a name="246">246: </a></span>            );
+<span class="nocode"><a name="247">247: </a></span>            return arrangeFF(container, g2, c);
+<span class="nocode"><a name="248">248: </a></span>        }
+<span class="nocode"><a name="249">249: </a></span>    }
+<span class="nocode"><a name="250">250: </a></span>
+<span class="nocode"><a name="251">251: </a></span>    /**
+<span class="nocode"><a name="252">252: </a></span>     * Arranges the blocks in the container with the overall height and width
+<span class="nocode"><a name="253">253: </a></span>     * specified as fixed constraints.
+<span class="nocode"><a name="254">254: </a></span>     * 
+<span class="nocode"><a name="255">255: </a></span>     * @param container  the container.
+<span class="nocode"><a name="256">256: </a></span>     * @param constraint  the constraint.
+<span class="nocode"><a name="257">257: </a></span>     * @param g2  the graphics device.
+<span class="nocode"><a name="258">258: </a></span>     * 
+<span class="nocode"><a name="259">259: </a></span>     * @return The size following the arrangement.
+<span class="nocode"><a name="260">260: </a></span>     */
+<span class="nocode"><a name="261">261: </a></span>    protected Size2D arrangeFF(BlockContainer container, Graphics2D g2,
+<span class="nocode"><a name="262">262: </a></span>                               RectangleConstraint constraint) {
+<span class="nocode"><a name="263">263: </a></span>
+<span class="nocode"><a name="264">264: </a></span>        // TODO: implement this properly
+<span class="nocode"><a name="265">265: </a></span>        return arrangeFN(container, g2, constraint);
+<span class="nocode"><a name="266">266: </a></span>    }
+<span class="nocode"><a name="267">267: </a></span>
+<span class="nocode"><a name="268">268: </a></span>    /**
+<span class="nocode"><a name="269">269: </a></span>     * Arranges the blocks with the overall width and height to fit within 
+<span class="nocode"><a name="270">270: </a></span>     * specified ranges.
+<span class="nocode"><a name="271">271: </a></span>     * 
+<span class="nocode"><a name="272">272: </a></span>     * @param container  the container.
+<span class="nocode"><a name="273">273: </a></span>     * @param constraint  the constraint.
+<span class="nocode"><a name="274">274: </a></span>     * @param g2  the graphics device.
+<span class="nocode"><a name="275">275: </a></span>     * 
+<span class="nocode"><a name="276">276: </a></span>     * @return The size after the arrangement.
+<span class="nocode"><a name="277">277: </a></span>     */
+<span class="nocode"><a name="278">278: </a></span>    protected Size2D arrangeRR(BlockContainer container, Graphics2D g2,
+<span class="nocode"><a name="279">279: </a></span>                               RectangleConstraint constraint) {
+<span class="nocode"><a name="280">280: </a></span>
+<span class="nocode"><a name="281">281: </a></span>        // first arrange without constraints, and see if this fits within
+<span class="nocode"><a name="282">282: </a></span>        // the required ranges...
+<span class="nocode"><a name="283">283: </a></span>        Size2D s1 = arrangeNN(container, g2);
+<span class="nocode"><a name="284">284: </a></span>        if (constraint.getWidthRange().contains(s1.width)) {
+<span class="nocode"><a name="285">285: </a></span>            return s1;  // TODO: we didn't check the height yet
+<span class="nocode"><a name="286">286: </a></span>        }
+<span class="nocode"><a name="287">287: </a></span>        else {
+<span class="nocode"><a name="288">288: </a></span>            RectangleConstraint c = constraint.toFixedWidth(
+<span class="nocode"><a name="289">289: </a></span>                constraint.getWidthRange().getUpperBound()
+<span class="nocode"><a name="290">290: </a></span>            );
+<span class="nocode"><a name="291">291: </a></span>            return arrangeFR(container, g2, c);
+<span class="nocode"><a name="292">292: </a></span>        }
+<span class="nocode"><a name="293">293: </a></span>    }
+<span class="nocode"><a name="294">294: </a></span>    
+<span class="nocode"><a name="295">295: </a></span>    /**
+<span class="nocode"><a name="296">296: </a></span>     * Arranges the blocks in the container with a range constraint on the
+<span class="nocode"><a name="297">297: </a></span>     * width and a fixed height.
+<span class="nocode"><a name="298">298: </a></span>     * 
+<span class="nocode"><a name="299">299: </a></span>     * @param container  the container.
+<span class="nocode"><a name="300">300: </a></span>     * @param constraint  the constraint.
+<span class="nocode"><a name="301">301: </a></span>     * @param g2  the graphics device.
+<span class="nocode"><a name="302">302: </a></span>     * 
+<span class="nocode"><a name="303">303: </a></span>     * @return The size following the arrangement.
+<span class="nocode"><a name="304">304: </a></span>     */
+<span class="nocode"><a name="305">305: </a></span>    protected Size2D arrangeRF(BlockContainer container, Graphics2D g2,
+<span class="nocode"><a name="306">306: </a></span>                               RectangleConstraint constraint) {
+<span class="nocode"><a name="307">307: </a></span>
+<span class="nocode"><a name="308">308: </a></span>        Size2D s = arrangeNF(container, g2, constraint);
+<span class="nocode"><a name="309">309: </a></span>        if (constraint.getWidthRange().contains(s.width)) {
+<span class="nocode"><a name="310">310: </a></span>            return s;   
+<span class="nocode"><a name="311">311: </a></span>        }
+<span class="nocode"><a name="312">312: </a></span>        else {
+<span class="nocode"><a name="313">313: </a></span>            RectangleConstraint c = constraint.toFixedWidth(
+<span class="nocode"><a name="314">314: </a></span>                constraint.getWidthRange().constrain(s.getWidth())
+<span class="nocode"><a name="315">315: </a></span>            );
+<span class="nocode"><a name="316">316: </a></span>            return arrangeFF(container, g2, c);
+<span class="nocode"><a name="317">317: </a></span>        }
+<span class="nocode"><a name="318">318: </a></span>    }
+<span class="nocode"><a name="319">319: </a></span>
+<span class="nocode"><a name="320">320: </a></span>    /**
+<span class="nocode"><a name="321">321: </a></span>     * Arranges the block with a range constraint on the width, and no 
+<span class="nocode"><a name="322">322: </a></span>     * constraint on the height.
+<span class="nocode"><a name="323">323: </a></span>     * 
+<span class="nocode"><a name="324">324: </a></span>     * @param container  the container.
+<span class="nocode"><a name="325">325: </a></span>     * @param constraint  the constraint.
+<span class="nocode"><a name="326">326: </a></span>     * @param g2  the graphics device.
+<span class="nocode"><a name="327">327: </a></span>     * 
+<span class="nocode"><a name="328">328: </a></span>     * @return The size following the arrangement.
+<span class="nocode"><a name="329">329: </a></span>     */
+<span class="nocode"><a name="330">330: </a></span>    protected Size2D arrangeRN(BlockContainer container, Graphics2D g2,
+<span class="nocode"><a name="331">331: </a></span>                               RectangleConstraint constraint) {
+<span class="nocode"><a name="332">332: </a></span>        // first arrange without constraints, then see if the width fits
+<span class="nocode"><a name="333">333: </a></span>        // within the required range...if not, call arrangeFN() at max width
+<span class="nocode"><a name="334">334: </a></span>        Size2D s1 = arrangeNN(container, g2);
+<span class="nocode"><a name="335">335: </a></span>        if (constraint.getWidthRange().contains(s1.width)) {
+<span class="nocode"><a name="336">336: </a></span>            return s1;   
+<span class="nocode"><a name="337">337: </a></span>        }
+<span class="nocode"><a name="338">338: </a></span>        else {
+<span class="nocode"><a name="339">339: </a></span>            RectangleConstraint c = constraint.toFixedWidth(
+<span class="nocode"><a name="340">340: </a></span>                constraint.getWidthRange().getUpperBound()
+<span class="nocode"><a name="341">341: </a></span>            );
+<span class="nocode"><a name="342">342: </a></span>            return arrangeFN(container, g2, c);
+<span class="nocode"><a name="343">343: </a></span>        }
+<span class="nocode"><a name="344">344: </a></span>    }
+<span class="nocode"><a name="345">345: </a></span>    
+<span class="nocode"><a name="346">346: </a></span>    /**
+<span class="nocode"><a name="347">347: </a></span>     * Arranges the blocks without any constraints.  This puts all blocks
+<span class="nocode"><a name="348">348: </a></span>     * into a single row.
+<span class="nocode"><a name="349">349: </a></span>     * 
+<span class="nocode"><a name="350">350: </a></span>     * @param container  the container.
+<span class="nocode"><a name="351">351: </a></span>     * @param g2  the graphics device.
+<span class="nocode"><a name="352">352: </a></span>     * 
+<span class="nocode"><a name="353">353: </a></span>     * @return The size after the arrangement.
+<span class="nocode"><a name="354">354: </a></span>     */
+<span class="nocode"><a name="355">355: </a></span>    protected Size2D arrangeNN(BlockContainer container, Graphics2D g2) {
+<span class="nocode"><a name="356">356: </a></span>        double x = 0.0;
+<span class="nocode"><a name="357">357: </a></span>        double width = 0.0;
+<span class="nocode"><a name="358">358: </a></span>        double maxHeight = 0.0;
+<span class="nocode"><a name="359">359: </a></span>        List blocks = container.getBlocks();
+<span class="nocode"><a name="360">360: </a></span>        int blockCount = blocks.size();
+<span class="nocode"><a name="361">361: </a></span>        if (blockCount &gt; 0) {
+<span class="nocode"><a name="362">362: </a></span>            Size2D[] sizes = new Size2D[blocks.size()];
+<span class="nocode"><a name="363">363: </a></span>            for (int i = 0; i &lt; blocks.size(); i++) {
+<span class="nocode"><a name="364">364: </a></span>                Block block = (Block) blocks.get(i);
+<span class="nocode"><a name="365">365: </a></span>                sizes[i] = block.arrange(g2, RectangleConstraint.NONE);
+<span class="nocode"><a name="366">366: </a></span>                width = width + sizes[i].getWidth();
+<span class="nocode"><a name="367">367: </a></span>                maxHeight = Math.max(sizes[i].height, maxHeight);
+<span class="nocode"><a name="368">368: </a></span>                block.setBounds(
+<span class="nocode"><a name="369">369: </a></span>                    new Rectangle2D.Double(
+<span class="nocode"><a name="370">370: </a></span>                        x, 0.0, sizes[i].width, sizes[i].height
+<span class="nocode"><a name="371">371: </a></span>                    )
+<span class="nocode"><a name="372">372: </a></span>                );
+<span class="nocode"><a name="373">373: </a></span>                x = x + sizes[i].width + this.horizontalGap;
+<span class="nocode"><a name="374">374: </a></span>            }
+<span class="nocode"><a name="375">375: </a></span>            if (blockCount &gt; 1) {
+<span class="nocode"><a name="376">376: </a></span>                width = width + this.horizontalGap * (blockCount - 1);   
+<span class="nocode"><a name="377">377: </a></span>            }
+<span class="nocode"><a name="378">378: </a></span>            if (this.verticalAlignment != VerticalAlignment.TOP) {
+<span class="nocode"><a name="379">379: </a></span>                for (int i = 0; i &lt; blocks.size(); i++) {
+<span class="nocode"><a name="380">380: </a></span>                    //Block b = (Block) blocks.get(i);
+<span class="nocode"><a name="381">381: </a></span>                    if (this.verticalAlignment == VerticalAlignment.CENTER) {
+<span class="nocode"><a name="382">382: </a></span>                        //TODO: shift block down by half
+<span class="nocode"><a name="383">383: </a></span>                    }
+<span class="nocode"><a name="384">384: </a></span>                    else if (this.verticalAlignment 
+<span class="nocode"><a name="385">385: </a></span>                            == VerticalAlignment.BOTTOM) {
+<span class="nocode"><a name="386">386: </a></span>                        //TODO: shift block down to bottom
+<span class="nocode"><a name="387">387: </a></span>                    }
+<span class="nocode"><a name="388">388: </a></span>                }            
+<span class="nocode"><a name="389">389: </a></span>            }
+<span class="nocode"><a name="390">390: </a></span>        }
+<span class="nocode"><a name="391">391: </a></span>        return new Size2D(width, maxHeight);
+<span class="nocode"><a name="392">392: </a></span>    }
+<span class="nocode"><a name="393">393: </a></span>    
+<span class="nocode"><a name="394">394: </a></span>    /**
+<span class="nocode"><a name="395">395: </a></span>     * Arranges the blocks with no width constraint and a fixed height 
+<span class="nocode"><a name="396">396: </a></span>     * constraint.  This puts all blocks into a single row.
+<span class="nocode"><a name="397">397: </a></span>     * 
+<span class="nocode"><a name="398">398: </a></span>     * @param container  the container.
+<span class="nocode"><a name="399">399: </a></span>     * @param constraint  the constraint.
+<span class="nocode"><a name="400">400: </a></span>     * @param g2  the graphics device.
+<span class="nocode"><a name="401">401: </a></span>     * 
+<span class="nocode"><a name="402">402: </a></span>     * @return The size after the arrangement.
+<span class="nocode"><a name="403">403: </a></span>     */
+<span class="nocode"><a name="404">404: </a></span>    protected Size2D arrangeNF(BlockContainer container, Graphics2D g2,
+<span class="nocode"><a name="405">405: </a></span>                               RectangleConstraint constraint) {
+<span class="nocode"><a name="406">406: </a></span>        // TODO: for now we are ignoring the height constraint
+<span class="nocode"><a name="407">407: </a></span>        return arrangeNN(container, g2);
+<span class="nocode"><a name="408">408: </a></span>    }
+<span class="nocode"><a name="409">409: </a></span>    
+<span class="nocode"><a name="410">410: </a></span>    /**
+<span class="nocode"><a name="411">411: </a></span>     * Clears any cached information.
+<span class="nocode"><a name="412">412: </a></span>     */
+<span class="nocode"><a name="413">413: </a></span>    public void clear() {
+<span class="nocode"><a name="414">414: </a></span>        // no action required.
+<span class="nocode"><a name="415">415: </a></span>    }
+<span class="nocode"><a name="416">416: </a></span>    
+<span class="nocode"><a name="417">417: </a></span>    /**
+<span class="nocode"><a name="418">418: </a></span>     * Tests this instance for equality with an arbitrary object.
+<span class="nocode"><a name="419">419: </a></span>     * 
+<span class="nocode"><a name="420">420: </a></span>     * @param obj  the object (&lt;code&gt;null&lt;/code&gt; permitted).
+<span class="nocode"><a name="421">421: </a></span>     * 
+<span class="nocode"><a name="422">422: </a></span>     * @return A boolean.
+<span class="nocode"><a name="423">423: </a></span>     */
+<span class="nocode"><a name="424">424: </a></span>    public boolean equals(Object obj) {
+<span class="nocode"><a name="425">425: </a></span>        if (obj == this) {
+<span class="nocode"><a name="426">426: </a></span>            return true;   
+<span class="nocode"><a name="427">427: </a></span>        }
+<span class="nocode"><a name="428">428: </a></span>        if (!(obj instanceof FlowArrangement)) {
+<span class="nocode"><a name="429">429: </a></span>            return false;   
+<span class="nocode"><a name="430">430: </a></span>        }
+<span class="nocode"><a name="431">431: </a></span>        FlowArrangement that = (FlowArrangement) obj;
+<span class="nocode"><a name="432">432: </a></span>        if (this.horizontalAlignment != that.horizontalAlignment) {
+<span class="nocode"><a name="433">433: </a></span>            return false;
+<span class="nocode"><a name="434">434: </a></span>        }
+<span class="nocode"><a name="435">435: </a></span>        if (this.verticalAlignment != that.verticalAlignment) {
+<span class="nocode"><a name="436">436: </a></span>            return false;
+<span class="nocode"><a name="437">437: </a></span>        }
+<span class="nocode"><a name="438">438: </a></span>        if (this.horizontalGap != that.horizontalGap) {
+<span class="nocode"><a name="439">439: </a></span>            return false;   
+<span class="nocode"><a name="440">440: </a></span>        }
+<span class="nocode"><a name="441">441: </a></span>        if (this.verticalGap != that.verticalGap) {
+<span class="nocode"><a name="442">442: </a></span>            return false;   
+<span class="nocode"><a name="443">443: </a></span>        }
+<span class="nocode"><a name="444">444: </a></span>        return true;
+<span class="nocode"><a name="445">445: </a></span>    }
+<span class="nocode"><a name="446">446: </a></span>    
+<span class="nocode"><a name="447">447: </a></span>}
+</pre><table class="mutation_table" summary="Mutations">
+<tr><th>ID</th><th>Line</th><th>Type</th><th>Detected</th></tr><tr><td>22974</td><td><a href="#79">79</a></td><td>Replace a constant (Replace 2.0 with 3.0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>22975</td><td><a href="#79">79</a></td><td>Replace a constant (Replace 2.0 with 0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>22976</td><td><a href="#79">79</a></td><td>Replace a constant (Replace 2.0 with 1.0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>22978</td><td><a href="#79">79(1)</a></td><td>Replace a constant (Replace 2.0 with 0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>22979</td><td><a href="#79">79(1)</a></td><td>Replace a constant (Replace 2.0 with 1.0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>22977</td><td><a href="#79">79(1)</a></td><td>Replace a constant (Replace 2.0 with 3.0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>22980</td><td><a href="#126">126</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>22981</td><td><a href="#127">127</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>22982</td><td><a href="#128">128</a></td><td>Negate jump condition (Replace IF_ACMPNE with  IF_ACMPEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>22983</td><td><a href="#129">129</a></td><td>Negate jump condition (Replace IF_ACMPNE with  IF_ACMPEQ)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>22984</td><td><a href="#130">130</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>22985</td><td><a href="#132">132</a></td><td>Negate jump condition (Replace IF_ACMPNE with  IF_ACMPEQ)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>22986</td><td><a href="#133">133</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>22987</td><td><a href="#135">135</a></td><td>Negate jump condition (Replace IF_ACMPNE with  IF_ACMPEQ)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>22988</td><td><a href="#139">139</a></td><td>Negate jump condition (Replace IF_ACMPNE with  IF_ACMPEQ)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>22989</td><td><a href="#140">140</a></td><td>Negate jump condition (Replace IF_ACMPNE with  IF_ACMPEQ)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>22990</td><td><a href="#141">141</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>22991</td><td><a href="#143">143</a></td><td>Negate jump condition (Replace IF_ACMPNE with  IF_ACMPEQ)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>22992</td><td><a href="#144">144</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>22993</td><td><a href="#146">146</a></td><td>Negate jump condition (Replace IF_ACMPNE with  IF_ACMPEQ)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>22994</td><td><a href="#147">147</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>22995</td><td><a href="#150">150</a></td><td>Negate jump condition (Replace IF_ACMPNE with  IF_ACMPEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>22996</td><td><a href="#151">151</a></td><td>Negate jump condition (Replace IF_ACMPNE with  IF_ACMPEQ)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>22997</td><td><a href="#152">152</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>22998</td><td><a href="#154">154</a></td><td>Negate jump condition (Replace IF_ACMPNE with  IF_ACMPEQ)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>22999</td><td><a href="#155">155</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>23000</td><td><a href="#157">157</a></td><td>Negate jump condition (Replace IF_ACMPNE with  IF_ACMPEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>23001</td><td><a href="#158">158</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>23002</td><td><a href="#178">178</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>23003</td><td><a href="#179">179</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>23004</td><td><a href="#181">181</a></td><td>Replace a constant (Replace 0 with 1(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>23005</td><td><a href="#181">181</a></td><td>Replace a constant (Replace 0 with -1(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>23006</td><td><a href="#182">182</a></td><td>Replace a constant (Replace 0 with 1(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>23007</td><td><a href="#182">182</a></td><td>Replace a constant (Replace 0 with -1(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>23009</td><td><a href="#183">183</a></td><td>Replace a constant (Replace 0 with -1(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>23008</td><td><a href="#183">183</a></td><td>Replace a constant (Replace 0 with 1(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>23011</td><td><a href="#185">185</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>23010</td><td><a href="#185">185</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>23013</td><td><a href="#185">185</a></td><td>Negate jump condition (Replace IF_ICMPGE with  IF_ICMPLT)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>23012</td><td><a href="#185">185</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>23014</td><td><a href="#186">186</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>23015</td><td><a href="#187">187</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>23017</td><td><a href="#188">188</a></td><td>Negate jump condition (Replace IFGT with  IFLE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>23016</td><td><a href="#188">188</a></td><td>Replace arithmetic operator (Replace DADD with DSUB)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>23018</td><td><a href="#189">189</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>23019</td><td><a href="#190">190</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>23020</td><td><a href="#193">193</a></td><td>Replace arithmetic operator (Replace DADD with DSUB)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>23021</td><td><a href="#193">193(1)</a></td><td>Replace arithmetic operator (Replace DADD with DSUB)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>23022</td><td><a href="#194">194</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>23024</td><td><a href="#197">197</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>23023</td><td><a href="#197">197</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>23025</td><td><a href="#199">199</a></td><td>Replace arithmetic operator (Replace DSUB with DADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>23026</td><td><a href="#199">199</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>23027</td><td><a href="#199">199(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>23029</td><td><a href="#204">204</a></td><td>Replace a constant (Replace 0 with -1(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>23028</td><td><a href="#204">204</a></td><td>Replace a constant (Replace 0 with 1(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>23030</td><td><a href="#205">205</a></td><td>Replace arithmetic operator (Replace DADD with DSUB)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>23031</td><td><a href="#205">205(1)</a></td><td>Replace arithmetic operator (Replace DADD with DSUB)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>23032</td><td><a href="#209">209</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>23034</td><td><a href="#210">210</a></td><td>Replace a constant (Replace 0 with -1(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>23033</td><td><a href="#210">210</a></td><td>Replace a constant (Replace 0 with 1(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>23035</td><td><a href="#211">211</a></td><td>Replace arithmetic operator (Replace DADD with DSUB)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>23036</td><td><a href="#211">211(1)</a></td><td>Replace arithmetic operator (Replace DADD with DSUB)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>23037</td><td><a href="#213">213</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>23038</td><td><a href="#213">213(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>23039</td><td><a href="#218">218</a></td><td>Replace arithmetic operator (Replace DADD with DSUB)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>23040</td><td><a href="#219">219</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>23042</td><td><a href="#223">223</a></td><td>Replace arithmetic operator (Replace DADD with DSUB)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>23041</td><td><a href="#223">223</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>23043</td><td><a href="#239">239</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>23046</td><td><a href="#240">240</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>23044</td><td><a href="#240">240</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>23045</td><td><a href="#240">240(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>23047</td><td><a href="#244">244</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>23048</td><td><a href="#244">244(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>23049</td><td><a href="#244">244(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>23050</td><td><a href="#244">244(3)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>23051</td><td><a href="#247">247</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>23052</td><td><a href="#265">265</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>23053</td><td><a href="#283">283</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>23056</td><td><a href="#284">284</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>23054</td><td><a href="#284">284</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>23055</td><td><a href="#284">284(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>23057</td><td><a href="#288">288</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>23058</td><td><a href="#288">288(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>23059</td><td><a href="#288">288(2)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>23060</td><td><a href="#291">291</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>23061</td><td><a href="#308">308</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>23064</td><td><a href="#309">309</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>23062</td><td><a href="#309">309</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>23063</td><td><a href="#309">309(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>23065</td><td><a href="#313">313</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>23066</td><td><a href="#313">313(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>23067</td><td><a href="#313">313(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>23068</td><td><a href="#313">313(3)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>23069</td><td><a href="#316">316</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>23070</td><td><a href="#334">334</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>23073</td><td><a href="#335">335</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>23071</td><td><a href="#335">335</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>23072</td><td><a href="#335">335(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>23074</td><td><a href="#339">339</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>23075</td><td><a href="#339">339(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>23076</td><td><a href="#339">339(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>23077</td><td><a href="#342">342</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>23078</td><td><a href="#356">356</a></td><td>Replace a constant (Replace 0 with 1(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>23079</td><td><a href="#356">356</a></td><td>Replace a constant (Replace 0 with -1(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>23081</td><td><a href="#357">357</a></td><td>Replace a constant (Replace 0 with -1(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>23080</td><td><a href="#357">357</a></td><td>Replace a constant (Replace 0 with 1(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>23082</td><td><a href="#358">358</a></td><td>Replace a constant (Replace 0 with 1(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>23083</td><td><a href="#358">358</a></td><td>Replace a constant (Replace 0 with -1(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>23084</td><td><a href="#359">359</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>23085</td><td><a href="#360">360</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>23086</td><td><a href="#361">361</a></td><td>Negate jump condition (Replace IFLE with  IFGT)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>23087</td><td><a href="#362">362</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>23089</td><td><a href="#363">363</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>23088</td><td><a href="#363">363</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>23091</td><td><a href="#363">363</a></td><td>Negate jump condition (Replace IF_ICMPGE with  IF_ICMPLT)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>23090</td><td><a href="#363">363</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>23092</td><td><a href="#364">364</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>23093</td><td><a href="#365">365</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>23095</td><td><a href="#366">366</a></td><td>Replace arithmetic operator (Replace DADD with DSUB)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>23094</td><td><a href="#366">366</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>23096</td><td><a href="#367">367</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>23097</td><td><a href="#368">368</a></td><td>Replace a constant (Replace 0 with 1(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>23098</td><td><a href="#368">368</a></td><td>Replace a constant (Replace 0 with -1(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>23099</td><td><a href="#368">368</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>23100</td><td><a href="#373">373</a></td><td>Replace arithmetic operator (Replace DADD with DSUB)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>23101</td><td><a href="#373">373(1)</a></td><td>Replace arithmetic operator (Replace DADD with DSUB)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>23102</td><td><a href="#375">375</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>23103</td><td><a href="#375">375</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>23104</td><td><a href="#375">375</a></td><td>Negate jump condition (Replace IF_ICMPLE with  IF_ICMPGT)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>23105</td><td><a href="#376">376</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>23106</td><td><a href="#376">376</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>23107</td><td><a href="#376">376</a></td><td>Replace arithmetic operator (Replace ISUB with IADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>23108</td><td><a href="#376">376(1)</a></td><td>Replace arithmetic operator (Replace DMUL with DADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>23109</td><td><a href="#376">376(2)</a></td><td>Replace arithmetic operator (Replace DADD with DSUB)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>23110</td><td><a href="#378">378</a></td><td>Negate jump condition (Replace IF_ACMPEQ with  IF_ACMPNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>23112</td><td><a href="#379">379</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>23111</td><td><a href="#379">379</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>23114</td><td><a href="#379">379</a></td><td>Negate jump condition (Replace IF_ICMPGE with  IF_ICMPLT)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>23113</td><td><a href="#379">379</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>23115</td><td><a href="#381">381</a></td><td>Negate jump condition (Replace IF_ACMPNE with  IF_ACMPEQ)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>23116</td><td><a href="#384">384</a></td><td>Negate jump condition (Replace IF_ACMPNE with  IF_ACMPEQ)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>23117</td><td><a href="#407">407</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>23118</td><td><a href="#425">425</a></td><td>Negate jump condition (Replace IF_ACMPNE with  IF_ACMPEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>23120</td><td><a href="#426">426</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>23119</td><td><a href="#426">426</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>23121</td><td><a href="#428">428</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>23123</td><td><a href="#429">429</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>23122</td><td><a href="#429">429</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>23124</td><td><a href="#432">432</a></td><td>Negate jump condition (Replace IF_ACMPEQ with  IF_ACMPNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>23126</td><td><a href="#433">433</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>23125</td><td><a href="#433">433</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>23127</td><td><a href="#435">435</a></td><td>Negate jump condition (Replace IF_ACMPEQ with  IF_ACMPNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>23128</td><td><a href="#436">436</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>23129</td><td><a href="#436">436</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>23130</td><td><a href="#438">438</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>23131</td><td><a href="#439">439</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>23132</td><td><a href="#439">439</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>23133</td><td><a href="#441">441</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>23135</td><td><a href="#442">442</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>23134</td><td><a href="#442">442</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>23137</td><td><a href="#444">444</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>23136</td><td><a href="#444">444</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+</table>
+</body>
+</html>

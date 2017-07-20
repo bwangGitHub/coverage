@@ -1,0 +1,456 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN
+"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>
+org.joda.time.chrono.BasicGJChronology
+</title>
+<link href="prettify.css" type="text/css" rel="stylesheet" />
+<script type="text/javascript" src="prettify.js"></script>
+</head>
+<body onload="prettyPrint()">
+<h2>Javalanche report for class:<br/> org.joda.time.chrono.BasicGJChronology </h2><pre class="prettyprint" style="border: 1px solid #888;padding: 2px"><span class="nocode"><a name="1">  1: </a></span>/*
+<span class="nocode"><a name="2">  2: </a></span> *  Copyright 2001-2005 Stephen Colebourne
+<span class="nocode"><a name="3">  3: </a></span> *
+<span class="nocode"><a name="4">  4: </a></span> *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+<span class="nocode"><a name="5">  5: </a></span> *  you may not use this file except in compliance with the License.
+<span class="nocode"><a name="6">  6: </a></span> *  You may obtain a copy of the License at
+<span class="nocode"><a name="7">  7: </a></span> *
+<span class="nocode"><a name="8">  8: </a></span> *      http://www.apache.org/licenses/LICENSE-2.0
+<span class="nocode"><a name="9">  9: </a></span> *
+<span class="nocode"><a name="10"> 10: </a></span> *  Unless required by applicable law or agreed to in writing, software
+<span class="nocode"><a name="11"> 11: </a></span> *  distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+<span class="nocode"><a name="12"> 12: </a></span> *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+<span class="nocode"><a name="13"> 13: </a></span> *  See the License for the specific language governing permissions and
+<span class="nocode"><a name="14"> 14: </a></span> *  limitations under the License.
+<span class="nocode"><a name="15"> 15: </a></span> */
+<span class="nocode"><a name="16"> 16: </a></span>package org.joda.time.chrono;
+<span class="nocode"><a name="17"> 17: </a></span>
+<span class="nocode"><a name="18"> 18: </a></span>import org.joda.time.Chronology;
+<span class="nocode"><a name="19"> 19: </a></span>import org.joda.time.DateTimeConstants;
+<span class="nocode"><a name="20"> 20: </a></span>
+<span class="nocode"><a name="21"> 21: </a></span>/**
+<span class="nocode"><a name="22"> 22: </a></span> * Abstract Chronology for implementing chronologies based on Gregorian/Julian formulae.
+<span class="nocode"><a name="23"> 23: </a></span> * Most of the utility methods required by subclasses are package-private,
+<span class="nocode"><a name="24"> 24: </a></span> * reflecting the intention that they be defined in the same package.
+<span class="nocode"><a name="25"> 25: </a></span> * &lt;p&gt;
+<span class="nocode"><a name="26"> 26: </a></span> * BasicGJChronology is thread-safe and immutable, and all subclasses must
+<span class="nocode"><a name="27"> 27: </a></span> * be as well.
+<span class="nocode"><a name="28"> 28: </a></span> *
+<span class="nocode"><a name="29"> 29: </a></span> * @author Stephen Colebourne
+<span class="nocode"><a name="30"> 30: </a></span> * @author Brian S O'Neill
+<span class="nocode"><a name="31"> 31: </a></span> * @author Guy Allard
+<span class="nocode"><a name="32"> 32: </a></span> * @since 1.2, refactored from CommonGJChronology
+<span class="nocode"><a name="33"> 33: </a></span> */
+<span class="nocode"><a name="34"> 34: </a></span>abstract class BasicGJChronology extends BasicChronology {
+<span class="nocode"><a name="35"> 35: </a></span>
+<span class="nocode"><a name="36"> 36: </a></span>    /** Serialization lock */
+<span class="nocode"><a name="37"> 37: </a></span>    private static final long serialVersionUID = 538276888268L;
+<span class="nocode"><a name="38"> 38: </a></span>
+<span class="nocode"><a name="39"> 39: </a></span>    // These arrays are NOT public. We trust ourselves not to alter the array.
+<span class="nocode"><a name="40"> 40: </a></span>    // They use zero-based array indexes so the that valid range of months is
+<span class="nocode"><a name="41"> 41: </a></span>    // automatically checked.
+<span class="nocode"><a name="42"> 42: </a></span>    private static final int[] MIN_DAYS_PER_MONTH_ARRAY = {
+<span class="nocode"><a name="43"> 43: </a></span>        31,28,31,30,31,30,31,31,30,31,30,31
+<span class="nocode"><a name="44"> 44: </a></span>    };
+<span class="nocode"><a name="45"> 45: </a></span>    private static final int[] MAX_DAYS_PER_MONTH_ARRAY = {
+<span class="nocode"><a name="46"> 46: </a></span>        31,29,31,30,31,30,31,31,30,31,30,31
+<span class="nocode"><a name="47"> 47: </a></span>    };
+<span class="nocode"><a name="48"> 48: </a></span>    private static final long[] MIN_TOTAL_MILLIS_BY_MONTH_ARRAY;
+<span class="nocode"><a name="49"> 49: </a></span>    private static final long[] MAX_TOTAL_MILLIS_BY_MONTH_ARRAY;
+<span class="nocode"><a name="50"> 50: </a></span>    private static final long FEB_29 = (31L + 29 - 1) * DateTimeConstants.MILLIS_PER_DAY;
+<span class="nocode"><a name="51"> 51: </a></span>
+<span class="nocode"><a name="52"> 52: </a></span>    static {
+<span class="nocode"><a name="53"> 53: </a></span>        MIN_TOTAL_MILLIS_BY_MONTH_ARRAY = new long[12];
+<span class="nocode"><a name="54"> 54: </a></span>        MAX_TOTAL_MILLIS_BY_MONTH_ARRAY = new long[12];
+<span class="nocode"><a name="55"> 55: </a></span>
+<span class="nocode"><a name="56"> 56: </a></span>        long minSum = 0;
+<span class="nocode"><a name="57"> 57: </a></span>        long maxSum = 0;
+<span class="nocode"><a name="58"> 58: </a></span>        for (int i = 0; i &lt; 11; i++) {
+<span class="nocode"><a name="59"> 59: </a></span>            long millis = MIN_DAYS_PER_MONTH_ARRAY[i]
+<span class="nocode"><a name="60"> 60: </a></span>                * (long)DateTimeConstants.MILLIS_PER_DAY;
+<span class="nocode"><a name="61"> 61: </a></span>            minSum += millis;
+<span class="nocode"><a name="62"> 62: </a></span>            MIN_TOTAL_MILLIS_BY_MONTH_ARRAY[i + 1] = minSum;
+<span class="nocode"><a name="63"> 63: </a></span>
+<span class="nocode"><a name="64"> 64: </a></span>            millis = MAX_DAYS_PER_MONTH_ARRAY[i]
+<span class="nocode"><a name="65"> 65: </a></span>                * (long)DateTimeConstants.MILLIS_PER_DAY;
+<span class="nocode"><a name="66"> 66: </a></span>            maxSum += millis;
+<span class="nocode"><a name="67"> 67: </a></span>            MAX_TOTAL_MILLIS_BY_MONTH_ARRAY[i + 1] = maxSum;
+<span class="nocode"><a name="68"> 68: </a></span>        }
+<span class="nocode"><a name="69"> 69: </a></span>    }
+<span class="nocode"><a name="70"> 70: </a></span>
+<span class="nocode"><a name="71"> 71: </a></span>    /**
+<span class="nocode"><a name="72"> 72: </a></span>     * Constructor.
+<span class="nocode"><a name="73"> 73: </a></span>     */
+<span class="nocode"><a name="74"> 74: </a></span>    BasicGJChronology(Chronology base, Object param, int minDaysInFirstWeek) {
+<span class="nocode"><a name="75"> 75: </a></span>        super(base, param, minDaysInFirstWeek);
+<span class="nocode"><a name="76"> 76: </a></span>    }
+<span class="nocode"><a name="77"> 77: </a></span>
+<span class="nocode"><a name="78"> 78: </a></span>    //-----------------------------------------------------------------------
+<span class="nocode"><a name="79"> 79: </a></span>    int getMonthOfYear(long millis, int year) {
+<span class="nocode"><a name="80"> 80: </a></span>        // Perform a binary search to get the month. To make it go even faster,
+<span class="nocode"><a name="81"> 81: </a></span>        // compare using ints instead of longs. The number of milliseconds per
+<span class="nocode"><a name="82"> 82: </a></span>        // year exceeds the limit of a 32-bit int's capacity, so divide by
+<span class="nocode"><a name="83"> 83: </a></span>        // 1024. No precision is lost (except time of day) since the number of
+<span class="nocode"><a name="84"> 84: </a></span>        // milliseconds per day contains 1024 as a factor. After the division,
+<span class="nocode"><a name="85"> 85: </a></span>        // the instant isn't measured in milliseconds, but in units of
+<span class="nocode"><a name="86"> 86: </a></span>        // (128/125)seconds.
+<span class="nocode"><a name="87"> 87: </a></span>
+<span class="nocode"><a name="88"> 88: </a></span>        int i = (int)((millis - getYearMillis(year)) &gt;&gt; 10);
+<span class="nocode"><a name="89"> 89: </a></span>
+<span class="nocode"><a name="90"> 90: </a></span>        // There are 86400000 milliseconds per day, but divided by 1024 is
+<span class="nocode"><a name="91"> 91: </a></span>        // 84375. There are 84375 (128/125)seconds per day.
+<span class="nocode"><a name="92"> 92: </a></span>
+<span class="nocode"><a name="93"> 93: </a></span>        return
+<span class="nocode"><a name="94"> 94: </a></span>            (isLeapYear(year))
+<span class="nocode"><a name="95"> 95: </a></span>            ? ((i &lt; 182 * 84375)
+<span class="nocode"><a name="96"> 96: </a></span>               ? ((i &lt; 91 * 84375)
+<span class="nocode"><a name="97"> 97: </a></span>                  ? ((i &lt; 31 * 84375) ? 1 : (i &lt; 60 * 84375) ? 2 : 3)
+<span class="nocode"><a name="98"> 98: </a></span>                  : ((i &lt; 121 * 84375) ? 4 : (i &lt; 152 * 84375) ? 5 : 6))
+<span class="nocode"><a name="99"> 99: </a></span>               : ((i &lt; 274 * 84375)
+<span class="nocode"><a name="100">100: </a></span>                  ? ((i &lt; 213 * 84375) ? 7 : (i &lt; 244 * 84375) ? 8 : 9)
+<span class="nocode"><a name="101">101: </a></span>                  : ((i &lt; 305 * 84375) ? 10 : (i &lt; 335 * 84375) ? 11 : 12)))
+<span class="nocode"><a name="102">102: </a></span>            : ((i &lt; 181 * 84375)
+<span class="nocode"><a name="103">103: </a></span>               ? ((i &lt; 90 * 84375)
+<span class="nocode"><a name="104">104: </a></span>                  ? ((i &lt; 31 * 84375) ? 1 : (i &lt; 59 * 84375) ? 2 : 3)
+<span class="nocode"><a name="105">105: </a></span>                  : ((i &lt; 120 * 84375) ? 4 : (i &lt; 151 * 84375) ? 5 : 6))
+<span class="nocode"><a name="106">106: </a></span>               : ((i &lt; 273 * 84375)
+<span class="nocode"><a name="107">107: </a></span>                  ? ((i &lt; 212 * 84375) ? 7 : (i &lt; 243 * 84375) ? 8 : 9)
+<span class="nocode"><a name="108">108: </a></span>                  : ((i &lt; 304 * 84375) ? 10 : (i &lt; 334 * 84375) ? 11 : 12)));
+<span class="nocode"><a name="109">109: </a></span>    }
+<span class="nocode"><a name="110">110: </a></span>
+<span class="nocode"><a name="111">111: </a></span>    //-----------------------------------------------------------------------
+<span class="nocode"><a name="112">112: </a></span>    /**
+<span class="nocode"><a name="113">113: </a></span>     * Gets the number of days in the specified month and year.
+<span class="nocode"><a name="114">114: </a></span>     * 
+<span class="nocode"><a name="115">115: </a></span>     * @param year  the year
+<span class="nocode"><a name="116">116: </a></span>     * @param month  the month
+<span class="nocode"><a name="117">117: </a></span>     * @return the number of days
+<span class="nocode"><a name="118">118: </a></span>     */
+<span class="nocode"><a name="119">119: </a></span>    int getDaysInYearMonth(int year, int month) {
+<span class="nocode"><a name="120">120: </a></span>        if (isLeapYear(year)) {
+<span class="nocode"><a name="121">121: </a></span>            return MAX_DAYS_PER_MONTH_ARRAY[month - 1];
+<span class="nocode"><a name="122">122: </a></span>        } else {
+<span class="nocode"><a name="123">123: </a></span>            return MIN_DAYS_PER_MONTH_ARRAY[month - 1];
+<span class="nocode"><a name="124">124: </a></span>        }
+<span class="nocode"><a name="125">125: </a></span>    }
+<span class="nocode"><a name="126">126: </a></span>
+<span class="nocode"><a name="127">127: </a></span>    //-----------------------------------------------------------------------
+<span class="nocode"><a name="128">128: </a></span>    int getDaysInMonthMax(int month) {
+<span class="nocode"><a name="129">129: </a></span>        return MAX_DAYS_PER_MONTH_ARRAY[month - 1];
+<span class="nocode"><a name="130">130: </a></span>    }
+<span class="nocode"><a name="131">131: </a></span>
+<span class="nocode"><a name="132">132: </a></span>    //-----------------------------------------------------------------------
+<span class="nocode"><a name="133">133: </a></span>    int getDaysInMonthMaxForSet(long instant, int value) {
+<span class="nocode"><a name="134">134: </a></span>        return (value &gt; 28 ? getDaysInMonthMax(instant) : 28);
+<span class="nocode"><a name="135">135: </a></span>    }
+<span class="nocode"><a name="136">136: </a></span>
+<span class="nocode"><a name="137">137: </a></span>    //-----------------------------------------------------------------------
+<span class="nocode"><a name="138">138: </a></span>    long getTotalMillisByYearMonth(int year, int month) {
+<span class="nocode"><a name="139">139: </a></span>        if (isLeapYear(year)) {
+<span class="nocode"><a name="140">140: </a></span>            return MAX_TOTAL_MILLIS_BY_MONTH_ARRAY[month - 1];
+<span class="nocode"><a name="141">141: </a></span>        } else {
+<span class="nocode"><a name="142">142: </a></span>            return MIN_TOTAL_MILLIS_BY_MONTH_ARRAY[month - 1];
+<span class="nocode"><a name="143">143: </a></span>        }
+<span class="nocode"><a name="144">144: </a></span>    }
+<span class="nocode"><a name="145">145: </a></span>
+<span class="nocode"><a name="146">146: </a></span>    //-----------------------------------------------------------------------
+<span class="nocode"><a name="147">147: </a></span>    long getYearDifference(long minuendInstant, long subtrahendInstant) {
+<span class="nocode"><a name="148">148: </a></span>        int minuendYear = getYear(minuendInstant);
+<span class="nocode"><a name="149">149: </a></span>        int subtrahendYear = getYear(subtrahendInstant);
+<span class="nocode"><a name="150">150: </a></span>    
+<span class="nocode"><a name="151">151: </a></span>        // Inlined remainder method to avoid duplicate calls to get.
+<span class="nocode"><a name="152">152: </a></span>        long minuendRem = minuendInstant - getYearMillis(minuendYear);
+<span class="nocode"><a name="153">153: </a></span>        long subtrahendRem = subtrahendInstant - getYearMillis(subtrahendYear);
+<span class="nocode"><a name="154">154: </a></span>    
+<span class="nocode"><a name="155">155: </a></span>        // Balance leap year differences on remainders.
+<span class="nocode"><a name="156">156: </a></span>        if (subtrahendRem &gt;= FEB_29) {
+<span class="nocode"><a name="157">157: </a></span>            if (isLeapYear(subtrahendYear)) {
+<span class="nocode"><a name="158">158: </a></span>                if (!isLeapYear(minuendYear)) {
+<span class="nocode"><a name="159">159: </a></span>                    subtrahendRem -= DateTimeConstants.MILLIS_PER_DAY;
+<span class="nocode"><a name="160">160: </a></span>                }
+<span class="nocode"><a name="161">161: </a></span>            } else if (minuendRem &gt;= FEB_29 &amp;&amp; isLeapYear(minuendYear)) {
+<span class="nocode"><a name="162">162: </a></span>                minuendRem -= DateTimeConstants.MILLIS_PER_DAY;
+<span class="nocode"><a name="163">163: </a></span>            }
+<span class="nocode"><a name="164">164: </a></span>        }
+<span class="nocode"><a name="165">165: </a></span>    
+<span class="nocode"><a name="166">166: </a></span>        int difference = minuendYear - subtrahendYear;
+<span class="nocode"><a name="167">167: </a></span>        if (minuendRem &lt; subtrahendRem) {
+<span class="nocode"><a name="168">168: </a></span>            difference--;
+<span class="nocode"><a name="169">169: </a></span>        }
+<span class="nocode"><a name="170">170: </a></span>        return difference;
+<span class="nocode"><a name="171">171: </a></span>    }
+<span class="nocode"><a name="172">172: </a></span>
+<span class="nocode"><a name="173">173: </a></span>    //-----------------------------------------------------------------------
+<span class="nocode"><a name="174">174: </a></span>    long setYear(long instant, int year) {
+<span class="nocode"><a name="175">175: </a></span>        int thisYear = getYear(instant);
+<span class="nocode"><a name="176">176: </a></span>        int dayOfYear = getDayOfYear(instant, thisYear);
+<span class="nocode"><a name="177">177: </a></span>        int millisOfDay = getMillisOfDay(instant);
+<span class="nocode"><a name="178">178: </a></span>
+<span class="nocode"><a name="179">179: </a></span>        if (dayOfYear &gt; (31 + 28)) { // after Feb 28
+<span class="nocode"><a name="180">180: </a></span>            if (isLeapYear(thisYear)) {
+<span class="nocode"><a name="181">181: </a></span>                // Current date is Feb 29 or later.
+<span class="nocode"><a name="182">182: </a></span>                if (!isLeapYear(year)) {
+<span class="nocode"><a name="183">183: </a></span>                    // Moving to a non-leap year, Feb 29 does not exist.
+<span class="nocode"><a name="184">184: </a></span>                    dayOfYear--;
+<span class="nocode"><a name="185">185: </a></span>                }
+<span class="nocode"><a name="186">186: </a></span>            } else {
+<span class="nocode"><a name="187">187: </a></span>                // Current date is Mar 01 or later.
+<span class="nocode"><a name="188">188: </a></span>                if (isLeapYear(year)) {
+<span class="nocode"><a name="189">189: </a></span>                    // Moving to a leap year, account for Feb 29.
+<span class="nocode"><a name="190">190: </a></span>                    dayOfYear++;
+<span class="nocode"><a name="191">191: </a></span>                }
+<span class="nocode"><a name="192">192: </a></span>            }
+<span class="nocode"><a name="193">193: </a></span>        }
+<span class="nocode"><a name="194">194: </a></span>
+<span class="nocode"><a name="195">195: </a></span>        instant = getYearMonthDayMillis(year, 1, dayOfYear);
+<span class="nocode"><a name="196">196: </a></span>        instant += millisOfDay;
+<span class="nocode"><a name="197">197: </a></span>
+<span class="nocode"><a name="198">198: </a></span>        return instant;
+<span class="nocode"><a name="199">199: </a></span>    }
+<span class="nocode"><a name="200">200: </a></span>
+<span class="nocode"><a name="201">201: </a></span>}
+</pre><table class="mutation_table" summary="Mutations">
+<tr><th>ID</th><th>Line</th><th>Type</th><th>Detected</th></tr><tr><td>3394</td><td><a href="#88">88</a></td><td>Replace a constant (Replace 10 with 11(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3392</td><td><a href="#88">88</a></td><td>Replace a constant (Replace 10 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3393</td><td><a href="#88">88</a></td><td>Replace a constant (Replace 10 with 9(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3391</td><td><a href="#88">88</a></td><td>Replace arithmetic operator (Replace LSUB with LADD)</td><td><img src="detected.png"/></td></tr>
+<tr><td>3395</td><td><a href="#88">88(1)</a></td><td>Replace arithmetic operator (Replace LSHR with LSHL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>3390</td><td><a href="#88">88</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>3399</td><td><a href="#93">93</a></td><td>Replace a constant (Replace 15356250 with 15356249(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3400</td><td><a href="#93">93</a></td><td>Replace a constant (Replace 15356250 with 15356251(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3398</td><td><a href="#93">93</a></td><td>Replace a constant (Replace 15356250 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3403</td><td><a href="#93">93(1)</a></td><td>Replace a constant (Replace 7678125 with 7678124(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3402</td><td><a href="#93">93(1)</a></td><td>Replace a constant (Replace 7678125 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3404</td><td><a href="#93">93(1)</a></td><td>Replace a constant (Replace 7678125 with 7678126(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3407</td><td><a href="#93">93(2)</a></td><td>Replace a constant (Replace 2615625 with 2615624(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3406</td><td><a href="#93">93(2)</a></td><td>Replace a constant (Replace 2615625 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3408</td><td><a href="#93">93(2)</a></td><td>Replace a constant (Replace 2615625 with 2615626(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3411</td><td><a href="#93">93(3)</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3410</td><td><a href="#93">93(3)</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3414</td><td><a href="#93">93(4)</a></td><td>Replace a constant (Replace 5062500 with 5062499(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3413</td><td><a href="#93">93(4)</a></td><td>Replace a constant (Replace 5062500 with 5062501(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3412</td><td><a href="#93">93(4)</a></td><td>Replace a constant (Replace 5062500 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3418</td><td><a href="#93">93(5)</a></td><td>Replace a constant (Replace 2 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3416</td><td><a href="#93">93(5)</a></td><td>Replace a constant (Replace 2 with 3(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3417</td><td><a href="#93">93(5)</a></td><td>Replace a constant (Replace 2 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3419</td><td><a href="#93">93(6)</a></td><td>Replace a constant (Replace 3 with 2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3420</td><td><a href="#93">93(6)</a></td><td>Replace a constant (Replace 3 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3421</td><td><a href="#93">93(6)</a></td><td>Replace a constant (Replace 3 with 4(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3423</td><td><a href="#93">93(7)</a></td><td>Replace a constant (Replace 10209375 with 10209376(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3422</td><td><a href="#93">93(7)</a></td><td>Replace a constant (Replace 10209375 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3424</td><td><a href="#93">93(7)</a></td><td>Replace a constant (Replace 10209375 with 10209374(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3427</td><td><a href="#93">93(8)</a></td><td>Replace a constant (Replace 4 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3428</td><td><a href="#93">93(8)</a></td><td>Replace a constant (Replace 4 with 5(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3426</td><td><a href="#93">93(8)</a></td><td>Replace a constant (Replace 4 with 3(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3429</td><td><a href="#93">93(9)</a></td><td>Replace a constant (Replace 12825000 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3430</td><td><a href="#93">93(9)</a></td><td>Replace a constant (Replace 12825000 with 12824999(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3431</td><td><a href="#93">93(9)</a></td><td>Replace a constant (Replace 12825000 with 12825001(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3434</td><td><a href="#93">93(10)</a></td><td>Replace a constant (Replace 5 with 6(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3433</td><td><a href="#93">93(10)</a></td><td>Replace a constant (Replace 5 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3435</td><td><a href="#93">93(10)</a></td><td>Replace a constant (Replace 5 with 4(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3437</td><td><a href="#93">93(11)</a></td><td>Replace a constant (Replace 6 with 7(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3436</td><td><a href="#93">93(11)</a></td><td>Replace a constant (Replace 6 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3438</td><td><a href="#93">93(11)</a></td><td>Replace a constant (Replace 6 with 5(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3440</td><td><a href="#93">93(12)</a></td><td>Replace a constant (Replace 23118750 with 23118751(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3439</td><td><a href="#93">93(12)</a></td><td>Replace a constant (Replace 23118750 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3441</td><td><a href="#93">93(12)</a></td><td>Replace a constant (Replace 23118750 with 23118749(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3444</td><td><a href="#93">93(13)</a></td><td>Replace a constant (Replace 17971875 with 17971874(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3445</td><td><a href="#93">93(13)</a></td><td>Replace a constant (Replace 17971875 with 17971876(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3443</td><td><a href="#93">93(13)</a></td><td>Replace a constant (Replace 17971875 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3449</td><td><a href="#93">93(14)</a></td><td>Replace a constant (Replace 7 with 8(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3447</td><td><a href="#93">93(14)</a></td><td>Replace a constant (Replace 7 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3448</td><td><a href="#93">93(14)</a></td><td>Replace a constant (Replace 7 with 6(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3451</td><td><a href="#93">93(15)</a></td><td>Replace a constant (Replace 20587500 with 20587499(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3452</td><td><a href="#93">93(15)</a></td><td>Replace a constant (Replace 20587500 with 20587501(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3450</td><td><a href="#93">93(15)</a></td><td>Replace a constant (Replace 20587500 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3454</td><td><a href="#93">93(16)</a></td><td>Replace a constant (Replace 8 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3455</td><td><a href="#93">93(16)</a></td><td>Replace a constant (Replace 8 with 7(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3456</td><td><a href="#93">93(16)</a></td><td>Replace a constant (Replace 8 with 9(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3458</td><td><a href="#93">93(17)</a></td><td>Replace a constant (Replace 9 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3457</td><td><a href="#93">93(17)</a></td><td>Replace a constant (Replace 9 with 10(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3459</td><td><a href="#93">93(17)</a></td><td>Replace a constant (Replace 9 with 8(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3460</td><td><a href="#93">93(18)</a></td><td>Replace a constant (Replace 25734375 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3462</td><td><a href="#93">93(18)</a></td><td>Replace a constant (Replace 25734375 with 25734376(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3461</td><td><a href="#93">93(18)</a></td><td>Replace a constant (Replace 25734375 with 25734374(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3465</td><td><a href="#93">93(19)</a></td><td>Replace a constant (Replace 10 with 9(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3464</td><td><a href="#93">93(19)</a></td><td>Replace a constant (Replace 10 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3466</td><td><a href="#93">93(19)</a></td><td>Replace a constant (Replace 10 with 11(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3468</td><td><a href="#93">93(20)</a></td><td>Replace a constant (Replace 28265625 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3469</td><td><a href="#93">93(20)</a></td><td>Replace a constant (Replace 28265625 with 28265626(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3467</td><td><a href="#93">93(20)</a></td><td>Replace a constant (Replace 28265625 with 28265624(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>3472</td><td><a href="#93">93(21)</a></td><td>Replace a constant (Replace 11 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3471</td><td><a href="#93">93(21)</a></td><td>Replace a constant (Replace 11 with 10(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3473</td><td><a href="#93">93(21)</a></td><td>Replace a constant (Replace 11 with 12(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3474</td><td><a href="#93">93(22)</a></td><td>Replace a constant (Replace 12 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3475</td><td><a href="#93">93(22)</a></td><td>Replace a constant (Replace 12 with 13(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3476</td><td><a href="#93">93(22)</a></td><td>Replace a constant (Replace 12 with 11(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3477</td><td><a href="#93">93(23)</a></td><td>Replace a constant (Replace 15271875 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3478</td><td><a href="#93">93(23)</a></td><td>Replace a constant (Replace 15271875 with 15271874(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3479</td><td><a href="#93">93(23)</a></td><td>Replace a constant (Replace 15271875 with 15271876(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3481</td><td><a href="#93">93(24)</a></td><td>Replace a constant (Replace 7593750 with 7593751(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3483</td><td><a href="#93">93(24)</a></td><td>Replace a constant (Replace 7593750 with 7593749(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3482</td><td><a href="#93">93(24)</a></td><td>Replace a constant (Replace 7593750 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3486</td><td><a href="#93">93(25)</a></td><td>Replace a constant (Replace 2615625 with 2615624(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3485</td><td><a href="#93">93(25)</a></td><td>Replace a constant (Replace 2615625 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3487</td><td><a href="#93">93(25)</a></td><td>Replace a constant (Replace 2615625 with 2615626(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3489</td><td><a href="#93">93(26)</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3490</td><td><a href="#93">93(26)</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3492</td><td><a href="#93">93(27)</a></td><td>Replace a constant (Replace 4978125 with 4978126(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3493</td><td><a href="#93">93(27)</a></td><td>Replace a constant (Replace 4978125 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3491</td><td><a href="#93">93(27)</a></td><td>Replace a constant (Replace 4978125 with 4978124(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3497</td><td><a href="#93">93(28)</a></td><td>Replace a constant (Replace 2 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3495</td><td><a href="#93">93(28)</a></td><td>Replace a constant (Replace 2 with 3(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3496</td><td><a href="#93">93(28)</a></td><td>Replace a constant (Replace 2 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3499</td><td><a href="#93">93(29)</a></td><td>Replace a constant (Replace 3 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3498</td><td><a href="#93">93(29)</a></td><td>Replace a constant (Replace 3 with 2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3500</td><td><a href="#93">93(29)</a></td><td>Replace a constant (Replace 3 with 4(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3502</td><td><a href="#93">93(30)</a></td><td>Replace a constant (Replace 10125000 with 10125001(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3503</td><td><a href="#93">93(30)</a></td><td>Replace a constant (Replace 10125000 with 10124999(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3501</td><td><a href="#93">93(30)</a></td><td>Replace a constant (Replace 10125000 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3505</td><td><a href="#93">93(31)</a></td><td>Replace a constant (Replace 4 with 3(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3507</td><td><a href="#93">93(31)</a></td><td>Replace a constant (Replace 4 with 5(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3506</td><td><a href="#93">93(31)</a></td><td>Replace a constant (Replace 4 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3510</td><td><a href="#93">93(32)</a></td><td>Replace a constant (Replace 12740625 with 12740624(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3508</td><td><a href="#93">93(32)</a></td><td>Replace a constant (Replace 12740625 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3509</td><td><a href="#93">93(32)</a></td><td>Replace a constant (Replace 12740625 with 12740626(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3512</td><td><a href="#93">93(33)</a></td><td>Replace a constant (Replace 5 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3513</td><td><a href="#93">93(33)</a></td><td>Replace a constant (Replace 5 with 6(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3514</td><td><a href="#93">93(33)</a></td><td>Replace a constant (Replace 5 with 4(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3515</td><td><a href="#93">93(34)</a></td><td>Replace a constant (Replace 6 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3516</td><td><a href="#93">93(34)</a></td><td>Replace a constant (Replace 6 with 7(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3517</td><td><a href="#93">93(34)</a></td><td>Replace a constant (Replace 6 with 5(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3518</td><td><a href="#93">93(35)</a></td><td>Replace a constant (Replace 23034375 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3519</td><td><a href="#93">93(35)</a></td><td>Replace a constant (Replace 23034375 with 23034376(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3520</td><td><a href="#93">93(35)</a></td><td>Replace a constant (Replace 23034375 with 23034374(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3523</td><td><a href="#93">93(36)</a></td><td>Replace a constant (Replace 17887500 with 17887501(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3524</td><td><a href="#93">93(36)</a></td><td>Replace a constant (Replace 17887500 with 17887499(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3522</td><td><a href="#93">93(36)</a></td><td>Replace a constant (Replace 17887500 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3526</td><td><a href="#93">93(37)</a></td><td>Replace a constant (Replace 7 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3527</td><td><a href="#93">93(37)</a></td><td>Replace a constant (Replace 7 with 6(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3528</td><td><a href="#93">93(37)</a></td><td>Replace a constant (Replace 7 with 8(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3531</td><td><a href="#93">93(38)</a></td><td>Replace a constant (Replace 20503125 with 20503126(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3529</td><td><a href="#93">93(38)</a></td><td>Replace a constant (Replace 20503125 with 20503124(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3530</td><td><a href="#93">93(38)</a></td><td>Replace a constant (Replace 20503125 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3535</td><td><a href="#93">93(39)</a></td><td>Replace a constant (Replace 8 with 9(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3534</td><td><a href="#93">93(39)</a></td><td>Replace a constant (Replace 8 with 7(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3533</td><td><a href="#93">93(39)</a></td><td>Replace a constant (Replace 8 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3537</td><td><a href="#93">93(40)</a></td><td>Replace a constant (Replace 9 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3536</td><td><a href="#93">93(40)</a></td><td>Replace a constant (Replace 9 with 10(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3538</td><td><a href="#93">93(40)</a></td><td>Replace a constant (Replace 9 with 8(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3540</td><td><a href="#93">93(41)</a></td><td>Replace a constant (Replace 25650000 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3539</td><td><a href="#93">93(41)</a></td><td>Replace a constant (Replace 25650000 with 25649999(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3541</td><td><a href="#93">93(41)</a></td><td>Replace a constant (Replace 25650000 with 25650001(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3544</td><td><a href="#93">93(42)</a></td><td>Replace a constant (Replace 10 with 9(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3545</td><td><a href="#93">93(42)</a></td><td>Replace a constant (Replace 10 with 11(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3543</td><td><a href="#93">93(42)</a></td><td>Replace a constant (Replace 10 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3548</td><td><a href="#93">93(43)</a></td><td>Replace a constant (Replace 28181250 with 28181251(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3546</td><td><a href="#93">93(43)</a></td><td>Replace a constant (Replace 28181250 with 28181249(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3547</td><td><a href="#93">93(43)</a></td><td>Replace a constant (Replace 28181250 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3550</td><td><a href="#93">93(44)</a></td><td>Replace a constant (Replace 11 with 10(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3552</td><td><a href="#93">93(44)</a></td><td>Replace a constant (Replace 11 with 12(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3551</td><td><a href="#93">93(44)</a></td><td>Replace a constant (Replace 11 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3553</td><td><a href="#93">93(45)</a></td><td>Replace a constant (Replace 12 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3554</td><td><a href="#93">93(45)</a></td><td>Replace a constant (Replace 12 with 13(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3555</td><td><a href="#93">93(45)</a></td><td>Replace a constant (Replace 12 with 11(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3397</td><td><a href="#93">93</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>3401</td><td><a href="#93">93(1)</a></td><td>Negate jump condition (Replace IF_ICMPGE with  IF_ICMPLT)</td><td><img src="detected.png"/></td></tr>
+<tr><td>3405</td><td><a href="#93">93(2)</a></td><td>Negate jump condition (Replace IF_ICMPGE with  IF_ICMPLT)</td><td><img src="detected.png"/></td></tr>
+<tr><td>3409</td><td><a href="#93">93(3)</a></td><td>Negate jump condition (Replace IF_ICMPGE with  IF_ICMPLT)</td><td><img src="detected.png"/></td></tr>
+<tr><td>3415</td><td><a href="#93">93(4)</a></td><td>Negate jump condition (Replace IF_ICMPGE with  IF_ICMPLT)</td><td><img src="detected.png"/></td></tr>
+<tr><td>3425</td><td><a href="#93">93(5)</a></td><td>Negate jump condition (Replace IF_ICMPGE with  IF_ICMPLT)</td><td><img src="detected.png"/></td></tr>
+<tr><td>3432</td><td><a href="#93">93(6)</a></td><td>Negate jump condition (Replace IF_ICMPGE with  IF_ICMPLT)</td><td><img src="detected.png"/></td></tr>
+<tr><td>3442</td><td><a href="#93">93(7)</a></td><td>Negate jump condition (Replace IF_ICMPGE with  IF_ICMPLT)</td><td><img src="detected.png"/></td></tr>
+<tr><td>3446</td><td><a href="#93">93(8)</a></td><td>Negate jump condition (Replace IF_ICMPGE with  IF_ICMPLT)</td><td><img src="detected.png"/></td></tr>
+<tr><td>3453</td><td><a href="#93">93(9)</a></td><td>Negate jump condition (Replace IF_ICMPGE with  IF_ICMPLT)</td><td><img src="detected.png"/></td></tr>
+<tr><td>3463</td><td><a href="#93">93(10)</a></td><td>Negate jump condition (Replace IF_ICMPGE with  IF_ICMPLT)</td><td><img src="detected.png"/></td></tr>
+<tr><td>3470</td><td><a href="#93">93(11)</a></td><td>Negate jump condition (Replace IF_ICMPGE with  IF_ICMPLT)</td><td><img src="detected.png"/></td></tr>
+<tr><td>3480</td><td><a href="#93">93(12)</a></td><td>Negate jump condition (Replace IF_ICMPGE with  IF_ICMPLT)</td><td><img src="detected.png"/></td></tr>
+<tr><td>3484</td><td><a href="#93">93(13)</a></td><td>Negate jump condition (Replace IF_ICMPGE with  IF_ICMPLT)</td><td><img src="detected.png"/></td></tr>
+<tr><td>3488</td><td><a href="#93">93(14)</a></td><td>Negate jump condition (Replace IF_ICMPGE with  IF_ICMPLT)</td><td><img src="detected.png"/></td></tr>
+<tr><td>3494</td><td><a href="#93">93(15)</a></td><td>Negate jump condition (Replace IF_ICMPGE with  IF_ICMPLT)</td><td><img src="detected.png"/></td></tr>
+<tr><td>3504</td><td><a href="#93">93(16)</a></td><td>Negate jump condition (Replace IF_ICMPGE with  IF_ICMPLT)</td><td><img src="detected.png"/></td></tr>
+<tr><td>3511</td><td><a href="#93">93(17)</a></td><td>Negate jump condition (Replace IF_ICMPGE with  IF_ICMPLT)</td><td><img src="detected.png"/></td></tr>
+<tr><td>3521</td><td><a href="#93">93(18)</a></td><td>Negate jump condition (Replace IF_ICMPGE with  IF_ICMPLT)</td><td><img src="detected.png"/></td></tr>
+<tr><td>3525</td><td><a href="#93">93(19)</a></td><td>Negate jump condition (Replace IF_ICMPGE with  IF_ICMPLT)</td><td><img src="detected.png"/></td></tr>
+<tr><td>3532</td><td><a href="#93">93(20)</a></td><td>Negate jump condition (Replace IF_ICMPGE with  IF_ICMPLT)</td><td><img src="detected.png"/></td></tr>
+<tr><td>3542</td><td><a href="#93">93(21)</a></td><td>Negate jump condition (Replace IF_ICMPGE with  IF_ICMPLT)</td><td><img src="detected.png"/></td></tr>
+<tr><td>3549</td><td><a href="#93">93(22)</a></td><td>Negate jump condition (Replace IF_ICMPGE with  IF_ICMPLT)</td><td><img src="detected.png"/></td></tr>
+<tr><td>3396</td><td><a href="#93">93</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>3557</td><td><a href="#120">120</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>3556</td><td><a href="#120">120</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>3558</td><td><a href="#121">121</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3559</td><td><a href="#121">121</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3560</td><td><a href="#121">121</a></td><td>Replace arithmetic operator (Replace ISUB with IADD)</td><td><img src="detected.png"/></td></tr>
+<tr><td>3561</td><td><a href="#123">123</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3562</td><td><a href="#123">123</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3563</td><td><a href="#123">123</a></td><td>Replace arithmetic operator (Replace ISUB with IADD)</td><td><img src="detected.png"/></td></tr>
+<tr><td>3565</td><td><a href="#129">129</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3564</td><td><a href="#129">129</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3566</td><td><a href="#129">129</a></td><td>Replace arithmetic operator (Replace ISUB with IADD)</td><td><img src="detected.png"/></td></tr>
+<tr><td>3569</td><td><a href="#134">134</a></td><td>Replace a constant (Replace 28 with 29(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3568</td><td><a href="#134">134</a></td><td>Replace a constant (Replace 28 with 27(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3567</td><td><a href="#134">134</a></td><td>Replace a constant (Replace 28 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3572</td><td><a href="#134">134(1)</a></td><td>Replace a constant (Replace 28 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3574</td><td><a href="#134">134(1)</a></td><td>Replace a constant (Replace 28 with 29(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3573</td><td><a href="#134">134(1)</a></td><td>Replace a constant (Replace 28 with 27(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3570</td><td><a href="#134">134</a></td><td>Negate jump condition (Replace IF_ICMPLE with  IF_ICMPGT)</td><td><img src="detected.png"/></td></tr>
+<tr><td>3571</td><td><a href="#134">134</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>3576</td><td><a href="#139">139</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>3575</td><td><a href="#139">139</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>3578</td><td><a href="#140">140</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3577</td><td><a href="#140">140</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3579</td><td><a href="#140">140</a></td><td>Replace arithmetic operator (Replace ISUB with IADD)</td><td><img src="detected.png"/></td></tr>
+<tr><td>3581</td><td><a href="#142">142</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3580</td><td><a href="#142">142</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3582</td><td><a href="#142">142</a></td><td>Replace arithmetic operator (Replace ISUB with IADD)</td><td><img src="detected.png"/></td></tr>
+<tr><td>3583</td><td><a href="#148">148</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>3584</td><td><a href="#149">149</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>3586</td><td><a href="#152">152</a></td><td>Replace arithmetic operator (Replace LSUB with LADD)</td><td><img src="detected.png"/></td></tr>
+<tr><td>3585</td><td><a href="#152">152</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>3588</td><td><a href="#153">153</a></td><td>Replace arithmetic operator (Replace LSUB with LADD)</td><td><img src="detected.png"/></td></tr>
+<tr><td>3587</td><td><a href="#153">153</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>3591</td><td><a href="#156">156</a></td><td>Replace a constant (Replace 5097600000 with 5097599999(LONG))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>3590</td><td><a href="#156">156</a></td><td>Replace a constant (Replace 5097600000 with 0(LONG))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>3589</td><td><a href="#156">156</a></td><td>Replace a constant (Replace 5097600000 with 5097600001(LONG))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3592</td><td><a href="#156">156</a></td><td>Negate jump condition (Replace IFLT with  IFGE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>3594</td><td><a href="#157">157</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>3593</td><td><a href="#157">157</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>3596</td><td><a href="#158">158</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>3595</td><td><a href="#158">158</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>3598</td><td><a href="#159">159</a></td><td>Replace a constant (Replace 86400000 with 86400001(LONG))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>3599</td><td><a href="#159">159</a></td><td>Replace a constant (Replace 86400000 with 86399999(LONG))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>3597</td><td><a href="#159">159</a></td><td>Replace a constant (Replace 86400000 with 0(LONG))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3600</td><td><a href="#159">159</a></td><td>Replace arithmetic operator (Replace LSUB with LADD)</td><td><img src="detected.png"/></td></tr>
+<tr><td>3601</td><td><a href="#161">161</a></td><td>Replace a constant (Replace 5097600000 with 5097600001(LONG))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>3602</td><td><a href="#161">161</a></td><td>Replace a constant (Replace 5097600000 with 0(LONG))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>3603</td><td><a href="#161">161</a></td><td>Replace a constant (Replace 5097600000 with 5097599999(LONG))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>3604</td><td><a href="#161">161</a></td><td>Negate jump condition (Replace IFLT with  IFGE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>3606</td><td><a href="#161">161(1)</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>3605</td><td><a href="#161">161</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>3607</td><td><a href="#162">162</a></td><td>Replace a constant (Replace 86400000 with 0(LONG))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>3608</td><td><a href="#162">162</a></td><td>Replace a constant (Replace 86400000 with 86400001(LONG))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3609</td><td><a href="#162">162</a></td><td>Replace a constant (Replace 86400000 with 86399999(LONG))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>3610</td><td><a href="#162">162</a></td><td>Replace arithmetic operator (Replace LSUB with LADD)</td><td><img src="detected.png"/></td></tr>
+<tr><td>3611</td><td><a href="#166">166</a></td><td>Replace arithmetic operator (Replace ISUB with IADD)</td><td><img src="detected.png"/></td></tr>
+<tr><td>3612</td><td><a href="#167">167</a></td><td>Negate jump condition (Replace IFGE with  IFLT)</td><td><img src="detected.png"/></td></tr>
+<tr><td>3613</td><td><a href="#175">175</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>3614</td><td><a href="#176">176</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>3615</td><td><a href="#177">177</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>3618</td><td><a href="#179">179</a></td><td>Replace a constant (Replace 59 with 60(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3617</td><td><a href="#179">179</a></td><td>Replace a constant (Replace 59 with 58(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3616</td><td><a href="#179">179</a></td><td>Replace a constant (Replace 59 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3619</td><td><a href="#179">179</a></td><td>Negate jump condition (Replace IF_ICMPLE with  IF_ICMPGT)</td><td><img src="detected.png"/></td></tr>
+<tr><td>3621</td><td><a href="#180">180</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>3620</td><td><a href="#180">180</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>3623</td><td><a href="#182">182</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>3622</td><td><a href="#182">182</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>3625</td><td><a href="#188">188</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>3624</td><td><a href="#188">188</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>3626</td><td><a href="#195">195</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3627</td><td><a href="#195">195</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3628</td><td><a href="#195">195</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>3629</td><td><a href="#196">196</a></td><td>Replace arithmetic operator (Replace LADD with LSUB)</td><td><img src="detected.png"/></td></tr>
+</table>
+</body>
+</html>

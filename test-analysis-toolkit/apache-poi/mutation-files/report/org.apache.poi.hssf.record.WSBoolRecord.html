@@ -1,0 +1,429 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN
+"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>
+org.apache.poi.hssf.record.WSBoolRecord
+</title>
+<link href="prettify.css" type="text/css" rel="stylesheet" />
+<script type="text/javascript" src="prettify.js"></script>
+</head>
+<body onload="prettyPrint()">
+<h2>Javalanche report for class:<br/> org.apache.poi.hssf.record.WSBoolRecord </h2><pre class="prettyprint" style="border: 1px solid #888;padding: 2px"><span class="nocode"><a name="1">  1: </a></span>/* ====================================================================
+<span class="nocode"><a name="2">  2: </a></span>   Licensed to the Apache Software Foundation (ASF) under one or more
+<span class="nocode"><a name="3">  3: </a></span>   contributor license agreements.  See the NOTICE file distributed with
+<span class="nocode"><a name="4">  4: </a></span>   this work for additional information regarding copyright ownership.
+<span class="nocode"><a name="5">  5: </a></span>   The ASF licenses this file to You under the Apache License, Version 2.0
+<span class="nocode"><a name="6">  6: </a></span>   (the &quot;License&quot;); you may not use this file except in compliance with
+<span class="nocode"><a name="7">  7: </a></span>   the License.  You may obtain a copy of the License at
+<span class="nocode"><a name="8">  8: </a></span>
+<span class="nocode"><a name="9">  9: </a></span>       http://www.apache.org/licenses/LICENSE-2.0
+<span class="nocode"><a name="10"> 10: </a></span>
+<span class="nocode"><a name="11"> 11: </a></span>   Unless required by applicable law or agreed to in writing, software
+<span class="nocode"><a name="12"> 12: </a></span>   distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+<span class="nocode"><a name="13"> 13: </a></span>   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+<span class="nocode"><a name="14"> 14: </a></span>   See the License for the specific language governing permissions and
+<span class="nocode"><a name="15"> 15: </a></span>   limitations under the License.
+<span class="nocode"><a name="16"> 16: </a></span>==================================================================== */
+<span class="nocode"><a name="17"> 17: </a></span>
+<span class="nocode"><a name="18"> 18: </a></span>package org.apache.poi.hssf.record;
+<span class="nocode"><a name="19"> 19: </a></span>
+<span class="nocode"><a name="20"> 20: </a></span>import org.apache.poi.util.BitField;
+<span class="nocode"><a name="21"> 21: </a></span>import org.apache.poi.util.BitFieldFactory;
+<span class="nocode"><a name="22"> 22: </a></span>import org.apache.poi.util.LittleEndianOutput;
+<span class="nocode"><a name="23"> 23: </a></span>
+<span class="nocode"><a name="24"> 24: </a></span>/**
+<span class="nocode"><a name="25"> 25: </a></span> * Title:        WSBOOL (0x0081) (called SHEETPR in OOO doc)&lt;p/&gt;
+<span class="nocode"><a name="26"> 26: </a></span> * Description:  stores workbook settings  (aka its a big &quot;everything we didn't
+<span class="nocode"><a name="27"> 27: </a></span> *               put somewhere else&quot;)&lt;P&gt;
+<span class="nocode"><a name="28"> 28: </a></span> * REFERENCE:  PG 425 Microsoft Excel 97 Developer's Kit (ISBN: 1-57231-498-2)&lt;P&gt;
+<span class="nocode"><a name="29"> 29: </a></span> * @author Andrew C. Oliver (acoliver at apache dot org)
+<span class="nocode"><a name="30"> 30: </a></span> * @author Glen Stampoultzis (gstamp@iprimus.com.au)
+<span class="nocode"><a name="31"> 31: </a></span> * @author Jason Height (jheight at chariot dot net dot au)
+<span class="nocode"><a name="32"> 32: </a></span> */
+<span class="nocode"><a name="33"> 33: </a></span>public final class WSBoolRecord extends StandardRecord {
+<span class="nocode"><a name="34"> 34: </a></span>    public final static short     sid = 0x0081;
+<span class="nocode"><a name="35"> 35: </a></span>    private byte                  field_1_wsbool;         // crappy names are because this is really one big short field (2byte)
+<span class="nocode"><a name="36"> 36: </a></span>    private byte                  field_2_wsbool;         // but the docs inconsistently use it as 2 separate bytes
+<span class="nocode"><a name="37"> 37: </a></span>
+<span class="nocode"><a name="38"> 38: </a></span>    // I decided to be consistent in this way.
+<span class="nocode"><a name="39"> 39: </a></span>    private static final BitField autobreaks    = BitFieldFactory.getInstance(0x01); // are automatic page breaks visible
+<span class="nocode"><a name="40"> 40: </a></span>
+<span class="nocode"><a name="41"> 41: </a></span>    // bits 1 to 3 unused
+<span class="nocode"><a name="42"> 42: </a></span>    private static final BitField dialog        = BitFieldFactory.getInstance(0x10); // is sheet dialog sheet
+<span class="nocode"><a name="43"> 43: </a></span>    private static final BitField applystyles   = BitFieldFactory.getInstance(0x20); // whether to apply automatic styles to outlines
+<span class="nocode"><a name="44"> 44: </a></span>    private static final BitField rowsumsbelow  = BitFieldFactory.getInstance(0x40); // whether summary rows will appear below detail in outlines
+<span class="nocode"><a name="45"> 45: </a></span>    private static final BitField rowsumsright  = BitFieldFactory.getInstance(0x80); // whether summary rows will appear right of the detail in outlines
+<span class="nocode"><a name="46"> 46: </a></span>    private static final BitField fittopage     = BitFieldFactory.getInstance(0x01); // whether to fit stuff to the page
+<span class="nocode"><a name="47"> 47: </a></span>
+<span class="nocode"><a name="48"> 48: </a></span>    // bit 2 reserved
+<span class="nocode"><a name="49"> 49: </a></span>    private static final BitField displayguts   = BitFieldFactory.getInstance(0x06); // whether to display outline symbols (in the gutters)
+<span class="nocode"><a name="50"> 50: </a></span>
+<span class="nocode"><a name="51"> 51: </a></span>    // bits 4-5 reserved
+<span class="nocode"><a name="52"> 52: </a></span>    private static final BitField alternateexpression = BitFieldFactory.getInstance(0x40); // whether to use alternate expression eval
+<span class="nocode"><a name="53"> 53: </a></span>    private static final BitField alternateformula    = BitFieldFactory.getInstance(0x80); // whether to use alternate formula entry
+<span class="nocode"><a name="54"> 54: </a></span>
+<span class="nocode"><a name="55"> 55: </a></span>    public WSBoolRecord()
+<span class="nocode"><a name="56"> 56: </a></span>    {
+<span class="nocode"><a name="57"> 57: </a></span>    }
+<span class="nocode"><a name="58"> 58: </a></span>
+<span class="nocode"><a name="59"> 59: </a></span>    public WSBoolRecord(RecordInputStream in)
+<span class="nocode"><a name="60"> 60: </a></span>    {
+<span class="nocode"><a name="61"> 61: </a></span>       byte data[] = in.readRemainder();
+<span class="nocode"><a name="62"> 62: </a></span>        field_1_wsbool =
+<span class="nocode"><a name="63"> 63: </a></span>            data[ 1 ];   // backwards because theoretically this is one short field
+<span class="nocode"><a name="64"> 64: </a></span>        field_2_wsbool =
+<span class="nocode"><a name="65"> 65: </a></span>            data[ 0 ];   // but it was easier to implement it this way to avoid confusion
+<span class="nocode"><a name="66"> 66: </a></span>    }                             // because the dev kit shows the masks for it as 2 byte fields
+<span class="nocode"><a name="67"> 67: </a></span>
+<span class="nocode"><a name="68"> 68: </a></span>    // why?  Why ask why?  But don't drink bud dry as its a really
+<span class="nocode"><a name="69"> 69: </a></span>    // crappy beer, try the czech &quot;Budvar&quot; beer (which is the real
+<span class="nocode"><a name="70"> 70: </a></span>    // budweiser though its ironically good...its sold in the USs
+<span class="nocode"><a name="71"> 71: </a></span>    // as czechvar  --- odd that they had the name first but can't
+<span class="nocode"><a name="72"> 72: </a></span>    // use it)...
+<span class="nocode"><a name="73"> 73: </a></span>
+<span class="nocode"><a name="74"> 74: </a></span>    /**
+<span class="nocode"><a name="75"> 75: </a></span>     * set first byte (see bit setters)
+<span class="nocode"><a name="76"> 76: </a></span>     */
+<span class="nocode"><a name="77"> 77: </a></span>
+<span class="nocode"><a name="78"> 78: </a></span>    public void setWSBool1(byte bool1)
+<span class="nocode"><a name="79"> 79: </a></span>    {
+<span class="nocode"><a name="80"> 80: </a></span>        field_1_wsbool = bool1;
+<span class="nocode"><a name="81"> 81: </a></span>    }
+<span class="nocode"><a name="82"> 82: </a></span>
+<span class="nocode"><a name="83"> 83: </a></span>    // bool1 bitfields
+<span class="nocode"><a name="84"> 84: </a></span>
+<span class="nocode"><a name="85"> 85: </a></span>    /**
+<span class="nocode"><a name="86"> 86: </a></span>     * show automatic page breaks or not
+<span class="nocode"><a name="87"> 87: </a></span>     * @param ab  whether to show auto page breaks
+<span class="nocode"><a name="88"> 88: </a></span>     */
+<span class="nocode"><a name="89"> 89: </a></span>
+<span class="nocode"><a name="90"> 90: </a></span>    public void setAutobreaks(boolean ab)
+<span class="nocode"><a name="91"> 91: </a></span>    {
+<span class="nocode"><a name="92"> 92: </a></span>        field_1_wsbool = autobreaks.setByteBoolean(field_1_wsbool, ab);
+<span class="nocode"><a name="93"> 93: </a></span>    }
+<span class="nocode"><a name="94"> 94: </a></span>
+<span class="nocode"><a name="95"> 95: </a></span>    /**
+<span class="nocode"><a name="96"> 96: </a></span>     * set whether sheet is a dialog sheet or not
+<span class="nocode"><a name="97"> 97: </a></span>     * @param isDialog or not
+<span class="nocode"><a name="98"> 98: </a></span>     */
+<span class="nocode"><a name="99"> 99: </a></span>
+<span class="nocode"><a name="100">100: </a></span>    public void setDialog(boolean isDialog)
+<span class="nocode"><a name="101">101: </a></span>    {
+<span class="nocode"><a name="102">102: </a></span>        field_1_wsbool = dialog.setByteBoolean(field_1_wsbool, isDialog);
+<span class="nocode"><a name="103">103: </a></span>    }
+<span class="nocode"><a name="104">104: </a></span>
+<span class="nocode"><a name="105">105: </a></span>    /**
+<span class="nocode"><a name="106">106: </a></span>     * set if row summaries appear below detail in the outline
+<span class="nocode"><a name="107">107: </a></span>     * @param below or not
+<span class="nocode"><a name="108">108: </a></span>     */
+<span class="nocode"><a name="109">109: </a></span>
+<span class="nocode"><a name="110">110: </a></span>    public void setRowSumsBelow(boolean below)
+<span class="nocode"><a name="111">111: </a></span>    {
+<span class="nocode"><a name="112">112: </a></span>        field_1_wsbool = rowsumsbelow.setByteBoolean(field_1_wsbool, below);
+<span class="nocode"><a name="113">113: </a></span>    }
+<span class="nocode"><a name="114">114: </a></span>
+<span class="nocode"><a name="115">115: </a></span>    /**
+<span class="nocode"><a name="116">116: </a></span>     * set if col summaries appear right of the detail in the outline
+<span class="nocode"><a name="117">117: </a></span>     * @param right or not
+<span class="nocode"><a name="118">118: </a></span>     */
+<span class="nocode"><a name="119">119: </a></span>
+<span class="nocode"><a name="120">120: </a></span>    public void setRowSumsRight(boolean right)
+<span class="nocode"><a name="121">121: </a></span>    {
+<span class="nocode"><a name="122">122: </a></span>        field_1_wsbool = rowsumsright.setByteBoolean(field_1_wsbool, right);
+<span class="nocode"><a name="123">123: </a></span>    }
+<span class="nocode"><a name="124">124: </a></span>
+<span class="nocode"><a name="125">125: </a></span>    // end bitfields
+<span class="nocode"><a name="126">126: </a></span>
+<span class="nocode"><a name="127">127: </a></span>    /**
+<span class="nocode"><a name="128">128: </a></span>     * set the second byte (see bit setters)
+<span class="nocode"><a name="129">129: </a></span>     */
+<span class="nocode"><a name="130">130: </a></span>
+<span class="nocode"><a name="131">131: </a></span>    public void setWSBool2(byte bool2)
+<span class="nocode"><a name="132">132: </a></span>    {
+<span class="nocode"><a name="133">133: </a></span>        field_2_wsbool = bool2;
+<span class="nocode"><a name="134">134: </a></span>    }
+<span class="nocode"><a name="135">135: </a></span>
+<span class="nocode"><a name="136">136: </a></span>    // bool2 bitfields
+<span class="nocode"><a name="137">137: </a></span>
+<span class="nocode"><a name="138">138: </a></span>    /**
+<span class="nocode"><a name="139">139: </a></span>     * fit to page option is on
+<span class="nocode"><a name="140">140: </a></span>     * @param fit2page  fit or not
+<span class="nocode"><a name="141">141: </a></span>     */
+<span class="nocode"><a name="142">142: </a></span>
+<span class="nocode"><a name="143">143: </a></span>    public void setFitToPage(boolean fit2page)
+<span class="nocode"><a name="144">144: </a></span>    {
+<span class="nocode"><a name="145">145: </a></span>        field_2_wsbool = fittopage.setByteBoolean(field_2_wsbool, fit2page);
+<span class="nocode"><a name="146">146: </a></span>    }
+<span class="nocode"><a name="147">147: </a></span>
+<span class="nocode"><a name="148">148: </a></span>    /**
+<span class="nocode"><a name="149">149: </a></span>     * set whether to display the guts or not
+<span class="nocode"><a name="150">150: </a></span>     *
+<span class="nocode"><a name="151">151: </a></span>     * @param guts or no guts (or glory)
+<span class="nocode"><a name="152">152: </a></span>     */
+<span class="nocode"><a name="153">153: </a></span>
+<span class="nocode"><a name="154">154: </a></span>    public void setDisplayGuts(boolean guts)
+<span class="nocode"><a name="155">155: </a></span>    {
+<span class="nocode"><a name="156">156: </a></span>        field_2_wsbool = displayguts.setByteBoolean(field_2_wsbool, guts);
+<span class="nocode"><a name="157">157: </a></span>    }
+<span class="nocode"><a name="158">158: </a></span>
+<span class="nocode"><a name="159">159: </a></span>    /**
+<span class="nocode"><a name="160">160: </a></span>     * whether alternate expression evaluation is on
+<span class="nocode"><a name="161">161: </a></span>     * @param altexp  alternative expression evaluation or not
+<span class="nocode"><a name="162">162: </a></span>     */
+<span class="nocode"><a name="163">163: </a></span>
+<span class="nocode"><a name="164">164: </a></span>    public void setAlternateExpression(boolean altexp)
+<span class="nocode"><a name="165">165: </a></span>    {
+<span class="nocode"><a name="166">166: </a></span>        field_2_wsbool = alternateexpression.setByteBoolean(field_2_wsbool,
+<span class="nocode"><a name="167">167: </a></span>                altexp);
+<span class="nocode"><a name="168">168: </a></span>    }
+<span class="nocode"><a name="169">169: </a></span>
+<span class="nocode"><a name="170">170: </a></span>    /**
+<span class="nocode"><a name="171">171: </a></span>     * whether alternative formula entry is on
+<span class="nocode"><a name="172">172: </a></span>     * @param formula  alternative formulas or not
+<span class="nocode"><a name="173">173: </a></span>     */
+<span class="nocode"><a name="174">174: </a></span>
+<span class="nocode"><a name="175">175: </a></span>    public void setAlternateFormula(boolean formula)
+<span class="nocode"><a name="176">176: </a></span>    {
+<span class="nocode"><a name="177">177: </a></span>        field_2_wsbool = alternateformula.setByteBoolean(field_2_wsbool,
+<span class="nocode"><a name="178">178: </a></span>                formula);
+<span class="nocode"><a name="179">179: </a></span>    }
+<span class="nocode"><a name="180">180: </a></span>
+<span class="nocode"><a name="181">181: </a></span>    // end bitfields
+<span class="nocode"><a name="182">182: </a></span>
+<span class="nocode"><a name="183">183: </a></span>    /**
+<span class="nocode"><a name="184">184: </a></span>     * get first byte (see bit getters)
+<span class="nocode"><a name="185">185: </a></span>     */
+<span class="nocode"><a name="186">186: </a></span>
+<span class="nocode"><a name="187">187: </a></span>    public byte getWSBool1()
+<span class="nocode"><a name="188">188: </a></span>    {
+<span class="nocode"><a name="189">189: </a></span>        return field_1_wsbool;
+<span class="nocode"><a name="190">190: </a></span>    }
+<span class="nocode"><a name="191">191: </a></span>
+<span class="nocode"><a name="192">192: </a></span>    // bool1 bitfields
+<span class="nocode"><a name="193">193: </a></span>
+<span class="nocode"><a name="194">194: </a></span>    /**
+<span class="nocode"><a name="195">195: </a></span>     * show automatic page breaks or not
+<span class="nocode"><a name="196">196: </a></span>     * @return whether to show auto page breaks
+<span class="nocode"><a name="197">197: </a></span>     */
+<span class="nocode"><a name="198">198: </a></span>
+<span class="nocode"><a name="199">199: </a></span>    public boolean getAutobreaks()
+<span class="nocode"><a name="200">200: </a></span>    {
+<span class="nocode"><a name="201">201: </a></span>        return autobreaks.isSet(field_1_wsbool);
+<span class="nocode"><a name="202">202: </a></span>    }
+<span class="nocode"><a name="203">203: </a></span>
+<span class="nocode"><a name="204">204: </a></span>    /**
+<span class="nocode"><a name="205">205: </a></span>     * get whether sheet is a dialog sheet or not
+<span class="nocode"><a name="206">206: </a></span>     * @return isDialog or not
+<span class="nocode"><a name="207">207: </a></span>     */
+<span class="nocode"><a name="208">208: </a></span>
+<span class="nocode"><a name="209">209: </a></span>    public boolean getDialog()
+<span class="nocode"><a name="210">210: </a></span>    {
+<span class="nocode"><a name="211">211: </a></span>        return dialog.isSet(field_1_wsbool);
+<span class="nocode"><a name="212">212: </a></span>    }
+<span class="nocode"><a name="213">213: </a></span>
+<span class="nocode"><a name="214">214: </a></span>    /**
+<span class="nocode"><a name="215">215: </a></span>     * get if row summaries appear below detail in the outline
+<span class="nocode"><a name="216">216: </a></span>     * @return below or not
+<span class="nocode"><a name="217">217: </a></span>     */
+<span class="nocode"><a name="218">218: </a></span>
+<span class="nocode"><a name="219">219: </a></span>    public boolean getRowSumsBelow()
+<span class="nocode"><a name="220">220: </a></span>    {
+<span class="nocode"><a name="221">221: </a></span>        return rowsumsbelow.isSet(field_1_wsbool);
+<span class="nocode"><a name="222">222: </a></span>    }
+<span class="nocode"><a name="223">223: </a></span>
+<span class="nocode"><a name="224">224: </a></span>    /**
+<span class="nocode"><a name="225">225: </a></span>     * get if col summaries appear right of the detail in the outline
+<span class="nocode"><a name="226">226: </a></span>     * @return right or not
+<span class="nocode"><a name="227">227: </a></span>     */
+<span class="nocode"><a name="228">228: </a></span>
+<span class="nocode"><a name="229">229: </a></span>    public boolean getRowSumsRight()
+<span class="nocode"><a name="230">230: </a></span>    {
+<span class="nocode"><a name="231">231: </a></span>        return rowsumsright.isSet(field_1_wsbool);
+<span class="nocode"><a name="232">232: </a></span>    }
+<span class="nocode"><a name="233">233: </a></span>
+<span class="nocode"><a name="234">234: </a></span>    // end bitfields
+<span class="nocode"><a name="235">235: </a></span>
+<span class="nocode"><a name="236">236: </a></span>    /**
+<span class="nocode"><a name="237">237: </a></span>     * get the second byte (see bit getters)
+<span class="nocode"><a name="238">238: </a></span>     */
+<span class="nocode"><a name="239">239: </a></span>
+<span class="nocode"><a name="240">240: </a></span>    public byte getWSBool2()
+<span class="nocode"><a name="241">241: </a></span>    {
+<span class="nocode"><a name="242">242: </a></span>        return field_2_wsbool;
+<span class="nocode"><a name="243">243: </a></span>    }
+<span class="nocode"><a name="244">244: </a></span>
+<span class="nocode"><a name="245">245: </a></span>    // bool2 bitfields
+<span class="nocode"><a name="246">246: </a></span>
+<span class="nocode"><a name="247">247: </a></span>    /**
+<span class="nocode"><a name="248">248: </a></span>     * fit to page option is on
+<span class="nocode"><a name="249">249: </a></span>     * @return fit or not
+<span class="nocode"><a name="250">250: </a></span>     */
+<span class="nocode"><a name="251">251: </a></span>
+<span class="nocode"><a name="252">252: </a></span>    public boolean getFitToPage()
+<span class="nocode"><a name="253">253: </a></span>    {
+<span class="nocode"><a name="254">254: </a></span>        return fittopage.isSet(field_2_wsbool);
+<span class="nocode"><a name="255">255: </a></span>    }
+<span class="nocode"><a name="256">256: </a></span>
+<span class="nocode"><a name="257">257: </a></span>    /**
+<span class="nocode"><a name="258">258: </a></span>     * get whether to display the guts or not
+<span class="nocode"><a name="259">259: </a></span>     *
+<span class="nocode"><a name="260">260: </a></span>     * @return guts or no guts (or glory)
+<span class="nocode"><a name="261">261: </a></span>     */
+<span class="nocode"><a name="262">262: </a></span>
+<span class="nocode"><a name="263">263: </a></span>    public boolean getDisplayGuts()
+<span class="nocode"><a name="264">264: </a></span>    {
+<span class="nocode"><a name="265">265: </a></span>        return displayguts.isSet(field_2_wsbool);
+<span class="nocode"><a name="266">266: </a></span>    }
+<span class="nocode"><a name="267">267: </a></span>
+<span class="nocode"><a name="268">268: </a></span>    /**
+<span class="nocode"><a name="269">269: </a></span>     * whether alternate expression evaluation is on
+<span class="nocode"><a name="270">270: </a></span>     * @return alternative expression evaluation or not
+<span class="nocode"><a name="271">271: </a></span>     */
+<span class="nocode"><a name="272">272: </a></span>
+<span class="nocode"><a name="273">273: </a></span>    public boolean getAlternateExpression()
+<span class="nocode"><a name="274">274: </a></span>    {
+<span class="nocode"><a name="275">275: </a></span>        return alternateexpression.isSet(field_2_wsbool);
+<span class="nocode"><a name="276">276: </a></span>    }
+<span class="nocode"><a name="277">277: </a></span>
+<span class="nocode"><a name="278">278: </a></span>    /**
+<span class="nocode"><a name="279">279: </a></span>     * whether alternative formula entry is on
+<span class="nocode"><a name="280">280: </a></span>     * @return alternative formulas or not
+<span class="nocode"><a name="281">281: </a></span>     */
+<span class="nocode"><a name="282">282: </a></span>
+<span class="nocode"><a name="283">283: </a></span>    public boolean getAlternateFormula()
+<span class="nocode"><a name="284">284: </a></span>    {
+<span class="nocode"><a name="285">285: </a></span>        return alternateformula.isSet(field_2_wsbool);
+<span class="nocode"><a name="286">286: </a></span>    }
+<span class="nocode"><a name="287">287: </a></span>
+<span class="nocode"><a name="288">288: </a></span>    // end bitfields
+<span class="nocode"><a name="289">289: </a></span>    public String toString()
+<span class="nocode"><a name="290">290: </a></span>    {
+<span class="nocode"><a name="291">291: </a></span>        StringBuffer buffer = new StringBuffer();
+<span class="nocode"><a name="292">292: </a></span>
+<span class="nocode"><a name="293">293: </a></span>        buffer.append(&quot;[WSBOOL]\n&quot;);
+<span class="nocode"><a name="294">294: </a></span>        buffer.append(&quot;    .wsbool1        = &quot;)
+<span class="nocode"><a name="295">295: </a></span>            .append(Integer.toHexString(getWSBool1())).append(&quot;\n&quot;);
+<span class="nocode"><a name="296">296: </a></span>        buffer.append(&quot;        .autobreaks = &quot;).append(getAutobreaks())
+<span class="nocode"><a name="297">297: </a></span>            .append(&quot;\n&quot;);
+<span class="nocode"><a name="298">298: </a></span>        buffer.append(&quot;        .dialog     = &quot;).append(getDialog())
+<span class="nocode"><a name="299">299: </a></span>            .append(&quot;\n&quot;);
+<span class="nocode"><a name="300">300: </a></span>        buffer.append(&quot;        .rowsumsbelw= &quot;).append(getRowSumsBelow())
+<span class="nocode"><a name="301">301: </a></span>            .append(&quot;\n&quot;);
+<span class="nocode"><a name="302">302: </a></span>        buffer.append(&quot;        .rowsumsrigt= &quot;).append(getRowSumsRight())
+<span class="nocode"><a name="303">303: </a></span>            .append(&quot;\n&quot;);
+<span class="nocode"><a name="304">304: </a></span>        buffer.append(&quot;    .wsbool2        = &quot;)
+<span class="nocode"><a name="305">305: </a></span>            .append(Integer.toHexString(getWSBool2())).append(&quot;\n&quot;);
+<span class="nocode"><a name="306">306: </a></span>        buffer.append(&quot;        .fittopage  = &quot;).append(getFitToPage())
+<span class="nocode"><a name="307">307: </a></span>            .append(&quot;\n&quot;);
+<span class="nocode"><a name="308">308: </a></span>        buffer.append(&quot;        .displayguts= &quot;).append(getDisplayGuts())
+<span class="nocode"><a name="309">309: </a></span>            .append(&quot;\n&quot;);
+<span class="nocode"><a name="310">310: </a></span>        buffer.append(&quot;        .alternateex= &quot;)
+<span class="nocode"><a name="311">311: </a></span>            .append(getAlternateExpression()).append(&quot;\n&quot;);
+<span class="nocode"><a name="312">312: </a></span>        buffer.append(&quot;        .alternatefo= &quot;).append(getAlternateFormula())
+<span class="nocode"><a name="313">313: </a></span>            .append(&quot;\n&quot;);
+<span class="nocode"><a name="314">314: </a></span>        buffer.append(&quot;[/WSBOOL]\n&quot;);
+<span class="nocode"><a name="315">315: </a></span>        return buffer.toString();
+<span class="nocode"><a name="316">316: </a></span>    }
+<span class="nocode"><a name="317">317: </a></span>
+<span class="nocode"><a name="318">318: </a></span>    public void serialize(LittleEndianOutput out) {
+<span class="nocode"><a name="319">319: </a></span>        out.writeByte(getWSBool2());
+<span class="nocode"><a name="320">320: </a></span>        out.writeByte(getWSBool1());
+<span class="nocode"><a name="321">321: </a></span>    }
+<span class="nocode"><a name="322">322: </a></span>
+<span class="nocode"><a name="323">323: </a></span>    protected int getDataSize() {
+<span class="nocode"><a name="324">324: </a></span>        return 2;
+<span class="nocode"><a name="325">325: </a></span>    }
+<span class="nocode"><a name="326">326: </a></span>
+<span class="nocode"><a name="327">327: </a></span>    public short getSid()
+<span class="nocode"><a name="328">328: </a></span>    {
+<span class="nocode"><a name="329">329: </a></span>        return sid;
+<span class="nocode"><a name="330">330: </a></span>    }
+<span class="nocode"><a name="331">331: </a></span>
+<span class="nocode"><a name="332">332: </a></span>    public Object clone() {
+<span class="nocode"><a name="333">333: </a></span>      WSBoolRecord rec = new WSBoolRecord();
+<span class="nocode"><a name="334">334: </a></span>      rec.field_1_wsbool = field_1_wsbool;
+<span class="nocode"><a name="335">335: </a></span>      rec.field_2_wsbool = field_2_wsbool;
+<span class="nocode"><a name="336">336: </a></span>      return rec;
+<span class="nocode"><a name="337">337: </a></span>    }
+<span class="nocode"><a name="338">338: </a></span>}
+</pre><table class="mutation_table" summary="Mutations">
+<tr><th>ID</th><th>Line</th><th>Type</th><th>Detected</th></tr><tr><td>19613</td><td><a href="#61">61</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>19614</td><td><a href="#62">62</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>19615</td><td><a href="#62">62</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>19616</td><td><a href="#64">64</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>19617</td><td><a href="#64">64</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>19618</td><td><a href="#92">92</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>19619</td><td><a href="#102">102</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>19620</td><td><a href="#112">112</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>19621</td><td><a href="#122">122</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>19622</td><td><a href="#145">145</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>19623</td><td><a href="#156">156</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>19624</td><td><a href="#166">166</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>19625</td><td><a href="#177">177</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>19626</td><td><a href="#201">201</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>19627</td><td><a href="#211">211</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>19628</td><td><a href="#221">221</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>19629</td><td><a href="#231">231</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>19630</td><td><a href="#254">254</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>19631</td><td><a href="#265">265</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>19632</td><td><a href="#275">275</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>19633</td><td><a href="#285">285</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>19634</td><td><a href="#293">293</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>19635</td><td><a href="#294">294</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>19636</td><td><a href="#294">294(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>19637</td><td><a href="#294">294(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>19638</td><td><a href="#294">294(3)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>19639</td><td><a href="#294">294(4)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>19640</td><td><a href="#296">296</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>19641</td><td><a href="#296">296(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>19642</td><td><a href="#296">296(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>19643</td><td><a href="#296">296(3)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>19644</td><td><a href="#298">298</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>19645</td><td><a href="#298">298(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>19646</td><td><a href="#298">298(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>19647</td><td><a href="#298">298(3)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>19648</td><td><a href="#300">300</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>19649</td><td><a href="#300">300(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>19650</td><td><a href="#300">300(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>19651</td><td><a href="#300">300(3)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>19652</td><td><a href="#302">302</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>19653</td><td><a href="#302">302(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>19654</td><td><a href="#302">302(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>19655</td><td><a href="#302">302(3)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>19656</td><td><a href="#304">304</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>19657</td><td><a href="#304">304(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>19658</td><td><a href="#304">304(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>19659</td><td><a href="#304">304(3)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>19660</td><td><a href="#304">304(4)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>19661</td><td><a href="#306">306</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>19662</td><td><a href="#306">306(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>19663</td><td><a href="#306">306(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>19664</td><td><a href="#306">306(3)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>19665</td><td><a href="#308">308</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>19666</td><td><a href="#308">308(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>19667</td><td><a href="#308">308(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>19668</td><td><a href="#308">308(3)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>19669</td><td><a href="#310">310</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>19670</td><td><a href="#310">310(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>19671</td><td><a href="#310">310(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>19672</td><td><a href="#310">310(3)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>19673</td><td><a href="#312">312</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>19674</td><td><a href="#312">312(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>19675</td><td><a href="#312">312(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>19676</td><td><a href="#312">312(3)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>19677</td><td><a href="#314">314</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>19678</td><td><a href="#315">315</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>19679</td><td><a href="#319">319</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>19680</td><td><a href="#319">319(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>19681</td><td><a href="#320">320</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>19682</td><td><a href="#320">320(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>19683</td><td><a href="#324">324</a></td><td>Replace a constant (Replace 2 with 3(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>19685</td><td><a href="#324">324</a></td><td>Replace a constant (Replace 2 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>19684</td><td><a href="#324">324</a></td><td>Replace a constant (Replace 2 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>19686</td><td><a href="#329">329</a></td><td>Replace a constant (Replace 129 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>19688</td><td><a href="#329">329</a></td><td>Replace a constant (Replace 129 with 130(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>19687</td><td><a href="#329">329</a></td><td>Replace a constant (Replace 129 with 128(INT))</td><td><img src="detected.png"/></td></tr>
+</table>
+</body>
+</html>

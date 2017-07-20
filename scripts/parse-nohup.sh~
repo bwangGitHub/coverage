@@ -1,0 +1,2 @@
+#!/bin/bash
+grep "INFO: Results of this run: *" ../data-files/joda-results-3-10-30-100.log

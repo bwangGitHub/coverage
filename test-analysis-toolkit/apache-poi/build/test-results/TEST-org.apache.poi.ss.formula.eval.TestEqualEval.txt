@@ -1,0 +1,9 @@
+Testsuite: org.apache.poi.ss.formula.eval.TestEqualEval
+Tests run: 6, Failures: 0, Errors: 0, Time elapsed: 0.002 sec
+
+Testcase: test1x1AreaOperand took 0 sec
+Testcase: testBlankEqualToEmptyString took 0 sec
+Testcase: testStringInsensitive_bug46613 took 0 sec
+Testcase: testBooleanCompares took 0 sec
+Testcase: testZeroEquality_bug47198 took 0 sec
+Testcase: testRounding_bug47598 took 0 sec

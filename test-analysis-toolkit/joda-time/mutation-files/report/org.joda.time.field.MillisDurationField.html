@@ -1,0 +1,224 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN
+"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>
+org.joda.time.field.MillisDurationField
+</title>
+<link href="prettify.css" type="text/css" rel="stylesheet" />
+<script type="text/javascript" src="prettify.js"></script>
+</head>
+<body onload="prettyPrint()">
+<h2>Javalanche report for class:<br/> org.joda.time.field.MillisDurationField </h2><pre class="prettyprint" style="border: 1px solid #888;padding: 2px"><span class="nocode"><a name="1">  1: </a></span>/*
+<span class="nocode"><a name="2">  2: </a></span> *  Copyright 2001-2009 Stephen Colebourne
+<span class="nocode"><a name="3">  3: </a></span> *
+<span class="nocode"><a name="4">  4: </a></span> *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+<span class="nocode"><a name="5">  5: </a></span> *  you may not use this file except in compliance with the License.
+<span class="nocode"><a name="6">  6: </a></span> *  You may obtain a copy of the License at
+<span class="nocode"><a name="7">  7: </a></span> *
+<span class="nocode"><a name="8">  8: </a></span> *      http://www.apache.org/licenses/LICENSE-2.0
+<span class="nocode"><a name="9">  9: </a></span> *
+<span class="nocode"><a name="10"> 10: </a></span> *  Unless required by applicable law or agreed to in writing, software
+<span class="nocode"><a name="11"> 11: </a></span> *  distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+<span class="nocode"><a name="12"> 12: </a></span> *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+<span class="nocode"><a name="13"> 13: </a></span> *  See the License for the specific language governing permissions and
+<span class="nocode"><a name="14"> 14: </a></span> *  limitations under the License.
+<span class="nocode"><a name="15"> 15: </a></span> */
+<span class="nocode"><a name="16"> 16: </a></span>package org.joda.time.field;
+<span class="nocode"><a name="17"> 17: </a></span>
+<span class="nocode"><a name="18"> 18: </a></span>import java.io.Serializable;
+<span class="nocode"><a name="19"> 19: </a></span>
+<span class="nocode"><a name="20"> 20: </a></span>import org.joda.time.DurationField;
+<span class="nocode"><a name="21"> 21: </a></span>import org.joda.time.DurationFieldType;
+<span class="nocode"><a name="22"> 22: </a></span>
+<span class="nocode"><a name="23"> 23: </a></span>/**
+<span class="nocode"><a name="24"> 24: </a></span> * Duration field class representing a field with a fixed unit length of one
+<span class="nocode"><a name="25"> 25: </a></span> * millisecond.
+<span class="nocode"><a name="26"> 26: </a></span> * &lt;p&gt;
+<span class="nocode"><a name="27"> 27: </a></span> * MillisDurationField is thread-safe and immutable.
+<span class="nocode"><a name="28"> 28: </a></span> *
+<span class="nocode"><a name="29"> 29: </a></span> * @author Brian S O'Neill
+<span class="nocode"><a name="30"> 30: </a></span> * @since 1.0
+<span class="nocode"><a name="31"> 31: </a></span> */
+<span class="nocode"><a name="32"> 32: </a></span>public final class MillisDurationField extends DurationField implements Serializable {
+<span class="nocode"><a name="33"> 33: </a></span>
+<span class="nocode"><a name="34"> 34: </a></span>    /** Serialization lock. */
+<span class="nocode"><a name="35"> 35: </a></span>    private static final long serialVersionUID = 2656707858124633367L;
+<span class="nocode"><a name="36"> 36: </a></span>
+<span class="nocode"><a name="37"> 37: </a></span>    /** Singleton instance. */
+<span class="nocode"><a name="38"> 38: </a></span>    public static final DurationField INSTANCE = new MillisDurationField();
+<span class="nocode"><a name="39"> 39: </a></span>
+<span class="nocode"><a name="40"> 40: </a></span>    /**
+<span class="nocode"><a name="41"> 41: </a></span>     * Restricted constructor.
+<span class="nocode"><a name="42"> 42: </a></span>     */
+<span class="nocode"><a name="43"> 43: </a></span>    private MillisDurationField() {
+<span class="nocode"><a name="44"> 44: </a></span>        super();
+<span class="nocode"><a name="45"> 45: </a></span>    }
+<span class="nocode"><a name="46"> 46: </a></span>    
+<span class="nocode"><a name="47"> 47: </a></span>    //------------------------------------------------------------------------
+<span class="nocode"><a name="48"> 48: </a></span>    public DurationFieldType getType() {
+<span class="nocode"><a name="49"> 49: </a></span>        return DurationFieldType.millis();
+<span class="nocode"><a name="50"> 50: </a></span>    }
+<span class="nocode"><a name="51"> 51: </a></span>
+<span class="nocode"><a name="52"> 52: </a></span>    public String getName() {
+<span class="nocode"><a name="53"> 53: </a></span>        return &quot;millis&quot;;
+<span class="nocode"><a name="54"> 54: </a></span>    }
+<span class="nocode"><a name="55"> 55: </a></span>
+<span class="nocode"><a name="56"> 56: </a></span>    /**
+<span class="nocode"><a name="57"> 57: </a></span>     * Returns true as this field is supported.
+<span class="nocode"><a name="58"> 58: </a></span>     * 
+<span class="nocode"><a name="59"> 59: </a></span>     * @return true always
+<span class="nocode"><a name="60"> 60: </a></span>     */
+<span class="nocode"><a name="61"> 61: </a></span>    public boolean isSupported() {
+<span class="nocode"><a name="62"> 62: </a></span>        return true;
+<span class="nocode"><a name="63"> 63: </a></span>    }
+<span class="nocode"><a name="64"> 64: </a></span>
+<span class="nocode"><a name="65"> 65: </a></span>    /**
+<span class="nocode"><a name="66"> 66: </a></span>     * Returns true as this field is precise.
+<span class="nocode"><a name="67"> 67: </a></span>     * 
+<span class="nocode"><a name="68"> 68: </a></span>     * @return true always
+<span class="nocode"><a name="69"> 69: </a></span>     */
+<span class="nocode"><a name="70"> 70: </a></span>    public final boolean isPrecise() {
+<span class="nocode"><a name="71"> 71: </a></span>        return true;
+<span class="nocode"><a name="72"> 72: </a></span>    }
+<span class="nocode"><a name="73"> 73: </a></span>
+<span class="nocode"><a name="74"> 74: </a></span>    /**
+<span class="nocode"><a name="75"> 75: </a></span>     * Returns the amount of milliseconds per unit value of this field.
+<span class="nocode"><a name="76"> 76: </a></span>     *
+<span class="nocode"><a name="77"> 77: </a></span>     * @return one always
+<span class="nocode"><a name="78"> 78: </a></span>     */
+<span class="nocode"><a name="79"> 79: </a></span>    public final long getUnitMillis() {
+<span class="nocode"><a name="80"> 80: </a></span>        return 1;
+<span class="nocode"><a name="81"> 81: </a></span>    }
+<span class="nocode"><a name="82"> 82: </a></span>
+<span class="nocode"><a name="83"> 83: </a></span>    //------------------------------------------------------------------------
+<span class="nocode"><a name="84"> 84: </a></span>    public int getValue(long duration) {
+<span class="nocode"><a name="85"> 85: </a></span>        return FieldUtils.safeToInt(duration);
+<span class="nocode"><a name="86"> 86: </a></span>    }
+<span class="nocode"><a name="87"> 87: </a></span>
+<span class="nocode"><a name="88"> 88: </a></span>    public long getValueAsLong(long duration) {
+<span class="nocode"><a name="89"> 89: </a></span>        return duration;
+<span class="nocode"><a name="90"> 90: </a></span>    }
+<span class="nocode"><a name="91"> 91: </a></span>
+<span class="nocode"><a name="92"> 92: </a></span>    public int getValue(long duration, long instant) {
+<span class="nocode"><a name="93"> 93: </a></span>        return FieldUtils.safeToInt(duration);
+<span class="nocode"><a name="94"> 94: </a></span>    }
+<span class="nocode"><a name="95"> 95: </a></span>
+<span class="nocode"><a name="96"> 96: </a></span>    public long getValueAsLong(long duration, long instant) {
+<span class="nocode"><a name="97"> 97: </a></span>        return duration;
+<span class="nocode"><a name="98"> 98: </a></span>    }
+<span class="nocode"><a name="99"> 99: </a></span>
+<span class="nocode"><a name="100">100: </a></span>    public long getMillis(int value) {
+<span class="nocode"><a name="101">101: </a></span>        return value;
+<span class="nocode"><a name="102">102: </a></span>    }
+<span class="nocode"><a name="103">103: </a></span>
+<span class="nocode"><a name="104">104: </a></span>    public long getMillis(long value) {
+<span class="nocode"><a name="105">105: </a></span>        return value;
+<span class="nocode"><a name="106">106: </a></span>    }
+<span class="nocode"><a name="107">107: </a></span>
+<span class="nocode"><a name="108">108: </a></span>    public long getMillis(int value, long instant) {
+<span class="nocode"><a name="109">109: </a></span>        return value;
+<span class="nocode"><a name="110">110: </a></span>    }
+<span class="nocode"><a name="111">111: </a></span>
+<span class="nocode"><a name="112">112: </a></span>    public long getMillis(long value, long instant) {
+<span class="nocode"><a name="113">113: </a></span>        return value;
+<span class="nocode"><a name="114">114: </a></span>    }
+<span class="nocode"><a name="115">115: </a></span>
+<span class="nocode"><a name="116">116: </a></span>    public long add(long instant, int value) {
+<span class="nocode"><a name="117">117: </a></span>        return FieldUtils.safeAdd(instant, value);
+<span class="nocode"><a name="118">118: </a></span>    }
+<span class="nocode"><a name="119">119: </a></span>
+<span class="nocode"><a name="120">120: </a></span>    public long add(long instant, long value) {
+<span class="nocode"><a name="121">121: </a></span>        return FieldUtils.safeAdd(instant, value);
+<span class="nocode"><a name="122">122: </a></span>    }
+<span class="nocode"><a name="123">123: </a></span>
+<span class="nocode"><a name="124">124: </a></span>    public int getDifference(long minuendInstant, long subtrahendInstant) {
+<span class="nocode"><a name="125">125: </a></span>        return FieldUtils.safeToInt(FieldUtils.safeSubtract(minuendInstant, subtrahendInstant));
+<span class="nocode"><a name="126">126: </a></span>    }
+<span class="nocode"><a name="127">127: </a></span>
+<span class="nocode"><a name="128">128: </a></span>    public long getDifferenceAsLong(long minuendInstant, long subtrahendInstant) {
+<span class="nocode"><a name="129">129: </a></span>        return FieldUtils.safeSubtract(minuendInstant, subtrahendInstant);
+<span class="nocode"><a name="130">130: </a></span>    }
+<span class="nocode"><a name="131">131: </a></span>
+<span class="nocode"><a name="132">132: </a></span>    //------------------------------------------------------------------------
+<span class="nocode"><a name="133">133: </a></span>    public int compareTo(DurationField otherField) {
+<span class="nocode"><a name="134">134: </a></span>        long otherMillis = otherField.getUnitMillis();
+<span class="nocode"><a name="135">135: </a></span>        long thisMillis = getUnitMillis();
+<span class="nocode"><a name="136">136: </a></span>        // cannot do (thisMillis - otherMillis) as can overflow
+<span class="nocode"><a name="137">137: </a></span>        if (thisMillis == otherMillis) {
+<span class="nocode"><a name="138">138: </a></span>            return 0;
+<span class="nocode"><a name="139">139: </a></span>        }
+<span class="nocode"><a name="140">140: </a></span>        if (thisMillis &lt; otherMillis) {
+<span class="nocode"><a name="141">141: </a></span>            return -1;
+<span class="nocode"><a name="142">142: </a></span>        } else {
+<span class="nocode"><a name="143">143: </a></span>            return 1;
+<span class="nocode"><a name="144">144: </a></span>        }
+<span class="nocode"><a name="145">145: </a></span>    }
+<span class="nocode"><a name="146">146: </a></span>
+<span class="nocode"><a name="147">147: </a></span>    public boolean equals(Object obj) {
+<span class="nocode"><a name="148">148: </a></span>        if (obj instanceof MillisDurationField) {
+<span class="nocode"><a name="149">149: </a></span>            return getUnitMillis() == ((MillisDurationField) obj).getUnitMillis();
+<span class="nocode"><a name="150">150: </a></span>        }
+<span class="nocode"><a name="151">151: </a></span>        return false;
+<span class="nocode"><a name="152">152: </a></span>    }
+<span class="nocode"><a name="153">153: </a></span>
+<span class="nocode"><a name="154">154: </a></span>    public int hashCode() {
+<span class="nocode"><a name="155">155: </a></span>        return (int) getUnitMillis();
+<span class="nocode"><a name="156">156: </a></span>    }
+<span class="nocode"><a name="157">157: </a></span>
+<span class="nocode"><a name="158">158: </a></span>    /**
+<span class="nocode"><a name="159">159: </a></span>     * Get a suitable debug string.
+<span class="nocode"><a name="160">160: </a></span>     * 
+<span class="nocode"><a name="161">161: </a></span>     * @return debug string
+<span class="nocode"><a name="162">162: </a></span>     */
+<span class="nocode"><a name="163">163: </a></span>    public String toString() {
+<span class="nocode"><a name="164">164: </a></span>        return &quot;DurationField[millis]&quot;;
+<span class="nocode"><a name="165">165: </a></span>    }
+<span class="nocode"><a name="166">166: </a></span>
+<span class="nocode"><a name="167">167: </a></span>    /**
+<span class="nocode"><a name="168">168: </a></span>     * Deserialize to the singleton.
+<span class="nocode"><a name="169">169: </a></span>     */
+<span class="nocode"><a name="170">170: </a></span>    private Object readResolve() {
+<span class="nocode"><a name="171">171: </a></span>        return INSTANCE;
+<span class="nocode"><a name="172">172: </a></span>    }
+<span class="nocode"><a name="173">173: </a></span>
+<span class="nocode"><a name="174">174: </a></span>}
+</pre><table class="mutation_table" summary="Mutations">
+<tr><th>ID</th><th>Line</th><th>Type</th><th>Detected</th></tr><tr><td>5479</td><td><a href="#49">49</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>5481</td><td><a href="#62">62</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>5480</td><td><a href="#62">62</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>5482</td><td><a href="#71">71</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>5483</td><td><a href="#71">71</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>5485</td><td><a href="#80">80</a></td><td>Replace a constant (Replace 1 with 0(LONG))</td><td><img src="detected.png"/></td></tr>
+<tr><td>5484</td><td><a href="#80">80</a></td><td>Replace a constant (Replace 1 with 2(LONG))</td><td><img src="detected.png"/></td></tr>
+<tr><td>5486</td><td><a href="#85">85</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>5487</td><td><a href="#93">93</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>5488</td><td><a href="#117">117</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>5489</td><td><a href="#121">121</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>5490</td><td><a href="#125">125</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>5491</td><td><a href="#125">125(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>5492</td><td><a href="#129">129</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>5493</td><td><a href="#134">134</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>5494</td><td><a href="#135">135</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>5495</td><td><a href="#137">137</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>5497</td><td><a href="#138">138</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>5496</td><td><a href="#138">138</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>5498</td><td><a href="#140">140</a></td><td>Negate jump condition (Replace IFGE with  IFLT)</td><td><img src="detected.png"/></td></tr>
+<tr><td>5500</td><td><a href="#141">141</a></td><td>Replace a constant (Replace -1 with -2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>5499</td><td><a href="#141">141</a></td><td>Replace a constant (Replace -1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>5501</td><td><a href="#143">143</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>5502</td><td><a href="#143">143</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>5503</td><td><a href="#148">148</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>5507</td><td><a href="#149">149</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>5508</td><td><a href="#149">149</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>5509</td><td><a href="#149">149(1)</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>5510</td><td><a href="#149">149(1)</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>5506</td><td><a href="#149">149</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>5504</td><td><a href="#149">149</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>5505</td><td><a href="#149">149(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>5512</td><td><a href="#151">151</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>5511</td><td><a href="#151">151</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>5513</td><td><a href="#155">155</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+</table>
+</body>
+</html>

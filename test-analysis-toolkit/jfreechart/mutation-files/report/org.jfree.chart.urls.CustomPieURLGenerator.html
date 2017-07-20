@@ -1,0 +1,299 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN
+"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>
+org.jfree.chart.urls.CustomPieURLGenerator
+</title>
+<link href="prettify.css" type="text/css" rel="stylesheet" />
+<script type="text/javascript" src="prettify.js"></script>
+</head>
+<body onload="prettyPrint()">
+<h2>Javalanche report for class:<br/> org.jfree.chart.urls.CustomPieURLGenerator </h2><pre class="prettyprint" style="border: 1px solid #888;padding: 2px"><span class="nocode"><a name="1">  1: </a></span>/* ======================================
+<span class="nocode"><a name="2">  2: </a></span> * JFreeChart : a free Java chart library
+<span class="nocode"><a name="3">  3: </a></span> * ======================================
+<span class="nocode"><a name="4">  4: </a></span> *
+<span class="nocode"><a name="5">  5: </a></span> * (C) Copyright 2000-2007, by Object Refinery Limited and Contributors.
+<span class="nocode"><a name="6">  6: </a></span> *
+<span class="nocode"><a name="7">  7: </a></span> * Project Info:  http://www.jfree.org/jfreechart/index.html
+<span class="nocode"><a name="8">  8: </a></span> *
+<span class="nocode"><a name="9">  9: </a></span> * This library is free software; you can redistribute it and/or modify it 
+<span class="nocode"><a name="10"> 10: </a></span> * under the terms of the GNU Lesser General Public License as published by 
+<span class="nocode"><a name="11"> 11: </a></span> * the Free Software Foundation; either version 2.1 of the License, or 
+<span class="nocode"><a name="12"> 12: </a></span> * (at your option) any later version.
+<span class="nocode"><a name="13"> 13: </a></span> *
+<span class="nocode"><a name="14"> 14: </a></span> * This library is distributed in the hope that it will be useful, but 
+<span class="nocode"><a name="15"> 15: </a></span> * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY 
+<span class="nocode"><a name="16"> 16: </a></span> * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public 
+<span class="nocode"><a name="17"> 17: </a></span> * License for more details.
+<span class="nocode"><a name="18"> 18: </a></span> *
+<span class="nocode"><a name="19"> 19: </a></span> * You should have received a copy of the GNU Lesser General Public
+<span class="nocode"><a name="20"> 20: </a></span> * License along with this library; if not, write to the Free Software
+<span class="nocode"><a name="21"> 21: </a></span> * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, 
+<span class="nocode"><a name="22"> 22: </a></span> * USA.  
+<span class="nocode"><a name="23"> 23: </a></span> *
+<span class="nocode"><a name="24"> 24: </a></span> * [Java is a trademark or registered trademark of Sun Microsystems, Inc. 
+<span class="nocode"><a name="25"> 25: </a></span> * in the United States and other countries.]
+<span class="nocode"><a name="26"> 26: </a></span> *
+<span class="nocode"><a name="27"> 27: </a></span> * --------------------------
+<span class="nocode"><a name="28"> 28: </a></span> * CustomPieURLGenerator.java
+<span class="nocode"><a name="29"> 29: </a></span> * --------------------------
+<span class="nocode"><a name="30"> 30: </a></span> * (C) Copyright 2004-2007, by David Basten and Contributors.
+<span class="nocode"><a name="31"> 31: </a></span> *
+<span class="nocode"><a name="32"> 32: </a></span> * Original Author:  David Basten;
+<span class="nocode"><a name="33"> 33: </a></span> * Contributors:     -;
+<span class="nocode"><a name="34"> 34: </a></span> *
+<span class="nocode"><a name="35"> 35: </a></span> * Changes:
+<span class="nocode"><a name="36"> 36: </a></span> * --------
+<span class="nocode"><a name="37"> 37: </a></span> * 04-Feb-2004 : Version 1, contributed by David Basten based on 
+<span class="nocode"><a name="38"> 38: </a></span> *               CustomXYURLGenerator by Richard Atkinson (added to main source
+<span class="nocode"><a name="39"> 39: </a></span> *               tree on 25-May-2004);
+<span class="nocode"><a name="40"> 40: </a></span> *
+<span class="nocode"><a name="41"> 41: </a></span> */
+<span class="nocode"><a name="42"> 42: </a></span>package org.jfree.chart.urls;
+<span class="nocode"><a name="43"> 43: </a></span>
+<span class="nocode"><a name="44"> 44: </a></span>import java.io.Serializable;
+<span class="nocode"><a name="45"> 45: </a></span>import java.util.ArrayList;
+<span class="nocode"><a name="46"> 46: </a></span>import java.util.HashMap;
+<span class="nocode"><a name="47"> 47: </a></span>import java.util.Iterator;
+<span class="nocode"><a name="48"> 48: </a></span>import java.util.Map;
+<span class="nocode"><a name="49"> 49: </a></span>import java.util.Set;
+<span class="nocode"><a name="50"> 50: </a></span>
+<span class="nocode"><a name="51"> 51: </a></span>import org.jfree.chart.plot.MultiplePiePlot;
+<span class="nocode"><a name="52"> 52: </a></span>import org.jfree.data.general.PieDataset;
+<span class="nocode"><a name="53"> 53: </a></span>import org.jfree.util.PublicCloneable;
+<span class="nocode"><a name="54"> 54: </a></span>
+<span class="nocode"><a name="55"> 55: </a></span>/**
+<span class="nocode"><a name="56"> 56: </a></span> * A custom URL generator for pie charts.
+<span class="nocode"><a name="57"> 57: </a></span> */
+<span class="nocode"><a name="58"> 58: </a></span>public class CustomPieURLGenerator implements PieURLGenerator, 
+<span class="nocode"><a name="59"> 59: </a></span>                                              Cloneable, 
+<span class="nocode"><a name="60"> 60: </a></span>                                              PublicCloneable, 
+<span class="nocode"><a name="61"> 61: </a></span>                                              Serializable {
+<span class="nocode"><a name="62"> 62: </a></span>
+<span class="nocode"><a name="63"> 63: </a></span>    /** For serialization. */
+<span class="nocode"><a name="64"> 64: </a></span>    private static final long serialVersionUID = 7100607670144900503L;
+<span class="nocode"><a name="65"> 65: </a></span>
+<span class="nocode"><a name="66"> 66: </a></span>    /** Storage for the URLs. */
+<span class="nocode"><a name="67"> 67: </a></span>    private ArrayList urls;
+<span class="nocode"><a name="68"> 68: </a></span>
+<span class="nocode"><a name="69"> 69: </a></span>    /**
+<span class="nocode"><a name="70"> 70: </a></span>     * Creates a new &lt;code&gt;CustomPieURLGenerator&lt;/code&gt; instance, initially
+<span class="nocode"><a name="71"> 71: </a></span>     * empty.  Call {@link #addURLs(Map)} to specify the URL fragments to be
+<span class="nocode"><a name="72"> 72: </a></span>     * used.
+<span class="nocode"><a name="73"> 73: </a></span>     */
+<span class="nocode"><a name="74"> 74: </a></span>    public CustomPieURLGenerator() {
+<span class="nocode"><a name="75"> 75: </a></span>        this.urls = new ArrayList();
+<span class="nocode"><a name="76"> 76: </a></span>    }
+<span class="nocode"><a name="77"> 77: </a></span>
+<span class="nocode"><a name="78"> 78: </a></span>    /**
+<span class="nocode"><a name="79"> 79: </a></span>     * Generates a URL fragment.
+<span class="nocode"><a name="80"> 80: </a></span>     *
+<span class="nocode"><a name="81"> 81: </a></span>     * @param dataset  the dataset (ignored).
+<span class="nocode"><a name="82"> 82: </a></span>     * @param key  the item key.
+<span class="nocode"><a name="83"> 83: </a></span>     * @param pieIndex  the pie index.
+<span class="nocode"><a name="84"> 84: </a></span>     *
+<span class="nocode"><a name="85"> 85: </a></span>     * @return A string containing the generated URL.
+<span class="nocode"><a name="86"> 86: </a></span>     * 
+<span class="nocode"><a name="87"> 87: </a></span>     * @see #getURL(Comparable, int)
+<span class="nocode"><a name="88"> 88: </a></span>     */
+<span class="nocode"><a name="89"> 89: </a></span>    public String generateURL(PieDataset dataset, Comparable key, 
+<span class="nocode"><a name="90"> 90: </a></span>                              int pieIndex) {
+<span class="nocode"><a name="91"> 91: </a></span>        return getURL(key, pieIndex);
+<span class="nocode"><a name="92"> 92: </a></span>    }
+<span class="nocode"><a name="93"> 93: </a></span>
+<span class="nocode"><a name="94"> 94: </a></span>    /**
+<span class="nocode"><a name="95"> 95: </a></span>     * Returns the number of URL maps stored by the renderer.
+<span class="nocode"><a name="96"> 96: </a></span>     * 
+<span class="nocode"><a name="97"> 97: </a></span>     * @return The list count.
+<span class="nocode"><a name="98"> 98: </a></span>     * 
+<span class="nocode"><a name="99"> 99: </a></span>     * @see #addURLs(Map)
+<span class="nocode"><a name="100">100: </a></span>     */
+<span class="nocode"><a name="101">101: </a></span>    public int getListCount() {
+<span class="nocode"><a name="102">102: </a></span>        return this.urls.size();
+<span class="nocode"><a name="103">103: </a></span>    }
+<span class="nocode"><a name="104">104: </a></span>    
+<span class="nocode"><a name="105">105: </a></span>    /**
+<span class="nocode"><a name="106">106: </a></span>     * Returns the number of URLs in a given map (specified by its position 
+<span class="nocode"><a name="107">107: </a></span>     * in the map list).
+<span class="nocode"><a name="108">108: </a></span>     * 
+<span class="nocode"><a name="109">109: </a></span>     * @param list  the list index (zero based).
+<span class="nocode"><a name="110">110: </a></span>     * 
+<span class="nocode"><a name="111">111: </a></span>     * @return The URL count.
+<span class="nocode"><a name="112">112: </a></span>     * 
+<span class="nocode"><a name="113">113: </a></span>     * @see #getListCount()
+<span class="nocode"><a name="114">114: </a></span>     */
+<span class="nocode"><a name="115">115: </a></span>    public int getURLCount(int list) {
+<span class="nocode"><a name="116">116: </a></span>        int result = 0;
+<span class="nocode"><a name="117">117: </a></span>        Map urlMap = (Map) this.urls.get(list);
+<span class="nocode"><a name="118">118: </a></span>        if (urlMap != null) {
+<span class="nocode"><a name="119">119: </a></span>            result = urlMap.size();
+<span class="nocode"><a name="120">120: </a></span>        }
+<span class="nocode"><a name="121">121: </a></span>        return result;
+<span class="nocode"><a name="122">122: </a></span>    }
+<span class="nocode"><a name="123">123: </a></span>
+<span class="nocode"><a name="124">124: </a></span>    /**
+<span class="nocode"><a name="125">125: </a></span>     * Returns the URL for a section in the specified map.
+<span class="nocode"><a name="126">126: </a></span>     * 
+<span class="nocode"><a name="127">127: </a></span>     * @param key  the key.
+<span class="nocode"><a name="128">128: </a></span>     * @param mapIndex  the map index.
+<span class="nocode"><a name="129">129: </a></span>     * 
+<span class="nocode"><a name="130">130: </a></span>     * @return The URL.
+<span class="nocode"><a name="131">131: </a></span>     */    
+<span class="nocode"><a name="132">132: </a></span>    public String getURL(Comparable key, int mapIndex) {
+<span class="nocode"><a name="133">133: </a></span>        String result = null;
+<span class="nocode"><a name="134">134: </a></span>        if (mapIndex &lt; getListCount()) {
+<span class="nocode"><a name="135">135: </a></span>            Map urlMap = (Map) this.urls.get(mapIndex);
+<span class="nocode"><a name="136">136: </a></span>            if (urlMap != null) {
+<span class="nocode"><a name="137">137: </a></span>                result = (String) urlMap.get(key);
+<span class="nocode"><a name="138">138: </a></span>            }
+<span class="nocode"><a name="139">139: </a></span>        }
+<span class="nocode"><a name="140">140: </a></span>        return result;
+<span class="nocode"><a name="141">141: </a></span>    }
+<span class="nocode"><a name="142">142: </a></span>
+<span class="nocode"><a name="143">143: </a></span>    /**
+<span class="nocode"><a name="144">144: </a></span>     * Adds a map containing &lt;code&gt;(key, URL)&lt;/code&gt; mappings where each
+<span class="nocode"><a name="145">145: </a></span>     * &lt;code&gt;key&lt;/code&gt; is an instance of &lt;code&gt;Comparable&lt;/code&gt; 
+<span class="nocode"><a name="146">146: </a></span>     * (corresponding to the key for an item in a pie dataset) and each 
+<span class="nocode"><a name="147">147: </a></span>     * &lt;code&gt;URL&lt;/code&gt; is a &lt;code&gt;String&lt;/code&gt; representing a URL fragment.
+<span class="nocode"><a name="148">148: </a></span>     * &lt;br&gt;&lt;br&gt;
+<span class="nocode"><a name="149">149: </a></span>     * The map is appended to an internal list...you can add multiple maps
+<span class="nocode"><a name="150">150: </a></span>     * if you are working with, say, a {@link MultiplePiePlot}.
+<span class="nocode"><a name="151">151: </a></span>     * 
+<span class="nocode"><a name="152">152: </a></span>     * @param urlMap  the URLs (&lt;code&gt;null&lt;/code&gt; permitted).
+<span class="nocode"><a name="153">153: </a></span>     */
+<span class="nocode"><a name="154">154: </a></span>    public void addURLs(Map urlMap) {
+<span class="nocode"><a name="155">155: </a></span>        this.urls.add(urlMap);
+<span class="nocode"><a name="156">156: </a></span>    }
+<span class="nocode"><a name="157">157: </a></span>    
+<span class="nocode"><a name="158">158: </a></span>    /**
+<span class="nocode"><a name="159">159: </a></span>     * Tests if this object is equal to another.
+<span class="nocode"><a name="160">160: </a></span>     * 
+<span class="nocode"><a name="161">161: </a></span>     * @param o  the other object.
+<span class="nocode"><a name="162">162: </a></span>     * 
+<span class="nocode"><a name="163">163: </a></span>     * @return A boolean.
+<span class="nocode"><a name="164">164: </a></span>     */
+<span class="nocode"><a name="165">165: </a></span>    public boolean equals(Object o) {
+<span class="nocode"><a name="166">166: </a></span>    
+<span class="nocode"><a name="167">167: </a></span>        if (o == this) {
+<span class="nocode"><a name="168">168: </a></span>            return true;
+<span class="nocode"><a name="169">169: </a></span>        }
+<span class="nocode"><a name="170">170: </a></span>        
+<span class="nocode"><a name="171">171: </a></span>        if (o instanceof CustomPieURLGenerator) {
+<span class="nocode"><a name="172">172: </a></span>            CustomPieURLGenerator generator = (CustomPieURLGenerator) o;
+<span class="nocode"><a name="173">173: </a></span>            if (getListCount() != generator.getListCount()) {
+<span class="nocode"><a name="174">174: </a></span>                return false;
+<span class="nocode"><a name="175">175: </a></span>            }
+<span class="nocode"><a name="176">176: </a></span>            Set keySet;
+<span class="nocode"><a name="177">177: </a></span>            for (int pieItem = 0; pieItem &lt; getListCount(); pieItem++) {
+<span class="nocode"><a name="178">178: </a></span>                if (getURLCount(pieItem) != generator.getURLCount(pieItem)) {
+<span class="nocode"><a name="179">179: </a></span>                    return false;
+<span class="nocode"><a name="180">180: </a></span>                }
+<span class="nocode"><a name="181">181: </a></span>                keySet = ((HashMap) this.urls.get(pieItem)).keySet();
+<span class="nocode"><a name="182">182: </a></span>                String key;
+<span class="nocode"><a name="183">183: </a></span>                for (Iterator i = keySet.iterator(); i.hasNext();) {
+<span class="nocode"><a name="184">184: </a></span>                key = (String) i.next();
+<span class="nocode"><a name="185">185: </a></span>                    if (!getURL(key, pieItem).equals(
+<span class="nocode"><a name="186">186: </a></span>                            generator.getURL(key, pieItem))) {
+<span class="nocode"><a name="187">187: </a></span>                        return false;
+<span class="nocode"><a name="188">188: </a></span>                    }
+<span class="nocode"><a name="189">189: </a></span>                }
+<span class="nocode"><a name="190">190: </a></span>            }
+<span class="nocode"><a name="191">191: </a></span>            return true;
+<span class="nocode"><a name="192">192: </a></span>        }
+<span class="nocode"><a name="193">193: </a></span>        return false;
+<span class="nocode"><a name="194">194: </a></span>    }
+<span class="nocode"><a name="195">195: </a></span>
+<span class="nocode"><a name="196">196: </a></span>    /**
+<span class="nocode"><a name="197">197: </a></span>     * Returns a clone of the generator.
+<span class="nocode"><a name="198">198: </a></span>     * 
+<span class="nocode"><a name="199">199: </a></span>     * @return A clone.
+<span class="nocode"><a name="200">200: </a></span>     * 
+<span class="nocode"><a name="201">201: </a></span>     * @throws CloneNotSupportedException if cloning is not supported.
+<span class="nocode"><a name="202">202: </a></span>     */
+<span class="nocode"><a name="203">203: </a></span>    public Object clone() throws CloneNotSupportedException {
+<span class="nocode"><a name="204">204: </a></span>        CustomPieURLGenerator urlGen = new CustomPieURLGenerator();
+<span class="nocode"><a name="205">205: </a></span>        Map map;
+<span class="nocode"><a name="206">206: </a></span>        Map newMap;
+<span class="nocode"><a name="207">207: </a></span>        String key;
+<span class="nocode"><a name="208">208: </a></span>
+<span class="nocode"><a name="209">209: </a></span>        for (Iterator i = this.urls.iterator(); i.hasNext();) {
+<span class="nocode"><a name="210">210: </a></span>            map = (Map) i.next();
+<span class="nocode"><a name="211">211: </a></span>
+<span class="nocode"><a name="212">212: </a></span>            newMap = new HashMap();
+<span class="nocode"><a name="213">213: </a></span>            for (Iterator j = map.keySet().iterator(); j.hasNext();) {
+<span class="nocode"><a name="214">214: </a></span>                key = (String) j.next();
+<span class="nocode"><a name="215">215: </a></span>                newMap.put(key, map.get(key));
+<span class="nocode"><a name="216">216: </a></span>            }
+<span class="nocode"><a name="217">217: </a></span>
+<span class="nocode"><a name="218">218: </a></span>            urlGen.addURLs(newMap);
+<span class="nocode"><a name="219">219: </a></span>            newMap = null;
+<span class="nocode"><a name="220">220: </a></span>        }
+<span class="nocode"><a name="221">221: </a></span>
+<span class="nocode"><a name="222">222: </a></span>        return urlGen;
+<span class="nocode"><a name="223">223: </a></span>    }
+<span class="nocode"><a name="224">224: </a></span>
+<span class="nocode"><a name="225">225: </a></span>}
+</pre><table class="mutation_table" summary="Mutations">
+<tr><th>ID</th><th>Line</th><th>Type</th><th>Detected</th></tr><tr><td>61772</td><td><a href="#91">91</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>61773</td><td><a href="#102">102</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>61775</td><td><a href="#116">116</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>61774</td><td><a href="#116">116</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>61776</td><td><a href="#117">117</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>61777</td><td><a href="#118">118</a></td><td>Negate jump condition (Replace IFNULL with  IFNONNULL)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>61778</td><td><a href="#119">119</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>61780</td><td><a href="#134">134</a></td><td>Negate jump condition (Replace IF_ICMPGE with  IF_ICMPLT)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>61779</td><td><a href="#134">134</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>61781</td><td><a href="#135">135</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>61782</td><td><a href="#136">136</a></td><td>Negate jump condition (Replace IFNULL with  IFNONNULL)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>61783</td><td><a href="#137">137</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>61784</td><td><a href="#155">155</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>61785</td><td><a href="#167">167</a></td><td>Negate jump condition (Replace IF_ACMPNE with  IF_ACMPEQ)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>61787</td><td><a href="#168">168</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>61786</td><td><a href="#168">168</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>61788</td><td><a href="#171">171</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>61791</td><td><a href="#173">173</a></td><td>Negate jump condition (Replace IF_ICMPEQ with  IF_ICMPNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>61789</td><td><a href="#173">173</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>61790</td><td><a href="#173">173(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>61792</td><td><a href="#174">174</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>61793</td><td><a href="#174">174</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>61795</td><td><a href="#177">177</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>61794</td><td><a href="#177">177</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>61797</td><td><a href="#177">177</a></td><td>Negate jump condition (Replace IF_ICMPGE with  IF_ICMPLT)</td><td><img src="detected.png"/></td></tr>
+<tr><td>61796</td><td><a href="#177">177</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>61800</td><td><a href="#178">178</a></td><td>Negate jump condition (Replace IF_ICMPEQ with  IF_ICMPNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>61798</td><td><a href="#178">178</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>61799</td><td><a href="#178">178(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>61802</td><td><a href="#179">179</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>61801</td><td><a href="#179">179</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>61803</td><td><a href="#181">181</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>61804</td><td><a href="#181">181(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>61807</td><td><a href="#183">183</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>61805</td><td><a href="#183">183</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>61806</td><td><a href="#183">183(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>61808</td><td><a href="#184">184</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>61812</td><td><a href="#185">185</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>61809</td><td><a href="#185">185</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>61810</td><td><a href="#185">185(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>61811</td><td><a href="#185">185(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>61814</td><td><a href="#187">187</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>61813</td><td><a href="#187">187</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>61816</td><td><a href="#191">191</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>61815</td><td><a href="#191">191</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>61818</td><td><a href="#193">193</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>61817</td><td><a href="#193">193</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>61821</td><td><a href="#209">209</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>61819</td><td><a href="#209">209</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>61820</td><td><a href="#209">209(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>61822</td><td><a href="#210">210</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>61826</td><td><a href="#213">213</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>61823</td><td><a href="#213">213</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>61824</td><td><a href="#213">213(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>61825</td><td><a href="#213">213(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>61827</td><td><a href="#214">214</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>61828</td><td><a href="#215">215</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>61829</td><td><a href="#215">215(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>61830</td><td><a href="#218">218</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+</table>
+</body>
+</html>

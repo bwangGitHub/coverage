@@ -1,0 +1,47 @@
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/repos/asf/!svn/ver/1053274/poi/trunk/src/java/org/apache/poi/poifs/dev
+END
+POIFSViewer.java
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/repos/asf/!svn/ver/712084/poi/trunk/src/java/org/apache/poi/poifs/dev/POIFSViewer.java
+END
+POIFSLister.java
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/repos/asf/!svn/ver/1053274/poi/trunk/src/java/org/apache/poi/poifs/dev/POIFSLister.java
+END
+POIFSDump.java
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/repos/asf/!svn/ver/814335/poi/trunk/src/java/org/apache/poi/poifs/dev/POIFSDump.java
+END
+POIFSHeaderDumper.java
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/repos/asf/!svn/ver/1052202/poi/trunk/src/java/org/apache/poi/poifs/dev/POIFSHeaderDumper.java
+END
+package.html
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/repos/asf/!svn/ver/814335/poi/trunk/src/java/org/apache/poi/poifs/dev/package.html
+END
+POIFSViewable.java
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/repos/asf/!svn/ver/896866/poi/trunk/src/java/org/apache/poi/poifs/dev/POIFSViewable.java
+END
+POIFSViewEngine.java
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/repos/asf/!svn/ver/712084/poi/trunk/src/java/org/apache/poi/poifs/dev/POIFSViewEngine.java
+END

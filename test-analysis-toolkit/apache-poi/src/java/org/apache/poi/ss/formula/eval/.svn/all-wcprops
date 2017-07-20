@@ -1,0 +1,167 @@
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/repos/asf/!svn/ver/1297021/poi/trunk/src/java/org/apache/poi/ss/formula/eval
+END
+MissingArgEval.java
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/repos/asf/!svn/ver/1037436/poi/trunk/src/java/org/apache/poi/ss/formula/eval/MissingArgEval.java
+END
+AreaEvalBase.java
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/repos/asf/!svn/ver/1150673/poi/trunk/src/java/org/apache/poi/ss/formula/eval/AreaEvalBase.java
+END
+StringValueEval.java
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/repos/asf/!svn/ver/1037436/poi/trunk/src/java/org/apache/poi/ss/formula/eval/StringValueEval.java
+END
+IntersectionEval.java
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/repos/asf/!svn/ver/1037436/poi/trunk/src/java/org/apache/poi/ss/formula/eval/IntersectionEval.java
+END
+StringEval.java
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/repos/asf/!svn/ver/1038688/poi/trunk/src/java/org/apache/poi/ss/formula/eval/StringEval.java
+END
+ConcatEval.java
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/repos/asf/!svn/ver/1037436/poi/trunk/src/java/org/apache/poi/ss/formula/eval/ConcatEval.java
+END
+RefEvalBase.java
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/repos/asf/!svn/ver/1037436/poi/trunk/src/java/org/apache/poi/ss/formula/eval/RefEvalBase.java
+END
+NameXEval.java
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/repos/asf/!svn/ver/1038688/poi/trunk/src/java/org/apache/poi/ss/formula/eval/NameXEval.java
+END
+AreaEval.java
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/repos/asf/!svn/ver/1037436/poi/trunk/src/java/org/apache/poi/ss/formula/eval/AreaEval.java
+END
+UnaryMinusEval.java
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/repos/asf/!svn/ver/1037436/poi/trunk/src/java/org/apache/poi/ss/formula/eval/UnaryMinusEval.java
+END
+RelationalOperationEval.java
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/repos/asf/!svn/ver/1037436/poi/trunk/src/java/org/apache/poi/ss/formula/eval/RelationalOperationEval.java
+END
+RefEval.java
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/repos/asf/!svn/ver/1037436/poi/trunk/src/java/org/apache/poi/ss/formula/eval/RefEval.java
+END
+ValueEval.java
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/repos/asf/!svn/ver/1037436/poi/trunk/src/java/org/apache/poi/ss/formula/eval/ValueEval.java
+END
+EvaluationException.java
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/repos/asf/!svn/ver/1037436/poi/trunk/src/java/org/apache/poi/ss/formula/eval/EvaluationException.java
+END
+TwoOperandNumericOperation.java
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/repos/asf/!svn/ver/1037436/poi/trunk/src/java/org/apache/poi/ss/formula/eval/TwoOperandNumericOperation.java
+END
+NameEval.java
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/repos/asf/!svn/ver/1037436/poi/trunk/src/java/org/apache/poi/ss/formula/eval/NameEval.java
+END
+FunctionEval.java
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/repos/asf/!svn/ver/1297021/poi/trunk/src/java/org/apache/poi/ss/formula/eval/FunctionEval.java
+END
+BlankEval.java
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/repos/asf/!svn/ver/1037436/poi/trunk/src/java/org/apache/poi/ss/formula/eval/BlankEval.java
+END
+NumberEval.java
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/repos/asf/!svn/ver/1038688/poi/trunk/src/java/org/apache/poi/ss/formula/eval/NumberEval.java
+END
+ErrorEval.java
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/repos/asf/!svn/ver/1037436/poi/trunk/src/java/org/apache/poi/ss/formula/eval/ErrorEval.java
+END
+NotImplementedException.java
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/repos/asf/!svn/ver/776377/poi/trunk/src/java/org/apache/poi/ss/formula/eval/NotImplementedException.java
+END
+BoolEval.java
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/repos/asf/!svn/ver/1037436/poi/trunk/src/java/org/apache/poi/ss/formula/eval/BoolEval.java
+END
+RangeEval.java
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/repos/asf/!svn/ver/1037436/poi/trunk/src/java/org/apache/poi/ss/formula/eval/RangeEval.java
+END
+NumericValueEval.java
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/repos/asf/!svn/ver/1037436/poi/trunk/src/java/org/apache/poi/ss/formula/eval/NumericValueEval.java
+END
+PercentEval.java
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/repos/asf/!svn/ver/1037436/poi/trunk/src/java/org/apache/poi/ss/formula/eval/PercentEval.java
+END
+OperandResolver.java
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/repos/asf/!svn/ver/1037436/poi/trunk/src/java/org/apache/poi/ss/formula/eval/OperandResolver.java
+END
+UnaryPlusEval.java
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/repos/asf/!svn/ver/1037436/poi/trunk/src/java/org/apache/poi/ss/formula/eval/UnaryPlusEval.java
+END

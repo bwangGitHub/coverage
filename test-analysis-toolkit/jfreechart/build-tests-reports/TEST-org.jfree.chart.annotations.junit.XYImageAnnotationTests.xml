@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuite name="org.jfree.chart.annotations.junit.XYImageAnnotationTests" timestamp="2013-02-27T03:50:55" hostname="battower" tests="3" failures="0" errors="0" time="0.153">
+  <properties>
+    <property name="java.vendor" value="Sun Microsystems Inc." />
+    <property name="sun.java.launcher" value="SUN_STANDARD" />
+    <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers" />
+    <property name="os.name" value="Linux" />
+    <property name="sun.boot.class.path" value="/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/resources.jar:/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/rt.jar:/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/sunrsasign.jar:/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/jsse.jar:/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/jce.jar:/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/charsets.jar:/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/modules/jdk.boot.jar:/usr/lib/jvm/java-6-sun-1.6.0.26/jre/classes" />
+    <property name="TODAY" value="February 26 2013" />
+    <property name="java.vm.specification.vendor" value="Sun Microsystems Inc." />
+    <property name="ant.home" value="/usr/share/ant" />
+    <property name="java.runtime.version" value="1.6.0_26-b03" />
+    <property name="ant.file.type.jfreechart" value="file" />
+    <property name="user.name" value="laura" />
+    <property name="ant.file.jfreechart" value="/media/batdrive/unified-test-analysis-toolkit/test-subjects/jfreechart/ant/build.xml" />
+    <property name="user.language" value="en" />
+    <property name="sun.boot.library.path" value="/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/amd64" />
+    <property name="ant.project.default-target" value="all" />
+    <property name="ant.project.name" value="jfreechart" />
+    <property name="DSTAMP" value="20130226" />
+    <property name="java.version" value="1.6.0_26" />
+    <property name="jfreechart.name" value="jfreechart" />
+    <property name="user.timezone" value="" />
+    <property name="sun.arch.data.model" value="64" />
+    <property name="java.endorsed.dirs" value="/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/endorsed" />
+    <property name="sun.cpu.isalist" value="" />
+    <property name="sun.jnu.encoding" value="UTF-8" />
+    <property name="file.encoding.pkg" value="sun.io" />
+    <property name="file.separator" value="/" />
+    <property name="java.specification.name" value="Java Platform API Specification" />
+    <property name="java.class.version" value="50.0" />
+    <property name="user.country" value="CA" />
+    <property name="java.home" value="/usr/lib/jvm/java-6-sun-1.6.0.26/jre" />
+    <property name="jcommon.name" value="jcommon" />
+    <property name="java.vm.info" value="mixed mode" />
+    <property name="ant.file" value="/media/batdrive/unified-test-analysis-toolkit/test-subjects/jfreechart/ant/build.xml" />
+    <property name="os.version" value="3.2.0-4-amd64" />
+    <property name="path.separator" value=":" />
+    <property name="java.vm.version" value="20.1-b02" />
+    <property name="servlet.jar" value="/media/batdrive/unified-test-analysis-toolkit/test-subjects/jfreechart/lib/servlet.jar" />
+    <property name="jfreechart-bundle-file" value="jfreechart-1.0.8-bundle.jar" />
+    <property name="ant.library.dir" value="/usr/share/ant/lib" />
+    <property name="java.awt.printerjob" value="sun.print.PSPrinterJob" />
+    <property name="sun.io.unicode.encoding" value="UnicodeLittle" />
+    <property name="jfreechart.version" value="1.0.8" />
+    <property name="user.home" value="/home/laura" />
+    <property name="java.specification.vendor" value="Sun Microsystems Inc." />
+    <property name="java.library.path" value="/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/amd64/server:/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/amd64:/usr/lib/jvm/java-6-sun-1.6.0.26/jre/../lib/amd64:/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib" />
+    <property name="java.vendor.url" value="http://java.sun.com/" />
+    <property name="jcommon.version" value="1.0.12" />
+    <property name="java.vm.vendor" value="Sun Microsystems Inc." />
+    <property name="java.runtime.name" value="Java(TM) SE Runtime Environment" />
+    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner org.jfree.chart.annotations.junit.XYImageAnnotationTests filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.SummaryJUnitResultFormatter showoutput=false outputtoformatters=true logfailedtests=true logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/media/batdrive/unified-test-analysis-toolkit/test-subjects/jfreechart/build-tests-reports/TEST-org.jfree.chart.annotations.junit.XYImageAnnotationTests.xml crashfile=/media/batdrive/unified-test-analysis-toolkit/test-subjects/jfreechart/junitvmwatcher2376604748294862938.properties propsfile=/media/batdrive/unified-test-analysis-toolkit/test-subjects/jfreechart/junit6566538622385080644.properties" />
+    <property name="java.class.path" value="/media/batdrive/unified-test-analysis-toolkit/test-subjects/jfreechart/lib/jcommon-1.0.12.jar:/media/batdrive/unified-test-analysis-toolkit/test-subjects/jfreechart/lib/servlet.jar:/media/batdrive/unified-test-analysis-toolkit/test-subjects/jfreechart/lib/gnujaxp.jar:/media/batdrive/unified-test-analysis-toolkit/test-subjects/jfreechart/lib/junit.jar:/media/batdrive/unified-test-analysis-toolkit/test-subjects/jfreechart/jfreechart-1.0.8.jar:/media/batdrive/unified-test-analysis-toolkit/test-subjects/jfreechart/jfreechart-1.0.8-experimental.jar:/media/batdrive/unified-test-analysis-toolkit/test-subjects/jfreechart/build-tests:/home/laura/.ant/lib/junit-4.8.1.jar:/usr/share/java/ant-launcher-1.8.2.jar:/usr/share/ant/lib/ant.jar:/usr/share/ant/lib/ant-junit.jar:/usr/share/ant/lib/ant-junit4.jar" />
+    <property name="ant.version" value="Apache Ant(TM) version 1.8.2 compiled on September 22 2011" />
+    <property name="itext.jar" value="/media/batdrive/unified-test-analysis-toolkit/test-subjects/jfreechart/lib/itext-2.0.6.jar" />
+    <property name="TSTAMP" value="2250" />
+    <property name="itext.name" value="itext" />
+    <property name="builddir" value="/media/batdrive/unified-test-analysis-toolkit/test-subjects/jfreechart/build" />
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification" />
+    <property name="ant.file.type" value="file" />
+    <property name="java.vm.specification.version" value="1.0" />
+    <property name="junit.jar" value="/media/batdrive/unified-test-analysis-toolkit/test-subjects/jfreechart/lib/junit.jar" />
+    <property name="sun.cpu.endian" value="little" />
+    <property name="sun.os.patch.level" value="unknown" />
+    <property name="itext.version" value="2.0.6" />
+    <property name="java.io.tmpdir" value="/tmp" />
+    <property name="java.vendor.url.bug" value="http://java.sun.com/cgi-bin/bugreport.cgi" />
+    <property name="os.arch" value="amd64" />
+    <property name="java.awt.graphicsenv" value="sun.awt.X11GraphicsEnvironment" />
+    <property name="ImageIO.present" value="true" />
+    <property name="jcommon.jar" value="/media/batdrive/unified-test-analysis-toolkit/test-subjects/jfreechart/lib/jcommon-1.0.12.jar" />
+    <property name="java.ext.dirs" value="/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/ext:/usr/java/packages/lib/ext" />
+    <property name="user.dir" value="/media/batdrive/unified-test-analysis-toolkit/test-subjects/jfreechart" />
+    <property name="line.separator" value="&#xa;" />
+    <property name="java.vm.name" value="Java HotSpot(TM) 64-Bit Server VM" />
+    <property name="basedir" value="." />
+    <property name="ant.java.version" value="1.6" />
+    <property name="ant.core.lib" value="/usr/share/ant/lib/ant.jar" />
+    <property name="file.encoding" value="UTF-8" />
+    <property name="gnujaxp.jar" value="/media/batdrive/unified-test-analysis-toolkit/test-subjects/jfreechart/lib/gnujaxp.jar" />
+    <property name="java.specification.version" value="1.6" />
+    <property name="ant.project.invoked-targets" value="test" />
+  </properties>
+  <testcase name="testEquals" classname="org.jfree.chart.annotations.junit.XYImageAnnotationTests" time="0.126" />
+  <testcase name="testHashCode" classname="org.jfree.chart.annotations.junit.XYImageAnnotationTests" time="0.0" />
+  <testcase name="testCloning" classname="org.jfree.chart.annotations.junit.XYImageAnnotationTests" time="0.0" />
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[sun.awt.image.ImageFormatException: Bogus Huffman table definition
+	at sun.awt.image.JPEGImageDecoder.readImage(Native Method)
+	at sun.awt.image.JPEGImageDecoder.produceImage(JPEGImageDecoder.java:119)
+	at sun.awt.image.InputStreamImageSource.doFetch(InputStreamImageSource.java:246)
+	at sun.awt.image.ImageFetcher.fetchloop(ImageFetcher.java:172)
+	at sun.awt.image.ImageFetcher.run(ImageFetcher.java:136)
+]]></system-err>
+</testsuite>

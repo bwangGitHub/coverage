@@ -1,0 +1,7 @@
+Testsuite: org.apache.poi.hdgf.pointers.TestPointerFactory
+Tests run: 4, Failures: 0, Errors: 0, Time elapsed: 0.008 sec
+
+Testcase: testCreateV4 took 0 sec
+Testcase: testCreateV5 took 0 sec
+Testcase: testCreateV6 took 0.001 sec
+Testcase: testCreateV6FromMid took 0 sec

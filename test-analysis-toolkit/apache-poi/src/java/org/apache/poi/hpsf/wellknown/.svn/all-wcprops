@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/repos/asf/!svn/ver/823348/poi/trunk/src/java/org/apache/poi/hpsf/wellknown
+END
+package.html
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/repos/asf/!svn/ver/781869/poi/trunk/src/java/org/apache/poi/hpsf/wellknown/package.html
+END
+PropertyIDMap.java
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/repos/asf/!svn/ver/823348/poi/trunk/src/java/org/apache/poi/hpsf/wellknown/PropertyIDMap.java
+END
+SectionIDMap.java
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/repos/asf/!svn/ver/805492/poi/trunk/src/java/org/apache/poi/hpsf/wellknown/SectionIDMap.java
+END

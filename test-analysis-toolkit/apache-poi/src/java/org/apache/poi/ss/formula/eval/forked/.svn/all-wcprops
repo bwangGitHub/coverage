@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/repos/asf/!svn/ver/1240903/poi/trunk/src/java/org/apache/poi/ss/formula/eval/forked
+END
+ForkedEvaluationSheet.java
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/repos/asf/!svn/ver/824972/poi/trunk/src/java/org/apache/poi/ss/formula/eval/forked/ForkedEvaluationSheet.java
+END
+ForkedEvaluator.java
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/repos/asf/!svn/ver/1037436/poi/trunk/src/java/org/apache/poi/ss/formula/eval/forked/ForkedEvaluator.java
+END
+ForkedEvaluationWorkbook.java
+K 25
+svn:wc:ra_dav:version-url
+V 114
+/repos/asf/!svn/ver/1039870/poi/trunk/src/java/org/apache/poi/ss/formula/eval/forked/ForkedEvaluationWorkbook.java
+END
+ForkedEvaluationCell.java
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/repos/asf/!svn/ver/1240903/poi/trunk/src/java/org/apache/poi/ss/formula/eval/forked/ForkedEvaluationCell.java
+END

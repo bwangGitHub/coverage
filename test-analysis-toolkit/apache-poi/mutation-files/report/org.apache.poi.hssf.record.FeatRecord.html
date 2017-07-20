@@ -1,0 +1,259 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN
+"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>
+org.apache.poi.hssf.record.FeatRecord
+</title>
+<link href="prettify.css" type="text/css" rel="stylesheet" />
+<script type="text/javascript" src="prettify.js"></script>
+</head>
+<body onload="prettyPrint()">
+<h2>Javalanche report for class:<br/> org.apache.poi.hssf.record.FeatRecord </h2><pre class="prettyprint" style="border: 1px solid #888;padding: 2px"><span class="nocode"><a name="1">  1: </a></span>/* ====================================================================
+<span class="nocode"><a name="2">  2: </a></span>   Licensed to the Apache Software Foundation (ASF) under one or more
+<span class="nocode"><a name="3">  3: </a></span>   contributor license agreements.  See the NOTICE file distributed with
+<span class="nocode"><a name="4">  4: </a></span>   this work for additional information regarding copyright ownership.
+<span class="nocode"><a name="5">  5: </a></span>   The ASF licenses this file to You under the Apache License, Version 2.0
+<span class="nocode"><a name="6">  6: </a></span>   (the &quot;License&quot;); you may not use this file except in compliance with
+<span class="nocode"><a name="7">  7: </a></span>   the License.  You may obtain a copy of the License at
+<span class="nocode"><a name="8">  8: </a></span>
+<span class="nocode"><a name="9">  9: </a></span>       http://www.apache.org/licenses/LICENSE-2.0
+<span class="nocode"><a name="10"> 10: </a></span>
+<span class="nocode"><a name="11"> 11: </a></span>   Unless required by applicable law or agreed to in writing, software
+<span class="nocode"><a name="12"> 12: </a></span>   distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+<span class="nocode"><a name="13"> 13: </a></span>   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+<span class="nocode"><a name="14"> 14: </a></span>   See the License for the specific language governing permissions and
+<span class="nocode"><a name="15"> 15: </a></span>   limitations under the License.
+<span class="nocode"><a name="16"> 16: </a></span>==================================================================== */
+<span class="nocode"><a name="17"> 17: </a></span>
+<span class="nocode"><a name="18"> 18: </a></span>package org.apache.poi.hssf.record;
+<span class="nocode"><a name="19"> 19: </a></span>
+<span class="nocode"><a name="20"> 20: </a></span>import org.apache.poi.hssf.record.common.FeatFormulaErr2;
+<span class="nocode"><a name="21"> 21: </a></span>import org.apache.poi.hssf.record.common.FeatProtection;
+<span class="nocode"><a name="22"> 22: </a></span>import org.apache.poi.hssf.record.common.FeatSmartTag;
+<span class="nocode"><a name="23"> 23: </a></span>import org.apache.poi.hssf.record.common.FtrHeader;
+<span class="nocode"><a name="24"> 24: </a></span>import org.apache.poi.hssf.record.common.SharedFeature;
+<span class="nocode"><a name="25"> 25: </a></span>import org.apache.poi.ss.util.CellRangeAddress;
+<span class="nocode"><a name="26"> 26: </a></span>import org.apache.poi.util.LittleEndianOutput;
+<span class="nocode"><a name="27"> 27: </a></span>
+<span class="nocode"><a name="28"> 28: </a></span>/**
+<span class="nocode"><a name="29"> 29: </a></span> * Title: Feat (Feature) Record
+<span class="nocode"><a name="30"> 30: </a></span> * &lt;P&gt;
+<span class="nocode"><a name="31"> 31: </a></span> * This record specifies Shared Features data. It is normally paired
+<span class="nocode"><a name="32"> 32: </a></span> *  up with a {@link FeatHdrRecord}.
+<span class="nocode"><a name="33"> 33: </a></span> */
+<span class="nocode"><a name="34"> 34: </a></span>public final class FeatRecord extends StandardRecord  {
+<span class="nocode"><a name="35"> 35: </a></span>	public final static short sid = 0x0868;
+<span class="nocode"><a name="36"> 36: </a></span>	
+<span class="nocode"><a name="37"> 37: </a></span>	private FtrHeader futureHeader;
+<span class="nocode"><a name="38"> 38: </a></span>	
+<span class="nocode"><a name="39"> 39: </a></span>	/**
+<span class="nocode"><a name="40"> 40: </a></span>	 * See SHAREDFEATURES_* on {@link FeatHdrRecord}
+<span class="nocode"><a name="41"> 41: </a></span>	 */
+<span class="nocode"><a name="42"> 42: </a></span>	private int isf_sharedFeatureType; 
+<span class="nocode"><a name="43"> 43: </a></span>	private byte reserved1; // Should always be zero
+<span class="nocode"><a name="44"> 44: </a></span>	private long reserved2; // Should always be zero
+<span class="nocode"><a name="45"> 45: </a></span>	/** Only matters if type is ISFFEC2 */
+<span class="nocode"><a name="46"> 46: </a></span>	private long cbFeatData;
+<span class="nocode"><a name="47"> 47: </a></span>	private int reserved3; // Should always be zero
+<span class="nocode"><a name="48"> 48: </a></span>	private CellRangeAddress[] cellRefs;
+<span class="nocode"><a name="49"> 49: </a></span>
+<span class="nocode"><a name="50"> 50: </a></span>	/**
+<span class="nocode"><a name="51"> 51: </a></span>	 * Contents depends on isf_sharedFeatureType :
+<span class="nocode"><a name="52"> 52: </a></span>	 *  ISFPROTECTION -&gt; FeatProtection 
+<span class="nocode"><a name="53"> 53: </a></span>	 *  ISFFEC2       -&gt; FeatFormulaErr2
+<span class="nocode"><a name="54"> 54: </a></span>	 *  ISFFACTOID    -&gt; FeatSmartTag
+<span class="nocode"><a name="55"> 55: </a></span>	 */
+<span class="nocode"><a name="56"> 56: </a></span>	private SharedFeature sharedFeature; 
+<span class="nocode"><a name="57"> 57: </a></span>	
+<span class="nocode"><a name="58"> 58: </a></span>	public FeatRecord() {
+<span class="nocode"><a name="59"> 59: </a></span>		futureHeader = new FtrHeader();
+<span class="nocode"><a name="60"> 60: </a></span>		futureHeader.setRecordType(sid);
+<span class="nocode"><a name="61"> 61: </a></span>	}
+<span class="nocode"><a name="62"> 62: </a></span>
+<span class="nocode"><a name="63"> 63: </a></span>	public short getSid() {
+<span class="nocode"><a name="64"> 64: </a></span>		return sid;
+<span class="nocode"><a name="65"> 65: </a></span>	}
+<span class="nocode"><a name="66"> 66: </a></span>
+<span class="nocode"><a name="67"> 67: </a></span>	public FeatRecord(RecordInputStream in) {
+<span class="nocode"><a name="68"> 68: </a></span>		futureHeader = new FtrHeader(in);
+<span class="nocode"><a name="69"> 69: </a></span>		
+<span class="nocode"><a name="70"> 70: </a></span>		isf_sharedFeatureType = in.readShort();
+<span class="nocode"><a name="71"> 71: </a></span>		reserved1 = in.readByte();
+<span class="nocode"><a name="72"> 72: </a></span>		reserved2 = in.readInt();
+<span class="nocode"><a name="73"> 73: </a></span>		int cref = in.readUShort();
+<span class="nocode"><a name="74"> 74: </a></span>		cbFeatData = in.readInt();
+<span class="nocode"><a name="75"> 75: </a></span>		reserved3 = in.readShort();
+<span class="nocode"><a name="76"> 76: </a></span>
+<span class="nocode"><a name="77"> 77: </a></span>		cellRefs = new CellRangeAddress[cref];
+<span class="nocode"><a name="78"> 78: </a></span>		for(int i=0; i&lt;cellRefs.length; i++) {
+<span class="nocode"><a name="79"> 79: </a></span>			cellRefs[i] = new CellRangeAddress(in);
+<span class="nocode"><a name="80"> 80: </a></span>		}
+<span class="nocode"><a name="81"> 81: </a></span>		
+<span class="nocode"><a name="82"> 82: </a></span>		switch(isf_sharedFeatureType) {
+<span class="nocode"><a name="83"> 83: </a></span>		case FeatHdrRecord.SHAREDFEATURES_ISFPROTECTION:
+<span class="nocode"><a name="84"> 84: </a></span>			sharedFeature = new FeatProtection(in);
+<span class="nocode"><a name="85"> 85: </a></span>			break;
+<span class="nocode"><a name="86"> 86: </a></span>		case FeatHdrRecord.SHAREDFEATURES_ISFFEC2:
+<span class="nocode"><a name="87"> 87: </a></span>			sharedFeature = new FeatFormulaErr2(in);
+<span class="nocode"><a name="88"> 88: </a></span>			break;
+<span class="nocode"><a name="89"> 89: </a></span>		case FeatHdrRecord.SHAREDFEATURES_ISFFACTOID:
+<span class="nocode"><a name="90"> 90: </a></span>			sharedFeature = new FeatSmartTag(in);
+<span class="nocode"><a name="91"> 91: </a></span>			break;
+<span class="nocode"><a name="92"> 92: </a></span>		default:
+<span class="nocode"><a name="93"> 93: </a></span>			System.err.println(&quot;Unknown Shared Feature &quot; + isf_sharedFeatureType + &quot; found!&quot;);
+<span class="nocode"><a name="94"> 94: </a></span>		}
+<span class="nocode"><a name="95"> 95: </a></span>	}
+<span class="nocode"><a name="96"> 96: </a></span>
+<span class="nocode"><a name="97"> 97: </a></span>	public String toString() {
+<span class="nocode"><a name="98"> 98: </a></span>		StringBuffer buffer = new StringBuffer();
+<span class="nocode"><a name="99"> 99: </a></span>		buffer.append(&quot;[SHARED FEATURE]\n&quot;);
+<span class="nocode"><a name="100">100: </a></span>		
+<span class="nocode"><a name="101">101: </a></span>		// TODO ...
+<span class="nocode"><a name="102">102: </a></span>		
+<span class="nocode"><a name="103">103: </a></span>		buffer.append(&quot;[/SHARED FEATURE]\n&quot;);
+<span class="nocode"><a name="104">104: </a></span>		return buffer.toString();
+<span class="nocode"><a name="105">105: </a></span>	}
+<span class="nocode"><a name="106">106: </a></span>
+<span class="nocode"><a name="107">107: </a></span>	public void serialize(LittleEndianOutput out) {
+<span class="nocode"><a name="108">108: </a></span>		futureHeader.serialize(out);
+<span class="nocode"><a name="109">109: </a></span>		
+<span class="nocode"><a name="110">110: </a></span>		out.writeShort(isf_sharedFeatureType);
+<span class="nocode"><a name="111">111: </a></span>		out.writeByte(reserved1);
+<span class="nocode"><a name="112">112: </a></span>		out.writeInt((int)reserved2);
+<span class="nocode"><a name="113">113: </a></span>		out.writeShort(cellRefs.length);
+<span class="nocode"><a name="114">114: </a></span>		out.writeInt((int)cbFeatData);
+<span class="nocode"><a name="115">115: </a></span>		out.writeShort(reserved3);
+<span class="nocode"><a name="116">116: </a></span>		
+<span class="nocode"><a name="117">117: </a></span>		for(int i=0; i&lt;cellRefs.length; i++) {
+<span class="nocode"><a name="118">118: </a></span>			cellRefs[i].serialize(out);
+<span class="nocode"><a name="119">119: </a></span>		}
+<span class="nocode"><a name="120">120: </a></span>		
+<span class="nocode"><a name="121">121: </a></span>		sharedFeature.serialize(out);
+<span class="nocode"><a name="122">122: </a></span>	}
+<span class="nocode"><a name="123">123: </a></span>
+<span class="nocode"><a name="124">124: </a></span>	protected int getDataSize() {
+<span class="nocode"><a name="125">125: </a></span>		return 12 + 2+1+4+2+4+2+
+<span class="nocode"><a name="126">126: </a></span>			(cellRefs.length * CellRangeAddress.ENCODED_SIZE)
+<span class="nocode"><a name="127">127: </a></span>			+sharedFeature.getDataSize();
+<span class="nocode"><a name="128">128: </a></span>	}
+<span class="nocode"><a name="129">129: </a></span>
+<span class="nocode"><a name="130">130: </a></span>	public int getIsf_sharedFeatureType() {
+<span class="nocode"><a name="131">131: </a></span>		return isf_sharedFeatureType;
+<span class="nocode"><a name="132">132: </a></span>	}
+<span class="nocode"><a name="133">133: </a></span>
+<span class="nocode"><a name="134">134: </a></span>	public long getCbFeatData() {
+<span class="nocode"><a name="135">135: </a></span>		return cbFeatData;
+<span class="nocode"><a name="136">136: </a></span>	}
+<span class="nocode"><a name="137">137: </a></span>	public void setCbFeatData(long cbFeatData) {
+<span class="nocode"><a name="138">138: </a></span>		this.cbFeatData = cbFeatData;
+<span class="nocode"><a name="139">139: </a></span>	}
+<span class="nocode"><a name="140">140: </a></span>
+<span class="nocode"><a name="141">141: </a></span>	public CellRangeAddress[] getCellRefs() {
+<span class="nocode"><a name="142">142: </a></span>		return cellRefs;
+<span class="nocode"><a name="143">143: </a></span>	}
+<span class="nocode"><a name="144">144: </a></span>	public void setCellRefs(CellRangeAddress[] cellRefs) {
+<span class="nocode"><a name="145">145: </a></span>		this.cellRefs = cellRefs;
+<span class="nocode"><a name="146">146: </a></span>	}
+<span class="nocode"><a name="147">147: </a></span>
+<span class="nocode"><a name="148">148: </a></span>	public SharedFeature getSharedFeature() {
+<span class="nocode"><a name="149">149: </a></span>		return sharedFeature;
+<span class="nocode"><a name="150">150: </a></span>	}
+<span class="nocode"><a name="151">151: </a></span>	public void setSharedFeature(SharedFeature feature) {
+<span class="nocode"><a name="152">152: </a></span>		this.sharedFeature = feature;
+<span class="nocode"><a name="153">153: </a></span>		
+<span class="nocode"><a name="154">154: </a></span>		if(feature instanceof FeatProtection) {
+<span class="nocode"><a name="155">155: </a></span>			isf_sharedFeatureType = FeatHdrRecord.SHAREDFEATURES_ISFPROTECTION;
+<span class="nocode"><a name="156">156: </a></span>		}
+<span class="nocode"><a name="157">157: </a></span>		if(feature instanceof FeatFormulaErr2) {
+<span class="nocode"><a name="158">158: </a></span>			isf_sharedFeatureType = FeatHdrRecord.SHAREDFEATURES_ISFFEC2;
+<span class="nocode"><a name="159">159: </a></span>		}
+<span class="nocode"><a name="160">160: </a></span>		if(feature instanceof FeatSmartTag) {
+<span class="nocode"><a name="161">161: </a></span>			isf_sharedFeatureType = FeatHdrRecord.SHAREDFEATURES_ISFFACTOID;
+<span class="nocode"><a name="162">162: </a></span>		}
+<span class="nocode"><a name="163">163: </a></span>		
+<span class="nocode"><a name="164">164: </a></span>		if(isf_sharedFeatureType == FeatHdrRecord.SHAREDFEATURES_ISFFEC2) {
+<span class="nocode"><a name="165">165: </a></span>			cbFeatData = sharedFeature.getDataSize();
+<span class="nocode"><a name="166">166: </a></span>		} else {
+<span class="nocode"><a name="167">167: </a></span>			cbFeatData = 0;
+<span class="nocode"><a name="168">168: </a></span>		}
+<span class="nocode"><a name="169">169: </a></span>	}
+<span class="nocode"><a name="170">170: </a></span>
+<span class="nocode"><a name="171">171: </a></span>    
+<span class="nocode"><a name="172">172: </a></span>    //HACK: do a &quot;cheat&quot; clone, see Record.java for more information
+<span class="nocode"><a name="173">173: </a></span>    public Object clone() {
+<span class="nocode"><a name="174">174: </a></span>        return cloneViaReserialise();
+<span class="nocode"><a name="175">175: </a></span>    }
+<span class="nocode"><a name="176">176: </a></span>
+<span class="nocode"><a name="177">177: </a></span>    
+<span class="nocode"><a name="178">178: </a></span>}
+</pre><table class="mutation_table" summary="Mutations">
+<tr><th>ID</th><th>Line</th><th>Type</th><th>Detected</th></tr><tr><td>43053</td><td><a href="#60">60</a></td><td>Replace a constant (Replace 2152 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43054</td><td><a href="#60">60</a></td><td>Replace a constant (Replace 2152 with 2151(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43055</td><td><a href="#60">60</a></td><td>Replace a constant (Replace 2152 with 2153(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43056</td><td><a href="#60">60</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43059</td><td><a href="#64">64</a></td><td>Replace a constant (Replace 2152 with 2153(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43058</td><td><a href="#64">64</a></td><td>Replace a constant (Replace 2152 with 2151(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>43057</td><td><a href="#64">64</a></td><td>Replace a constant (Replace 2152 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43060</td><td><a href="#70">70</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>43061</td><td><a href="#71">71</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>43062</td><td><a href="#72">72</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>43063</td><td><a href="#73">73</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>43064</td><td><a href="#74">74</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>43065</td><td><a href="#75">75</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>43067</td><td><a href="#78">78</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>43066</td><td><a href="#78">78</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>43068</td><td><a href="#78">78</a></td><td>Negate jump condition (Replace IF_ICMPGE with  IF_ICMPLT)</td><td><img src="detected.png"/></td></tr>
+<tr><td>43069</td><td><a href="#93">93</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43070</td><td><a href="#93">93(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43071</td><td><a href="#93">93(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43072</td><td><a href="#93">93(3)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43073</td><td><a href="#93">93(4)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43074</td><td><a href="#99">99</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43075</td><td><a href="#103">103</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43076</td><td><a href="#104">104</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43077</td><td><a href="#108">108</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>43078</td><td><a href="#110">110</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>43079</td><td><a href="#111">111</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>43080</td><td><a href="#112">112</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>43081</td><td><a href="#113">113</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>43082</td><td><a href="#114">114</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>43083</td><td><a href="#115">115</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>43085</td><td><a href="#117">117</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>43084</td><td><a href="#117">117</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>43086</td><td><a href="#117">117</a></td><td>Negate jump condition (Replace IF_ICMPGE with  IF_ICMPLT)</td><td><img src="detected.png"/></td></tr>
+<tr><td>43087</td><td><a href="#118">118</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>43088</td><td><a href="#121">121</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>43091</td><td><a href="#125">125</a></td><td>Replace a constant (Replace 27 with 28(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>43090</td><td><a href="#125">125</a></td><td>Replace a constant (Replace 27 with 26(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>43089</td><td><a href="#125">125</a></td><td>Replace a constant (Replace 27 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>43094</td><td><a href="#125">125(1)</a></td><td>Replace a constant (Replace 8 with 9(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>43092</td><td><a href="#125">125(1)</a></td><td>Replace a constant (Replace 8 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>43093</td><td><a href="#125">125(1)</a></td><td>Replace a constant (Replace 8 with 7(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>43095</td><td><a href="#125">125</a></td><td>Replace arithmetic operator (Replace IMUL with IADD)</td><td><img src="detected.png"/></td></tr>
+<tr><td>43096</td><td><a href="#125">125(1)</a></td><td>Replace arithmetic operator (Replace IADD with ISUB)</td><td><img src="detected.png"/></td></tr>
+<tr><td>43098</td><td><a href="#125">125(2)</a></td><td>Replace arithmetic operator (Replace IADD with ISUB)</td><td><img src="detected.png"/></td></tr>
+<tr><td>43097</td><td><a href="#125">125</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>43099</td><td><a href="#154">154</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43102</td><td><a href="#155">155</a></td><td>Replace a constant (Replace 2 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43101</td><td><a href="#155">155</a></td><td>Replace a constant (Replace 2 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43100</td><td><a href="#155">155</a></td><td>Replace a constant (Replace 2 with 3(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43103</td><td><a href="#157">157</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43104</td><td><a href="#158">158</a></td><td>Replace a constant (Replace 3 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43106</td><td><a href="#158">158</a></td><td>Replace a constant (Replace 3 with 4(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43105</td><td><a href="#158">158</a></td><td>Replace a constant (Replace 3 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43107</td><td><a href="#160">160</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43110</td><td><a href="#161">161</a></td><td>Replace a constant (Replace 4 with 5(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43109</td><td><a href="#161">161</a></td><td>Replace a constant (Replace 4 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43108</td><td><a href="#161">161</a></td><td>Replace a constant (Replace 4 with 3(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43113</td><td><a href="#164">164</a></td><td>Replace a constant (Replace 3 with 4(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43111</td><td><a href="#164">164</a></td><td>Replace a constant (Replace 3 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43112</td><td><a href="#164">164</a></td><td>Replace a constant (Replace 3 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43114</td><td><a href="#164">164</a></td><td>Negate jump condition (Replace IF_ICMPNE with  IF_ICMPEQ)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43115</td><td><a href="#165">165</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43117</td><td><a href="#167">167</a></td><td>Replace a constant (Replace 0 with -1(LONG))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43116</td><td><a href="#167">167</a></td><td>Replace a constant (Replace 0 with 1(LONG))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43118</td><td><a href="#174">174</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+</table>
+</body>
+</html>

@@ -1,0 +1,801 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN
+"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>
+org.jfree.chart.renderer.category.WaterfallBarRenderer
+</title>
+<link href="prettify.css" type="text/css" rel="stylesheet" />
+<script type="text/javascript" src="prettify.js"></script>
+</head>
+<body onload="prettyPrint()">
+<h2>Javalanche report for class:<br/> org.jfree.chart.renderer.category.WaterfallBarRenderer </h2><pre class="prettyprint" style="border: 1px solid #888;padding: 2px"><span class="nocode"><a name="1">  1: </a></span>/* ===========================================================
+<span class="nocode"><a name="2">  2: </a></span> * JFreeChart : a free chart library for the Java(tm) platform
+<span class="nocode"><a name="3">  3: </a></span> * ===========================================================
+<span class="nocode"><a name="4">  4: </a></span> *
+<span class="nocode"><a name="5">  5: </a></span> * (C) Copyright 2000-2007, by Object Refinery Limited and Contributors.
+<span class="nocode"><a name="6">  6: </a></span> *
+<span class="nocode"><a name="7">  7: </a></span> * Project Info:  http://www.jfree.org/jfreechart/index.html
+<span class="nocode"><a name="8">  8: </a></span> *
+<span class="nocode"><a name="9">  9: </a></span> * This library is free software; you can redistribute it and/or modify it 
+<span class="nocode"><a name="10"> 10: </a></span> * under the terms of the GNU Lesser General Public License as published by 
+<span class="nocode"><a name="11"> 11: </a></span> * the Free Software Foundation; either version 2.1 of the License, or 
+<span class="nocode"><a name="12"> 12: </a></span> * (at your option) any later version.
+<span class="nocode"><a name="13"> 13: </a></span> *
+<span class="nocode"><a name="14"> 14: </a></span> * This library is distributed in the hope that it will be useful, but 
+<span class="nocode"><a name="15"> 15: </a></span> * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY 
+<span class="nocode"><a name="16"> 16: </a></span> * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public 
+<span class="nocode"><a name="17"> 17: </a></span> * License for more details.
+<span class="nocode"><a name="18"> 18: </a></span> *
+<span class="nocode"><a name="19"> 19: </a></span> * You should have received a copy of the GNU Lesser General Public
+<span class="nocode"><a name="20"> 20: </a></span> * License along with this library; if not, write to the Free Software
+<span class="nocode"><a name="21"> 21: </a></span> * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, 
+<span class="nocode"><a name="22"> 22: </a></span> * USA.  
+<span class="nocode"><a name="23"> 23: </a></span> *
+<span class="nocode"><a name="24"> 24: </a></span> * [Java is a trademark or registered trademark of Sun Microsystems, Inc. 
+<span class="nocode"><a name="25"> 25: </a></span> * in the United States and other countries.]
+<span class="nocode"><a name="26"> 26: </a></span> *
+<span class="nocode"><a name="27"> 27: </a></span> * -------------------------
+<span class="nocode"><a name="28"> 28: </a></span> * WaterfallBarRenderer.java
+<span class="nocode"><a name="29"> 29: </a></span> * -------------------------
+<span class="nocode"><a name="30"> 30: </a></span> * (C) Copyright 2003-2007, by Object Refinery Limited and Contributors.
+<span class="nocode"><a name="31"> 31: </a></span> *
+<span class="nocode"><a name="32"> 32: </a></span> * Original Author:  Darshan Shah;
+<span class="nocode"><a name="33"> 33: </a></span> * Contributor(s):   David Gilbert (for Object Refinery Limited);
+<span class="nocode"><a name="34"> 34: </a></span> *
+<span class="nocode"><a name="35"> 35: </a></span> * Changes
+<span class="nocode"><a name="36"> 36: </a></span> * -------
+<span class="nocode"><a name="37"> 37: </a></span> * 20-Oct-2003 : Version 1, contributed by Darshan Shah (DG);
+<span class="nocode"><a name="38"> 38: </a></span> * 06-Nov-2003 : Changed order of parameters in constructor, and added support 
+<span class="nocode"><a name="39"> 39: </a></span> *               for GradientPaint (DG);
+<span class="nocode"><a name="40"> 40: </a></span> * 10-Feb-2004 : Updated drawItem() method to make cut-and-paste overriding 
+<span class="nocode"><a name="41"> 41: </a></span> *               easier.  Also fixed a bug that meant the minimum bar length 
+<span class="nocode"><a name="42"> 42: </a></span> *               was being ignored (DG);
+<span class="nocode"><a name="43"> 43: </a></span> * 04-Oct-2004 : Reworked equals() method and renamed PaintUtils 
+<span class="nocode"><a name="44"> 44: </a></span> *               --&gt; PaintUtilities (DG);
+<span class="nocode"><a name="45"> 45: </a></span> * 05-Nov-2004 : Modified drawItem() signature (DG);
+<span class="nocode"><a name="46"> 46: </a></span> * 07-Jan-2005 : Renamed getRangeExtent() --&gt; findRangeBounds (DG);
+<span class="nocode"><a name="47"> 47: </a></span> * 23-Feb-2005 : Added argument checking (DG);
+<span class="nocode"><a name="48"> 48: </a></span> * 20-Apr-2005 : Renamed CategoryLabelGenerator 
+<span class="nocode"><a name="49"> 49: </a></span> *               --&gt; CategoryItemLabelGenerator (DG);
+<span class="nocode"><a name="50"> 50: </a></span> * 09-Jun-2005 : Use addItemEntity() from superclass (DG);
+<span class="nocode"><a name="51"> 51: </a></span> * 
+<span class="nocode"><a name="52"> 52: </a></span> */
+<span class="nocode"><a name="53"> 53: </a></span>
+<span class="nocode"><a name="54"> 54: </a></span>package org.jfree.chart.renderer.category;
+<span class="nocode"><a name="55"> 55: </a></span>
+<span class="nocode"><a name="56"> 56: </a></span>import java.awt.Color;
+<span class="nocode"><a name="57"> 57: </a></span>import java.awt.GradientPaint;
+<span class="nocode"><a name="58"> 58: </a></span>import java.awt.Graphics2D;
+<span class="nocode"><a name="59"> 59: </a></span>import java.awt.Paint;
+<span class="nocode"><a name="60"> 60: </a></span>import java.awt.Stroke;
+<span class="nocode"><a name="61"> 61: </a></span>import java.awt.geom.Rectangle2D;
+<span class="nocode"><a name="62"> 62: </a></span>import java.io.IOException;
+<span class="nocode"><a name="63"> 63: </a></span>import java.io.ObjectInputStream;
+<span class="nocode"><a name="64"> 64: </a></span>import java.io.ObjectOutputStream;
+<span class="nocode"><a name="65"> 65: </a></span>import java.io.Serializable;
+<span class="nocode"><a name="66"> 66: </a></span>
+<span class="nocode"><a name="67"> 67: </a></span>import org.jfree.chart.axis.CategoryAxis;
+<span class="nocode"><a name="68"> 68: </a></span>import org.jfree.chart.axis.ValueAxis;
+<span class="nocode"><a name="69"> 69: </a></span>import org.jfree.chart.entity.EntityCollection;
+<span class="nocode"><a name="70"> 70: </a></span>import org.jfree.chart.event.RendererChangeEvent;
+<span class="nocode"><a name="71"> 71: </a></span>import org.jfree.chart.labels.CategoryItemLabelGenerator;
+<span class="nocode"><a name="72"> 72: </a></span>import org.jfree.chart.plot.CategoryPlot;
+<span class="nocode"><a name="73"> 73: </a></span>import org.jfree.chart.plot.PlotOrientation;
+<span class="nocode"><a name="74"> 74: </a></span>import org.jfree.chart.renderer.AbstractRenderer;
+<span class="nocode"><a name="75"> 75: </a></span>import org.jfree.data.Range;
+<span class="nocode"><a name="76"> 76: </a></span>import org.jfree.data.category.CategoryDataset;
+<span class="nocode"><a name="77"> 77: </a></span>import org.jfree.data.general.DatasetUtilities;
+<span class="nocode"><a name="78"> 78: </a></span>import org.jfree.io.SerialUtilities;
+<span class="nocode"><a name="79"> 79: </a></span>import org.jfree.ui.GradientPaintTransformType;
+<span class="nocode"><a name="80"> 80: </a></span>import org.jfree.ui.RectangleEdge;
+<span class="nocode"><a name="81"> 81: </a></span>import org.jfree.ui.StandardGradientPaintTransformer;
+<span class="nocode"><a name="82"> 82: </a></span>import org.jfree.util.PaintUtilities;
+<span class="nocode"><a name="83"> 83: </a></span>import org.jfree.util.PublicCloneable;
+<span class="nocode"><a name="84"> 84: </a></span>
+<span class="nocode"><a name="85"> 85: </a></span>/**
+<span class="nocode"><a name="86"> 86: </a></span> * A renderer that handles the drawing of waterfall bar charts, for use with 
+<span class="nocode"><a name="87"> 87: </a></span> * the {@link CategoryPlot} class.  Note that the bar colors are defined 
+<span class="nocode"><a name="88"> 88: </a></span> * using special methods in this class - the inherited methods (for example,
+<span class="nocode"><a name="89"> 89: </a></span> * {@link AbstractRenderer#setSeriesPaint(int, Paint)}) are ignored.
+<span class="nocode"><a name="90"> 90: </a></span> */
+<span class="nocode"><a name="91"> 91: </a></span>public class WaterfallBarRenderer extends BarRenderer 
+<span class="nocode"><a name="92"> 92: </a></span>                                  implements Cloneable, PublicCloneable, 
+<span class="nocode"><a name="93"> 93: </a></span>                                             Serializable {
+<span class="nocode"><a name="94"> 94: </a></span>
+<span class="nocode"><a name="95"> 95: </a></span>    /** For serialization. */
+<span class="nocode"><a name="96"> 96: </a></span>    private static final long serialVersionUID = -2482910643727230911L;
+<span class="nocode"><a name="97"> 97: </a></span>    
+<span class="nocode"><a name="98"> 98: </a></span>    /** The paint used to draw the first bar. */
+<span class="nocode"><a name="99"> 99: </a></span>    private transient Paint firstBarPaint;
+<span class="nocode"><a name="100">100: </a></span>
+<span class="nocode"><a name="101">101: </a></span>    /** The paint used to draw the last bar. */
+<span class="nocode"><a name="102">102: </a></span>    private transient Paint lastBarPaint;
+<span class="nocode"><a name="103">103: </a></span>
+<span class="nocode"><a name="104">104: </a></span>    /** The paint used to draw bars having positive values. */
+<span class="nocode"><a name="105">105: </a></span>    private transient Paint positiveBarPaint;
+<span class="nocode"><a name="106">106: </a></span>
+<span class="nocode"><a name="107">107: </a></span>    /** The paint used to draw bars having negative values. */
+<span class="nocode"><a name="108">108: </a></span>    private transient Paint negativeBarPaint;
+<span class="nocode"><a name="109">109: </a></span>
+<span class="nocode"><a name="110">110: </a></span>    /**
+<span class="nocode"><a name="111">111: </a></span>     * Constructs a new renderer with default values for the bar colors.
+<span class="nocode"><a name="112">112: </a></span>     */
+<span class="nocode"><a name="113">113: </a></span>    public WaterfallBarRenderer() {
+<span class="nocode"><a name="114">114: </a></span>        this(new GradientPaint(0.0f, 0.0f, new Color(0x22, 0x22, 0xFF), 
+<span class="nocode"><a name="115">115: </a></span>                0.0f, 0.0f, new Color(0x66, 0x66, 0xFF)), 
+<span class="nocode"><a name="116">116: </a></span>                new GradientPaint(0.0f, 0.0f, new Color(0x22, 0xFF, 0x22), 
+<span class="nocode"><a name="117">117: </a></span>                0.0f, 0.0f, new Color(0x66, 0xFF, 0x66)), 
+<span class="nocode"><a name="118">118: </a></span>                new GradientPaint(0.0f, 0.0f, new Color(0xFF, 0x22, 0x22), 
+<span class="nocode"><a name="119">119: </a></span>                0.0f, 0.0f, new Color(0xFF, 0x66, 0x66)),
+<span class="nocode"><a name="120">120: </a></span>                new GradientPaint(0.0f, 0.0f, new Color(0xFF, 0xFF, 0x22), 
+<span class="nocode"><a name="121">121: </a></span>                0.0f, 0.0f, new Color(0xFF, 0xFF, 0x66)));
+<span class="nocode"><a name="122">122: </a></span>    }
+<span class="nocode"><a name="123">123: </a></span>
+<span class="nocode"><a name="124">124: </a></span>    /**
+<span class="nocode"><a name="125">125: </a></span>     * Constructs a new waterfall renderer.
+<span class="nocode"><a name="126">126: </a></span>     *
+<span class="nocode"><a name="127">127: </a></span>     * @param firstBarPaint  the color of the first bar (&lt;code&gt;null&lt;/code&gt; not 
+<span class="nocode"><a name="128">128: </a></span>     *                       permitted).
+<span class="nocode"><a name="129">129: </a></span>     * @param positiveBarPaint  the color for bars with positive values 
+<span class="nocode"><a name="130">130: </a></span>     *                          (&lt;code&gt;null&lt;/code&gt; not permitted).
+<span class="nocode"><a name="131">131: </a></span>     * @param negativeBarPaint  the color for bars with negative values 
+<span class="nocode"><a name="132">132: </a></span>     *                          (&lt;code&gt;null&lt;/code&gt; not permitted).
+<span class="nocode"><a name="133">133: </a></span>     * @param lastBarPaint  the color of the last bar (&lt;code&gt;null&lt;/code&gt; not 
+<span class="nocode"><a name="134">134: </a></span>     *                      permitted).
+<span class="nocode"><a name="135">135: </a></span>     */
+<span class="nocode"><a name="136">136: </a></span>    public WaterfallBarRenderer(Paint firstBarPaint, 
+<span class="nocode"><a name="137">137: </a></span>                                Paint positiveBarPaint, 
+<span class="nocode"><a name="138">138: </a></span>                                Paint negativeBarPaint,
+<span class="nocode"><a name="139">139: </a></span>                                Paint lastBarPaint) {
+<span class="nocode"><a name="140">140: </a></span>        super();
+<span class="nocode"><a name="141">141: </a></span>        if (firstBarPaint == null) {
+<span class="nocode"><a name="142">142: </a></span>            throw new IllegalArgumentException(&quot;Null 'firstBarPaint' argument&quot;);
+<span class="nocode"><a name="143">143: </a></span>        }
+<span class="nocode"><a name="144">144: </a></span>        if (positiveBarPaint == null) {
+<span class="nocode"><a name="145">145: </a></span>            throw new IllegalArgumentException(
+<span class="nocode"><a name="146">146: </a></span>                    &quot;Null 'positiveBarPaint' argument&quot;);   
+<span class="nocode"><a name="147">147: </a></span>        }
+<span class="nocode"><a name="148">148: </a></span>        if (negativeBarPaint == null) {
+<span class="nocode"><a name="149">149: </a></span>            throw new IllegalArgumentException(
+<span class="nocode"><a name="150">150: </a></span>                    &quot;Null 'negativeBarPaint' argument&quot;);   
+<span class="nocode"><a name="151">151: </a></span>        }
+<span class="nocode"><a name="152">152: </a></span>        if (lastBarPaint == null) {
+<span class="nocode"><a name="153">153: </a></span>            throw new IllegalArgumentException(&quot;Null 'lastBarPaint' argument&quot;);
+<span class="nocode"><a name="154">154: </a></span>        }
+<span class="nocode"><a name="155">155: </a></span>        this.firstBarPaint = firstBarPaint;
+<span class="nocode"><a name="156">156: </a></span>        this.lastBarPaint = lastBarPaint;
+<span class="nocode"><a name="157">157: </a></span>        this.positiveBarPaint = positiveBarPaint;
+<span class="nocode"><a name="158">158: </a></span>        this.negativeBarPaint = negativeBarPaint;
+<span class="nocode"><a name="159">159: </a></span>        setGradientPaintTransformer(new StandardGradientPaintTransformer(
+<span class="nocode"><a name="160">160: </a></span>                GradientPaintTransformType.CENTER_VERTICAL));
+<span class="nocode"><a name="161">161: </a></span>        setMinimumBarLength(1.0);
+<span class="nocode"><a name="162">162: </a></span>    }
+<span class="nocode"><a name="163">163: </a></span>
+<span class="nocode"><a name="164">164: </a></span>    /**
+<span class="nocode"><a name="165">165: </a></span>     * Returns the range of values the renderer requires to display all the 
+<span class="nocode"><a name="166">166: </a></span>     * items from the specified dataset.
+<span class="nocode"><a name="167">167: </a></span>     * 
+<span class="nocode"><a name="168">168: </a></span>     * @param dataset  the dataset (&lt;code&gt;null&lt;/code&gt; not permitted).
+<span class="nocode"><a name="169">169: </a></span>     * 
+<span class="nocode"><a name="170">170: </a></span>     * @return The range (or &lt;code&gt;null&lt;/code&gt; if the dataset is empty).
+<span class="nocode"><a name="171">171: </a></span>     */
+<span class="nocode"><a name="172">172: </a></span>    public Range findRangeBounds(CategoryDataset dataset) {
+<span class="nocode"><a name="173">173: </a></span>        return DatasetUtilities.findCumulativeRangeBounds(dataset);   
+<span class="nocode"><a name="174">174: </a></span>    }
+<span class="nocode"><a name="175">175: </a></span>
+<span class="nocode"><a name="176">176: </a></span>    /**
+<span class="nocode"><a name="177">177: </a></span>     * Returns the paint used to draw the first bar.
+<span class="nocode"><a name="178">178: </a></span>     * 
+<span class="nocode"><a name="179">179: </a></span>     * @return The paint (never &lt;code&gt;null&lt;/code&gt;).
+<span class="nocode"><a name="180">180: </a></span>     */
+<span class="nocode"><a name="181">181: </a></span>    public Paint getFirstBarPaint() {
+<span class="nocode"><a name="182">182: </a></span>        return this.firstBarPaint;
+<span class="nocode"><a name="183">183: </a></span>    }
+<span class="nocode"><a name="184">184: </a></span>    
+<span class="nocode"><a name="185">185: </a></span>    /**
+<span class="nocode"><a name="186">186: </a></span>     * Sets the paint that will be used to draw the first bar and sends a
+<span class="nocode"><a name="187">187: </a></span>     * {@link RendererChangeEvent} to all registered listeners.
+<span class="nocode"><a name="188">188: </a></span>     *
+<span class="nocode"><a name="189">189: </a></span>     * @param paint  the paint (&lt;code&gt;null&lt;/code&gt; not permitted).
+<span class="nocode"><a name="190">190: </a></span>     */
+<span class="nocode"><a name="191">191: </a></span>    public void setFirstBarPaint(Paint paint) {
+<span class="nocode"><a name="192">192: </a></span>        if (paint == null) {
+<span class="nocode"><a name="193">193: </a></span>            throw new IllegalArgumentException(&quot;Null 'paint' argument&quot;);   
+<span class="nocode"><a name="194">194: </a></span>        }
+<span class="nocode"><a name="195">195: </a></span>        this.firstBarPaint = paint;
+<span class="nocode"><a name="196">196: </a></span>        fireChangeEvent();
+<span class="nocode"><a name="197">197: </a></span>    }
+<span class="nocode"><a name="198">198: </a></span>
+<span class="nocode"><a name="199">199: </a></span>    /**
+<span class="nocode"><a name="200">200: </a></span>     * Returns the paint used to draw the last bar.
+<span class="nocode"><a name="201">201: </a></span>     * 
+<span class="nocode"><a name="202">202: </a></span>     * @return The paint (never &lt;code&gt;null&lt;/code&gt;).
+<span class="nocode"><a name="203">203: </a></span>     */
+<span class="nocode"><a name="204">204: </a></span>    public Paint getLastBarPaint() {
+<span class="nocode"><a name="205">205: </a></span>        return this.lastBarPaint;
+<span class="nocode"><a name="206">206: </a></span>    }
+<span class="nocode"><a name="207">207: </a></span>    
+<span class="nocode"><a name="208">208: </a></span>    /**
+<span class="nocode"><a name="209">209: </a></span>     * Sets the paint that will be used to draw the last bar and sends a 
+<span class="nocode"><a name="210">210: </a></span>     * {@link RendererChangeEvent} to all registered listeners.
+<span class="nocode"><a name="211">211: </a></span>     *
+<span class="nocode"><a name="212">212: </a></span>     * @param paint  the paint (&lt;code&gt;null&lt;/code&gt; not permitted).
+<span class="nocode"><a name="213">213: </a></span>     */
+<span class="nocode"><a name="214">214: </a></span>    public void setLastBarPaint(Paint paint) {
+<span class="nocode"><a name="215">215: </a></span>        if (paint == null) {
+<span class="nocode"><a name="216">216: </a></span>            throw new IllegalArgumentException(&quot;Null 'paint' argument&quot;);   
+<span class="nocode"><a name="217">217: </a></span>        }
+<span class="nocode"><a name="218">218: </a></span>        this.lastBarPaint = paint;
+<span class="nocode"><a name="219">219: </a></span>        fireChangeEvent();
+<span class="nocode"><a name="220">220: </a></span>    }
+<span class="nocode"><a name="221">221: </a></span>
+<span class="nocode"><a name="222">222: </a></span>    /**
+<span class="nocode"><a name="223">223: </a></span>     * Returns the paint used to draw bars with positive values.
+<span class="nocode"><a name="224">224: </a></span>     * 
+<span class="nocode"><a name="225">225: </a></span>     * @return The paint (never &lt;code&gt;null&lt;/code&gt;).
+<span class="nocode"><a name="226">226: </a></span>     */
+<span class="nocode"><a name="227">227: </a></span>    public Paint getPositiveBarPaint() {
+<span class="nocode"><a name="228">228: </a></span>        return this.positiveBarPaint;
+<span class="nocode"><a name="229">229: </a></span>    }
+<span class="nocode"><a name="230">230: </a></span>    
+<span class="nocode"><a name="231">231: </a></span>    /**
+<span class="nocode"><a name="232">232: </a></span>     * Sets the paint that will be used to draw bars having positive values.
+<span class="nocode"><a name="233">233: </a></span>     *
+<span class="nocode"><a name="234">234: </a></span>     * @param paint  the paint (&lt;code&gt;null&lt;/code&gt; not permitted).
+<span class="nocode"><a name="235">235: </a></span>     */
+<span class="nocode"><a name="236">236: </a></span>    public void setPositiveBarPaint(Paint paint) {
+<span class="nocode"><a name="237">237: </a></span>        if (paint == null) {
+<span class="nocode"><a name="238">238: </a></span>            throw new IllegalArgumentException(&quot;Null 'paint' argument&quot;);   
+<span class="nocode"><a name="239">239: </a></span>        }
+<span class="nocode"><a name="240">240: </a></span>        this.positiveBarPaint = paint;
+<span class="nocode"><a name="241">241: </a></span>        fireChangeEvent();
+<span class="nocode"><a name="242">242: </a></span>    }
+<span class="nocode"><a name="243">243: </a></span>
+<span class="nocode"><a name="244">244: </a></span>    /**
+<span class="nocode"><a name="245">245: </a></span>     * Returns the paint used to draw bars with negative values.
+<span class="nocode"><a name="246">246: </a></span>     * 
+<span class="nocode"><a name="247">247: </a></span>     * @return The paint (never &lt;code&gt;null&lt;/code&gt;).
+<span class="nocode"><a name="248">248: </a></span>     */
+<span class="nocode"><a name="249">249: </a></span>    public Paint getNegativeBarPaint() {
+<span class="nocode"><a name="250">250: </a></span>        return this.negativeBarPaint;
+<span class="nocode"><a name="251">251: </a></span>    }
+<span class="nocode"><a name="252">252: </a></span>    
+<span class="nocode"><a name="253">253: </a></span>    /**
+<span class="nocode"><a name="254">254: </a></span>     * Sets the paint that will be used to draw bars having negative values,
+<span class="nocode"><a name="255">255: </a></span>     * and sends a {@link RendererChangeEvent} to all registered listeners.
+<span class="nocode"><a name="256">256: </a></span>     *
+<span class="nocode"><a name="257">257: </a></span>     * @param paint  the paint (&lt;code&gt;null&lt;/code&gt; not permitted).
+<span class="nocode"><a name="258">258: </a></span>     */
+<span class="nocode"><a name="259">259: </a></span>    public void setNegativeBarPaint(Paint paint) {
+<span class="nocode"><a name="260">260: </a></span>        if (paint == null) {
+<span class="nocode"><a name="261">261: </a></span>            throw new IllegalArgumentException(&quot;Null 'paint' argument&quot;);   
+<span class="nocode"><a name="262">262: </a></span>        }
+<span class="nocode"><a name="263">263: </a></span>        this.negativeBarPaint = paint;
+<span class="nocode"><a name="264">264: </a></span>        fireChangeEvent();
+<span class="nocode"><a name="265">265: </a></span>    }
+<span class="nocode"><a name="266">266: </a></span>
+<span class="nocode"><a name="267">267: </a></span>    /**
+<span class="nocode"><a name="268">268: </a></span>     * Draws the bar for a single (series, category) data item.
+<span class="nocode"><a name="269">269: </a></span>     *
+<span class="nocode"><a name="270">270: </a></span>     * @param g2  the graphics device.
+<span class="nocode"><a name="271">271: </a></span>     * @param state  the renderer state.
+<span class="nocode"><a name="272">272: </a></span>     * @param dataArea  the data area.
+<span class="nocode"><a name="273">273: </a></span>     * @param plot  the plot.
+<span class="nocode"><a name="274">274: </a></span>     * @param domainAxis  the domain axis.
+<span class="nocode"><a name="275">275: </a></span>     * @param rangeAxis  the range axis.
+<span class="nocode"><a name="276">276: </a></span>     * @param dataset  the dataset.
+<span class="nocode"><a name="277">277: </a></span>     * @param row  the row index (zero-based).
+<span class="nocode"><a name="278">278: </a></span>     * @param column  the column index (zero-based).
+<span class="nocode"><a name="279">279: </a></span>     * @param pass  the pass index.
+<span class="nocode"><a name="280">280: </a></span>     */
+<span class="nocode"><a name="281">281: </a></span>    public void drawItem(Graphics2D g2,
+<span class="nocode"><a name="282">282: </a></span>                         CategoryItemRendererState state,
+<span class="nocode"><a name="283">283: </a></span>                         Rectangle2D dataArea,
+<span class="nocode"><a name="284">284: </a></span>                         CategoryPlot plot,
+<span class="nocode"><a name="285">285: </a></span>                         CategoryAxis domainAxis,
+<span class="nocode"><a name="286">286: </a></span>                         ValueAxis rangeAxis,
+<span class="nocode"><a name="287">287: </a></span>                         CategoryDataset dataset,
+<span class="nocode"><a name="288">288: </a></span>                         int row,
+<span class="nocode"><a name="289">289: </a></span>                         int column,
+<span class="nocode"><a name="290">290: </a></span>                         int pass) {
+<span class="nocode"><a name="291">291: </a></span>
+<span class="nocode"><a name="292">292: </a></span>        double previous = state.getSeriesRunningTotal();
+<span class="nocode"><a name="293">293: </a></span>        if (column == dataset.getColumnCount() - 1) {
+<span class="nocode"><a name="294">294: </a></span>            previous = 0.0;
+<span class="nocode"><a name="295">295: </a></span>        }
+<span class="nocode"><a name="296">296: </a></span>        double current = 0.0;
+<span class="nocode"><a name="297">297: </a></span>        Number n = dataset.getValue(row, column);
+<span class="nocode"><a name="298">298: </a></span>        if (n != null) {
+<span class="nocode"><a name="299">299: </a></span>            current = previous + n.doubleValue();
+<span class="nocode"><a name="300">300: </a></span>        }
+<span class="nocode"><a name="301">301: </a></span>        state.setSeriesRunningTotal(current);
+<span class="nocode"><a name="302">302: </a></span>        
+<span class="nocode"><a name="303">303: </a></span>        int seriesCount = getRowCount();
+<span class="nocode"><a name="304">304: </a></span>        int categoryCount = getColumnCount();
+<span class="nocode"><a name="305">305: </a></span>        PlotOrientation orientation = plot.getOrientation();
+<span class="nocode"><a name="306">306: </a></span>        
+<span class="nocode"><a name="307">307: </a></span>        double rectX = 0.0;
+<span class="nocode"><a name="308">308: </a></span>        double rectY = 0.0;
+<span class="nocode"><a name="309">309: </a></span>
+<span class="nocode"><a name="310">310: </a></span>        RectangleEdge domainAxisLocation = plot.getDomainAxisEdge();
+<span class="nocode"><a name="311">311: </a></span>        RectangleEdge rangeAxisLocation = plot.getRangeAxisEdge();
+<span class="nocode"><a name="312">312: </a></span>        
+<span class="nocode"><a name="313">313: </a></span>        // Y0
+<span class="nocode"><a name="314">314: </a></span>        double j2dy0 = rangeAxis.valueToJava2D(previous, dataArea, 
+<span class="nocode"><a name="315">315: </a></span>                rangeAxisLocation);
+<span class="nocode"><a name="316">316: </a></span>
+<span class="nocode"><a name="317">317: </a></span>        // Y1
+<span class="nocode"><a name="318">318: </a></span>        double j2dy1 = rangeAxis.valueToJava2D(current, dataArea, 
+<span class="nocode"><a name="319">319: </a></span>                rangeAxisLocation);
+<span class="nocode"><a name="320">320: </a></span>
+<span class="nocode"><a name="321">321: </a></span>        double valDiff = current - previous;
+<span class="nocode"><a name="322">322: </a></span>        if (j2dy1 &lt; j2dy0) {
+<span class="nocode"><a name="323">323: </a></span>            double temp = j2dy1;
+<span class="nocode"><a name="324">324: </a></span>            j2dy1 = j2dy0;
+<span class="nocode"><a name="325">325: </a></span>            j2dy0 = temp;
+<span class="nocode"><a name="326">326: </a></span>        }
+<span class="nocode"><a name="327">327: </a></span>
+<span class="nocode"><a name="328">328: </a></span>        // BAR WIDTH
+<span class="nocode"><a name="329">329: </a></span>        double rectWidth = state.getBarWidth();
+<span class="nocode"><a name="330">330: </a></span>
+<span class="nocode"><a name="331">331: </a></span>        // BAR HEIGHT
+<span class="nocode"><a name="332">332: </a></span>        double rectHeight = Math.max(getMinimumBarLength(), 
+<span class="nocode"><a name="333">333: </a></span>                Math.abs(j2dy1 - j2dy0));
+<span class="nocode"><a name="334">334: </a></span>
+<span class="nocode"><a name="335">335: </a></span>        if (orientation == PlotOrientation.HORIZONTAL) {
+<span class="nocode"><a name="336">336: </a></span>            // BAR Y
+<span class="nocode"><a name="337">337: </a></span>            rectY = domainAxis.getCategoryStart(column, getColumnCount(), 
+<span class="nocode"><a name="338">338: </a></span>                    dataArea, domainAxisLocation);
+<span class="nocode"><a name="339">339: </a></span>            if (seriesCount &gt; 1) {
+<span class="nocode"><a name="340">340: </a></span>                double seriesGap = dataArea.getHeight() * getItemMargin()
+<span class="nocode"><a name="341">341: </a></span>                                   / (categoryCount * (seriesCount - 1));
+<span class="nocode"><a name="342">342: </a></span>                rectY = rectY + row * (state.getBarWidth() + seriesGap);
+<span class="nocode"><a name="343">343: </a></span>            }
+<span class="nocode"><a name="344">344: </a></span>            else {
+<span class="nocode"><a name="345">345: </a></span>                rectY = rectY + row * state.getBarWidth();
+<span class="nocode"><a name="346">346: </a></span>            }
+<span class="nocode"><a name="347">347: </a></span>             
+<span class="nocode"><a name="348">348: </a></span>            rectX = j2dy0;
+<span class="nocode"><a name="349">349: </a></span>            rectHeight = state.getBarWidth();
+<span class="nocode"><a name="350">350: </a></span>            rectWidth = Math.max(getMinimumBarLength(), 
+<span class="nocode"><a name="351">351: </a></span>                    Math.abs(j2dy1 - j2dy0));
+<span class="nocode"><a name="352">352: </a></span>
+<span class="nocode"><a name="353">353: </a></span>        }
+<span class="nocode"><a name="354">354: </a></span>        else if (orientation == PlotOrientation.VERTICAL) {
+<span class="nocode"><a name="355">355: </a></span>            // BAR X
+<span class="nocode"><a name="356">356: </a></span>            rectX = domainAxis.getCategoryStart(column, getColumnCount(), 
+<span class="nocode"><a name="357">357: </a></span>                    dataArea, domainAxisLocation);
+<span class="nocode"><a name="358">358: </a></span>
+<span class="nocode"><a name="359">359: </a></span>            if (seriesCount &gt; 1) {
+<span class="nocode"><a name="360">360: </a></span>                double seriesGap = dataArea.getWidth() * getItemMargin()
+<span class="nocode"><a name="361">361: </a></span>                                   / (categoryCount * (seriesCount - 1));
+<span class="nocode"><a name="362">362: </a></span>                rectX = rectX + row * (state.getBarWidth() + seriesGap);
+<span class="nocode"><a name="363">363: </a></span>            }
+<span class="nocode"><a name="364">364: </a></span>            else {
+<span class="nocode"><a name="365">365: </a></span>                rectX = rectX + row * state.getBarWidth();
+<span class="nocode"><a name="366">366: </a></span>            }
+<span class="nocode"><a name="367">367: </a></span>
+<span class="nocode"><a name="368">368: </a></span>            rectY = j2dy0;
+<span class="nocode"><a name="369">369: </a></span>        }
+<span class="nocode"><a name="370">370: </a></span>        Rectangle2D bar = new Rectangle2D.Double(rectX, rectY, rectWidth, 
+<span class="nocode"><a name="371">371: </a></span>                rectHeight);
+<span class="nocode"><a name="372">372: </a></span>        Paint seriesPaint = getFirstBarPaint();
+<span class="nocode"><a name="373">373: </a></span>        if (column == 0) {
+<span class="nocode"><a name="374">374: </a></span>            seriesPaint = getFirstBarPaint();
+<span class="nocode"><a name="375">375: </a></span>        }
+<span class="nocode"><a name="376">376: </a></span>        else if (column == categoryCount - 1) {
+<span class="nocode"><a name="377">377: </a></span>            seriesPaint = getLastBarPaint();    
+<span class="nocode"><a name="378">378: </a></span>        } 
+<span class="nocode"><a name="379">379: </a></span>        else {
+<span class="nocode"><a name="380">380: </a></span>            if (valDiff &lt; 0.0) {
+<span class="nocode"><a name="381">381: </a></span>                seriesPaint = getNegativeBarPaint();
+<span class="nocode"><a name="382">382: </a></span>            } 
+<span class="nocode"><a name="383">383: </a></span>            else if (valDiff &gt; 0.0) {
+<span class="nocode"><a name="384">384: </a></span>                seriesPaint = getPositiveBarPaint();
+<span class="nocode"><a name="385">385: </a></span>            } 
+<span class="nocode"><a name="386">386: </a></span>            else {
+<span class="nocode"><a name="387">387: </a></span>                seriesPaint = getLastBarPaint();
+<span class="nocode"><a name="388">388: </a></span>            }
+<span class="nocode"><a name="389">389: </a></span>        }
+<span class="nocode"><a name="390">390: </a></span>        if (getGradientPaintTransformer() != null 
+<span class="nocode"><a name="391">391: </a></span>                &amp;&amp; seriesPaint instanceof GradientPaint) {
+<span class="nocode"><a name="392">392: </a></span>            GradientPaint gp = (GradientPaint) seriesPaint;
+<span class="nocode"><a name="393">393: </a></span>            seriesPaint = getGradientPaintTransformer().transform(gp, bar);
+<span class="nocode"><a name="394">394: </a></span>        }
+<span class="nocode"><a name="395">395: </a></span>        g2.setPaint(seriesPaint);
+<span class="nocode"><a name="396">396: </a></span>        g2.fill(bar);
+<span class="nocode"><a name="397">397: </a></span>        
+<span class="nocode"><a name="398">398: </a></span>        // draw the outline...
+<span class="nocode"><a name="399">399: </a></span>        if (isDrawBarOutline() 
+<span class="nocode"><a name="400">400: </a></span>                &amp;&amp; state.getBarWidth() &gt; BAR_OUTLINE_WIDTH_THRESHOLD) {
+<span class="nocode"><a name="401">401: </a></span>            Stroke stroke = getItemOutlineStroke(row, column);
+<span class="nocode"><a name="402">402: </a></span>            Paint paint = getItemOutlinePaint(row, column);
+<span class="nocode"><a name="403">403: </a></span>            if (stroke != null &amp;&amp; paint != null) {
+<span class="nocode"><a name="404">404: </a></span>                g2.setStroke(stroke);
+<span class="nocode"><a name="405">405: </a></span>                g2.setPaint(paint);
+<span class="nocode"><a name="406">406: </a></span>                g2.draw(bar);
+<span class="nocode"><a name="407">407: </a></span>            }
+<span class="nocode"><a name="408">408: </a></span>        }
+<span class="nocode"><a name="409">409: </a></span>        
+<span class="nocode"><a name="410">410: </a></span>        CategoryItemLabelGenerator generator 
+<span class="nocode"><a name="411">411: </a></span>            = getItemLabelGenerator(row, column);
+<span class="nocode"><a name="412">412: </a></span>        if (generator != null &amp;&amp; isItemLabelVisible(row, column)) {
+<span class="nocode"><a name="413">413: </a></span>            drawItemLabel(g2, dataset, row, column, plot, generator, bar, 
+<span class="nocode"><a name="414">414: </a></span>                    (valDiff &lt; 0.0));
+<span class="nocode"><a name="415">415: </a></span>        }        
+<span class="nocode"><a name="416">416: </a></span>
+<span class="nocode"><a name="417">417: </a></span>        // add an item entity, if this information is being collected
+<span class="nocode"><a name="418">418: </a></span>        EntityCollection entities = state.getEntityCollection();
+<span class="nocode"><a name="419">419: </a></span>        if (entities != null) {
+<span class="nocode"><a name="420">420: </a></span>            addItemEntity(entities, dataset, row, column, bar);
+<span class="nocode"><a name="421">421: </a></span>        }
+<span class="nocode"><a name="422">422: </a></span>
+<span class="nocode"><a name="423">423: </a></span>    }
+<span class="nocode"><a name="424">424: </a></span>    
+<span class="nocode"><a name="425">425: </a></span>    /**
+<span class="nocode"><a name="426">426: </a></span>     * Tests an object for equality with this instance.
+<span class="nocode"><a name="427">427: </a></span>     * 
+<span class="nocode"><a name="428">428: </a></span>     * @param obj  the object (&lt;code&gt;null&lt;/code&gt; permitted).
+<span class="nocode"><a name="429">429: </a></span>     * 
+<span class="nocode"><a name="430">430: </a></span>     * @return A boolean.
+<span class="nocode"><a name="431">431: </a></span>     */
+<span class="nocode"><a name="432">432: </a></span>    public boolean equals(Object obj) {
+<span class="nocode"><a name="433">433: </a></span>        
+<span class="nocode"><a name="434">434: </a></span>        if (obj == this) {
+<span class="nocode"><a name="435">435: </a></span>            return true;
+<span class="nocode"><a name="436">436: </a></span>        }
+<span class="nocode"><a name="437">437: </a></span>        if (!super.equals(obj)) {
+<span class="nocode"><a name="438">438: </a></span>            return false;
+<span class="nocode"><a name="439">439: </a></span>        }
+<span class="nocode"><a name="440">440: </a></span>        if (!(obj instanceof WaterfallBarRenderer)) {
+<span class="nocode"><a name="441">441: </a></span>            return false;
+<span class="nocode"><a name="442">442: </a></span>        }
+<span class="nocode"><a name="443">443: </a></span>        WaterfallBarRenderer that = (WaterfallBarRenderer) obj;
+<span class="nocode"><a name="444">444: </a></span>        if (!PaintUtilities.equal(this.firstBarPaint, that.firstBarPaint)) {
+<span class="nocode"><a name="445">445: </a></span>            return false;
+<span class="nocode"><a name="446">446: </a></span>        }
+<span class="nocode"><a name="447">447: </a></span>        if (!PaintUtilities.equal(this.lastBarPaint, that.lastBarPaint)) {
+<span class="nocode"><a name="448">448: </a></span>            return false;
+<span class="nocode"><a name="449">449: </a></span>        }             
+<span class="nocode"><a name="450">450: </a></span>        if (!PaintUtilities.equal(this.positiveBarPaint, 
+<span class="nocode"><a name="451">451: </a></span>                that.positiveBarPaint)) {
+<span class="nocode"><a name="452">452: </a></span>            return false;
+<span class="nocode"><a name="453">453: </a></span>        }             
+<span class="nocode"><a name="454">454: </a></span>        if (!PaintUtilities.equal(this.negativeBarPaint, 
+<span class="nocode"><a name="455">455: </a></span>                that.negativeBarPaint)) {
+<span class="nocode"><a name="456">456: </a></span>            return false;
+<span class="nocode"><a name="457">457: </a></span>        }             
+<span class="nocode"><a name="458">458: </a></span>        return true;
+<span class="nocode"><a name="459">459: </a></span>        
+<span class="nocode"><a name="460">460: </a></span>    }
+<span class="nocode"><a name="461">461: </a></span>    
+<span class="nocode"><a name="462">462: </a></span>    /**
+<span class="nocode"><a name="463">463: </a></span>     * Provides serialization support.
+<span class="nocode"><a name="464">464: </a></span>     *
+<span class="nocode"><a name="465">465: </a></span>     * @param stream  the output stream.
+<span class="nocode"><a name="466">466: </a></span>     *
+<span class="nocode"><a name="467">467: </a></span>     * @throws IOException  if there is an I/O error.
+<span class="nocode"><a name="468">468: </a></span>     */
+<span class="nocode"><a name="469">469: </a></span>    private void writeObject(ObjectOutputStream stream) throws IOException {
+<span class="nocode"><a name="470">470: </a></span>        stream.defaultWriteObject();
+<span class="nocode"><a name="471">471: </a></span>        SerialUtilities.writePaint(this.firstBarPaint, stream);
+<span class="nocode"><a name="472">472: </a></span>        SerialUtilities.writePaint(this.lastBarPaint, stream);
+<span class="nocode"><a name="473">473: </a></span>        SerialUtilities.writePaint(this.positiveBarPaint, stream);
+<span class="nocode"><a name="474">474: </a></span>        SerialUtilities.writePaint(this.negativeBarPaint, stream);
+<span class="nocode"><a name="475">475: </a></span>    }
+<span class="nocode"><a name="476">476: </a></span>
+<span class="nocode"><a name="477">477: </a></span>    /**
+<span class="nocode"><a name="478">478: </a></span>     * Provides serialization support.
+<span class="nocode"><a name="479">479: </a></span>     *
+<span class="nocode"><a name="480">480: </a></span>     * @param stream  the input stream.
+<span class="nocode"><a name="481">481: </a></span>     *
+<span class="nocode"><a name="482">482: </a></span>     * @throws IOException  if there is an I/O error.
+<span class="nocode"><a name="483">483: </a></span>     * @throws ClassNotFoundException  if there is a classpath problem.
+<span class="nocode"><a name="484">484: </a></span>     */
+<span class="nocode"><a name="485">485: </a></span>    private void readObject(ObjectInputStream stream) 
+<span class="nocode"><a name="486">486: </a></span>        throws IOException, ClassNotFoundException {
+<span class="nocode"><a name="487">487: </a></span>        stream.defaultReadObject();
+<span class="nocode"><a name="488">488: </a></span>        this.firstBarPaint = SerialUtilities.readPaint(stream);
+<span class="nocode"><a name="489">489: </a></span>        this.lastBarPaint = SerialUtilities.readPaint(stream);
+<span class="nocode"><a name="490">490: </a></span>        this.positiveBarPaint = SerialUtilities.readPaint(stream);
+<span class="nocode"><a name="491">491: </a></span>        this.negativeBarPaint = SerialUtilities.readPaint(stream);
+<span class="nocode"><a name="492">492: </a></span>    }
+<span class="nocode"><a name="493">493: </a></span>
+<span class="nocode"><a name="494">494: </a></span>}
+</pre><table class="mutation_table" summary="Mutations">
+<tr><th>ID</th><th>Line</th><th>Type</th><th>Detected</th></tr><tr><td>58203</td><td><a href="#114">114</a></td><td>Replace a constant (Replace 0 with -1(FLOAT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58202</td><td><a href="#114">114</a></td><td>Replace a constant (Replace 0 with 1(FLOAT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58204</td><td><a href="#114">114(1)</a></td><td>Replace a constant (Replace 0 with 1(FLOAT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58205</td><td><a href="#114">114(1)</a></td><td>Replace a constant (Replace 0 with -1(FLOAT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58208</td><td><a href="#114">114(2)</a></td><td>Replace a constant (Replace 34 with 33(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58206</td><td><a href="#114">114(2)</a></td><td>Replace a constant (Replace 34 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58207</td><td><a href="#114">114(2)</a></td><td>Replace a constant (Replace 34 with 35(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58209</td><td><a href="#114">114(3)</a></td><td>Replace a constant (Replace 34 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58210</td><td><a href="#114">114(3)</a></td><td>Replace a constant (Replace 34 with 35(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58211</td><td><a href="#114">114(3)</a></td><td>Replace a constant (Replace 34 with 33(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58212</td><td><a href="#114">114(4)</a></td><td>Replace a constant (Replace 255 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58214</td><td><a href="#114">114(4)</a></td><td>Replace a constant (Replace 255 with 256(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>58213</td><td><a href="#114">114(4)</a></td><td>Replace a constant (Replace 255 with 254(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58216</td><td><a href="#114">114(5)</a></td><td>Replace a constant (Replace 0 with -1(FLOAT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58215</td><td><a href="#114">114(5)</a></td><td>Replace a constant (Replace 0 with 1(FLOAT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58218</td><td><a href="#114">114(6)</a></td><td>Replace a constant (Replace 0 with -1(FLOAT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58217</td><td><a href="#114">114(6)</a></td><td>Replace a constant (Replace 0 with 1(FLOAT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58221</td><td><a href="#114">114(7)</a></td><td>Replace a constant (Replace 102 with 101(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58220</td><td><a href="#114">114(7)</a></td><td>Replace a constant (Replace 102 with 103(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58219</td><td><a href="#114">114(7)</a></td><td>Replace a constant (Replace 102 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58223</td><td><a href="#114">114(8)</a></td><td>Replace a constant (Replace 102 with 103(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58224</td><td><a href="#114">114(8)</a></td><td>Replace a constant (Replace 102 with 101(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58222</td><td><a href="#114">114(8)</a></td><td>Replace a constant (Replace 102 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58226</td><td><a href="#114">114(9)</a></td><td>Replace a constant (Replace 255 with 254(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58227</td><td><a href="#114">114(9)</a></td><td>Replace a constant (Replace 255 with 256(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>58225</td><td><a href="#114">114(9)</a></td><td>Replace a constant (Replace 255 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58229</td><td><a href="#114">114(10)</a></td><td>Replace a constant (Replace 0 with -1(FLOAT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58228</td><td><a href="#114">114(10)</a></td><td>Replace a constant (Replace 0 with 1(FLOAT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58231</td><td><a href="#114">114(11)</a></td><td>Replace a constant (Replace 0 with -1(FLOAT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58230</td><td><a href="#114">114(11)</a></td><td>Replace a constant (Replace 0 with 1(FLOAT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58232</td><td><a href="#114">114(12)</a></td><td>Replace a constant (Replace 34 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58233</td><td><a href="#114">114(12)</a></td><td>Replace a constant (Replace 34 with 35(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58234</td><td><a href="#114">114(12)</a></td><td>Replace a constant (Replace 34 with 33(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58236</td><td><a href="#114">114(13)</a></td><td>Replace a constant (Replace 255 with 254(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58237</td><td><a href="#114">114(13)</a></td><td>Replace a constant (Replace 255 with 256(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>58235</td><td><a href="#114">114(13)</a></td><td>Replace a constant (Replace 255 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58240</td><td><a href="#114">114(14)</a></td><td>Replace a constant (Replace 34 with 33(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58238</td><td><a href="#114">114(14)</a></td><td>Replace a constant (Replace 34 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58239</td><td><a href="#114">114(14)</a></td><td>Replace a constant (Replace 34 with 35(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58241</td><td><a href="#114">114(15)</a></td><td>Replace a constant (Replace 0 with 1(FLOAT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58242</td><td><a href="#114">114(15)</a></td><td>Replace a constant (Replace 0 with -1(FLOAT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58244</td><td><a href="#114">114(16)</a></td><td>Replace a constant (Replace 0 with -1(FLOAT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58243</td><td><a href="#114">114(16)</a></td><td>Replace a constant (Replace 0 with 1(FLOAT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58245</td><td><a href="#114">114(17)</a></td><td>Replace a constant (Replace 102 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58246</td><td><a href="#114">114(17)</a></td><td>Replace a constant (Replace 102 with 103(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58247</td><td><a href="#114">114(17)</a></td><td>Replace a constant (Replace 102 with 101(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58248</td><td><a href="#114">114(18)</a></td><td>Replace a constant (Replace 255 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58250</td><td><a href="#114">114(18)</a></td><td>Replace a constant (Replace 255 with 256(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>58249</td><td><a href="#114">114(18)</a></td><td>Replace a constant (Replace 255 with 254(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58252</td><td><a href="#114">114(19)</a></td><td>Replace a constant (Replace 102 with 103(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58251</td><td><a href="#114">114(19)</a></td><td>Replace a constant (Replace 102 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58253</td><td><a href="#114">114(19)</a></td><td>Replace a constant (Replace 102 with 101(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58255</td><td><a href="#114">114(20)</a></td><td>Replace a constant (Replace 0 with -1(FLOAT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58254</td><td><a href="#114">114(20)</a></td><td>Replace a constant (Replace 0 with 1(FLOAT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58257</td><td><a href="#114">114(21)</a></td><td>Replace a constant (Replace 0 with -1(FLOAT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58256</td><td><a href="#114">114(21)</a></td><td>Replace a constant (Replace 0 with 1(FLOAT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58258</td><td><a href="#114">114(22)</a></td><td>Replace a constant (Replace 255 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58260</td><td><a href="#114">114(22)</a></td><td>Replace a constant (Replace 255 with 256(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>58259</td><td><a href="#114">114(22)</a></td><td>Replace a constant (Replace 255 with 254(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58263</td><td><a href="#114">114(23)</a></td><td>Replace a constant (Replace 34 with 33(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58261</td><td><a href="#114">114(23)</a></td><td>Replace a constant (Replace 34 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58262</td><td><a href="#114">114(23)</a></td><td>Replace a constant (Replace 34 with 35(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58265</td><td><a href="#114">114(24)</a></td><td>Replace a constant (Replace 34 with 35(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58266</td><td><a href="#114">114(24)</a></td><td>Replace a constant (Replace 34 with 33(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58264</td><td><a href="#114">114(24)</a></td><td>Replace a constant (Replace 34 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58268</td><td><a href="#114">114(25)</a></td><td>Replace a constant (Replace 0 with -1(FLOAT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58267</td><td><a href="#114">114(25)</a></td><td>Replace a constant (Replace 0 with 1(FLOAT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58270</td><td><a href="#114">114(26)</a></td><td>Replace a constant (Replace 0 with -1(FLOAT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58269</td><td><a href="#114">114(26)</a></td><td>Replace a constant (Replace 0 with 1(FLOAT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58271</td><td><a href="#114">114(27)</a></td><td>Replace a constant (Replace 255 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58273</td><td><a href="#114">114(27)</a></td><td>Replace a constant (Replace 255 with 256(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>58272</td><td><a href="#114">114(27)</a></td><td>Replace a constant (Replace 255 with 254(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58275</td><td><a href="#114">114(28)</a></td><td>Replace a constant (Replace 102 with 103(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58274</td><td><a href="#114">114(28)</a></td><td>Replace a constant (Replace 102 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58276</td><td><a href="#114">114(28)</a></td><td>Replace a constant (Replace 102 with 101(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58278</td><td><a href="#114">114(29)</a></td><td>Replace a constant (Replace 102 with 103(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58277</td><td><a href="#114">114(29)</a></td><td>Replace a constant (Replace 102 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58279</td><td><a href="#114">114(29)</a></td><td>Replace a constant (Replace 102 with 101(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58280</td><td><a href="#114">114(30)</a></td><td>Replace a constant (Replace 0 with 1(FLOAT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58281</td><td><a href="#114">114(30)</a></td><td>Replace a constant (Replace 0 with -1(FLOAT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58282</td><td><a href="#114">114(31)</a></td><td>Replace a constant (Replace 0 with 1(FLOAT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58283</td><td><a href="#114">114(31)</a></td><td>Replace a constant (Replace 0 with -1(FLOAT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58285</td><td><a href="#114">114(32)</a></td><td>Replace a constant (Replace 255 with 254(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58286</td><td><a href="#114">114(32)</a></td><td>Replace a constant (Replace 255 with 256(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>58284</td><td><a href="#114">114(32)</a></td><td>Replace a constant (Replace 255 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58288</td><td><a href="#114">114(33)</a></td><td>Replace a constant (Replace 255 with 254(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58289</td><td><a href="#114">114(33)</a></td><td>Replace a constant (Replace 255 with 256(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>58287</td><td><a href="#114">114(33)</a></td><td>Replace a constant (Replace 255 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58290</td><td><a href="#114">114(34)</a></td><td>Replace a constant (Replace 34 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58291</td><td><a href="#114">114(34)</a></td><td>Replace a constant (Replace 34 with 35(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58292</td><td><a href="#114">114(34)</a></td><td>Replace a constant (Replace 34 with 33(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58293</td><td><a href="#114">114(35)</a></td><td>Replace a constant (Replace 0 with 1(FLOAT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58294</td><td><a href="#114">114(35)</a></td><td>Replace a constant (Replace 0 with -1(FLOAT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58295</td><td><a href="#114">114(36)</a></td><td>Replace a constant (Replace 0 with 1(FLOAT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58296</td><td><a href="#114">114(36)</a></td><td>Replace a constant (Replace 0 with -1(FLOAT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58299</td><td><a href="#114">114(37)</a></td><td>Replace a constant (Replace 255 with 256(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58297</td><td><a href="#114">114(37)</a></td><td>Replace a constant (Replace 255 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58298</td><td><a href="#114">114(37)</a></td><td>Replace a constant (Replace 255 with 254(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58302</td><td><a href="#114">114(38)</a></td><td>Replace a constant (Replace 255 with 256(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>58300</td><td><a href="#114">114(38)</a></td><td>Replace a constant (Replace 255 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58301</td><td><a href="#114">114(38)</a></td><td>Replace a constant (Replace 255 with 254(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58304</td><td><a href="#114">114(39)</a></td><td>Replace a constant (Replace 102 with 103(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58303</td><td><a href="#114">114(39)</a></td><td>Replace a constant (Replace 102 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58305</td><td><a href="#114">114(39)</a></td><td>Replace a constant (Replace 102 with 101(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58306</td><td><a href="#141">141</a></td><td>Negate jump condition (Replace IFNONNULL with  IFNULL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>58307</td><td><a href="#144">144</a></td><td>Negate jump condition (Replace IFNONNULL with  IFNULL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>58308</td><td><a href="#148">148</a></td><td>Negate jump condition (Replace IFNONNULL with  IFNULL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>58309</td><td><a href="#152">152</a></td><td>Negate jump condition (Replace IFNONNULL with  IFNULL)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58310</td><td><a href="#159">159</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58312</td><td><a href="#161">161</a></td><td>Replace a constant (Replace 1 with 0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58311</td><td><a href="#161">161</a></td><td>Replace a constant (Replace 1 with 2(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58313</td><td><a href="#161">161</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58314</td><td><a href="#173">173</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58315</td><td><a href="#192">192</a></td><td>Negate jump condition (Replace IFNONNULL with  IFNULL)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58316</td><td><a href="#196">196</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58317</td><td><a href="#215">215</a></td><td>Negate jump condition (Replace IFNONNULL with  IFNULL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>58318</td><td><a href="#219">219</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58319</td><td><a href="#237">237</a></td><td>Negate jump condition (Replace IFNONNULL with  IFNULL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>58320</td><td><a href="#241">241</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58321</td><td><a href="#260">260</a></td><td>Negate jump condition (Replace IFNONNULL with  IFNULL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>58322</td><td><a href="#264">264</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58323</td><td><a href="#292">292</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58325</td><td><a href="#293">293</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58326</td><td><a href="#293">293</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58328</td><td><a href="#293">293</a></td><td>Negate jump condition (Replace IF_ICMPNE with  IF_ICMPEQ)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58327</td><td><a href="#293">293</a></td><td>Replace arithmetic operator (Replace ISUB with IADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58324</td><td><a href="#293">293</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58330</td><td><a href="#294">294</a></td><td>Replace a constant (Replace 0 with -1(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58329</td><td><a href="#294">294</a></td><td>Replace a constant (Replace 0 with 1(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58332</td><td><a href="#296">296</a></td><td>Replace a constant (Replace 0 with -1(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58331</td><td><a href="#296">296</a></td><td>Replace a constant (Replace 0 with 1(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58333</td><td><a href="#297">297</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58334</td><td><a href="#298">298</a></td><td>Negate jump condition (Replace IFNULL with  IFNONNULL)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58336</td><td><a href="#299">299</a></td><td>Replace arithmetic operator (Replace DADD with DSUB)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58335</td><td><a href="#299">299</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58337</td><td><a href="#301">301</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58338</td><td><a href="#303">303</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58339</td><td><a href="#304">304</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58340</td><td><a href="#305">305</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58341</td><td><a href="#307">307</a></td><td>Replace a constant (Replace 0 with 1(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58342</td><td><a href="#307">307</a></td><td>Replace a constant (Replace 0 with -1(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58344</td><td><a href="#308">308</a></td><td>Replace a constant (Replace 0 with -1(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58343</td><td><a href="#308">308</a></td><td>Replace a constant (Replace 0 with 1(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58345</td><td><a href="#310">310</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58346</td><td><a href="#311">311</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58347</td><td><a href="#314">314</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58348</td><td><a href="#318">318</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58349</td><td><a href="#321">321</a></td><td>Replace arithmetic operator (Replace DSUB with DADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58350</td><td><a href="#322">322</a></td><td>Negate jump condition (Replace IFGE with  IFLT)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58351</td><td><a href="#329">329</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58353</td><td><a href="#332">332</a></td><td>Replace arithmetic operator (Replace DSUB with DADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58352</td><td><a href="#332">332</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58354</td><td><a href="#332">332(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58355</td><td><a href="#332">332(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58356</td><td><a href="#335">335</a></td><td>Negate jump condition (Replace IF_ACMPNE with  IF_ACMPEQ)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58357</td><td><a href="#337">337</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58358</td><td><a href="#337">337(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58360</td><td><a href="#339">339</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58359</td><td><a href="#339">339</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58361</td><td><a href="#339">339</a></td><td>Negate jump condition (Replace IF_ICMPLE with  IF_ICMPGT)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58366</td><td><a href="#340">340</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58365</td><td><a href="#340">340</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58364</td><td><a href="#340">340</a></td><td>Replace arithmetic operator (Replace DMUL with DADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58367</td><td><a href="#340">340(1)</a></td><td>Replace arithmetic operator (Replace ISUB with IADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58368</td><td><a href="#340">340(2)</a></td><td>Replace arithmetic operator (Replace IMUL with IADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58369</td><td><a href="#340">340(3)</a></td><td>Replace arithmetic operator (Replace DDIV with DMUL)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58362</td><td><a href="#340">340</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58363</td><td><a href="#340">340(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58371</td><td><a href="#342">342</a></td><td>Replace arithmetic operator (Replace DADD with DSUB)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58372</td><td><a href="#342">342(1)</a></td><td>Replace arithmetic operator (Replace DMUL with DADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58373</td><td><a href="#342">342(2)</a></td><td>Replace arithmetic operator (Replace DADD with DSUB)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58370</td><td><a href="#342">342</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58375</td><td><a href="#345">345</a></td><td>Replace arithmetic operator (Replace DMUL with DADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58376</td><td><a href="#345">345(1)</a></td><td>Replace arithmetic operator (Replace DADD with DSUB)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58374</td><td><a href="#345">345</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58377</td><td><a href="#349">349</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58379</td><td><a href="#350">350</a></td><td>Replace arithmetic operator (Replace DSUB with DADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58378</td><td><a href="#350">350</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58380</td><td><a href="#350">350(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58381</td><td><a href="#350">350(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58382</td><td><a href="#354">354</a></td><td>Negate jump condition (Replace IF_ACMPNE with  IF_ACMPEQ)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58383</td><td><a href="#356">356</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58384</td><td><a href="#356">356(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58386</td><td><a href="#359">359</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58385</td><td><a href="#359">359</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58387</td><td><a href="#359">359</a></td><td>Negate jump condition (Replace IF_ICMPLE with  IF_ICMPGT)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58391</td><td><a href="#360">360</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58392</td><td><a href="#360">360</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58390</td><td><a href="#360">360</a></td><td>Replace arithmetic operator (Replace DMUL with DADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58393</td><td><a href="#360">360(1)</a></td><td>Replace arithmetic operator (Replace ISUB with IADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58394</td><td><a href="#360">360(2)</a></td><td>Replace arithmetic operator (Replace IMUL with IADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58395</td><td><a href="#360">360(3)</a></td><td>Replace arithmetic operator (Replace DDIV with DMUL)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58388</td><td><a href="#360">360</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58389</td><td><a href="#360">360(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58397</td><td><a href="#362">362</a></td><td>Replace arithmetic operator (Replace DADD with DSUB)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58398</td><td><a href="#362">362(1)</a></td><td>Replace arithmetic operator (Replace DMUL with DADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58399</td><td><a href="#362">362(2)</a></td><td>Replace arithmetic operator (Replace DADD with DSUB)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58396</td><td><a href="#362">362</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58401</td><td><a href="#365">365</a></td><td>Replace arithmetic operator (Replace DMUL with DADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58402</td><td><a href="#365">365(1)</a></td><td>Replace arithmetic operator (Replace DADD with DSUB)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58400</td><td><a href="#365">365</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58403</td><td><a href="#372">372</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58404</td><td><a href="#373">373</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58405</td><td><a href="#374">374</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58406</td><td><a href="#376">376</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58407</td><td><a href="#376">376</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58409</td><td><a href="#376">376</a></td><td>Negate jump condition (Replace IF_ICMPNE with  IF_ICMPEQ)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58408</td><td><a href="#376">376</a></td><td>Replace arithmetic operator (Replace ISUB with IADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58410</td><td><a href="#377">377</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58412</td><td><a href="#380">380</a></td><td>Replace a constant (Replace 0 with -1(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58411</td><td><a href="#380">380</a></td><td>Replace a constant (Replace 0 with 1(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58413</td><td><a href="#380">380</a></td><td>Negate jump condition (Replace IFGE with  IFLT)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58414</td><td><a href="#381">381</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58415</td><td><a href="#383">383</a></td><td>Replace a constant (Replace 0 with 1(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58416</td><td><a href="#383">383</a></td><td>Replace a constant (Replace 0 with -1(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58417</td><td><a href="#383">383</a></td><td>Negate jump condition (Replace IFLE with  IFGT)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58418</td><td><a href="#384">384</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58419</td><td><a href="#387">387</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58421</td><td><a href="#390">390</a></td><td>Negate jump condition (Replace IFNULL with  IFNONNULL)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58422</td><td><a href="#390">390(1)</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58420</td><td><a href="#390">390</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58423</td><td><a href="#393">393</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>58424</td><td><a href="#393">393(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58425</td><td><a href="#395">395</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58426</td><td><a href="#396">396</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58430</td><td><a href="#399">399</a></td><td>Replace a constant (Replace 3.0 with 0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58432</td><td><a href="#399">399</a></td><td>Replace a constant (Replace 3.0 with 2.0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58431</td><td><a href="#399">399</a></td><td>Replace a constant (Replace 3.0 with 4.0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58428</td><td><a href="#399">399</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58433</td><td><a href="#399">399(1)</a></td><td>Negate jump condition (Replace IFLE with  IFGT)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58427</td><td><a href="#399">399</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58429</td><td><a href="#399">399(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58434</td><td><a href="#401">401</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58435</td><td><a href="#402">402</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58436</td><td><a href="#403">403</a></td><td>Negate jump condition (Replace IFNULL with  IFNONNULL)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58437</td><td><a href="#403">403(1)</a></td><td>Negate jump condition (Replace IFNULL with  IFNONNULL)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58438</td><td><a href="#404">404</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58439</td><td><a href="#405">405</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58440</td><td><a href="#406">406</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58441</td><td><a href="#410">410</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58442</td><td><a href="#412">412</a></td><td>Negate jump condition (Replace IFNULL with  IFNONNULL)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58444</td><td><a href="#412">412(1)</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58443</td><td><a href="#412">412</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58445</td><td><a href="#413">413</a></td><td>Replace a constant (Replace 0 with 1(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58446</td><td><a href="#413">413</a></td><td>Replace a constant (Replace 0 with -1(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58449</td><td><a href="#413">413(1)</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58448</td><td><a href="#413">413(1)</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58450</td><td><a href="#413">413(2)</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58451</td><td><a href="#413">413(2)</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58447</td><td><a href="#413">413</a></td><td>Negate jump condition (Replace IFGE with  IFLT)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58452</td><td><a href="#413">413</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58453</td><td><a href="#418">418</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58454</td><td><a href="#419">419</a></td><td>Negate jump condition (Replace IFNULL with  IFNONNULL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>58455</td><td><a href="#420">420</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58456</td><td><a href="#434">434</a></td><td>Negate jump condition (Replace IF_ACMPNE with  IF_ACMPEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>58458</td><td><a href="#435">435</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58457</td><td><a href="#435">435</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58460</td><td><a href="#437">437</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58459</td><td><a href="#437">437</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>58462</td><td><a href="#438">438</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58461</td><td><a href="#438">438</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58463</td><td><a href="#440">440</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>58465</td><td><a href="#441">441</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58464</td><td><a href="#441">441</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58467</td><td><a href="#444">444</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>58466</td><td><a href="#444">444</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>58469</td><td><a href="#445">445</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58468</td><td><a href="#445">445</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>58471</td><td><a href="#447">447</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>58470</td><td><a href="#447">447</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>58472</td><td><a href="#448">448</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58473</td><td><a href="#448">448</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58475</td><td><a href="#450">450</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>58474</td><td><a href="#450">450</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>58477</td><td><a href="#452">452</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58476</td><td><a href="#452">452</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>58479</td><td><a href="#454">454</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>58478</td><td><a href="#454">454</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>58481</td><td><a href="#456">456</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>58480</td><td><a href="#456">456</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>58482</td><td><a href="#458">458</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58483</td><td><a href="#458">458</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>58484</td><td><a href="#470">470</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58485</td><td><a href="#471">471</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>58486</td><td><a href="#472">472</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>58487</td><td><a href="#473">473</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>58488</td><td><a href="#474">474</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>58489</td><td><a href="#487">487</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58490</td><td><a href="#488">488</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>58491</td><td><a href="#489">489</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>58492</td><td><a href="#490">490</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>58493</td><td><a href="#491">491</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+</table>
+</body>
+</html>

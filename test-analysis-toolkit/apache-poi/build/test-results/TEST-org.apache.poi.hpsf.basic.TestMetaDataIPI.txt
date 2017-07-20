@@ -1,0 +1,10 @@
+Testsuite: org.apache.poi.hpsf.basic.TestMetaDataIPI
+Tests run: 7, Failures: 0, Errors: 0, Time elapsed: 0.26 sec
+
+Testcase: testOne took 0.003 sec
+Testcase: testTwo took 0.094 sec
+Testcase: testThree took 0.002 sec
+Testcase: testFour took 0.09 sec
+Testcase: testUnicode took 0.001 sec
+Testcase: testSix took 0.069 sec
+Testcase: testConvAndExistence took 0 sec

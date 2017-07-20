@@ -1,0 +1,119 @@
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/repos/asf/!svn/ver/1296979/poi/trunk/src/java/org/apache/poi/ss/usermodel/charts
+END
+ValueAxis.java
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/repos/asf/!svn/ver/1167579/poi/trunk/src/java/org/apache/poi/ss/usermodel/charts/ValueAxis.java
+END
+AxisCrosses.java
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/repos/asf/!svn/ver/1125275/poi/trunk/src/java/org/apache/poi/ss/usermodel/charts/AxisCrosses.java
+END
+ManualLayout.java
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/repos/asf/!svn/ver/1167579/poi/trunk/src/java/org/apache/poi/ss/usermodel/charts/ManualLayout.java
+END
+ChartDataSource.java
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/repos/asf/!svn/ver/1167579/poi/trunk/src/java/org/apache/poi/ss/usermodel/charts/ChartDataSource.java
+END
+DataSources.java
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/repos/asf/!svn/ver/1167579/poi/trunk/src/java/org/apache/poi/ss/usermodel/charts/DataSources.java
+END
+ChartAxisFactory.java
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/repos/asf/!svn/ver/1296979/poi/trunk/src/java/org/apache/poi/ss/usermodel/charts/ChartAxisFactory.java
+END
+ScatterChartSerie.java
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/repos/asf/!svn/ver/1167579/poi/trunk/src/java/org/apache/poi/ss/usermodel/charts/ScatterChartSerie.java
+END
+ChartLegend.java
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/repos/asf/!svn/ver/1167579/poi/trunk/src/java/org/apache/poi/ss/usermodel/charts/ChartLegend.java
+END
+AxisOrientation.java
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/repos/asf/!svn/ver/1125275/poi/trunk/src/java/org/apache/poi/ss/usermodel/charts/AxisOrientation.java
+END
+ScatterChartData.java
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/repos/asf/!svn/ver/1167579/poi/trunk/src/java/org/apache/poi/ss/usermodel/charts/ScatterChartData.java
+END
+LayoutMode.java
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/repos/asf/!svn/ver/1132553/poi/trunk/src/java/org/apache/poi/ss/usermodel/charts/LayoutMode.java
+END
+LegendPosition.java
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/repos/asf/!svn/ver/1125275/poi/trunk/src/java/org/apache/poi/ss/usermodel/charts/LegendPosition.java
+END
+ChartDataFactory.java
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/repos/asf/!svn/ver/1167579/poi/trunk/src/java/org/apache/poi/ss/usermodel/charts/ChartDataFactory.java
+END
+LayoutTarget.java
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/repos/asf/!svn/ver/1132553/poi/trunk/src/java/org/apache/poi/ss/usermodel/charts/LayoutTarget.java
+END
+ChartAxis.java
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/repos/asf/!svn/ver/1167579/poi/trunk/src/java/org/apache/poi/ss/usermodel/charts/ChartAxis.java
+END
+AxisCrossBetween.java
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/repos/asf/!svn/ver/1125275/poi/trunk/src/java/org/apache/poi/ss/usermodel/charts/AxisCrossBetween.java
+END
+AxisPosition.java
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/repos/asf/!svn/ver/1125275/poi/trunk/src/java/org/apache/poi/ss/usermodel/charts/AxisPosition.java
+END
+ManuallyPositionable.java
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/repos/asf/!svn/ver/1167579/poi/trunk/src/java/org/apache/poi/ss/usermodel/charts/ManuallyPositionable.java
+END
+ChartData.java
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/repos/asf/!svn/ver/1167579/poi/trunk/src/java/org/apache/poi/ss/usermodel/charts/ChartData.java
+END

@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/repos/asf/!svn/ver/1302840/poi/trunk/src/ooxml/java/org/apache/poi/openxml4j/exceptions
+END
+InvalidOperationException.java
+K 25
+svn:wc:ra_dav:version-url
+V 119
+/repos/asf/!svn/ver/1302840/poi/trunk/src/ooxml/java/org/apache/poi/openxml4j/exceptions/InvalidOperationException.java
+END
+PartAlreadyExistsException.java
+K 25
+svn:wc:ra_dav:version-url
+V 120
+/repos/asf/!svn/ver/1174045/poi/trunk/src/ooxml/java/org/apache/poi/openxml4j/exceptions/PartAlreadyExistsException.java
+END
+InvalidFormatException.java
+K 25
+svn:wc:ra_dav:version-url
+V 115
+/repos/asf/!svn/ver/814335/poi/trunk/src/ooxml/java/org/apache/poi/openxml4j/exceptions/InvalidFormatException.java
+END
+OpenXML4JException.java
+K 25
+svn:wc:ra_dav:version-url
+V 111
+/repos/asf/!svn/ver/814335/poi/trunk/src/ooxml/java/org/apache/poi/openxml4j/exceptions/OpenXML4JException.java
+END
+OpenXML4JRuntimeException.java
+K 25
+svn:wc:ra_dav:version-url
+V 119
+/repos/asf/!svn/ver/1141576/poi/trunk/src/ooxml/java/org/apache/poi/openxml4j/exceptions/OpenXML4JRuntimeException.java
+END

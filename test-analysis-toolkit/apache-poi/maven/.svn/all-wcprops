@@ -1,0 +1,59 @@
+K 25
+svn:wc:ra_dav:version-url
+V 43
+/repos/asf/!svn/ver/1102603/poi/trunk/maven
+END
+poi-scratchpad.pom
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/repos/asf/!svn/ver/1021408/poi/trunk/maven/poi-scratchpad.pom
+END
+poi-examples.pom
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/repos/asf/!svn/ver/882927/poi/trunk/maven/poi-examples.pom
+END
+poi-ooxml.pom
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/repos/asf/!svn/ver/882927/poi/trunk/maven/poi-ooxml.pom
+END
+poi-ooxml-schemas.pom
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/repos/asf/!svn/ver/1073683/poi/trunk/maven/poi-ooxml-schemas.pom
+END
+poi.pom
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/repos/asf/!svn/ver/1102603/poi/trunk/maven/poi.pom
+END
+poi-excelant.pom
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/repos/asf/!svn/ver/1073707/poi/trunk/maven/poi-excelant.pom
+END
+mvn-deploy.sh
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/repos/asf/!svn/ver/1078760/poi/trunk/maven/mvn-deploy.sh
+END
+multisign.sh
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/repos/asf/!svn/ver/1000901/poi/trunk/maven/multisign.sh
+END
+ooxml-schemas.pom
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/repos/asf/!svn/ver/826045/poi/trunk/maven/ooxml-schemas.pom
+END

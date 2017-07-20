@@ -1,0 +1,6 @@
+Testsuite: org.apache.poi.poifs.storage.TestBlockAllocationTableWriter
+Tests run: 3, Failures: 0, Errors: 0, Time elapsed: 0.002 sec
+
+Testcase: testAllocateSpace took 0 sec
+Testcase: testCreateBlocks took 0.001 sec
+Testcase: testProduct took 0 sec

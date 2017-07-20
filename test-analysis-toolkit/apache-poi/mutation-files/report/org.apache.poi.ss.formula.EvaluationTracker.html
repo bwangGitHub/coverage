@@ -1,0 +1,214 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN
+"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>
+org.apache.poi.ss.formula.EvaluationTracker
+</title>
+<link href="prettify.css" type="text/css" rel="stylesheet" />
+<script type="text/javascript" src="prettify.js"></script>
+</head>
+<body onload="prettyPrint()">
+<h2>Javalanche report for class:<br/> org.apache.poi.ss.formula.EvaluationTracker </h2><pre class="prettyprint" style="border: 1px solid #888;padding: 2px"><span class="nocode"><a name="1">  1: </a></span>/* ====================================================================
+<span class="nocode"><a name="2">  2: </a></span>   Licensed to the Apache Software Foundation (ASF) under one or more
+<span class="nocode"><a name="3">  3: </a></span>   contributor license agreements.  See the NOTICE file distributed with
+<span class="nocode"><a name="4">  4: </a></span>   this work for additional information regarding copyright ownership.
+<span class="nocode"><a name="5">  5: </a></span>   The ASF licenses this file to You under the Apache License, Version 2.0
+<span class="nocode"><a name="6">  6: </a></span>   (the &quot;License&quot;); you may not use this file except in compliance with
+<span class="nocode"><a name="7">  7: </a></span>   the License.  You may obtain a copy of the License at
+<span class="nocode"><a name="8">  8: </a></span>
+<span class="nocode"><a name="9">  9: </a></span>       http://www.apache.org/licenses/LICENSE-2.0
+<span class="nocode"><a name="10"> 10: </a></span>
+<span class="nocode"><a name="11"> 11: </a></span>   Unless required by applicable law or agreed to in writing, software
+<span class="nocode"><a name="12"> 12: </a></span>   distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+<span class="nocode"><a name="13"> 13: </a></span>   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+<span class="nocode"><a name="14"> 14: </a></span>   See the License for the specific language governing permissions and
+<span class="nocode"><a name="15"> 15: </a></span>   limitations under the License.
+<span class="nocode"><a name="16"> 16: </a></span>==================================================================== */
+<span class="nocode"><a name="17"> 17: </a></span>
+<span class="nocode"><a name="18"> 18: </a></span>package org.apache.poi.ss.formula;
+<span class="nocode"><a name="19"> 19: </a></span>
+<span class="nocode"><a name="20"> 20: </a></span>import java.util.ArrayList;
+<span class="nocode"><a name="21"> 21: </a></span>import java.util.HashSet;
+<span class="nocode"><a name="22"> 22: </a></span>import java.util.List;
+<span class="nocode"><a name="23"> 23: </a></span>import java.util.Set;
+<span class="nocode"><a name="24"> 24: </a></span>
+<span class="nocode"><a name="25"> 25: </a></span>import org.apache.poi.ss.formula.eval.BlankEval;
+<span class="nocode"><a name="26"> 26: </a></span>import org.apache.poi.ss.formula.eval.ErrorEval;
+<span class="nocode"><a name="27"> 27: </a></span>import org.apache.poi.ss.formula.eval.ValueEval;
+<span class="nocode"><a name="28"> 28: </a></span>
+<span class="nocode"><a name="29"> 29: </a></span>/**
+<span class="nocode"><a name="30"> 30: </a></span> * Instances of this class keep track of multiple dependent cell evaluations due
+<span class="nocode"><a name="31"> 31: </a></span> * to recursive calls to {@link WorkbookEvaluator#evaluate(EvaluationCell)}}
+<span class="nocode"><a name="32"> 32: </a></span> * The main purpose of this class is to detect an attempt to evaluate a cell
+<span class="nocode"><a name="33"> 33: </a></span> * that is already being evaluated. In other words, it detects circular
+<span class="nocode"><a name="34"> 34: </a></span> * references in spreadsheet formulas.
+<span class="nocode"><a name="35"> 35: </a></span> *
+<span class="nocode"><a name="36"> 36: </a></span> * @author Josh Micich
+<span class="nocode"><a name="37"> 37: </a></span> */
+<span class="nocode"><a name="38"> 38: </a></span>final class EvaluationTracker {
+<span class="nocode"><a name="39"> 39: </a></span>	// TODO - consider deleting this class and letting CellEvaluationFrame take care of itself
+<span class="nocode"><a name="40"> 40: </a></span>	private final List&lt;CellEvaluationFrame&gt; _evaluationFrames;
+<span class="nocode"><a name="41"> 41: </a></span>	private final Set&lt;FormulaCellCacheEntry&gt; _currentlyEvaluatingCells;
+<span class="nocode"><a name="42"> 42: </a></span>	private final EvaluationCache _cache;
+<span class="nocode"><a name="43"> 43: </a></span>
+<span class="nocode"><a name="44"> 44: </a></span>	public EvaluationTracker(EvaluationCache cache) {
+<span class="nocode"><a name="45"> 45: </a></span>		_cache = cache;
+<span class="nocode"><a name="46"> 46: </a></span>		_evaluationFrames = new ArrayList&lt;CellEvaluationFrame&gt;();
+<span class="nocode"><a name="47"> 47: </a></span>		_currentlyEvaluatingCells = new HashSet&lt;FormulaCellCacheEntry&gt;();
+<span class="nocode"><a name="48"> 48: </a></span>	}
+<span class="nocode"><a name="49"> 49: </a></span>
+<span class="nocode"><a name="50"> 50: </a></span>	/**
+<span class="nocode"><a name="51"> 51: </a></span>	 * Notifies this evaluation tracker that evaluation of the specified cell is
+<span class="nocode"><a name="52"> 52: </a></span>	 * about to start.&lt;br/&gt;
+<span class="nocode"><a name="53"> 53: </a></span>	 *
+<span class="nocode"><a name="54"> 54: </a></span>	 * In the case of a &lt;code&gt;true&lt;/code&gt; return code, the caller should
+<span class="nocode"><a name="55"> 55: </a></span>	 * continue evaluation of the specified cell, and also be sure to call
+<span class="nocode"><a name="56"> 56: </a></span>	 * &lt;tt&gt;endEvaluate()&lt;/tt&gt; when complete.&lt;br/&gt;
+<span class="nocode"><a name="57"> 57: </a></span>	 *
+<span class="nocode"><a name="58"> 58: </a></span>	 * In the case of a &lt;code&gt;null&lt;/code&gt; return code, the caller should
+<span class="nocode"><a name="59"> 59: </a></span>	 * return an evaluation result of
+<span class="nocode"><a name="60"> 60: </a></span>	 * &lt;tt&gt;ErrorEval.CIRCULAR_REF_ERROR&lt;tt&gt;, and not call &lt;tt&gt;endEvaluate()&lt;/tt&gt;.
+<span class="nocode"><a name="61"> 61: </a></span>	 * &lt;br/&gt;
+<span class="nocode"><a name="62"> 62: </a></span>	 * @return &lt;code&gt;false&lt;/code&gt; if the specified cell is already being evaluated
+<span class="nocode"><a name="63"> 63: </a></span>	 */
+<span class="nocode"><a name="64"> 64: </a></span>	public boolean startEvaluate(FormulaCellCacheEntry cce) {
+<span class="nocode"><a name="65"> 65: </a></span>		if (cce == null) {
+<span class="nocode"><a name="66"> 66: </a></span>			throw new IllegalArgumentException(&quot;cellLoc must not be null&quot;);
+<span class="nocode"><a name="67"> 67: </a></span>		}
+<span class="nocode"><a name="68"> 68: </a></span>		if (_currentlyEvaluatingCells.contains(cce)) {
+<span class="nocode"><a name="69"> 69: </a></span>			return false;
+<span class="nocode"><a name="70"> 70: </a></span>		}
+<span class="nocode"><a name="71"> 71: </a></span>		_currentlyEvaluatingCells.add(cce);
+<span class="nocode"><a name="72"> 72: </a></span>		_evaluationFrames.add(new CellEvaluationFrame(cce));
+<span class="nocode"><a name="73"> 73: </a></span>		return true;
+<span class="nocode"><a name="74"> 74: </a></span>	}
+<span class="nocode"><a name="75"> 75: </a></span>
+<span class="nocode"><a name="76"> 76: </a></span>	public void updateCacheResult(ValueEval result) {
+<span class="nocode"><a name="77"> 77: </a></span>
+<span class="nocode"><a name="78"> 78: </a></span>		int nFrames = _evaluationFrames.size();
+<span class="nocode"><a name="79"> 79: </a></span>		if (nFrames &lt; 1) {
+<span class="nocode"><a name="80"> 80: </a></span>			throw new IllegalStateException(&quot;Call to endEvaluate without matching call to startEvaluate&quot;);
+<span class="nocode"><a name="81"> 81: </a></span>		}
+<span class="nocode"><a name="82"> 82: </a></span>		CellEvaluationFrame frame = _evaluationFrames.get(nFrames-1);
+<span class="nocode"><a name="83"> 83: </a></span>		if (result == ErrorEval.CIRCULAR_REF_ERROR &amp;&amp; nFrames &gt; 1) {
+<span class="nocode"><a name="84"> 84: </a></span>			// Don't cache a circular ref error result if this cell is not the top evaluated cell.
+<span class="nocode"><a name="85"> 85: </a></span>			// A true circular ref error will propagate all the way around the loop.  However, it's
+<span class="nocode"><a name="86"> 86: </a></span>			// possible to have parts of the formula tree (/ parts of the loop) to evaluate to
+<span class="nocode"><a name="87"> 87: </a></span>			// CIRCULAR_REF_ERROR, and that value not get used in the final cell result (see the
+<span class="nocode"><a name="88"> 88: </a></span>			// unit tests for a simple example). Thus, the only CIRCULAR_REF_ERROR result that can
+<span class="nocode"><a name="89"> 89: </a></span>			// safely be cached is that of the top evaluated cell.
+<span class="nocode"><a name="90"> 90: </a></span>			return;
+<span class="nocode"><a name="91"> 91: </a></span>		}
+<span class="nocode"><a name="92"> 92: </a></span>
+<span class="nocode"><a name="93"> 93: </a></span>		frame.updateFormulaResult(result);
+<span class="nocode"><a name="94"> 94: </a></span>	}
+<span class="nocode"><a name="95"> 95: </a></span>
+<span class="nocode"><a name="96"> 96: </a></span>	/**
+<span class="nocode"><a name="97"> 97: </a></span>	 * Notifies this evaluation tracker that the evaluation of the specified cell is complete. &lt;p/&gt;
+<span class="nocode"><a name="98"> 98: </a></span>	 *
+<span class="nocode"><a name="99"> 99: </a></span>	 * Every successful call to &lt;tt&gt;startEvaluate&lt;/tt&gt; must be followed by a call to &lt;tt&gt;endEvaluate&lt;/tt&gt; (recommended in a finally block) to enable
+<span class="nocode"><a name="100">100: </a></span>	 * proper tracking of which cells are being evaluated at any point in time.&lt;p/&gt;
+<span class="nocode"><a name="101">101: </a></span>	 *
+<span class="nocode"><a name="102">102: </a></span>	 * Assuming a well behaved client, parameters to this method would not be
+<span class="nocode"><a name="103">103: </a></span>	 * required. However, they have been included to assert correct behaviour,
+<span class="nocode"><a name="104">104: </a></span>	 * and form more meaningful error messages.
+<span class="nocode"><a name="105">105: </a></span>	 */
+<span class="nocode"><a name="106">106: </a></span>	public void endEvaluate(CellCacheEntry cce) {
+<span class="nocode"><a name="107">107: </a></span>
+<span class="nocode"><a name="108">108: </a></span>		int nFrames = _evaluationFrames.size();
+<span class="nocode"><a name="109">109: </a></span>		if (nFrames &lt; 1) {
+<span class="nocode"><a name="110">110: </a></span>			throw new IllegalStateException(&quot;Call to endEvaluate without matching call to startEvaluate&quot;);
+<span class="nocode"><a name="111">111: </a></span>		}
+<span class="nocode"><a name="112">112: </a></span>
+<span class="nocode"><a name="113">113: </a></span>		nFrames--;
+<span class="nocode"><a name="114">114: </a></span>		CellEvaluationFrame frame = _evaluationFrames.get(nFrames);
+<span class="nocode"><a name="115">115: </a></span>		if (cce != frame.getCCE()) {
+<span class="nocode"><a name="116">116: </a></span>			throw new IllegalStateException(&quot;Wrong cell specified. &quot;);
+<span class="nocode"><a name="117">117: </a></span>		}
+<span class="nocode"><a name="118">118: </a></span>		// else - no problems so pop current frame
+<span class="nocode"><a name="119">119: </a></span>		_evaluationFrames.remove(nFrames);
+<span class="nocode"><a name="120">120: </a></span>		_currentlyEvaluatingCells.remove(cce);
+<span class="nocode"><a name="121">121: </a></span>	}
+<span class="nocode"><a name="122">122: </a></span>
+<span class="nocode"><a name="123">123: </a></span>	public void acceptFormulaDependency(CellCacheEntry cce) {
+<span class="nocode"><a name="124">124: </a></span>		// Tell the currently evaluating cell frame that it has a dependency on the specified
+<span class="nocode"><a name="125">125: </a></span>		int prevFrameIndex = _evaluationFrames.size()-1;
+<span class="nocode"><a name="126">126: </a></span>		if (prevFrameIndex &lt; 0) {
+<span class="nocode"><a name="127">127: </a></span>			// Top level frame, there is no 'cell' above this frame that is using the current cell
+<span class="nocode"><a name="128">128: </a></span>		} else {
+<span class="nocode"><a name="129">129: </a></span>			CellEvaluationFrame consumingFrame = _evaluationFrames.get(prevFrameIndex);
+<span class="nocode"><a name="130">130: </a></span>			consumingFrame.addSensitiveInputCell(cce);
+<span class="nocode"><a name="131">131: </a></span>		}
+<span class="nocode"><a name="132">132: </a></span>	}
+<span class="nocode"><a name="133">133: </a></span>
+<span class="nocode"><a name="134">134: </a></span>	public void acceptPlainValueDependency(int bookIndex, int sheetIndex,
+<span class="nocode"><a name="135">135: </a></span>			int rowIndex, int columnIndex, ValueEval value) {
+<span class="nocode"><a name="136">136: </a></span>		// Tell the currently evaluating cell frame that it has a dependency on the specified
+<span class="nocode"><a name="137">137: </a></span>		int prevFrameIndex = _evaluationFrames.size() - 1;
+<span class="nocode"><a name="138">138: </a></span>		if (prevFrameIndex &lt; 0) {
+<span class="nocode"><a name="139">139: </a></span>			// Top level frame, there is no 'cell' above this frame that is using the current cell
+<span class="nocode"><a name="140">140: </a></span>		} else {
+<span class="nocode"><a name="141">141: </a></span>			CellEvaluationFrame consumingFrame = _evaluationFrames.get(prevFrameIndex);
+<span class="nocode"><a name="142">142: </a></span>			if (value == BlankEval.instance) {
+<span class="nocode"><a name="143">143: </a></span>				consumingFrame.addUsedBlankCell(bookIndex, sheetIndex, rowIndex, columnIndex);
+<span class="nocode"><a name="144">144: </a></span>			} else {
+<span class="nocode"><a name="145">145: </a></span>				PlainValueCellCacheEntry cce = _cache.getPlainValueEntry(bookIndex, sheetIndex,
+<span class="nocode"><a name="146">146: </a></span>						rowIndex, columnIndex, value);
+<span class="nocode"><a name="147">147: </a></span>				consumingFrame.addSensitiveInputCell(cce);
+<span class="nocode"><a name="148">148: </a></span>			}
+<span class="nocode"><a name="149">149: </a></span>		}
+<span class="nocode"><a name="150">150: </a></span>	}
+<span class="nocode"><a name="151">151: </a></span>}
+</pre><table class="mutation_table" summary="Mutations">
+<tr><th>ID</th><th>Line</th><th>Type</th><th>Detected</th></tr><tr><td>55419</td><td><a href="#65">65</a></td><td>Negate jump condition (Replace IFNONNULL with  IFNULL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>55421</td><td><a href="#68">68</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>55420</td><td><a href="#68">68</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>55423</td><td><a href="#69">69</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>55422</td><td><a href="#69">69</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>55424</td><td><a href="#71">71</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>55425</td><td><a href="#72">72</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>55426</td><td><a href="#73">73</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55427</td><td><a href="#73">73</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>55428</td><td><a href="#78">78</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>55430</td><td><a href="#79">79</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55429</td><td><a href="#79">79</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>55431</td><td><a href="#79">79</a></td><td>Negate jump condition (Replace IF_ICMPGE with  IF_ICMPLT)</td><td><img src="detected.png"/></td></tr>
+<tr><td>55433</td><td><a href="#82">82</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>55432</td><td><a href="#82">82</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>55434</td><td><a href="#82">82</a></td><td>Replace arithmetic operator (Replace ISUB with IADD)</td><td><img src="detected.png"/></td></tr>
+<tr><td>55435</td><td><a href="#82">82</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>55437</td><td><a href="#83">83</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55438</td><td><a href="#83">83</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55436</td><td><a href="#83">83</a></td><td>Negate jump condition (Replace IF_ACMPNE with  IF_ACMPEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>55439</td><td><a href="#83">83(1)</a></td><td>Negate jump condition (Replace IF_ICMPLE with  IF_ICMPGT)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55440</td><td><a href="#93">93</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>55441</td><td><a href="#108">108</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>55443</td><td><a href="#109">109</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55442</td><td><a href="#109">109</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>55444</td><td><a href="#109">109</a></td><td>Negate jump condition (Replace IF_ICMPGE with  IF_ICMPLT)</td><td><img src="detected.png"/></td></tr>
+<tr><td>55445</td><td><a href="#114">114</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>55447</td><td><a href="#115">115</a></td><td>Negate jump condition (Replace IF_ACMPEQ with  IF_ACMPNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>55446</td><td><a href="#115">115</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>55448</td><td><a href="#119">119</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>55449</td><td><a href="#120">120</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>55452</td><td><a href="#125">125</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>55451</td><td><a href="#125">125</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>55453</td><td><a href="#125">125</a></td><td>Replace arithmetic operator (Replace ISUB with IADD)</td><td><img src="detected.png"/></td></tr>
+<tr><td>55450</td><td><a href="#125">125</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>55454</td><td><a href="#126">126</a></td><td>Negate jump condition (Replace IFGE with  IFLT)</td><td><img src="detected.png"/></td></tr>
+<tr><td>55455</td><td><a href="#129">129</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>55456</td><td><a href="#130">130</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>55458</td><td><a href="#137">137</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>55459</td><td><a href="#137">137</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>55460</td><td><a href="#137">137</a></td><td>Replace arithmetic operator (Replace ISUB with IADD)</td><td><img src="detected.png"/></td></tr>
+<tr><td>55457</td><td><a href="#137">137</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>55461</td><td><a href="#138">138</a></td><td>Negate jump condition (Replace IFGE with  IFLT)</td><td><img src="detected.png"/></td></tr>
+<tr><td>55462</td><td><a href="#141">141</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>55463</td><td><a href="#142">142</a></td><td>Negate jump condition (Replace IF_ACMPNE with  IF_ACMPEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>55464</td><td><a href="#143">143</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>55465</td><td><a href="#145">145</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>55466</td><td><a href="#147">147</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+</table>
+</body>
+</html>

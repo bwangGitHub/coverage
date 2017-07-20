@@ -1,0 +1,11 @@
+Testsuite: org.apache.poi.hssf.usermodel.TestHSSFHeaderFooter
+Tests run: 8, Failures: 0, Errors: 0, Time elapsed: 0.004 sec
+
+Testcase: testRetrieveCorrectHeader took 0.001 sec
+Testcase: testSpecialChars took 0 sec
+Testcase: testStripFields took 0.001 sec
+Testcase: testRetrieveCorrectFooter took 0.001 sec
+Testcase: testHeaderHas16bitCharacter took 0 sec
+Testcase: testFooterHas16bitCharacter took 0 sec
+Testcase: testReadDBCSHeaderFooter took 0 sec
+Testcase: testMissingHeaderFooterRecord_bug47244 took 0 sec

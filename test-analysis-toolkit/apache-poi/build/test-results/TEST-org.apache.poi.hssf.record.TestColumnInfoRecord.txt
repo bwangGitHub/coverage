@@ -1,0 +1,6 @@
+Testsuite: org.apache.poi.hssf.record.TestColumnInfoRecord
+Tests run: 3, Failures: 0, Errors: 0, Time elapsed: 0.001 sec
+
+Testcase: testBasic took 0 sec
+Testcase: testZeroResevedBytes_bug48332 took 0 sec
+Testcase: testOneReservedByte took 0 sec

@@ -1,0 +1,11 @@
+Testsuite: org.apache.poi.ss.formula.atp.TestWorkdayFunction
+Tests run: 8, Failures: 0, Errors: 0, Time elapsed: 0.042 sec
+
+Testcase: testFailWhenNoArguments took 0 sec
+Testcase: testFailWhenLessThan2Arguments took 0 sec
+Testcase: testFailWhenMoreThan3Arguments took 0 sec
+Testcase: testReturnNetworkdaysWithManyHolidays took 0.014 sec
+Testcase: testFailWhenArgumentsAreNotDatesNorNumbers took 0.001 sec
+Testcase: testReturnWorkdays took 0.012 sec
+Testcase: testReturnWorkdaysWithDaysTruncated took 0.013 sec
+Testcase: testReturnRetroativeWorkday took 0.001 sec

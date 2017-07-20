@@ -1,0 +1,137 @@
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/repos/asf/!svn/ver/777204/poi/trunk/src/scratchpad/src/org/apache/poi/sl/usermodel
+END
+TextRun.java
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/repos/asf/!svn/ver/777204/poi/trunk/src/scratchpad/src/org/apache/poi/sl/usermodel/TextRun.java
+END
+Resources.java
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/repos/asf/!svn/ver/777204/poi/trunk/src/scratchpad/src/org/apache/poi/sl/usermodel/Resources.java
+END
+SimpleShape.java
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/repos/asf/!svn/ver/777204/poi/trunk/src/scratchpad/src/org/apache/poi/sl/usermodel/SimpleShape.java
+END
+Picture.java
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/repos/asf/!svn/ver/777204/poi/trunk/src/scratchpad/src/org/apache/poi/sl/usermodel/Picture.java
+END
+ShapeGroup.java
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/repos/asf/!svn/ver/777204/poi/trunk/src/scratchpad/src/org/apache/poi/sl/usermodel/ShapeGroup.java
+END
+Background.java
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/repos/asf/!svn/ver/777204/poi/trunk/src/scratchpad/src/org/apache/poi/sl/usermodel/Background.java
+END
+FontCollection.java
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/repos/asf/!svn/ver/777204/poi/trunk/src/scratchpad/src/org/apache/poi/sl/usermodel/FontCollection.java
+END
+MasterSheet.java
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/repos/asf/!svn/ver/777204/poi/trunk/src/scratchpad/src/org/apache/poi/sl/usermodel/MasterSheet.java
+END
+ShapeTypes.java
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/repos/asf/!svn/ver/777204/poi/trunk/src/scratchpad/src/org/apache/poi/sl/usermodel/ShapeTypes.java
+END
+Fill.java
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/repos/asf/!svn/ver/777204/poi/trunk/src/scratchpad/src/org/apache/poi/sl/usermodel/Fill.java
+END
+Line.java
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/repos/asf/!svn/ver/777204/poi/trunk/src/scratchpad/src/org/apache/poi/sl/usermodel/Line.java
+END
+Notes.java
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/repos/asf/!svn/ver/777204/poi/trunk/src/scratchpad/src/org/apache/poi/sl/usermodel/Notes.java
+END
+AutoShape.java
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/repos/asf/!svn/ver/777204/poi/trunk/src/scratchpad/src/org/apache/poi/sl/usermodel/AutoShape.java
+END
+TextBox.java
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/repos/asf/!svn/ver/777204/poi/trunk/src/scratchpad/src/org/apache/poi/sl/usermodel/TextBox.java
+END
+Shape.java
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/repos/asf/!svn/ver/777204/poi/trunk/src/scratchpad/src/org/apache/poi/sl/usermodel/Shape.java
+END
+Slide.java
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/repos/asf/!svn/ver/777204/poi/trunk/src/scratchpad/src/org/apache/poi/sl/usermodel/Slide.java
+END
+SlideShow.java
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/repos/asf/!svn/ver/777204/poi/trunk/src/scratchpad/src/org/apache/poi/sl/usermodel/SlideShow.java
+END
+ShapeContainer.java
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/repos/asf/!svn/ver/777204/poi/trunk/src/scratchpad/src/org/apache/poi/sl/usermodel/ShapeContainer.java
+END
+PictureData.java
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/repos/asf/!svn/ver/777204/poi/trunk/src/scratchpad/src/org/apache/poi/sl/usermodel/PictureData.java
+END
+Hyperlink.java
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/repos/asf/!svn/ver/777204/poi/trunk/src/scratchpad/src/org/apache/poi/sl/usermodel/Hyperlink.java
+END
+LineStyle.java
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/repos/asf/!svn/ver/777204/poi/trunk/src/scratchpad/src/org/apache/poi/sl/usermodel/LineStyle.java
+END
+Sheet.java
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/repos/asf/!svn/ver/777204/poi/trunk/src/scratchpad/src/org/apache/poi/sl/usermodel/Sheet.java
+END

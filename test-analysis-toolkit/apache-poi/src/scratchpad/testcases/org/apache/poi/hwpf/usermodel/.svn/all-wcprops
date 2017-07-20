@@ -1,0 +1,119 @@
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/repos/asf/!svn/ver/1296980/poi/trunk/src/scratchpad/testcases/org/apache/poi/hwpf/usermodel
+END
+TestBorderCode.java
+K 25
+svn:wc:ra_dav:version-url
+V 112
+/repos/asf/!svn/ver/1005447/poi/trunk/src/scratchpad/testcases/org/apache/poi/hwpf/usermodel/TestBorderCode.java
+END
+TestRangeProperties.java
+K 25
+svn:wc:ra_dav:version-url
+V 117
+/repos/asf/!svn/ver/1178038/poi/trunk/src/scratchpad/testcases/org/apache/poi/hwpf/usermodel/TestRangeProperties.java
+END
+TestRangeReplacement.java
+K 25
+svn:wc:ra_dav:version-url
+V 117
+/repos/asf/!svn/ver/951498/poi/trunk/src/scratchpad/testcases/org/apache/poi/hwpf/usermodel/TestRangeReplacement.java
+END
+TestBug50075.java
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/repos/asf/!svn/ver/1022458/poi/trunk/src/scratchpad/testcases/org/apache/poi/hwpf/usermodel/TestBug50075.java
+END
+TestBug46610.java
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/repos/asf/!svn/ver/814335/poi/trunk/src/scratchpad/testcases/org/apache/poi/hwpf/usermodel/TestBug46610.java
+END
+TestRangeDelete.java
+K 25
+svn:wc:ra_dav:version-url
+V 113
+/repos/asf/!svn/ver/1150675/poi/trunk/src/scratchpad/testcases/org/apache/poi/hwpf/usermodel/TestRangeDelete.java
+END
+TestTableRow.java
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/repos/asf/!svn/ver/1156541/poi/trunk/src/scratchpad/testcases/org/apache/poi/hwpf/usermodel/TestTableRow.java
+END
+TestProblems.java
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/repos/asf/!svn/ver/1155205/poi/trunk/src/scratchpad/testcases/org/apache/poi/hwpf/usermodel/TestProblems.java
+END
+TestShapes.java
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/repos/asf/!svn/ver/805928/poi/trunk/src/scratchpad/testcases/org/apache/poi/hwpf/usermodel/TestShapes.java
+END
+TestBug49820.java
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/repos/asf/!svn/ver/998897/poi/trunk/src/scratchpad/testcases/org/apache/poi/hwpf/usermodel/TestBug49820.java
+END
+TestRangeInsertion.java
+K 25
+svn:wc:ra_dav:version-url
+V 115
+/repos/asf/!svn/ver/806789/poi/trunk/src/scratchpad/testcases/org/apache/poi/hwpf/usermodel/TestRangeInsertion.java
+END
+TestOfficeDrawings.java
+K 25
+svn:wc:ra_dav:version-url
+V 116
+/repos/asf/!svn/ver/1160749/poi/trunk/src/scratchpad/testcases/org/apache/poi/hwpf/usermodel/TestOfficeDrawings.java
+END
+TestRange.java
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/repos/asf/!svn/ver/1145286/poi/trunk/src/scratchpad/testcases/org/apache/poi/hwpf/usermodel/TestRange.java
+END
+TestPictures.java
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/repos/asf/!svn/ver/1296980/poi/trunk/src/scratchpad/testcases/org/apache/poi/hwpf/usermodel/TestPictures.java
+END
+TestLists.java
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/repos/asf/!svn/ver/998943/poi/trunk/src/scratchpad/testcases/org/apache/poi/hwpf/usermodel/TestLists.java
+END
+TestBugs.java
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/repos/asf/!svn/ver/1296980/poi/trunk/src/scratchpad/testcases/org/apache/poi/hwpf/usermodel/TestBugs.java
+END
+TestHeaderStories.java
+K 25
+svn:wc:ra_dav:version-url
+V 114
+/repos/asf/!svn/ver/806789/poi/trunk/src/scratchpad/testcases/org/apache/poi/hwpf/usermodel/TestHeaderStories.java
+END
+TestHWPFOldDocument.java
+K 25
+svn:wc:ra_dav:version-url
+V 117
+/repos/asf/!svn/ver/1195134/poi/trunk/src/scratchpad/testcases/org/apache/poi/hwpf/usermodel/TestHWPFOldDocument.java
+END
+TestRangeSymbols.java
+K 25
+svn:wc:ra_dav:version-url
+V 114
+/repos/asf/!svn/ver/1022458/poi/trunk/src/scratchpad/testcases/org/apache/poi/hwpf/usermodel/TestRangeSymbols.java
+END

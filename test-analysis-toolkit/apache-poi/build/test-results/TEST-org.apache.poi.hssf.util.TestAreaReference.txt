@@ -1,0 +1,9 @@
+Testsuite: org.apache.poi.hssf.util.TestAreaReference
+Tests run: 6, Failures: 0, Errors: 0, Time elapsed: 0.003 sec
+
+Testcase: testAreaRef1 took 0.001 sec
+Testcase: testReferenceWithSheet took 0 sec
+Testcase: testContiguousReferences took 0.001 sec
+Testcase: testDiscontinousReference took 0 sec
+Testcase: testSpecialSheetNames took 0 sec
+Testcase: testWholeColumnRefs took 0 sec

@@ -1,0 +1,699 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN
+"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>
+org.apache.poi.poifs.storage.HeaderBlock
+</title>
+<link href="prettify.css" type="text/css" rel="stylesheet" />
+<script type="text/javascript" src="prettify.js"></script>
+</head>
+<body onload="prettyPrint()">
+<h2>Javalanche report for class:<br/> org.apache.poi.poifs.storage.HeaderBlock </h2><pre class="prettyprint" style="border: 1px solid #888;padding: 2px"><span class="nocode"><a name="1">  1: </a></span>/* ====================================================================
+<span class="nocode"><a name="2">  2: </a></span>   Licensed to the Apache Software Foundation (ASF) under one or more
+<span class="nocode"><a name="3">  3: </a></span>   contributor license agreements.  See the NOTICE file distributed with
+<span class="nocode"><a name="4">  4: </a></span>   this work for additional information regarding copyright ownership.
+<span class="nocode"><a name="5">  5: </a></span>   The ASF licenses this file to You under the Apache License, Version 2.0
+<span class="nocode"><a name="6">  6: </a></span>   (the &quot;License&quot;); you may not use this file except in compliance with
+<span class="nocode"><a name="7">  7: </a></span>   the License.  You may obtain a copy of the License at
+<span class="nocode"><a name="8">  8: </a></span>
+<span class="nocode"><a name="9">  9: </a></span>       http://www.apache.org/licenses/LICENSE-2.0
+<span class="nocode"><a name="10"> 10: </a></span>
+<span class="nocode"><a name="11"> 11: </a></span>   Unless required by applicable law or agreed to in writing, software
+<span class="nocode"><a name="12"> 12: </a></span>   distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+<span class="nocode"><a name="13"> 13: </a></span>   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+<span class="nocode"><a name="14"> 14: </a></span>   See the License for the specific language governing permissions and
+<span class="nocode"><a name="15"> 15: </a></span>   limitations under the License.
+<span class="nocode"><a name="16"> 16: </a></span>==================================================================== */
+<span class="nocode"><a name="17"> 17: </a></span>
+<span class="nocode"><a name="18"> 18: </a></span>package org.apache.poi.poifs.storage;
+<span class="nocode"><a name="19"> 19: </a></span>
+<span class="nocode"><a name="20"> 20: </a></span>import java.io.IOException;
+<span class="nocode"><a name="21"> 21: </a></span>import java.io.InputStream;
+<span class="nocode"><a name="22"> 22: </a></span>import java.io.OutputStream;
+<span class="nocode"><a name="23"> 23: </a></span>import java.nio.ByteBuffer;
+<span class="nocode"><a name="24"> 24: </a></span>import java.util.Arrays;
+<span class="nocode"><a name="25"> 25: </a></span>
+<span class="nocode"><a name="26"> 26: </a></span>import org.apache.poi.poifs.common.POIFSBigBlockSize;
+<span class="nocode"><a name="27"> 27: </a></span>import org.apache.poi.poifs.common.POIFSConstants;
+<span class="nocode"><a name="28"> 28: </a></span>import org.apache.poi.poifs.filesystem.OfficeXmlFileException;
+<span class="nocode"><a name="29"> 29: </a></span>import org.apache.poi.util.HexDump;
+<span class="nocode"><a name="30"> 30: </a></span>import org.apache.poi.util.IOUtils;
+<span class="nocode"><a name="31"> 31: </a></span>import org.apache.poi.util.IntegerField;
+<span class="nocode"><a name="32"> 32: </a></span>import org.apache.poi.util.LittleEndian;
+<span class="nocode"><a name="33"> 33: </a></span>import org.apache.poi.util.LittleEndianConsts;
+<span class="nocode"><a name="34"> 34: </a></span>import org.apache.poi.util.LongField;
+<span class="nocode"><a name="35"> 35: </a></span>import org.apache.poi.util.POILogFactory;
+<span class="nocode"><a name="36"> 36: </a></span>import org.apache.poi.util.POILogger;
+<span class="nocode"><a name="37"> 37: </a></span>import org.apache.poi.util.ShortField;
+<span class="nocode"><a name="38"> 38: </a></span>
+<span class="nocode"><a name="39"> 39: </a></span>/**
+<span class="nocode"><a name="40"> 40: </a></span> * The block containing the archive header
+<span class="nocode"><a name="41"> 41: </a></span> */
+<span class="nocode"><a name="42"> 42: </a></span>public final class HeaderBlock implements HeaderBlockConstants {
+<span class="nocode"><a name="43"> 43: </a></span>   private static final POILogger _logger =
+<span class="nocode"><a name="44"> 44: </a></span>      POILogFactory.getLogger(HeaderBlock.class);
+<span class="nocode"><a name="45"> 45: </a></span>   
+<span class="nocode"><a name="46"> 46: </a></span>	/**
+<span class="nocode"><a name="47"> 47: </a></span>	 * What big block size the file uses. Most files
+<span class="nocode"><a name="48"> 48: </a></span>	 *  use 512 bytes, but a few use 4096
+<span class="nocode"><a name="49"> 49: </a></span>	 */
+<span class="nocode"><a name="50"> 50: </a></span>	private final POIFSBigBlockSize bigBlockSize;
+<span class="nocode"><a name="51"> 51: </a></span>
+<span class="nocode"><a name="52"> 52: </a></span>	/** 
+<span class="nocode"><a name="53"> 53: </a></span>	 * Number of big block allocation table blocks (int).
+<span class="nocode"><a name="54"> 54: </a></span>	 * (Number of FAT Sectors in Microsoft parlance).
+<span class="nocode"><a name="55"> 55: </a></span>	 */
+<span class="nocode"><a name="56"> 56: </a></span>	private int _bat_count;
+<span class="nocode"><a name="57"> 57: </a></span>
+<span class="nocode"><a name="58"> 58: </a></span>	/** 
+<span class="nocode"><a name="59"> 59: </a></span>	 * Start of the property set block (int index of the property set
+<span class="nocode"><a name="60"> 60: </a></span>	 * chain's first big block).
+<span class="nocode"><a name="61"> 61: </a></span>	 */
+<span class="nocode"><a name="62"> 62: </a></span>	private int _property_start;
+<span class="nocode"><a name="63"> 63: </a></span>
+<span class="nocode"><a name="64"> 64: </a></span>	/** 
+<span class="nocode"><a name="65"> 65: </a></span>	 * start of the small block allocation table (int index of small
+<span class="nocode"><a name="66"> 66: </a></span>	 * block allocation table's first big block)
+<span class="nocode"><a name="67"> 67: </a></span>	 */
+<span class="nocode"><a name="68"> 68: </a></span>	private int _sbat_start;
+<span class="nocode"><a name="69"> 69: </a></span>	/**
+<span class="nocode"><a name="70"> 70: </a></span>	 * Number of small block allocation table blocks (int)
+<span class="nocode"><a name="71"> 71: </a></span>	 * (Number of MiniFAT Sectors in Microsoft parlance)
+<span class="nocode"><a name="72"> 72: </a></span>	 */
+<span class="nocode"><a name="73"> 73: </a></span>	private int _sbat_count;
+<span class="nocode"><a name="74"> 74: </a></span>
+<span class="nocode"><a name="75"> 75: </a></span>	/** 
+<span class="nocode"><a name="76"> 76: </a></span>	 * Big block index for extension to the big block allocation table
+<span class="nocode"><a name="77"> 77: </a></span>	 */
+<span class="nocode"><a name="78"> 78: </a></span>	private int _xbat_start;
+<span class="nocode"><a name="79"> 79: </a></span>	/**
+<span class="nocode"><a name="80"> 80: </a></span>	 * Number of big block allocation table blocks (int)
+<span class="nocode"><a name="81"> 81: </a></span>	 * (Number of DIFAT Sectors in Microsoft parlance)
+<span class="nocode"><a name="82"> 82: </a></span>	 */
+<span class="nocode"><a name="83"> 83: </a></span>	private int _xbat_count;
+<span class="nocode"><a name="84"> 84: </a></span>	
+<span class="nocode"><a name="85"> 85: </a></span>	/**
+<span class="nocode"><a name="86"> 86: </a></span>	 * The data. Only ever 512 bytes, because 4096 byte
+<span class="nocode"><a name="87"> 87: </a></span>	 *  files use zeros for the extra header space.
+<span class="nocode"><a name="88"> 88: </a></span>	 */
+<span class="nocode"><a name="89"> 89: </a></span>	private final byte[] _data;
+<span class="nocode"><a name="90"> 90: </a></span>	
+<span class="nocode"><a name="91"> 91: </a></span>   private static final byte _default_value = ( byte ) 0xFF;
+<span class="nocode"><a name="92"> 92: </a></span>
+<span class="nocode"><a name="93"> 93: </a></span>	/**
+<span class="nocode"><a name="94"> 94: </a></span>	 * create a new HeaderBlockReader from an InputStream
+<span class="nocode"><a name="95"> 95: </a></span>	 *
+<span class="nocode"><a name="96"> 96: </a></span>	 * @param stream the source InputStream
+<span class="nocode"><a name="97"> 97: </a></span>	 *
+<span class="nocode"><a name="98"> 98: </a></span>	 * @exception IOException on errors or bad data
+<span class="nocode"><a name="99"> 99: </a></span>	 */
+<span class="nocode"><a name="100">100: </a></span>	public HeaderBlock(InputStream stream) throws IOException {
+<span class="nocode"><a name="101">101: </a></span>		// Grab the first 512 bytes
+<span class="nocode"><a name="102">102: </a></span>	   // (For 4096 sized blocks, the remaining 3584 bytes are zero)
+<span class="nocode"><a name="103">103: </a></span>		// Then, process the contents
+<span class="nocode"><a name="104">104: </a></span>		this(readFirst512(stream));
+<span class="nocode"><a name="105">105: </a></span>		
+<span class="nocode"><a name="106">106: </a></span>		// Fetch the rest of the block if needed
+<span class="nocode"><a name="107">107: </a></span>		if(bigBlockSize.getBigBlockSize() != 512) {
+<span class="nocode"><a name="108">108: </a></span>		   int rest = bigBlockSize.getBigBlockSize() - 512;
+<span class="nocode"><a name="109">109: </a></span>		   byte[] tmp = new byte[rest];
+<span class="nocode"><a name="110">110: </a></span>		   IOUtils.readFully(stream, tmp);
+<span class="nocode"><a name="111">111: </a></span>		}
+<span class="nocode"><a name="112">112: </a></span>	}
+<span class="nocode"><a name="113">113: </a></span>	
+<span class="nocode"><a name="114">114: </a></span>	public HeaderBlock(ByteBuffer buffer) throws IOException {
+<span class="nocode"><a name="115">115: </a></span>	   this(IOUtils.toByteArray(buffer, POIFSConstants.SMALLER_BIG_BLOCK_SIZE));
+<span class="nocode"><a name="116">116: </a></span>	}
+<span class="nocode"><a name="117">117: </a></span>	
+<span class="nocode"><a name="118">118: </a></span>	private HeaderBlock(byte[] data) throws IOException {
+<span class="nocode"><a name="119">119: </a></span>	   this._data = data;
+<span class="nocode"><a name="120">120: </a></span>	   
+<span class="nocode"><a name="121">121: </a></span>		// verify signature
+<span class="nocode"><a name="122">122: </a></span>		long signature = LittleEndian.getLong(_data, _signature_offset);
+<span class="nocode"><a name="123">123: </a></span>
+<span class="nocode"><a name="124">124: </a></span>		if (signature != _signature) {
+<span class="nocode"><a name="125">125: </a></span>			// Is it one of the usual suspects?
+<span class="nocode"><a name="126">126: </a></span>			byte[] OOXML_FILE_HEADER = POIFSConstants.OOXML_FILE_HEADER;
+<span class="nocode"><a name="127">127: </a></span>			if(_data[0] == OOXML_FILE_HEADER[0] &amp;&amp;
+<span class="nocode"><a name="128">128: </a></span>				_data[1] == OOXML_FILE_HEADER[1] &amp;&amp;
+<span class="nocode"><a name="129">129: </a></span>				_data[2] == OOXML_FILE_HEADER[2] &amp;&amp;
+<span class="nocode"><a name="130">130: </a></span>				_data[3] == OOXML_FILE_HEADER[3]) {
+<span class="nocode"><a name="131">131: </a></span>				throw new OfficeXmlFileException(&quot;The supplied data appears to be in the Office 2007+ XML. You are calling the part of POI that deals with OLE2 Office Documents. You need to call a different part of POI to process this data (eg XSSF instead of HSSF)&quot;);
+<span class="nocode"><a name="132">132: </a></span>			}
+<span class="nocode"><a name="133">133: </a></span>			if ((signature &amp; 0xFF8FFFFFFFFFFFFFL) == 0x0010000200040009L) {
+<span class="nocode"><a name="134">134: </a></span>				// BIFF2 raw stream starts with BOF (sid=0x0009, size=0x0004, data=0x00t0)
+<span class="nocode"><a name="135">135: </a></span>				throw new IllegalArgumentException(&quot;The supplied data appears to be in BIFF2 format.  &quot;
+<span class="nocode"><a name="136">136: </a></span>						+ &quot;POI only supports BIFF8 format&quot;);
+<span class="nocode"><a name="137">137: </a></span>			}
+<span class="nocode"><a name="138">138: </a></span>
+<span class="nocode"><a name="139">139: </a></span>			// Give a generic error
+<span class="nocode"><a name="140">140: </a></span>			throw new IOException(&quot;Invalid header signature; read &quot;
+<span class="nocode"><a name="141">141: </a></span>				                  + longToHex(signature) + &quot;, expected &quot;
+<span class="nocode"><a name="142">142: </a></span>				                  + longToHex(_signature));
+<span class="nocode"><a name="143">143: </a></span>		}
+<span class="nocode"><a name="144">144: </a></span>
+<span class="nocode"><a name="145">145: </a></span>
+<span class="nocode"><a name="146">146: </a></span>		// Figure out our block size
+<span class="nocode"><a name="147">147: </a></span>		if (_data[30] == 12) {
+<span class="nocode"><a name="148">148: </a></span>			this.bigBlockSize = POIFSConstants.LARGER_BIG_BLOCK_SIZE_DETAILS;
+<span class="nocode"><a name="149">149: </a></span>		} else if(_data[30] == 9) {
+<span class="nocode"><a name="150">150: </a></span>			this.bigBlockSize = POIFSConstants.SMALLER_BIG_BLOCK_SIZE_DETAILS;
+<span class="nocode"><a name="151">151: </a></span>		} else {
+<span class="nocode"><a name="152">152: </a></span>		   throw new IOException(&quot;Unsupported blocksize  (2^&quot;+ _data[30] + &quot;). Expected 2^9 or 2^12.&quot;);
+<span class="nocode"><a name="153">153: </a></span>		}
+<span class="nocode"><a name="154">154: </a></span>
+<span class="nocode"><a name="155">155: </a></span>	   // Setup the fields to read and write the counts and starts
+<span class="nocode"><a name="156">156: </a></span>      _bat_count      = new IntegerField(_bat_count_offset, data).get();
+<span class="nocode"><a name="157">157: </a></span>      _property_start = new IntegerField(_property_start_offset,_data).get();
+<span class="nocode"><a name="158">158: </a></span>      _sbat_start = new IntegerField(_sbat_start_offset, _data).get();
+<span class="nocode"><a name="159">159: </a></span>      _sbat_count = new IntegerField(_sbat_block_count_offset, _data).get();
+<span class="nocode"><a name="160">160: </a></span>      _xbat_start = new IntegerField(_xbat_start_offset, _data).get();
+<span class="nocode"><a name="161">161: </a></span>      _xbat_count = new IntegerField(_xbat_count_offset, _data).get();
+<span class="nocode"><a name="162">162: </a></span>	}
+<span class="nocode"><a name="163">163: </a></span>	
+<span class="nocode"><a name="164">164: </a></span>   /**
+<span class="nocode"><a name="165">165: </a></span>    * Create a single instance initialized with default values
+<span class="nocode"><a name="166">166: </a></span>    */
+<span class="nocode"><a name="167">167: </a></span>   public HeaderBlock(POIFSBigBlockSize bigBlockSize)
+<span class="nocode"><a name="168">168: </a></span>   {
+<span class="nocode"><a name="169">169: </a></span>      this.bigBlockSize = bigBlockSize;
+<span class="nocode"><a name="170">170: </a></span>
+<span class="nocode"><a name="171">171: </a></span>      // Our data is always 512 big no matter what
+<span class="nocode"><a name="172">172: </a></span>      _data = new byte[ POIFSConstants.SMALLER_BIG_BLOCK_SIZE ];
+<span class="nocode"><a name="173">173: </a></span>      Arrays.fill(_data, _default_value);
+<span class="nocode"><a name="174">174: </a></span>      
+<span class="nocode"><a name="175">175: </a></span>      // Set all the default values
+<span class="nocode"><a name="176">176: </a></span>      new LongField(_signature_offset, _signature, _data);
+<span class="nocode"><a name="177">177: </a></span>      new IntegerField(0x08, 0, _data);
+<span class="nocode"><a name="178">178: </a></span>      new IntegerField(0x0c, 0, _data);
+<span class="nocode"><a name="179">179: </a></span>      new IntegerField(0x10, 0, _data);
+<span class="nocode"><a name="180">180: </a></span>      new IntegerField(0x14, 0, _data);
+<span class="nocode"><a name="181">181: </a></span>      new ShortField(0x18, ( short ) 0x3b, _data);
+<span class="nocode"><a name="182">182: </a></span>      new ShortField(0x1a, ( short ) 0x3, _data);
+<span class="nocode"><a name="183">183: </a></span>      new ShortField(0x1c, ( short ) -2, _data);
+<span class="nocode"><a name="184">184: </a></span>       
+<span class="nocode"><a name="185">185: </a></span>      new ShortField(0x1e, bigBlockSize.getHeaderValue(), _data);
+<span class="nocode"><a name="186">186: </a></span>      new IntegerField(0x20, 0x6, _data);
+<span class="nocode"><a name="187">187: </a></span>      new IntegerField(0x24, 0, _data);
+<span class="nocode"><a name="188">188: </a></span>      new IntegerField(0x28, 0, _data);
+<span class="nocode"><a name="189">189: </a></span>      new IntegerField(0x34, 0, _data);
+<span class="nocode"><a name="190">190: </a></span>      new IntegerField(0x38, 0x1000, _data);
+<span class="nocode"><a name="191">191: </a></span>      
+<span class="nocode"><a name="192">192: </a></span>      // Initialise the variables
+<span class="nocode"><a name="193">193: </a></span>      _bat_count = 0;
+<span class="nocode"><a name="194">194: </a></span>      _sbat_count = 0;
+<span class="nocode"><a name="195">195: </a></span>      _xbat_count = 0;
+<span class="nocode"><a name="196">196: </a></span>      _property_start = POIFSConstants.END_OF_CHAIN;
+<span class="nocode"><a name="197">197: </a></span>      _sbat_start = POIFSConstants.END_OF_CHAIN;
+<span class="nocode"><a name="198">198: </a></span>      _xbat_start = POIFSConstants.END_OF_CHAIN;
+<span class="nocode"><a name="199">199: </a></span>   }
+<span class="nocode"><a name="200">200: </a></span>   
+<span class="nocode"><a name="201">201: </a></span>	private static byte[] readFirst512(InputStream stream) throws IOException {
+<span class="nocode"><a name="202">202: </a></span>      // Grab the first 512 bytes
+<span class="nocode"><a name="203">203: </a></span>      // (For 4096 sized blocks, the remaining 3584 bytes are zero)
+<span class="nocode"><a name="204">204: </a></span>      byte[] data = new byte[512];
+<span class="nocode"><a name="205">205: </a></span>      int bsCount = IOUtils.readFully(stream, data);
+<span class="nocode"><a name="206">206: </a></span>      if(bsCount != 512) {
+<span class="nocode"><a name="207">207: </a></span>         throw alertShortRead(bsCount, 512);
+<span class="nocode"><a name="208">208: </a></span>      }
+<span class="nocode"><a name="209">209: </a></span>      return data;
+<span class="nocode"><a name="210">210: </a></span>	}
+<span class="nocode"><a name="211">211: </a></span>
+<span class="nocode"><a name="212">212: </a></span>	private static String longToHex(long value) {
+<span class="nocode"><a name="213">213: </a></span>		return new String(HexDump.longToHex(value));
+<span class="nocode"><a name="214">214: </a></span>	}
+<span class="nocode"><a name="215">215: </a></span>
+<span class="nocode"><a name="216">216: </a></span>	private static IOException alertShortRead(int pRead, int expectedReadSize) {
+<span class="nocode"><a name="217">217: </a></span>		int read;
+<span class="nocode"><a name="218">218: </a></span>		if (pRead &lt; 0) {
+<span class="nocode"><a name="219">219: </a></span>			//Can't have -1 bytes read in the error message!
+<span class="nocode"><a name="220">220: </a></span>			read = 0;
+<span class="nocode"><a name="221">221: </a></span>		} else {
+<span class="nocode"><a name="222">222: </a></span>			read = pRead;
+<span class="nocode"><a name="223">223: </a></span>		}
+<span class="nocode"><a name="224">224: </a></span>		String type = &quot; byte&quot; + (read == 1 ? (&quot;&quot;): (&quot;s&quot;));
+<span class="nocode"><a name="225">225: </a></span>
+<span class="nocode"><a name="226">226: </a></span>		return new IOException(&quot;Unable to read entire header; &quot;
+<span class="nocode"><a name="227">227: </a></span>				+ read + type + &quot; read; expected &quot;
+<span class="nocode"><a name="228">228: </a></span>				+ expectedReadSize + &quot; bytes&quot;);
+<span class="nocode"><a name="229">229: </a></span>	}
+<span class="nocode"><a name="230">230: </a></span>
+<span class="nocode"><a name="231">231: </a></span>	/**
+<span class="nocode"><a name="232">232: </a></span>	 * get start of Property Table
+<span class="nocode"><a name="233">233: </a></span>	 *
+<span class="nocode"><a name="234">234: </a></span>	 * @return the index of the first block of the Property Table
+<span class="nocode"><a name="235">235: </a></span>	 */
+<span class="nocode"><a name="236">236: </a></span>	public int getPropertyStart() {
+<span class="nocode"><a name="237">237: </a></span>		return _property_start;
+<span class="nocode"><a name="238">238: </a></span>	}
+<span class="nocode"><a name="239">239: </a></span>   /**
+<span class="nocode"><a name="240">240: </a></span>    * Set start of Property Table
+<span class="nocode"><a name="241">241: </a></span>    *
+<span class="nocode"><a name="242">242: </a></span>    * @param startBlock the index of the first block of the Property Table
+<span class="nocode"><a name="243">243: </a></span>    */
+<span class="nocode"><a name="244">244: </a></span>   public void setPropertyStart(final int startBlock) {
+<span class="nocode"><a name="245">245: </a></span>       _property_start = startBlock;
+<span class="nocode"><a name="246">246: </a></span>   }
+<span class="nocode"><a name="247">247: </a></span>
+<span class="nocode"><a name="248">248: </a></span>	/**
+<span class="nocode"><a name="249">249: </a></span>	 * @return start of small block (MiniFAT) allocation table
+<span class="nocode"><a name="250">250: </a></span>	 */
+<span class="nocode"><a name="251">251: </a></span>	public int getSBATStart() {
+<span class="nocode"><a name="252">252: </a></span>		return _sbat_start;
+<span class="nocode"><a name="253">253: </a></span>	}
+<span class="nocode"><a name="254">254: </a></span>	public int getSBATCount() {
+<span class="nocode"><a name="255">255: </a></span>	   return _sbat_count;
+<span class="nocode"><a name="256">256: </a></span>	}
+<span class="nocode"><a name="257">257: </a></span>	
+<span class="nocode"><a name="258">258: </a></span>   /**
+<span class="nocode"><a name="259">259: </a></span>    * Set start of small block allocation table
+<span class="nocode"><a name="260">260: </a></span>    *
+<span class="nocode"><a name="261">261: </a></span>    * @param startBlock the index of the first big block of the small
+<span class="nocode"><a name="262">262: </a></span>    *                   block allocation table
+<span class="nocode"><a name="263">263: </a></span>    */
+<span class="nocode"><a name="264">264: </a></span>   public void setSBATStart(final int startBlock) {
+<span class="nocode"><a name="265">265: </a></span>       _sbat_start = startBlock;
+<span class="nocode"><a name="266">266: </a></span>   }
+<span class="nocode"><a name="267">267: </a></span>   /**
+<span class="nocode"><a name="268">268: </a></span>    * Set count of SBAT blocks
+<span class="nocode"><a name="269">269: </a></span>    *
+<span class="nocode"><a name="270">270: </a></span>    * @param count the number of SBAT blocks
+<span class="nocode"><a name="271">271: </a></span>    */
+<span class="nocode"><a name="272">272: </a></span>   public void setSBATBlockCount(final int count)
+<span class="nocode"><a name="273">273: </a></span>   {
+<span class="nocode"><a name="274">274: </a></span>      _sbat_count = count;
+<span class="nocode"><a name="275">275: </a></span>   }
+<span class="nocode"><a name="276">276: </a></span>
+<span class="nocode"><a name="277">277: </a></span>	/**
+<span class="nocode"><a name="278">278: </a></span>	 * @return number of BAT blocks
+<span class="nocode"><a name="279">279: </a></span>	 */
+<span class="nocode"><a name="280">280: </a></span>	public int getBATCount() {
+<span class="nocode"><a name="281">281: </a></span>		return _bat_count;
+<span class="nocode"><a name="282">282: </a></span>	}
+<span class="nocode"><a name="283">283: </a></span>   /**
+<span class="nocode"><a name="284">284: </a></span>    * Sets the number of BAT blocks that are used.
+<span class="nocode"><a name="285">285: </a></span>    * This is the number used in both the BAT and XBAT. 
+<span class="nocode"><a name="286">286: </a></span>    */
+<span class="nocode"><a name="287">287: </a></span>   public void setBATCount(final int count) {
+<span class="nocode"><a name="288">288: </a></span>      _bat_count = count;
+<span class="nocode"><a name="289">289: </a></span>   }
+<span class="nocode"><a name="290">290: </a></span>
+<span class="nocode"><a name="291">291: </a></span>	/**
+<span class="nocode"><a name="292">292: </a></span>	 * Returns the offsets to the first (up to) 109
+<span class="nocode"><a name="293">293: </a></span>	 *  BAT sectors.
+<span class="nocode"><a name="294">294: </a></span>	 * Any additional BAT sectors are held in the XBAT (DIFAT)
+<span class="nocode"><a name="295">295: </a></span>	 *  sectors in a chain.
+<span class="nocode"><a name="296">296: </a></span>	 * @return BAT offset array
+<span class="nocode"><a name="297">297: </a></span>	 */
+<span class="nocode"><a name="298">298: </a></span>	public int[] getBATArray() {
+<span class="nocode"><a name="299">299: </a></span>      // Read them in
+<span class="nocode"><a name="300">300: </a></span>		int[] result = new int[ Math.min(_bat_count,_max_bats_in_header) ];
+<span class="nocode"><a name="301">301: </a></span>		int offset = _bat_array_offset;
+<span class="nocode"><a name="302">302: </a></span>		for (int j = 0; j &lt; result.length; j++) {
+<span class="nocode"><a name="303">303: </a></span>			result[ j ] = LittleEndian.getInt(_data, offset);
+<span class="nocode"><a name="304">304: </a></span>			offset     += LittleEndianConsts.INT_SIZE;
+<span class="nocode"><a name="305">305: </a></span>		}
+<span class="nocode"><a name="306">306: </a></span>		return result;
+<span class="nocode"><a name="307">307: </a></span>	}
+<span class="nocode"><a name="308">308: </a></span>	/**
+<span class="nocode"><a name="309">309: </a></span>	 * Sets the offsets of the first (up to) 109
+<span class="nocode"><a name="310">310: </a></span>	 *  BAT sectors.
+<span class="nocode"><a name="311">311: </a></span>	 */
+<span class="nocode"><a name="312">312: </a></span>	public void setBATArray(int[] bat_array) {
+<span class="nocode"><a name="313">313: </a></span>	   int count = Math.min(bat_array.length, _max_bats_in_header);
+<span class="nocode"><a name="314">314: </a></span>	   int blank = _max_bats_in_header - count;
+<span class="nocode"><a name="315">315: </a></span>	   
+<span class="nocode"><a name="316">316: </a></span>      int offset = _bat_array_offset;
+<span class="nocode"><a name="317">317: </a></span>	   for(int i=0; i&lt;count; i++) {
+<span class="nocode"><a name="318">318: </a></span>	      LittleEndian.putInt(_data, offset, bat_array[i]);
+<span class="nocode"><a name="319">319: </a></span>         offset += LittleEndianConsts.INT_SIZE;
+<span class="nocode"><a name="320">320: </a></span>	   }
+<span class="nocode"><a name="321">321: </a></span>	   for(int i=0; i&lt;blank; i++) {
+<span class="nocode"><a name="322">322: </a></span>         LittleEndian.putInt(_data, offset, POIFSConstants.UNUSED_BLOCK);
+<span class="nocode"><a name="323">323: </a></span>         offset += LittleEndianConsts.INT_SIZE;
+<span class="nocode"><a name="324">324: </a></span>	   }
+<span class="nocode"><a name="325">325: </a></span>	}
+<span class="nocode"><a name="326">326: </a></span>
+<span class="nocode"><a name="327">327: </a></span>	/**
+<span class="nocode"><a name="328">328: </a></span>	 * @return XBAT (DIFAT) count
+<span class="nocode"><a name="329">329: </a></span>	 */
+<span class="nocode"><a name="330">330: </a></span>	public int getXBATCount() {
+<span class="nocode"><a name="331">331: </a></span>		return _xbat_count;
+<span class="nocode"><a name="332">332: </a></span>	}
+<span class="nocode"><a name="333">333: </a></span>	/**
+<span class="nocode"><a name="334">334: </a></span>	 * Sets the number of XBAT (DIFAT) blocks used
+<span class="nocode"><a name="335">335: </a></span>	 */
+<span class="nocode"><a name="336">336: </a></span>	public void setXBATCount(final int count) {
+<span class="nocode"><a name="337">337: </a></span>	   _xbat_count = count;
+<span class="nocode"><a name="338">338: </a></span>	}
+<span class="nocode"><a name="339">339: </a></span>
+<span class="nocode"><a name="340">340: </a></span>	/**
+<span class="nocode"><a name="341">341: </a></span>	 * @return XBAT (DIFAT) index
+<span class="nocode"><a name="342">342: </a></span>	 */
+<span class="nocode"><a name="343">343: </a></span>	public int getXBATIndex() {
+<span class="nocode"><a name="344">344: </a></span>		return _xbat_start;
+<span class="nocode"><a name="345">345: </a></span>	}
+<span class="nocode"><a name="346">346: </a></span>	/**
+<span class="nocode"><a name="347">347: </a></span>	 * Sets the first XBAT (DIFAT) block location
+<span class="nocode"><a name="348">348: </a></span>	 */
+<span class="nocode"><a name="349">349: </a></span>   public void setXBATStart(final int startBlock) {
+<span class="nocode"><a name="350">350: </a></span>      _xbat_start = startBlock;
+<span class="nocode"><a name="351">351: </a></span>  }
+<span class="nocode"><a name="352">352: </a></span>
+<span class="nocode"><a name="353">353: </a></span>	/**
+<span class="nocode"><a name="354">354: </a></span>	 * @return The Big Block size, normally 512 bytes, sometimes 4096 bytes
+<span class="nocode"><a name="355">355: </a></span>	 */
+<span class="nocode"><a name="356">356: </a></span>	public POIFSBigBlockSize getBigBlockSize() {
+<span class="nocode"><a name="357">357: </a></span>		return bigBlockSize;
+<span class="nocode"><a name="358">358: </a></span>	}
+<span class="nocode"><a name="359">359: </a></span>	
+<span class="nocode"><a name="360">360: </a></span>   /**
+<span class="nocode"><a name="361">361: </a></span>    * Write the block's data to an OutputStream
+<span class="nocode"><a name="362">362: </a></span>    *
+<span class="nocode"><a name="363">363: </a></span>    * @param stream the OutputStream to which the stored data should
+<span class="nocode"><a name="364">364: </a></span>    *               be written
+<span class="nocode"><a name="365">365: </a></span>    *
+<span class="nocode"><a name="366">366: </a></span>    * @exception IOException on problems writing to the specified
+<span class="nocode"><a name="367">367: </a></span>    *            stream
+<span class="nocode"><a name="368">368: </a></span>    */
+<span class="nocode"><a name="369">369: </a></span>   void writeData(final OutputStream stream)
+<span class="nocode"><a name="370">370: </a></span>       throws IOException
+<span class="nocode"><a name="371">371: </a></span>   {
+<span class="nocode"><a name="372">372: </a></span>      // Update the counts and start positions 
+<span class="nocode"><a name="373">373: </a></span>      new IntegerField(_bat_count_offset,      _bat_count, _data);
+<span class="nocode"><a name="374">374: </a></span>      new IntegerField(_property_start_offset, _property_start, _data);
+<span class="nocode"><a name="375">375: </a></span>      new IntegerField(_sbat_start_offset,     _sbat_start, _data);
+<span class="nocode"><a name="376">376: </a></span>      new IntegerField(_sbat_block_count_offset, _sbat_count, _data);
+<span class="nocode"><a name="377">377: </a></span>      new IntegerField(_xbat_start_offset,      _xbat_start, _data);
+<span class="nocode"><a name="378">378: </a></span>      new IntegerField(_xbat_count_offset,      _xbat_count, _data);
+<span class="nocode"><a name="379">379: </a></span>      
+<span class="nocode"><a name="380">380: </a></span>      // Write the main data out
+<span class="nocode"><a name="381">381: </a></span>      stream.write(_data, 0, 512);
+<span class="nocode"><a name="382">382: </a></span>      
+<span class="nocode"><a name="383">383: </a></span>      // Now do the padding if needed
+<span class="nocode"><a name="384">384: </a></span>      for(int i=POIFSConstants.SMALLER_BIG_BLOCK_SIZE; i&lt;bigBlockSize.getBigBlockSize(); i++) {
+<span class="nocode"><a name="385">385: </a></span>         stream.write(0);
+<span class="nocode"><a name="386">386: </a></span>      }
+<span class="nocode"><a name="387">387: </a></span>   }
+<span class="nocode"><a name="388">388: </a></span>}
+</pre><table class="mutation_table" summary="Mutations">
+<tr><th>ID</th><th>Line</th><th>Type</th><th>Detected</th></tr><tr><td>39488</td><td><a href="#107">107</a></td><td>Replace a constant (Replace 512 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>39486</td><td><a href="#107">107</a></td><td>Replace a constant (Replace 512 with 513(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>39487</td><td><a href="#107">107</a></td><td>Replace a constant (Replace 512 with 511(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>39489</td><td><a href="#107">107</a></td><td>Negate jump condition (Replace IF_ICMPEQ with  IF_ICMPNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>39485</td><td><a href="#107">107</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>39491</td><td><a href="#108">108</a></td><td>Replace a constant (Replace 512 with 513(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39492</td><td><a href="#108">108</a></td><td>Replace a constant (Replace 512 with 511(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39493</td><td><a href="#108">108</a></td><td>Replace a constant (Replace 512 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39494</td><td><a href="#108">108</a></td><td>Replace arithmetic operator (Replace ISUB with IADD)</td><td><img src="detected.png"/></td></tr>
+<tr><td>39490</td><td><a href="#108">108</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>39495</td><td><a href="#110">110</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>39498</td><td><a href="#115">115</a></td><td>Replace a constant (Replace 512 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>39496</td><td><a href="#115">115</a></td><td>Replace a constant (Replace 512 with 513(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>39497</td><td><a href="#115">115</a></td><td>Replace a constant (Replace 512 with 511(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>39500</td><td><a href="#122">122</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39499</td><td><a href="#122">122</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39501</td><td><a href="#122">122</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>39504</td><td><a href="#124">124</a></td><td>Replace a constant (Replace -2226271756974174256 with -2226271756974174255(LONG))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39503</td><td><a href="#124">124</a></td><td>Replace a constant (Replace -2226271756974174256 with -2226271756974174257(LONG))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39502</td><td><a href="#124">124</a></td><td>Replace a constant (Replace -2226271756974174256 with 0(LONG))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39505</td><td><a href="#124">124</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>39506</td><td><a href="#127">127</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39507</td><td><a href="#127">127</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39509</td><td><a href="#127">127(1)</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39508</td><td><a href="#127">127(1)</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39511</td><td><a href="#127">127(2)</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39512</td><td><a href="#127">127(2)</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39513</td><td><a href="#127">127(3)</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39514</td><td><a href="#127">127(3)</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39517</td><td><a href="#127">127(4)</a></td><td>Replace a constant (Replace 2 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39518</td><td><a href="#127">127(4)</a></td><td>Replace a constant (Replace 2 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39516</td><td><a href="#127">127(4)</a></td><td>Replace a constant (Replace 2 with 3(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39519</td><td><a href="#127">127(5)</a></td><td>Replace a constant (Replace 2 with 3(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39520</td><td><a href="#127">127(5)</a></td><td>Replace a constant (Replace 2 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39521</td><td><a href="#127">127(5)</a></td><td>Replace a constant (Replace 2 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39523</td><td><a href="#127">127(6)</a></td><td>Replace a constant (Replace 3 with 2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39525</td><td><a href="#127">127(6)</a></td><td>Replace a constant (Replace 3 with 4(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39524</td><td><a href="#127">127(6)</a></td><td>Replace a constant (Replace 3 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39527</td><td><a href="#127">127(7)</a></td><td>Replace a constant (Replace 3 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39526</td><td><a href="#127">127(7)</a></td><td>Replace a constant (Replace 3 with 2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39528</td><td><a href="#127">127(7)</a></td><td>Replace a constant (Replace 3 with 4(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39510</td><td><a href="#127">127</a></td><td>Negate jump condition (Replace IF_ICMPNE with  IF_ICMPEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>39515</td><td><a href="#127">127(1)</a></td><td>Negate jump condition (Replace IF_ICMPNE with  IF_ICMPEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>39522</td><td><a href="#127">127(2)</a></td><td>Negate jump condition (Replace IF_ICMPNE with  IF_ICMPEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>39529</td><td><a href="#127">127(3)</a></td><td>Negate jump condition (Replace IF_ICMPNE with  IF_ICMPEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>39530</td><td><a href="#133">133</a></td><td>Replace a constant (Replace -31525197391593473 with 0(LONG))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>39532</td><td><a href="#133">133</a></td><td>Replace a constant (Replace -31525197391593473 with -31525197391593472(LONG))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>39531</td><td><a href="#133">133</a></td><td>Replace a constant (Replace -31525197391593473 with -31525197391593474(LONG))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>39536</td><td><a href="#133">133(1)</a></td><td>Replace a constant (Replace 4503608217567241 with 4503608217567242(LONG))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>39535</td><td><a href="#133">133(1)</a></td><td>Replace a constant (Replace 4503608217567241 with 4503608217567240(LONG))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>39534</td><td><a href="#133">133(1)</a></td><td>Replace a constant (Replace 4503608217567241 with 0(LONG))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>39537</td><td><a href="#133">133</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>39533</td><td><a href="#133">133</a></td><td>Replace arithmetic operator (Replace LAND with LOR)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>39542</td><td><a href="#140">140</a></td><td>Replace a constant (Replace -2226271756974174256 with 0(LONG))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>39543</td><td><a href="#140">140</a></td><td>Replace a constant (Replace -2226271756974174256 with -2226271756974174257(LONG))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>39544</td><td><a href="#140">140</a></td><td>Replace a constant (Replace -2226271756974174256 with -2226271756974174255(LONG))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>39538</td><td><a href="#140">140</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>39539</td><td><a href="#140">140(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>39540</td><td><a href="#140">140(2)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>39541</td><td><a href="#140">140(3)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>39545</td><td><a href="#140">140(4)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>39546</td><td><a href="#140">140(5)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>39547</td><td><a href="#140">140(6)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>39549</td><td><a href="#147">147</a></td><td>Replace a constant (Replace 30 with 31(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39548</td><td><a href="#147">147</a></td><td>Replace a constant (Replace 30 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39550</td><td><a href="#147">147</a></td><td>Replace a constant (Replace 30 with 29(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39552</td><td><a href="#147">147(1)</a></td><td>Replace a constant (Replace 12 with 13(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39551</td><td><a href="#147">147(1)</a></td><td>Replace a constant (Replace 12 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39553</td><td><a href="#147">147(1)</a></td><td>Replace a constant (Replace 12 with 11(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39554</td><td><a href="#147">147</a></td><td>Negate jump condition (Replace IF_ICMPNE with  IF_ICMPEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>39555</td><td><a href="#149">149</a></td><td>Replace a constant (Replace 30 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39556</td><td><a href="#149">149</a></td><td>Replace a constant (Replace 30 with 31(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39557</td><td><a href="#149">149</a></td><td>Replace a constant (Replace 30 with 29(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39558</td><td><a href="#149">149(1)</a></td><td>Replace a constant (Replace 9 with 10(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39559</td><td><a href="#149">149(1)</a></td><td>Replace a constant (Replace 9 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39560</td><td><a href="#149">149(1)</a></td><td>Replace a constant (Replace 9 with 8(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39561</td><td><a href="#149">149</a></td><td>Negate jump condition (Replace IF_ICMPNE with  IF_ICMPEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>39564</td><td><a href="#152">152</a></td><td>Replace a constant (Replace 30 with 31(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>39563</td><td><a href="#152">152</a></td><td>Replace a constant (Replace 30 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>39565</td><td><a href="#152">152</a></td><td>Replace a constant (Replace 30 with 29(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>39562</td><td><a href="#152">152</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>39566</td><td><a href="#152">152(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>39567</td><td><a href="#152">152(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>39568</td><td><a href="#152">152(3)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>39571</td><td><a href="#156">156</a></td><td>Replace a constant (Replace 44 with 45(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39570</td><td><a href="#156">156</a></td><td>Replace a constant (Replace 44 with 43(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39569</td><td><a href="#156">156</a></td><td>Replace a constant (Replace 44 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39572</td><td><a href="#156">156</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>39574</td><td><a href="#157">157</a></td><td>Replace a constant (Replace 48 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39573</td><td><a href="#157">157</a></td><td>Replace a constant (Replace 48 with 49(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39575</td><td><a href="#157">157</a></td><td>Replace a constant (Replace 48 with 47(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39576</td><td><a href="#157">157</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>39578</td><td><a href="#158">158</a></td><td>Replace a constant (Replace 60 with 59(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39577</td><td><a href="#158">158</a></td><td>Replace a constant (Replace 60 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39579</td><td><a href="#158">158</a></td><td>Replace a constant (Replace 60 with 61(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39580</td><td><a href="#158">158</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>39583</td><td><a href="#159">159</a></td><td>Replace a constant (Replace 64 with 63(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39581</td><td><a href="#159">159</a></td><td>Replace a constant (Replace 64 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39582</td><td><a href="#159">159</a></td><td>Replace a constant (Replace 64 with 65(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39584</td><td><a href="#159">159</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>39586</td><td><a href="#160">160</a></td><td>Replace a constant (Replace 68 with 69(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39587</td><td><a href="#160">160</a></td><td>Replace a constant (Replace 68 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39585</td><td><a href="#160">160</a></td><td>Replace a constant (Replace 68 with 67(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39588</td><td><a href="#160">160</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>39590</td><td><a href="#161">161</a></td><td>Replace a constant (Replace 72 with 71(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39591</td><td><a href="#161">161</a></td><td>Replace a constant (Replace 72 with 73(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39589</td><td><a href="#161">161</a></td><td>Replace a constant (Replace 72 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39592</td><td><a href="#161">161</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>39594</td><td><a href="#172">172</a></td><td>Replace a constant (Replace 512 with 511(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39595</td><td><a href="#172">172</a></td><td>Replace a constant (Replace 512 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39593</td><td><a href="#172">172</a></td><td>Replace a constant (Replace 512 with 513(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39597</td><td><a href="#173">173</a></td><td>Replace a constant (Replace -1 with -2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39596</td><td><a href="#173">173</a></td><td>Replace a constant (Replace -1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39598</td><td><a href="#173">173</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>39600</td><td><a href="#176">176</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39599</td><td><a href="#176">176</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39601</td><td><a href="#176">176(1)</a></td><td>Replace a constant (Replace -2226271756974174256 with 0(LONG))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39602</td><td><a href="#176">176(1)</a></td><td>Replace a constant (Replace -2226271756974174256 with -2226271756974174257(LONG))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39603</td><td><a href="#176">176(1)</a></td><td>Replace a constant (Replace -2226271756974174256 with -2226271756974174255(LONG))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39606</td><td><a href="#177">177</a></td><td>Replace a constant (Replace 8 with 9(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39605</td><td><a href="#177">177</a></td><td>Replace a constant (Replace 8 with 7(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39604</td><td><a href="#177">177</a></td><td>Replace a constant (Replace 8 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39607</td><td><a href="#177">177(1)</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39608</td><td><a href="#177">177(1)</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39609</td><td><a href="#178">178</a></td><td>Replace a constant (Replace 12 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39611</td><td><a href="#178">178</a></td><td>Replace a constant (Replace 12 with 11(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39610</td><td><a href="#178">178</a></td><td>Replace a constant (Replace 12 with 13(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39613</td><td><a href="#178">178(1)</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39612</td><td><a href="#178">178(1)</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39614</td><td><a href="#179">179</a></td><td>Replace a constant (Replace 16 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39615</td><td><a href="#179">179</a></td><td>Replace a constant (Replace 16 with 17(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39616</td><td><a href="#179">179</a></td><td>Replace a constant (Replace 16 with 15(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39617</td><td><a href="#179">179(1)</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39618</td><td><a href="#179">179(1)</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39620</td><td><a href="#180">180</a></td><td>Replace a constant (Replace 20 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39619</td><td><a href="#180">180</a></td><td>Replace a constant (Replace 20 with 21(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39621</td><td><a href="#180">180</a></td><td>Replace a constant (Replace 20 with 19(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39622</td><td><a href="#180">180(1)</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39623</td><td><a href="#180">180(1)</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39624</td><td><a href="#181">181</a></td><td>Replace a constant (Replace 24 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39625</td><td><a href="#181">181</a></td><td>Replace a constant (Replace 24 with 23(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39626</td><td><a href="#181">181</a></td><td>Replace a constant (Replace 24 with 25(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39629</td><td><a href="#181">181(1)</a></td><td>Replace a constant (Replace 59 with 60(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39628</td><td><a href="#181">181(1)</a></td><td>Replace a constant (Replace 59 with 58(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39627</td><td><a href="#181">181(1)</a></td><td>Replace a constant (Replace 59 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39631</td><td><a href="#182">182</a></td><td>Replace a constant (Replace 26 with 25(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39630</td><td><a href="#182">182</a></td><td>Replace a constant (Replace 26 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39632</td><td><a href="#182">182</a></td><td>Replace a constant (Replace 26 with 27(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39633</td><td><a href="#182">182(1)</a></td><td>Replace a constant (Replace 3 with 2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39634</td><td><a href="#182">182(1)</a></td><td>Replace a constant (Replace 3 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39635</td><td><a href="#182">182(1)</a></td><td>Replace a constant (Replace 3 with 4(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39637</td><td><a href="#183">183</a></td><td>Replace a constant (Replace 28 with 27(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39636</td><td><a href="#183">183</a></td><td>Replace a constant (Replace 28 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39638</td><td><a href="#183">183</a></td><td>Replace a constant (Replace 28 with 29(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39641</td><td><a href="#183">183(1)</a></td><td>Replace a constant (Replace -2 with -3(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39639</td><td><a href="#183">183(1)</a></td><td>Replace a constant (Replace -2 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39640</td><td><a href="#183">183(1)</a></td><td>Replace a constant (Replace -2 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39644</td><td><a href="#185">185</a></td><td>Replace a constant (Replace 30 with 29(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39643</td><td><a href="#185">185</a></td><td>Replace a constant (Replace 30 with 31(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39642</td><td><a href="#185">185</a></td><td>Replace a constant (Replace 30 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39645</td><td><a href="#185">185</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>39647</td><td><a href="#186">186</a></td><td>Replace a constant (Replace 32 with 31(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39648</td><td><a href="#186">186</a></td><td>Replace a constant (Replace 32 with 33(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39646</td><td><a href="#186">186</a></td><td>Replace a constant (Replace 32 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39649</td><td><a href="#186">186(1)</a></td><td>Replace a constant (Replace 6 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39651</td><td><a href="#186">186(1)</a></td><td>Replace a constant (Replace 6 with 5(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39650</td><td><a href="#186">186(1)</a></td><td>Replace a constant (Replace 6 with 7(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39653</td><td><a href="#187">187</a></td><td>Replace a constant (Replace 36 with 35(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39654</td><td><a href="#187">187</a></td><td>Replace a constant (Replace 36 with 37(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39652</td><td><a href="#187">187</a></td><td>Replace a constant (Replace 36 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39655</td><td><a href="#187">187(1)</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39656</td><td><a href="#187">187(1)</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39657</td><td><a href="#188">188</a></td><td>Replace a constant (Replace 40 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39658</td><td><a href="#188">188</a></td><td>Replace a constant (Replace 40 with 41(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39659</td><td><a href="#188">188</a></td><td>Replace a constant (Replace 40 with 39(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39661</td><td><a href="#188">188(1)</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39660</td><td><a href="#188">188(1)</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39663</td><td><a href="#189">189</a></td><td>Replace a constant (Replace 52 with 51(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39664</td><td><a href="#189">189</a></td><td>Replace a constant (Replace 52 with 53(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39662</td><td><a href="#189">189</a></td><td>Replace a constant (Replace 52 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39666</td><td><a href="#189">189(1)</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39665</td><td><a href="#189">189(1)</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39667</td><td><a href="#190">190</a></td><td>Replace a constant (Replace 56 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39668</td><td><a href="#190">190</a></td><td>Replace a constant (Replace 56 with 57(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39669</td><td><a href="#190">190</a></td><td>Replace a constant (Replace 56 with 55(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39670</td><td><a href="#190">190(1)</a></td><td>Replace a constant (Replace 4096 with 4097(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39671</td><td><a href="#190">190(1)</a></td><td>Replace a constant (Replace 4096 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39672</td><td><a href="#190">190(1)</a></td><td>Replace a constant (Replace 4096 with 4095(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39674</td><td><a href="#193">193</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39673</td><td><a href="#193">193</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39675</td><td><a href="#194">194</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39676</td><td><a href="#194">194</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39678</td><td><a href="#195">195</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39677</td><td><a href="#195">195</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39679</td><td><a href="#196">196</a></td><td>Replace a constant (Replace -2 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39680</td><td><a href="#196">196</a></td><td>Replace a constant (Replace -2 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39681</td><td><a href="#196">196</a></td><td>Replace a constant (Replace -2 with -3(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39682</td><td><a href="#197">197</a></td><td>Replace a constant (Replace -2 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39683</td><td><a href="#197">197</a></td><td>Replace a constant (Replace -2 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39684</td><td><a href="#197">197</a></td><td>Replace a constant (Replace -2 with -3(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39687</td><td><a href="#198">198</a></td><td>Replace a constant (Replace -2 with -3(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39686</td><td><a href="#198">198</a></td><td>Replace a constant (Replace -2 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39685</td><td><a href="#198">198</a></td><td>Replace a constant (Replace -2 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39688</td><td><a href="#204">204</a></td><td>Replace a constant (Replace 512 with 513(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39690</td><td><a href="#204">204</a></td><td>Replace a constant (Replace 512 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39689</td><td><a href="#204">204</a></td><td>Replace a constant (Replace 512 with 511(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39691</td><td><a href="#205">205</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>39692</td><td><a href="#206">206</a></td><td>Replace a constant (Replace 512 with 513(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39694</td><td><a href="#206">206</a></td><td>Replace a constant (Replace 512 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39693</td><td><a href="#206">206</a></td><td>Replace a constant (Replace 512 with 511(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39695</td><td><a href="#206">206</a></td><td>Negate jump condition (Replace IF_ICMPEQ with  IF_ICMPNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>39696</td><td><a href="#207">207</a></td><td>Replace a constant (Replace 512 with 513(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>39697</td><td><a href="#207">207</a></td><td>Replace a constant (Replace 512 with 511(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>39698</td><td><a href="#207">207</a></td><td>Replace a constant (Replace 512 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>39699</td><td><a href="#207">207</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>39700</td><td><a href="#213">213</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>39701</td><td><a href="#218">218</a></td><td>Negate jump condition (Replace IFGE with  IFLT)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>39702</td><td><a href="#220">220</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>39703</td><td><a href="#220">220</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>39706</td><td><a href="#224">224</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>39705</td><td><a href="#224">224</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>39707</td><td><a href="#224">224</a></td><td>Negate jump condition (Replace IF_ICMPNE with  IF_ICMPEQ)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>39704</td><td><a href="#224">224</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>39708</td><td><a href="#224">224(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>39709</td><td><a href="#224">224(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>39710</td><td><a href="#226">226</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>39711</td><td><a href="#226">226(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>39712</td><td><a href="#226">226(2)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>39713</td><td><a href="#226">226(3)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>39714</td><td><a href="#226">226(4)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>39715</td><td><a href="#226">226(5)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>39716</td><td><a href="#226">226(6)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>39717</td><td><a href="#300">300</a></td><td>Replace a constant (Replace 109 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39719</td><td><a href="#300">300</a></td><td>Replace a constant (Replace 109 with 110(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39718</td><td><a href="#300">300</a></td><td>Replace a constant (Replace 109 with 108(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39720</td><td><a href="#300">300</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>39722</td><td><a href="#301">301</a></td><td>Replace a constant (Replace 76 with 77(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39721</td><td><a href="#301">301</a></td><td>Replace a constant (Replace 76 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39723</td><td><a href="#301">301</a></td><td>Replace a constant (Replace 76 with 75(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39725</td><td><a href="#302">302</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39724</td><td><a href="#302">302</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39726</td><td><a href="#302">302</a></td><td>Negate jump condition (Replace IF_ICMPGE with  IF_ICMPLT)</td><td><img src="detected.png"/></td></tr>
+<tr><td>39727</td><td><a href="#303">303</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>39728</td><td><a href="#313">313</a></td><td>Replace a constant (Replace 109 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39730</td><td><a href="#313">313</a></td><td>Replace a constant (Replace 109 with 110(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>39729</td><td><a href="#313">313</a></td><td>Replace a constant (Replace 109 with 108(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39731</td><td><a href="#313">313</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>39733</td><td><a href="#314">314</a></td><td>Replace a constant (Replace 109 with 108(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>39732</td><td><a href="#314">314</a></td><td>Replace a constant (Replace 109 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>39734</td><td><a href="#314">314</a></td><td>Replace a constant (Replace 109 with 110(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39735</td><td><a href="#314">314</a></td><td>Replace arithmetic operator (Replace ISUB with IADD)</td><td><img src="detected.png"/></td></tr>
+<tr><td>39736</td><td><a href="#316">316</a></td><td>Replace a constant (Replace 76 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39737</td><td><a href="#316">316</a></td><td>Replace a constant (Replace 76 with 77(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39738</td><td><a href="#316">316</a></td><td>Replace a constant (Replace 76 with 75(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39739</td><td><a href="#317">317</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39740</td><td><a href="#317">317</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39741</td><td><a href="#317">317</a></td><td>Negate jump condition (Replace IF_ICMPGE with  IF_ICMPLT)</td><td><img src="detected.png"/></td></tr>
+<tr><td>39742</td><td><a href="#318">318</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>39744</td><td><a href="#321">321</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39743</td><td><a href="#321">321</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39745</td><td><a href="#321">321</a></td><td>Negate jump condition (Replace IF_ICMPGE with  IF_ICMPLT)</td><td><img src="detected.png"/></td></tr>
+<tr><td>39747</td><td><a href="#322">322</a></td><td>Replace a constant (Replace -1 with -2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39746</td><td><a href="#322">322</a></td><td>Replace a constant (Replace -1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39748</td><td><a href="#322">322</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>39749</td><td><a href="#373">373</a></td><td>Replace a constant (Replace 44 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39750</td><td><a href="#373">373</a></td><td>Replace a constant (Replace 44 with 43(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39751</td><td><a href="#373">373</a></td><td>Replace a constant (Replace 44 with 45(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39754</td><td><a href="#374">374</a></td><td>Replace a constant (Replace 48 with 47(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39752</td><td><a href="#374">374</a></td><td>Replace a constant (Replace 48 with 49(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39753</td><td><a href="#374">374</a></td><td>Replace a constant (Replace 48 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39755</td><td><a href="#375">375</a></td><td>Replace a constant (Replace 60 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39757</td><td><a href="#375">375</a></td><td>Replace a constant (Replace 60 with 61(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39756</td><td><a href="#375">375</a></td><td>Replace a constant (Replace 60 with 59(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39758</td><td><a href="#376">376</a></td><td>Replace a constant (Replace 64 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39759</td><td><a href="#376">376</a></td><td>Replace a constant (Replace 64 with 65(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39760</td><td><a href="#376">376</a></td><td>Replace a constant (Replace 64 with 63(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39762</td><td><a href="#377">377</a></td><td>Replace a constant (Replace 68 with 69(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39763</td><td><a href="#377">377</a></td><td>Replace a constant (Replace 68 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39761</td><td><a href="#377">377</a></td><td>Replace a constant (Replace 68 with 67(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39766</td><td><a href="#378">378</a></td><td>Replace a constant (Replace 72 with 73(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39764</td><td><a href="#378">378</a></td><td>Replace a constant (Replace 72 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39765</td><td><a href="#378">378</a></td><td>Replace a constant (Replace 72 with 71(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39767</td><td><a href="#381">381</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39768</td><td><a href="#381">381</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39770</td><td><a href="#381">381(1)</a></td><td>Replace a constant (Replace 512 with 511(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39771</td><td><a href="#381">381(1)</a></td><td>Replace a constant (Replace 512 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39769</td><td><a href="#381">381(1)</a></td><td>Replace a constant (Replace 512 with 513(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39772</td><td><a href="#381">381</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>39773</td><td><a href="#384">384</a></td><td>Replace a constant (Replace 512 with 513(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>39775</td><td><a href="#384">384</a></td><td>Replace a constant (Replace 512 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39774</td><td><a href="#384">384</a></td><td>Replace a constant (Replace 512 with 511(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>39777</td><td><a href="#384">384</a></td><td>Negate jump condition (Replace IF_ICMPGE with  IF_ICMPLT)</td><td><img src="detected.png"/></td></tr>
+<tr><td>39776</td><td><a href="#384">384</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>39778</td><td><a href="#385">385</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>39779</td><td><a href="#385">385</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>39780</td><td><a href="#385">385</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+</table>
+</body>
+</html>

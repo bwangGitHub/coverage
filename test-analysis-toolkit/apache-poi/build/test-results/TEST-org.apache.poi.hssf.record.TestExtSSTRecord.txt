@@ -1,0 +1,4 @@
+Testsuite: org.apache.poi.hssf.record.TestExtSSTRecord
+Tests run: 1, Failures: 0, Errors: 0, Time elapsed: 0.008 sec
+
+Testcase: test50967 took 0.008 sec

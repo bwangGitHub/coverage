@@ -1,0 +1,47 @@
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/repos/asf/!svn/ver/1296977/poi/trunk/src/ooxml/java/org/apache/poi/xssf/usermodel/charts
+END
+XSSFChartAxis.java
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/repos/asf/!svn/ver/1296977/poi/trunk/src/ooxml/java/org/apache/poi/xssf/usermodel/charts/XSSFChartAxis.java
+END
+XSSFManualLayout.java
+K 25
+svn:wc:ra_dav:version-url
+V 111
+/repos/asf/!svn/ver/1296977/poi/trunk/src/ooxml/java/org/apache/poi/xssf/usermodel/charts/XSSFManualLayout.java
+END
+XSSFChartUtil.java
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/repos/asf/!svn/ver/1167579/poi/trunk/src/ooxml/java/org/apache/poi/xssf/usermodel/charts/XSSFChartUtil.java
+END
+XSSFChartLegend.java
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/repos/asf/!svn/ver/1167579/poi/trunk/src/ooxml/java/org/apache/poi/xssf/usermodel/charts/XSSFChartLegend.java
+END
+XSSFScatterChartData.java
+K 25
+svn:wc:ra_dav:version-url
+V 115
+/repos/asf/!svn/ver/1167579/poi/trunk/src/ooxml/java/org/apache/poi/xssf/usermodel/charts/XSSFScatterChartData.java
+END
+XSSFValueAxis.java
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/repos/asf/!svn/ver/1296977/poi/trunk/src/ooxml/java/org/apache/poi/xssf/usermodel/charts/XSSFValueAxis.java
+END
+XSSFChartDataFactory.java
+K 25
+svn:wc:ra_dav:version-url
+V 115
+/repos/asf/!svn/ver/1167579/poi/trunk/src/ooxml/java/org/apache/poi/xssf/usermodel/charts/XSSFChartDataFactory.java
+END

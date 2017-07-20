@@ -1,0 +1,5 @@
+Testsuite: org.apache.poi.ss.formula.functions.TestPmt
+Tests run: 2, Failures: 0, Errors: 0, Time elapsed: 0 sec
+
+Testcase: testBasic took 0 sec
+Testcase: test3args took 0 sec

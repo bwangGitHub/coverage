@@ -1,0 +1,164 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN
+"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>
+org.apache.poi.hssf.eventusermodel.HSSFRequest
+</title>
+<link href="prettify.css" type="text/css" rel="stylesheet" />
+<script type="text/javascript" src="prettify.js"></script>
+</head>
+<body onload="prettyPrint()">
+<h2>Javalanche report for class:<br/> org.apache.poi.hssf.eventusermodel.HSSFRequest </h2><pre class="prettyprint" style="border: 1px solid #888;padding: 2px"><span class="nocode"><a name="1">  1: </a></span>/* ====================================================================
+<span class="nocode"><a name="2">  2: </a></span>   Licensed to the Apache Software Foundation (ASF) under one or more
+<span class="nocode"><a name="3">  3: </a></span>   contributor license agreements.  See the NOTICE file distributed with
+<span class="nocode"><a name="4">  4: </a></span>   this work for additional information regarding copyright ownership.
+<span class="nocode"><a name="5">  5: </a></span>   The ASF licenses this file to You under the Apache License, Version 2.0
+<span class="nocode"><a name="6">  6: </a></span>   (the &quot;License&quot;); you may not use this file except in compliance with
+<span class="nocode"><a name="7">  7: </a></span>   the License.  You may obtain a copy of the License at
+<span class="nocode"><a name="8">  8: </a></span>
+<span class="nocode"><a name="9">  9: </a></span>       http://www.apache.org/licenses/LICENSE-2.0
+<span class="nocode"><a name="10"> 10: </a></span>
+<span class="nocode"><a name="11"> 11: </a></span>   Unless required by applicable law or agreed to in writing, software
+<span class="nocode"><a name="12"> 12: </a></span>   distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+<span class="nocode"><a name="13"> 13: </a></span>   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+<span class="nocode"><a name="14"> 14: </a></span>   See the License for the specific language governing permissions and
+<span class="nocode"><a name="15"> 15: </a></span>   limitations under the License.
+<span class="nocode"><a name="16"> 16: </a></span>==================================================================== */
+<span class="nocode"><a name="17"> 17: </a></span>
+<span class="nocode"><a name="18"> 18: </a></span>package org.apache.poi.hssf.eventusermodel;
+<span class="nocode"><a name="19"> 19: </a></span>
+<span class="nocode"><a name="20"> 20: </a></span>import java.util.HashMap;
+<span class="nocode"><a name="21"> 21: </a></span>import java.util.List;
+<span class="nocode"><a name="22"> 22: </a></span>import java.util.ArrayList;
+<span class="nocode"><a name="23"> 23: </a></span>import java.util.Map;
+<span class="nocode"><a name="24"> 24: </a></span>
+<span class="nocode"><a name="25"> 25: </a></span>import org.apache.poi.hssf.record.Record;
+<span class="nocode"><a name="26"> 26: </a></span>import org.apache.poi.hssf.record.RecordFactory;
+<span class="nocode"><a name="27"> 27: </a></span>
+<span class="nocode"><a name="28"> 28: </a></span>/**
+<span class="nocode"><a name="29"> 29: </a></span> * An HSSFRequest object should be constructed registering an instance or multiple
+<span class="nocode"><a name="30"> 30: </a></span> * instances of HSSFListener with each Record.sid you wish to listen for.
+<span class="nocode"><a name="31"> 31: </a></span> *
+<span class="nocode"><a name="32"> 32: </a></span> * @see org.apache.poi.hssf.eventusermodel.HSSFEventFactory
+<span class="nocode"><a name="33"> 33: </a></span> * @see org.apache.poi.hssf.eventusermodel.HSSFListener
+<span class="nocode"><a name="34"> 34: </a></span> * @see org.apache.poi.hssf.eventusermodel.HSSFUserException
+<span class="nocode"><a name="35"> 35: </a></span> * @author  Andrew C. Oliver (acoliver at apache dot org)
+<span class="nocode"><a name="36"> 36: </a></span> * @author Carey Sublette (careysub@earthling.net)
+<span class="nocode"><a name="37"> 37: </a></span> */
+<span class="nocode"><a name="38"> 38: </a></span>public class HSSFRequest {
+<span class="nocode"><a name="39"> 39: </a></span>	private final Map&lt;Short, List&lt;HSSFListener&gt;&gt; _records;
+<span class="nocode"><a name="40"> 40: </a></span>
+<span class="nocode"><a name="41"> 41: </a></span>	/** Creates a new instance of HSSFRequest */
+<span class="nocode"><a name="42"> 42: </a></span>	public HSSFRequest() {
+<span class="nocode"><a name="43"> 43: </a></span>		_records = new HashMap&lt;Short, List&lt;HSSFListener&gt;&gt;(50); // most folks won't listen for too many of these
+<span class="nocode"><a name="44"> 44: </a></span>	}
+<span class="nocode"><a name="45"> 45: </a></span>
+<span class="nocode"><a name="46"> 46: </a></span>	/**
+<span class="nocode"><a name="47"> 47: </a></span>	 * add an event listener for a particular record type.  The trick is you have to know
+<span class="nocode"><a name="48"> 48: </a></span>	 * what the records are for or just start with our examples and build on them.  Alternatively,
+<span class="nocode"><a name="49"> 49: </a></span>	 * you CAN call addListenerForAllRecords and you'll receive ALL record events in one listener,
+<span class="nocode"><a name="50"> 50: </a></span>	 * but if you like to squeeze every last byte of efficiency out of life you my not like this.
+<span class="nocode"><a name="51"> 51: </a></span>	 * (its sure as heck what I plan to do)
+<span class="nocode"><a name="52"> 52: </a></span>	 *
+<span class="nocode"><a name="53"> 53: </a></span>	 * @see #addListenerForAllRecords(HSSFListener)
+<span class="nocode"><a name="54"> 54: </a></span>	 *
+<span class="nocode"><a name="55"> 55: </a></span>	 * @param lsnr for the event
+<span class="nocode"><a name="56"> 56: </a></span>	 * @param sid identifier for the record type this is the .sid static member on the individual records
+<span class="nocode"><a name="57"> 57: </a></span>	 *        for example req.addListener(myListener, BOFRecord.sid)
+<span class="nocode"><a name="58"> 58: </a></span>	 */
+<span class="nocode"><a name="59"> 59: </a></span>	public void addListener(HSSFListener lsnr, short sid) {
+<span class="nocode"><a name="60"> 60: </a></span>		List&lt;HSSFListener&gt; list = _records.get(Short.valueOf(sid));
+<span class="nocode"><a name="61"> 61: </a></span>
+<span class="nocode"><a name="62"> 62: </a></span>		if (list == null) {
+<span class="nocode"><a name="63"> 63: </a></span>			list = new ArrayList&lt;HSSFListener&gt;(1); // probably most people will use one listener
+<span class="nocode"><a name="64"> 64: </a></span>			_records.put(Short.valueOf(sid), list);
+<span class="nocode"><a name="65"> 65: </a></span>		}
+<span class="nocode"><a name="66"> 66: </a></span>		list.add(lsnr);
+<span class="nocode"><a name="67"> 67: </a></span>	}
+<span class="nocode"><a name="68"> 68: </a></span>
+<span class="nocode"><a name="69"> 69: </a></span>	/**
+<span class="nocode"><a name="70"> 70: </a></span>	 * This is the equivalent of calling addListener(myListener, sid) for EVERY
+<span class="nocode"><a name="71"> 71: </a></span>	 * record in the org.apache.poi.hssf.record package. This is for lazy
+<span class="nocode"><a name="72"> 72: </a></span>	 * people like me. You can call this more than once with more than one listener, but
+<span class="nocode"><a name="73"> 73: </a></span>	 * that seems like a bad thing to do from a practice-perspective unless you have a
+<span class="nocode"><a name="74"> 74: </a></span>	 * compelling reason to do so (like maybe you send the event two places or log it or
+<span class="nocode"><a name="75"> 75: </a></span>	 * something?).
+<span class="nocode"><a name="76"> 76: </a></span>	 *
+<span class="nocode"><a name="77"> 77: </a></span>	 * @param lsnr a single listener to associate with ALL records
+<span class="nocode"><a name="78"> 78: </a></span>	 */
+<span class="nocode"><a name="79"> 79: </a></span>	public void addListenerForAllRecords(HSSFListener lsnr) {
+<span class="nocode"><a name="80"> 80: </a></span>		short[] rectypes = RecordFactory.getAllKnownRecordSIDs();
+<span class="nocode"><a name="81"> 81: </a></span>
+<span class="nocode"><a name="82"> 82: </a></span>		for (int k = 0; k &lt; rectypes.length; k++) {
+<span class="nocode"><a name="83"> 83: </a></span>			addListener(lsnr, rectypes[k]);
+<span class="nocode"><a name="84"> 84: </a></span>		}
+<span class="nocode"><a name="85"> 85: </a></span>	}
+<span class="nocode"><a name="86"> 86: </a></span>
+<span class="nocode"><a name="87"> 87: </a></span>	/**
+<span class="nocode"><a name="88"> 88: </a></span>	 * Called by HSSFEventFactory, passes the Record to each listener associated with
+<span class="nocode"><a name="89"> 89: </a></span>	 * a record.sid.
+<span class="nocode"><a name="90"> 90: </a></span>	 *
+<span class="nocode"><a name="91"> 91: </a></span>	 * Exception and return value added 2002-04-19 by Carey Sublette
+<span class="nocode"><a name="92"> 92: </a></span>	 *
+<span class="nocode"><a name="93"> 93: </a></span>	 * @return numeric user-specified result code. If zero continue processing.
+<span class="nocode"><a name="94"> 94: </a></span>	 * @throws HSSFUserException User exception condition
+<span class="nocode"><a name="95"> 95: </a></span>	 */
+<span class="nocode"><a name="96"> 96: </a></span>	protected short processRecord(Record rec) throws HSSFUserException {
+<span class="nocode"><a name="97"> 97: </a></span>		Object obj = _records.get(Short.valueOf(rec.getSid()));
+<span class="nocode"><a name="98"> 98: </a></span>		short userCode = 0;
+<span class="nocode"><a name="99"> 99: </a></span>
+<span class="nocode"><a name="100">100: </a></span>		if (obj != null) {
+<span class="nocode"><a name="101">101: </a></span>			List listeners = (List) obj;
+<span class="nocode"><a name="102">102: </a></span>
+<span class="nocode"><a name="103">103: </a></span>			for (int k = 0; k &lt; listeners.size(); k++) {
+<span class="nocode"><a name="104">104: </a></span>				Object listenObj = listeners.get(k);
+<span class="nocode"><a name="105">105: </a></span>				if (listenObj instanceof AbortableHSSFListener) {
+<span class="nocode"><a name="106">106: </a></span>					AbortableHSSFListener listener = (AbortableHSSFListener) listenObj;
+<span class="nocode"><a name="107">107: </a></span>					userCode = listener.abortableProcessRecord(rec);
+<span class="nocode"><a name="108">108: </a></span>					if (userCode != 0)
+<span class="nocode"><a name="109">109: </a></span>						break;
+<span class="nocode"><a name="110">110: </a></span>				} else {
+<span class="nocode"><a name="111">111: </a></span>					HSSFListener listener = (HSSFListener) listenObj;
+<span class="nocode"><a name="112">112: </a></span>					listener.processRecord(rec);
+<span class="nocode"><a name="113">113: </a></span>				}
+<span class="nocode"><a name="114">114: </a></span>			}
+<span class="nocode"><a name="115">115: </a></span>		}
+<span class="nocode"><a name="116">116: </a></span>		return userCode;
+<span class="nocode"><a name="117">117: </a></span>	}
+<span class="nocode"><a name="118">118: </a></span>}
+</pre><table class="mutation_table" summary="Mutations">
+<tr><th>ID</th><th>Line</th><th>Type</th><th>Detected</th></tr><tr><td>47648</td><td><a href="#43">43</a></td><td>Replace a constant (Replace 50 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>47649</td><td><a href="#43">43</a></td><td>Replace a constant (Replace 50 with 51(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>47647</td><td><a href="#43">43</a></td><td>Replace a constant (Replace 50 with 49(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>47650</td><td><a href="#60">60</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>47651</td><td><a href="#60">60(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>47652</td><td><a href="#62">62</a></td><td>Negate jump condition (Replace IFNONNULL with  IFNULL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>47654</td><td><a href="#63">63</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>47653</td><td><a href="#63">63</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>47655</td><td><a href="#64">64</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>47656</td><td><a href="#64">64(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>47657</td><td><a href="#66">66</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>47658</td><td><a href="#80">80</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>47660</td><td><a href="#82">82</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>47659</td><td><a href="#82">82</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>47661</td><td><a href="#82">82</a></td><td>Negate jump condition (Replace IF_ICMPGE with  IF_ICMPLT)</td><td><img src="detected.png"/></td></tr>
+<tr><td>47662</td><td><a href="#83">83</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>47663</td><td><a href="#97">97</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>47664</td><td><a href="#97">97(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>47665</td><td><a href="#97">97(2)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>47666</td><td><a href="#98">98</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>47667</td><td><a href="#98">98</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>47668</td><td><a href="#100">100</a></td><td>Negate jump condition (Replace IFNULL with  IFNONNULL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>47670</td><td><a href="#103">103</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>47669</td><td><a href="#103">103</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>47672</td><td><a href="#103">103</a></td><td>Negate jump condition (Replace IF_ICMPGE with  IF_ICMPLT)</td><td><img src="detected.png"/></td></tr>
+<tr><td>47671</td><td><a href="#103">103</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>47673</td><td><a href="#104">104</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>47674</td><td><a href="#105">105</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>47675</td><td><a href="#107">107</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>47676</td><td><a href="#108">108</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>47677</td><td><a href="#112">112</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+</table>
+</body>
+</html>

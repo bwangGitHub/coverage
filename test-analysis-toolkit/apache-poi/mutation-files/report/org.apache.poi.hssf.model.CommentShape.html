@@ -1,0 +1,231 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN
+"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>
+org.apache.poi.hssf.model.CommentShape
+</title>
+<link href="prettify.css" type="text/css" rel="stylesheet" />
+<script type="text/javascript" src="prettify.js"></script>
+</head>
+<body onload="prettyPrint()">
+<h2>Javalanche report for class:<br/> org.apache.poi.hssf.model.CommentShape </h2><pre class="prettyprint" style="border: 1px solid #888;padding: 2px"><span class="nocode"><a name="1">  1: </a></span>/* ====================================================================
+<span class="nocode"><a name="2">  2: </a></span>   Licensed to the Apache Software Foundation (ASF) under one or more
+<span class="nocode"><a name="3">  3: </a></span>   contributor license agreements.  See the NOTICE file distributed with
+<span class="nocode"><a name="4">  4: </a></span>   this work for additional information regarding copyright ownership.
+<span class="nocode"><a name="5">  5: </a></span>   The ASF licenses this file to You under the Apache License, Version 2.0
+<span class="nocode"><a name="6">  6: </a></span>   (the &quot;License&quot;); you may not use this file except in compliance with
+<span class="nocode"><a name="7">  7: </a></span>   the License.  You may obtain a copy of the License at
+<span class="nocode"><a name="8">  8: </a></span>
+<span class="nocode"><a name="9">  9: </a></span>       http://www.apache.org/licenses/LICENSE-2.0
+<span class="nocode"><a name="10"> 10: </a></span>
+<span class="nocode"><a name="11"> 11: </a></span>   Unless required by applicable law or agreed to in writing, software
+<span class="nocode"><a name="12"> 12: </a></span>   distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+<span class="nocode"><a name="13"> 13: </a></span>   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+<span class="nocode"><a name="14"> 14: </a></span>   See the License for the specific language governing permissions and
+<span class="nocode"><a name="15"> 15: </a></span>   limitations under the License.
+<span class="nocode"><a name="16"> 16: </a></span>==================================================================== */
+<span class="nocode"><a name="17"> 17: </a></span>
+<span class="nocode"><a name="18"> 18: </a></span>package org.apache.poi.hssf.model;
+<span class="nocode"><a name="19"> 19: </a></span>
+<span class="nocode"><a name="20"> 20: </a></span>import java.util.Iterator;
+<span class="nocode"><a name="21"> 21: </a></span>import java.util.List;
+<span class="nocode"><a name="22"> 22: </a></span>
+<span class="nocode"><a name="23"> 23: </a></span>import org.apache.poi.ddf.EscherOptRecord;
+<span class="nocode"><a name="24"> 24: </a></span>import org.apache.poi.ddf.EscherProperties;
+<span class="nocode"><a name="25"> 25: </a></span>import org.apache.poi.ddf.EscherProperty;
+<span class="nocode"><a name="26"> 26: </a></span>import org.apache.poi.ddf.EscherSimpleProperty;
+<span class="nocode"><a name="27"> 27: </a></span>import org.apache.poi.hssf.record.CommonObjectDataSubRecord;
+<span class="nocode"><a name="28"> 28: </a></span>import org.apache.poi.hssf.record.NoteRecord;
+<span class="nocode"><a name="29"> 29: </a></span>import org.apache.poi.hssf.record.NoteStructureSubRecord;
+<span class="nocode"><a name="30"> 30: </a></span>import org.apache.poi.hssf.record.ObjRecord;
+<span class="nocode"><a name="31"> 31: </a></span>import org.apache.poi.hssf.record.SubRecord;
+<span class="nocode"><a name="32"> 32: </a></span>import org.apache.poi.hssf.usermodel.HSSFComment;
+<span class="nocode"><a name="33"> 33: </a></span>import org.apache.poi.hssf.usermodel.HSSFShape;
+<span class="nocode"><a name="34"> 34: </a></span>
+<span class="nocode"><a name="35"> 35: </a></span>/**
+<span class="nocode"><a name="36"> 36: </a></span> * Represents a cell comment.
+<span class="nocode"><a name="37"> 37: </a></span> * This class converts highlevel model data from &lt;code&gt;HSSFComment&lt;/code&gt;
+<span class="nocode"><a name="38"> 38: </a></span> * to low-level records.
+<span class="nocode"><a name="39"> 39: </a></span> *
+<span class="nocode"><a name="40"> 40: </a></span> * @author Yegor Kozlov
+<span class="nocode"><a name="41"> 41: </a></span> */
+<span class="nocode"><a name="42"> 42: </a></span>public final class CommentShape extends TextboxShape {
+<span class="nocode"><a name="43"> 43: </a></span>
+<span class="nocode"><a name="44"> 44: </a></span>    private NoteRecord _note;
+<span class="nocode"><a name="45"> 45: </a></span>
+<span class="nocode"><a name="46"> 46: </a></span>    /**
+<span class="nocode"><a name="47"> 47: </a></span>     * Creates the low-level records for a comment.
+<span class="nocode"><a name="48"> 48: </a></span>     *
+<span class="nocode"><a name="49"> 49: </a></span>     * @param hssfShape  The highlevel shape.
+<span class="nocode"><a name="50"> 50: </a></span>     * @param shapeId    The shape id to use for this shape.
+<span class="nocode"><a name="51"> 51: </a></span>     */
+<span class="nocode"><a name="52"> 52: </a></span>     public CommentShape( HSSFComment hssfShape, int shapeId )
+<span class="nocode"><a name="53"> 53: </a></span>    {
+<span class="nocode"><a name="54"> 54: </a></span>        super(hssfShape, shapeId);
+<span class="nocode"><a name="55"> 55: </a></span>
+<span class="nocode"><a name="56"> 56: </a></span>        _note = createNoteRecord(hssfShape, shapeId);
+<span class="nocode"><a name="57"> 57: </a></span>
+<span class="nocode"><a name="58"> 58: </a></span>        ObjRecord obj = getObjRecord();
+<span class="nocode"><a name="59"> 59: </a></span>        List&lt;SubRecord&gt; records = obj.getSubRecords();
+<span class="nocode"><a name="60"> 60: </a></span>        int cmoIdx = 0;
+<span class="nocode"><a name="61"> 61: </a></span>        for (int i = 0; i &lt; records.size(); i++) {
+<span class="nocode"><a name="62"> 62: </a></span>            Object r = records.get(i);
+<span class="nocode"><a name="63"> 63: </a></span>
+<span class="nocode"><a name="64"> 64: </a></span>            if (r instanceof CommonObjectDataSubRecord){
+<span class="nocode"><a name="65"> 65: </a></span>                //modify autofill attribute inherited from &lt;code&gt;TextObjectRecord&lt;/code&gt;
+<span class="nocode"><a name="66"> 66: </a></span>                CommonObjectDataSubRecord cmo = (CommonObjectDataSubRecord)r;
+<span class="nocode"><a name="67"> 67: </a></span>                cmo.setAutofill(false);
+<span class="nocode"><a name="68"> 68: </a></span>                cmoIdx = i;
+<span class="nocode"><a name="69"> 69: </a></span>            }
+<span class="nocode"><a name="70"> 70: </a></span>        }
+<span class="nocode"><a name="71"> 71: </a></span>        //add NoteStructure sub record
+<span class="nocode"><a name="72"> 72: </a></span>        //we don't know it's format, for now the record data is empty
+<span class="nocode"><a name="73"> 73: </a></span>        NoteStructureSubRecord u = new NoteStructureSubRecord();
+<span class="nocode"><a name="74"> 74: </a></span>        obj.addSubRecord(cmoIdx+1, u);
+<span class="nocode"><a name="75"> 75: </a></span>    }
+<span class="nocode"><a name="76"> 76: </a></span>
+<span class="nocode"><a name="77"> 77: </a></span>    /**
+<span class="nocode"><a name="78"> 78: </a></span>     * Creates the low level &lt;code&gt;NoteRecord&lt;/code&gt;
+<span class="nocode"><a name="79"> 79: </a></span>     *  which holds the comment attributes.
+<span class="nocode"><a name="80"> 80: </a></span>     */
+<span class="nocode"><a name="81"> 81: </a></span>     private NoteRecord createNoteRecord( HSSFComment shape, int shapeId )
+<span class="nocode"><a name="82"> 82: </a></span>    {
+<span class="nocode"><a name="83"> 83: </a></span>        NoteRecord note = new NoteRecord();
+<span class="nocode"><a name="84"> 84: </a></span>        note.setColumn(shape.getColumn());
+<span class="nocode"><a name="85"> 85: </a></span>        note.setRow(shape.getRow());
+<span class="nocode"><a name="86"> 86: </a></span>        note.setFlags(shape.isVisible() ? NoteRecord.NOTE_VISIBLE : NoteRecord.NOTE_HIDDEN);
+<span class="nocode"><a name="87"> 87: </a></span>        note.setShapeId(shapeId);
+<span class="nocode"><a name="88"> 88: </a></span>        note.setAuthor(shape.getAuthor() == null ? &quot;&quot; : shape.getAuthor());
+<span class="nocode"><a name="89"> 89: </a></span>        return note;
+<span class="nocode"><a name="90"> 90: </a></span>    }
+<span class="nocode"><a name="91"> 91: </a></span>
+<span class="nocode"><a name="92"> 92: </a></span>    /**
+<span class="nocode"><a name="93"> 93: </a></span>     * Sets standard escher options for a comment.
+<span class="nocode"><a name="94"> 94: </a></span>     * This method is responsible for setting default background,
+<span class="nocode"><a name="95"> 95: </a></span>     * shading and other comment properties.
+<span class="nocode"><a name="96"> 96: </a></span>     *
+<span class="nocode"><a name="97"> 97: </a></span>     * @param shape   The highlevel shape.
+<span class="nocode"><a name="98"> 98: </a></span>     * @param opt     The escher records holding the proerties
+<span class="nocode"><a name="99"> 99: </a></span>     * @return number of escher options added
+<span class="nocode"><a name="100">100: </a></span>     */
+<span class="nocode"><a name="101">101: </a></span>    protected int addStandardOptions( HSSFShape shape, EscherOptRecord opt )
+<span class="nocode"><a name="102">102: </a></span>    {
+<span class="nocode"><a name="103">103: </a></span>        super.addStandardOptions(shape, opt);
+<span class="nocode"><a name="104">104: </a></span>
+<span class="nocode"><a name="105">105: </a></span>        //remove unnecessary properties inherited from TextboxShape
+<span class="nocode"><a name="106">106: </a></span>        List&lt;EscherProperty&gt; props = opt.getEscherProperties();
+<span class="nocode"><a name="107">107: </a></span>        for (Iterator&lt;EscherProperty&gt; iterator = props.iterator(); iterator.hasNext(); ) {
+<span class="nocode"><a name="108">108: </a></span>            EscherProperty prop = iterator.next();
+<span class="nocode"><a name="109">109: </a></span>            switch (prop.getId()){
+<span class="nocode"><a name="110">110: </a></span>                case EscherProperties.TEXT__TEXTLEFT:
+<span class="nocode"><a name="111">111: </a></span>                case EscherProperties.TEXT__TEXTRIGHT:
+<span class="nocode"><a name="112">112: </a></span>                case EscherProperties.TEXT__TEXTTOP:
+<span class="nocode"><a name="113">113: </a></span>                case EscherProperties.TEXT__TEXTBOTTOM:
+<span class="nocode"><a name="114">114: </a></span>                case EscherProperties.GROUPSHAPE__PRINT:
+<span class="nocode"><a name="115">115: </a></span>                case EscherProperties.FILL__FILLBACKCOLOR:
+<span class="nocode"><a name="116">116: </a></span>                case EscherProperties.LINESTYLE__COLOR:
+<span class="nocode"><a name="117">117: </a></span>                    iterator.remove();
+<span class="nocode"><a name="118">118: </a></span>                    break;
+<span class="nocode"><a name="119">119: </a></span>            }
+<span class="nocode"><a name="120">120: </a></span>        }
+<span class="nocode"><a name="121">121: </a></span>
+<span class="nocode"><a name="122">122: </a></span>        HSSFComment comment = (HSSFComment)shape;
+<span class="nocode"><a name="123">123: </a></span>        opt.addEscherProperty( new EscherSimpleProperty( EscherProperties.GROUPSHAPE__PRINT, comment.isVisible() ? 0x000A0000 : 0x000A0002) );
+<span class="nocode"><a name="124">124: </a></span>        opt.addEscherProperty( new EscherSimpleProperty( EscherProperties.SHADOWSTYLE__SHADOWOBSURED, 0x00030003 ) );
+<span class="nocode"><a name="125">125: </a></span>        opt.addEscherProperty( new EscherSimpleProperty( EscherProperties.SHADOWSTYLE__COLOR, 0x00000000 ) );
+<span class="nocode"><a name="126">126: </a></span>        opt.sortProperties();
+<span class="nocode"><a name="127">127: </a></span>        return opt.getEscherProperties().size();   // # options added
+<span class="nocode"><a name="128">128: </a></span>    }
+<span class="nocode"><a name="129">129: </a></span>
+<span class="nocode"><a name="130">130: </a></span>    /**
+<span class="nocode"><a name="131">131: </a></span>     * Return the &lt;code&gt;NoteRecord&lt;/code&gt; holding the comment attributes
+<span class="nocode"><a name="132">132: </a></span>     *
+<span class="nocode"><a name="133">133: </a></span>     * @return &lt;code&gt;NoteRecord&lt;/code&gt; holding the comment attributes
+<span class="nocode"><a name="134">134: </a></span>     */
+<span class="nocode"><a name="135">135: </a></span>    public NoteRecord getNoteRecord()
+<span class="nocode"><a name="136">136: </a></span>    {
+<span class="nocode"><a name="137">137: </a></span>        return _note;
+<span class="nocode"><a name="138">138: </a></span>    }
+<span class="nocode"><a name="139">139: </a></span>
+<span class="nocode"><a name="140">140: </a></span>    @Override
+<span class="nocode"><a name="141">141: </a></span>    int getCmoObjectId(int shapeId){
+<span class="nocode"><a name="142">142: </a></span>        return shapeId;
+<span class="nocode"><a name="143">143: </a></span>    }
+<span class="nocode"><a name="144">144: </a></span>
+<span class="nocode"><a name="145">145: </a></span>}
+</pre><table class="mutation_table" summary="Mutations">
+<tr><th>ID</th><th>Line</th><th>Type</th><th>Detected</th></tr><tr><td>52721</td><td><a href="#56">56</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>52722</td><td><a href="#58">58</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>52723</td><td><a href="#59">59</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>52724</td><td><a href="#60">60</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>52725</td><td><a href="#60">60</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>52727</td><td><a href="#61">61</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>52726</td><td><a href="#61">61</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>52729</td><td><a href="#61">61</a></td><td>Negate jump condition (Replace IF_ICMPGE with  IF_ICMPLT)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>52728</td><td><a href="#61">61</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>52730</td><td><a href="#62">62</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>52731</td><td><a href="#64">64</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>52732</td><td><a href="#67">67</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>52733</td><td><a href="#67">67</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>52734</td><td><a href="#67">67</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>52736</td><td><a href="#74">74</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>52735</td><td><a href="#74">74</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>52737</td><td><a href="#74">74</a></td><td>Replace arithmetic operator (Replace IADD with ISUB)</td><td><img src="detected.png"/></td></tr>
+<tr><td>52738</td><td><a href="#74">74</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>52739</td><td><a href="#84">84</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>52740</td><td><a href="#84">84(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>52741</td><td><a href="#85">85</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>52742</td><td><a href="#85">85(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>52745</td><td><a href="#86">86</a></td><td>Replace a constant (Replace 2 with 3(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>52746</td><td><a href="#86">86</a></td><td>Replace a constant (Replace 2 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>52747</td><td><a href="#86">86</a></td><td>Replace a constant (Replace 2 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>52748</td><td><a href="#86">86(1)</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>52749</td><td><a href="#86">86(1)</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>52744</td><td><a href="#86">86</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>52743</td><td><a href="#86">86</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>52750</td><td><a href="#86">86(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>52751</td><td><a href="#87">87</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>52753</td><td><a href="#88">88</a></td><td>Negate jump condition (Replace IFNONNULL with  IFNULL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>52752</td><td><a href="#88">88</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>52754</td><td><a href="#88">88(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>52755</td><td><a href="#88">88(2)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>52756</td><td><a href="#103">103</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>52757</td><td><a href="#106">106</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>52760</td><td><a href="#107">107</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>52758</td><td><a href="#107">107</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>52759</td><td><a href="#107">107(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>52761</td><td><a href="#108">108</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>52762</td><td><a href="#109">109</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>52763</td><td><a href="#117">117</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>52764</td><td><a href="#123">123</a></td><td>Replace a constant (Replace 959 with 958(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>52765</td><td><a href="#123">123</a></td><td>Replace a constant (Replace 959 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>52766</td><td><a href="#123">123</a></td><td>Replace a constant (Replace 959 with 960(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>52771</td><td><a href="#123">123(1)</a></td><td>Replace a constant (Replace 655360 with 655361(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>52770</td><td><a href="#123">123(1)</a></td><td>Replace a constant (Replace 655360 with 655359(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>52769</td><td><a href="#123">123(1)</a></td><td>Replace a constant (Replace 655360 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>52773</td><td><a href="#123">123(2)</a></td><td>Replace a constant (Replace 655362 with 655363(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>52772</td><td><a href="#123">123(2)</a></td><td>Replace a constant (Replace 655362 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>52774</td><td><a href="#123">123(2)</a></td><td>Replace a constant (Replace 655362 with 655361(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>52768</td><td><a href="#123">123</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>52767</td><td><a href="#123">123</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>52775</td><td><a href="#123">123(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>52778</td><td><a href="#124">124</a></td><td>Replace a constant (Replace 575 with 576(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>52776</td><td><a href="#124">124</a></td><td>Replace a constant (Replace 575 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>52777</td><td><a href="#124">124</a></td><td>Replace a constant (Replace 575 with 574(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>52781</td><td><a href="#124">124(1)</a></td><td>Replace a constant (Replace 196611 with 196610(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>52779</td><td><a href="#124">124(1)</a></td><td>Replace a constant (Replace 196611 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>52780</td><td><a href="#124">124(1)</a></td><td>Replace a constant (Replace 196611 with 196612(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>52782</td><td><a href="#124">124</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>52784</td><td><a href="#125">125</a></td><td>Replace a constant (Replace 513 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>52785</td><td><a href="#125">125</a></td><td>Replace a constant (Replace 513 with 514(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>52783</td><td><a href="#125">125</a></td><td>Replace a constant (Replace 513 with 512(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>52787</td><td><a href="#125">125(1)</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>52786</td><td><a href="#125">125(1)</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>52788</td><td><a href="#125">125</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>52789</td><td><a href="#126">126</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>52790</td><td><a href="#127">127</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>52791</td><td><a href="#127">127(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+</table>
+</body>
+</html>

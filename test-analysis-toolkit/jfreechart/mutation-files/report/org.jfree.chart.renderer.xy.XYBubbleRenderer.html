@@ -1,0 +1,517 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN
+"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>
+org.jfree.chart.renderer.xy.XYBubbleRenderer
+</title>
+<link href="prettify.css" type="text/css" rel="stylesheet" />
+<script type="text/javascript" src="prettify.js"></script>
+</head>
+<body onload="prettyPrint()">
+<h2>Javalanche report for class:<br/> org.jfree.chart.renderer.xy.XYBubbleRenderer </h2><pre class="prettyprint" style="border: 1px solid #888;padding: 2px"><span class="nocode"><a name="1">  1: </a></span>/* ===========================================================
+<span class="nocode"><a name="2">  2: </a></span> * JFreeChart : a free chart library for the Java(tm) platform
+<span class="nocode"><a name="3">  3: </a></span> * ===========================================================
+<span class="nocode"><a name="4">  4: </a></span> *
+<span class="nocode"><a name="5">  5: </a></span> * (C) Copyright 2000-2007, by Object Refinery Limited and Contributors.
+<span class="nocode"><a name="6">  6: </a></span> *
+<span class="nocode"><a name="7">  7: </a></span> * Project Info:  http://www.jfree.org/jfreechart/index.html
+<span class="nocode"><a name="8">  8: </a></span> *
+<span class="nocode"><a name="9">  9: </a></span> * This library is free software; you can redistribute it and/or modify it 
+<span class="nocode"><a name="10"> 10: </a></span> * under the terms of the GNU Lesser General Public License as published by 
+<span class="nocode"><a name="11"> 11: </a></span> * the Free Software Foundation; either version 2.1 of the License, or 
+<span class="nocode"><a name="12"> 12: </a></span> * (at your option) any later version.
+<span class="nocode"><a name="13"> 13: </a></span> *
+<span class="nocode"><a name="14"> 14: </a></span> * This library is distributed in the hope that it will be useful, but 
+<span class="nocode"><a name="15"> 15: </a></span> * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY 
+<span class="nocode"><a name="16"> 16: </a></span> * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public 
+<span class="nocode"><a name="17"> 17: </a></span> * License for more details.
+<span class="nocode"><a name="18"> 18: </a></span> *
+<span class="nocode"><a name="19"> 19: </a></span> * You should have received a copy of the GNU Lesser General Public
+<span class="nocode"><a name="20"> 20: </a></span> * License along with this library; if not, write to the Free Software
+<span class="nocode"><a name="21"> 21: </a></span> * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, 
+<span class="nocode"><a name="22"> 22: </a></span> * USA.  
+<span class="nocode"><a name="23"> 23: </a></span> *
+<span class="nocode"><a name="24"> 24: </a></span> * [Java is a trademark or registered trademark of Sun Microsystems, Inc. 
+<span class="nocode"><a name="25"> 25: </a></span> * in the United States and other countries.]
+<span class="nocode"><a name="26"> 26: </a></span> *
+<span class="nocode"><a name="27"> 27: </a></span> * ---------------------
+<span class="nocode"><a name="28"> 28: </a></span> * XYBubbleRenderer.java
+<span class="nocode"><a name="29"> 29: </a></span> * ---------------------
+<span class="nocode"><a name="30"> 30: </a></span> * (C) Copyright 2003-2007, by Object Refinery Limited.
+<span class="nocode"><a name="31"> 31: </a></span> *
+<span class="nocode"><a name="32"> 32: </a></span> * Original Author:  David Gilbert (for Object Refinery Limited);
+<span class="nocode"><a name="33"> 33: </a></span> * Contributor(s):   Christian W. Zuckschwerdt;
+<span class="nocode"><a name="34"> 34: </a></span> *
+<span class="nocode"><a name="35"> 35: </a></span> * Changes
+<span class="nocode"><a name="36"> 36: </a></span> * -------
+<span class="nocode"><a name="37"> 37: </a></span> * 28-Jan-2003 : Version 1 (DG);
+<span class="nocode"><a name="38"> 38: </a></span> * 25-Mar-2003 : Implemented Serializable (DG);
+<span class="nocode"><a name="39"> 39: </a></span> * 01-May-2003 : Modified drawItem() method signature (DG);
+<span class="nocode"><a name="40"> 40: </a></span> * 30-Jul-2003 : Modified entity constructor (CZ);
+<span class="nocode"><a name="41"> 41: </a></span> * 20-Aug-2003 : Implemented Cloneable and PublicCloneable (DG);
+<span class="nocode"><a name="42"> 42: </a></span> * 16-Sep-2003 : Changed ChartRenderingInfo --&gt; PlotRenderingInfo (DG);
+<span class="nocode"><a name="43"> 43: </a></span> * 10-Feb-2004 : Small change to drawItem() method to make cut-and-paste 
+<span class="nocode"><a name="44"> 44: </a></span> *               overriding easier (DG);
+<span class="nocode"><a name="45"> 45: </a></span> * 15-Jul-2004 : Switched getZ() and getZValue() methods (DG);
+<span class="nocode"><a name="46"> 46: </a></span> * 19-Jan-2005 : Now accesses only primitives from dataset (DG);
+<span class="nocode"><a name="47"> 47: </a></span> * 28-Feb-2005 : Modify renderer to use circles in legend (DG);
+<span class="nocode"><a name="48"> 48: </a></span> * 17-Mar-2005 : Fixed bug in bubble bounds calculation (DG);
+<span class="nocode"><a name="49"> 49: </a></span> * 20-Apr-2005 : Use generators for legend tooltips and URLs (DG);
+<span class="nocode"><a name="50"> 50: </a></span> * ------------- JFREECHART 1.0.x ---------------------------------------------
+<span class="nocode"><a name="51"> 51: </a></span> * 13-Dec-2005 : Added support for item labels (bug 1373371) (DG);
+<span class="nocode"><a name="52"> 52: </a></span> * 20-Jan-2006 : Check flag for drawing item labels (DG);
+<span class="nocode"><a name="53"> 53: </a></span> * 21-Sep-2006 : Respect the outline paint and stroke settings (DG);
+<span class="nocode"><a name="54"> 54: </a></span> * 24-Jan-2007 : Added new equals() override (DG);
+<span class="nocode"><a name="55"> 55: </a></span> * 06-Feb-2007 : Fixed bug 1086307, crosshairs with multiple axes (DG);
+<span class="nocode"><a name="56"> 56: </a></span> * 20-Apr-2007 : Updated getLegendItem() for renderer change (DG);
+<span class="nocode"><a name="57"> 57: </a></span> * 17-May-2007 : Set datasetIndex and seriesIndex in getLegendItem() (DG);
+<span class="nocode"><a name="58"> 58: </a></span> * 18-May-2007 : Set dataset and seriesKey for LegendItem (DG);
+<span class="nocode"><a name="59"> 59: </a></span> * 13-Jun-2007 : Fixed seriesVisibility bug (DG);
+<span class="nocode"><a name="60"> 60: </a></span> *
+<span class="nocode"><a name="61"> 61: </a></span> */
+<span class="nocode"><a name="62"> 62: </a></span>
+<span class="nocode"><a name="63"> 63: </a></span>package org.jfree.chart.renderer.xy;
+<span class="nocode"><a name="64"> 64: </a></span>
+<span class="nocode"><a name="65"> 65: </a></span>import java.awt.Graphics2D;
+<span class="nocode"><a name="66"> 66: </a></span>import java.awt.Paint;
+<span class="nocode"><a name="67"> 67: </a></span>import java.awt.Shape;
+<span class="nocode"><a name="68"> 68: </a></span>import java.awt.Stroke;
+<span class="nocode"><a name="69"> 69: </a></span>import java.awt.geom.Ellipse2D;
+<span class="nocode"><a name="70"> 70: </a></span>import java.awt.geom.Rectangle2D;
+<span class="nocode"><a name="71"> 71: </a></span>import java.io.Serializable;
+<span class="nocode"><a name="72"> 72: </a></span>
+<span class="nocode"><a name="73"> 73: </a></span>import org.jfree.chart.LegendItem;
+<span class="nocode"><a name="74"> 74: </a></span>import org.jfree.chart.axis.ValueAxis;
+<span class="nocode"><a name="75"> 75: </a></span>import org.jfree.chart.entity.EntityCollection;
+<span class="nocode"><a name="76"> 76: </a></span>import org.jfree.chart.plot.CrosshairState;
+<span class="nocode"><a name="77"> 77: </a></span>import org.jfree.chart.plot.PlotOrientation;
+<span class="nocode"><a name="78"> 78: </a></span>import org.jfree.chart.plot.PlotRenderingInfo;
+<span class="nocode"><a name="79"> 79: </a></span>import org.jfree.chart.plot.XYPlot;
+<span class="nocode"><a name="80"> 80: </a></span>import org.jfree.data.xy.XYDataset;
+<span class="nocode"><a name="81"> 81: </a></span>import org.jfree.data.xy.XYZDataset;
+<span class="nocode"><a name="82"> 82: </a></span>import org.jfree.ui.RectangleEdge;
+<span class="nocode"><a name="83"> 83: </a></span>import org.jfree.util.PublicCloneable;
+<span class="nocode"><a name="84"> 84: </a></span>
+<span class="nocode"><a name="85"> 85: </a></span>/**
+<span class="nocode"><a name="86"> 86: </a></span> * A renderer that draws a circle at each data point with a diameter that is
+<span class="nocode"><a name="87"> 87: </a></span> * determined by the z-value in the dataset (the renderer requires the dataset 
+<span class="nocode"><a name="88"> 88: </a></span> * to be an instance of {@link XYZDataset}.
+<span class="nocode"><a name="89"> 89: </a></span> */
+<span class="nocode"><a name="90"> 90: </a></span>public class XYBubbleRenderer extends AbstractXYItemRenderer 
+<span class="nocode"><a name="91"> 91: </a></span>                              implements XYItemRenderer, 
+<span class="nocode"><a name="92"> 92: </a></span>                                         Cloneable,
+<span class="nocode"><a name="93"> 93: </a></span>                                         PublicCloneable,
+<span class="nocode"><a name="94"> 94: </a></span>                                         Serializable {
+<span class="nocode"><a name="95"> 95: </a></span>
+<span class="nocode"><a name="96"> 96: </a></span>    /** For serialization. */
+<span class="nocode"><a name="97"> 97: </a></span>    public static final long serialVersionUID = -5221991598674249125L;
+<span class="nocode"><a name="98"> 98: </a></span>    
+<span class="nocode"><a name="99"> 99: </a></span>    /** 
+<span class="nocode"><a name="100">100: </a></span>     * A constant to specify that the bubbles drawn by this renderer should be 
+<span class="nocode"><a name="101">101: </a></span>     * scaled on both axes (see {@link #XYBubbleRenderer(int)}). 
+<span class="nocode"><a name="102">102: </a></span>     */
+<span class="nocode"><a name="103">103: </a></span>    public static final int SCALE_ON_BOTH_AXES = 0;
+<span class="nocode"><a name="104">104: </a></span>
+<span class="nocode"><a name="105">105: </a></span>    /** 
+<span class="nocode"><a name="106">106: </a></span>     * A constant to specify that the bubbles drawn by this renderer should be 
+<span class="nocode"><a name="107">107: </a></span>     * scaled on the domain axis (see {@link #XYBubbleRenderer(int)}). 
+<span class="nocode"><a name="108">108: </a></span>     */
+<span class="nocode"><a name="109">109: </a></span>    public static final int SCALE_ON_DOMAIN_AXIS = 1;
+<span class="nocode"><a name="110">110: </a></span>
+<span class="nocode"><a name="111">111: </a></span>    /** 
+<span class="nocode"><a name="112">112: </a></span>     * A constant to specify that the bubbles drawn by this renderer should be 
+<span class="nocode"><a name="113">113: </a></span>     * scaled on the range axis (see {@link #XYBubbleRenderer(int)}). 
+<span class="nocode"><a name="114">114: </a></span>     */
+<span class="nocode"><a name="115">115: </a></span>    public static final int SCALE_ON_RANGE_AXIS = 2;
+<span class="nocode"><a name="116">116: </a></span>
+<span class="nocode"><a name="117">117: </a></span>    /** Controls how the width and height of the bubble are scaled. */
+<span class="nocode"><a name="118">118: </a></span>    private int scaleType;
+<span class="nocode"><a name="119">119: </a></span>
+<span class="nocode"><a name="120">120: </a></span>    /**
+<span class="nocode"><a name="121">121: </a></span>     * Constructs a new renderer.
+<span class="nocode"><a name="122">122: </a></span>     */
+<span class="nocode"><a name="123">123: </a></span>    public XYBubbleRenderer() {
+<span class="nocode"><a name="124">124: </a></span>        this(SCALE_ON_BOTH_AXES); 
+<span class="nocode"><a name="125">125: </a></span>    }
+<span class="nocode"><a name="126">126: </a></span>
+<span class="nocode"><a name="127">127: </a></span>    /**
+<span class="nocode"><a name="128">128: </a></span>     * Constructs a new renderer with the specified type of scaling. 
+<span class="nocode"><a name="129">129: </a></span>     *
+<span class="nocode"><a name="130">130: </a></span>     * @param scaleType  the type of scaling (must be one of: 
+<span class="nocode"><a name="131">131: </a></span>     *        {@link #SCALE_ON_BOTH_AXES}, {@link #SCALE_ON_DOMAIN_AXIS}, 
+<span class="nocode"><a name="132">132: </a></span>     *        {@link #SCALE_ON_RANGE_AXIS}).
+<span class="nocode"><a name="133">133: </a></span>     */
+<span class="nocode"><a name="134">134: </a></span>    public XYBubbleRenderer(int scaleType) {
+<span class="nocode"><a name="135">135: </a></span>        super();
+<span class="nocode"><a name="136">136: </a></span>        if (scaleType &lt; 0 || scaleType &gt; 2) {
+<span class="nocode"><a name="137">137: </a></span>            throw new IllegalArgumentException(&quot;Invalid 'scaleType'.&quot;);
+<span class="nocode"><a name="138">138: </a></span>        }
+<span class="nocode"><a name="139">139: </a></span>        this.scaleType = scaleType;
+<span class="nocode"><a name="140">140: </a></span>    }
+<span class="nocode"><a name="141">141: </a></span>
+<span class="nocode"><a name="142">142: </a></span>    /**
+<span class="nocode"><a name="143">143: </a></span>     * Returns the scale type that was set when the renderer was constructed.
+<span class="nocode"><a name="144">144: </a></span>     *
+<span class="nocode"><a name="145">145: </a></span>     * @return The scale type (one of: {@link #SCALE_ON_BOTH_AXES}, 
+<span class="nocode"><a name="146">146: </a></span>     *         {@link #SCALE_ON_DOMAIN_AXIS}, {@link #SCALE_ON_RANGE_AXIS}).
+<span class="nocode"><a name="147">147: </a></span>     */
+<span class="nocode"><a name="148">148: </a></span>    public int getScaleType() {
+<span class="nocode"><a name="149">149: </a></span>        return this.scaleType;
+<span class="nocode"><a name="150">150: </a></span>    }
+<span class="nocode"><a name="151">151: </a></span>
+<span class="nocode"><a name="152">152: </a></span>    /**
+<span class="nocode"><a name="153">153: </a></span>     * Draws the visual representation of a single data item.
+<span class="nocode"><a name="154">154: </a></span>     *
+<span class="nocode"><a name="155">155: </a></span>     * @param g2  the graphics device.
+<span class="nocode"><a name="156">156: </a></span>     * @param state  the renderer state.
+<span class="nocode"><a name="157">157: </a></span>     * @param dataArea  the area within which the data is being drawn.
+<span class="nocode"><a name="158">158: </a></span>     * @param info  collects information about the drawing.
+<span class="nocode"><a name="159">159: </a></span>     * @param plot  the plot (can be used to obtain standard color 
+<span class="nocode"><a name="160">160: </a></span>     *              information etc).
+<span class="nocode"><a name="161">161: </a></span>     * @param domainAxis  the domain (horizontal) axis.
+<span class="nocode"><a name="162">162: </a></span>     * @param rangeAxis  the range (vertical) axis.
+<span class="nocode"><a name="163">163: </a></span>     * @param dataset  the dataset (an {@link XYZDataset} is expected).
+<span class="nocode"><a name="164">164: </a></span>     * @param series  the series index (zero-based).
+<span class="nocode"><a name="165">165: </a></span>     * @param item  the item index (zero-based).
+<span class="nocode"><a name="166">166: </a></span>     * @param crosshairState  crosshair information for the plot 
+<span class="nocode"><a name="167">167: </a></span>     *                        (&lt;code&gt;null&lt;/code&gt; permitted).
+<span class="nocode"><a name="168">168: </a></span>     * @param pass  the pass index.
+<span class="nocode"><a name="169">169: </a></span>     */
+<span class="nocode"><a name="170">170: </a></span>    public void drawItem(Graphics2D g2, XYItemRendererState state,
+<span class="nocode"><a name="171">171: </a></span>            Rectangle2D dataArea, PlotRenderingInfo info, XYPlot plot,
+<span class="nocode"><a name="172">172: </a></span>            ValueAxis domainAxis, ValueAxis rangeAxis, XYDataset dataset, 
+<span class="nocode"><a name="173">173: </a></span>            int series, int item, CrosshairState crosshairState, int pass) {
+<span class="nocode"><a name="174">174: </a></span>
+<span class="nocode"><a name="175">175: </a></span>        // return straight away if the item is not visible
+<span class="nocode"><a name="176">176: </a></span>        if (!getItemVisible(series, item)) {
+<span class="nocode"><a name="177">177: </a></span>            return;   
+<span class="nocode"><a name="178">178: </a></span>        }
+<span class="nocode"><a name="179">179: </a></span>        
+<span class="nocode"><a name="180">180: </a></span>        PlotOrientation orientation = plot.getOrientation();
+<span class="nocode"><a name="181">181: </a></span>        
+<span class="nocode"><a name="182">182: </a></span>        // get the data point...
+<span class="nocode"><a name="183">183: </a></span>        double x = dataset.getXValue(series, item);
+<span class="nocode"><a name="184">184: </a></span>        double y = dataset.getYValue(series, item);
+<span class="nocode"><a name="185">185: </a></span>        double z = Double.NaN;
+<span class="nocode"><a name="186">186: </a></span>        if (dataset instanceof XYZDataset) {
+<span class="nocode"><a name="187">187: </a></span>            XYZDataset xyzData = (XYZDataset) dataset;
+<span class="nocode"><a name="188">188: </a></span>            z = xyzData.getZValue(series, item);
+<span class="nocode"><a name="189">189: </a></span>        }
+<span class="nocode"><a name="190">190: </a></span>        if (!Double.isNaN(z)) {
+<span class="nocode"><a name="191">191: </a></span>            RectangleEdge domainAxisLocation = plot.getDomainAxisEdge();
+<span class="nocode"><a name="192">192: </a></span>            RectangleEdge rangeAxisLocation = plot.getRangeAxisEdge();
+<span class="nocode"><a name="193">193: </a></span>            double transX = domainAxis.valueToJava2D(x, dataArea, 
+<span class="nocode"><a name="194">194: </a></span>                    domainAxisLocation);
+<span class="nocode"><a name="195">195: </a></span>            double transY = rangeAxis.valueToJava2D(y, dataArea, 
+<span class="nocode"><a name="196">196: </a></span>                    rangeAxisLocation);
+<span class="nocode"><a name="197">197: </a></span>
+<span class="nocode"><a name="198">198: </a></span>            double transDomain = 0.0;
+<span class="nocode"><a name="199">199: </a></span>            double transRange = 0.0;
+<span class="nocode"><a name="200">200: </a></span>            double zero;
+<span class="nocode"><a name="201">201: </a></span>
+<span class="nocode"><a name="202">202: </a></span>            switch(getScaleType()) {
+<span class="nocode"><a name="203">203: </a></span>                case SCALE_ON_DOMAIN_AXIS:
+<span class="nocode"><a name="204">204: </a></span>                    zero = domainAxis.valueToJava2D(0.0, dataArea, 
+<span class="nocode"><a name="205">205: </a></span>                            domainAxisLocation);
+<span class="nocode"><a name="206">206: </a></span>                    transDomain = domainAxis.valueToJava2D(z, dataArea, 
+<span class="nocode"><a name="207">207: </a></span>                            domainAxisLocation) - zero;
+<span class="nocode"><a name="208">208: </a></span>                    transRange = transDomain;
+<span class="nocode"><a name="209">209: </a></span>                    break;
+<span class="nocode"><a name="210">210: </a></span>                case SCALE_ON_RANGE_AXIS:
+<span class="nocode"><a name="211">211: </a></span>                    zero = rangeAxis.valueToJava2D(0.0, dataArea, 
+<span class="nocode"><a name="212">212: </a></span>                            rangeAxisLocation);
+<span class="nocode"><a name="213">213: </a></span>                    transRange = zero - rangeAxis.valueToJava2D(z, dataArea, 
+<span class="nocode"><a name="214">214: </a></span>                            rangeAxisLocation);
+<span class="nocode"><a name="215">215: </a></span>                    transDomain = transRange;
+<span class="nocode"><a name="216">216: </a></span>                    break;
+<span class="nocode"><a name="217">217: </a></span>                default:
+<span class="nocode"><a name="218">218: </a></span>                    double zero1 = domainAxis.valueToJava2D(0.0, dataArea, 
+<span class="nocode"><a name="219">219: </a></span>                            domainAxisLocation);
+<span class="nocode"><a name="220">220: </a></span>                    double zero2 = rangeAxis.valueToJava2D(0.0, dataArea, 
+<span class="nocode"><a name="221">221: </a></span>                            rangeAxisLocation);
+<span class="nocode"><a name="222">222: </a></span>                    transDomain = domainAxis.valueToJava2D(z, dataArea, 
+<span class="nocode"><a name="223">223: </a></span>                            domainAxisLocation) - zero1;
+<span class="nocode"><a name="224">224: </a></span>                    transRange = zero2 - rangeAxis.valueToJava2D(z, dataArea, 
+<span class="nocode"><a name="225">225: </a></span>                            rangeAxisLocation);
+<span class="nocode"><a name="226">226: </a></span>            }
+<span class="nocode"><a name="227">227: </a></span>            transDomain = Math.abs(transDomain);
+<span class="nocode"><a name="228">228: </a></span>            transRange = Math.abs(transRange);
+<span class="nocode"><a name="229">229: </a></span>            Ellipse2D circle = null;
+<span class="nocode"><a name="230">230: </a></span>            if (orientation == PlotOrientation.VERTICAL) {
+<span class="nocode"><a name="231">231: </a></span>                circle = new Ellipse2D.Double(transX - transDomain / 2.0, 
+<span class="nocode"><a name="232">232: </a></span>                        transY - transRange / 2.0, transDomain, transRange);
+<span class="nocode"><a name="233">233: </a></span>            }
+<span class="nocode"><a name="234">234: </a></span>            else if (orientation == PlotOrientation.HORIZONTAL) {
+<span class="nocode"><a name="235">235: </a></span>                circle = new Ellipse2D.Double(transY - transRange / 2.0, 
+<span class="nocode"><a name="236">236: </a></span>                        transX - transDomain / 2.0, transRange, transDomain);
+<span class="nocode"><a name="237">237: </a></span>            }
+<span class="nocode"><a name="238">238: </a></span>            g2.setPaint(getItemPaint(series, item));
+<span class="nocode"><a name="239">239: </a></span>            g2.fill(circle);
+<span class="nocode"><a name="240">240: </a></span>            g2.setStroke(getItemOutlineStroke(series, item));
+<span class="nocode"><a name="241">241: </a></span>            g2.setPaint(getItemOutlinePaint(series, item));
+<span class="nocode"><a name="242">242: </a></span>            g2.draw(circle);
+<span class="nocode"><a name="243">243: </a></span>
+<span class="nocode"><a name="244">244: </a></span>            if (isItemLabelVisible(series, item)) {
+<span class="nocode"><a name="245">245: </a></span>                if (orientation == PlotOrientation.VERTICAL) {
+<span class="nocode"><a name="246">246: </a></span>                    drawItemLabel(g2, orientation, dataset, series, item, 
+<span class="nocode"><a name="247">247: </a></span>                            transX, transY, false);
+<span class="nocode"><a name="248">248: </a></span>                }
+<span class="nocode"><a name="249">249: </a></span>                else if (orientation == PlotOrientation.HORIZONTAL) {
+<span class="nocode"><a name="250">250: </a></span>                    drawItemLabel(g2, orientation, dataset, series, item, 
+<span class="nocode"><a name="251">251: </a></span>                            transY, transX, false);                
+<span class="nocode"><a name="252">252: </a></span>                }
+<span class="nocode"><a name="253">253: </a></span>            }
+<span class="nocode"><a name="254">254: </a></span>            
+<span class="nocode"><a name="255">255: </a></span>            // add an entity if this info is being collected
+<span class="nocode"><a name="256">256: </a></span>            EntityCollection entities = null;
+<span class="nocode"><a name="257">257: </a></span>            if (info != null) {
+<span class="nocode"><a name="258">258: </a></span>                entities = info.getOwner().getEntityCollection();
+<span class="nocode"><a name="259">259: </a></span>                if (entities != null &amp;&amp; circle.intersects(dataArea)) {
+<span class="nocode"><a name="260">260: </a></span>                    addEntity(entities, circle, dataset, series, item, 
+<span class="nocode"><a name="261">261: </a></span>                            circle.getCenterX(), circle.getCenterY());
+<span class="nocode"><a name="262">262: </a></span>                }
+<span class="nocode"><a name="263">263: </a></span>            }
+<span class="nocode"><a name="264">264: </a></span>
+<span class="nocode"><a name="265">265: </a></span>            int domainAxisIndex = plot.getDomainAxisIndex(domainAxis);
+<span class="nocode"><a name="266">266: </a></span>            int rangeAxisIndex = plot.getRangeAxisIndex(rangeAxis);
+<span class="nocode"><a name="267">267: </a></span>            updateCrosshairValues(crosshairState, x, y, domainAxisIndex, 
+<span class="nocode"><a name="268">268: </a></span>                    rangeAxisIndex, transX, transY, orientation);
+<span class="nocode"><a name="269">269: </a></span>        }
+<span class="nocode"><a name="270">270: </a></span>
+<span class="nocode"><a name="271">271: </a></span>    }
+<span class="nocode"><a name="272">272: </a></span>
+<span class="nocode"><a name="273">273: </a></span>    /**
+<span class="nocode"><a name="274">274: </a></span>     * Returns a legend item for the specified series.  The default method
+<span class="nocode"><a name="275">275: </a></span>     * is overridden so that the legend displays circles for all series.
+<span class="nocode"><a name="276">276: </a></span>     *
+<span class="nocode"><a name="277">277: </a></span>     * @param datasetIndex  the dataset index (zero-based).
+<span class="nocode"><a name="278">278: </a></span>     * @param series  the series index (zero-based).
+<span class="nocode"><a name="279">279: </a></span>     *
+<span class="nocode"><a name="280">280: </a></span>     * @return A legend item for the series.
+<span class="nocode"><a name="281">281: </a></span>     */
+<span class="nocode"><a name="282">282: </a></span>    public LegendItem getLegendItem(int datasetIndex, int series) {
+<span class="nocode"><a name="283">283: </a></span>        LegendItem result = null;
+<span class="nocode"><a name="284">284: </a></span>        XYPlot plot = getPlot();
+<span class="nocode"><a name="285">285: </a></span>        if (plot == null) {
+<span class="nocode"><a name="286">286: </a></span>            return null;
+<span class="nocode"><a name="287">287: </a></span>        }
+<span class="nocode"><a name="288">288: </a></span>           
+<span class="nocode"><a name="289">289: </a></span>        XYDataset dataset = plot.getDataset(datasetIndex);
+<span class="nocode"><a name="290">290: </a></span>        if (dataset != null) {
+<span class="nocode"><a name="291">291: </a></span>            if (getItemVisible(series, 0)) {
+<span class="nocode"><a name="292">292: </a></span>                String label = getLegendItemLabelGenerator().generateLabel(
+<span class="nocode"><a name="293">293: </a></span>                        dataset, series);
+<span class="nocode"><a name="294">294: </a></span>                String description = label;
+<span class="nocode"><a name="295">295: </a></span>                String toolTipText = null;
+<span class="nocode"><a name="296">296: </a></span>                if (getLegendItemToolTipGenerator() != null) {
+<span class="nocode"><a name="297">297: </a></span>                    toolTipText = getLegendItemToolTipGenerator().generateLabel(
+<span class="nocode"><a name="298">298: </a></span>                            dataset, series);
+<span class="nocode"><a name="299">299: </a></span>                }
+<span class="nocode"><a name="300">300: </a></span>                String urlText = null;
+<span class="nocode"><a name="301">301: </a></span>                if (getLegendItemURLGenerator() != null) {
+<span class="nocode"><a name="302">302: </a></span>                    urlText = getLegendItemURLGenerator().generateLabel(
+<span class="nocode"><a name="303">303: </a></span>                            dataset, series);
+<span class="nocode"><a name="304">304: </a></span>                }
+<span class="nocode"><a name="305">305: </a></span>                Shape shape = new Ellipse2D.Double(-4.0, -4.0, 8.0, 8.0);
+<span class="nocode"><a name="306">306: </a></span>                Paint paint = lookupSeriesPaint(series);
+<span class="nocode"><a name="307">307: </a></span>                Paint outlinePaint = lookupSeriesOutlinePaint(series);
+<span class="nocode"><a name="308">308: </a></span>                Stroke outlineStroke = lookupSeriesOutlineStroke(series);
+<span class="nocode"><a name="309">309: </a></span>                result = new LegendItem(label, description, toolTipText, 
+<span class="nocode"><a name="310">310: </a></span>                        urlText, shape, paint, outlineStroke, outlinePaint);
+<span class="nocode"><a name="311">311: </a></span>                result.setDataset(dataset);
+<span class="nocode"><a name="312">312: </a></span>                result.setDatasetIndex(datasetIndex);
+<span class="nocode"><a name="313">313: </a></span>                result.setSeriesKey(dataset.getSeriesKey(series));
+<span class="nocode"><a name="314">314: </a></span>                result.setSeriesIndex(series);
+<span class="nocode"><a name="315">315: </a></span>            }
+<span class="nocode"><a name="316">316: </a></span>        }
+<span class="nocode"><a name="317">317: </a></span>        return result;
+<span class="nocode"><a name="318">318: </a></span>    }
+<span class="nocode"><a name="319">319: </a></span>    
+<span class="nocode"><a name="320">320: </a></span>    /**
+<span class="nocode"><a name="321">321: </a></span>     * Tests this renderer for equality with an arbitrary object.
+<span class="nocode"><a name="322">322: </a></span>     * 
+<span class="nocode"><a name="323">323: </a></span>     * @param obj  the object (&lt;code&gt;null&lt;/code&gt; permitted).
+<span class="nocode"><a name="324">324: </a></span>     * 
+<span class="nocode"><a name="325">325: </a></span>     * @return A boolean.
+<span class="nocode"><a name="326">326: </a></span>     */
+<span class="nocode"><a name="327">327: </a></span>    public boolean equals(Object obj) {
+<span class="nocode"><a name="328">328: </a></span>        if (obj == this) {
+<span class="nocode"><a name="329">329: </a></span>            return true;
+<span class="nocode"><a name="330">330: </a></span>        }
+<span class="nocode"><a name="331">331: </a></span>        if (!(obj instanceof XYBubbleRenderer)) {
+<span class="nocode"><a name="332">332: </a></span>            return false;
+<span class="nocode"><a name="333">333: </a></span>        }
+<span class="nocode"><a name="334">334: </a></span>        XYBubbleRenderer that = (XYBubbleRenderer) obj;
+<span class="nocode"><a name="335">335: </a></span>        if (this.scaleType != that.scaleType) {
+<span class="nocode"><a name="336">336: </a></span>            return false;
+<span class="nocode"><a name="337">337: </a></span>        }
+<span class="nocode"><a name="338">338: </a></span>        return super.equals(obj);
+<span class="nocode"><a name="339">339: </a></span>    }
+<span class="nocode"><a name="340">340: </a></span>    
+<span class="nocode"><a name="341">341: </a></span>    /**
+<span class="nocode"><a name="342">342: </a></span>     * Returns a clone of the renderer.
+<span class="nocode"><a name="343">343: </a></span>     * 
+<span class="nocode"><a name="344">344: </a></span>     * @return A clone.
+<span class="nocode"><a name="345">345: </a></span>     * 
+<span class="nocode"><a name="346">346: </a></span>     * @throws CloneNotSupportedException  if the renderer cannot be cloned.
+<span class="nocode"><a name="347">347: </a></span>     */
+<span class="nocode"><a name="348">348: </a></span>    public Object clone() throws CloneNotSupportedException {
+<span class="nocode"><a name="349">349: </a></span>        return super.clone();
+<span class="nocode"><a name="350">350: </a></span>    }
+<span class="nocode"><a name="351">351: </a></span>
+<span class="nocode"><a name="352">352: </a></span>}
+</pre><table class="mutation_table" summary="Mutations">
+<tr><th>ID</th><th>Line</th><th>Type</th><th>Detected</th></tr><tr><td>48240</td><td><a href="#124">124</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48241</td><td><a href="#124">124</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48245</td><td><a href="#136">136</a></td><td>Replace a constant (Replace 2 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>48244</td><td><a href="#136">136</a></td><td>Replace a constant (Replace 2 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>48243</td><td><a href="#136">136</a></td><td>Replace a constant (Replace 2 with 3(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48242</td><td><a href="#136">136</a></td><td>Negate jump condition (Replace IFLT with  IFGE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>48246</td><td><a href="#136">136(1)</a></td><td>Negate jump condition (Replace IF_ICMPLE with  IF_ICMPGT)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48248</td><td><a href="#176">176</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48247</td><td><a href="#176">176</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48249</td><td><a href="#180">180</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48250</td><td><a href="#183">183</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48251</td><td><a href="#184">184</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48253</td><td><a href="#185">185</a></td><td>Replace a constant (Replace NaN with NaN(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48252</td><td><a href="#185">185</a></td><td>Replace a constant (Replace NaN with 0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48254</td><td><a href="#186">186</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48255</td><td><a href="#188">188</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48257</td><td><a href="#190">190</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48256</td><td><a href="#190">190</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48258</td><td><a href="#191">191</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48259</td><td><a href="#192">192</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48260</td><td><a href="#193">193</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48261</td><td><a href="#195">195</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48262</td><td><a href="#198">198</a></td><td>Replace a constant (Replace 0 with 1(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48263</td><td><a href="#198">198</a></td><td>Replace a constant (Replace 0 with -1(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48265</td><td><a href="#199">199</a></td><td>Replace a constant (Replace 0 with -1(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48264</td><td><a href="#199">199</a></td><td>Replace a constant (Replace 0 with 1(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48266</td><td><a href="#202">202</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48267</td><td><a href="#204">204</a></td><td>Replace a constant (Replace 0 with 1(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48268</td><td><a href="#204">204</a></td><td>Replace a constant (Replace 0 with -1(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48269</td><td><a href="#204">204</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48271</td><td><a href="#206">206</a></td><td>Replace arithmetic operator (Replace DSUB with DADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48270</td><td><a href="#206">206</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48273</td><td><a href="#211">211</a></td><td>Replace a constant (Replace 0 with -1(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48272</td><td><a href="#211">211</a></td><td>Replace a constant (Replace 0 with 1(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48274</td><td><a href="#211">211</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48276</td><td><a href="#213">213</a></td><td>Replace arithmetic operator (Replace DSUB with DADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48275</td><td><a href="#213">213</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48278</td><td><a href="#218">218</a></td><td>Replace a constant (Replace 0 with -1(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48277</td><td><a href="#218">218</a></td><td>Replace a constant (Replace 0 with 1(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48279</td><td><a href="#218">218</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48281</td><td><a href="#220">220</a></td><td>Replace a constant (Replace 0 with -1(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48280</td><td><a href="#220">220</a></td><td>Replace a constant (Replace 0 with 1(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48282</td><td><a href="#220">220</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48284</td><td><a href="#222">222</a></td><td>Replace arithmetic operator (Replace DSUB with DADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48283</td><td><a href="#222">222</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48286</td><td><a href="#224">224</a></td><td>Replace arithmetic operator (Replace DSUB with DADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48285</td><td><a href="#224">224</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48287</td><td><a href="#227">227</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48288</td><td><a href="#228">228</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48289</td><td><a href="#230">230</a></td><td>Negate jump condition (Replace IF_ACMPNE with  IF_ACMPEQ)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48292</td><td><a href="#231">231</a></td><td>Replace a constant (Replace 2.0 with 1.0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48290</td><td><a href="#231">231</a></td><td>Replace a constant (Replace 2.0 with 3.0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48291</td><td><a href="#231">231</a></td><td>Replace a constant (Replace 2.0 with 0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48296</td><td><a href="#231">231(1)</a></td><td>Replace a constant (Replace 2.0 with 0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48297</td><td><a href="#231">231(1)</a></td><td>Replace a constant (Replace 2.0 with 1.0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48295</td><td><a href="#231">231(1)</a></td><td>Replace a constant (Replace 2.0 with 3.0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48293</td><td><a href="#231">231</a></td><td>Replace arithmetic operator (Replace DDIV with DMUL)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48294</td><td><a href="#231">231(1)</a></td><td>Replace arithmetic operator (Replace DSUB with DADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48298</td><td><a href="#231">231(2)</a></td><td>Replace arithmetic operator (Replace DDIV with DMUL)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48299</td><td><a href="#231">231(3)</a></td><td>Replace arithmetic operator (Replace DSUB with DADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48300</td><td><a href="#234">234</a></td><td>Negate jump condition (Replace IF_ACMPNE with  IF_ACMPEQ)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48303</td><td><a href="#235">235</a></td><td>Replace a constant (Replace 2.0 with 1.0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48301</td><td><a href="#235">235</a></td><td>Replace a constant (Replace 2.0 with 3.0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48302</td><td><a href="#235">235</a></td><td>Replace a constant (Replace 2.0 with 0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48307</td><td><a href="#235">235(1)</a></td><td>Replace a constant (Replace 2.0 with 0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48308</td><td><a href="#235">235(1)</a></td><td>Replace a constant (Replace 2.0 with 1.0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48306</td><td><a href="#235">235(1)</a></td><td>Replace a constant (Replace 2.0 with 3.0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48304</td><td><a href="#235">235</a></td><td>Replace arithmetic operator (Replace DDIV with DMUL)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48305</td><td><a href="#235">235(1)</a></td><td>Replace arithmetic operator (Replace DSUB with DADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48309</td><td><a href="#235">235(2)</a></td><td>Replace arithmetic operator (Replace DDIV with DMUL)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48310</td><td><a href="#235">235(3)</a></td><td>Replace arithmetic operator (Replace DSUB with DADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48311</td><td><a href="#238">238</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48312</td><td><a href="#238">238(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48313</td><td><a href="#239">239</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48314</td><td><a href="#240">240</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48315</td><td><a href="#240">240(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48316</td><td><a href="#241">241</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48317</td><td><a href="#241">241(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48318</td><td><a href="#242">242</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48320</td><td><a href="#244">244</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48319</td><td><a href="#244">244</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48321</td><td><a href="#245">245</a></td><td>Negate jump condition (Replace IF_ACMPNE with  IF_ACMPEQ)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48322</td><td><a href="#246">246</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48323</td><td><a href="#246">246</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48324</td><td><a href="#246">246</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48325</td><td><a href="#249">249</a></td><td>Negate jump condition (Replace IF_ACMPNE with  IF_ACMPEQ)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48326</td><td><a href="#250">250</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48327</td><td><a href="#250">250</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48328</td><td><a href="#250">250</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48329</td><td><a href="#257">257</a></td><td>Negate jump condition (Replace IFNULL with  IFNONNULL)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48330</td><td><a href="#258">258</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48331</td><td><a href="#258">258(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48332</td><td><a href="#259">259</a></td><td>Negate jump condition (Replace IFNULL with  IFNONNULL)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48334</td><td><a href="#259">259(1)</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48333</td><td><a href="#259">259</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48335</td><td><a href="#260">260</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48336</td><td><a href="#260">260(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48337</td><td><a href="#260">260(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48338</td><td><a href="#265">265</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48339</td><td><a href="#266">266</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48340</td><td><a href="#267">267</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48341</td><td><a href="#284">284</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>48342</td><td><a href="#285">285</a></td><td>Negate jump condition (Replace IFNONNULL with  IFNULL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>48343</td><td><a href="#289">289</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>48344</td><td><a href="#290">290</a></td><td>Negate jump condition (Replace IFNULL with  IFNONNULL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>48345</td><td><a href="#291">291</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48346</td><td><a href="#291">291</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48348</td><td><a href="#291">291</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>48347</td><td><a href="#291">291</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>48349</td><td><a href="#292">292</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>48350</td><td><a href="#292">292(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>48352</td><td><a href="#296">296</a></td><td>Negate jump condition (Replace IFNULL with  IFNONNULL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>48351</td><td><a href="#296">296</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48353</td><td><a href="#297">297</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48354</td><td><a href="#297">297(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48356</td><td><a href="#301">301</a></td><td>Negate jump condition (Replace IFNULL with  IFNONNULL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>48355</td><td><a href="#301">301</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48357</td><td><a href="#302">302</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48358</td><td><a href="#302">302(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48359</td><td><a href="#305">305</a></td><td>Replace a constant (Replace -4.0 with -3.0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48360</td><td><a href="#305">305</a></td><td>Replace a constant (Replace -4.0 with 0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48361</td><td><a href="#305">305</a></td><td>Replace a constant (Replace -4.0 with -5.0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48364</td><td><a href="#305">305(1)</a></td><td>Replace a constant (Replace -4.0 with -5.0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48362</td><td><a href="#305">305(1)</a></td><td>Replace a constant (Replace -4.0 with -3.0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48363</td><td><a href="#305">305(1)</a></td><td>Replace a constant (Replace -4.0 with 0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48366</td><td><a href="#305">305(2)</a></td><td>Replace a constant (Replace 8.0 with 9.0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48365</td><td><a href="#305">305(2)</a></td><td>Replace a constant (Replace 8.0 with 0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48367</td><td><a href="#305">305(2)</a></td><td>Replace a constant (Replace 8.0 with 7.0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48369</td><td><a href="#305">305(3)</a></td><td>Replace a constant (Replace 8.0 with 9.0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48370</td><td><a href="#305">305(3)</a></td><td>Replace a constant (Replace 8.0 with 7.0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48368</td><td><a href="#305">305(3)</a></td><td>Replace a constant (Replace 8.0 with 0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48371</td><td><a href="#306">306</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48372</td><td><a href="#307">307</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>48373</td><td><a href="#308">308</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>48374</td><td><a href="#311">311</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48375</td><td><a href="#312">312</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>48376</td><td><a href="#313">313</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48377</td><td><a href="#313">313(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48378</td><td><a href="#314">314</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>48379</td><td><a href="#328">328</a></td><td>Negate jump condition (Replace IF_ACMPNE with  IF_ACMPEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>48380</td><td><a href="#329">329</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48381</td><td><a href="#329">329</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48382</td><td><a href="#331">331</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>48384</td><td><a href="#332">332</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48383</td><td><a href="#332">332</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>48385</td><td><a href="#335">335</a></td><td>Negate jump condition (Replace IF_ICMPEQ with  IF_ICMPNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>48387</td><td><a href="#336">336</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>48386</td><td><a href="#336">336</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>48388</td><td><a href="#338">338</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>48389</td><td><a href="#349">349</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+</table>
+</body>
+</html>

@@ -1,0 +1,83 @@
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/repos/asf/!svn/ver/1173717/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/sprm
+END
+SprmUncompressor.java
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/repos/asf/!svn/ver/1155215/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/sprm/SprmUncompressor.java
+END
+SprmOperation.java
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/repos/asf/!svn/ver/1155215/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/sprm/SprmOperation.java
+END
+SprmUtils.java
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/repos/asf/!svn/ver/1155215/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/sprm/SprmUtils.java
+END
+SectionSprmCompressor.java
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/repos/asf/!svn/ver/1155215/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/sprm/SectionSprmCompressor.java
+END
+ParagraphSprmCompressor.java
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/repos/asf/!svn/ver/1173157/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/sprm/ParagraphSprmCompressor.java
+END
+SectionSprmUncompressor.java
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/repos/asf/!svn/ver/1155215/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/sprm/SectionSprmUncompressor.java
+END
+TableSprmCompressor.java
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/repos/asf/!svn/ver/1155215/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/sprm/TableSprmCompressor.java
+END
+ParagraphSprmUncompressor.java
+K 25
+svn:wc:ra_dav:version-url
+V 112
+/repos/asf/!svn/ver/1173717/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/sprm/ParagraphSprmUncompressor.java
+END
+TableSprmUncompressor.java
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/repos/asf/!svn/ver/1155215/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/sprm/TableSprmUncompressor.java
+END
+CharacterSprmCompressor.java
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/repos/asf/!svn/ver/1155215/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/sprm/CharacterSprmCompressor.java
+END
+SprmBuffer.java
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/repos/asf/!svn/ver/1155215/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/sprm/SprmBuffer.java
+END
+SprmIterator.java
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/repos/asf/!svn/ver/1155215/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/sprm/SprmIterator.java
+END
+CharacterSprmUncompressor.java
+K 25
+svn:wc:ra_dav:version-url
+V 112
+/repos/asf/!svn/ver/1173716/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/sprm/CharacterSprmUncompressor.java
+END

@@ -1,0 +1,192 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN
+"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>
+org.apache.poi.hssf.record.chart.ChartFRTInfoRecord
+</title>
+<link href="prettify.css" type="text/css" rel="stylesheet" />
+<script type="text/javascript" src="prettify.js"></script>
+</head>
+<body onload="prettyPrint()">
+<h2>Javalanche report for class:<br/> org.apache.poi.hssf.record.chart.ChartFRTInfoRecord </h2><pre class="prettyprint" style="border: 1px solid #888;padding: 2px"><span class="nocode"><a name="1">  1: </a></span>/* ====================================================================
+<span class="nocode"><a name="2">  2: </a></span>   Licensed to the Apache Software Foundation (ASF) under one or more
+<span class="nocode"><a name="3">  3: </a></span>   contributor license agreements.  See the NOTICE file distributed with
+<span class="nocode"><a name="4">  4: </a></span>   this work for additional information regarding copyright ownership.
+<span class="nocode"><a name="5">  5: </a></span>   The ASF licenses this file to You under the Apache License, Version 2.0
+<span class="nocode"><a name="6">  6: </a></span>   (the &quot;License&quot;); you may not use this file except in compliance with
+<span class="nocode"><a name="7">  7: </a></span>   the License.  You may obtain a copy of the License at
+<span class="nocode"><a name="8">  8: </a></span>
+<span class="nocode"><a name="9">  9: </a></span>       http://www.apache.org/licenses/LICENSE-2.0
+<span class="nocode"><a name="10"> 10: </a></span>
+<span class="nocode"><a name="11"> 11: </a></span>   Unless required by applicable law or agreed to in writing, software
+<span class="nocode"><a name="12"> 12: </a></span>   distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+<span class="nocode"><a name="13"> 13: </a></span>   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+<span class="nocode"><a name="14"> 14: </a></span>   See the License for the specific language governing permissions and
+<span class="nocode"><a name="15"> 15: </a></span>   limitations under the License.
+<span class="nocode"><a name="16"> 16: </a></span>==================================================================== */
+<span class="nocode"><a name="17"> 17: </a></span>
+<span class="nocode"><a name="18"> 18: </a></span>package org.apache.poi.hssf.record.chart;
+<span class="nocode"><a name="19"> 19: </a></span>
+<span class="nocode"><a name="20"> 20: </a></span>import org.apache.poi.hssf.record.RecordInputStream;
+<span class="nocode"><a name="21"> 21: </a></span>import org.apache.poi.hssf.record.StandardRecord;
+<span class="nocode"><a name="22"> 22: </a></span>import org.apache.poi.util.HexDump;
+<span class="nocode"><a name="23"> 23: </a></span>import org.apache.poi.util.LittleEndianInput;
+<span class="nocode"><a name="24"> 24: </a></span>import org.apache.poi.util.LittleEndianOutput;
+<span class="nocode"><a name="25"> 25: </a></span>
+<span class="nocode"><a name="26"> 26: </a></span>/**
+<span class="nocode"><a name="27"> 27: </a></span> * CHARTFRTINFO - Chart Future Record Type Info (0x0850)&lt;br/&gt;
+<span class="nocode"><a name="28"> 28: </a></span> * 
+<span class="nocode"><a name="29"> 29: </a></span> * @author Patrick Cheng
+<span class="nocode"><a name="30"> 30: </a></span> */
+<span class="nocode"><a name="31"> 31: </a></span>public final class ChartFRTInfoRecord extends StandardRecord {
+<span class="nocode"><a name="32"> 32: </a></span>	public static final short sid = 0x850;
+<span class="nocode"><a name="33"> 33: </a></span>
+<span class="nocode"><a name="34"> 34: </a></span>	private short rt;
+<span class="nocode"><a name="35"> 35: </a></span>	private short grbitFrt;
+<span class="nocode"><a name="36"> 36: </a></span>	private byte verOriginator;
+<span class="nocode"><a name="37"> 37: </a></span>	private byte verWriter;
+<span class="nocode"><a name="38"> 38: </a></span>	private CFRTID[] rgCFRTID;
+<span class="nocode"><a name="39"> 39: </a></span>
+<span class="nocode"><a name="40"> 40: </a></span>	private static final class CFRTID {
+<span class="nocode"><a name="41"> 41: </a></span>		public static final int ENCODED_SIZE = 4;
+<span class="nocode"><a name="42"> 42: </a></span>		private int rtFirst;
+<span class="nocode"><a name="43"> 43: </a></span>		private int rtLast;
+<span class="nocode"><a name="44"> 44: </a></span>
+<span class="nocode"><a name="45"> 45: </a></span>		public CFRTID(LittleEndianInput in) {
+<span class="nocode"><a name="46"> 46: </a></span>			rtFirst = in.readShort();
+<span class="nocode"><a name="47"> 47: </a></span>			rtLast = in.readShort();
+<span class="nocode"><a name="48"> 48: </a></span>		}
+<span class="nocode"><a name="49"> 49: </a></span>
+<span class="nocode"><a name="50"> 50: </a></span>		public void serialize(LittleEndianOutput out) {
+<span class="nocode"><a name="51"> 51: </a></span>			out.writeShort(rtFirst);
+<span class="nocode"><a name="52"> 52: </a></span>			out.writeShort(rtLast);
+<span class="nocode"><a name="53"> 53: </a></span>		}
+<span class="nocode"><a name="54"> 54: </a></span>	}
+<span class="nocode"><a name="55"> 55: </a></span>
+<span class="nocode"><a name="56"> 56: </a></span>	public ChartFRTInfoRecord(RecordInputStream in) {
+<span class="nocode"><a name="57"> 57: </a></span>		rt = in.readShort();
+<span class="nocode"><a name="58"> 58: </a></span>		grbitFrt = in.readShort();
+<span class="nocode"><a name="59"> 59: </a></span>		verOriginator = in.readByte();
+<span class="nocode"><a name="60"> 60: </a></span>		verWriter = in.readByte();
+<span class="nocode"><a name="61"> 61: </a></span>		int cCFRTID = in.readShort();
+<span class="nocode"><a name="62"> 62: </a></span>
+<span class="nocode"><a name="63"> 63: </a></span>		rgCFRTID = new CFRTID[cCFRTID];
+<span class="nocode"><a name="64"> 64: </a></span>		for (int i = 0; i &lt; cCFRTID; i++) {
+<span class="nocode"><a name="65"> 65: </a></span>			rgCFRTID[i] = new CFRTID(in);
+<span class="nocode"><a name="66"> 66: </a></span>		}
+<span class="nocode"><a name="67"> 67: </a></span>	}
+<span class="nocode"><a name="68"> 68: </a></span>
+<span class="nocode"><a name="69"> 69: </a></span>	@Override
+<span class="nocode"><a name="70"> 70: </a></span>	protected int getDataSize() {
+<span class="nocode"><a name="71"> 71: </a></span>		return 2 + 2 + 1 + 1 + 2 + rgCFRTID.length * CFRTID.ENCODED_SIZE;
+<span class="nocode"><a name="72"> 72: </a></span>	}
+<span class="nocode"><a name="73"> 73: </a></span>
+<span class="nocode"><a name="74"> 74: </a></span>	@Override
+<span class="nocode"><a name="75"> 75: </a></span>	public short getSid() {
+<span class="nocode"><a name="76"> 76: </a></span>		return sid;
+<span class="nocode"><a name="77"> 77: </a></span>	}
+<span class="nocode"><a name="78"> 78: </a></span>
+<span class="nocode"><a name="79"> 79: </a></span>	@Override
+<span class="nocode"><a name="80"> 80: </a></span>	public void serialize(LittleEndianOutput out) {
+<span class="nocode"><a name="81"> 81: </a></span>
+<span class="nocode"><a name="82"> 82: </a></span>		out.writeShort(rt);
+<span class="nocode"><a name="83"> 83: </a></span>		out.writeShort(grbitFrt);
+<span class="nocode"><a name="84"> 84: </a></span>		out.writeByte(verOriginator);
+<span class="nocode"><a name="85"> 85: </a></span>		out.writeByte(verWriter);
+<span class="nocode"><a name="86"> 86: </a></span>		int nCFRTIDs = rgCFRTID.length;
+<span class="nocode"><a name="87"> 87: </a></span>		out.writeShort(nCFRTIDs);
+<span class="nocode"><a name="88"> 88: </a></span>
+<span class="nocode"><a name="89"> 89: </a></span>		for (int i = 0; i &lt; nCFRTIDs; i++) {
+<span class="nocode"><a name="90"> 90: </a></span>			rgCFRTID[i].serialize(out);
+<span class="nocode"><a name="91"> 91: </a></span>		}
+<span class="nocode"><a name="92"> 92: </a></span>	}
+<span class="nocode"><a name="93"> 93: </a></span>
+<span class="nocode"><a name="94"> 94: </a></span>	@Override
+<span class="nocode"><a name="95"> 95: </a></span>	public String toString() {
+<span class="nocode"><a name="96"> 96: </a></span>		StringBuffer buffer = new StringBuffer();
+<span class="nocode"><a name="97"> 97: </a></span>
+<span class="nocode"><a name="98"> 98: </a></span>		buffer.append(&quot;[CHARTFRTINFO]\n&quot;);
+<span class="nocode"><a name="99"> 99: </a></span>		buffer.append(&quot;    .rt           =&quot;).append(HexDump.shortToHex(rt)).append('\n');
+<span class="nocode"><a name="100">100: </a></span>		buffer.append(&quot;    .grbitFrt     =&quot;).append(HexDump.shortToHex(grbitFrt)).append('\n');
+<span class="nocode"><a name="101">101: </a></span>		buffer.append(&quot;    .verOriginator=&quot;).append(HexDump.byteToHex(verOriginator)).append('\n');
+<span class="nocode"><a name="102">102: </a></span>		buffer.append(&quot;    .verWriter    =&quot;).append(HexDump.byteToHex(verOriginator)).append('\n');
+<span class="nocode"><a name="103">103: </a></span>		buffer.append(&quot;    .nCFRTIDs     =&quot;).append(HexDump.shortToHex(rgCFRTID.length)).append('\n');
+<span class="nocode"><a name="104">104: </a></span>		buffer.append(&quot;[/CHARTFRTINFO]\n&quot;);
+<span class="nocode"><a name="105">105: </a></span>		return buffer.toString();
+<span class="nocode"><a name="106">106: </a></span>	}
+<span class="nocode"><a name="107">107: </a></span>}
+</pre><table class="mutation_table" summary="Mutations">
+<tr><th>ID</th><th>Line</th><th>Type</th><th>Detected</th></tr><tr><td>67430</td><td><a href="#46">46</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>67431</td><td><a href="#47">47</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>67432</td><td><a href="#51">51</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>67433</td><td><a href="#52">52</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>44968</td><td><a href="#57">57</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>44969</td><td><a href="#58">58</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>44970</td><td><a href="#59">59</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>44971</td><td><a href="#60">60</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>44972</td><td><a href="#61">61</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>44973</td><td><a href="#64">64</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>44974</td><td><a href="#64">64</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>44975</td><td><a href="#64">64</a></td><td>Negate jump condition (Replace IF_ICMPGE with  IF_ICMPLT)</td><td><img src="detected.png"/></td></tr>
+<tr><td>44978</td><td><a href="#71">71</a></td><td>Replace a constant (Replace 8 with 9(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>44977</td><td><a href="#71">71</a></td><td>Replace a constant (Replace 8 with 7(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>44976</td><td><a href="#71">71</a></td><td>Replace a constant (Replace 8 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>44981</td><td><a href="#71">71(1)</a></td><td>Replace a constant (Replace 4 with 5(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>44979</td><td><a href="#71">71(1)</a></td><td>Replace a constant (Replace 4 with 3(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>44980</td><td><a href="#71">71(1)</a></td><td>Replace a constant (Replace 4 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>44982</td><td><a href="#71">71</a></td><td>Replace arithmetic operator (Replace IMUL with IADD)</td><td><img src="detected.png"/></td></tr>
+<tr><td>44983</td><td><a href="#71">71(1)</a></td><td>Replace arithmetic operator (Replace IADD with ISUB)</td><td><img src="detected.png"/></td></tr>
+<tr><td>44984</td><td><a href="#76">76</a></td><td>Replace a constant (Replace 2128 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>44985</td><td><a href="#76">76</a></td><td>Replace a constant (Replace 2128 with 2129(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>44986</td><td><a href="#76">76</a></td><td>Replace a constant (Replace 2128 with 2127(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>44987</td><td><a href="#82">82</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>44988</td><td><a href="#83">83</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>44989</td><td><a href="#84">84</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>44990</td><td><a href="#85">85</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>44991</td><td><a href="#87">87</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>44992</td><td><a href="#89">89</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>44993</td><td><a href="#89">89</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>44994</td><td><a href="#89">89</a></td><td>Negate jump condition (Replace IF_ICMPGE with  IF_ICMPLT)</td><td><img src="detected.png"/></td></tr>
+<tr><td>44995</td><td><a href="#90">90</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>44996</td><td><a href="#98">98</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>45001</td><td><a href="#99">99</a></td><td>Replace a constant (Replace 10 with 9(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>45002</td><td><a href="#99">99</a></td><td>Replace a constant (Replace 10 with 11(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>45000</td><td><a href="#99">99</a></td><td>Replace a constant (Replace 10 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>44997</td><td><a href="#99">99</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>44998</td><td><a href="#99">99(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>44999</td><td><a href="#99">99(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>45003</td><td><a href="#99">99(3)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>45009</td><td><a href="#100">100</a></td><td>Replace a constant (Replace 10 with 11(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>45007</td><td><a href="#100">100</a></td><td>Replace a constant (Replace 10 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>45008</td><td><a href="#100">100</a></td><td>Replace a constant (Replace 10 with 9(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>45004</td><td><a href="#100">100</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>45005</td><td><a href="#100">100(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>45006</td><td><a href="#100">100(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>45010</td><td><a href="#100">100(3)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>45016</td><td><a href="#101">101</a></td><td>Replace a constant (Replace 10 with 11(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>45015</td><td><a href="#101">101</a></td><td>Replace a constant (Replace 10 with 9(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>45014</td><td><a href="#101">101</a></td><td>Replace a constant (Replace 10 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>45011</td><td><a href="#101">101</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>45012</td><td><a href="#101">101(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>45013</td><td><a href="#101">101(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>45017</td><td><a href="#101">101(3)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>45021</td><td><a href="#102">102</a></td><td>Replace a constant (Replace 10 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>45022</td><td><a href="#102">102</a></td><td>Replace a constant (Replace 10 with 9(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>45023</td><td><a href="#102">102</a></td><td>Replace a constant (Replace 10 with 11(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>45018</td><td><a href="#102">102</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>45019</td><td><a href="#102">102(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>45020</td><td><a href="#102">102(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>45024</td><td><a href="#102">102(3)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>45028</td><td><a href="#103">103</a></td><td>Replace a constant (Replace 10 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>45030</td><td><a href="#103">103</a></td><td>Replace a constant (Replace 10 with 11(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>45029</td><td><a href="#103">103</a></td><td>Replace a constant (Replace 10 with 9(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>45025</td><td><a href="#103">103</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>45026</td><td><a href="#103">103(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>45027</td><td><a href="#103">103(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>45031</td><td><a href="#103">103(3)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>45032</td><td><a href="#104">104</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>45033</td><td><a href="#105">105</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+</table>
+</body>
+</html>

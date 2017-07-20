@@ -1,0 +1,53 @@
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/repos/asf/!svn/ver/904062/poi/trunk/src/scratchpad/src/org/apache/poi/hdgf/chunks
+END
+ChunkHeaderV4V5.java
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/repos/asf/!svn/ver/777204/poi/trunk/src/scratchpad/src/org/apache/poi/hdgf/chunks/ChunkHeaderV4V5.java
+END
+Chunk.java
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/repos/asf/!svn/ver/904062/poi/trunk/src/scratchpad/src/org/apache/poi/hdgf/chunks/Chunk.java
+END
+ChunkHeaderV11.java
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/repos/asf/!svn/ver/904052/poi/trunk/src/scratchpad/src/org/apache/poi/hdgf/chunks/ChunkHeaderV11.java
+END
+ChunkSeparator.java
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/repos/asf/!svn/ver/777204/poi/trunk/src/scratchpad/src/org/apache/poi/hdgf/chunks/ChunkSeparator.java
+END
+ChunkTrailer.java
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/repos/asf/!svn/ver/777204/poi/trunk/src/scratchpad/src/org/apache/poi/hdgf/chunks/ChunkTrailer.java
+END
+ChunkHeaderV6.java
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/repos/asf/!svn/ver/777204/poi/trunk/src/scratchpad/src/org/apache/poi/hdgf/chunks/ChunkHeaderV6.java
+END
+ChunkFactory.java
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/repos/asf/!svn/ver/904049/poi/trunk/src/scratchpad/src/org/apache/poi/hdgf/chunks/ChunkFactory.java
+END
+ChunkHeader.java
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/repos/asf/!svn/ver/805284/poi/trunk/src/scratchpad/src/org/apache/poi/hdgf/chunks/ChunkHeader.java
+END

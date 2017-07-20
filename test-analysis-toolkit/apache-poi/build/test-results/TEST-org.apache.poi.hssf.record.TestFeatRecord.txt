@@ -1,0 +1,6 @@
+Testsuite: org.apache.poi.hssf.record.TestFeatRecord
+Tests run: 3, Failures: 0, Errors: 0, Time elapsed: 0.002 sec
+
+Testcase: testWithoutFeatRecord took 0.001 sec
+Testcase: testReadFeatRecord took 0 sec
+Testcase: testCloneSheetWithFeatRecord took 0 sec

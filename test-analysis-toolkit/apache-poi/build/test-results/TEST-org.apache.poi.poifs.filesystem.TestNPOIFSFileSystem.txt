@@ -1,0 +1,13 @@
+Testsuite: org.apache.poi.poifs.filesystem.TestNPOIFSFileSystem
+Tests run: 10, Failures: 0, Errors: 0, Time elapsed: 0.104 sec
+
+Testcase: testBasicOpen took 0.003 sec
+Testcase: testPropertiesAndFatOnRead took 0.003 sec
+Testcase: testNextBlock took 0.003 sec
+Testcase: testGetBlock took 0.002 sec
+Testcase: testGetFreeBlockWithSpare took 0 sec
+Testcase: testGetFreeBlockWithNoneSpare took 0.085 sec
+Testcase: testListEntries took 0.002 sec
+Testcase: testGetDocumentEntry took 0.004 sec
+Testcase: testReadWriteRead took 0 sec
+Testcase: testCreateWriteRead took 0.001 sec

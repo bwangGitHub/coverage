@@ -1,0 +1,8 @@
+Testsuite: org.apache.poi.hssf.record.TestRecordFactory
+Tests run: 5, Failures: 0, Errors: 0, Time elapsed: 0.002 sec
+
+Testcase: testContinuedUnknownRecord took 0 sec
+Testcase: testBasicRecordConstruction took 0 sec
+Testcase: testSpecial took 0 sec
+Testcase: testMixedContinue took 0 sec
+Testcase: testNonZeroPadding_bug46987 took 0.001 sec

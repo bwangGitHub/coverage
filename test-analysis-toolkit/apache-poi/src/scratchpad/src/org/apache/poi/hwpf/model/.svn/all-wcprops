@@ -1,0 +1,485 @@
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/repos/asf/!svn/ver/1296980/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/model
+END
+StyleDescription.java
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/repos/asf/!svn/ver/1173841/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/model/StyleDescription.java
+END
+TabDescriptor.java
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/repos/asf/!svn/ver/1173157/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/model/TabDescriptor.java
+END
+ListTables.java
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/repos/asf/!svn/ver/1195077/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/model/ListTables.java
+END
+FibRgLw95.java
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/repos/asf/!svn/ver/1178063/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/model/FibRgLw95.java
+END
+SectionTable.java
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/repos/asf/!svn/ver/1178038/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/model/SectionTable.java
+END
+UPX.java
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/repos/asf/!svn/ver/1173715/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/model/UPX.java
+END
+FontTable.java
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/repos/asf/!svn/ver/1156727/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/model/FontTable.java
+END
+ComplexFileTable.java
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/repos/asf/!svn/ver/1156727/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/model/ComplexFileTable.java
+END
+PICFAndOfficeArtData.java
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/repos/asf/!svn/ver/1177709/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/model/PICFAndOfficeArtData.java
+END
+PAPBinTable.java
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/repos/asf/!svn/ver/1296980/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/model/PAPBinTable.java
+END
+CachedPropertyNode.java
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/repos/asf/!svn/ver/1155217/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/model/CachedPropertyNode.java
+END
+CHPFormattedDiskPage.java
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/repos/asf/!svn/ver/1212511/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/model/CHPFormattedDiskPage.java
+END
+FSPA.java
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/repos/asf/!svn/ver/1151845/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/model/FSPA.java
+END
+FieldsDocumentPart.java
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/repos/asf/!svn/ver/1156541/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/model/FieldsDocumentPart.java
+END
+SttbUtils.java
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/repos/asf/!svn/ver/1177643/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/model/SttbUtils.java
+END
+ParagraphHeight.java
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/repos/asf/!svn/ver/1155217/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/model/ParagraphHeight.java
+END
+FibRgW97.java
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/repos/asf/!svn/ver/1178030/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/model/FibRgW97.java
+END
+FSPATable.java
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/repos/asf/!svn/ver/1151845/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/model/FSPATable.java
+END
+Grfhic.java
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/repos/asf/!svn/ver/1195068/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/model/Grfhic.java
+END
+TextPieceTable.java
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/repos/asf/!svn/ver/1166144/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/model/TextPieceTable.java
+END
+SavedByTable.java
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/repos/asf/!svn/ver/1177643/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/model/SavedByTable.java
+END
+PicturesTable.java
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/repos/asf/!svn/ver/1296980/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/model/PicturesTable.java
+END
+NoteType.java
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/repos/asf/!svn/ver/1155217/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/model/NoteType.java
+END
+Colorref.java
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/repos/asf/!svn/ver/1173157/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/model/Colorref.java
+END
+SavedByEntry.java
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/repos/asf/!svn/ver/1155217/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/model/SavedByEntry.java
+END
+FSPADocumentPart.java
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/repos/asf/!svn/ver/1156541/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/model/FSPADocumentPart.java
+END
+CharIndexTranslator.java
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/repos/asf/!svn/ver/1166144/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/model/CharIndexTranslator.java
+END
+PICF.java
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/repos/asf/!svn/ver/1177709/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/model/PICF.java
+END
+FieldDescriptor.java
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/repos/asf/!svn/ver/1155217/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/model/FieldDescriptor.java
+END
+StyleSheet.java
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/repos/asf/!svn/ver/1173841/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/model/StyleSheet.java
+END
+PropertyNode.java
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/repos/asf/!svn/ver/1155217/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/model/PropertyNode.java
+END
+FibBase.java
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/repos/asf/!svn/ver/1178019/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/model/FibBase.java
+END
+ShapesTable.java
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/repos/asf/!svn/ver/1155217/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/model/ShapesTable.java
+END
+StdfBase.java
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/repos/asf/!svn/ver/1173622/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/model/StdfBase.java
+END
+FormattedDiskPage.java
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/repos/asf/!svn/ver/1155217/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/model/FormattedDiskPage.java
+END
+PlexOfField.java
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/repos/asf/!svn/ver/1155217/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/model/PlexOfField.java
+END
+PropertyModifier.java
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/repos/asf/!svn/ver/1156541/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/model/PropertyModifier.java
+END
+EscherRecordHolder.java
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/repos/asf/!svn/ver/1155217/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/model/EscherRecordHolder.java
+END
+PAPX.java
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/repos/asf/!svn/ver/1195133/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/model/PAPX.java
+END
+LSTF.java
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/repos/asf/!svn/ver/1178104/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/model/LSTF.java
+END
+StdfPost2000.java
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/repos/asf/!svn/ver/1173622/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/model/StdfPost2000.java
+END
+Ffn.java
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/repos/asf/!svn/ver/1155217/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/model/Ffn.java
+END
+OldCHPBinTable.java
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/repos/asf/!svn/ver/1195079/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/model/OldCHPBinTable.java
+END
+OldSectionTable.java
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/repos/asf/!svn/ver/1155217/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/model/OldSectionTable.java
+END
+FootnoteReferenceDescriptor.java
+K 25
+svn:wc:ra_dav:version-url
+V 115
+/repos/asf/!svn/ver/1155217/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/model/FootnoteReferenceDescriptor.java
+END
+FibRgLw97.java
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/repos/asf/!svn/ver/1178063/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/model/FibRgLw97.java
+END
+UnhandledDataStructure.java
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/repos/asf/!svn/ver/1155217/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/model/UnhandledDataStructure.java
+END
+BytePropertyNode.java
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/repos/asf/!svn/ver/1145342/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/model/BytePropertyNode.java
+END
+SEPX.java
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/repos/asf/!svn/ver/1155217/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/model/SEPX.java
+END
+BookmarksTables.java
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/repos/asf/!svn/ver/1177643/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/model/BookmarksTables.java
+END
+PieceDescriptor.java
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/repos/asf/!svn/ver/1155217/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/model/PieceDescriptor.java
+END
+ListFormatOverride.java
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/repos/asf/!svn/ver/1178083/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/model/ListFormatOverride.java
+END
+Hyphenation.java
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/repos/asf/!svn/ver/1155217/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/model/Hyphenation.java
+END
+SubdocumentType.java
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/repos/asf/!svn/ver/1178038/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/model/SubdocumentType.java
+END
+SinglentonTextPiece.java
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/repos/asf/!svn/ver/1156541/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/model/SinglentonTextPiece.java
+END
+Stshif.java
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/repos/asf/!svn/ver/1173622/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/model/Stshif.java
+END
+FieldsTables.java
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/repos/asf/!svn/ver/1156662/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/model/FieldsTables.java
+END
+CHPX.java
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/repos/asf/!svn/ver/1160596/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/model/CHPX.java
+END
+PlexOfCps.java
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/repos/asf/!svn/ver/1170437/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/model/PlexOfCps.java
+END
+ListLevel.java
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/repos/asf/!svn/ver/1195077/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/model/ListLevel.java
+END
+LVLF.java
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/repos/asf/!svn/ver/1178098/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/model/LVLF.java
+END
+HDFType.java
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/repos/asf/!svn/ver/1155217/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/model/HDFType.java
+END
+SectionDescriptor.java
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/repos/asf/!svn/ver/1212511/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/model/SectionDescriptor.java
+END
+RevisionMarkAuthorTable.java
+K 25
+svn:wc:ra_dav:version-url
+V 111
+/repos/asf/!svn/ver/1177643/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/model/RevisionMarkAuthorTable.java
+END
+ListData.java
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/repos/asf/!svn/ver/1178104/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/model/ListData.java
+END
+LFOData.java
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/repos/asf/!svn/ver/1198722/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/model/LFOData.java
+END
+CHPBinTable.java
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/repos/asf/!svn/ver/1296980/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/model/CHPBinTable.java
+END
+ListFormatOverrideLevel.java
+K 25
+svn:wc:ra_dav:version-url
+V 111
+/repos/asf/!svn/ver/1195060/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/model/ListFormatOverrideLevel.java
+END
+BookmarkFirstDescriptor.java
+K 25
+svn:wc:ra_dav:version-url
+V 111
+/repos/asf/!svn/ver/1156541/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/model/BookmarkFirstDescriptor.java
+END
+OldPAPBinTable.java
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/repos/asf/!svn/ver/1195133/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/model/OldPAPBinTable.java
+END
+LFO.java
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/repos/asf/!svn/ver/1195068/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/model/LFO.java
+END
+NotesTables.java
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/repos/asf/!svn/ver/1156662/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/model/NotesTables.java
+END
+GenericPropertyNode.java
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/repos/asf/!svn/ver/1155217/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/model/GenericPropertyNode.java
+END
+LFOLVLBase.java
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/repos/asf/!svn/ver/1178083/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/model/LFOLVLBase.java
+END
+TextPiece.java
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/repos/asf/!svn/ver/1155210/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/model/TextPiece.java
+END
+DocumentProperties.java
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/repos/asf/!svn/ver/1156662/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/model/DocumentProperties.java
+END
+FibRgLw.java
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/repos/asf/!svn/ver/1178063/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/model/FibRgLw.java
+END
+PAPFormattedDiskPage.java
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/repos/asf/!svn/ver/1296980/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/model/PAPFormattedDiskPage.java
+END
+FileInformationBlock.java
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/repos/asf/!svn/ver/1212511/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/model/FileInformationBlock.java
+END
+FIBFieldHandler.java
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/repos/asf/!svn/ver/1178045/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/model/FIBFieldHandler.java
+END

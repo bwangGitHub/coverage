@@ -1,0 +1,407 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN
+"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>
+org.jfree.chart.plot.PieLabelDistributor
+</title>
+<link href="prettify.css" type="text/css" rel="stylesheet" />
+<script type="text/javascript" src="prettify.js"></script>
+</head>
+<body onload="prettyPrint()">
+<h2>Javalanche report for class:<br/> org.jfree.chart.plot.PieLabelDistributor </h2><pre class="prettyprint" style="border: 1px solid #888;padding: 2px"><span class="nocode"><a name="1">  1: </a></span>/* ===========================================================
+<span class="nocode"><a name="2">  2: </a></span> * JFreeChart : a free chart library for the Java(tm) platform
+<span class="nocode"><a name="3">  3: </a></span> * ===========================================================
+<span class="nocode"><a name="4">  4: </a></span> *
+<span class="nocode"><a name="5">  5: </a></span> * (C) Copyright 2000-2007, by Object Refinery Limited and Contributors.
+<span class="nocode"><a name="6">  6: </a></span> *
+<span class="nocode"><a name="7">  7: </a></span> * Project Info:  http://www.jfree.org/jfreechart/index.html
+<span class="nocode"><a name="8">  8: </a></span> *
+<span class="nocode"><a name="9">  9: </a></span> * This library is free software; you can redistribute it and/or modify it 
+<span class="nocode"><a name="10"> 10: </a></span> * under the terms of the GNU Lesser General Public License as published by 
+<span class="nocode"><a name="11"> 11: </a></span> * the Free Software Foundation; either version 2.1 of the License, or 
+<span class="nocode"><a name="12"> 12: </a></span> * (at your option) any later version.
+<span class="nocode"><a name="13"> 13: </a></span> *
+<span class="nocode"><a name="14"> 14: </a></span> * This library is distributed in the hope that it will be useful, but 
+<span class="nocode"><a name="15"> 15: </a></span> * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY 
+<span class="nocode"><a name="16"> 16: </a></span> * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public 
+<span class="nocode"><a name="17"> 17: </a></span> * License for more details.
+<span class="nocode"><a name="18"> 18: </a></span> *
+<span class="nocode"><a name="19"> 19: </a></span> * You should have received a copy of the GNU Lesser General Public
+<span class="nocode"><a name="20"> 20: </a></span> * License along with this library; if not, write to the Free Software
+<span class="nocode"><a name="21"> 21: </a></span> * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, 
+<span class="nocode"><a name="22"> 22: </a></span> * USA.  
+<span class="nocode"><a name="23"> 23: </a></span> *
+<span class="nocode"><a name="24"> 24: </a></span> * [Java is a trademark or registered trademark of Sun Microsystems, Inc. 
+<span class="nocode"><a name="25"> 25: </a></span> * in the United States and other countries.]
+<span class="nocode"><a name="26"> 26: </a></span> *
+<span class="nocode"><a name="27"> 27: </a></span> * ------------------------
+<span class="nocode"><a name="28"> 28: </a></span> * PieLabelDistributor.java
+<span class="nocode"><a name="29"> 29: </a></span> * ------------------------
+<span class="nocode"><a name="30"> 30: </a></span> * (C) Copyright 2004-2007, by Object Refinery Limited and Contributors.
+<span class="nocode"><a name="31"> 31: </a></span> *
+<span class="nocode"><a name="32"> 32: </a></span> * Original Author:  David Gilbert (for Object Refinery Limited);
+<span class="nocode"><a name="33"> 33: </a></span> * Contributor(s):   -;
+<span class="nocode"><a name="34"> 34: </a></span> *
+<span class="nocode"><a name="35"> 35: </a></span> * Changes
+<span class="nocode"><a name="36"> 36: </a></span> * -------
+<span class="nocode"><a name="37"> 37: </a></span> * 08-Mar-2004 : Version 1 (DG);
+<span class="nocode"><a name="38"> 38: </a></span> * 18-Apr-2005 : Use StringBuffer (DG);
+<span class="nocode"><a name="39"> 39: </a></span> * 14-Jun-2007 : Now extends AbstractPieLabelDistributor (DG);
+<span class="nocode"><a name="40"> 40: </a></span> *
+<span class="nocode"><a name="41"> 41: </a></span> */
+<span class="nocode"><a name="42"> 42: </a></span>
+<span class="nocode"><a name="43"> 43: </a></span>package org.jfree.chart.plot;
+<span class="nocode"><a name="44"> 44: </a></span>
+<span class="nocode"><a name="45"> 45: </a></span>import java.util.Collections;
+<span class="nocode"><a name="46"> 46: </a></span>
+<span class="nocode"><a name="47"> 47: </a></span>/**
+<span class="nocode"><a name="48"> 48: </a></span> * This class distributes the section labels for one side of a pie chart so 
+<span class="nocode"><a name="49"> 49: </a></span> * that they do not overlap.
+<span class="nocode"><a name="50"> 50: </a></span> */
+<span class="nocode"><a name="51"> 51: </a></span>public class PieLabelDistributor extends AbstractPieLabelDistributor {
+<span class="nocode"><a name="52"> 52: </a></span>        
+<span class="nocode"><a name="53"> 53: </a></span>    /** The minimum gap. */
+<span class="nocode"><a name="54"> 54: </a></span>    private double minGap = 4.0;
+<span class="nocode"><a name="55"> 55: </a></span>    
+<span class="nocode"><a name="56"> 56: </a></span>    /**
+<span class="nocode"><a name="57"> 57: </a></span>     * Creates a new distributor.
+<span class="nocode"><a name="58"> 58: </a></span>     * 
+<span class="nocode"><a name="59"> 59: </a></span>     * @param labelCount  the number of labels (ignored).
+<span class="nocode"><a name="60"> 60: </a></span>     */
+<span class="nocode"><a name="61"> 61: </a></span>    public PieLabelDistributor(int labelCount) {
+<span class="nocode"><a name="62"> 62: </a></span>        super();
+<span class="nocode"><a name="63"> 63: </a></span>    }
+<span class="nocode"><a name="64"> 64: </a></span>    
+<span class="nocode"><a name="65"> 65: </a></span>    /**
+<span class="nocode"><a name="66"> 66: </a></span>     * Distributes the labels.
+<span class="nocode"><a name="67"> 67: </a></span>     * 
+<span class="nocode"><a name="68"> 68: </a></span>     * @param minY  the minimum y-coordinate in Java2D-space.
+<span class="nocode"><a name="69"> 69: </a></span>     * @param height  the available height (in Java2D units).
+<span class="nocode"><a name="70"> 70: </a></span>     */
+<span class="nocode"><a name="71"> 71: </a></span>    public void distributeLabels(double minY, double height) {
+<span class="nocode"><a name="72"> 72: </a></span>        sort();  // sorts the label records into ascending order by baseY
+<span class="nocode"><a name="73"> 73: </a></span>        if (isOverlap()) {
+<span class="nocode"><a name="74"> 74: </a></span>            adjustInwards();
+<span class="nocode"><a name="75"> 75: </a></span>        }
+<span class="nocode"><a name="76"> 76: </a></span>        
+<span class="nocode"><a name="77"> 77: </a></span>        // if still overlapping, do something else...
+<span class="nocode"><a name="78"> 78: </a></span>        if (isOverlap()) {
+<span class="nocode"><a name="79"> 79: </a></span>            adjustDownwards(minY, height);
+<span class="nocode"><a name="80"> 80: </a></span>        }
+<span class="nocode"><a name="81"> 81: </a></span>        
+<span class="nocode"><a name="82"> 82: </a></span>        if (isOverlap()) { 
+<span class="nocode"><a name="83"> 83: </a></span>            adjustUpwards(minY, height);
+<span class="nocode"><a name="84"> 84: </a></span>        }
+<span class="nocode"><a name="85"> 85: </a></span>        
+<span class="nocode"><a name="86"> 86: </a></span>        if (isOverlap()) {  
+<span class="nocode"><a name="87"> 87: </a></span>            spreadEvenly(minY, height);
+<span class="nocode"><a name="88"> 88: </a></span>        }
+<span class="nocode"><a name="89"> 89: </a></span>
+<span class="nocode"><a name="90"> 90: </a></span>    }
+<span class="nocode"><a name="91"> 91: </a></span>    
+<span class="nocode"><a name="92"> 92: </a></span>    /**
+<span class="nocode"><a name="93"> 93: </a></span>     * Returns &lt;code&gt;true&lt;/code&gt; if there are overlapping labels in the list, 
+<span class="nocode"><a name="94"> 94: </a></span>     * and &lt;code&gt;false&lt;/code&gt; otherwise.
+<span class="nocode"><a name="95"> 95: </a></span>     * 
+<span class="nocode"><a name="96"> 96: </a></span>     * @return A boolean.
+<span class="nocode"><a name="97"> 97: </a></span>     */
+<span class="nocode"><a name="98"> 98: </a></span>    private boolean isOverlap() {
+<span class="nocode"><a name="99"> 99: </a></span>        double y = 0.0;
+<span class="nocode"><a name="100">100: </a></span>        for (int i = 0; i &lt; this.labels.size(); i++) {
+<span class="nocode"><a name="101">101: </a></span>            PieLabelRecord plr = getPieLabelRecord(i);
+<span class="nocode"><a name="102">102: </a></span>            if (y &gt; plr.getLowerY()) {
+<span class="nocode"><a name="103">103: </a></span>                return true;
+<span class="nocode"><a name="104">104: </a></span>            }
+<span class="nocode"><a name="105">105: </a></span>            y = plr.getUpperY();    
+<span class="nocode"><a name="106">106: </a></span>        }
+<span class="nocode"><a name="107">107: </a></span>        return false;
+<span class="nocode"><a name="108">108: </a></span>    }
+<span class="nocode"><a name="109">109: </a></span>    
+<span class="nocode"><a name="110">110: </a></span>    /**
+<span class="nocode"><a name="111">111: </a></span>     * Adjusts the y-coordinate for the labels in towards the center in an 
+<span class="nocode"><a name="112">112: </a></span>     * attempt to fix overlapping.
+<span class="nocode"><a name="113">113: </a></span>     */
+<span class="nocode"><a name="114">114: </a></span>    protected void adjustInwards() {   
+<span class="nocode"><a name="115">115: </a></span>        int lower = 0;
+<span class="nocode"><a name="116">116: </a></span>        int upper = this.labels.size() - 1;
+<span class="nocode"><a name="117">117: </a></span>        while (upper &gt; lower) {
+<span class="nocode"><a name="118">118: </a></span>            if (lower &lt; upper - 1) {
+<span class="nocode"><a name="119">119: </a></span>                PieLabelRecord r0 = getPieLabelRecord(lower);
+<span class="nocode"><a name="120">120: </a></span>                PieLabelRecord r1 = getPieLabelRecord(lower + 1); 
+<span class="nocode"><a name="121">121: </a></span>                if (r1.getLowerY() &lt; r0.getUpperY()) {
+<span class="nocode"><a name="122">122: </a></span>                    double adjust = r0.getUpperY() - r1.getLowerY() 
+<span class="nocode"><a name="123">123: </a></span>                                    + this.minGap;  
+<span class="nocode"><a name="124">124: </a></span>                    r1.setAllocatedY(r1.getAllocatedY() + adjust);   
+<span class="nocode"><a name="125">125: </a></span>                }
+<span class="nocode"><a name="126">126: </a></span>            }
+<span class="nocode"><a name="127">127: </a></span>            PieLabelRecord r2 = getPieLabelRecord(upper - 1);
+<span class="nocode"><a name="128">128: </a></span>            PieLabelRecord r3 = getPieLabelRecord(upper);  
+<span class="nocode"><a name="129">129: </a></span>            if (r2.getUpperY() &gt; r3.getLowerY()) {
+<span class="nocode"><a name="130">130: </a></span>                double adjust = (r2.getUpperY() - r3.getLowerY()) + this.minGap;
+<span class="nocode"><a name="131">131: </a></span>                r3.setAllocatedY(r3.getAllocatedY() + adjust);   
+<span class="nocode"><a name="132">132: </a></span>            }                
+<span class="nocode"><a name="133">133: </a></span>            lower++; 
+<span class="nocode"><a name="134">134: </a></span>            upper--;
+<span class="nocode"><a name="135">135: </a></span>        }
+<span class="nocode"><a name="136">136: </a></span>    }
+<span class="nocode"><a name="137">137: </a></span>    
+<span class="nocode"><a name="138">138: </a></span>    /**
+<span class="nocode"><a name="139">139: </a></span>     * Any labels that are overlapping are moved down in an attempt to 
+<span class="nocode"><a name="140">140: </a></span>     * eliminate the overlaps.
+<span class="nocode"><a name="141">141: </a></span>     * 
+<span class="nocode"><a name="142">142: </a></span>     * @param minY  the minimum y value (in Java2D coordinate space).
+<span class="nocode"><a name="143">143: </a></span>     * @param height  the height available for all labels.
+<span class="nocode"><a name="144">144: </a></span>     */
+<span class="nocode"><a name="145">145: </a></span>    protected void adjustDownwards(double minY, double height) {
+<span class="nocode"><a name="146">146: </a></span>        for (int i = 0; i &lt; this.labels.size() - 1; i++) {
+<span class="nocode"><a name="147">147: </a></span>            PieLabelRecord record0 = getPieLabelRecord(i);
+<span class="nocode"><a name="148">148: </a></span>            PieLabelRecord record1 = getPieLabelRecord(i + 1);
+<span class="nocode"><a name="149">149: </a></span>            if (record1.getLowerY() &lt; record0.getUpperY()) {
+<span class="nocode"><a name="150">150: </a></span>                record1.setAllocatedY(Math.min(minY + height, 
+<span class="nocode"><a name="151">151: </a></span>                        record0.getUpperY() + this.minGap 
+<span class="nocode"><a name="152">152: </a></span>                        + record1.getLabelHeight() / 2.0));   
+<span class="nocode"><a name="153">153: </a></span>            }
+<span class="nocode"><a name="154">154: </a></span>        }        
+<span class="nocode"><a name="155">155: </a></span>    }
+<span class="nocode"><a name="156">156: </a></span>
+<span class="nocode"><a name="157">157: </a></span>    /**
+<span class="nocode"><a name="158">158: </a></span>     * Any labels that are overlapping are moved up in an attempt to eliminate 
+<span class="nocode"><a name="159">159: </a></span>     * the overlaps.
+<span class="nocode"><a name="160">160: </a></span>     * 
+<span class="nocode"><a name="161">161: </a></span>     * @param minY  the minimum y value (in Java2D coordinate space).
+<span class="nocode"><a name="162">162: </a></span>     * @param height  the height available for all labels.
+<span class="nocode"><a name="163">163: </a></span>     */
+<span class="nocode"><a name="164">164: </a></span>    protected void adjustUpwards(double minY, double height) {
+<span class="nocode"><a name="165">165: </a></span>        for (int i = this.labels.size() - 1; i &gt; 0; i--) {
+<span class="nocode"><a name="166">166: </a></span>            PieLabelRecord record0 = getPieLabelRecord(i);
+<span class="nocode"><a name="167">167: </a></span>            PieLabelRecord record1 = getPieLabelRecord(i - 1);
+<span class="nocode"><a name="168">168: </a></span>            if (record1.getUpperY() &gt; record0.getLowerY()) {
+<span class="nocode"><a name="169">169: </a></span>                record1.setAllocatedY(Math.max(minY, record0.getLowerY() 
+<span class="nocode"><a name="170">170: </a></span>                        - this.minGap - record1.getLabelHeight() / 2.0));
+<span class="nocode"><a name="171">171: </a></span>            }
+<span class="nocode"><a name="172">172: </a></span>        }        
+<span class="nocode"><a name="173">173: </a></span>    }
+<span class="nocode"><a name="174">174: </a></span>
+<span class="nocode"><a name="175">175: </a></span>    /**
+<span class="nocode"><a name="176">176: </a></span>     * Labels are spaced evenly in the available space in an attempt to 
+<span class="nocode"><a name="177">177: </a></span>     * eliminate the overlaps.
+<span class="nocode"><a name="178">178: </a></span>     * 
+<span class="nocode"><a name="179">179: </a></span>     * @param minY  the minimum y value (in Java2D coordinate space).
+<span class="nocode"><a name="180">180: </a></span>     * @param height  the height available for all labels.
+<span class="nocode"><a name="181">181: </a></span>     */
+<span class="nocode"><a name="182">182: </a></span>    protected void spreadEvenly(double minY, double height) {
+<span class="nocode"><a name="183">183: </a></span>        double y = minY;
+<span class="nocode"><a name="184">184: </a></span>        double sumOfLabelHeights = 0.0;
+<span class="nocode"><a name="185">185: </a></span>        for (int i = 0; i &lt; this.labels.size(); i++) {
+<span class="nocode"><a name="186">186: </a></span>            sumOfLabelHeights += getPieLabelRecord(i).getLabelHeight();
+<span class="nocode"><a name="187">187: </a></span>        }
+<span class="nocode"><a name="188">188: </a></span>        double gap = Math.max(0, height - sumOfLabelHeights);
+<span class="nocode"><a name="189">189: </a></span>        if (this.labels.size() &gt; 1) {
+<span class="nocode"><a name="190">190: </a></span>            gap = gap / (this.labels.size() - 1);   
+<span class="nocode"><a name="191">191: </a></span>        }
+<span class="nocode"><a name="192">192: </a></span>        for (int i = 0; i &lt; this.labels.size(); i++) {
+<span class="nocode"><a name="193">193: </a></span>            PieLabelRecord record = getPieLabelRecord(i);
+<span class="nocode"><a name="194">194: </a></span>            y = y + record.getLabelHeight() / 2.0;
+<span class="nocode"><a name="195">195: </a></span>            record.setAllocatedY(y);
+<span class="nocode"><a name="196">196: </a></span>            y = y + record.getLabelHeight() / 2.0 + gap;
+<span class="nocode"><a name="197">197: </a></span>        }        
+<span class="nocode"><a name="198">198: </a></span>    }
+<span class="nocode"><a name="199">199: </a></span>        
+<span class="nocode"><a name="200">200: </a></span>    /**
+<span class="nocode"><a name="201">201: </a></span>     * Sorts the label records into ascending order by y-value.
+<span class="nocode"><a name="202">202: </a></span>     */
+<span class="nocode"><a name="203">203: </a></span>    public void sort() {
+<span class="nocode"><a name="204">204: </a></span>        Collections.sort(this.labels);  
+<span class="nocode"><a name="205">205: </a></span>    }
+<span class="nocode"><a name="206">206: </a></span>    
+<span class="nocode"><a name="207">207: </a></span>    /**
+<span class="nocode"><a name="208">208: </a></span>     * Returns a string containing a description of the object for 
+<span class="nocode"><a name="209">209: </a></span>     * debugging purposes.
+<span class="nocode"><a name="210">210: </a></span>     * 
+<span class="nocode"><a name="211">211: </a></span>     * @return A string.
+<span class="nocode"><a name="212">212: </a></span>     */
+<span class="nocode"><a name="213">213: </a></span>    public String toString() {
+<span class="nocode"><a name="214">214: </a></span>        StringBuffer result = new StringBuffer();
+<span class="nocode"><a name="215">215: </a></span>        for (int i = 0; i &lt; this.labels.size(); i++) {
+<span class="nocode"><a name="216">216: </a></span>            result.append(getPieLabelRecord(i).toString()).append(&quot;\n&quot;);   
+<span class="nocode"><a name="217">217: </a></span>        }
+<span class="nocode"><a name="218">218: </a></span>        return result.toString();
+<span class="nocode"><a name="219">219: </a></span>    }
+<span class="nocode"><a name="220">220: </a></span>    
+<span class="nocode"><a name="221">221: </a></span>}
+</pre><table class="mutation_table" summary="Mutations">
+<tr><th>ID</th><th>Line</th><th>Type</th><th>Detected</th></tr><tr><td>28206</td><td><a href="#54">54</a></td><td>Replace a constant (Replace 4.0 with 3.0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28207</td><td><a href="#54">54</a></td><td>Replace a constant (Replace 4.0 with 0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28208</td><td><a href="#54">54</a></td><td>Replace a constant (Replace 4.0 with 5.0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28209</td><td><a href="#72">72</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28211</td><td><a href="#73">73</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28210</td><td><a href="#73">73</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28212</td><td><a href="#74">74</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28214</td><td><a href="#78">78</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28213</td><td><a href="#78">78</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28215</td><td><a href="#79">79</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28217</td><td><a href="#82">82</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28216</td><td><a href="#82">82</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28218</td><td><a href="#83">83</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28220</td><td><a href="#86">86</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28219</td><td><a href="#86">86</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28221</td><td><a href="#87">87</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28222</td><td><a href="#99">99</a></td><td>Replace a constant (Replace 0 with 1(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28223</td><td><a href="#99">99</a></td><td>Replace a constant (Replace 0 with -1(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28224</td><td><a href="#100">100</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28225</td><td><a href="#100">100</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>28227</td><td><a href="#100">100</a></td><td>Negate jump condition (Replace IF_ICMPGE with  IF_ICMPLT)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28226</td><td><a href="#100">100</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28228</td><td><a href="#101">101</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>28230</td><td><a href="#102">102</a></td><td>Negate jump condition (Replace IFLE with  IFGT)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28229</td><td><a href="#102">102</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28231</td><td><a href="#103">103</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28232</td><td><a href="#103">103</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28233</td><td><a href="#105">105</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28235</td><td><a href="#107">107</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28234</td><td><a href="#107">107</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28236</td><td><a href="#115">115</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28237</td><td><a href="#115">115</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>28240</td><td><a href="#116">116</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>28239</td><td><a href="#116">116</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28241</td><td><a href="#116">116</a></td><td>Replace arithmetic operator (Replace ISUB with IADD)</td><td><img src="detected.png"/></td></tr>
+<tr><td>28238</td><td><a href="#116">116</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28242</td><td><a href="#117">117</a></td><td>Negate jump condition (Replace IF_ICMPLE with  IF_ICMPGT)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28243</td><td><a href="#118">118</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28244</td><td><a href="#118">118</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28246</td><td><a href="#118">118</a></td><td>Negate jump condition (Replace IF_ICMPGE with  IF_ICMPLT)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28245</td><td><a href="#118">118</a></td><td>Replace arithmetic operator (Replace ISUB with IADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28247</td><td><a href="#119">119</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28248</td><td><a href="#120">120</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28249</td><td><a href="#120">120</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28250</td><td><a href="#120">120</a></td><td>Replace arithmetic operator (Replace IADD with ISUB)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28251</td><td><a href="#120">120</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28254</td><td><a href="#121">121</a></td><td>Negate jump condition (Replace IFGE with  IFLT)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28252</td><td><a href="#121">121</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28253</td><td><a href="#121">121(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28257</td><td><a href="#122">122</a></td><td>Replace arithmetic operator (Replace DSUB with DADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28258</td><td><a href="#122">122(1)</a></td><td>Replace arithmetic operator (Replace DADD with DSUB)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28255</td><td><a href="#122">122</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28256</td><td><a href="#122">122(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28260</td><td><a href="#124">124</a></td><td>Replace arithmetic operator (Replace DADD with DSUB)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28259</td><td><a href="#124">124</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28261</td><td><a href="#124">124(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28262</td><td><a href="#127">127</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>28263</td><td><a href="#127">127</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28264</td><td><a href="#127">127</a></td><td>Replace arithmetic operator (Replace ISUB with IADD)</td><td><img src="detected.png"/></td></tr>
+<tr><td>28265</td><td><a href="#127">127</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>28266</td><td><a href="#128">128</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>28269</td><td><a href="#129">129</a></td><td>Negate jump condition (Replace IFLE with  IFGT)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28267</td><td><a href="#129">129</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28268</td><td><a href="#129">129(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28272</td><td><a href="#130">130</a></td><td>Replace arithmetic operator (Replace DSUB with DADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28273</td><td><a href="#130">130(1)</a></td><td>Replace arithmetic operator (Replace DADD with DSUB)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28270</td><td><a href="#130">130</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28271</td><td><a href="#130">130(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28275</td><td><a href="#131">131</a></td><td>Replace arithmetic operator (Replace DADD with DSUB)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28274</td><td><a href="#131">131</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28276</td><td><a href="#131">131(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28277</td><td><a href="#146">146</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28278</td><td><a href="#146">146</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28281</td><td><a href="#146">146(1)</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28280</td><td><a href="#146">146(1)</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28283</td><td><a href="#146">146</a></td><td>Negate jump condition (Replace IF_ICMPGE with  IF_ICMPLT)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28282</td><td><a href="#146">146</a></td><td>Replace arithmetic operator (Replace ISUB with IADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28279</td><td><a href="#146">146</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28284</td><td><a href="#147">147</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28286</td><td><a href="#148">148</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28285</td><td><a href="#148">148</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28287</td><td><a href="#148">148</a></td><td>Replace arithmetic operator (Replace IADD with ISUB)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28288</td><td><a href="#148">148</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28291</td><td><a href="#149">149</a></td><td>Negate jump condition (Replace IFGE with  IFLT)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28289</td><td><a href="#149">149</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28290</td><td><a href="#149">149(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28296</td><td><a href="#150">150</a></td><td>Replace a constant (Replace 2.0 with 3.0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28298</td><td><a href="#150">150</a></td><td>Replace a constant (Replace 2.0 with 1.0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28297</td><td><a href="#150">150</a></td><td>Replace a constant (Replace 2.0 with 0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28292</td><td><a href="#150">150</a></td><td>Replace arithmetic operator (Replace DADD with DSUB)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28294</td><td><a href="#150">150(1)</a></td><td>Replace arithmetic operator (Replace DADD with DSUB)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28299</td><td><a href="#150">150(2)</a></td><td>Replace arithmetic operator (Replace DDIV with DMUL)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28300</td><td><a href="#150">150(3)</a></td><td>Replace arithmetic operator (Replace DADD with DSUB)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28293</td><td><a href="#150">150</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28295</td><td><a href="#150">150(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28301</td><td><a href="#150">150(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28302</td><td><a href="#150">150(3)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28304</td><td><a href="#165">165</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28305</td><td><a href="#165">165</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28307</td><td><a href="#165">165</a></td><td>Negate jump condition (Replace IFLE with  IFGT)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28306</td><td><a href="#165">165</a></td><td>Replace arithmetic operator (Replace ISUB with IADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28303</td><td><a href="#165">165</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28308</td><td><a href="#166">166</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28310</td><td><a href="#167">167</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28309</td><td><a href="#167">167</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28311</td><td><a href="#167">167</a></td><td>Replace arithmetic operator (Replace ISUB with IADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28312</td><td><a href="#167">167</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28315</td><td><a href="#168">168</a></td><td>Negate jump condition (Replace IFLE with  IFGT)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28313</td><td><a href="#168">168</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28314</td><td><a href="#168">168(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28320</td><td><a href="#169">169</a></td><td>Replace a constant (Replace 2.0 with 0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28319</td><td><a href="#169">169</a></td><td>Replace a constant (Replace 2.0 with 3.0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28321</td><td><a href="#169">169</a></td><td>Replace a constant (Replace 2.0 with 1.0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28317</td><td><a href="#169">169</a></td><td>Replace arithmetic operator (Replace DSUB with DADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28322</td><td><a href="#169">169(1)</a></td><td>Replace arithmetic operator (Replace DDIV with DMUL)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28323</td><td><a href="#169">169(2)</a></td><td>Replace arithmetic operator (Replace DSUB with DADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28316</td><td><a href="#169">169</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28318</td><td><a href="#169">169(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28324</td><td><a href="#169">169(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28325</td><td><a href="#169">169(3)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28327</td><td><a href="#184">184</a></td><td>Replace a constant (Replace 0 with -1(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28326</td><td><a href="#184">184</a></td><td>Replace a constant (Replace 0 with 1(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28328</td><td><a href="#185">185</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28329</td><td><a href="#185">185</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28331</td><td><a href="#185">185</a></td><td>Negate jump condition (Replace IF_ICMPGE with  IF_ICMPLT)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28330</td><td><a href="#185">185</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28334</td><td><a href="#186">186</a></td><td>Replace arithmetic operator (Replace DADD with DSUB)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28332</td><td><a href="#186">186</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28333</td><td><a href="#186">186(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28335</td><td><a href="#188">188</a></td><td>Replace a constant (Replace 0 with 1(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28336</td><td><a href="#188">188</a></td><td>Replace a constant (Replace 0 with -1(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28337</td><td><a href="#188">188</a></td><td>Replace arithmetic operator (Replace DSUB with DADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28338</td><td><a href="#188">188</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28340</td><td><a href="#189">189</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28341</td><td><a href="#189">189</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28342</td><td><a href="#189">189</a></td><td>Negate jump condition (Replace IF_ICMPLE with  IF_ICMPGT)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28339</td><td><a href="#189">189</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28344</td><td><a href="#190">190</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28345</td><td><a href="#190">190</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28346</td><td><a href="#190">190</a></td><td>Replace arithmetic operator (Replace ISUB with IADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28347</td><td><a href="#190">190(1)</a></td><td>Replace arithmetic operator (Replace DDIV with DMUL)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28343</td><td><a href="#190">190</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28349</td><td><a href="#192">192</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28348</td><td><a href="#192">192</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28351</td><td><a href="#192">192</a></td><td>Negate jump condition (Replace IF_ICMPGE with  IF_ICMPLT)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28350</td><td><a href="#192">192</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28352</td><td><a href="#193">193</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28356</td><td><a href="#194">194</a></td><td>Replace a constant (Replace 2.0 with 1.0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28354</td><td><a href="#194">194</a></td><td>Replace a constant (Replace 2.0 with 3.0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28355</td><td><a href="#194">194</a></td><td>Replace a constant (Replace 2.0 with 0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28357</td><td><a href="#194">194</a></td><td>Replace arithmetic operator (Replace DDIV with DMUL)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28358</td><td><a href="#194">194(1)</a></td><td>Replace arithmetic operator (Replace DADD with DSUB)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28353</td><td><a href="#194">194</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28359</td><td><a href="#195">195</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28363</td><td><a href="#196">196</a></td><td>Replace a constant (Replace 2.0 with 1.0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28362</td><td><a href="#196">196</a></td><td>Replace a constant (Replace 2.0 with 0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28361</td><td><a href="#196">196</a></td><td>Replace a constant (Replace 2.0 with 3.0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28364</td><td><a href="#196">196</a></td><td>Replace arithmetic operator (Replace DDIV with DMUL)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28365</td><td><a href="#196">196(1)</a></td><td>Replace arithmetic operator (Replace DADD with DSUB)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28366</td><td><a href="#196">196(2)</a></td><td>Replace arithmetic operator (Replace DADD with DSUB)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28360</td><td><a href="#196">196</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28367</td><td><a href="#204">204</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28368</td><td><a href="#215">215</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28369</td><td><a href="#215">215</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28371</td><td><a href="#215">215</a></td><td>Negate jump condition (Replace IF_ICMPGE with  IF_ICMPLT)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28370</td><td><a href="#215">215</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28372</td><td><a href="#216">216</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28373</td><td><a href="#216">216(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28374</td><td><a href="#216">216(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28375</td><td><a href="#216">216(3)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>28376</td><td><a href="#218">218</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+</table>
+</body>
+</html>

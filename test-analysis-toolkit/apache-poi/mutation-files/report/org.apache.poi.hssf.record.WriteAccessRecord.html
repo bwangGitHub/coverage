@@ -1,0 +1,288 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN
+"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>
+org.apache.poi.hssf.record.WriteAccessRecord
+</title>
+<link href="prettify.css" type="text/css" rel="stylesheet" />
+<script type="text/javascript" src="prettify.js"></script>
+</head>
+<body onload="prettyPrint()">
+<h2>Javalanche report for class:<br/> org.apache.poi.hssf.record.WriteAccessRecord </h2><pre class="prettyprint" style="border: 1px solid #888;padding: 2px"><span class="nocode"><a name="1">  1: </a></span>/* ====================================================================
+<span class="nocode"><a name="2">  2: </a></span>   Licensed to the Apache Software Foundation (ASF) under one or more
+<span class="nocode"><a name="3">  3: </a></span>   contributor license agreements.  See the NOTICE file distributed with
+<span class="nocode"><a name="4">  4: </a></span>   this work for additional information regarding copyright ownership.
+<span class="nocode"><a name="5">  5: </a></span>   The ASF licenses this file to You under the Apache License, Version 2.0
+<span class="nocode"><a name="6">  6: </a></span>   (the &quot;License&quot;); you may not use this file except in compliance with
+<span class="nocode"><a name="7">  7: </a></span>   the License.  You may obtain a copy of the License at
+<span class="nocode"><a name="8">  8: </a></span>
+<span class="nocode"><a name="9">  9: </a></span>       http://www.apache.org/licenses/LICENSE-2.0
+<span class="nocode"><a name="10"> 10: </a></span>
+<span class="nocode"><a name="11"> 11: </a></span>   Unless required by applicable law or agreed to in writing, software
+<span class="nocode"><a name="12"> 12: </a></span>   distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+<span class="nocode"><a name="13"> 13: </a></span>   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+<span class="nocode"><a name="14"> 14: </a></span>   See the License for the specific language governing permissions and
+<span class="nocode"><a name="15"> 15: </a></span>   limitations under the License.
+<span class="nocode"><a name="16"> 16: </a></span>==================================================================== */
+<span class="nocode"><a name="17"> 17: </a></span>
+<span class="nocode"><a name="18"> 18: </a></span>package org.apache.poi.hssf.record;
+<span class="nocode"><a name="19"> 19: </a></span>
+<span class="nocode"><a name="20"> 20: </a></span>import java.util.Arrays;
+<span class="nocode"><a name="21"> 21: </a></span>
+<span class="nocode"><a name="22"> 22: </a></span>import org.apache.poi.util.LittleEndian;
+<span class="nocode"><a name="23"> 23: </a></span>import org.apache.poi.util.LittleEndianOutput;
+<span class="nocode"><a name="24"> 24: </a></span>import org.apache.poi.util.StringUtil;
+<span class="nocode"><a name="25"> 25: </a></span>
+<span class="nocode"><a name="26"> 26: </a></span>/**
+<span class="nocode"><a name="27"> 27: </a></span> * Title: Write Access Record (0x005C)&lt;p/&gt;
+<span class="nocode"><a name="28"> 28: </a></span> * 
+<span class="nocode"><a name="29"> 29: </a></span> * Description: Stores the username of that who owns the spreadsheet generator (on unix the user's 
+<span class="nocode"><a name="30"> 30: </a></span> * login, on Windoze its the name you typed when you installed the thing)
+<span class="nocode"><a name="31"> 31: </a></span> * &lt;p/&gt;
+<span class="nocode"><a name="32"> 32: </a></span> * REFERENCE: PG 424 Microsoft Excel 97 Developer's Kit (ISBN: 1-57231-498-2)
+<span class="nocode"><a name="33"> 33: </a></span> * &lt;p/&gt;
+<span class="nocode"><a name="34"> 34: </a></span> * 
+<span class="nocode"><a name="35"> 35: </a></span> * @author Andrew C. Oliver (acoliver at apache dot org)
+<span class="nocode"><a name="36"> 36: </a></span> */
+<span class="nocode"><a name="37"> 37: </a></span>public final class WriteAccessRecord extends StandardRecord {
+<span class="nocode"><a name="38"> 38: </a></span>	public final static short sid = 0x005C;
+<span class="nocode"><a name="39"> 39: </a></span>
+<span class="nocode"><a name="40"> 40: </a></span>	private static final byte PAD_CHAR = (byte) ' ';
+<span class="nocode"><a name="41"> 41: </a></span>	private static final int DATA_SIZE = 112;
+<span class="nocode"><a name="42"> 42: </a></span>	private String field_1_username;
+<span class="nocode"><a name="43"> 43: </a></span>	/** this record is always padded to a constant length */
+<span class="nocode"><a name="44"> 44: </a></span>	private static final byte[] PADDING = new byte[DATA_SIZE];
+<span class="nocode"><a name="45"> 45: </a></span>	static {
+<span class="nocode"><a name="46"> 46: </a></span>		Arrays.fill(PADDING, PAD_CHAR);
+<span class="nocode"><a name="47"> 47: </a></span>	}
+<span class="nocode"><a name="48"> 48: </a></span>
+<span class="nocode"><a name="49"> 49: </a></span>	public WriteAccessRecord() {
+<span class="nocode"><a name="50"> 50: </a></span>		setUsername(&quot;&quot;);
+<span class="nocode"><a name="51"> 51: </a></span>	}
+<span class="nocode"><a name="52"> 52: </a></span>
+<span class="nocode"><a name="53"> 53: </a></span>	public WriteAccessRecord(RecordInputStream in) {
+<span class="nocode"><a name="54"> 54: </a></span>		if (in.remaining() &gt; DATA_SIZE) {
+<span class="nocode"><a name="55"> 55: </a></span>			throw new RecordFormatException(&quot;Expected data size (&quot; + DATA_SIZE + &quot;) but got (&quot;
+<span class="nocode"><a name="56"> 56: </a></span>					+ in.remaining() + &quot;)&quot;);
+<span class="nocode"><a name="57"> 57: </a></span>		}
+<span class="nocode"><a name="58"> 58: </a></span>		// The string is always 112 characters (padded with spaces), therefore
+<span class="nocode"><a name="59"> 59: </a></span>		// this record can not be continued.
+<span class="nocode"><a name="60"> 60: </a></span>
+<span class="nocode"><a name="61"> 61: </a></span>		int nChars = in.readUShort();
+<span class="nocode"><a name="62"> 62: </a></span>		int is16BitFlag = in.readUByte();
+<span class="nocode"><a name="63"> 63: </a></span>		if (nChars &gt; DATA_SIZE || (is16BitFlag &amp; 0xFE) != 0) {
+<span class="nocode"><a name="64"> 64: </a></span>			// String header looks wrong (probably missing)
+<span class="nocode"><a name="65"> 65: </a></span>			// OOO doc says this is optional anyway.
+<span class="nocode"><a name="66"> 66: </a></span>			// reconstruct data
+<span class="nocode"><a name="67"> 67: </a></span>			byte[] data = new byte[3 + in.remaining()];
+<span class="nocode"><a name="68"> 68: </a></span>			LittleEndian.putUShort(data, 0, nChars);
+<span class="nocode"><a name="69"> 69: </a></span>			LittleEndian.putByte(data, 2, is16BitFlag);
+<span class="nocode"><a name="70"> 70: </a></span>			in.readFully(data, 3, data.length-3);
+<span class="nocode"><a name="71"> 71: </a></span>			String rawValue = new String(data);
+<span class="nocode"><a name="72"> 72: </a></span>			setUsername(rawValue.trim());
+<span class="nocode"><a name="73"> 73: </a></span>			return;
+<span class="nocode"><a name="74"> 74: </a></span>		}
+<span class="nocode"><a name="75"> 75: </a></span>
+<span class="nocode"><a name="76"> 76: </a></span>		String rawText;
+<span class="nocode"><a name="77"> 77: </a></span>		if ((is16BitFlag &amp; 0x01) == 0x00) {
+<span class="nocode"><a name="78"> 78: </a></span>			rawText = StringUtil.readCompressedUnicode(in, nChars);
+<span class="nocode"><a name="79"> 79: </a></span>		} else {
+<span class="nocode"><a name="80"> 80: </a></span>			rawText = StringUtil.readUnicodeLE(in, nChars);
+<span class="nocode"><a name="81"> 81: </a></span>		}
+<span class="nocode"><a name="82"> 82: </a></span>		field_1_username = rawText.trim();
+<span class="nocode"><a name="83"> 83: </a></span>
+<span class="nocode"><a name="84"> 84: </a></span>		// consume padding
+<span class="nocode"><a name="85"> 85: </a></span>		int padSize = in.remaining();
+<span class="nocode"><a name="86"> 86: </a></span>		while (padSize &gt; 0) {
+<span class="nocode"><a name="87"> 87: </a></span>			// in some cases this seems to be garbage (non spaces)
+<span class="nocode"><a name="88"> 88: </a></span>			in.readUByte();
+<span class="nocode"><a name="89"> 89: </a></span>			padSize--;
+<span class="nocode"><a name="90"> 90: </a></span>		}
+<span class="nocode"><a name="91"> 91: </a></span>	}
+<span class="nocode"><a name="92"> 92: </a></span>
+<span class="nocode"><a name="93"> 93: </a></span>	/**
+<span class="nocode"><a name="94"> 94: </a></span>	 * set the username for the user that created the report. HSSF uses the
+<span class="nocode"><a name="95"> 95: </a></span>	 * logged in user.
+<span class="nocode"><a name="96"> 96: </a></span>	 * 
+<span class="nocode"><a name="97"> 97: </a></span>	 * @param username of the user who is logged in (probably &quot;tomcat&quot; or &quot;apache&quot;)
+<span class="nocode"><a name="98"> 98: </a></span>	 */
+<span class="nocode"><a name="99"> 99: </a></span>	public void setUsername(String username) {
+<span class="nocode"><a name="100">100: </a></span>		boolean is16bit = StringUtil.hasMultibyte(username);
+<span class="nocode"><a name="101">101: </a></span>		int encodedByteCount = 3 + username.length() * (is16bit ? 2 : 1);
+<span class="nocode"><a name="102">102: </a></span>		int paddingSize = DATA_SIZE - encodedByteCount;
+<span class="nocode"><a name="103">103: </a></span>		if (paddingSize &lt; 0) {
+<span class="nocode"><a name="104">104: </a></span>			throw new IllegalArgumentException(&quot;Name is too long: &quot; + username);
+<span class="nocode"><a name="105">105: </a></span>		}
+<span class="nocode"><a name="106">106: </a></span>
+<span class="nocode"><a name="107">107: </a></span>		field_1_username = username;
+<span class="nocode"><a name="108">108: </a></span>	}
+<span class="nocode"><a name="109">109: </a></span>
+<span class="nocode"><a name="110">110: </a></span>	/**
+<span class="nocode"><a name="111">111: </a></span>	 * get the username for the user that created the report. HSSF uses the
+<span class="nocode"><a name="112">112: </a></span>	 * logged in user. On natively created M$ Excel sheet this would be the name
+<span class="nocode"><a name="113">113: </a></span>	 * you typed in when you installed it in most cases.
+<span class="nocode"><a name="114">114: </a></span>	 * 
+<span class="nocode"><a name="115">115: </a></span>	 * @return username of the user who is logged in (probably &quot;tomcat&quot; or &quot;apache&quot;)
+<span class="nocode"><a name="116">116: </a></span>	 */
+<span class="nocode"><a name="117">117: </a></span>	public String getUsername() {
+<span class="nocode"><a name="118">118: </a></span>		return field_1_username;
+<span class="nocode"><a name="119">119: </a></span>	}
+<span class="nocode"><a name="120">120: </a></span>
+<span class="nocode"><a name="121">121: </a></span>	public String toString() {
+<span class="nocode"><a name="122">122: </a></span>		StringBuffer buffer = new StringBuffer();
+<span class="nocode"><a name="123">123: </a></span>
+<span class="nocode"><a name="124">124: </a></span>		buffer.append(&quot;[WRITEACCESS]\n&quot;);
+<span class="nocode"><a name="125">125: </a></span>		buffer.append(&quot;    .name = &quot;).append(field_1_username.toString()).append(&quot;\n&quot;);
+<span class="nocode"><a name="126">126: </a></span>		buffer.append(&quot;[/WRITEACCESS]\n&quot;);
+<span class="nocode"><a name="127">127: </a></span>		return buffer.toString();
+<span class="nocode"><a name="128">128: </a></span>	}
+<span class="nocode"><a name="129">129: </a></span>
+<span class="nocode"><a name="130">130: </a></span>	public void serialize(LittleEndianOutput out) {
+<span class="nocode"><a name="131">131: </a></span>		String username = getUsername();
+<span class="nocode"><a name="132">132: </a></span>		boolean is16bit = StringUtil.hasMultibyte(username);
+<span class="nocode"><a name="133">133: </a></span>
+<span class="nocode"><a name="134">134: </a></span>		out.writeShort(username.length());
+<span class="nocode"><a name="135">135: </a></span>		out.writeByte(is16bit ? 0x01 : 0x00);
+<span class="nocode"><a name="136">136: </a></span>		if (is16bit) {
+<span class="nocode"><a name="137">137: </a></span>			StringUtil.putUnicodeLE(username, out);
+<span class="nocode"><a name="138">138: </a></span>		} else {
+<span class="nocode"><a name="139">139: </a></span>			StringUtil.putCompressedUnicode(username, out);
+<span class="nocode"><a name="140">140: </a></span>		}
+<span class="nocode"><a name="141">141: </a></span>		int encodedByteCount = 3 + username.length() * (is16bit ? 2 : 1);
+<span class="nocode"><a name="142">142: </a></span>		int paddingSize = DATA_SIZE - encodedByteCount;
+<span class="nocode"><a name="143">143: </a></span>		out.write(PADDING, 0, paddingSize);
+<span class="nocode"><a name="144">144: </a></span>	}
+<span class="nocode"><a name="145">145: </a></span>
+<span class="nocode"><a name="146">146: </a></span>	protected int getDataSize() {
+<span class="nocode"><a name="147">147: </a></span>		return DATA_SIZE;
+<span class="nocode"><a name="148">148: </a></span>	}
+<span class="nocode"><a name="149">149: </a></span>
+<span class="nocode"><a name="150">150: </a></span>	public short getSid() {
+<span class="nocode"><a name="151">151: </a></span>		return sid;
+<span class="nocode"><a name="152">152: </a></span>	}
+<span class="nocode"><a name="153">153: </a></span>}
+</pre><table class="mutation_table" summary="Mutations">
+<tr><th>ID</th><th>Line</th><th>Type</th><th>Detected</th></tr><tr><td>13426</td><td><a href="#50">50</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>13428</td><td><a href="#54">54</a></td><td>Replace a constant (Replace 112 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>13430</td><td><a href="#54">54</a></td><td>Replace a constant (Replace 112 with 111(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>13429</td><td><a href="#54">54</a></td><td>Replace a constant (Replace 112 with 113(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>13431</td><td><a href="#54">54</a></td><td>Negate jump condition (Replace IF_ICMPLE with  IF_ICMPGT)</td><td><img src="detected.png"/></td></tr>
+<tr><td>13427</td><td><a href="#54">54</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>13432</td><td><a href="#55">55</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>13433</td><td><a href="#55">55(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>13434</td><td><a href="#55">55(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>13435</td><td><a href="#55">55(3)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>13436</td><td><a href="#55">55(4)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>13437</td><td><a href="#61">61</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>13438</td><td><a href="#62">62</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>13441</td><td><a href="#63">63</a></td><td>Replace a constant (Replace 112 with 111(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>13440</td><td><a href="#63">63</a></td><td>Replace a constant (Replace 112 with 113(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>13439</td><td><a href="#63">63</a></td><td>Replace a constant (Replace 112 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>13444</td><td><a href="#63">63(1)</a></td><td>Replace a constant (Replace 254 with 253(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>13443</td><td><a href="#63">63(1)</a></td><td>Replace a constant (Replace 254 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>13445</td><td><a href="#63">63(1)</a></td><td>Replace a constant (Replace 254 with 255(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>13442</td><td><a href="#63">63</a></td><td>Negate jump condition (Replace IF_ICMPGT with  IF_ICMPLE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>13447</td><td><a href="#63">63(1)</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>13446</td><td><a href="#63">63</a></td><td>Replace arithmetic operator (Replace IAND with IOR)</td><td><img src="detected.png"/></td></tr>
+<tr><td>13449</td><td><a href="#67">67</a></td><td>Replace a constant (Replace 3 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>13448</td><td><a href="#67">67</a></td><td>Replace a constant (Replace 3 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>13450</td><td><a href="#67">67</a></td><td>Replace a constant (Replace 3 with 4(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>13452</td><td><a href="#67">67</a></td><td>Replace arithmetic operator (Replace IADD with ISUB)</td><td><img src="detected.png"/></td></tr>
+<tr><td>13451</td><td><a href="#67">67</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>13454</td><td><a href="#68">68</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>13453</td><td><a href="#68">68</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>13455</td><td><a href="#68">68</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>13458</td><td><a href="#69">69</a></td><td>Replace a constant (Replace 2 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>13456</td><td><a href="#69">69</a></td><td>Replace a constant (Replace 2 with 3(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>13457</td><td><a href="#69">69</a></td><td>Replace a constant (Replace 2 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>13459</td><td><a href="#69">69</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>13461</td><td><a href="#70">70</a></td><td>Replace a constant (Replace 3 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>13460</td><td><a href="#70">70</a></td><td>Replace a constant (Replace 3 with 2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>13462</td><td><a href="#70">70</a></td><td>Replace a constant (Replace 3 with 4(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>13464</td><td><a href="#70">70(1)</a></td><td>Replace a constant (Replace 3 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>13463</td><td><a href="#70">70(1)</a></td><td>Replace a constant (Replace 3 with 2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>13465</td><td><a href="#70">70(1)</a></td><td>Replace a constant (Replace 3 with 4(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>13466</td><td><a href="#70">70</a></td><td>Replace arithmetic operator (Replace ISUB with IADD)</td><td><img src="detected.png"/></td></tr>
+<tr><td>13467</td><td><a href="#70">70</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>13468</td><td><a href="#72">72</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>13469</td><td><a href="#72">72(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>13470</td><td><a href="#77">77</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>13471</td><td><a href="#77">77</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>13473</td><td><a href="#77">77</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>13472</td><td><a href="#77">77</a></td><td>Replace arithmetic operator (Replace IAND with IOR)</td><td><img src="detected.png"/></td></tr>
+<tr><td>13474</td><td><a href="#78">78</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>13475</td><td><a href="#80">80</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>13476</td><td><a href="#82">82</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>13477</td><td><a href="#85">85</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>13478</td><td><a href="#86">86</a></td><td>Negate jump condition (Replace IFLE with  IFGT)</td><td><img src="detected.png"/></td></tr>
+<tr><td>13479</td><td><a href="#88">88</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>13480</td><td><a href="#100">100</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>13483</td><td><a href="#101">101</a></td><td>Replace a constant (Replace 3 with 4(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>13481</td><td><a href="#101">101</a></td><td>Replace a constant (Replace 3 with 2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>13482</td><td><a href="#101">101</a></td><td>Replace a constant (Replace 3 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>13486</td><td><a href="#101">101(1)</a></td><td>Replace a constant (Replace 2 with 3(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>13488</td><td><a href="#101">101(1)</a></td><td>Replace a constant (Replace 2 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>13487</td><td><a href="#101">101(1)</a></td><td>Replace a constant (Replace 2 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>13489</td><td><a href="#101">101(2)</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>13490</td><td><a href="#101">101(2)</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>13485</td><td><a href="#101">101</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>13491</td><td><a href="#101">101</a></td><td>Replace arithmetic operator (Replace IMUL with IADD)</td><td><img src="detected.png"/></td></tr>
+<tr><td>13492</td><td><a href="#101">101(1)</a></td><td>Replace arithmetic operator (Replace IADD with ISUB)</td><td><img src="detected.png"/></td></tr>
+<tr><td>13484</td><td><a href="#101">101</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>13494</td><td><a href="#102">102</a></td><td>Replace a constant (Replace 112 with 113(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>13493</td><td><a href="#102">102</a></td><td>Replace a constant (Replace 112 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>13495</td><td><a href="#102">102</a></td><td>Replace a constant (Replace 112 with 111(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>13496</td><td><a href="#102">102</a></td><td>Replace arithmetic operator (Replace ISUB with IADD)</td><td><img src="detected.png"/></td></tr>
+<tr><td>13497</td><td><a href="#103">103</a></td><td>Negate jump condition (Replace IFGE with  IFLT)</td><td><img src="detected.png"/></td></tr>
+<tr><td>13498</td><td><a href="#104">104</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>13499</td><td><a href="#104">104(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>13500</td><td><a href="#104">104(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>13501</td><td><a href="#124">124</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>13502</td><td><a href="#125">125</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>13503</td><td><a href="#125">125(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>13504</td><td><a href="#125">125(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>13505</td><td><a href="#125">125(3)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>13506</td><td><a href="#126">126</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>13507</td><td><a href="#127">127</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>13508</td><td><a href="#131">131</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>13509</td><td><a href="#132">132</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>13510</td><td><a href="#134">134</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>13511</td><td><a href="#134">134(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>13513</td><td><a href="#135">135</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>13514</td><td><a href="#135">135</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>13515</td><td><a href="#135">135(1)</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>13516</td><td><a href="#135">135(1)</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>13512</td><td><a href="#135">135</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>13517</td><td><a href="#135">135</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>13518</td><td><a href="#136">136</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>13519</td><td><a href="#137">137</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>13520</td><td><a href="#139">139</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>13521</td><td><a href="#141">141</a></td><td>Replace a constant (Replace 3 with 2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>13522</td><td><a href="#141">141</a></td><td>Replace a constant (Replace 3 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>13523</td><td><a href="#141">141</a></td><td>Replace a constant (Replace 3 with 4(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>13527</td><td><a href="#141">141(1)</a></td><td>Replace a constant (Replace 2 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>13526</td><td><a href="#141">141(1)</a></td><td>Replace a constant (Replace 2 with 3(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>13528</td><td><a href="#141">141(1)</a></td><td>Replace a constant (Replace 2 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>13530</td><td><a href="#141">141(2)</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>13529</td><td><a href="#141">141(2)</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>13525</td><td><a href="#141">141</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>13531</td><td><a href="#141">141</a></td><td>Replace arithmetic operator (Replace IMUL with IADD)</td><td><img src="detected.png"/></td></tr>
+<tr><td>13532</td><td><a href="#141">141(1)</a></td><td>Replace arithmetic operator (Replace IADD with ISUB)</td><td><img src="detected.png"/></td></tr>
+<tr><td>13524</td><td><a href="#141">141</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>13535</td><td><a href="#142">142</a></td><td>Replace a constant (Replace 112 with 111(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>13534</td><td><a href="#142">142</a></td><td>Replace a constant (Replace 112 with 113(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>13533</td><td><a href="#142">142</a></td><td>Replace a constant (Replace 112 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>13536</td><td><a href="#142">142</a></td><td>Replace arithmetic operator (Replace ISUB with IADD)</td><td><img src="detected.png"/></td></tr>
+<tr><td>13538</td><td><a href="#143">143</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>13537</td><td><a href="#143">143</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>13539</td><td><a href="#143">143</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>13542</td><td><a href="#147">147</a></td><td>Replace a constant (Replace 112 with 111(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>13540</td><td><a href="#147">147</a></td><td>Replace a constant (Replace 112 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>13541</td><td><a href="#147">147</a></td><td>Replace a constant (Replace 112 with 113(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>13544</td><td><a href="#151">151</a></td><td>Replace a constant (Replace 92 with 93(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>13543</td><td><a href="#151">151</a></td><td>Replace a constant (Replace 92 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>13545</td><td><a href="#151">151</a></td><td>Replace a constant (Replace 92 with 91(INT))</td><td><img src="detected.png"/></td></tr>
+</table>
+</body>
+</html>

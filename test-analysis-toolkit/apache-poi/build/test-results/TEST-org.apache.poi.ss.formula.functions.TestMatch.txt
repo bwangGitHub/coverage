@@ -1,0 +1,9 @@
+Testsuite: org.apache.poi.ss.formula.functions.TestMatch
+Tests run: 6, Failures: 0, Errors: 0, Time elapsed: 0.001 sec
+
+Testcase: testSimpleNumber took 0 sec
+Testcase: testReversedNumber took 0 sec
+Testcase: testSimpleString took 0 sec
+Testcase: testSimpleBoolean took 0.001 sec
+Testcase: testHeterogeneous took 0 sec
+Testcase: testMatchArgTypeArea took 0 sec

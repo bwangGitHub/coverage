@@ -1,0 +1,89 @@
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/repos/asf/!svn/ver/1301923/poi/trunk/src/testcases/org/apache/poi/ss/util
+END
+NumberRenderingSpreadsheetGenerator.java
+K 25
+svn:wc:ra_dav:version-url
+V 115
+/repos/asf/!svn/ver/1044405/poi/trunk/src/testcases/org/apache/poi/ss/util/NumberRenderingSpreadsheetGenerator.java
+END
+NumberToTextConversionExamples.java
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/repos/asf/!svn/ver/798771/poi/trunk/src/testcases/org/apache/poi/ss/util/NumberToTextConversionExamples.java
+END
+NumberComparingSpreadsheetGenerator.java
+K 25
+svn:wc:ra_dav:version-url
+V 114
+/repos/asf/!svn/ver/798771/poi/trunk/src/testcases/org/apache/poi/ss/util/NumberComparingSpreadsheetGenerator.java
+END
+TestNumberToTextConverter.java
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/repos/asf/!svn/ver/1038691/poi/trunk/src/testcases/org/apache/poi/ss/util/TestNumberToTextConverter.java
+END
+TestWorkbookUtil.java
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/repos/asf/!svn/ver/1294180/poi/trunk/src/testcases/org/apache/poi/ss/util/TestWorkbookUtil.java
+END
+TestCellReference.java
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/repos/asf/!svn/ver/1078039/poi/trunk/src/testcases/org/apache/poi/ss/util/TestCellReference.java
+END
+TestDateFormatConverter.java
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/repos/asf/!svn/ver/1301923/poi/trunk/src/testcases/org/apache/poi/ss/util/TestDateFormatConverter.java
+END
+AllSSUtilTests.java
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/repos/asf/!svn/ver/947860/poi/trunk/src/testcases/org/apache/poi/ss/util/AllSSUtilTests.java
+END
+TestSheetBuilder.java
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/repos/asf/!svn/ver/1167579/poi/trunk/src/testcases/org/apache/poi/ss/util/TestSheetBuilder.java
+END
+TestNumberComparer.java
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/repos/asf/!svn/ver/798771/poi/trunk/src/testcases/org/apache/poi/ss/util/TestNumberComparer.java
+END
+NumberComparisonExamples.java
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/repos/asf/!svn/ver/798771/poi/trunk/src/testcases/org/apache/poi/ss/util/NumberComparisonExamples.java
+END
+TestCellRangeAddress.java
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/repos/asf/!svn/ver/894078/poi/trunk/src/testcases/org/apache/poi/ss/util/TestCellRangeAddress.java
+END
+TestExpandedDouble.java
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/repos/asf/!svn/ver/798771/poi/trunk/src/testcases/org/apache/poi/ss/util/TestExpandedDouble.java
+END
+TestRegion.java
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/repos/asf/!svn/ver/776056/poi/trunk/src/testcases/org/apache/poi/ss/util/TestRegion.java
+END

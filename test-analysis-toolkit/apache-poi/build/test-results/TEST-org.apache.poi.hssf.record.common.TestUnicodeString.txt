@@ -1,0 +1,12 @@
+Testsuite: org.apache.poi.hssf.record.common.TestUnicodeString
+Tests run: 9, Failures: 0, Errors: 0, Time elapsed: 0.003 sec
+
+Testcase: testSmallStringSize took 0 sec
+Testcase: testPerfectStringSize took 0.001 sec
+Testcase: testPerfectRichStringSize took 0 sec
+Testcase: testContinuedStringSize took 0.001 sec
+Testcase: testPerfectContinuedStringSize took 0.001 sec
+Testcase: testFormatRun took 0 sec
+Testcase: testExtRstFromEmpty took 0 sec
+Testcase: testExtRstFromData took 0 sec
+Testcase: testCorruptExtRstDetection took 0 sec

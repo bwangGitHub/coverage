@@ -1,0 +1,7 @@
+Testsuite: org.apache.poi.poifs.storage.TestRawDataBlock
+Tests run: 4, Failures: 0, Errors: 0, Time elapsed: 0.022 sec
+
+Testcase: testEmptyConstructor took 0 sec
+Testcase: testNormalConstructor took 0.001 sec
+Testcase: testShortConstructor took 0.004 sec
+Testcase: testSlowInputStream took 0.016 sec

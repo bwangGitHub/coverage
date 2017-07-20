@@ -1,0 +1,7 @@
+Testsuite: org.apache.poi.ss.util.TestNumberComparer
+Tests run: 4, Failures: 0, Errors: 0, Time elapsed: 0.061 sec
+
+Testcase: testAllComparisonExamples took 0.002 sec
+Testcase: testRoundTripOnComparisonExamples took 0.058 sec
+Testcase: testSpecificExampleA took 0 sec
+Testcase: testSpecificExampleB took 0 sec

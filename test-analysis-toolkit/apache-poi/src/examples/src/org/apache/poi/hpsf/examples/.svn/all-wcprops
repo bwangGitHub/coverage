@@ -1,0 +1,41 @@
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/repos/asf/!svn/ver/823348/poi/trunk/src/examples/src/org/apache/poi/hpsf/examples
+END
+ReadTitle.java
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/repos/asf/!svn/ver/780832/poi/trunk/src/examples/src/org/apache/poi/hpsf/examples/ReadTitle.java
+END
+CopyCompare.java
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/repos/asf/!svn/ver/780832/poi/trunk/src/examples/src/org/apache/poi/hpsf/examples/CopyCompare.java
+END
+WriteAuthorAndTitle.java
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/repos/asf/!svn/ver/780832/poi/trunk/src/examples/src/org/apache/poi/hpsf/examples/WriteAuthorAndTitle.java
+END
+ModifyDocumentSummaryInformation.java
+K 25
+svn:wc:ra_dav:version-url
+V 120
+/repos/asf/!svn/ver/823348/poi/trunk/src/examples/src/org/apache/poi/hpsf/examples/ModifyDocumentSummaryInformation.java
+END
+ReadCustomPropertySets.java
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/repos/asf/!svn/ver/780832/poi/trunk/src/examples/src/org/apache/poi/hpsf/examples/ReadCustomPropertySets.java
+END
+WriteTitle.java
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/repos/asf/!svn/ver/780832/poi/trunk/src/examples/src/org/apache/poi/hpsf/examples/WriteTitle.java
+END

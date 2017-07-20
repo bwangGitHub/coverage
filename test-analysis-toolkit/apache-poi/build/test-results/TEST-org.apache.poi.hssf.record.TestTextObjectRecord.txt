@@ -1,0 +1,9 @@
+Testsuite: org.apache.poi.hssf.record.TestTextObjectRecord
+Tests run: 6, Failures: 0, Errors: 0, Time elapsed: 0.033 sec
+
+Testcase: testRead took 0 sec
+Testcase: testWrite took 0 sec
+Testcase: testClone took 0 sec
+Testcase: testWriteEmpty took 0 sec
+Testcase: testLongRecords took 0.033 sec
+Testcase: testLinkFormula took 0 sec

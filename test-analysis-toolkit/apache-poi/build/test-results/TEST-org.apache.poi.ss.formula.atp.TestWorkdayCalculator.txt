@@ -1,0 +1,13 @@
+Testsuite: org.apache.poi.ss.formula.atp.TestWorkdayCalculator
+Tests run: 10, Failures: 0, Errors: 0, Time elapsed: 0.004 sec
+
+Testcase: testCalculateWorkdaysShouldReturnJustWeekdaysWhenNoWeekend took 0 sec
+Testcase: testCalculateWorkdaysShouldReturnAllDaysButNoSaturdays took 0.001 sec
+Testcase: testCalculateWorkdaysShouldReturnAllDaysButNoSundays took 0 sec
+Testcase: testCalculateWorkdaysShouldReturnAllDaysButNoHolidays took 0.001 sec
+Testcase: testCalculateWorkdaysShouldIgnoreWeekendHolidays took 0.001 sec
+Testcase: testPastDaysOfWeekShouldReturn0Past0Saturdays took 0 sec
+Testcase: testPastDaysOfWeekShouldReturn1Past1Saturdays took 0 sec
+Testcase: testPastDaysOfWeekShouldReturn2Past2Saturdays took 0.001 sec
+Testcase: testPastDaysOfWeekShouldReturn1BeginningFromASaturday took 0 sec
+Testcase: testPastDaysOfWeekShouldReturn1EndingAtASaturday took 0 sec

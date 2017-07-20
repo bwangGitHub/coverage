@@ -1,0 +1,421 @@
+library(ggplot2)
+library(MASS)
+library(grid)
+library(RColorBrewer)
+library(reshape)
+
+makeBoxplot <- function(df)
+{
+    # Make graph
+    pdf(paste("rq1-", df$short.name, ".pdf", sep=""))
+    graph = ggplot()
+
+    # Alter appearance
+    sizes = sort(unique(df$size))
+    graph = graph + scale_x_continuous("\nSize", trans="log10", breaks=sizes, labels=sizes)
+    graph = graph + scale_y_continuous("Effectiveness\n")
+    graph = graph + coord_cartesian(ylim=c(0,1))
+    graph = graph + opts(aspect.ratio = 1,
+                          axis.title.x = theme_text(size=11, lineheight=0.5),
+                          axis.title.y = theme_text(size=11, lineheight=0.5, angle=90, hjust=0.5))
+
+    # Add measurements as boxplots
+    graph = graph + layer(data = df,
+                          geom = "boxplot",
+                          mapping = aes(x=size, y=kill.score, group=size))
+
+    print(graph)
+    dev.off()
+}
+
+makeBoxplotWithRegLine <- function(df, filename, theta, sigma, maxSize)
+{
+    # Make data frame that describes the prediction line
+    predLine = data.frame(size=(seq(from = 3, to = maxSize, length = maxSize)))
+    predLine$eff = rep(theta[1], times=length(predLine$size)) + (log(predLine$size)/sigma[1])*theta[2] + (sqrt(predLine$size)/sigma[2])*theta[3] + (predLine$size/sigma[3])*theta[4]
+
+    # Make data frame that will be used to compute r^2
+    sizes = sort(unique(df$size))
+    predictions = rep(theta[1], times=length(sizes)) + (log(sizes)/sigma[1])*theta[2] + (sqrt(sizes)/sigma[2])*theta[3] + (sizes/sigma[3])*theta[4]
+    predPearson = data.frame(size=rep(sizes, each=1000), kill.score=rep(predictions, each=1000))
+    
+    # Compute pearson correlation coefficient
+    rVal = cor(x=df$kill.score, y=predPearson$kill.score, use="everything", method="pearson")
+    caption = data.frame(cap=paste("R^2 = ", round(rVal*rVal, digits=2), sep=""), max.size=maxSize)
+    
+    # Make graph
+    pdf(filename)
+    graph = ggplot()
+
+    # Alter appearance
+    graph = graph + scale_x_continuous("\nSize", trans="log10", breaks=sizes, labels=sizes)
+    graph = graph + scale_y_continuous("Effectiveness\n")
+    graph = graph + coord_cartesian(ylim=c(0,1))
+    graph = graph + opts(aspect.ratio = 1,
+                          axis.title.x = theme_text(size=11, lineheight=0.5),
+                          axis.title.y = theme_text(size=11, lineheight=0.5, angle=90, hjust=0.5))
+
+    # Add measurements as boxplots
+    graph = graph + layer(data = df,
+                          geom = "boxplot",
+                          mapping = aes(x=size, y=kill.score, group=size))
+
+    # Add regression line
+    graph = graph + layer(data = predLine,
+                          geom = "line",
+                          geom_params = list(colour="red"),
+                          mapping = aes(x=size, y=eff, group=1))
+    
+    # Add caption with r^2 value
+    graph = graph + layer(data = caption,
+                          geom = "text",
+                          mapping = aes(x=0.8*max.size, y=0.05, label=cap),
+                          geom_params = list(size=4, colour="red"))
+
+    print(graph)
+    dev.off()
+}
+
+makeScatterplot <- function(df, shouldColour)
+{
+    filenames = c("stmt", "branch", "mc")
+    axisLabels = c("Statement coverage", "Branch coverage", "Modified condition coverage")
+    for (i in 1:3)
+    {
+        # Make graph
+        pdf(paste("rq2-", df$short.name, "-", filenames[i], ".pdf", sep="")) 
+        graph = ggplot()
+
+        # Alter appearance
+        graph = graph + scale_x_continuous(paste("\n", axisLabels[i], sep=""))
+        graph = graph + scale_y_continuous("Effectiveness\n")
+        graph = graph + coord_cartesian(xlim=c(0,1), ylim=c(0,1))
+        graph = graph + opts(aspect.ratio = 1,
+                             axis.title.x = theme_text(size=11, lineheight=0.5),
+                             axis.title.y = theme_text(size=11, lineheight=0.5, angle=90, hjust=0.5))
+
+        if (shouldColour)
+        {
+            graph = graph + scale_colour_hue(name="Size")
+
+            # Add data
+            graph = graph + layer(data = df,
+                                  geom = "point",
+                                  geom_params = list(size=1),
+                                  mapping = aes_string(x=names(df)[i+1], y="kill.score", colour="as.factor(size)"))
+        }
+
+        else
+        { 
+            # Add data
+            graph = graph + layer(data = df,
+                                  geom = "point",
+                                  geom_params = list(size=1), #, alpha=1/5),
+                                  mapping = aes_string(x=names(df)[i+1], y="kill.score"))
+        }
+    
+        print(graph)
+        dev.off()
+    }
+}
+
+makeBlockScatterplot <- function(df, shouldColour)
+{
+        # Make graph
+        pdf("rq2-poi-block.pdf") 
+        graph = ggplot()
+
+        # Alter appearance
+        graph = graph + scale_x_continuous("\nBlock coverage")
+        graph = graph + scale_y_continuous("Effectiveness\n")
+        graph = graph + coord_cartesian(xlim=c(0,1), ylim=c(0,1))
+        graph = graph + opts(aspect.ratio = 1,
+                             axis.title.x = theme_text(size=11, lineheight=0.5),
+                             axis.title.y = theme_text(size=11, lineheight=0.5, angle=90, hjust=0.5))
+
+        if (shouldColour)
+        {
+            graph = graph + scale_colour_hue(name="Size")
+
+            # Add data
+            graph = graph + layer(data = df,
+                                  geom = "point",
+                                  geom_params = list(size=1),
+                                  mapping = aes(x=block.coverage, y=kill.score, colour=as.factor(size)))
+        }
+
+        else
+        { 
+            # Add data
+            graph = graph + layer(data = df,
+                                  geom = "point",
+                                  geom_params = list(size=1), #, alpha=1/5),
+                                  mapping = aes(x=block.coverage, y=kill.score))
+        }
+    
+        print(graph)
+        dev.off()
+}
+
+makeFacetedPlot <- function(df, filename)
+{
+    # Reshape data frame
+    newDF = rbind(df, df, df, df)
+    newDF$coverage = c(df$block.coverage, df$stmt.coverage, df$branch.coverage, df$mc.coverage)
+    numObvs = nrow(df)
+    newDF$coverage.type = c(rep("Block coverage", numObvs),
+                            rep("Statement coverage", numObvs),
+                            rep("Branch coverage", numObvs),
+                            rep("Modified condition coverage", numObvs))
+    newDF$block.coverage = NULL
+    newDF$stmt.coverage = NULL
+    newDF$branch.coverage = NULL
+    newDF$mc.coverage = NULL
+    
+    # Make graph
+    #setEPS()
+    #postscript(filename)
+    pdf(filename)
+    graph = ggplot(newDF, aes(x=coverage, y=kill.score, colour=coverage.type))
+
+    # Alter appearance
+    graph = graph + scale_x_continuous("\nCoverage")
+    graph = graph + scale_y_continuous("Effectiveness\n")
+    graph = graph + coord_cartesian(xlim=c(0,1), ylim=c(0,1))
+    graph = graph + opts(legend.position="bottom",
+                         panel.margin = unit(4, "mm"),
+                         axis.text.x = theme_text(colour="grey50", size=9, angle=90, hjust=0, lineheight=0.9),
+                         axis.text.y = theme_text(colour="grey50", size=9, lineheight=0.9),
+                         axis.title.x = theme_text(size=11, lineheight=0.5),
+                         axis.title.y = theme_text(size=11, lineheight=0.5, angle=90, hjust=0.5))
+    graph = graph + guides(colour = guide_legend(nrow = 2, byrow = T))
+    
+    # Add data
+    graph = graph + scale_colour_hue(name="Coverage Type")
+    graph = graph + layer(geom = "point",
+                          geom_params = list(shape=".", alpha=0.2))
+    graph = graph + facet_grid(facets=size~project, margins=TRUE)
+
+    # Add NA labels
+    ## NAlabels = data.frame(size=c(1000, 3000, 3000, 3000),
+    ##                       project=c("HSQLDB", "HSQLDB", "JFreeChart", "Apache POI"),
+    ##                       text=rep("N/A", 4),
+    ##                       xPos=rep(0.5, 4),
+    ##                       yPos=rep(0.5, 4))
+    ## graph = graph + layer(data=NAlabels,
+    ##                       geom="text",
+    ##                       geom_params=list(size=4, colour="grey50"),
+    ##                       mapping=aes(x=xPos, y=yPos, label=text))
+    
+    print(graph)
+    dev.off()  
+}
+
+# Facets the data for one project by size, making two rows
+makeWrappedPlot <- function(df, filename)
+{
+    pdf(filename)
+    graph = ggplot(df, aes(x=block.coverage, y=kill.score))
+    
+    # Alter appearance
+    graph = graph + scale_x_continuous("\nBlock coverage")
+    graph = graph + scale_y_continuous("Effectiveness\n")
+    graph = graph + coord_cartesian(xlim=c(0,1), ylim=c(0,1))
+    graph = graph + opts(panel.margin = unit(4, "mm"),
+                         axis.text.x = theme_text(colour="grey50", size=9, angle=90, hjust=0, lineheight=0.9),
+                         axis.text.y = theme_text(colour="grey50", size=9, lineheight=0.9),
+                         axis.title.x = theme_text(size=11, lineheight=0.5),
+                         axis.title.y = theme_text(size=11, lineheight=0.5, angle=90, hjust=0.5),
+                         aspect.ratio=1)
+
+    # Add data
+    graph = graph + layer(geom = "point",
+                          geom_params = list(shape="."))
+    graph = graph + facet_wrap(facets=~size, nrow=2)
+    
+    print(graph)
+    dev.off()
+}
+
+makeHeatmap <- function(filename, theta, sigma)
+{
+    # Make a dataframe with the input features
+    size = seq(from = 1, to = 1000, length = 100)
+    cov = seq(from = 0.01, to = 1, length = 100)
+    df = expand.grid(size=size, cov=cov)
+
+    # Add a prediction column
+    df$eff = (log(df$size)/sigma[1])*theta[1] + (sqrt(df$size)/sigma[2])*theta[2] + (df$size/sigma[3])*theta[3] + (log(df$cov)/sigma[4])*theta[4] + (sqrt(df$cov)/sigma[5])*theta[5] + (df$cov/sigma[6])*theta[6]
+
+    # Apply upper and lower bounds
+    df$eff = (df$eff>1)*1 + (df$eff<=1)*df$eff
+    df$eff = (df$eff<0)*0 + (df$eff>=0)*df$eff
+
+    # Make graph
+    pdf(filename)
+    graph = ggplot()
+
+    # Alter appearance
+    graph = graph + scale_x_continuous("\nSize")
+    graph = graph + scale_y_continuous("Block coverage\n")
+    graph = graph + coord_cartesian(xlim=c(0,1000), ylim=c(0,1))
+    graph = graph + scale_fill_gradient("Effectiveness", limits=c(0,1), low = "black", high = "white", breaks=c(0, 0.2, 0.4, 0.6, 0.8, 1), labels=c(0, 0.2, 0.4, 0.6, 0.8, 1))
+    graph = graph + opts(aspect.ratio = 1,
+                         axis.title.x = theme_text(size=11, lineheight=0.5),
+                         axis.title.y = theme_text(size=11, lineheight=0.5, angle=90, hjust=0.5))
+    theme_set(theme_bw())
+    
+    # Add data
+    graph = graph + layer(data=df,
+                          geom="tile",
+                          mapping=aes(x=size, y=cov, fill=eff))
+
+    print(graph)
+    dev.off()
+}
+
+makeSingleMethodHeatmap <- function(df, filename, breakVec)
+{
+    # Make graph
+    pdf(filename)
+    #graph = ggplot()
+
+
+    graph <- ggplot(df, aes(kill.score, kill.score.denom))
+    graph <- graph + stat_binhex(bins = 30)
+
+    
+    # Alter appearance
+    graph = graph + scale_x_continuous("\nEffectiveness")
+    graph = graph + scale_y_continuous("Number of covered mutants\n")
+    hexsize = max(df$kill.score.denom)/30.0
+    graph = graph + coord_cartesian(xlim=c(-0.05,1.05), ylim=c(-hexsize,max(df$kill.score.denom)+hexsize))
+    #graph = graph + scale_fill_gradient("Count", limits=c(0,150), breaks=c(0, 50, 100, 150), labels=c(0, 50, 100, 150))
+    graph = graph + scale_fill_gradient("Count", low="blue", high="red", limits=c(min(breakVec), max(breakVec)), breaks=breakVec, labels=breakVec)
+    graph = graph + opts(aspect.ratio = 1,
+                         axis.title.x = theme_text(size=11, lineheight=0.5),
+                         axis.title.y = theme_text(size=11, lineheight=0.5, angle=90, hjust=0.5))
+
+    ## graph = graph + layer(data = df,
+    ##                       stat = "stat_binhex",
+    ##                       stat_params = list(bins=30), #, alpha=1/5),
+    ##                       mapping = aes(x=kill.score, y=num))
+
+    print(graph)
+    dev.off()
+}
+
+makeHistogram <- function(df, filename)
+{
+    pdf(filename)
+    graph = ggplot(df, aes(x=branch.coverage))
+    
+    # Alter appearance
+    graph = graph + scale_x_continuous("\nBranch coverage")
+    graph = graph + scale_y_continuous("Count\n")
+    graph = graph + coord_cartesian(xlim=c(0,1)) #, ylim=c(0,1))
+    graph = graph + opts(axis.text.x = theme_text(colour="grey50", size=9, angle=90, hjust=0, lineheight=0.9),
+                         axis.text.y = theme_text(colour="grey50", size=9, lineheight=0.9),
+                         axis.title.x = theme_text(size=11, lineheight=0.5),
+                         axis.title.y = theme_text(size=11, lineheight=0.5, angle=90, hjust=0.5),
+                         aspect.ratio=1)
+
+    # Add data
+    graph = graph + layer(geom = "histogram") #,
+                          #geom_params = list(shape="."))
+    
+    print(graph)
+    dev.off()
+}
+
+##### SET UP DATA FRAMES #####
+## size,stmt.coverage,branch.coverage,mc.coverage,kill.score
+joda <- read.csv("~/workspace/unified-test-analysis-toolkit/test-subjects/joda-time-results/randomSuiteResults.csv", header=TRUE)
+jfree <- read.csv("~/workspace/unified-test-analysis-toolkit/test-subjects/jfreechart-results/randomSuiteResults.csv", header=TRUE)
+poi <- read.csv("~/workspace/unified-test-analysis-toolkit/test-subjects/apache-poi-results/randomSuiteResults.csv", header=TRUE)
+hsqldb <- read.csv("~/workspace/unified-test-analysis-toolkit/test-subjects/hsqldb-results/randomSuiteResults.csv", header=TRUE)
+closure <- read.csv("~/workspace/unified-test-analysis-toolkit/test-subjects/closure-results/randomSuiteResults.csv", header=TRUE)
+
+joda$project <- "Joda Time"
+jfree$project <- "JFreeChart"
+poi$project <- "Apache POI"
+hsqldb$project <- "HSQLDB"
+closure$project <- "Closure"
+
+joda$short.name <- "joda"
+jfree$short.name <- "jfree"
+poi$short.name <- "poi"
+hsqldb$short.name <- "hsqldb"
+closure$short.name <- "closure"
+
+joda$block.coverage <- NA
+jfree$block.coverage <- NA
+hsqldb$block.coverage <- NA
+closure$stmt.coverage <- NA
+closure$branch.coverage <- NA
+closure$mc.coverage <- NA
+poi$stmt.coverage <- NA
+poi$branch.coverage <- NA
+poi$mc.coverage <- NA
+
+allProjects <- rbind(joda, jfree, poi, hsqldb, closure)
+
+##### MAKE GRAPHS FOR RESEARCH QUESTION 1 #####
+poiThetaRQ1 = c(0.537614, 0.020892, 0.179763, -0.090499)
+closureThetaRQ1 = c(0.435652, 0.070430, 0.146574, -0.070421)
+hsqldbThetaRQ1 = c(0.70250, -0.02818, 0.00000, 0.02013)
+jfreeThetaRQ1 = c(0.714212, -0.058167, 0.248983, -0.117529)
+jodaThetaRQ1 = c(0.410247, 0.129858, 0.092806, -0.060311)
+
+poiSigmaRQ1 = c(1.9742, 10.3469, 354.5169)
+closureSigmaRQ1 = c(2.3029, 17.9032, 1019.9449)
+hsqldbSigmaRQ1 = c(1.6285, 5.6373, 111.1499)
+jfreeSigmaRQ1 = c(1.9742, 10.3469, 354.5169)
+jodaSigmaRQ1 = c(2.3029, 17.9032, 1019.9449)
+
+makeBoxplotWithRegLine(poi, "rq1-poi.pdf", poiThetaRQ1, poiSigmaRQ1, 1000)
+makeBoxplotWithRegLine(closure, "rq1-closure.pdf", closureThetaRQ1, closureSigmaRQ1, 3000)
+makeBoxplotWithRegLine(hsqldb, "rq1-hsqldb.pdf", hsqldbThetaRQ1, hsqldbSigmaRQ1, 300)
+makeBoxplotWithRegLine(jfree, "rq1-jfree.pdf", jfreeThetaRQ1, jfreeSigmaRQ1, 1000)
+makeBoxplotWithRegLine(joda, "rq1-joda.pdf", jodaThetaRQ1, jodaSigmaRQ1, 3000)
+
+##### MAKE GRAPHS FOR RESEARCH QUESTION 2 #####
+makeScatterplot(joda, TRUE)
+makeScatterplot(jfree, TRUE)
+makeBlockScatterplot(poi, TRUE)
+makeScatterplot(hsqldb, TRUE)
+makeBlockScatterplot(closure, TRUE)
+
+##### MAKE GRAPHS FOR RESEARCH QUESTION 3 #####
+#makeFacetedPlot(allProjects, "rq3.pdf")
+
+##### MAKE GRAPHS FOR SINGLE METHOD RESULTS #####
+#jodaSingle <- read.csv("/media/batdrive/test-analysis-toolkit/test-subjects/joda-time-results/moddedMethod.csv", header=TRUE) #size,block.coverage,kill.score
+#hsqldbSingle <- read.csv("/media/batdrive/test-analysis-toolkit/test-subjects/hsqldb-results/singleMethodResults.csv", header=TRUE)
+#poiSingle <- read.csv("/media/batdrive/test-analysis-toolkit/test-subjects/apache-poi-results/singleMethodResults.csv", header=TRUE)
+#jfreeSingle <- read.csv("/media/batdrive/test-analysis-toolkit/test-subjects/jfreechart-results/singleMethodResults.csv", header=TRUE)
+
+#makeSingleMethodHeatmap(jodaSingle, "single-test-joda.pdf", c(0,50,100,150))
+#makeSingleMethodHeatmap(hsqldbSingle, "single-test-hsqldb.pdf", c(0,50,100,150,200))
+#makeSingleMethodHeatmap(poiSingle, "single-test-poi.pdf", c(0,50,100,150,200,250,300))
+#makeSingleMethodHeatmap(jfreeSingle, "single-test-jfree.pdf", c(0,50,100,150))
+
+#makeHistogram(jodaSingle, "joda-single-hist-stmt.pdf")
+#makeHistogram(jodaSingle, "joda-single-hist-branch.pdf")
+#makeHistogram(jodaSingle, "joda-single-hist.pdf")
+
+##### LINEAR REGRESSION RESULTS #####
+## poiTheta = c(0.39218, -0.59201, 0.30948, 0.00000, 0.06884, 0.02317)
+## hsqldbTheta = c(0.037371, 0.008718, 0.016340, -0.023812, 0.000000, 0.037183)
+## jfreeTheta = c(0.00000, 0.18785, -0.09439, -0.08100, 0.08443, 0.00000)
+## jodaTheta = c(0.14599, -0.11843, 0.00000, -0.13164, -0.10509, 0.34712)
+
+## poiSigma = c(1.97424, 10.34689, 354.51685, 0.47274, 0.12860, 0.16044)
+## hsqldbSigma = c(1.6285, 5.6373, 111.15, 0.096736, 0.025912, 0.028002)
+## jfreeSigma = c(1.97424, 10.34689, 354.51685, 0.45895, 0.11362, 0.11874)
+## jodaSigma = c(2.3029, 17.903, 1019.9, 0.40010, 0.13889, 0.19864)
+
+## makeHeatmap("regression-poi.pdf", poiTheta, poiSigma)
+## makeHeatmap("regression-hsqldb.pdf", hsqldbTheta, hsqldbSigma)
+## makeHeatmap("regression-jfree.pdf", jfreeTheta, jfreeSigma)
+## makeHeatmap("regression-joda.pdf", jodaTheta, jodaSigma)

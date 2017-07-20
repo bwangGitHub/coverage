@@ -1,0 +1,371 @@
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/repos/asf/!svn/ver/1038688/poi/trunk/src/java/org/apache/poi/ss/formula/ptg
+END
+LessEqualPtg.java
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/repos/asf/!svn/ver/1038688/poi/trunk/src/java/org/apache/poi/ss/formula/ptg/LessEqualPtg.java
+END
+UnknownPtg.java
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/repos/asf/!svn/ver/1038688/poi/trunk/src/java/org/apache/poi/ss/formula/ptg/UnknownPtg.java
+END
+OperationPtg.java
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/repos/asf/!svn/ver/1038688/poi/trunk/src/java/org/apache/poi/ss/formula/ptg/OperationPtg.java
+END
+PercentPtg.java
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/repos/asf/!svn/ver/1038688/poi/trunk/src/java/org/apache/poi/ss/formula/ptg/PercentPtg.java
+END
+UnaryPlusPtg.java
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/repos/asf/!svn/ver/1038688/poi/trunk/src/java/org/apache/poi/ss/formula/ptg/UnaryPlusPtg.java
+END
+AreaPtgBase.java
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/repos/asf/!svn/ver/1038688/poi/trunk/src/java/org/apache/poi/ss/formula/ptg/AreaPtgBase.java
+END
+MissingArgPtg.java
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/repos/asf/!svn/ver/1038688/poi/trunk/src/java/org/apache/poi/ss/formula/ptg/MissingArgPtg.java
+END
+Ref3DPtg.java
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/repos/asf/!svn/ver/1038688/poi/trunk/src/java/org/apache/poi/ss/formula/ptg/Ref3DPtg.java
+END
+FuncVarPtg.java
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/repos/asf/!svn/ver/1038688/poi/trunk/src/java/org/apache/poi/ss/formula/ptg/FuncVarPtg.java
+END
+AreaPtg.java
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/repos/asf/!svn/ver/1038688/poi/trunk/src/java/org/apache/poi/ss/formula/ptg/AreaPtg.java
+END
+NameXPtg.java
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/repos/asf/!svn/ver/1038688/poi/trunk/src/java/org/apache/poi/ss/formula/ptg/NameXPtg.java
+END
+AbstractFunctionPtg.java
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/repos/asf/!svn/ver/1038688/poi/trunk/src/java/org/apache/poi/ss/formula/ptg/AbstractFunctionPtg.java
+END
+AttrPtg.java
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/repos/asf/!svn/ver/1038688/poi/trunk/src/java/org/apache/poi/ss/formula/ptg/AttrPtg.java
+END
+UnaryMinusPtg.java
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/repos/asf/!svn/ver/1038688/poi/trunk/src/java/org/apache/poi/ss/formula/ptg/UnaryMinusPtg.java
+END
+ArrayPtg.java
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/repos/asf/!svn/ver/1038688/poi/trunk/src/java/org/apache/poi/ss/formula/ptg/ArrayPtg.java
+END
+Ptg.java
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/repos/asf/!svn/ver/1038688/poi/trunk/src/java/org/apache/poi/ss/formula/ptg/Ptg.java
+END
+ControlPtg.java
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/repos/asf/!svn/ver/1038688/poi/trunk/src/java/org/apache/poi/ss/formula/ptg/ControlPtg.java
+END
+GreaterEqualPtg.java
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/repos/asf/!svn/ver/1038688/poi/trunk/src/java/org/apache/poi/ss/formula/ptg/GreaterEqualPtg.java
+END
+TblPtg.java
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/repos/asf/!svn/ver/1038688/poi/trunk/src/java/org/apache/poi/ss/formula/ptg/TblPtg.java
+END
+RefErrorPtg.java
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/repos/asf/!svn/ver/1038688/poi/trunk/src/java/org/apache/poi/ss/formula/ptg/RefErrorPtg.java
+END
+AreaNPtg.java
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/repos/asf/!svn/ver/1038688/poi/trunk/src/java/org/apache/poi/ss/formula/ptg/AreaNPtg.java
+END
+DeletedArea3DPtg.java
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/repos/asf/!svn/ver/1038688/poi/trunk/src/java/org/apache/poi/ss/formula/ptg/DeletedArea3DPtg.java
+END
+MemErrPtg.java
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/repos/asf/!svn/ver/1038688/poi/trunk/src/java/org/apache/poi/ss/formula/ptg/MemErrPtg.java
+END
+SubtractPtg.java
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/repos/asf/!svn/ver/1038688/poi/trunk/src/java/org/apache/poi/ss/formula/ptg/SubtractPtg.java
+END
+ErrPtg.java
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/repos/asf/!svn/ver/1038688/poi/trunk/src/java/org/apache/poi/ss/formula/ptg/ErrPtg.java
+END
+UnionPtg.java
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/repos/asf/!svn/ver/1038688/poi/trunk/src/java/org/apache/poi/ss/formula/ptg/UnionPtg.java
+END
+IntPtg.java
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/repos/asf/!svn/ver/1038688/poi/trunk/src/java/org/apache/poi/ss/formula/ptg/IntPtg.java
+END
+DeletedRef3DPtg.java
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/repos/asf/!svn/ver/1038688/poi/trunk/src/java/org/apache/poi/ss/formula/ptg/DeletedRef3DPtg.java
+END
+FuncPtg.java
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/repos/asf/!svn/ver/1038688/poi/trunk/src/java/org/apache/poi/ss/formula/ptg/FuncPtg.java
+END
+ExpPtg.java
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/repos/asf/!svn/ver/1038688/poi/trunk/src/java/org/apache/poi/ss/formula/ptg/ExpPtg.java
+END
+RangePtg.java
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/repos/asf/!svn/ver/1038688/poi/trunk/src/java/org/apache/poi/ss/formula/ptg/RangePtg.java
+END
+Ref2DPtgBase.java
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/repos/asf/!svn/ver/1038688/poi/trunk/src/java/org/apache/poi/ss/formula/ptg/Ref2DPtgBase.java
+END
+Area3DPtg.java
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/repos/asf/!svn/ver/1038688/poi/trunk/src/java/org/apache/poi/ss/formula/ptg/Area3DPtg.java
+END
+package.html
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/repos/asf/!svn/ver/1038688/poi/trunk/src/java/org/apache/poi/ss/formula/ptg/package.html
+END
+GreaterThanPtg.java
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/repos/asf/!svn/ver/1038688/poi/trunk/src/java/org/apache/poi/ss/formula/ptg/GreaterThanPtg.java
+END
+DividePtg.java
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/repos/asf/!svn/ver/1038688/poi/trunk/src/java/org/apache/poi/ss/formula/ptg/DividePtg.java
+END
+IntersectionPtg.java
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/repos/asf/!svn/ver/1038688/poi/trunk/src/java/org/apache/poi/ss/formula/ptg/IntersectionPtg.java
+END
+ExternSheetNameResolver.java
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/repos/asf/!svn/ver/1038688/poi/trunk/src/java/org/apache/poi/ss/formula/ptg/ExternSheetNameResolver.java
+END
+AreaI.java
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/repos/asf/!svn/ver/1038688/poi/trunk/src/java/org/apache/poi/ss/formula/ptg/AreaI.java
+END
+StringPtg.java
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/repos/asf/!svn/ver/1038688/poi/trunk/src/java/org/apache/poi/ss/formula/ptg/StringPtg.java
+END
+MemAreaPtg.java
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/repos/asf/!svn/ver/1038688/poi/trunk/src/java/org/apache/poi/ss/formula/ptg/MemAreaPtg.java
+END
+EqualPtg.java
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/repos/asf/!svn/ver/1038688/poi/trunk/src/java/org/apache/poi/ss/formula/ptg/EqualPtg.java
+END
+RefPtgBase.java
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/repos/asf/!svn/ver/1038688/poi/trunk/src/java/org/apache/poi/ss/formula/ptg/RefPtgBase.java
+END
+ConcatPtg.java
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/repos/asf/!svn/ver/1038688/poi/trunk/src/java/org/apache/poi/ss/formula/ptg/ConcatPtg.java
+END
+RefPtg.java
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/repos/asf/!svn/ver/1038688/poi/trunk/src/java/org/apache/poi/ss/formula/ptg/RefPtg.java
+END
+MultiplyPtg.java
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/repos/asf/!svn/ver/1038688/poi/trunk/src/java/org/apache/poi/ss/formula/ptg/MultiplyPtg.java
+END
+ScalarConstantPtg.java
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/repos/asf/!svn/ver/1038688/poi/trunk/src/java/org/apache/poi/ss/formula/ptg/ScalarConstantPtg.java
+END
+NamePtg.java
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/repos/asf/!svn/ver/1038688/poi/trunk/src/java/org/apache/poi/ss/formula/ptg/NamePtg.java
+END
+AreaErrPtg.java
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/repos/asf/!svn/ver/1038688/poi/trunk/src/java/org/apache/poi/ss/formula/ptg/AreaErrPtg.java
+END
+LessThanPtg.java
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/repos/asf/!svn/ver/1038688/poi/trunk/src/java/org/apache/poi/ss/formula/ptg/LessThanPtg.java
+END
+ParenthesisPtg.java
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/repos/asf/!svn/ver/1038688/poi/trunk/src/java/org/apache/poi/ss/formula/ptg/ParenthesisPtg.java
+END
+AddPtg.java
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/repos/asf/!svn/ver/1038688/poi/trunk/src/java/org/apache/poi/ss/formula/ptg/AddPtg.java
+END
+NotEqualPtg.java
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/repos/asf/!svn/ver/1038688/poi/trunk/src/java/org/apache/poi/ss/formula/ptg/NotEqualPtg.java
+END
+NumberPtg.java
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/repos/asf/!svn/ver/1038688/poi/trunk/src/java/org/apache/poi/ss/formula/ptg/NumberPtg.java
+END
+OperandPtg.java
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/repos/asf/!svn/ver/1038688/poi/trunk/src/java/org/apache/poi/ss/formula/ptg/OperandPtg.java
+END
+ValueOperatorPtg.java
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/repos/asf/!svn/ver/1038688/poi/trunk/src/java/org/apache/poi/ss/formula/ptg/ValueOperatorPtg.java
+END
+Area2DPtgBase.java
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/repos/asf/!svn/ver/1038688/poi/trunk/src/java/org/apache/poi/ss/formula/ptg/Area2DPtgBase.java
+END
+RefNPtg.java
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/repos/asf/!svn/ver/1038688/poi/trunk/src/java/org/apache/poi/ss/formula/ptg/RefNPtg.java
+END
+MemFuncPtg.java
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/repos/asf/!svn/ver/1038688/poi/trunk/src/java/org/apache/poi/ss/formula/ptg/MemFuncPtg.java
+END
+BoolPtg.java
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/repos/asf/!svn/ver/1038688/poi/trunk/src/java/org/apache/poi/ss/formula/ptg/BoolPtg.java
+END
+PowerPtg.java
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/repos/asf/!svn/ver/1038688/poi/trunk/src/java/org/apache/poi/ss/formula/ptg/PowerPtg.java
+END

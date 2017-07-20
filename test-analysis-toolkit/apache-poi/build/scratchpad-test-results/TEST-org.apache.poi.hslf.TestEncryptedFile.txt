@@ -1,0 +1,5 @@
+Testsuite: org.apache.poi.hslf.TestEncryptedFile
+Tests run: 2, Failures: 0, Errors: 0, Time elapsed: 0.04 sec
+
+Testcase: testLoadNonEncrypted took 0.004 sec
+Testcase: testLoadEncrypted took 0.033 sec

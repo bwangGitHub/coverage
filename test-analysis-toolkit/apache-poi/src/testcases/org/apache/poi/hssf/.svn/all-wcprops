@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/repos/asf/!svn/ver/1306781/poi/trunk/src/testcases/org/apache/poi/hssf
+END
+HSSFTests.java
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/repos/asf/!svn/ver/893041/poi/trunk/src/testcases/org/apache/poi/hssf/HSSFTests.java
+END
+HSSFITestDataProvider.java
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/repos/asf/!svn/ver/893929/poi/trunk/src/testcases/org/apache/poi/hssf/HSSFITestDataProvider.java
+END
+HSSFTestDataSamples.java
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/repos/asf/!svn/ver/1177409/poi/trunk/src/testcases/org/apache/poi/hssf/HSSFTestDataSamples.java
+END

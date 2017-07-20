@@ -1,0 +1,16 @@
+Testsuite: org.apache.poi.hssf.usermodel.TestHSSFFormulaEvaluator
+Tests run: 13, Failures: 0, Errors: 0, Time elapsed: 0.027 sec
+
+Testcase: testEvaluateSimple took 0 sec
+Testcase: testUpdateCachedFormulaResultFromErrorToNumber_bug46479 took 0.001 sec
+Testcase: testDefinedNameWithComplexFlag_bug47048 took 0 sec
+Testcase: testShortCircuitIfEvaluation took 0 sec
+Testcase: testXRefs took 0.001 sec
+Testcase: testSharedFormulas took 0 sec
+Testcase: testSheetLevelFormulas took 0 sec
+Testcase: testSimpleArithmetic took 0 sec
+Testcase: testSumCount took 0.001 sec
+Testcase: testFullColumnRefs took 0.02 sec
+Testcase: testRepeatedEvaluation took 0.001 sec
+Testcase: testEvaluateBlank took 0 sec
+Testcase: testRounding_bug51339 took 0 sec

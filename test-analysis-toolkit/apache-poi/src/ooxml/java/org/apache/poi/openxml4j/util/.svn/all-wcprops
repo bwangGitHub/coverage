@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/repos/asf/!svn/ver/1244450/poi/trunk/src/ooxml/java/org/apache/poi/openxml4j/util
+END
+ZipFileZipEntrySource.java
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/repos/asf/!svn/ver/1244450/poi/trunk/src/ooxml/java/org/apache/poi/openxml4j/util/ZipFileZipEntrySource.java
+END
+Nullable.java
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/repos/asf/!svn/ver/814335/poi/trunk/src/ooxml/java/org/apache/poi/openxml4j/util/Nullable.java
+END
+ZipInputStreamZipEntrySource.java
+K 25
+svn:wc:ra_dav:version-url
+V 116
+/repos/asf/!svn/ver/1124179/poi/trunk/src/ooxml/java/org/apache/poi/openxml4j/util/ZipInputStreamZipEntrySource.java
+END
+ZipEntrySource.java
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/repos/asf/!svn/ver/814335/poi/trunk/src/ooxml/java/org/apache/poi/openxml4j/util/ZipEntrySource.java
+END

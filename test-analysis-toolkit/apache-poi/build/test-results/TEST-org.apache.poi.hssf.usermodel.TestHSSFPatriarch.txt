@@ -1,0 +1,5 @@
+Testsuite: org.apache.poi.hssf.usermodel.TestHSSFPatriarch
+Tests run: 2, Failures: 0, Errors: 0, Time elapsed: 0.002 sec
+
+Testcase: testBasic took 0 sec
+Testcase: test44916 took 0.002 sec

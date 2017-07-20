@@ -1,0 +1,6 @@
+Testsuite: org.apache.poi.hssf.usermodel.TestHSSFDataFormat
+Tests run: 3, Failures: 0, Errors: 0, Time elapsed: 0.003 sec
+
+Testcase: test49928 took 0 sec
+Testcase: test51378 took 0.003 sec
+Testcase: testBuiltinFormats took 0 sec

@@ -1,0 +1,6 @@
+Testsuite: org.apache.poi.hssf.model.TestWorkbook
+Tests run: 3, Failures: 0, Errors: 0, Time elapsed: 0.003 sec
+
+Testcase: testAddNameX took 0.002 sec
+Testcase: testFontStuff took 0.001 sec
+Testcase: testRecalcId took 0 sec

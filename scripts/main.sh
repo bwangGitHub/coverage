@@ -1,0 +1,58 @@
+#!/bin/bash
+if [ -z "$1" ]; then
+    echo "Aborting: you must specify a property file to read"
+    exit 1
+fi
+
+cd "`dirname "$0"`"
+BASE_DIR="`dirname $PWD`"
+echo "Set base directory to $BASE_DIR"
+
+echo "Reading the properties file"
+. ./$1
+
+echo "Setting shell settings"
+set -x
+set -e
+
+echo "Setting up logging"
+LOG_DIR="$RESULT_DIR/logs/`date +%s`"
+mkdir -p $LOG_DIR
+echo "Logging to: $LOG_DIR"
+
+# if [ $MAKE_MASTER_SUITE = "y" ]; then
+#     echo "Making master test suite"
+#     ./make-master-suite.sh $1 > $LOG_DIR/make-master-suite.log
+# fi
+
+# if [ $RUN_PIT = "y" ]; then
+#     echo "Running PIT"
+#     ./run-pit.sh $1 1>$PIT_RESULT_DIR/run-pit.log 2>$PIT_RESULT_DIR/run-pit-err.log 
+# fi
+
+if [ $INSTRUMENT_SOURCE = "y" ]; then
+    echo "Instrumenting the source and measuring the coverage of the master suite"
+    ./instrument-source.sh $1 > $LOG_DIR/instrument-source.log
+    ./measure-coverage.sh $1 "$MASTER_SUITE_PACKAGE.$MASTER_SUITE_NAME" > $LOG_DIR/measure-coverage.log
+    mv $RESULT_FILE $MASTER_SUITE_RESULT_DIR
+fi
+
+if [ $EVALUATE_RANDOM_SUITES = "y" ]; then
+    echo "Evaluating random suites"
+    ./evaluate-random-suites.sh $1 > $LOG_DIR/evaluate-random-suites.log
+fi
+
+if [ $EVALUATE_SINGLE_METHODS = "y" ]; then
+    echo "Evaluating single method suites"
+    ./evaluate-single-methods.sh $1 > $LOG_DIR/evaluate-single-methods.log
+fi
+
+if [ $ANALYZE_RESULTS = "y" ]; then
+    echo "Analyzing the results"
+    ./do-analysis.sh $1 > $LOG_DIR/do-analysis.log
+fi
+
+if [ $DO_LINEAR_REGRESSION = "y" ]; then
+    echo "Doing linear regression on the results"
+    ./do-linear-regression.sh $1 > $LOG_DIR/do-linear-regression.log
+fi

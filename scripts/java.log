@@ -1,0 +1,104 @@
+Jan 10, 2014 3:47:40 PM ca.uwaterloo.swag.tat.CommandParser configureRootLogger
+FINEST: Root logger initialized
+Jan 10, 2014 3:47:40 PM ca.uwaterloo.swag.tat.CommandParser <init>
+FINEST: Logger ca.uwaterloo.swag.tat.CommandParser initialized; logging messages at level FINEST or higher
+Jan 10, 2014 3:47:40 PM ca.uwaterloo.swag.tat.CommandParser start
+FINEST: Attempting to open stdin and stdout
+Jan 10, 2014 3:47:40 PM ca.uwaterloo.swag.tat.Controller <init>
+FINEST: Logger ca.uwaterloo.swag.tat.Controller initialized; logging messages at level FINEST or higher
+Jan 10, 2014 3:47:42 PM ca.uwaterloo.swag.tat.TestDatabase <init>
+INFO: Found 3857 test methods
+Jan 10, 2014 3:47:46 PM ca.uwaterloo.swag.tat.MutantDatabase parseLog
+INFO: 3854 tests cover one or more mutants
+Jan 10, 2014 3:47:46 PM ca.uwaterloo.swag.tat.MutantDatabase parseLog
+INFO: 3844 tests killed one or more mutants
+Jan 10, 2014 3:47:46 PM ca.uwaterloo.swag.tat.MutantDatabase parseLog
+INFO: 1069 mutants are equivalent
+Jan 10, 2014 3:47:46 PM ca.uwaterloo.swag.tat.CommandParser start
+FINEST: Looping
+Jan 10, 2014 3:47:46 PM ca.uwaterloo.swag.tat.CommandParser start
+FINEST: Reading a command from stdin
+Jan 10, 2014 3:47:46 PM ca.uwaterloo.swag.tat.CommandParser start
+FINEST: Received a generate mutant set command
+Jan 10, 2014 3:47:46 PM ca.uwaterloo.swag.tat.CommandParser parseGenerateMutantSetCommand
+FINEST: Executing a generate mutant set command
+Jan 10, 2014 3:47:46 PM ca.uwaterloo.swag.tat.CommandParser start
+FINEST: Looping
+Jan 10, 2014 3:47:46 PM ca.uwaterloo.swag.tat.CommandParser start
+FINEST: Reading a command from stdin
+Jan 10, 2014 3:47:46 PM ca.uwaterloo.swag.tat.CommandParser start
+FINEST: Received a get number of tests command
+Jan 10, 2014 3:47:46 PM ca.uwaterloo.swag.tat.Controller getNumberOfTests
+FINEST: Returning total number of tests
+Jan 10, 2014 3:47:46 PM ca.uwaterloo.swag.tat.CommandParser start
+FINEST: Looping
+Jan 10, 2014 3:47:46 PM ca.uwaterloo.swag.tat.CommandParser start
+FINEST: Reading a command from stdin
+Jan 10, 2014 3:47:46 PM ca.uwaterloo.swag.tat.CommandParser start
+FINEST: Received a generate test suite command
+Jan 10, 2014 3:47:46 PM ca.uwaterloo.swag.tat.CommandParser parseGenerateTestSuiteCommand
+FINEST: Executing a generate test suite command
+Jan 10, 2014 3:47:46 PM ca.uwaterloo.swag.tat.Controller generateTestSuite
+FINEST: Generating test suite
+Jan 10, 2014 3:47:46 PM ca.uwaterloo.swag.tat.CommandParser start
+FINEST: Looping
+Jan 10, 2014 3:47:46 PM ca.uwaterloo.swag.tat.CommandParser start
+FINEST: Reading a command from stdin
+Jan 10, 2014 3:47:46 PM ca.uwaterloo.swag.tat.CommandParser start
+FINEST: Received a get test name command
+Jan 10, 2014 3:47:46 PM ca.uwaterloo.swag.tat.CommandParser start
+FINEST: Looping
+Jan 10, 2014 3:47:46 PM ca.uwaterloo.swag.tat.CommandParser start
+FINEST: Reading a command from stdin
+Jan 10, 2014 3:47:46 PM ca.uwaterloo.swag.tat.CommandParser start
+FINEST: Received a write test suite command
+Jan 10, 2014 3:47:46 PM ca.uwaterloo.swag.tat.CommandParser parseWriteTestSuiteCommand
+FINEST: Executing a write test suite command
+Jan 10, 2014 3:47:46 PM ca.uwaterloo.swag.tat.Controller writeTestSuite
+FINEST: Writing test suite: /media/lminozem/batdrive/test-analysis-toolkit/test-subjects/joda-time/src/test/java/org/joda/time/random/SingleMethod2538.java with header: package org.joda.time.random;
+import junit.framework.*;
+public class SingleMethod2538 extends TestCase {
+static TestSuite randomSuite;
+public SingleMethod2538 (String testname) {super(testname);}
+Jan 10, 2014 3:47:46 PM ca.uwaterloo.swag.tat.CommandParser start
+FINEST: Looping
+Jan 10, 2014 3:47:46 PM ca.uwaterloo.swag.tat.CommandParser start
+FINEST: Reading a command from stdin
+Jan 10, 2014 3:47:51 PM ca.uwaterloo.swag.tat.CommandParser start
+FINEST: Received a compute kill score command
+Jan 10, 2014 3:47:51 PM ca.uwaterloo.swag.tat.CommandParser parseComputeKillScoreCommand
+FINEST: Executing a compute kill score command
+Jan 10, 2014 3:47:51 PM ca.uwaterloo.swag.tat.CommandParser start
+FINEST: Looping
+Jan 10, 2014 3:47:51 PM ca.uwaterloo.swag.tat.CommandParser start
+FINEST: Reading a command from stdin
+Jan 10, 2014 3:47:51 PM ca.uwaterloo.swag.tat.CommandParser start
+FINEST: Received a generate test suite command
+Jan 10, 2014 3:47:51 PM ca.uwaterloo.swag.tat.CommandParser parseGenerateTestSuiteCommand
+FINEST: Executing a generate test suite command
+Jan 10, 2014 3:47:51 PM ca.uwaterloo.swag.tat.Controller generateTestSuite
+FINEST: Generating test suite
+Jan 10, 2014 3:47:51 PM ca.uwaterloo.swag.tat.CommandParser start
+FINEST: Looping
+Jan 10, 2014 3:47:51 PM ca.uwaterloo.swag.tat.CommandParser start
+FINEST: Reading a command from stdin
+Jan 10, 2014 3:47:51 PM ca.uwaterloo.swag.tat.CommandParser start
+FINEST: Received a get test name command
+Jan 10, 2014 3:47:51 PM ca.uwaterloo.swag.tat.CommandParser start
+FINEST: Looping
+Jan 10, 2014 3:47:51 PM ca.uwaterloo.swag.tat.CommandParser start
+FINEST: Reading a command from stdin
+Jan 10, 2014 3:47:51 PM ca.uwaterloo.swag.tat.CommandParser start
+FINEST: Received a write test suite command
+Jan 10, 2014 3:47:51 PM ca.uwaterloo.swag.tat.CommandParser parseWriteTestSuiteCommand
+FINEST: Executing a write test suite command
+Jan 10, 2014 3:47:51 PM ca.uwaterloo.swag.tat.Controller writeTestSuite
+FINEST: Writing test suite: /media/lminozem/batdrive/test-analysis-toolkit/test-subjects/joda-time/src/test/java/org/joda/time/random/SingleMethod2539.java with header: package org.joda.time.random;
+import junit.framework.*;
+public class SingleMethod2539 extends TestCase {
+static TestSuite randomSuite;
+public SingleMethod2539 (String testname) {super(testname);}
+Jan 10, 2014 3:47:51 PM ca.uwaterloo.swag.tat.CommandParser start
+FINEST: Looping
+Jan 10, 2014 3:47:51 PM ca.uwaterloo.swag.tat.CommandParser start
+FINEST: Reading a command from stdin

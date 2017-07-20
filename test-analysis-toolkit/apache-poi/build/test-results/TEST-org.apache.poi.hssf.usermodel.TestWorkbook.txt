@@ -1,0 +1,19 @@
+Testsuite: org.apache.poi.hssf.usermodel.TestWorkbook
+Tests run: 16, Failures: 0, Errors: 0, Time elapsed: 0.033 sec
+
+Testcase: testBackupRecord took 0.001 sec
+Testcase: testWriteSheetSimple took 0.007 sec
+Testcase: testWriteModifySheetSimple took 0.007 sec
+Testcase: testReadSimple took 0 sec
+Testcase: testReadSimpleWithDataFormat took 0 sec
+Testcase: testWriteDataFormat took 0.001 sec
+Testcase: testReadEmployeeSimple took 0 sec
+Testcase: testModifySimple took 0 sec
+Testcase: testModifySimpleWithSkip took 0.001 sec
+Testcase: testModifySimpleWithStyling took 0.001 sec
+Testcase: testModifyEmployee took 0.001 sec
+Testcase: testReadSheetWithRK took 0.001 sec
+Testcase: testWriteModifySheetMerged took 0.009 sec
+Testcase: testRepeatingBug took 0.001 sec
+Testcase: testRowIndexesBeyond32768 took 0.001 sec
+Testcase: testRepeatingColsRows took 0 sec

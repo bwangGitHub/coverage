@@ -1,0 +1,18 @@
+Testsuite: org.apache.poi.poifs.filesystem.TestNPOIFSStream
+Tests run: 15, Failures: 0, Errors: 0, Time elapsed: 0.009 sec
+
+Testcase: testReadTinyStream took 0 sec
+Testcase: testReadShortStream took 0 sec
+Testcase: testReadLongerStream took 0.001 sec
+Testcase: testReadStream4096 took 0 sec
+Testcase: testReadFailsOnLoop took 0.001 sec
+Testcase: testReadMiniStreams took 0 sec
+Testcase: testReplaceStream took 0 sec
+Testcase: testReplaceStreamWithLess took 0.001 sec
+Testcase: testReplaceStreamWithMore took 0 sec
+Testcase: testWriteNewStream took 0 sec
+Testcase: testWriteNewStreamExtraFATs took 0 sec
+Testcase: testWriteStream4096 took 0.002 sec
+Testcase: testWriteMiniStreams took 0.001 sec
+Testcase: testWriteFailsOnLoop took 0 sec
+Testcase: testReadWriteNewStream took 0.001 sec

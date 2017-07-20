@@ -1,0 +1,17 @@
+Testsuite: org.apache.poi.util.TestLittleEndian
+Tests run: 14, Failures: 0, Errors: 0, Time elapsed: 0.002 sec
+
+Testcase: testGetShort took 0 sec
+Testcase: testGetUShort took 0 sec
+Testcase: testGetDouble took 0 sec
+Testcase: testGetInt took 0 sec
+Testcase: testGetLong took 0 sec
+Testcase: testPutShort took 0 sec
+Testcase: testPutInt took 0 sec
+Testcase: testPutDouble took 0 sec
+Testcase: testPutLong took 0 sec
+Testcase: testReadShort took 0 sec
+Testcase: testReadInt took 0 sec
+Testcase: testReadLong took 0 sec
+Testcase: testUnsignedByteToInt took 0 sec
+Testcase: testUnsignedShort took 0 sec

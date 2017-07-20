@@ -1,0 +1,9 @@
+Testsuite: org.apache.poi.hdgf.streams.TestStreamComplex
+Tests run: 6, Failures: 0, Errors: 0, Time elapsed: 0.018 sec
+
+Testcase: testTrailer took 0.001 sec
+Testcase: testChunks took 0.002 sec
+Testcase: testStrings took 0.001 sec
+Testcase: testPointerToStrings took 0.001 sec
+Testcase: testTrailerContents took 0.004 sec
+Testcase: testChunkWithText took 0.003 sec

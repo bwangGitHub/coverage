@@ -1,0 +1,17 @@
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/repos/asf/!svn/ver/1038688/poi/trunk/src/java/org/apache/poi/ss/formula/constant
+END
+ConstantValueParser.java
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/repos/asf/!svn/ver/1038688/poi/trunk/src/java/org/apache/poi/ss/formula/constant/ConstantValueParser.java
+END
+ErrorConstant.java
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/repos/asf/!svn/ver/1038688/poi/trunk/src/java/org/apache/poi/ss/formula/constant/ErrorConstant.java
+END

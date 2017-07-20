@@ -1,0 +1,603 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN
+"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>
+org.jfree.chart.renderer.category.StatisticalLineAndShapeRenderer
+</title>
+<link href="prettify.css" type="text/css" rel="stylesheet" />
+<script type="text/javascript" src="prettify.js"></script>
+</head>
+<body onload="prettyPrint()">
+<h2>Javalanche report for class:<br/> org.jfree.chart.renderer.category.StatisticalLineAndShapeRenderer </h2><pre class="prettyprint" style="border: 1px solid #888;padding: 2px"><span class="nocode"><a name="1">  1: </a></span>/* ===========================================================
+<span class="nocode"><a name="2">  2: </a></span> * JFreeChart : a free chart library for the Java(tm) platform
+<span class="nocode"><a name="3">  3: </a></span> * ===========================================================
+<span class="nocode"><a name="4">  4: </a></span> *
+<span class="nocode"><a name="5">  5: </a></span> * (C) Copyright 2000-2007, by Object Refinery Limited and Contributors.
+<span class="nocode"><a name="6">  6: </a></span> *
+<span class="nocode"><a name="7">  7: </a></span> * Project Info:  http://www.jfree.org/jfreechart/index.html
+<span class="nocode"><a name="8">  8: </a></span> *
+<span class="nocode"><a name="9">  9: </a></span> * This library is free software; you can redistribute it and/or modify it
+<span class="nocode"><a name="10"> 10: </a></span> * under the terms of the GNU Lesser General Public License as published by
+<span class="nocode"><a name="11"> 11: </a></span> * the Free Software Foundation; either version 2.1 of the License, or
+<span class="nocode"><a name="12"> 12: </a></span> * (at your option) any later version.
+<span class="nocode"><a name="13"> 13: </a></span> *
+<span class="nocode"><a name="14"> 14: </a></span> * This library is distributed in the hope that it will be useful, but
+<span class="nocode"><a name="15"> 15: </a></span> * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+<span class="nocode"><a name="16"> 16: </a></span> * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
+<span class="nocode"><a name="17"> 17: </a></span> * License for more details.
+<span class="nocode"><a name="18"> 18: </a></span> *
+<span class="nocode"><a name="19"> 19: </a></span> * You should have received a copy of the GNU Lesser General Public
+<span class="nocode"><a name="20"> 20: </a></span> * License along with this library; if not, write to the Free Software
+<span class="nocode"><a name="21"> 21: </a></span> * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301,
+<span class="nocode"><a name="22"> 22: </a></span> * USA.
+<span class="nocode"><a name="23"> 23: </a></span> *
+<span class="nocode"><a name="24"> 24: </a></span> * [Java is a trademark or registered trademark of Sun Microsystems, Inc.
+<span class="nocode"><a name="25"> 25: </a></span> * in the United States and other countries.]
+<span class="nocode"><a name="26"> 26: </a></span> *
+<span class="nocode"><a name="27"> 27: </a></span> * ------------------------------------
+<span class="nocode"><a name="28"> 28: </a></span> * StatisticalLineAndShapeRenderer.java
+<span class="nocode"><a name="29"> 29: </a></span> * ------------------------------------
+<span class="nocode"><a name="30"> 30: </a></span> * (C) Copyright 2005-2007, by Object Refinery Limited and Contributors.
+<span class="nocode"><a name="31"> 31: </a></span> *
+<span class="nocode"><a name="32"> 32: </a></span> * Original Author:  Mofeed Shahin;
+<span class="nocode"><a name="33"> 33: </a></span> * Contributor(s):   David Gilbert (for Object Refinery Limited);
+<span class="nocode"><a name="34"> 34: </a></span> *
+<span class="nocode"><a name="35"> 35: </a></span> * Changes
+<span class="nocode"><a name="36"> 36: </a></span> * -------
+<span class="nocode"><a name="37"> 37: </a></span> * 01-Feb-2005 : Version 1, contributed by Mofeed Shahin (DG);
+<span class="nocode"><a name="38"> 38: </a></span> * 16-Jun-2005 : Added errorIndicatorPaint to be consistent with
+<span class="nocode"><a name="39"> 39: </a></span> *               StatisticalBarRenderer (DG);
+<span class="nocode"><a name="40"> 40: </a></span> * ------------- JFREECHART 1.0.x ---------------------------------------------
+<span class="nocode"><a name="41"> 41: </a></span> * 11-Apr-2006 : Fixed bug 1468794, error bars drawn incorrectly when rendering
+<span class="nocode"><a name="42"> 42: </a></span> *               plots with horizontal orientation (DG);
+<span class="nocode"><a name="43"> 43: </a></span> * 25-Sep-2006 : Fixed bug 1562759, constructor ignoring arguments (DG);
+<span class="nocode"><a name="44"> 44: </a></span> * 01-Jun-2007 : Return early from drawItem() method if item is not
+<span class="nocode"><a name="45"> 45: </a></span> *               visible (DG);
+<span class="nocode"><a name="46"> 46: </a></span> * 14-Jun-2007 : If the dataset is not a StatisticalCategoryDataset, revert
+<span class="nocode"><a name="47"> 47: </a></span> *               to the drawing behaviour of LineAndShapeRenderer (DG);
+<span class="nocode"><a name="48"> 48: </a></span> * 27-Sep-2007 : Added offset option to match new option in 
+<span class="nocode"><a name="49"> 49: </a></span> *               LineAndShapeRenderer (DG);
+<span class="nocode"><a name="50"> 50: </a></span> *
+<span class="nocode"><a name="51"> 51: </a></span> */
+<span class="nocode"><a name="52"> 52: </a></span>
+<span class="nocode"><a name="53"> 53: </a></span>package org.jfree.chart.renderer.category;
+<span class="nocode"><a name="54"> 54: </a></span>
+<span class="nocode"><a name="55"> 55: </a></span>import java.awt.Graphics2D;
+<span class="nocode"><a name="56"> 56: </a></span>import java.awt.Paint;
+<span class="nocode"><a name="57"> 57: </a></span>import java.awt.Shape;
+<span class="nocode"><a name="58"> 58: </a></span>import java.awt.geom.Line2D;
+<span class="nocode"><a name="59"> 59: </a></span>import java.awt.geom.Rectangle2D;
+<span class="nocode"><a name="60"> 60: </a></span>import java.io.IOException;
+<span class="nocode"><a name="61"> 61: </a></span>import java.io.ObjectInputStream;
+<span class="nocode"><a name="62"> 62: </a></span>import java.io.ObjectOutputStream;
+<span class="nocode"><a name="63"> 63: </a></span>import java.io.Serializable;
+<span class="nocode"><a name="64"> 64: </a></span>
+<span class="nocode"><a name="65"> 65: </a></span>import org.jfree.chart.axis.CategoryAxis;
+<span class="nocode"><a name="66"> 66: </a></span>import org.jfree.chart.axis.ValueAxis;
+<span class="nocode"><a name="67"> 67: </a></span>import org.jfree.chart.entity.EntityCollection;
+<span class="nocode"><a name="68"> 68: </a></span>import org.jfree.chart.event.RendererChangeEvent;
+<span class="nocode"><a name="69"> 69: </a></span>import org.jfree.chart.plot.CategoryPlot;
+<span class="nocode"><a name="70"> 70: </a></span>import org.jfree.chart.plot.PlotOrientation;
+<span class="nocode"><a name="71"> 71: </a></span>import org.jfree.data.category.CategoryDataset;
+<span class="nocode"><a name="72"> 72: </a></span>import org.jfree.data.statistics.StatisticalCategoryDataset;
+<span class="nocode"><a name="73"> 73: </a></span>import org.jfree.io.SerialUtilities;
+<span class="nocode"><a name="74"> 74: </a></span>import org.jfree.ui.RectangleEdge;
+<span class="nocode"><a name="75"> 75: </a></span>import org.jfree.util.PaintUtilities;
+<span class="nocode"><a name="76"> 76: </a></span>import org.jfree.util.PublicCloneable;
+<span class="nocode"><a name="77"> 77: </a></span>import org.jfree.util.ShapeUtilities;
+<span class="nocode"><a name="78"> 78: </a></span>
+<span class="nocode"><a name="79"> 79: </a></span>/**
+<span class="nocode"><a name="80"> 80: </a></span> * A renderer that draws shapes for each data item, and lines between data
+<span class="nocode"><a name="81"> 81: </a></span> * items.  Each point has a mean value and a standard deviation line. For use
+<span class="nocode"><a name="82"> 82: </a></span> * with the {@link CategoryPlot} class.
+<span class="nocode"><a name="83"> 83: </a></span> */
+<span class="nocode"><a name="84"> 84: </a></span>public class StatisticalLineAndShapeRenderer extends LineAndShapeRenderer
+<span class="nocode"><a name="85"> 85: </a></span>        implements Cloneable, PublicCloneable, Serializable {
+<span class="nocode"><a name="86"> 86: </a></span>
+<span class="nocode"><a name="87"> 87: </a></span>    /** For serialization. */
+<span class="nocode"><a name="88"> 88: </a></span>    private static final long serialVersionUID = -3557517173697777579L;
+<span class="nocode"><a name="89"> 89: </a></span>
+<span class="nocode"><a name="90"> 90: </a></span>    /** The paint used to show the error indicator. */
+<span class="nocode"><a name="91"> 91: </a></span>    private transient Paint errorIndicatorPaint;
+<span class="nocode"><a name="92"> 92: </a></span>
+<span class="nocode"><a name="93"> 93: </a></span>    /**
+<span class="nocode"><a name="94"> 94: </a></span>     * Constructs a default renderer (draws shapes and lines).
+<span class="nocode"><a name="95"> 95: </a></span>     */
+<span class="nocode"><a name="96"> 96: </a></span>    public StatisticalLineAndShapeRenderer() {
+<span class="nocode"><a name="97"> 97: </a></span>        this(true, true);
+<span class="nocode"><a name="98"> 98: </a></span>    }
+<span class="nocode"><a name="99"> 99: </a></span>
+<span class="nocode"><a name="100">100: </a></span>    /**
+<span class="nocode"><a name="101">101: </a></span>     * Constructs a new renderer.
+<span class="nocode"><a name="102">102: </a></span>     *
+<span class="nocode"><a name="103">103: </a></span>     * @param linesVisible  draw lines?
+<span class="nocode"><a name="104">104: </a></span>     * @param shapesVisible  draw shapes?
+<span class="nocode"><a name="105">105: </a></span>     */
+<span class="nocode"><a name="106">106: </a></span>    public StatisticalLineAndShapeRenderer(boolean linesVisible,
+<span class="nocode"><a name="107">107: </a></span>                                           boolean shapesVisible) {
+<span class="nocode"><a name="108">108: </a></span>        super(linesVisible, shapesVisible);
+<span class="nocode"><a name="109">109: </a></span>        this.errorIndicatorPaint = null;
+<span class="nocode"><a name="110">110: </a></span>    }
+<span class="nocode"><a name="111">111: </a></span>
+<span class="nocode"><a name="112">112: </a></span>    /**
+<span class="nocode"><a name="113">113: </a></span>     * Returns the paint used for the error indicators.
+<span class="nocode"><a name="114">114: </a></span>     *
+<span class="nocode"><a name="115">115: </a></span>     * @return The paint used for the error indicators (possibly
+<span class="nocode"><a name="116">116: </a></span>     *         &lt;code&gt;null&lt;/code&gt;).
+<span class="nocode"><a name="117">117: </a></span>     *         
+<span class="nocode"><a name="118">118: </a></span>     * @see #setErrorIndicatorPaint(Paint)
+<span class="nocode"><a name="119">119: </a></span>     */
+<span class="nocode"><a name="120">120: </a></span>    public Paint getErrorIndicatorPaint() {
+<span class="nocode"><a name="121">121: </a></span>        return this.errorIndicatorPaint;
+<span class="nocode"><a name="122">122: </a></span>    }
+<span class="nocode"><a name="123">123: </a></span>
+<span class="nocode"><a name="124">124: </a></span>    /**
+<span class="nocode"><a name="125">125: </a></span>     * Sets the paint used for the error indicators (if &lt;code&gt;null&lt;/code&gt;,
+<span class="nocode"><a name="126">126: </a></span>     * the item outline paint is used instead) and sends a 
+<span class="nocode"><a name="127">127: </a></span>     * {@link RendererChangeEvent} to all registered listeners.
+<span class="nocode"><a name="128">128: </a></span>     *
+<span class="nocode"><a name="129">129: </a></span>     * @param paint  the paint (&lt;code&gt;null&lt;/code&gt; permitted).
+<span class="nocode"><a name="130">130: </a></span>     * 
+<span class="nocode"><a name="131">131: </a></span>     * @see #getErrorIndicatorPaint()
+<span class="nocode"><a name="132">132: </a></span>     */
+<span class="nocode"><a name="133">133: </a></span>    public void setErrorIndicatorPaint(Paint paint) {
+<span class="nocode"><a name="134">134: </a></span>        this.errorIndicatorPaint = paint;
+<span class="nocode"><a name="135">135: </a></span>        fireChangeEvent();
+<span class="nocode"><a name="136">136: </a></span>    }
+<span class="nocode"><a name="137">137: </a></span>
+<span class="nocode"><a name="138">138: </a></span>    /**
+<span class="nocode"><a name="139">139: </a></span>     * Draw a single data item.
+<span class="nocode"><a name="140">140: </a></span>     *
+<span class="nocode"><a name="141">141: </a></span>     * @param g2  the graphics device.
+<span class="nocode"><a name="142">142: </a></span>     * @param state  the renderer state.
+<span class="nocode"><a name="143">143: </a></span>     * @param dataArea  the area in which the data is drawn.
+<span class="nocode"><a name="144">144: </a></span>     * @param plot  the plot.
+<span class="nocode"><a name="145">145: </a></span>     * @param domainAxis  the domain axis.
+<span class="nocode"><a name="146">146: </a></span>     * @param rangeAxis  the range axis.
+<span class="nocode"><a name="147">147: </a></span>     * @param dataset  the dataset (a {@link StatisticalCategoryDataset} is
+<span class="nocode"><a name="148">148: </a></span>     *                 required).
+<span class="nocode"><a name="149">149: </a></span>     * @param row  the row index (zero-based).
+<span class="nocode"><a name="150">150: </a></span>     * @param column  the column index (zero-based).
+<span class="nocode"><a name="151">151: </a></span>     * @param pass  the pass.
+<span class="nocode"><a name="152">152: </a></span>     */
+<span class="nocode"><a name="153">153: </a></span>    public void drawItem(Graphics2D g2,
+<span class="nocode"><a name="154">154: </a></span>                         CategoryItemRendererState state,
+<span class="nocode"><a name="155">155: </a></span>                         Rectangle2D dataArea,
+<span class="nocode"><a name="156">156: </a></span>                         CategoryPlot plot,
+<span class="nocode"><a name="157">157: </a></span>                         CategoryAxis domainAxis,
+<span class="nocode"><a name="158">158: </a></span>                         ValueAxis rangeAxis,
+<span class="nocode"><a name="159">159: </a></span>                         CategoryDataset dataset,
+<span class="nocode"><a name="160">160: </a></span>                         int row,
+<span class="nocode"><a name="161">161: </a></span>                         int column,
+<span class="nocode"><a name="162">162: </a></span>                         int pass) {
+<span class="nocode"><a name="163">163: </a></span>
+<span class="nocode"><a name="164">164: </a></span>        // do nothing if item is not visible
+<span class="nocode"><a name="165">165: </a></span>        if (!getItemVisible(row, column)) {
+<span class="nocode"><a name="166">166: </a></span>            return;
+<span class="nocode"><a name="167">167: </a></span>        }
+<span class="nocode"><a name="168">168: </a></span>
+<span class="nocode"><a name="169">169: </a></span>        // nothing is drawn for null...
+<span class="nocode"><a name="170">170: </a></span>        Number v = dataset.getValue(row, column);
+<span class="nocode"><a name="171">171: </a></span>        if (v == null) {
+<span class="nocode"><a name="172">172: </a></span>            return;
+<span class="nocode"><a name="173">173: </a></span>        }
+<span class="nocode"><a name="174">174: </a></span>
+<span class="nocode"><a name="175">175: </a></span>        // if the dataset is not a StatisticalCategoryDataset then just revert
+<span class="nocode"><a name="176">176: </a></span>        // to the superclass (LineAndShapeRenderer) behaviour...
+<span class="nocode"><a name="177">177: </a></span>        if (!(dataset instanceof StatisticalCategoryDataset)) {
+<span class="nocode"><a name="178">178: </a></span>            super.drawItem(g2, state, dataArea, plot, domainAxis, rangeAxis,
+<span class="nocode"><a name="179">179: </a></span>                    dataset, row, column, pass);
+<span class="nocode"><a name="180">180: </a></span>            return;
+<span class="nocode"><a name="181">181: </a></span>        }
+<span class="nocode"><a name="182">182: </a></span>
+<span class="nocode"><a name="183">183: </a></span>        StatisticalCategoryDataset statData
+<span class="nocode"><a name="184">184: </a></span>                = (StatisticalCategoryDataset) dataset;
+<span class="nocode"><a name="185">185: </a></span>
+<span class="nocode"><a name="186">186: </a></span>        Number meanValue = statData.getMeanValue(row, column);
+<span class="nocode"><a name="187">187: </a></span>
+<span class="nocode"><a name="188">188: </a></span>        PlotOrientation orientation = plot.getOrientation();
+<span class="nocode"><a name="189">189: </a></span>
+<span class="nocode"><a name="190">190: </a></span>        // current data point...
+<span class="nocode"><a name="191">191: </a></span>        double x1;
+<span class="nocode"><a name="192">192: </a></span>        if (getUseSeriesOffset()) {
+<span class="nocode"><a name="193">193: </a></span>            x1 = domainAxis.getCategorySeriesMiddle(dataset.getColumnKey(
+<span class="nocode"><a name="194">194: </a></span>                    column), dataset.getRowKey(row), dataset, getItemMargin(), 
+<span class="nocode"><a name="195">195: </a></span>                    dataArea, plot.getDomainAxisEdge());            
+<span class="nocode"><a name="196">196: </a></span>        }
+<span class="nocode"><a name="197">197: </a></span>        else {
+<span class="nocode"><a name="198">198: </a></span>            x1 = domainAxis.getCategoryMiddle(column, getColumnCount(), 
+<span class="nocode"><a name="199">199: </a></span>                    dataArea, plot.getDomainAxisEdge());
+<span class="nocode"><a name="200">200: </a></span>        }
+<span class="nocode"><a name="201">201: </a></span>
+<span class="nocode"><a name="202">202: </a></span>        double y1 = rangeAxis.valueToJava2D(meanValue.doubleValue(), dataArea,
+<span class="nocode"><a name="203">203: </a></span>                plot.getRangeAxisEdge());
+<span class="nocode"><a name="204">204: </a></span>
+<span class="nocode"><a name="205">205: </a></span>        Shape shape = getItemShape(row, column);
+<span class="nocode"><a name="206">206: </a></span>        if (orientation == PlotOrientation.HORIZONTAL) {
+<span class="nocode"><a name="207">207: </a></span>            shape = ShapeUtilities.createTranslatedShape(shape, y1, x1);
+<span class="nocode"><a name="208">208: </a></span>        }
+<span class="nocode"><a name="209">209: </a></span>        else if (orientation == PlotOrientation.VERTICAL) {
+<span class="nocode"><a name="210">210: </a></span>            shape = ShapeUtilities.createTranslatedShape(shape, x1, y1);
+<span class="nocode"><a name="211">211: </a></span>        }
+<span class="nocode"><a name="212">212: </a></span>        if (getItemShapeVisible(row, column)) {
+<span class="nocode"><a name="213">213: </a></span>
+<span class="nocode"><a name="214">214: </a></span>            if (getItemShapeFilled(row, column)) {
+<span class="nocode"><a name="215">215: </a></span>                g2.setPaint(getItemPaint(row, column));
+<span class="nocode"><a name="216">216: </a></span>                g2.fill(shape);
+<span class="nocode"><a name="217">217: </a></span>            }
+<span class="nocode"><a name="218">218: </a></span>            else {
+<span class="nocode"><a name="219">219: </a></span>                if (getUseOutlinePaint()) {
+<span class="nocode"><a name="220">220: </a></span>                    g2.setPaint(getItemOutlinePaint(row, column));
+<span class="nocode"><a name="221">221: </a></span>                }
+<span class="nocode"><a name="222">222: </a></span>                else {
+<span class="nocode"><a name="223">223: </a></span>                    g2.setPaint(getItemPaint(row, column));
+<span class="nocode"><a name="224">224: </a></span>                }
+<span class="nocode"><a name="225">225: </a></span>                g2.setStroke(getItemOutlineStroke(row, column));
+<span class="nocode"><a name="226">226: </a></span>                g2.draw(shape);
+<span class="nocode"><a name="227">227: </a></span>            }
+<span class="nocode"><a name="228">228: </a></span>        }
+<span class="nocode"><a name="229">229: </a></span>
+<span class="nocode"><a name="230">230: </a></span>        if (getItemLineVisible(row, column)) {
+<span class="nocode"><a name="231">231: </a></span>            if (column != 0) {
+<span class="nocode"><a name="232">232: </a></span>
+<span class="nocode"><a name="233">233: </a></span>                Number previousValue = statData.getValue(row, column - 1);
+<span class="nocode"><a name="234">234: </a></span>                if (previousValue != null) {
+<span class="nocode"><a name="235">235: </a></span>
+<span class="nocode"><a name="236">236: </a></span>                    // previous data point...
+<span class="nocode"><a name="237">237: </a></span>                    double previous = previousValue.doubleValue();
+<span class="nocode"><a name="238">238: </a></span>                    double x0;
+<span class="nocode"><a name="239">239: </a></span>                    if (getUseSeriesOffset()) {
+<span class="nocode"><a name="240">240: </a></span>                        x0 = domainAxis.getCategorySeriesMiddle(
+<span class="nocode"><a name="241">241: </a></span>                                dataset.getColumnKey(column - 1), 
+<span class="nocode"><a name="242">242: </a></span>                                dataset.getRowKey(row), dataset, 
+<span class="nocode"><a name="243">243: </a></span>                                getItemMargin(), dataArea, 
+<span class="nocode"><a name="244">244: </a></span>                                plot.getDomainAxisEdge());
+<span class="nocode"><a name="245">245: </a></span>                    }
+<span class="nocode"><a name="246">246: </a></span>                    else {
+<span class="nocode"><a name="247">247: </a></span>                        x0 = domainAxis.getCategoryMiddle(column - 1, 
+<span class="nocode"><a name="248">248: </a></span>                                getColumnCount(), dataArea, 
+<span class="nocode"><a name="249">249: </a></span>                                plot.getDomainAxisEdge());
+<span class="nocode"><a name="250">250: </a></span>                    }
+<span class="nocode"><a name="251">251: </a></span>                    double y0 = rangeAxis.valueToJava2D(previous, dataArea,
+<span class="nocode"><a name="252">252: </a></span>                            plot.getRangeAxisEdge());
+<span class="nocode"><a name="253">253: </a></span>
+<span class="nocode"><a name="254">254: </a></span>                    Line2D line = null;
+<span class="nocode"><a name="255">255: </a></span>                    if (orientation == PlotOrientation.HORIZONTAL) {
+<span class="nocode"><a name="256">256: </a></span>                        line = new Line2D.Double(y0, x0, y1, x1);
+<span class="nocode"><a name="257">257: </a></span>                    }
+<span class="nocode"><a name="258">258: </a></span>                    else if (orientation == PlotOrientation.VERTICAL) {
+<span class="nocode"><a name="259">259: </a></span>                        line = new Line2D.Double(x0, y0, x1, y1);
+<span class="nocode"><a name="260">260: </a></span>                    }
+<span class="nocode"><a name="261">261: </a></span>                    g2.setPaint(getItemPaint(row, column));
+<span class="nocode"><a name="262">262: </a></span>                    g2.setStroke(getItemStroke(row, column));
+<span class="nocode"><a name="263">263: </a></span>                    g2.draw(line);
+<span class="nocode"><a name="264">264: </a></span>                }
+<span class="nocode"><a name="265">265: </a></span>            }
+<span class="nocode"><a name="266">266: </a></span>        }
+<span class="nocode"><a name="267">267: </a></span>
+<span class="nocode"><a name="268">268: </a></span>        RectangleEdge yAxisLocation = plot.getRangeAxisEdge();
+<span class="nocode"><a name="269">269: </a></span>        g2.setPaint(getItemPaint(row, column));
+<span class="nocode"><a name="270">270: </a></span>
+<span class="nocode"><a name="271">271: </a></span>        //standard deviation lines
+<span class="nocode"><a name="272">272: </a></span>        double valueDelta = statData.getStdDevValue(row, column).doubleValue();
+<span class="nocode"><a name="273">273: </a></span>
+<span class="nocode"><a name="274">274: </a></span>        double highVal, lowVal;
+<span class="nocode"><a name="275">275: </a></span>        if ((meanValue.doubleValue() + valueDelta)
+<span class="nocode"><a name="276">276: </a></span>                &gt; rangeAxis.getRange().getUpperBound()) {
+<span class="nocode"><a name="277">277: </a></span>            highVal = rangeAxis.valueToJava2D(
+<span class="nocode"><a name="278">278: </a></span>                    rangeAxis.getRange().getUpperBound(), dataArea,
+<span class="nocode"><a name="279">279: </a></span>                    yAxisLocation);
+<span class="nocode"><a name="280">280: </a></span>        }
+<span class="nocode"><a name="281">281: </a></span>        else {
+<span class="nocode"><a name="282">282: </a></span>            highVal = rangeAxis.valueToJava2D(meanValue.doubleValue()
+<span class="nocode"><a name="283">283: </a></span>                    + valueDelta, dataArea, yAxisLocation);
+<span class="nocode"><a name="284">284: </a></span>        }
+<span class="nocode"><a name="285">285: </a></span>
+<span class="nocode"><a name="286">286: </a></span>        if ((meanValue.doubleValue() + valueDelta)
+<span class="nocode"><a name="287">287: </a></span>                &lt; rangeAxis.getRange().getLowerBound()) {
+<span class="nocode"><a name="288">288: </a></span>            lowVal = rangeAxis.valueToJava2D(
+<span class="nocode"><a name="289">289: </a></span>                    rangeAxis.getRange().getLowerBound(), dataArea,
+<span class="nocode"><a name="290">290: </a></span>                    yAxisLocation);
+<span class="nocode"><a name="291">291: </a></span>        }
+<span class="nocode"><a name="292">292: </a></span>        else {
+<span class="nocode"><a name="293">293: </a></span>            lowVal = rangeAxis.valueToJava2D(meanValue.doubleValue()
+<span class="nocode"><a name="294">294: </a></span>                    - valueDelta, dataArea, yAxisLocation);
+<span class="nocode"><a name="295">295: </a></span>        }
+<span class="nocode"><a name="296">296: </a></span>
+<span class="nocode"><a name="297">297: </a></span>        if (this.errorIndicatorPaint != null) {
+<span class="nocode"><a name="298">298: </a></span>            g2.setPaint(this.errorIndicatorPaint);
+<span class="nocode"><a name="299">299: </a></span>        }
+<span class="nocode"><a name="300">300: </a></span>        else {
+<span class="nocode"><a name="301">301: </a></span>            g2.setPaint(getItemPaint(row, column));
+<span class="nocode"><a name="302">302: </a></span>        }
+<span class="nocode"><a name="303">303: </a></span>        Line2D line = new Line2D.Double();
+<span class="nocode"><a name="304">304: </a></span>        if (orientation == PlotOrientation.HORIZONTAL) {
+<span class="nocode"><a name="305">305: </a></span>            line.setLine(lowVal, x1, highVal, x1);
+<span class="nocode"><a name="306">306: </a></span>            g2.draw(line);
+<span class="nocode"><a name="307">307: </a></span>            line.setLine(lowVal, x1 - 5.0d, lowVal, x1 + 5.0d);
+<span class="nocode"><a name="308">308: </a></span>            g2.draw(line);
+<span class="nocode"><a name="309">309: </a></span>            line.setLine(highVal, x1 - 5.0d, highVal, x1 + 5.0d);
+<span class="nocode"><a name="310">310: </a></span>            g2.draw(line);
+<span class="nocode"><a name="311">311: </a></span>        }
+<span class="nocode"><a name="312">312: </a></span>        else {  // PlotOrientation.VERTICAL
+<span class="nocode"><a name="313">313: </a></span>            line.setLine(x1, lowVal, x1, highVal);
+<span class="nocode"><a name="314">314: </a></span>            g2.draw(line);
+<span class="nocode"><a name="315">315: </a></span>            line.setLine(x1 - 5.0d, highVal, x1 + 5.0d, highVal);
+<span class="nocode"><a name="316">316: </a></span>            g2.draw(line);
+<span class="nocode"><a name="317">317: </a></span>            line.setLine(x1 - 5.0d, lowVal, x1 + 5.0d, lowVal);
+<span class="nocode"><a name="318">318: </a></span>            g2.draw(line);
+<span class="nocode"><a name="319">319: </a></span>        }
+<span class="nocode"><a name="320">320: </a></span>
+<span class="nocode"><a name="321">321: </a></span>        // draw the item label if there is one...
+<span class="nocode"><a name="322">322: </a></span>        if (isItemLabelVisible(row, column)) {
+<span class="nocode"><a name="323">323: </a></span>            if (orientation == PlotOrientation.HORIZONTAL) {
+<span class="nocode"><a name="324">324: </a></span>                drawItemLabel(g2, orientation, dataset, row, column,
+<span class="nocode"><a name="325">325: </a></span>                        y1, x1, (meanValue.doubleValue() &lt; 0.0));
+<span class="nocode"><a name="326">326: </a></span>            }
+<span class="nocode"><a name="327">327: </a></span>            else if (orientation == PlotOrientation.VERTICAL) {
+<span class="nocode"><a name="328">328: </a></span>                drawItemLabel(g2, orientation, dataset, row, column,
+<span class="nocode"><a name="329">329: </a></span>                        x1, y1, (meanValue.doubleValue() &lt; 0.0));
+<span class="nocode"><a name="330">330: </a></span>            }
+<span class="nocode"><a name="331">331: </a></span>        }
+<span class="nocode"><a name="332">332: </a></span>
+<span class="nocode"><a name="333">333: </a></span>        // add an item entity, if this information is being collected
+<span class="nocode"><a name="334">334: </a></span>        EntityCollection entities = state.getEntityCollection();
+<span class="nocode"><a name="335">335: </a></span>        if (entities != null &amp;&amp; shape != null) {
+<span class="nocode"><a name="336">336: </a></span>            addItemEntity(entities, dataset, row, column, shape);
+<span class="nocode"><a name="337">337: </a></span>        }
+<span class="nocode"><a name="338">338: </a></span>
+<span class="nocode"><a name="339">339: </a></span>    }
+<span class="nocode"><a name="340">340: </a></span>
+<span class="nocode"><a name="341">341: </a></span>    /**
+<span class="nocode"><a name="342">342: </a></span>     * Tests this renderer for equality with an arbitrary object.
+<span class="nocode"><a name="343">343: </a></span>     *
+<span class="nocode"><a name="344">344: </a></span>     * @param obj  the object (&lt;code&gt;null&lt;/code&gt; permitted).
+<span class="nocode"><a name="345">345: </a></span>     *
+<span class="nocode"><a name="346">346: </a></span>     * @return A boolean.
+<span class="nocode"><a name="347">347: </a></span>     */
+<span class="nocode"><a name="348">348: </a></span>    public boolean equals(Object obj) {
+<span class="nocode"><a name="349">349: </a></span>        if (obj == this) {
+<span class="nocode"><a name="350">350: </a></span>            return true;
+<span class="nocode"><a name="351">351: </a></span>        }
+<span class="nocode"><a name="352">352: </a></span>        if (!(obj instanceof StatisticalLineAndShapeRenderer)) {
+<span class="nocode"><a name="353">353: </a></span>            return false;
+<span class="nocode"><a name="354">354: </a></span>        }
+<span class="nocode"><a name="355">355: </a></span>        StatisticalLineAndShapeRenderer that
+<span class="nocode"><a name="356">356: </a></span>                = (StatisticalLineAndShapeRenderer) obj;
+<span class="nocode"><a name="357">357: </a></span>        if (!PaintUtilities.equal(this.errorIndicatorPaint,
+<span class="nocode"><a name="358">358: </a></span>                that.errorIndicatorPaint)) {
+<span class="nocode"><a name="359">359: </a></span>            return false;
+<span class="nocode"><a name="360">360: </a></span>        }
+<span class="nocode"><a name="361">361: </a></span>        return super.equals(obj);
+<span class="nocode"><a name="362">362: </a></span>    }
+<span class="nocode"><a name="363">363: </a></span>
+<span class="nocode"><a name="364">364: </a></span>    /**
+<span class="nocode"><a name="365">365: </a></span>     * Provides serialization support.
+<span class="nocode"><a name="366">366: </a></span>     *
+<span class="nocode"><a name="367">367: </a></span>     * @param stream  the output stream.
+<span class="nocode"><a name="368">368: </a></span>     *
+<span class="nocode"><a name="369">369: </a></span>     * @throws IOException  if there is an I/O error.
+<span class="nocode"><a name="370">370: </a></span>     */
+<span class="nocode"><a name="371">371: </a></span>    private void writeObject(ObjectOutputStream stream) throws IOException {
+<span class="nocode"><a name="372">372: </a></span>        stream.defaultWriteObject();
+<span class="nocode"><a name="373">373: </a></span>        SerialUtilities.writePaint(this.errorIndicatorPaint, stream);
+<span class="nocode"><a name="374">374: </a></span>    }
+<span class="nocode"><a name="375">375: </a></span>
+<span class="nocode"><a name="376">376: </a></span>    /**
+<span class="nocode"><a name="377">377: </a></span>     * Provides serialization support.
+<span class="nocode"><a name="378">378: </a></span>     *
+<span class="nocode"><a name="379">379: </a></span>     * @param stream  the input stream.
+<span class="nocode"><a name="380">380: </a></span>     *
+<span class="nocode"><a name="381">381: </a></span>     * @throws IOException  if there is an I/O error.
+<span class="nocode"><a name="382">382: </a></span>     * @throws ClassNotFoundException  if there is a classpath problem.
+<span class="nocode"><a name="383">383: </a></span>     */
+<span class="nocode"><a name="384">384: </a></span>    private void readObject(ObjectInputStream stream)
+<span class="nocode"><a name="385">385: </a></span>            throws IOException, ClassNotFoundException {
+<span class="nocode"><a name="386">386: </a></span>        stream.defaultReadObject();
+<span class="nocode"><a name="387">387: </a></span>        this.errorIndicatorPaint = SerialUtilities.readPaint(stream);
+<span class="nocode"><a name="388">388: </a></span>    }
+<span class="nocode"><a name="389">389: </a></span>
+<span class="nocode"><a name="390">390: </a></span>}
+</pre><table class="mutation_table" summary="Mutations">
+<tr><th>ID</th><th>Line</th><th>Type</th><th>Detected</th></tr><tr><td>59447</td><td><a href="#97">97</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>59448</td><td><a href="#97">97</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59449</td><td><a href="#97">97(1)</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>59450</td><td><a href="#97">97(1)</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59451</td><td><a href="#135">135</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59453</td><td><a href="#165">165</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59452</td><td><a href="#165">165</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59454</td><td><a href="#170">170</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59455</td><td><a href="#171">171</a></td><td>Negate jump condition (Replace IFNONNULL with  IFNULL)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59456</td><td><a href="#177">177</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59457</td><td><a href="#178">178</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59458</td><td><a href="#186">186</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>59459</td><td><a href="#188">188</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>59461</td><td><a href="#192">192</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59460</td><td><a href="#192">192</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59462</td><td><a href="#193">193</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59463</td><td><a href="#193">193(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59464</td><td><a href="#193">193(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59465</td><td><a href="#193">193(3)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59466</td><td><a href="#193">193(4)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59467</td><td><a href="#198">198</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59468</td><td><a href="#198">198(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59469</td><td><a href="#198">198(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59470</td><td><a href="#202">202</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59471</td><td><a href="#202">202(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59472</td><td><a href="#202">202(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59473</td><td><a href="#205">205</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>59474</td><td><a href="#206">206</a></td><td>Negate jump condition (Replace IF_ACMPNE with  IF_ACMPEQ)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59475</td><td><a href="#207">207</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59476</td><td><a href="#209">209</a></td><td>Negate jump condition (Replace IF_ACMPNE with  IF_ACMPEQ)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59477</td><td><a href="#210">210</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>59479</td><td><a href="#212">212</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59478</td><td><a href="#212">212</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59481</td><td><a href="#214">214</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59480</td><td><a href="#214">214</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59482</td><td><a href="#215">215</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59483</td><td><a href="#215">215(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59484</td><td><a href="#216">216</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59486</td><td><a href="#219">219</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59485</td><td><a href="#219">219</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59487</td><td><a href="#220">220</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59488</td><td><a href="#220">220(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59489</td><td><a href="#223">223</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59490</td><td><a href="#223">223(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59491</td><td><a href="#225">225</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59492</td><td><a href="#225">225(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59493</td><td><a href="#226">226</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59495</td><td><a href="#230">230</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59494</td><td><a href="#230">230</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59496</td><td><a href="#231">231</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59497</td><td><a href="#233">233</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>59498</td><td><a href="#233">233</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59499</td><td><a href="#233">233</a></td><td>Replace arithmetic operator (Replace ISUB with IADD)</td><td><img src="detected.png"/></td></tr>
+<tr><td>59500</td><td><a href="#233">233</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59501</td><td><a href="#234">234</a></td><td>Negate jump condition (Replace IFNULL with  IFNONNULL)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59502</td><td><a href="#237">237</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59504</td><td><a href="#239">239</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59503</td><td><a href="#239">239</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59506</td><td><a href="#240">240</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59505</td><td><a href="#240">240</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59507</td><td><a href="#240">240</a></td><td>Replace arithmetic operator (Replace ISUB with IADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59508</td><td><a href="#240">240</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59509</td><td><a href="#240">240(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59510</td><td><a href="#240">240(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59511</td><td><a href="#240">240(3)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59512</td><td><a href="#240">240(4)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59513</td><td><a href="#247">247</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59514</td><td><a href="#247">247</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59515</td><td><a href="#247">247</a></td><td>Replace arithmetic operator (Replace ISUB with IADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59516</td><td><a href="#247">247</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59517</td><td><a href="#247">247(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59518</td><td><a href="#247">247(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59519</td><td><a href="#251">251</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59520</td><td><a href="#251">251(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59521</td><td><a href="#255">255</a></td><td>Negate jump condition (Replace IF_ACMPNE with  IF_ACMPEQ)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59522</td><td><a href="#258">258</a></td><td>Negate jump condition (Replace IF_ACMPNE with  IF_ACMPEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>59523</td><td><a href="#261">261</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59524</td><td><a href="#261">261(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59525</td><td><a href="#262">262</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>59526</td><td><a href="#262">262(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59527</td><td><a href="#263">263</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59528</td><td><a href="#268">268</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59529</td><td><a href="#269">269</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59530</td><td><a href="#269">269(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59531</td><td><a href="#272">272</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>59532</td><td><a href="#272">272(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59537</td><td><a href="#275">275</a></td><td>Negate jump condition (Replace IFLE with  IFGT)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59534</td><td><a href="#275">275</a></td><td>Replace arithmetic operator (Replace DADD with DSUB)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59533</td><td><a href="#275">275</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59535</td><td><a href="#275">275(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59536</td><td><a href="#275">275(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59538</td><td><a href="#277">277</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59539</td><td><a href="#277">277(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59540</td><td><a href="#277">277(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59542</td><td><a href="#282">282</a></td><td>Replace arithmetic operator (Replace DADD with DSUB)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59541</td><td><a href="#282">282</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59543</td><td><a href="#282">282(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59548</td><td><a href="#286">286</a></td><td>Negate jump condition (Replace IFGE with  IFLT)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59545</td><td><a href="#286">286</a></td><td>Replace arithmetic operator (Replace DADD with DSUB)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59544</td><td><a href="#286">286</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59546</td><td><a href="#286">286(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59547</td><td><a href="#286">286(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59549</td><td><a href="#288">288</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59550</td><td><a href="#288">288(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59551</td><td><a href="#288">288(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59553</td><td><a href="#293">293</a></td><td>Replace arithmetic operator (Replace DSUB with DADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59552</td><td><a href="#293">293</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59554</td><td><a href="#293">293(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59555</td><td><a href="#297">297</a></td><td>Negate jump condition (Replace IFNULL with  IFNONNULL)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59556</td><td><a href="#298">298</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59557</td><td><a href="#301">301</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59558</td><td><a href="#301">301(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59559</td><td><a href="#304">304</a></td><td>Negate jump condition (Replace IF_ACMPNE with  IF_ACMPEQ)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59560</td><td><a href="#305">305</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59561</td><td><a href="#306">306</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59562</td><td><a href="#307">307</a></td><td>Replace a constant (Replace 5.0 with 6.0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59563</td><td><a href="#307">307</a></td><td>Replace a constant (Replace 5.0 with 0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59564</td><td><a href="#307">307</a></td><td>Replace a constant (Replace 5.0 with 4.0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59568</td><td><a href="#307">307(1)</a></td><td>Replace a constant (Replace 5.0 with 4.0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59567</td><td><a href="#307">307(1)</a></td><td>Replace a constant (Replace 5.0 with 0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59566</td><td><a href="#307">307(1)</a></td><td>Replace a constant (Replace 5.0 with 6.0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59565</td><td><a href="#307">307</a></td><td>Replace arithmetic operator (Replace DSUB with DADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59569</td><td><a href="#307">307(1)</a></td><td>Replace arithmetic operator (Replace DADD with DSUB)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59570</td><td><a href="#307">307</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59571</td><td><a href="#308">308</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59574</td><td><a href="#309">309</a></td><td>Replace a constant (Replace 5.0 with 4.0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59572</td><td><a href="#309">309</a></td><td>Replace a constant (Replace 5.0 with 6.0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59573</td><td><a href="#309">309</a></td><td>Replace a constant (Replace 5.0 with 0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59577</td><td><a href="#309">309(1)</a></td><td>Replace a constant (Replace 5.0 with 0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59578</td><td><a href="#309">309(1)</a></td><td>Replace a constant (Replace 5.0 with 4.0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59576</td><td><a href="#309">309(1)</a></td><td>Replace a constant (Replace 5.0 with 6.0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59575</td><td><a href="#309">309</a></td><td>Replace arithmetic operator (Replace DSUB with DADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59579</td><td><a href="#309">309(1)</a></td><td>Replace arithmetic operator (Replace DADD with DSUB)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59580</td><td><a href="#309">309</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59581</td><td><a href="#310">310</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59582</td><td><a href="#313">313</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59583</td><td><a href="#314">314</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59584</td><td><a href="#315">315</a></td><td>Replace a constant (Replace 5.0 with 6.0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59586</td><td><a href="#315">315</a></td><td>Replace a constant (Replace 5.0 with 4.0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59585</td><td><a href="#315">315</a></td><td>Replace a constant (Replace 5.0 with 0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59588</td><td><a href="#315">315(1)</a></td><td>Replace a constant (Replace 5.0 with 6.0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59589</td><td><a href="#315">315(1)</a></td><td>Replace a constant (Replace 5.0 with 0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59590</td><td><a href="#315">315(1)</a></td><td>Replace a constant (Replace 5.0 with 4.0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59587</td><td><a href="#315">315</a></td><td>Replace arithmetic operator (Replace DSUB with DADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59591</td><td><a href="#315">315(1)</a></td><td>Replace arithmetic operator (Replace DADD with DSUB)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59592</td><td><a href="#315">315</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59593</td><td><a href="#316">316</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59594</td><td><a href="#317">317</a></td><td>Replace a constant (Replace 5.0 with 6.0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59595</td><td><a href="#317">317</a></td><td>Replace a constant (Replace 5.0 with 0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59596</td><td><a href="#317">317</a></td><td>Replace a constant (Replace 5.0 with 4.0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59600</td><td><a href="#317">317(1)</a></td><td>Replace a constant (Replace 5.0 with 4.0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59598</td><td><a href="#317">317(1)</a></td><td>Replace a constant (Replace 5.0 with 6.0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59599</td><td><a href="#317">317(1)</a></td><td>Replace a constant (Replace 5.0 with 0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59597</td><td><a href="#317">317</a></td><td>Replace arithmetic operator (Replace DSUB with DADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59601</td><td><a href="#317">317(1)</a></td><td>Replace arithmetic operator (Replace DADD with DSUB)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59602</td><td><a href="#317">317</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59603</td><td><a href="#318">318</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59605</td><td><a href="#322">322</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59604</td><td><a href="#322">322</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59606</td><td><a href="#323">323</a></td><td>Negate jump condition (Replace IF_ACMPNE with  IF_ACMPEQ)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59608</td><td><a href="#324">324</a></td><td>Replace a constant (Replace 0 with 1(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59609</td><td><a href="#324">324</a></td><td>Replace a constant (Replace 0 with -1(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59611</td><td><a href="#324">324(1)</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59612</td><td><a href="#324">324(1)</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59614</td><td><a href="#324">324(2)</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59613</td><td><a href="#324">324(2)</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59610</td><td><a href="#324">324</a></td><td>Negate jump condition (Replace IFGE with  IFLT)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59607</td><td><a href="#324">324</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59615</td><td><a href="#324">324(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59616</td><td><a href="#327">327</a></td><td>Negate jump condition (Replace IF_ACMPNE with  IF_ACMPEQ)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59619</td><td><a href="#328">328</a></td><td>Replace a constant (Replace 0 with -1(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59618</td><td><a href="#328">328</a></td><td>Replace a constant (Replace 0 with 1(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59621</td><td><a href="#328">328(1)</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59622</td><td><a href="#328">328(1)</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59624</td><td><a href="#328">328(2)</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59623</td><td><a href="#328">328(2)</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59620</td><td><a href="#328">328</a></td><td>Negate jump condition (Replace IFGE with  IFLT)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59617</td><td><a href="#328">328</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59625</td><td><a href="#328">328(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59626</td><td><a href="#334">334</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59627</td><td><a href="#335">335</a></td><td>Negate jump condition (Replace IFNULL with  IFNONNULL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>59628</td><td><a href="#335">335(1)</a></td><td>Negate jump condition (Replace IFNULL with  IFNONNULL)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59629</td><td><a href="#336">336</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59630</td><td><a href="#349">349</a></td><td>Negate jump condition (Replace IF_ACMPNE with  IF_ACMPEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>59631</td><td><a href="#350">350</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59632</td><td><a href="#350">350</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59633</td><td><a href="#352">352</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59634</td><td><a href="#353">353</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59635</td><td><a href="#353">353</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59637</td><td><a href="#357">357</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>59636</td><td><a href="#357">357</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59638</td><td><a href="#359">359</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>59639</td><td><a href="#359">359</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>59640</td><td><a href="#361">361</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>59641</td><td><a href="#372">372</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59642</td><td><a href="#373">373</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>59643</td><td><a href="#386">386</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59644</td><td><a href="#387">387</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+</table>
+</body>
+</html>

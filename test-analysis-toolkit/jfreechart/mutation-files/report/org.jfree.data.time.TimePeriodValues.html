@@ -1,0 +1,812 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN
+"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>
+org.jfree.data.time.TimePeriodValues
+</title>
+<link href="prettify.css" type="text/css" rel="stylesheet" />
+<script type="text/javascript" src="prettify.js"></script>
+</head>
+<body onload="prettyPrint()">
+<h2>Javalanche report for class:<br/> org.jfree.data.time.TimePeriodValues </h2><pre class="prettyprint" style="border: 1px solid #888;padding: 2px"><span class="nocode"><a name="1">  1: </a></span>/* ===========================================================
+<span class="nocode"><a name="2">  2: </a></span> * JFreeChart : a free chart library for the Java(tm) platform
+<span class="nocode"><a name="3">  3: </a></span> * ===========================================================
+<span class="nocode"><a name="4">  4: </a></span> *
+<span class="nocode"><a name="5">  5: </a></span> * (C) Copyright 2000-2007, by Object Refinery Limited and Contributors.
+<span class="nocode"><a name="6">  6: </a></span> *
+<span class="nocode"><a name="7">  7: </a></span> * Project Info:  http://www.jfree.org/jfreechart/index.html
+<span class="nocode"><a name="8">  8: </a></span> *
+<span class="nocode"><a name="9">  9: </a></span> * This library is free software; you can redistribute it and/or modify it 
+<span class="nocode"><a name="10"> 10: </a></span> * under the terms of the GNU Lesser General Public License as published by 
+<span class="nocode"><a name="11"> 11: </a></span> * the Free Software Foundation; either version 2.1 of the License, or 
+<span class="nocode"><a name="12"> 12: </a></span> * (at your option) any later version.
+<span class="nocode"><a name="13"> 13: </a></span> *
+<span class="nocode"><a name="14"> 14: </a></span> * This library is distributed in the hope that it will be useful, but 
+<span class="nocode"><a name="15"> 15: </a></span> * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY 
+<span class="nocode"><a name="16"> 16: </a></span> * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public 
+<span class="nocode"><a name="17"> 17: </a></span> * License for more details.
+<span class="nocode"><a name="18"> 18: </a></span> *
+<span class="nocode"><a name="19"> 19: </a></span> * You should have received a copy of the GNU Lesser General Public
+<span class="nocode"><a name="20"> 20: </a></span> * License along with this library; if not, write to the Free Software
+<span class="nocode"><a name="21"> 21: </a></span> * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, 
+<span class="nocode"><a name="22"> 22: </a></span> * USA.  
+<span class="nocode"><a name="23"> 23: </a></span> *
+<span class="nocode"><a name="24"> 24: </a></span> * [Java is a trademark or registered trademark of Sun Microsystems, Inc. 
+<span class="nocode"><a name="25"> 25: </a></span> * in the United States and other countries.]
+<span class="nocode"><a name="26"> 26: </a></span> *
+<span class="nocode"><a name="27"> 27: </a></span> * ---------------------
+<span class="nocode"><a name="28"> 28: </a></span> * TimePeriodValues.java
+<span class="nocode"><a name="29"> 29: </a></span> * ---------------------
+<span class="nocode"><a name="30"> 30: </a></span> * (C) Copyright 2003-2007, by Object Refinery Limited.
+<span class="nocode"><a name="31"> 31: </a></span> *
+<span class="nocode"><a name="32"> 32: </a></span> * Original Author:  David Gilbert (for Object Refinery Limited);
+<span class="nocode"><a name="33"> 33: </a></span> * Contributor(s):   -;
+<span class="nocode"><a name="34"> 34: </a></span> *
+<span class="nocode"><a name="35"> 35: </a></span> * Changes
+<span class="nocode"><a name="36"> 36: </a></span> * -------
+<span class="nocode"><a name="37"> 37: </a></span> * 22-Apr-2003 : Version 1 (DG);
+<span class="nocode"><a name="38"> 38: </a></span> * 30-Jul-2003 : Added clone and equals methods while testing (DG);
+<span class="nocode"><a name="39"> 39: </a></span> * 11-Mar-2005 : Fixed bug in bounds recalculation - see bug report 
+<span class="nocode"><a name="40"> 40: </a></span> *               1161329 (DG);
+<span class="nocode"><a name="41"> 41: </a></span> * ------------- JFREECHART 1.0.x ---------------------------------------------
+<span class="nocode"><a name="42"> 42: </a></span> * 03-Oct-2006 : Fixed NullPointerException in equals(), fire change event in 
+<span class="nocode"><a name="43"> 43: </a></span> *               add() method, updated API docs (DG);
+<span class="nocode"><a name="44"> 44: </a></span> *
+<span class="nocode"><a name="45"> 45: </a></span> */
+<span class="nocode"><a name="46"> 46: </a></span>
+<span class="nocode"><a name="47"> 47: </a></span>package org.jfree.data.time;
+<span class="nocode"><a name="48"> 48: </a></span>
+<span class="nocode"><a name="49"> 49: </a></span>import java.io.Serializable;
+<span class="nocode"><a name="50"> 50: </a></span>import java.util.ArrayList;
+<span class="nocode"><a name="51"> 51: </a></span>import java.util.List;
+<span class="nocode"><a name="52"> 52: </a></span>
+<span class="nocode"><a name="53"> 53: </a></span>import org.jfree.data.general.Series;
+<span class="nocode"><a name="54"> 54: </a></span>import org.jfree.data.general.SeriesChangeEvent;
+<span class="nocode"><a name="55"> 55: </a></span>import org.jfree.data.general.SeriesException;
+<span class="nocode"><a name="56"> 56: </a></span>import org.jfree.util.ObjectUtilities;
+<span class="nocode"><a name="57"> 57: </a></span>
+<span class="nocode"><a name="58"> 58: </a></span>/**
+<span class="nocode"><a name="59"> 59: </a></span> * A structure containing zero, one or many {@link TimePeriodValue} instances.  
+<span class="nocode"><a name="60"> 60: </a></span> * The time periods can overlap, and are maintained in the order that they are 
+<span class="nocode"><a name="61"> 61: </a></span> * added to the collection.
+<span class="nocode"><a name="62"> 62: </a></span> * &lt;p&gt;
+<span class="nocode"><a name="63"> 63: </a></span> * This is similar to the {@link TimeSeries} class, except that the time 
+<span class="nocode"><a name="64"> 64: </a></span> * periods can have irregular lengths.
+<span class="nocode"><a name="65"> 65: </a></span> */
+<span class="nocode"><a name="66"> 66: </a></span>public class TimePeriodValues extends Series implements Serializable {
+<span class="nocode"><a name="67"> 67: </a></span>
+<span class="nocode"><a name="68"> 68: </a></span>    /** For serialization. */
+<span class="nocode"><a name="69"> 69: </a></span>    static final long serialVersionUID = -2210593619794989709L;
+<span class="nocode"><a name="70"> 70: </a></span>    
+<span class="nocode"><a name="71"> 71: </a></span>    /** Default value for the domain description. */
+<span class="nocode"><a name="72"> 72: </a></span>    protected static final String DEFAULT_DOMAIN_DESCRIPTION = &quot;Time&quot;;
+<span class="nocode"><a name="73"> 73: </a></span>
+<span class="nocode"><a name="74"> 74: </a></span>    /** Default value for the range description. */
+<span class="nocode"><a name="75"> 75: </a></span>    protected static final String DEFAULT_RANGE_DESCRIPTION = &quot;Value&quot;;
+<span class="nocode"><a name="76"> 76: </a></span>
+<span class="nocode"><a name="77"> 77: </a></span>    /** A description of the domain. */
+<span class="nocode"><a name="78"> 78: </a></span>    private String domain;
+<span class="nocode"><a name="79"> 79: </a></span>
+<span class="nocode"><a name="80"> 80: </a></span>    /** A description of the range. */
+<span class="nocode"><a name="81"> 81: </a></span>    private String range;
+<span class="nocode"><a name="82"> 82: </a></span>
+<span class="nocode"><a name="83"> 83: </a></span>    /** The list of data pairs in the series. */
+<span class="nocode"><a name="84"> 84: </a></span>    private List data;
+<span class="nocode"><a name="85"> 85: </a></span>
+<span class="nocode"><a name="86"> 86: </a></span>    /** Index of the time period with the minimum start milliseconds. */
+<span class="nocode"><a name="87"> 87: </a></span>    private int minStartIndex = -1;
+<span class="nocode"><a name="88"> 88: </a></span>    
+<span class="nocode"><a name="89"> 89: </a></span>    /** Index of the time period with the maximum start milliseconds. */
+<span class="nocode"><a name="90"> 90: </a></span>    private int maxStartIndex = -1;
+<span class="nocode"><a name="91"> 91: </a></span>    
+<span class="nocode"><a name="92"> 92: </a></span>    /** Index of the time period with the minimum middle milliseconds. */
+<span class="nocode"><a name="93"> 93: </a></span>    private int minMiddleIndex = -1;
+<span class="nocode"><a name="94"> 94: </a></span>    
+<span class="nocode"><a name="95"> 95: </a></span>    /** Index of the time period with the maximum middle milliseconds. */
+<span class="nocode"><a name="96"> 96: </a></span>    private int maxMiddleIndex = -1;
+<span class="nocode"><a name="97"> 97: </a></span>    
+<span class="nocode"><a name="98"> 98: </a></span>    /** Index of the time period with the minimum end milliseconds. */
+<span class="nocode"><a name="99"> 99: </a></span>    private int minEndIndex = -1;
+<span class="nocode"><a name="100">100: </a></span>    
+<span class="nocode"><a name="101">101: </a></span>    /** Index of the time period with the maximum end milliseconds. */
+<span class="nocode"><a name="102">102: </a></span>    private int maxEndIndex = -1;
+<span class="nocode"><a name="103">103: </a></span>
+<span class="nocode"><a name="104">104: </a></span>    /**
+<span class="nocode"><a name="105">105: </a></span>     * Creates a new (empty) collection of time period values.
+<span class="nocode"><a name="106">106: </a></span>     *
+<span class="nocode"><a name="107">107: </a></span>     * @param name  the name of the series (&lt;code&gt;null&lt;/code&gt; not permitted).
+<span class="nocode"><a name="108">108: </a></span>     */
+<span class="nocode"><a name="109">109: </a></span>    public TimePeriodValues(String name) {
+<span class="nocode"><a name="110">110: </a></span>        this(name, DEFAULT_DOMAIN_DESCRIPTION, DEFAULT_RANGE_DESCRIPTION);
+<span class="nocode"><a name="111">111: </a></span>    }
+<span class="nocode"><a name="112">112: </a></span>
+<span class="nocode"><a name="113">113: </a></span>    /**
+<span class="nocode"><a name="114">114: </a></span>     * Creates a new time series that contains no data.
+<span class="nocode"><a name="115">115: </a></span>     * &lt;P&gt;
+<span class="nocode"><a name="116">116: </a></span>     * Descriptions can be specified for the domain and range.  One situation
+<span class="nocode"><a name="117">117: </a></span>     * where this is helpful is when generating a chart for the time series -
+<span class="nocode"><a name="118">118: </a></span>     * axis labels can be taken from the domain and range description.
+<span class="nocode"><a name="119">119: </a></span>     *
+<span class="nocode"><a name="120">120: </a></span>     * @param name  the name of the series (&lt;code&gt;null&lt;/code&gt; not permitted).
+<span class="nocode"><a name="121">121: </a></span>     * @param domain  the domain description.
+<span class="nocode"><a name="122">122: </a></span>     * @param range  the range description.
+<span class="nocode"><a name="123">123: </a></span>     */
+<span class="nocode"><a name="124">124: </a></span>    public TimePeriodValues(String name, String domain, String range) {
+<span class="nocode"><a name="125">125: </a></span>        super(name);
+<span class="nocode"><a name="126">126: </a></span>        this.domain = domain;
+<span class="nocode"><a name="127">127: </a></span>        this.range = range;
+<span class="nocode"><a name="128">128: </a></span>        this.data = new ArrayList();
+<span class="nocode"><a name="129">129: </a></span>    }
+<span class="nocode"><a name="130">130: </a></span>
+<span class="nocode"><a name="131">131: </a></span>    /**
+<span class="nocode"><a name="132">132: </a></span>     * Returns the domain description.
+<span class="nocode"><a name="133">133: </a></span>     *
+<span class="nocode"><a name="134">134: </a></span>     * @return The domain description (possibly &lt;code&gt;null&lt;/code&gt;).
+<span class="nocode"><a name="135">135: </a></span>     * 
+<span class="nocode"><a name="136">136: </a></span>     * @see #getRangeDescription()
+<span class="nocode"><a name="137">137: </a></span>     * @see #setDomainDescription(String)
+<span class="nocode"><a name="138">138: </a></span>     */
+<span class="nocode"><a name="139">139: </a></span>    public String getDomainDescription() {
+<span class="nocode"><a name="140">140: </a></span>        return this.domain;
+<span class="nocode"><a name="141">141: </a></span>    }
+<span class="nocode"><a name="142">142: </a></span>
+<span class="nocode"><a name="143">143: </a></span>    /**
+<span class="nocode"><a name="144">144: </a></span>     * Sets the domain description and fires a property change event (with the
+<span class="nocode"><a name="145">145: </a></span>     * property name &lt;code&gt;Domain&lt;/code&gt; if the description changes).
+<span class="nocode"><a name="146">146: </a></span>     *
+<span class="nocode"><a name="147">147: </a></span>     * @param description  the new description (&lt;code&gt;null&lt;/code&gt; permitted).
+<span class="nocode"><a name="148">148: </a></span>     * 
+<span class="nocode"><a name="149">149: </a></span>     * @see #getDomainDescription()
+<span class="nocode"><a name="150">150: </a></span>     */
+<span class="nocode"><a name="151">151: </a></span>    public void setDomainDescription(String description) {
+<span class="nocode"><a name="152">152: </a></span>        String old = this.domain;
+<span class="nocode"><a name="153">153: </a></span>        this.domain = description;
+<span class="nocode"><a name="154">154: </a></span>        firePropertyChange(&quot;Domain&quot;, old, description);
+<span class="nocode"><a name="155">155: </a></span>    }
+<span class="nocode"><a name="156">156: </a></span>
+<span class="nocode"><a name="157">157: </a></span>    /**
+<span class="nocode"><a name="158">158: </a></span>     * Returns the range description.
+<span class="nocode"><a name="159">159: </a></span>     *
+<span class="nocode"><a name="160">160: </a></span>     * @return The range description (possibly &lt;code&gt;null&lt;/code&gt;).
+<span class="nocode"><a name="161">161: </a></span>     * 
+<span class="nocode"><a name="162">162: </a></span>     * @see #getDomainDescription()
+<span class="nocode"><a name="163">163: </a></span>     * @see #setRangeDescription(String)
+<span class="nocode"><a name="164">164: </a></span>     */
+<span class="nocode"><a name="165">165: </a></span>    public String getRangeDescription() {
+<span class="nocode"><a name="166">166: </a></span>        return this.range;
+<span class="nocode"><a name="167">167: </a></span>    }
+<span class="nocode"><a name="168">168: </a></span>
+<span class="nocode"><a name="169">169: </a></span>    /**
+<span class="nocode"><a name="170">170: </a></span>     * Sets the range description and fires a property change event with the
+<span class="nocode"><a name="171">171: </a></span>     * name &lt;code&gt;Range&lt;/code&gt;.
+<span class="nocode"><a name="172">172: </a></span>     *
+<span class="nocode"><a name="173">173: </a></span>     * @param description  the new description (&lt;code&gt;null&lt;/code&gt; permitted).
+<span class="nocode"><a name="174">174: </a></span>     * 
+<span class="nocode"><a name="175">175: </a></span>     * @see #getRangeDescription()
+<span class="nocode"><a name="176">176: </a></span>     */
+<span class="nocode"><a name="177">177: </a></span>    public void setRangeDescription(String description) {
+<span class="nocode"><a name="178">178: </a></span>        String old = this.range;
+<span class="nocode"><a name="179">179: </a></span>        this.range = description;
+<span class="nocode"><a name="180">180: </a></span>        firePropertyChange(&quot;Range&quot;, old, description);
+<span class="nocode"><a name="181">181: </a></span>    }
+<span class="nocode"><a name="182">182: </a></span>
+<span class="nocode"><a name="183">183: </a></span>    /**
+<span class="nocode"><a name="184">184: </a></span>     * Returns the number of items in the series.
+<span class="nocode"><a name="185">185: </a></span>     *
+<span class="nocode"><a name="186">186: </a></span>     * @return The item count.
+<span class="nocode"><a name="187">187: </a></span>     */
+<span class="nocode"><a name="188">188: </a></span>    public int getItemCount() {
+<span class="nocode"><a name="189">189: </a></span>        return this.data.size();
+<span class="nocode"><a name="190">190: </a></span>    }
+<span class="nocode"><a name="191">191: </a></span>
+<span class="nocode"><a name="192">192: </a></span>    /**
+<span class="nocode"><a name="193">193: </a></span>     * Returns one data item for the series.
+<span class="nocode"><a name="194">194: </a></span>     *
+<span class="nocode"><a name="195">195: </a></span>     * @param index  the item index (in the range &lt;code&gt;0&lt;/code&gt; to 
+<span class="nocode"><a name="196">196: </a></span>     *     &lt;code&gt;getItemCount() - 1&lt;/code&gt;).
+<span class="nocode"><a name="197">197: </a></span>     *
+<span class="nocode"><a name="198">198: </a></span>     * @return One data item for the series.
+<span class="nocode"><a name="199">199: </a></span>     */
+<span class="nocode"><a name="200">200: </a></span>    public TimePeriodValue getDataItem(int index) {
+<span class="nocode"><a name="201">201: </a></span>        return (TimePeriodValue) this.data.get(index);
+<span class="nocode"><a name="202">202: </a></span>    }
+<span class="nocode"><a name="203">203: </a></span>
+<span class="nocode"><a name="204">204: </a></span>    /**
+<span class="nocode"><a name="205">205: </a></span>     * Returns the time period at the specified index.
+<span class="nocode"><a name="206">206: </a></span>     *
+<span class="nocode"><a name="207">207: </a></span>     * @param index  the item index (in the range &lt;code&gt;0&lt;/code&gt; to 
+<span class="nocode"><a name="208">208: </a></span>     *     &lt;code&gt;getItemCount() - 1&lt;/code&gt;).
+<span class="nocode"><a name="209">209: </a></span>     *
+<span class="nocode"><a name="210">210: </a></span>     * @return The time period at the specified index.
+<span class="nocode"><a name="211">211: </a></span>     * 
+<span class="nocode"><a name="212">212: </a></span>     * @see #getDataItem(int)
+<span class="nocode"><a name="213">213: </a></span>     */
+<span class="nocode"><a name="214">214: </a></span>    public TimePeriod getTimePeriod(int index) {
+<span class="nocode"><a name="215">215: </a></span>        return getDataItem(index).getPeriod();
+<span class="nocode"><a name="216">216: </a></span>    }
+<span class="nocode"><a name="217">217: </a></span>
+<span class="nocode"><a name="218">218: </a></span>    /**
+<span class="nocode"><a name="219">219: </a></span>     * Returns the value at the specified index.
+<span class="nocode"><a name="220">220: </a></span>     *
+<span class="nocode"><a name="221">221: </a></span>     * @param index  the item index (in the range &lt;code&gt;0&lt;/code&gt; to 
+<span class="nocode"><a name="222">222: </a></span>     *     &lt;code&gt;getItemCount() - 1&lt;/code&gt;).
+<span class="nocode"><a name="223">223: </a></span>     *
+<span class="nocode"><a name="224">224: </a></span>     * @return The value at the specified index (possibly &lt;code&gt;null&lt;/code&gt;).
+<span class="nocode"><a name="225">225: </a></span>     * 
+<span class="nocode"><a name="226">226: </a></span>     * @see #getDataItem(int)
+<span class="nocode"><a name="227">227: </a></span>     */
+<span class="nocode"><a name="228">228: </a></span>    public Number getValue(int index) {
+<span class="nocode"><a name="229">229: </a></span>        return getDataItem(index).getValue();
+<span class="nocode"><a name="230">230: </a></span>    }
+<span class="nocode"><a name="231">231: </a></span>
+<span class="nocode"><a name="232">232: </a></span>    /**
+<span class="nocode"><a name="233">233: </a></span>     * Adds a data item to the series and sends a {@link SeriesChangeEvent} to
+<span class="nocode"><a name="234">234: </a></span>     * all registered listeners.
+<span class="nocode"><a name="235">235: </a></span>     *
+<span class="nocode"><a name="236">236: </a></span>     * @param item  the item (&lt;code&gt;null&lt;/code&gt; not permitted).
+<span class="nocode"><a name="237">237: </a></span>     */
+<span class="nocode"><a name="238">238: </a></span>    public void add(TimePeriodValue item) {
+<span class="nocode"><a name="239">239: </a></span>        if (item == null) {
+<span class="nocode"><a name="240">240: </a></span>            throw new IllegalArgumentException(&quot;Null item not allowed.&quot;);
+<span class="nocode"><a name="241">241: </a></span>        }
+<span class="nocode"><a name="242">242: </a></span>        this.data.add(item);
+<span class="nocode"><a name="243">243: </a></span>        updateBounds(item.getPeriod(), this.data.size() - 1);
+<span class="nocode"><a name="244">244: </a></span>        fireSeriesChanged();
+<span class="nocode"><a name="245">245: </a></span>    }
+<span class="nocode"><a name="246">246: </a></span>    
+<span class="nocode"><a name="247">247: </a></span>    /**
+<span class="nocode"><a name="248">248: </a></span>     * Update the index values for the maximum and minimum bounds.
+<span class="nocode"><a name="249">249: </a></span>     * 
+<span class="nocode"><a name="250">250: </a></span>     * @param period  the time period.
+<span class="nocode"><a name="251">251: </a></span>     * @param index  the index of the time period.
+<span class="nocode"><a name="252">252: </a></span>     */
+<span class="nocode"><a name="253">253: </a></span>    private void updateBounds(TimePeriod period, int index) {
+<span class="nocode"><a name="254">254: </a></span>        
+<span class="nocode"><a name="255">255: </a></span>        long start = period.getStart().getTime();
+<span class="nocode"><a name="256">256: </a></span>        long end = period.getEnd().getTime();
+<span class="nocode"><a name="257">257: </a></span>        long middle = start + ((end - start) / 2);
+<span class="nocode"><a name="258">258: </a></span>
+<span class="nocode"><a name="259">259: </a></span>        if (this.minStartIndex &gt;= 0) {
+<span class="nocode"><a name="260">260: </a></span>            long minStart = getDataItem(this.minStartIndex).getPeriod()
+<span class="nocode"><a name="261">261: </a></span>                .getStart().getTime();
+<span class="nocode"><a name="262">262: </a></span>            if (start &lt; minStart) {
+<span class="nocode"><a name="263">263: </a></span>                this.minStartIndex = index;           
+<span class="nocode"><a name="264">264: </a></span>            }
+<span class="nocode"><a name="265">265: </a></span>        }
+<span class="nocode"><a name="266">266: </a></span>        else {
+<span class="nocode"><a name="267">267: </a></span>            this.minStartIndex = index;
+<span class="nocode"><a name="268">268: </a></span>        }
+<span class="nocode"><a name="269">269: </a></span>        
+<span class="nocode"><a name="270">270: </a></span>        if (this.maxStartIndex &gt;= 0) {
+<span class="nocode"><a name="271">271: </a></span>            long maxStart = getDataItem(this.maxStartIndex).getPeriod()
+<span class="nocode"><a name="272">272: </a></span>                .getStart().getTime();
+<span class="nocode"><a name="273">273: </a></span>            if (start &gt; maxStart) {
+<span class="nocode"><a name="274">274: </a></span>                this.maxStartIndex = index;           
+<span class="nocode"><a name="275">275: </a></span>            }
+<span class="nocode"><a name="276">276: </a></span>        }
+<span class="nocode"><a name="277">277: </a></span>        else {
+<span class="nocode"><a name="278">278: </a></span>            this.maxStartIndex = index;
+<span class="nocode"><a name="279">279: </a></span>        }
+<span class="nocode"><a name="280">280: </a></span>        
+<span class="nocode"><a name="281">281: </a></span>        if (this.minMiddleIndex &gt;= 0) {
+<span class="nocode"><a name="282">282: </a></span>            long s = getDataItem(this.minMiddleIndex).getPeriod().getStart()
+<span class="nocode"><a name="283">283: </a></span>                .getTime();
+<span class="nocode"><a name="284">284: </a></span>            long e = getDataItem(this.minMiddleIndex).getPeriod().getEnd()
+<span class="nocode"><a name="285">285: </a></span>                .getTime();
+<span class="nocode"><a name="286">286: </a></span>            long minMiddle = s + (e - s) / 2;
+<span class="nocode"><a name="287">287: </a></span>            if (middle &lt; minMiddle) {
+<span class="nocode"><a name="288">288: </a></span>                this.minMiddleIndex = index;           
+<span class="nocode"><a name="289">289: </a></span>            }
+<span class="nocode"><a name="290">290: </a></span>        }
+<span class="nocode"><a name="291">291: </a></span>        else {
+<span class="nocode"><a name="292">292: </a></span>            this.minMiddleIndex = index;
+<span class="nocode"><a name="293">293: </a></span>        }
+<span class="nocode"><a name="294">294: </a></span>        
+<span class="nocode"><a name="295">295: </a></span>        if (this.maxMiddleIndex &gt;= 0) {
+<span class="nocode"><a name="296">296: </a></span>            long s = getDataItem(this.minMiddleIndex).getPeriod().getStart()
+<span class="nocode"><a name="297">297: </a></span>                .getTime();
+<span class="nocode"><a name="298">298: </a></span>            long e = getDataItem(this.minMiddleIndex).getPeriod().getEnd()
+<span class="nocode"><a name="299">299: </a></span>                .getTime();
+<span class="nocode"><a name="300">300: </a></span>            long maxMiddle = s + (e - s) / 2;
+<span class="nocode"><a name="301">301: </a></span>            if (middle &gt; maxMiddle) {
+<span class="nocode"><a name="302">302: </a></span>                this.maxMiddleIndex = index;           
+<span class="nocode"><a name="303">303: </a></span>            }
+<span class="nocode"><a name="304">304: </a></span>        }
+<span class="nocode"><a name="305">305: </a></span>        else {
+<span class="nocode"><a name="306">306: </a></span>            this.maxMiddleIndex = index;
+<span class="nocode"><a name="307">307: </a></span>        }
+<span class="nocode"><a name="308">308: </a></span>        
+<span class="nocode"><a name="309">309: </a></span>        if (this.minEndIndex &gt;= 0) {
+<span class="nocode"><a name="310">310: </a></span>            long minEnd = getDataItem(this.minEndIndex).getPeriod().getEnd()
+<span class="nocode"><a name="311">311: </a></span>                .getTime();
+<span class="nocode"><a name="312">312: </a></span>            if (end &lt; minEnd) {
+<span class="nocode"><a name="313">313: </a></span>                this.minEndIndex = index;           
+<span class="nocode"><a name="314">314: </a></span>            }
+<span class="nocode"><a name="315">315: </a></span>        }
+<span class="nocode"><a name="316">316: </a></span>        else {
+<span class="nocode"><a name="317">317: </a></span>            this.minEndIndex = index;
+<span class="nocode"><a name="318">318: </a></span>        }
+<span class="nocode"><a name="319">319: </a></span>       
+<span class="nocode"><a name="320">320: </a></span>        if (this.maxEndIndex &gt;= 0) {
+<span class="nocode"><a name="321">321: </a></span>            long maxEnd = getDataItem(this.maxEndIndex).getPeriod().getEnd()
+<span class="nocode"><a name="322">322: </a></span>                .getTime();
+<span class="nocode"><a name="323">323: </a></span>            if (end &gt; maxEnd) {
+<span class="nocode"><a name="324">324: </a></span>                this.maxEndIndex = index;           
+<span class="nocode"><a name="325">325: </a></span>            }
+<span class="nocode"><a name="326">326: </a></span>        }
+<span class="nocode"><a name="327">327: </a></span>        else {
+<span class="nocode"><a name="328">328: </a></span>            this.maxEndIndex = index;
+<span class="nocode"><a name="329">329: </a></span>        }
+<span class="nocode"><a name="330">330: </a></span>        
+<span class="nocode"><a name="331">331: </a></span>    }
+<span class="nocode"><a name="332">332: </a></span>    
+<span class="nocode"><a name="333">333: </a></span>    /**
+<span class="nocode"><a name="334">334: </a></span>     * Recalculates the bounds for the collection of items.
+<span class="nocode"><a name="335">335: </a></span>     */
+<span class="nocode"><a name="336">336: </a></span>    private void recalculateBounds() {
+<span class="nocode"><a name="337">337: </a></span>        this.minStartIndex = -1;
+<span class="nocode"><a name="338">338: </a></span>        this.minMiddleIndex = -1;
+<span class="nocode"><a name="339">339: </a></span>        this.minEndIndex = -1;
+<span class="nocode"><a name="340">340: </a></span>        this.maxStartIndex = -1;
+<span class="nocode"><a name="341">341: </a></span>        this.maxMiddleIndex = -1;
+<span class="nocode"><a name="342">342: </a></span>        this.maxEndIndex = -1;
+<span class="nocode"><a name="343">343: </a></span>        for (int i = 0; i &lt; this.data.size(); i++) {
+<span class="nocode"><a name="344">344: </a></span>            TimePeriodValue tpv = (TimePeriodValue) this.data.get(i);
+<span class="nocode"><a name="345">345: </a></span>            updateBounds(tpv.getPeriod(), i);
+<span class="nocode"><a name="346">346: </a></span>        }
+<span class="nocode"><a name="347">347: </a></span>    }
+<span class="nocode"><a name="348">348: </a></span>
+<span class="nocode"><a name="349">349: </a></span>    /**
+<span class="nocode"><a name="350">350: </a></span>     * Adds a new data item to the series and sends a {@link SeriesChangeEvent}
+<span class="nocode"><a name="351">351: </a></span>     * to all registered listeners.
+<span class="nocode"><a name="352">352: </a></span>     *
+<span class="nocode"><a name="353">353: </a></span>     * @param period  the time period (&lt;code&gt;null&lt;/code&gt; not permitted).
+<span class="nocode"><a name="354">354: </a></span>     * @param value  the value.
+<span class="nocode"><a name="355">355: </a></span>     * 
+<span class="nocode"><a name="356">356: </a></span>     * @see #add(TimePeriod, Number)
+<span class="nocode"><a name="357">357: </a></span>     */
+<span class="nocode"><a name="358">358: </a></span>    public void add(TimePeriod period, double value) {
+<span class="nocode"><a name="359">359: </a></span>        TimePeriodValue item = new TimePeriodValue(period, value);
+<span class="nocode"><a name="360">360: </a></span>        add(item);
+<span class="nocode"><a name="361">361: </a></span>    }
+<span class="nocode"><a name="362">362: </a></span>
+<span class="nocode"><a name="363">363: </a></span>    /**
+<span class="nocode"><a name="364">364: </a></span>     * Adds a new data item to the series and sends a {@link SeriesChangeEvent}
+<span class="nocode"><a name="365">365: </a></span>     * to all registered listeners.
+<span class="nocode"><a name="366">366: </a></span>     *
+<span class="nocode"><a name="367">367: </a></span>     * @param period  the time period (&lt;code&gt;null&lt;/code&gt; not permitted).
+<span class="nocode"><a name="368">368: </a></span>     * @param value  the value (&lt;code&gt;null&lt;/code&gt; permitted).
+<span class="nocode"><a name="369">369: </a></span>     */
+<span class="nocode"><a name="370">370: </a></span>    public void add(TimePeriod period, Number value) {
+<span class="nocode"><a name="371">371: </a></span>        TimePeriodValue item = new TimePeriodValue(period, value);
+<span class="nocode"><a name="372">372: </a></span>        add(item);
+<span class="nocode"><a name="373">373: </a></span>    }
+<span class="nocode"><a name="374">374: </a></span>
+<span class="nocode"><a name="375">375: </a></span>    /**
+<span class="nocode"><a name="376">376: </a></span>     * Updates (changes) the value of a data item and sends a 
+<span class="nocode"><a name="377">377: </a></span>     * {@link SeriesChangeEvent} to all registered listeners.
+<span class="nocode"><a name="378">378: </a></span>     *
+<span class="nocode"><a name="379">379: </a></span>     * @param index  the index of the data item to update.
+<span class="nocode"><a name="380">380: </a></span>     * @param value  the new value (&lt;code&gt;null&lt;/code&gt; not permitted).
+<span class="nocode"><a name="381">381: </a></span>     */
+<span class="nocode"><a name="382">382: </a></span>    public void update(int index, Number value) {
+<span class="nocode"><a name="383">383: </a></span>        TimePeriodValue item = getDataItem(index);
+<span class="nocode"><a name="384">384: </a></span>        item.setValue(value);
+<span class="nocode"><a name="385">385: </a></span>        fireSeriesChanged();
+<span class="nocode"><a name="386">386: </a></span>    }
+<span class="nocode"><a name="387">387: </a></span>
+<span class="nocode"><a name="388">388: </a></span>    /**
+<span class="nocode"><a name="389">389: </a></span>     * Deletes data from start until end index (end inclusive) and sends a
+<span class="nocode"><a name="390">390: </a></span>     * {@link SeriesChangeEvent} to all registered listeners.
+<span class="nocode"><a name="391">391: </a></span>     *
+<span class="nocode"><a name="392">392: </a></span>     * @param start  the index of the first period to delete.
+<span class="nocode"><a name="393">393: </a></span>     * @param end  the index of the last period to delete.
+<span class="nocode"><a name="394">394: </a></span>     */
+<span class="nocode"><a name="395">395: </a></span>    public void delete(int start, int end) {
+<span class="nocode"><a name="396">396: </a></span>        for (int i = 0; i &lt;= (end - start); i++) {
+<span class="nocode"><a name="397">397: </a></span>            this.data.remove(start);
+<span class="nocode"><a name="398">398: </a></span>        }
+<span class="nocode"><a name="399">399: </a></span>        recalculateBounds();
+<span class="nocode"><a name="400">400: </a></span>        fireSeriesChanged();
+<span class="nocode"><a name="401">401: </a></span>    }
+<span class="nocode"><a name="402">402: </a></span>    
+<span class="nocode"><a name="403">403: </a></span>    /**
+<span class="nocode"><a name="404">404: </a></span>     * Tests the series for equality with another object.
+<span class="nocode"><a name="405">405: </a></span>     *
+<span class="nocode"><a name="406">406: </a></span>     * @param obj  the object (&lt;code&gt;null&lt;/code&gt; permitted).
+<span class="nocode"><a name="407">407: </a></span>     *
+<span class="nocode"><a name="408">408: </a></span>     * @return &lt;code&gt;true&lt;/code&gt; or &lt;code&gt;false&lt;/code&gt;.
+<span class="nocode"><a name="409">409: </a></span>     */
+<span class="nocode"><a name="410">410: </a></span>    public boolean equals(Object obj) {
+<span class="nocode"><a name="411">411: </a></span>        if (obj == this) {
+<span class="nocode"><a name="412">412: </a></span>            return true;
+<span class="nocode"><a name="413">413: </a></span>        }
+<span class="nocode"><a name="414">414: </a></span>        if (!(obj instanceof TimePeriodValues)) {
+<span class="nocode"><a name="415">415: </a></span>            return false;
+<span class="nocode"><a name="416">416: </a></span>        }
+<span class="nocode"><a name="417">417: </a></span>        if (!super.equals(obj)) {
+<span class="nocode"><a name="418">418: </a></span>            return false;
+<span class="nocode"><a name="419">419: </a></span>        }
+<span class="nocode"><a name="420">420: </a></span>        TimePeriodValues that = (TimePeriodValues) obj;
+<span class="nocode"><a name="421">421: </a></span>        if (!ObjectUtilities.equal(this.getDomainDescription(), 
+<span class="nocode"><a name="422">422: </a></span>                that.getDomainDescription())) {
+<span class="nocode"><a name="423">423: </a></span>            return false;
+<span class="nocode"><a name="424">424: </a></span>        }
+<span class="nocode"><a name="425">425: </a></span>        if (!ObjectUtilities.equal(this.getRangeDescription(), 
+<span class="nocode"><a name="426">426: </a></span>                that.getRangeDescription())) {
+<span class="nocode"><a name="427">427: </a></span>            return false;
+<span class="nocode"><a name="428">428: </a></span>        }
+<span class="nocode"><a name="429">429: </a></span>        int count = getItemCount();
+<span class="nocode"><a name="430">430: </a></span>        if (count != that.getItemCount()) {
+<span class="nocode"><a name="431">431: </a></span>            return false;
+<span class="nocode"><a name="432">432: </a></span>        }
+<span class="nocode"><a name="433">433: </a></span>        for (int i = 0; i &lt; count; i++) {
+<span class="nocode"><a name="434">434: </a></span>            if (!getDataItem(i).equals(that.getDataItem(i))) {
+<span class="nocode"><a name="435">435: </a></span>                return false;
+<span class="nocode"><a name="436">436: </a></span>            }
+<span class="nocode"><a name="437">437: </a></span>        }
+<span class="nocode"><a name="438">438: </a></span>        return true;
+<span class="nocode"><a name="439">439: </a></span>    }
+<span class="nocode"><a name="440">440: </a></span>
+<span class="nocode"><a name="441">441: </a></span>    /**
+<span class="nocode"><a name="442">442: </a></span>     * Returns a hash code value for the object.
+<span class="nocode"><a name="443">443: </a></span>     *
+<span class="nocode"><a name="444">444: </a></span>     * @return The hashcode
+<span class="nocode"><a name="445">445: </a></span>     */
+<span class="nocode"><a name="446">446: </a></span>    public int hashCode() {
+<span class="nocode"><a name="447">447: </a></span>        int result;
+<span class="nocode"><a name="448">448: </a></span>        result = (this.domain != null ? this.domain.hashCode() : 0);
+<span class="nocode"><a name="449">449: </a></span>        result = 29 * result + (this.range != null ? this.range.hashCode() : 0);
+<span class="nocode"><a name="450">450: </a></span>        result = 29 * result + this.data.hashCode();
+<span class="nocode"><a name="451">451: </a></span>        result = 29 * result + this.minStartIndex;
+<span class="nocode"><a name="452">452: </a></span>        result = 29 * result + this.maxStartIndex;
+<span class="nocode"><a name="453">453: </a></span>        result = 29 * result + this.minMiddleIndex;
+<span class="nocode"><a name="454">454: </a></span>        result = 29 * result + this.maxMiddleIndex;
+<span class="nocode"><a name="455">455: </a></span>        result = 29 * result + this.minEndIndex;
+<span class="nocode"><a name="456">456: </a></span>        result = 29 * result + this.maxEndIndex;
+<span class="nocode"><a name="457">457: </a></span>        return result;
+<span class="nocode"><a name="458">458: </a></span>    }
+<span class="nocode"><a name="459">459: </a></span>
+<span class="nocode"><a name="460">460: </a></span>    /**
+<span class="nocode"><a name="461">461: </a></span>     * Returns a clone of the collection.
+<span class="nocode"><a name="462">462: </a></span>     * &lt;P&gt;
+<span class="nocode"><a name="463">463: </a></span>     * Notes:
+<span class="nocode"><a name="464">464: </a></span>     * &lt;ul&gt;
+<span class="nocode"><a name="465">465: </a></span>     *   &lt;li&gt;no need to clone the domain and range descriptions, since String 
+<span class="nocode"><a name="466">466: </a></span>     *       object is immutable;&lt;/li&gt;
+<span class="nocode"><a name="467">467: </a></span>     *   &lt;li&gt;we pass over to the more general method createCopy(start, end).
+<span class="nocode"><a name="468">468: </a></span>     *   &lt;/li&gt;
+<span class="nocode"><a name="469">469: </a></span>     * &lt;/ul&gt;
+<span class="nocode"><a name="470">470: </a></span>     *
+<span class="nocode"><a name="471">471: </a></span>     * @return A clone of the time series.
+<span class="nocode"><a name="472">472: </a></span>     * 
+<span class="nocode"><a name="473">473: </a></span>     * @throws CloneNotSupportedException if there is a cloning problem.
+<span class="nocode"><a name="474">474: </a></span>     */
+<span class="nocode"><a name="475">475: </a></span>    public Object clone() throws CloneNotSupportedException {
+<span class="nocode"><a name="476">476: </a></span>        Object clone = createCopy(0, getItemCount() - 1);
+<span class="nocode"><a name="477">477: </a></span>        return clone;
+<span class="nocode"><a name="478">478: </a></span>    }
+<span class="nocode"><a name="479">479: </a></span>
+<span class="nocode"><a name="480">480: </a></span>    /**
+<span class="nocode"><a name="481">481: </a></span>     * Creates a new instance by copying a subset of the data in this 
+<span class="nocode"><a name="482">482: </a></span>     * collection.
+<span class="nocode"><a name="483">483: </a></span>     *
+<span class="nocode"><a name="484">484: </a></span>     * @param start  the index of the first item to copy.
+<span class="nocode"><a name="485">485: </a></span>     * @param end  the index of the last item to copy.
+<span class="nocode"><a name="486">486: </a></span>     *
+<span class="nocode"><a name="487">487: </a></span>     * @return A copy of a subset of the items.
+<span class="nocode"><a name="488">488: </a></span>     * 
+<span class="nocode"><a name="489">489: </a></span>     * @throws CloneNotSupportedException if there is a cloning problem.
+<span class="nocode"><a name="490">490: </a></span>     */
+<span class="nocode"><a name="491">491: </a></span>    public TimePeriodValues createCopy(int start, int end) 
+<span class="nocode"><a name="492">492: </a></span>        throws CloneNotSupportedException {
+<span class="nocode"><a name="493">493: </a></span>
+<span class="nocode"><a name="494">494: </a></span>        TimePeriodValues copy = (TimePeriodValues) super.clone();
+<span class="nocode"><a name="495">495: </a></span>
+<span class="nocode"><a name="496">496: </a></span>        copy.data = new ArrayList();
+<span class="nocode"><a name="497">497: </a></span>        if (this.data.size() &gt; 0) {
+<span class="nocode"><a name="498">498: </a></span>            for (int index = start; index &lt;= end; index++) {
+<span class="nocode"><a name="499">499: </a></span>                TimePeriodValue item = (TimePeriodValue) this.data.get(index);
+<span class="nocode"><a name="500">500: </a></span>                TimePeriodValue clone = (TimePeriodValue) item.clone();
+<span class="nocode"><a name="501">501: </a></span>                try {
+<span class="nocode"><a name="502">502: </a></span>                    copy.add(clone);
+<span class="nocode"><a name="503">503: </a></span>                }
+<span class="nocode"><a name="504">504: </a></span>                catch (SeriesException e) {
+<span class="nocode"><a name="505">505: </a></span>                    System.err.println(&quot;Failed to add cloned item.&quot;);
+<span class="nocode"><a name="506">506: </a></span>                }
+<span class="nocode"><a name="507">507: </a></span>            }
+<span class="nocode"><a name="508">508: </a></span>        }
+<span class="nocode"><a name="509">509: </a></span>        return copy;
+<span class="nocode"><a name="510">510: </a></span>
+<span class="nocode"><a name="511">511: </a></span>    }
+<span class="nocode"><a name="512">512: </a></span>    
+<span class="nocode"><a name="513">513: </a></span>    /**
+<span class="nocode"><a name="514">514: </a></span>     * Returns the index of the time period with the minimum start milliseconds.
+<span class="nocode"><a name="515">515: </a></span>     * 
+<span class="nocode"><a name="516">516: </a></span>     * @return The index.
+<span class="nocode"><a name="517">517: </a></span>     */
+<span class="nocode"><a name="518">518: </a></span>    public int getMinStartIndex() {
+<span class="nocode"><a name="519">519: </a></span>        return this.minStartIndex;
+<span class="nocode"><a name="520">520: </a></span>    }
+<span class="nocode"><a name="521">521: </a></span>    
+<span class="nocode"><a name="522">522: </a></span>    /**
+<span class="nocode"><a name="523">523: </a></span>     * Returns the index of the time period with the maximum start milliseconds.
+<span class="nocode"><a name="524">524: </a></span>     * 
+<span class="nocode"><a name="525">525: </a></span>     * @return The index.
+<span class="nocode"><a name="526">526: </a></span>     */
+<span class="nocode"><a name="527">527: </a></span>    public int getMaxStartIndex() {
+<span class="nocode"><a name="528">528: </a></span>        return this.maxStartIndex;
+<span class="nocode"><a name="529">529: </a></span>    }
+<span class="nocode"><a name="530">530: </a></span>
+<span class="nocode"><a name="531">531: </a></span>    /**
+<span class="nocode"><a name="532">532: </a></span>     * Returns the index of the time period with the minimum middle 
+<span class="nocode"><a name="533">533: </a></span>     * milliseconds.
+<span class="nocode"><a name="534">534: </a></span>     * 
+<span class="nocode"><a name="535">535: </a></span>     * @return The index.
+<span class="nocode"><a name="536">536: </a></span>     */
+<span class="nocode"><a name="537">537: </a></span>    public int getMinMiddleIndex() {
+<span class="nocode"><a name="538">538: </a></span>        return this.minMiddleIndex;
+<span class="nocode"><a name="539">539: </a></span>    }
+<span class="nocode"><a name="540">540: </a></span>    
+<span class="nocode"><a name="541">541: </a></span>    /**
+<span class="nocode"><a name="542">542: </a></span>     * Returns the index of the time period with the maximum middle 
+<span class="nocode"><a name="543">543: </a></span>     * milliseconds.
+<span class="nocode"><a name="544">544: </a></span>     * 
+<span class="nocode"><a name="545">545: </a></span>     * @return The index.
+<span class="nocode"><a name="546">546: </a></span>     */
+<span class="nocode"><a name="547">547: </a></span>    public int getMaxMiddleIndex() {
+<span class="nocode"><a name="548">548: </a></span>        return this.maxMiddleIndex;
+<span class="nocode"><a name="549">549: </a></span>    }
+<span class="nocode"><a name="550">550: </a></span>
+<span class="nocode"><a name="551">551: </a></span>    /**
+<span class="nocode"><a name="552">552: </a></span>     * Returns the index of the time period with the minimum end milliseconds.
+<span class="nocode"><a name="553">553: </a></span>     * 
+<span class="nocode"><a name="554">554: </a></span>     * @return The index.
+<span class="nocode"><a name="555">555: </a></span>     */
+<span class="nocode"><a name="556">556: </a></span>    public int getMinEndIndex() {
+<span class="nocode"><a name="557">557: </a></span>        return this.minEndIndex;
+<span class="nocode"><a name="558">558: </a></span>    }
+<span class="nocode"><a name="559">559: </a></span>    
+<span class="nocode"><a name="560">560: </a></span>    /**
+<span class="nocode"><a name="561">561: </a></span>     * Returns the index of the time period with the maximum end milliseconds.
+<span class="nocode"><a name="562">562: </a></span>     * 
+<span class="nocode"><a name="563">563: </a></span>     * @return The index.
+<span class="nocode"><a name="564">564: </a></span>     */
+<span class="nocode"><a name="565">565: </a></span>    public int getMaxEndIndex() {
+<span class="nocode"><a name="566">566: </a></span>        return this.maxEndIndex;
+<span class="nocode"><a name="567">567: </a></span>    }
+<span class="nocode"><a name="568">568: </a></span>
+<span class="nocode"><a name="569">569: </a></span>}
+</pre><table class="mutation_table" summary="Mutations">
+<tr><th>ID</th><th>Line</th><th>Type</th><th>Detected</th></tr><tr><td>55488</td><td><a href="#87">87</a></td><td>Replace a constant (Replace -1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55489</td><td><a href="#87">87</a></td><td>Replace a constant (Replace -1 with -2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55490</td><td><a href="#90">90</a></td><td>Replace a constant (Replace -1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55491</td><td><a href="#90">90</a></td><td>Replace a constant (Replace -1 with -2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55492</td><td><a href="#93">93</a></td><td>Replace a constant (Replace -1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55493</td><td><a href="#93">93</a></td><td>Replace a constant (Replace -1 with -2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55494</td><td><a href="#96">96</a></td><td>Replace a constant (Replace -1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55495</td><td><a href="#96">96</a></td><td>Replace a constant (Replace -1 with -2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55496</td><td><a href="#99">99</a></td><td>Replace a constant (Replace -1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55497</td><td><a href="#99">99</a></td><td>Replace a constant (Replace -1 with -2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55499</td><td><a href="#102">102</a></td><td>Replace a constant (Replace -1 with -2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55498</td><td><a href="#102">102</a></td><td>Replace a constant (Replace -1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55500</td><td><a href="#154">154</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55501</td><td><a href="#180">180</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55502</td><td><a href="#189">189</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>55503</td><td><a href="#201">201</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>55504</td><td><a href="#215">215</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>55505</td><td><a href="#215">215(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>55506</td><td><a href="#229">229</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>55507</td><td><a href="#229">229(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>55508</td><td><a href="#239">239</a></td><td>Negate jump condition (Replace IFNONNULL with  IFNULL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>55509</td><td><a href="#242">242</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>55512</td><td><a href="#243">243</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>55513</td><td><a href="#243">243</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>55514</td><td><a href="#243">243</a></td><td>Replace arithmetic operator (Replace ISUB with IADD)</td><td><img src="detected.png"/></td></tr>
+<tr><td>55510</td><td><a href="#243">243</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>55511</td><td><a href="#243">243(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>55515</td><td><a href="#243">243(2)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>55516</td><td><a href="#244">244</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>55517</td><td><a href="#255">255</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>55518</td><td><a href="#255">255(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55519</td><td><a href="#256">256</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>55520</td><td><a href="#256">256(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>55522</td><td><a href="#257">257</a></td><td>Replace a constant (Replace 2 with 3(LONG))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55523</td><td><a href="#257">257</a></td><td>Replace a constant (Replace 2 with 1(LONG))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55524</td><td><a href="#257">257</a></td><td>Replace a constant (Replace 2 with 0(LONG))</td><td><img src="detected.png"/></td></tr>
+<tr><td>55521</td><td><a href="#257">257</a></td><td>Replace arithmetic operator (Replace LSUB with LADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55525</td><td><a href="#257">257(1)</a></td><td>Replace arithmetic operator (Replace LDIV with LMUL)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55526</td><td><a href="#257">257(2)</a></td><td>Replace arithmetic operator (Replace LADD with LSUB)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55527</td><td><a href="#259">259</a></td><td>Negate jump condition (Replace IFLT with  IFGE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55528</td><td><a href="#260">260</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>55529</td><td><a href="#260">260(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>55530</td><td><a href="#260">260(2)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>55531</td><td><a href="#260">260(3)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55532</td><td><a href="#262">262</a></td><td>Negate jump condition (Replace IFGE with  IFLT)</td><td><img src="detected.png"/></td></tr>
+<tr><td>55533</td><td><a href="#270">270</a></td><td>Negate jump condition (Replace IFLT with  IFGE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>55534</td><td><a href="#271">271</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>55535</td><td><a href="#271">271(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>55536</td><td><a href="#271">271(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55537</td><td><a href="#271">271(3)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55538</td><td><a href="#273">273</a></td><td>Negate jump condition (Replace IFLE with  IFGT)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55539</td><td><a href="#281">281</a></td><td>Negate jump condition (Replace IFLT with  IFGE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>55540</td><td><a href="#282">282</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>55541</td><td><a href="#282">282(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>55542</td><td><a href="#282">282(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55543</td><td><a href="#282">282(3)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55544</td><td><a href="#284">284</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>55545</td><td><a href="#284">284(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>55546</td><td><a href="#284">284(2)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>55547</td><td><a href="#284">284(3)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55550</td><td><a href="#286">286</a></td><td>Replace a constant (Replace 2 with 1(LONG))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55549</td><td><a href="#286">286</a></td><td>Replace a constant (Replace 2 with 3(LONG))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55551</td><td><a href="#286">286</a></td><td>Replace a constant (Replace 2 with 0(LONG))</td><td><img src="detected.png"/></td></tr>
+<tr><td>55548</td><td><a href="#286">286</a></td><td>Replace arithmetic operator (Replace LSUB with LADD)</td><td><img src="detected.png"/></td></tr>
+<tr><td>55552</td><td><a href="#286">286(1)</a></td><td>Replace arithmetic operator (Replace LDIV with LMUL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>55553</td><td><a href="#286">286(2)</a></td><td>Replace arithmetic operator (Replace LADD with LSUB)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55554</td><td><a href="#287">287</a></td><td>Negate jump condition (Replace IFGE with  IFLT)</td><td><img src="detected.png"/></td></tr>
+<tr><td>55555</td><td><a href="#295">295</a></td><td>Negate jump condition (Replace IFLT with  IFGE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>55556</td><td><a href="#296">296</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>55557</td><td><a href="#296">296(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>55558</td><td><a href="#296">296(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55559</td><td><a href="#296">296(3)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55560</td><td><a href="#298">298</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55561</td><td><a href="#298">298(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>55562</td><td><a href="#298">298(2)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>55563</td><td><a href="#298">298(3)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55565</td><td><a href="#300">300</a></td><td>Replace a constant (Replace 2 with 3(LONG))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55566</td><td><a href="#300">300</a></td><td>Replace a constant (Replace 2 with 1(LONG))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55567</td><td><a href="#300">300</a></td><td>Replace a constant (Replace 2 with 0(LONG))</td><td><img src="detected.png"/></td></tr>
+<tr><td>55564</td><td><a href="#300">300</a></td><td>Replace arithmetic operator (Replace LSUB with LADD)</td><td><img src="detected.png"/></td></tr>
+<tr><td>55568</td><td><a href="#300">300(1)</a></td><td>Replace arithmetic operator (Replace LDIV with LMUL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>55569</td><td><a href="#300">300(2)</a></td><td>Replace arithmetic operator (Replace LADD with LSUB)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55570</td><td><a href="#301">301</a></td><td>Negate jump condition (Replace IFLE with  IFGT)</td><td><img src="detected.png"/></td></tr>
+<tr><td>55571</td><td><a href="#309">309</a></td><td>Negate jump condition (Replace IFLT with  IFGE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>55572</td><td><a href="#310">310</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>55573</td><td><a href="#310">310(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>55574</td><td><a href="#310">310(2)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>55575</td><td><a href="#310">310(3)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55576</td><td><a href="#312">312</a></td><td>Negate jump condition (Replace IFGE with  IFLT)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55577</td><td><a href="#320">320</a></td><td>Negate jump condition (Replace IFLT with  IFGE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>55578</td><td><a href="#321">321</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>55579</td><td><a href="#321">321(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>55580</td><td><a href="#321">321(2)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>55581</td><td><a href="#321">321(3)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55582</td><td><a href="#323">323</a></td><td>Negate jump condition (Replace IFLE with  IFGT)</td><td><img src="detected.png"/></td></tr>
+<tr><td>55583</td><td><a href="#337">337</a></td><td>Replace a constant (Replace -1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55584</td><td><a href="#337">337</a></td><td>Replace a constant (Replace -1 with -2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55586</td><td><a href="#338">338</a></td><td>Replace a constant (Replace -1 with -2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55585</td><td><a href="#338">338</a></td><td>Replace a constant (Replace -1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55588</td><td><a href="#339">339</a></td><td>Replace a constant (Replace -1 with -2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55587</td><td><a href="#339">339</a></td><td>Replace a constant (Replace -1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55589</td><td><a href="#340">340</a></td><td>Replace a constant (Replace -1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55590</td><td><a href="#340">340</a></td><td>Replace a constant (Replace -1 with -2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55592</td><td><a href="#341">341</a></td><td>Replace a constant (Replace -1 with -2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55591</td><td><a href="#341">341</a></td><td>Replace a constant (Replace -1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55594</td><td><a href="#342">342</a></td><td>Replace a constant (Replace -1 with -2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55593</td><td><a href="#342">342</a></td><td>Replace a constant (Replace -1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55596</td><td><a href="#343">343</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>55595</td><td><a href="#343">343</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55598</td><td><a href="#343">343</a></td><td>Negate jump condition (Replace IF_ICMPGE with  IF_ICMPLT)</td><td><img src="detected.png"/></td></tr>
+<tr><td>55597</td><td><a href="#343">343</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55599</td><td><a href="#344">344</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55600</td><td><a href="#345">345</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55601</td><td><a href="#345">345(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55602</td><td><a href="#360">360</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>55603</td><td><a href="#372">372</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>55604</td><td><a href="#383">383</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>55605</td><td><a href="#384">384</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>55606</td><td><a href="#385">385</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55608</td><td><a href="#396">396</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>55607</td><td><a href="#396">396</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>55610</td><td><a href="#396">396</a></td><td>Negate jump condition (Replace IF_ICMPGT with  IF_ICMPLE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>55609</td><td><a href="#396">396</a></td><td>Replace arithmetic operator (Replace ISUB with IADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55611</td><td><a href="#397">397</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55612</td><td><a href="#399">399</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>55613</td><td><a href="#400">400</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55614</td><td><a href="#411">411</a></td><td>Negate jump condition (Replace IF_ACMPNE with  IF_ACMPEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>55616</td><td><a href="#412">412</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>55615</td><td><a href="#412">412</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55617</td><td><a href="#414">414</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>55619</td><td><a href="#415">415</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55618</td><td><a href="#415">415</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55621</td><td><a href="#417">417</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55620</td><td><a href="#417">417</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55623</td><td><a href="#418">418</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>55622</td><td><a href="#418">418</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>55627</td><td><a href="#421">421</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55624</td><td><a href="#421">421</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>55625</td><td><a href="#421">421(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>55626</td><td><a href="#421">421(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55628</td><td><a href="#423">423</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>55629</td><td><a href="#423">423</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>55633</td><td><a href="#425">425</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>55630</td><td><a href="#425">425</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>55631</td><td><a href="#425">425(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55632</td><td><a href="#425">425(2)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>55635</td><td><a href="#427">427</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>55634</td><td><a href="#427">427</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>55636</td><td><a href="#429">429</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>55638</td><td><a href="#430">430</a></td><td>Negate jump condition (Replace IF_ICMPEQ with  IF_ICMPNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>55637</td><td><a href="#430">430</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>55639</td><td><a href="#431">431</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>55640</td><td><a href="#431">431</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55642</td><td><a href="#433">433</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>55641</td><td><a href="#433">433</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55643</td><td><a href="#433">433</a></td><td>Negate jump condition (Replace IF_ICMPGE with  IF_ICMPLT)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55647</td><td><a href="#434">434</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>55644</td><td><a href="#434">434</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>55645</td><td><a href="#434">434(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>55646</td><td><a href="#434">434(2)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>55649</td><td><a href="#435">435</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55648</td><td><a href="#435">435</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55650</td><td><a href="#438">438</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55651</td><td><a href="#438">438</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>55654</td><td><a href="#448">448</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55655</td><td><a href="#448">448</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55652</td><td><a href="#448">448</a></td><td>Negate jump condition (Replace IFNULL with  IFNONNULL)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55653</td><td><a href="#448">448</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55657</td><td><a href="#449">449</a></td><td>Replace a constant (Replace 29 with 30(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55656</td><td><a href="#449">449</a></td><td>Replace a constant (Replace 29 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55658</td><td><a href="#449">449</a></td><td>Replace a constant (Replace 29 with 28(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55662</td><td><a href="#449">449(1)</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55663</td><td><a href="#449">449(1)</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55660</td><td><a href="#449">449</a></td><td>Negate jump condition (Replace IFNULL with  IFNONNULL)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55659</td><td><a href="#449">449</a></td><td>Replace arithmetic operator (Replace IMUL with IADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55664</td><td><a href="#449">449(1)</a></td><td>Replace arithmetic operator (Replace IADD with ISUB)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55661</td><td><a href="#449">449</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55667</td><td><a href="#450">450</a></td><td>Replace a constant (Replace 29 with 28(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55665</td><td><a href="#450">450</a></td><td>Replace a constant (Replace 29 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55666</td><td><a href="#450">450</a></td><td>Replace a constant (Replace 29 with 30(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55668</td><td><a href="#450">450</a></td><td>Replace arithmetic operator (Replace IMUL with IADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55670</td><td><a href="#450">450(1)</a></td><td>Replace arithmetic operator (Replace IADD with ISUB)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55669</td><td><a href="#450">450</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55673</td><td><a href="#451">451</a></td><td>Replace a constant (Replace 29 with 28(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55671</td><td><a href="#451">451</a></td><td>Replace a constant (Replace 29 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55672</td><td><a href="#451">451</a></td><td>Replace a constant (Replace 29 with 30(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55674</td><td><a href="#451">451</a></td><td>Replace arithmetic operator (Replace IMUL with IADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55675</td><td><a href="#451">451(1)</a></td><td>Replace arithmetic operator (Replace IADD with ISUB)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55676</td><td><a href="#452">452</a></td><td>Replace a constant (Replace 29 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55677</td><td><a href="#452">452</a></td><td>Replace a constant (Replace 29 with 30(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55678</td><td><a href="#452">452</a></td><td>Replace a constant (Replace 29 with 28(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55679</td><td><a href="#452">452</a></td><td>Replace arithmetic operator (Replace IMUL with IADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55680</td><td><a href="#452">452(1)</a></td><td>Replace arithmetic operator (Replace IADD with ISUB)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55683</td><td><a href="#453">453</a></td><td>Replace a constant (Replace 29 with 28(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55681</td><td><a href="#453">453</a></td><td>Replace a constant (Replace 29 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55682</td><td><a href="#453">453</a></td><td>Replace a constant (Replace 29 with 30(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55684</td><td><a href="#453">453</a></td><td>Replace arithmetic operator (Replace IMUL with IADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55685</td><td><a href="#453">453(1)</a></td><td>Replace arithmetic operator (Replace IADD with ISUB)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55687</td><td><a href="#454">454</a></td><td>Replace a constant (Replace 29 with 30(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55688</td><td><a href="#454">454</a></td><td>Replace a constant (Replace 29 with 28(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55686</td><td><a href="#454">454</a></td><td>Replace a constant (Replace 29 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55689</td><td><a href="#454">454</a></td><td>Replace arithmetic operator (Replace IMUL with IADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55690</td><td><a href="#454">454(1)</a></td><td>Replace arithmetic operator (Replace IADD with ISUB)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55693</td><td><a href="#455">455</a></td><td>Replace a constant (Replace 29 with 28(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55691</td><td><a href="#455">455</a></td><td>Replace a constant (Replace 29 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55692</td><td><a href="#455">455</a></td><td>Replace a constant (Replace 29 with 30(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55694</td><td><a href="#455">455</a></td><td>Replace arithmetic operator (Replace IMUL with IADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55695</td><td><a href="#455">455(1)</a></td><td>Replace arithmetic operator (Replace IADD with ISUB)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55697</td><td><a href="#456">456</a></td><td>Replace a constant (Replace 29 with 30(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55696</td><td><a href="#456">456</a></td><td>Replace a constant (Replace 29 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55698</td><td><a href="#456">456</a></td><td>Replace a constant (Replace 29 with 28(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55699</td><td><a href="#456">456</a></td><td>Replace arithmetic operator (Replace IMUL with IADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55700</td><td><a href="#456">456(1)</a></td><td>Replace arithmetic operator (Replace IADD with ISUB)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55702</td><td><a href="#476">476</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>55701</td><td><a href="#476">476</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55704</td><td><a href="#476">476(1)</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>55705</td><td><a href="#476">476(1)</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>55706</td><td><a href="#476">476</a></td><td>Replace arithmetic operator (Replace ISUB with IADD)</td><td><img src="detected.png"/></td></tr>
+<tr><td>55703</td><td><a href="#476">476</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>55707</td><td><a href="#476">476(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>55708</td><td><a href="#494">494</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>55710</td><td><a href="#497">497</a></td><td>Negate jump condition (Replace IFLE with  IFGT)</td><td><img src="detected.png"/></td></tr>
+<tr><td>55709</td><td><a href="#497">497</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>55711</td><td><a href="#498">498</a></td><td>Negate jump condition (Replace IF_ICMPGT with  IF_ICMPLE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>55712</td><td><a href="#499">499</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>55713</td><td><a href="#500">500</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>55714</td><td><a href="#502">502</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>55715</td><td><a href="#505">505</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+</table>
+</body>
+</html>

@@ -1,0 +1,10 @@
+Testsuite: org.apache.poi.hssf.record.TestSupBookRecord
+Tests run: 7, Failures: 0, Errors: 0, Time elapsed: 0.001 sec
+
+Testcase: testLoadIR took 0 sec
+Testcase: testLoadER took 0 sec
+Testcase: testLoadAIF took 0 sec
+Testcase: testStoreIR took 0 sec
+Testcase: testStoreER took 0 sec
+Testcase: testStoreAIF took 0 sec
+Testcase: testExternalReferenceUrl took 0 sec

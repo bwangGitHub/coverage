@@ -1,0 +1,8 @@
+Testsuite: org.apache.poi.ss.formula.functions.TestTrunc
+Tests run: 5, Failures: 0, Errors: 0, Time elapsed: 0 sec
+
+Testcase: testTruncWithStringArg took 0 sec
+Testcase: testTruncWithWholeNumber took 0 sec
+Testcase: testTruncWithDecimalNumber took 0 sec
+Testcase: testTruncWithDecimalNumberOneArg took 0 sec
+Testcase: testNegative took 0 sec

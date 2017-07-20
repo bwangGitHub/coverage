@@ -1,0 +1,568 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN
+"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>
+org.jfree.chart.entity.ChartEntity
+</title>
+<link href="prettify.css" type="text/css" rel="stylesheet" />
+<script type="text/javascript" src="prettify.js"></script>
+</head>
+<body onload="prettyPrint()">
+<h2>Javalanche report for class:<br/> org.jfree.chart.entity.ChartEntity </h2><pre class="prettyprint" style="border: 1px solid #888;padding: 2px"><span class="nocode"><a name="1">  1: </a></span>/* ===========================================================
+<span class="nocode"><a name="2">  2: </a></span> * JFreeChart : a free chart library for the Java(tm) platform
+<span class="nocode"><a name="3">  3: </a></span> * ===========================================================
+<span class="nocode"><a name="4">  4: </a></span> *
+<span class="nocode"><a name="5">  5: </a></span> * (C) Copyright 2000-2007, by Object Refinery Limited and Contributors.
+<span class="nocode"><a name="6">  6: </a></span> *
+<span class="nocode"><a name="7">  7: </a></span> * Project Info:  http://www.jfree.org/jfreechart/index.html
+<span class="nocode"><a name="8">  8: </a></span> *
+<span class="nocode"><a name="9">  9: </a></span> * This library is free software; you can redistribute it and/or modify it 
+<span class="nocode"><a name="10"> 10: </a></span> * under the terms of the GNU Lesser General Public License as published by 
+<span class="nocode"><a name="11"> 11: </a></span> * the Free Software Foundation; either version 2.1 of the License, or 
+<span class="nocode"><a name="12"> 12: </a></span> * (at your option) any later version.
+<span class="nocode"><a name="13"> 13: </a></span> *
+<span class="nocode"><a name="14"> 14: </a></span> * This library is distributed in the hope that it will be useful, but 
+<span class="nocode"><a name="15"> 15: </a></span> * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY 
+<span class="nocode"><a name="16"> 16: </a></span> * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public 
+<span class="nocode"><a name="17"> 17: </a></span> * License for more details.
+<span class="nocode"><a name="18"> 18: </a></span> *
+<span class="nocode"><a name="19"> 19: </a></span> * You should have received a copy of the GNU Lesser General Public
+<span class="nocode"><a name="20"> 20: </a></span> * License along with this library; if not, write to the Free Software
+<span class="nocode"><a name="21"> 21: </a></span> * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, 
+<span class="nocode"><a name="22"> 22: </a></span> * USA.  
+<span class="nocode"><a name="23"> 23: </a></span> *
+<span class="nocode"><a name="24"> 24: </a></span> * [Java is a trademark or registered trademark of Sun Microsystems, Inc. 
+<span class="nocode"><a name="25"> 25: </a></span> * in the United States and other countries.]
+<span class="nocode"><a name="26"> 26: </a></span> *
+<span class="nocode"><a name="27"> 27: </a></span> * ----------------
+<span class="nocode"><a name="28"> 28: </a></span> * ChartEntity.java
+<span class="nocode"><a name="29"> 29: </a></span> * ----------------
+<span class="nocode"><a name="30"> 30: </a></span> * (C) Copyright 2002-2007, by Object Refinery Limited and Contributors.
+<span class="nocode"><a name="31"> 31: </a></span> *
+<span class="nocode"><a name="32"> 32: </a></span> * Original Author:  David Gilbert (for Object Refinery Limited);
+<span class="nocode"><a name="33"> 33: </a></span> * Contributor(s):   Richard Atkinson;
+<span class="nocode"><a name="34"> 34: </a></span> *                   Xavier Poinsard;
+<span class="nocode"><a name="35"> 35: </a></span> *                   Robert Fuller;
+<span class="nocode"><a name="36"> 36: </a></span> *
+<span class="nocode"><a name="37"> 37: </a></span> * Changes:
+<span class="nocode"><a name="38"> 38: </a></span> * --------
+<span class="nocode"><a name="39"> 39: </a></span> * 23-May-2002 : Version 1 (DG);
+<span class="nocode"><a name="40"> 40: </a></span> * 12-Jun-2002 : Added Javadoc comments (DG);
+<span class="nocode"><a name="41"> 41: </a></span> * 26-Jun-2002 : Added methods for image maps (DG);
+<span class="nocode"><a name="42"> 42: </a></span> * 05-Aug-2002 : Added constructor and accessors for URL support in image maps
+<span class="nocode"><a name="43"> 43: </a></span> *               Added getImageMapAreaTag() - previously in subclasses (RA);
+<span class="nocode"><a name="44"> 44: </a></span> * 05-Sep-2002 : Added getImageMapAreaTag(boolean) to support OverLIB for 
+<span class="nocode"><a name="45"> 45: </a></span> *               tooltips http://www.bosrup.com/web/overlib (RA);
+<span class="nocode"><a name="46"> 46: </a></span> * 03-Oct-2002 : Fixed errors reported by Checkstyle (DG);
+<span class="nocode"><a name="47"> 47: </a></span> * 08-Oct-2002 : Changed getImageMapAreaTag to use title instead of alt 
+<span class="nocode"><a name="48"> 48: </a></span> *               attribute so HTML image maps now work in Mozilla and Opera as 
+<span class="nocode"><a name="49"> 49: </a></span> *               well as Internet Explorer (RA);
+<span class="nocode"><a name="50"> 50: </a></span> * 13-Mar-2003 : Change getImageMapAreaTag to only return a tag when there is a
+<span class="nocode"><a name="51"> 51: </a></span> *               tooltip or URL, as suggested by Xavier Poinsard (see Feature 
+<span class="nocode"><a name="52"> 52: </a></span> *               Request 688079) (DG);
+<span class="nocode"><a name="53"> 53: </a></span> * 12-Aug-2003 : Added support for custom image maps using 
+<span class="nocode"><a name="54"> 54: </a></span> *               ToolTipTagFragmentGenerator and URLTagFragmentGenerator (RA);
+<span class="nocode"><a name="55"> 55: </a></span> * 02-Sep-2003 : Incorporated fix (791901) submitted by Robert Fuller (DG);
+<span class="nocode"><a name="56"> 56: </a></span> * 19-May-2004 : Added equals() method and implemented Cloneable and 
+<span class="nocode"><a name="57"> 57: </a></span> *               Serializable (DG);
+<span class="nocode"><a name="58"> 58: </a></span> * 29-Sep-2004 : Implemented PublicCloneable (DG);
+<span class="nocode"><a name="59"> 59: </a></span> * 13-Jan-2005 : Fixed for compliance with XHTML 1.0 (DG);
+<span class="nocode"><a name="60"> 60: </a></span> * 18-Apr-2005 : Use StringBuffer (DG);
+<span class="nocode"><a name="61"> 61: </a></span> * 20-Apr-2005 : Added toString() implementation (DG);
+<span class="nocode"><a name="62"> 62: </a></span> * ------------- JFREECHART 1.0.x ---------------------------------------------
+<span class="nocode"><a name="63"> 63: </a></span> * 06-Feb-2007 : API doc update (DG);
+<span class="nocode"><a name="64"> 64: </a></span> * 13-Nov-2007 : Reorganised equals(), implemented hashCode (DG);
+<span class="nocode"><a name="65"> 65: </a></span> *
+<span class="nocode"><a name="66"> 66: </a></span> */
+<span class="nocode"><a name="67"> 67: </a></span>
+<span class="nocode"><a name="68"> 68: </a></span>package org.jfree.chart.entity;
+<span class="nocode"><a name="69"> 69: </a></span>
+<span class="nocode"><a name="70"> 70: </a></span>import java.awt.Shape;
+<span class="nocode"><a name="71"> 71: </a></span>import java.awt.geom.PathIterator;
+<span class="nocode"><a name="72"> 72: </a></span>import java.awt.geom.Rectangle2D;
+<span class="nocode"><a name="73"> 73: </a></span>import java.io.IOException;
+<span class="nocode"><a name="74"> 74: </a></span>import java.io.ObjectInputStream;
+<span class="nocode"><a name="75"> 75: </a></span>import java.io.ObjectOutputStream;
+<span class="nocode"><a name="76"> 76: </a></span>import java.io.Serializable;
+<span class="nocode"><a name="77"> 77: </a></span>
+<span class="nocode"><a name="78"> 78: </a></span>import org.jfree.chart.HashUtilities;
+<span class="nocode"><a name="79"> 79: </a></span>import org.jfree.chart.imagemap.ToolTipTagFragmentGenerator;
+<span class="nocode"><a name="80"> 80: </a></span>import org.jfree.chart.imagemap.URLTagFragmentGenerator;
+<span class="nocode"><a name="81"> 81: </a></span>import org.jfree.io.SerialUtilities;
+<span class="nocode"><a name="82"> 82: </a></span>import org.jfree.util.ObjectUtilities;
+<span class="nocode"><a name="83"> 83: </a></span>import org.jfree.util.PublicCloneable;
+<span class="nocode"><a name="84"> 84: </a></span>
+<span class="nocode"><a name="85"> 85: </a></span>/**
+<span class="nocode"><a name="86"> 86: </a></span> * A class that captures information about some component of a chart (a bar, 
+<span class="nocode"><a name="87"> 87: </a></span> * line etc).
+<span class="nocode"><a name="88"> 88: </a></span> */
+<span class="nocode"><a name="89"> 89: </a></span>public class ChartEntity implements Cloneable, PublicCloneable, Serializable {
+<span class="nocode"><a name="90"> 90: </a></span>
+<span class="nocode"><a name="91"> 91: </a></span>    /** For serialization. */
+<span class="nocode"><a name="92"> 92: </a></span>    private static final long serialVersionUID = -4445994133561919083L;
+<span class="nocode"><a name="93"> 93: </a></span>    
+<span class="nocode"><a name="94"> 94: </a></span>    /** The area occupied by the entity (in Java 2D space). */
+<span class="nocode"><a name="95"> 95: </a></span>    private transient Shape area;
+<span class="nocode"><a name="96"> 96: </a></span>
+<span class="nocode"><a name="97"> 97: </a></span>    /** The tool tip text for the entity. */
+<span class="nocode"><a name="98"> 98: </a></span>    private String toolTipText;
+<span class="nocode"><a name="99"> 99: </a></span>
+<span class="nocode"><a name="100">100: </a></span>    /** The URL text for the entity. */
+<span class="nocode"><a name="101">101: </a></span>    private String urlText;
+<span class="nocode"><a name="102">102: </a></span>
+<span class="nocode"><a name="103">103: </a></span>    /**
+<span class="nocode"><a name="104">104: </a></span>     * Creates a new chart entity.
+<span class="nocode"><a name="105">105: </a></span>     *
+<span class="nocode"><a name="106">106: </a></span>     * @param area  the area (&lt;code&gt;null&lt;/code&gt; not permitted).
+<span class="nocode"><a name="107">107: </a></span>     */
+<span class="nocode"><a name="108">108: </a></span>    public ChartEntity(Shape area) {
+<span class="nocode"><a name="109">109: </a></span>        // defer argument checks...
+<span class="nocode"><a name="110">110: </a></span>        this(area, null);
+<span class="nocode"><a name="111">111: </a></span>    }
+<span class="nocode"><a name="112">112: </a></span>
+<span class="nocode"><a name="113">113: </a></span>    /**
+<span class="nocode"><a name="114">114: </a></span>     * Creates a new chart entity.
+<span class="nocode"><a name="115">115: </a></span>     *
+<span class="nocode"><a name="116">116: </a></span>     * @param area  the area (&lt;code&gt;null&lt;/code&gt; not permitted).
+<span class="nocode"><a name="117">117: </a></span>     * @param toolTipText  the tool tip text (&lt;code&gt;null&lt;/code&gt; permitted).
+<span class="nocode"><a name="118">118: </a></span>     */
+<span class="nocode"><a name="119">119: </a></span>    public ChartEntity(Shape area, String toolTipText) {
+<span class="nocode"><a name="120">120: </a></span>        // defer argument checks...
+<span class="nocode"><a name="121">121: </a></span>        this(area, toolTipText, null);
+<span class="nocode"><a name="122">122: </a></span>    }
+<span class="nocode"><a name="123">123: </a></span>
+<span class="nocode"><a name="124">124: </a></span>    /**
+<span class="nocode"><a name="125">125: </a></span>     * Creates a new entity.
+<span class="nocode"><a name="126">126: </a></span>     *
+<span class="nocode"><a name="127">127: </a></span>     * @param area  the area (&lt;code&gt;null&lt;/code&gt; not permitted).
+<span class="nocode"><a name="128">128: </a></span>     * @param toolTipText  the tool tip text (&lt;code&gt;null&lt;/code&gt; permitted).
+<span class="nocode"><a name="129">129: </a></span>     * @param urlText  the URL text for HTML image maps (&lt;code&gt;null&lt;/code&gt; 
+<span class="nocode"><a name="130">130: </a></span>     *                 permitted).
+<span class="nocode"><a name="131">131: </a></span>     */
+<span class="nocode"><a name="132">132: </a></span>    public ChartEntity(Shape area, String toolTipText, String urlText) {
+<span class="nocode"><a name="133">133: </a></span>        if (area == null) {
+<span class="nocode"><a name="134">134: </a></span>            throw new IllegalArgumentException(&quot;Null 'area' argument.&quot;);   
+<span class="nocode"><a name="135">135: </a></span>        }
+<span class="nocode"><a name="136">136: </a></span>        this.area = area;
+<span class="nocode"><a name="137">137: </a></span>        this.toolTipText = toolTipText;
+<span class="nocode"><a name="138">138: </a></span>        this.urlText = urlText;
+<span class="nocode"><a name="139">139: </a></span>    }
+<span class="nocode"><a name="140">140: </a></span>
+<span class="nocode"><a name="141">141: </a></span>    /**
+<span class="nocode"><a name="142">142: </a></span>     * Returns the area occupied by the entity (in Java 2D space).
+<span class="nocode"><a name="143">143: </a></span>     *
+<span class="nocode"><a name="144">144: </a></span>     * @return The area (never &lt;code&gt;null&lt;/code&gt;).
+<span class="nocode"><a name="145">145: </a></span>     */
+<span class="nocode"><a name="146">146: </a></span>    public Shape getArea() {
+<span class="nocode"><a name="147">147: </a></span>        return this.area;
+<span class="nocode"><a name="148">148: </a></span>    }
+<span class="nocode"><a name="149">149: </a></span>
+<span class="nocode"><a name="150">150: </a></span>    /**
+<span class="nocode"><a name="151">151: </a></span>     * Sets the area for the entity.
+<span class="nocode"><a name="152">152: </a></span>     * &lt;P&gt;
+<span class="nocode"><a name="153">153: </a></span>     * This class conveys information about chart entities back to a client.
+<span class="nocode"><a name="154">154: </a></span>     * Setting this area doesn't change the entity (which has already been
+<span class="nocode"><a name="155">155: </a></span>     * drawn).
+<span class="nocode"><a name="156">156: </a></span>     *
+<span class="nocode"><a name="157">157: </a></span>     * @param area  the area (&lt;code&gt;null&lt;/code&gt; not permitted).
+<span class="nocode"><a name="158">158: </a></span>     */
+<span class="nocode"><a name="159">159: </a></span>    public void setArea(Shape area) {
+<span class="nocode"><a name="160">160: </a></span>        if (area == null) {
+<span class="nocode"><a name="161">161: </a></span>            throw new IllegalArgumentException(&quot;Null 'area' argument.&quot;);   
+<span class="nocode"><a name="162">162: </a></span>        }
+<span class="nocode"><a name="163">163: </a></span>        this.area = area;
+<span class="nocode"><a name="164">164: </a></span>    }
+<span class="nocode"><a name="165">165: </a></span>
+<span class="nocode"><a name="166">166: </a></span>    /**
+<span class="nocode"><a name="167">167: </a></span>     * Returns the tool tip text for the entity.
+<span class="nocode"><a name="168">168: </a></span>     *
+<span class="nocode"><a name="169">169: </a></span>     * @return The tool tip text (possibly &lt;code&gt;null&lt;/code&gt;).
+<span class="nocode"><a name="170">170: </a></span>     */
+<span class="nocode"><a name="171">171: </a></span>    public String getToolTipText() {
+<span class="nocode"><a name="172">172: </a></span>        return this.toolTipText;
+<span class="nocode"><a name="173">173: </a></span>    }
+<span class="nocode"><a name="174">174: </a></span>
+<span class="nocode"><a name="175">175: </a></span>    /**
+<span class="nocode"><a name="176">176: </a></span>     * Sets the tool tip text.
+<span class="nocode"><a name="177">177: </a></span>     *
+<span class="nocode"><a name="178">178: </a></span>     * @param text  the text (&lt;code&gt;null&lt;/code&gt; permitted).
+<span class="nocode"><a name="179">179: </a></span>     */
+<span class="nocode"><a name="180">180: </a></span>    public void setToolTipText(String text) {
+<span class="nocode"><a name="181">181: </a></span>        this.toolTipText = text;
+<span class="nocode"><a name="182">182: </a></span>    }
+<span class="nocode"><a name="183">183: </a></span>
+<span class="nocode"><a name="184">184: </a></span>    /**
+<span class="nocode"><a name="185">185: </a></span>     * Returns the URL text for the entity.
+<span class="nocode"><a name="186">186: </a></span>     *
+<span class="nocode"><a name="187">187: </a></span>     * @return The URL text (possibly &lt;code&gt;null&lt;/code&gt;).
+<span class="nocode"><a name="188">188: </a></span>     */
+<span class="nocode"><a name="189">189: </a></span>    public String getURLText() {
+<span class="nocode"><a name="190">190: </a></span>        return this.urlText;
+<span class="nocode"><a name="191">191: </a></span>    }
+<span class="nocode"><a name="192">192: </a></span>
+<span class="nocode"><a name="193">193: </a></span>    /**
+<span class="nocode"><a name="194">194: </a></span>     * Sets the URL text.
+<span class="nocode"><a name="195">195: </a></span>     *
+<span class="nocode"><a name="196">196: </a></span>     * @param text the text (&lt;code&gt;null&lt;/code&gt; permitted).
+<span class="nocode"><a name="197">197: </a></span>     */
+<span class="nocode"><a name="198">198: </a></span>    public void setURLText(String text) {
+<span class="nocode"><a name="199">199: </a></span>        this.urlText = text;
+<span class="nocode"><a name="200">200: </a></span>    }
+<span class="nocode"><a name="201">201: </a></span>
+<span class="nocode"><a name="202">202: </a></span>    /**
+<span class="nocode"><a name="203">203: </a></span>     * Returns a string describing the entity area.  This string is intended
+<span class="nocode"><a name="204">204: </a></span>     * for use in an AREA tag when generating an image map.
+<span class="nocode"><a name="205">205: </a></span>     *
+<span class="nocode"><a name="206">206: </a></span>     * @return The shape type (never &lt;code&gt;null&lt;/code&gt;).
+<span class="nocode"><a name="207">207: </a></span>     */
+<span class="nocode"><a name="208">208: </a></span>    public String getShapeType() {
+<span class="nocode"><a name="209">209: </a></span>        if (this.area instanceof Rectangle2D) {
+<span class="nocode"><a name="210">210: </a></span>            return &quot;rect&quot;;
+<span class="nocode"><a name="211">211: </a></span>        }
+<span class="nocode"><a name="212">212: </a></span>        else {
+<span class="nocode"><a name="213">213: </a></span>            return &quot;poly&quot;;
+<span class="nocode"><a name="214">214: </a></span>        }
+<span class="nocode"><a name="215">215: </a></span>    }
+<span class="nocode"><a name="216">216: </a></span>
+<span class="nocode"><a name="217">217: </a></span>    /**
+<span class="nocode"><a name="218">218: </a></span>     * Returns the shape coordinates as a string.
+<span class="nocode"><a name="219">219: </a></span>     *
+<span class="nocode"><a name="220">220: </a></span>     * @return The shape coordinates (never &lt;code&gt;null&lt;/code&gt;).
+<span class="nocode"><a name="221">221: </a></span>     */
+<span class="nocode"><a name="222">222: </a></span>    public String getShapeCoords() {
+<span class="nocode"><a name="223">223: </a></span>        if (this.area instanceof Rectangle2D) {
+<span class="nocode"><a name="224">224: </a></span>            return getRectCoords((Rectangle2D) this.area);
+<span class="nocode"><a name="225">225: </a></span>        }
+<span class="nocode"><a name="226">226: </a></span>        else {
+<span class="nocode"><a name="227">227: </a></span>            return getPolyCoords(this.area);
+<span class="nocode"><a name="228">228: </a></span>        }
+<span class="nocode"><a name="229">229: </a></span>    }
+<span class="nocode"><a name="230">230: </a></span>
+<span class="nocode"><a name="231">231: </a></span>    /**
+<span class="nocode"><a name="232">232: </a></span>     * Returns a string containing the coordinates (x1, y1, x2, y2) for a given
+<span class="nocode"><a name="233">233: </a></span>     * rectangle.  This string is intended for use in an image map.
+<span class="nocode"><a name="234">234: </a></span>     *
+<span class="nocode"><a name="235">235: </a></span>     * @param rectangle  the rectangle (&lt;code&gt;null&lt;/code&gt; not permitted).
+<span class="nocode"><a name="236">236: </a></span>     *
+<span class="nocode"><a name="237">237: </a></span>     * @return Upper left and lower right corner of a rectangle.
+<span class="nocode"><a name="238">238: </a></span>     */
+<span class="nocode"><a name="239">239: </a></span>    private String getRectCoords(Rectangle2D rectangle) {
+<span class="nocode"><a name="240">240: </a></span>        if (rectangle == null) {
+<span class="nocode"><a name="241">241: </a></span>            throw new IllegalArgumentException(&quot;Null 'rectangle' argument.&quot;);   
+<span class="nocode"><a name="242">242: </a></span>        }
+<span class="nocode"><a name="243">243: </a></span>        int x1 = (int) rectangle.getX();
+<span class="nocode"><a name="244">244: </a></span>        int y1 = (int) rectangle.getY();
+<span class="nocode"><a name="245">245: </a></span>        int x2 = x1 + (int) rectangle.getWidth();
+<span class="nocode"><a name="246">246: </a></span>        int y2 = y1 + (int) rectangle.getHeight();
+<span class="nocode"><a name="247">247: </a></span>        //      fix by rfuller
+<span class="nocode"><a name="248">248: </a></span>        if (x2 == x1) {
+<span class="nocode"><a name="249">249: </a></span>            x2++;
+<span class="nocode"><a name="250">250: </a></span>        }
+<span class="nocode"><a name="251">251: </a></span>        if (y2 == y1) {
+<span class="nocode"><a name="252">252: </a></span>            y2++;
+<span class="nocode"><a name="253">253: </a></span>        }
+<span class="nocode"><a name="254">254: </a></span>        //      end fix by rfuller
+<span class="nocode"><a name="255">255: </a></span>        return x1 + &quot;,&quot; + y1 + &quot;,&quot; + x2 + &quot;,&quot; + y2;
+<span class="nocode"><a name="256">256: </a></span>    }
+<span class="nocode"><a name="257">257: </a></span>
+<span class="nocode"><a name="258">258: </a></span>    /**
+<span class="nocode"><a name="259">259: </a></span>     * Returns a string containing the coordinates for a given shape.  This
+<span class="nocode"><a name="260">260: </a></span>     * string is intended for use in an image map.
+<span class="nocode"><a name="261">261: </a></span>     *
+<span class="nocode"><a name="262">262: </a></span>     * @param shape  the shape (&lt;code&gt;null&lt;/code&gt; not permitted).
+<span class="nocode"><a name="263">263: </a></span>     *
+<span class="nocode"><a name="264">264: </a></span>     * @return The coordinates for a given shape as string.
+<span class="nocode"><a name="265">265: </a></span>     */
+<span class="nocode"><a name="266">266: </a></span>    private String getPolyCoords(Shape shape) {
+<span class="nocode"><a name="267">267: </a></span>        if (shape == null) {
+<span class="nocode"><a name="268">268: </a></span>            throw new IllegalArgumentException(&quot;Null 'shape' argument.&quot;);   
+<span class="nocode"><a name="269">269: </a></span>        }
+<span class="nocode"><a name="270">270: </a></span>        StringBuffer result = new StringBuffer();
+<span class="nocode"><a name="271">271: </a></span>        boolean first = true;
+<span class="nocode"><a name="272">272: </a></span>        float[] coords = new float[6];
+<span class="nocode"><a name="273">273: </a></span>        PathIterator pi = shape.getPathIterator(null, 1.0);
+<span class="nocode"><a name="274">274: </a></span>        while (!pi.isDone()) {
+<span class="nocode"><a name="275">275: </a></span>            pi.currentSegment(coords);
+<span class="nocode"><a name="276">276: </a></span>            if (first) {
+<span class="nocode"><a name="277">277: </a></span>                first = false;
+<span class="nocode"><a name="278">278: </a></span>                result.append((int) coords[0]);
+<span class="nocode"><a name="279">279: </a></span>                result.append(&quot;,&quot;).append((int) coords[1]);
+<span class="nocode"><a name="280">280: </a></span>            }
+<span class="nocode"><a name="281">281: </a></span>            else {
+<span class="nocode"><a name="282">282: </a></span>                result.append(&quot;,&quot;);
+<span class="nocode"><a name="283">283: </a></span>                result.append((int) coords[0]);
+<span class="nocode"><a name="284">284: </a></span>                result.append(&quot;,&quot;);
+<span class="nocode"><a name="285">285: </a></span>                result.append((int) coords[1]);
+<span class="nocode"><a name="286">286: </a></span>            }
+<span class="nocode"><a name="287">287: </a></span>            pi.next();
+<span class="nocode"><a name="288">288: </a></span>        }
+<span class="nocode"><a name="289">289: </a></span>        return result.toString();
+<span class="nocode"><a name="290">290: </a></span>    }
+<span class="nocode"><a name="291">291: </a></span>
+<span class="nocode"><a name="292">292: </a></span>    /**
+<span class="nocode"><a name="293">293: </a></span>     * Returns an HTML image map tag for this entity.  The returned fragment
+<span class="nocode"><a name="294">294: </a></span>     * should be &lt;code&gt;XHTML 1.0&lt;/code&gt; compliant.
+<span class="nocode"><a name="295">295: </a></span>     *
+<span class="nocode"><a name="296">296: </a></span>     * @param toolTipTagFragmentGenerator  a generator for the HTML fragment
+<span class="nocode"><a name="297">297: </a></span>     *     that will contain the tooltip text (&lt;code&gt;null&lt;/code&gt; not permitted 
+<span class="nocode"><a name="298">298: </a></span>     *     if this entity contains tooltip information).
+<span class="nocode"><a name="299">299: </a></span>     * @param urlTagFragmentGenerator  a generator for the HTML fragment that
+<span class="nocode"><a name="300">300: </a></span>     *     will contain the URL reference (&lt;code&gt;null&lt;/code&gt; not permitted if 
+<span class="nocode"><a name="301">301: </a></span>     *     this entity has a URL).
+<span class="nocode"><a name="302">302: </a></span>     * 
+<span class="nocode"><a name="303">303: </a></span>     * @return The HTML tag.
+<span class="nocode"><a name="304">304: </a></span>     */
+<span class="nocode"><a name="305">305: </a></span>    public String getImageMapAreaTag(
+<span class="nocode"><a name="306">306: </a></span>            ToolTipTagFragmentGenerator toolTipTagFragmentGenerator,
+<span class="nocode"><a name="307">307: </a></span>            URLTagFragmentGenerator urlTagFragmentGenerator) {
+<span class="nocode"><a name="308">308: </a></span>
+<span class="nocode"><a name="309">309: </a></span>        StringBuffer tag = new StringBuffer();
+<span class="nocode"><a name="310">310: </a></span>        boolean hasURL = (this.urlText == null ? false 
+<span class="nocode"><a name="311">311: </a></span>                : !this.urlText.equals(&quot;&quot;));
+<span class="nocode"><a name="312">312: </a></span>        boolean hasToolTip = (this.toolTipText == null ? false 
+<span class="nocode"><a name="313">313: </a></span>                : !this.toolTipText.equals(&quot;&quot;));
+<span class="nocode"><a name="314">314: </a></span>        if (hasURL || hasToolTip) {
+<span class="nocode"><a name="315">315: </a></span>            tag.append(&quot;&lt;area shape=\&quot;&quot; + getShapeType() + &quot;\&quot;&quot; + &quot; coords=\&quot;&quot; 
+<span class="nocode"><a name="316">316: </a></span>                    + getShapeCoords() + &quot;\&quot;&quot;);
+<span class="nocode"><a name="317">317: </a></span>            if (hasToolTip) {
+<span class="nocode"><a name="318">318: </a></span>                tag.append(toolTipTagFragmentGenerator.generateToolTipFragment(
+<span class="nocode"><a name="319">319: </a></span>                        this.toolTipText));
+<span class="nocode"><a name="320">320: </a></span>            }
+<span class="nocode"><a name="321">321: </a></span>            if (hasURL) {
+<span class="nocode"><a name="322">322: </a></span>                tag.append(urlTagFragmentGenerator.generateURLFragment(
+<span class="nocode"><a name="323">323: </a></span>                        this.urlText));
+<span class="nocode"><a name="324">324: </a></span>            }
+<span class="nocode"><a name="325">325: </a></span>            // if there is a tool tip, we expect it to generate the title and
+<span class="nocode"><a name="326">326: </a></span>            // alt values, so we only add an empty alt if there is no tooltip
+<span class="nocode"><a name="327">327: </a></span>            if (!hasToolTip) {
+<span class="nocode"><a name="328">328: </a></span>                tag.append(&quot; alt=\&quot;\&quot;&quot;);
+<span class="nocode"><a name="329">329: </a></span>            }
+<span class="nocode"><a name="330">330: </a></span>            tag.append(&quot;/&gt;&quot;);
+<span class="nocode"><a name="331">331: </a></span>        }
+<span class="nocode"><a name="332">332: </a></span>        return tag.toString();
+<span class="nocode"><a name="333">333: </a></span>    }
+<span class="nocode"><a name="334">334: </a></span>    
+<span class="nocode"><a name="335">335: </a></span>    /**
+<span class="nocode"><a name="336">336: </a></span>     * Returns a string representation of the chart entity, useful for 
+<span class="nocode"><a name="337">337: </a></span>     * debugging.
+<span class="nocode"><a name="338">338: </a></span>     * 
+<span class="nocode"><a name="339">339: </a></span>     * @return A string.
+<span class="nocode"><a name="340">340: </a></span>     */
+<span class="nocode"><a name="341">341: </a></span>    public String toString() {
+<span class="nocode"><a name="342">342: </a></span>        StringBuffer buf = new StringBuffer(&quot;ChartEntity: &quot;);
+<span class="nocode"><a name="343">343: </a></span>        buf.append(&quot;tooltip = &quot;);
+<span class="nocode"><a name="344">344: </a></span>        buf.append(this.toolTipText);
+<span class="nocode"><a name="345">345: </a></span>        return buf.toString();
+<span class="nocode"><a name="346">346: </a></span>    }
+<span class="nocode"><a name="347">347: </a></span>    
+<span class="nocode"><a name="348">348: </a></span>    /**
+<span class="nocode"><a name="349">349: </a></span>     * Tests the entity for equality with an arbitrary object.
+<span class="nocode"><a name="350">350: </a></span>     * 
+<span class="nocode"><a name="351">351: </a></span>     * @param obj  the object to test against (&lt;code&gt;null&lt;/code&gt; permitted).
+<span class="nocode"><a name="352">352: </a></span>     * 
+<span class="nocode"><a name="353">353: </a></span>     * @return A boolean.
+<span class="nocode"><a name="354">354: </a></span>     */
+<span class="nocode"><a name="355">355: </a></span>    public boolean equals(Object obj) {
+<span class="nocode"><a name="356">356: </a></span>        if (obj == this) {
+<span class="nocode"><a name="357">357: </a></span>            return true;   
+<span class="nocode"><a name="358">358: </a></span>        }
+<span class="nocode"><a name="359">359: </a></span>        if (!(obj instanceof ChartEntity)) {
+<span class="nocode"><a name="360">360: </a></span>            return false;   
+<span class="nocode"><a name="361">361: </a></span>        }
+<span class="nocode"><a name="362">362: </a></span>        ChartEntity that = (ChartEntity) obj;
+<span class="nocode"><a name="363">363: </a></span>        if (!this.area.equals(that.area)) {
+<span class="nocode"><a name="364">364: </a></span>            return false;   
+<span class="nocode"><a name="365">365: </a></span>        }
+<span class="nocode"><a name="366">366: </a></span>        if (!ObjectUtilities.equal(this.toolTipText, that.toolTipText)) {
+<span class="nocode"><a name="367">367: </a></span>            return false;   
+<span class="nocode"><a name="368">368: </a></span>        }
+<span class="nocode"><a name="369">369: </a></span>        if (!ObjectUtilities.equal(this.urlText, that.urlText)) {
+<span class="nocode"><a name="370">370: </a></span>            return false;   
+<span class="nocode"><a name="371">371: </a></span>        }
+<span class="nocode"><a name="372">372: </a></span>        return true;
+<span class="nocode"><a name="373">373: </a></span>    }
+<span class="nocode"><a name="374">374: </a></span>
+<span class="nocode"><a name="375">375: </a></span>    /**
+<span class="nocode"><a name="376">376: </a></span>     * Returns a hash code for this instance.
+<span class="nocode"><a name="377">377: </a></span>     * 
+<span class="nocode"><a name="378">378: </a></span>     * @return A hash code.
+<span class="nocode"><a name="379">379: </a></span>     */
+<span class="nocode"><a name="380">380: </a></span>    public int hashCode() {
+<span class="nocode"><a name="381">381: </a></span>        int result = 37;
+<span class="nocode"><a name="382">382: </a></span>        result = HashUtilities.hashCode(result, this.toolTipText);
+<span class="nocode"><a name="383">383: </a></span>        result = HashUtilities.hashCode(result, this.urlText);
+<span class="nocode"><a name="384">384: </a></span>        return result;
+<span class="nocode"><a name="385">385: </a></span>    }
+<span class="nocode"><a name="386">386: </a></span>    
+<span class="nocode"><a name="387">387: </a></span>    /**
+<span class="nocode"><a name="388">388: </a></span>     * Returns a clone of the entity.
+<span class="nocode"><a name="389">389: </a></span>     * 
+<span class="nocode"><a name="390">390: </a></span>     * @return A clone.
+<span class="nocode"><a name="391">391: </a></span>     * 
+<span class="nocode"><a name="392">392: </a></span>     * @throws CloneNotSupportedException if there is a problem cloning the 
+<span class="nocode"><a name="393">393: </a></span>     *         entity.
+<span class="nocode"><a name="394">394: </a></span>     */
+<span class="nocode"><a name="395">395: </a></span>    public Object clone() throws CloneNotSupportedException {
+<span class="nocode"><a name="396">396: </a></span>        return super.clone();    
+<span class="nocode"><a name="397">397: </a></span>    }
+<span class="nocode"><a name="398">398: </a></span>    
+<span class="nocode"><a name="399">399: </a></span>    /**
+<span class="nocode"><a name="400">400: </a></span>     * Provides serialization support.
+<span class="nocode"><a name="401">401: </a></span>     *
+<span class="nocode"><a name="402">402: </a></span>     * @param stream  the output stream.
+<span class="nocode"><a name="403">403: </a></span>     *
+<span class="nocode"><a name="404">404: </a></span>     * @throws IOException  if there is an I/O error.
+<span class="nocode"><a name="405">405: </a></span>     */
+<span class="nocode"><a name="406">406: </a></span>    private void writeObject(ObjectOutputStream stream) throws IOException {
+<span class="nocode"><a name="407">407: </a></span>        stream.defaultWriteObject();
+<span class="nocode"><a name="408">408: </a></span>        SerialUtilities.writeShape(this.area, stream);
+<span class="nocode"><a name="409">409: </a></span>     }
+<span class="nocode"><a name="410">410: </a></span>
+<span class="nocode"><a name="411">411: </a></span>    /**
+<span class="nocode"><a name="412">412: </a></span>     * Provides serialization support.
+<span class="nocode"><a name="413">413: </a></span>     *
+<span class="nocode"><a name="414">414: </a></span>     * @param stream  the input stream.
+<span class="nocode"><a name="415">415: </a></span>     *
+<span class="nocode"><a name="416">416: </a></span>     * @throws IOException  if there is an I/O error.
+<span class="nocode"><a name="417">417: </a></span>     * @throws ClassNotFoundException  if there is a classpath problem.
+<span class="nocode"><a name="418">418: </a></span>     */
+<span class="nocode"><a name="419">419: </a></span>    private void readObject(ObjectInputStream stream) 
+<span class="nocode"><a name="420">420: </a></span>        throws IOException, ClassNotFoundException {
+<span class="nocode"><a name="421">421: </a></span>        stream.defaultReadObject();
+<span class="nocode"><a name="422">422: </a></span>        this.area = SerialUtilities.readShape(stream);
+<span class="nocode"><a name="423">423: </a></span>    }
+<span class="nocode"><a name="424">424: </a></span>
+<span class="nocode"><a name="425">425: </a></span>}
+</pre><table class="mutation_table" summary="Mutations">
+<tr><th>ID</th><th>Line</th><th>Type</th><th>Detected</th></tr><tr><td>15494</td><td><a href="#133">133</a></td><td>Negate jump condition (Replace IFNONNULL with  IFNULL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>15495</td><td><a href="#160">160</a></td><td>Negate jump condition (Replace IFNONNULL with  IFNULL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>15496</td><td><a href="#209">209</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>15497</td><td><a href="#223">223</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>15498</td><td><a href="#224">224</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>15499</td><td><a href="#227">227</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>15500</td><td><a href="#240">240</a></td><td>Negate jump condition (Replace IFNONNULL with  IFNULL)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>15501</td><td><a href="#243">243</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>15502</td><td><a href="#244">244</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>15504</td><td><a href="#245">245</a></td><td>Replace arithmetic operator (Replace IADD with ISUB)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>15503</td><td><a href="#245">245</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>15506</td><td><a href="#246">246</a></td><td>Replace arithmetic operator (Replace IADD with ISUB)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>15505</td><td><a href="#246">246</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>15507</td><td><a href="#248">248</a></td><td>Negate jump condition (Replace IF_ICMPNE with  IF_ICMPEQ)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>15508</td><td><a href="#251">251</a></td><td>Negate jump condition (Replace IF_ICMPNE with  IF_ICMPEQ)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>15509</td><td><a href="#255">255</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>15510</td><td><a href="#255">255(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>15511</td><td><a href="#255">255(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>15512</td><td><a href="#255">255(3)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>15513</td><td><a href="#255">255(4)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>15514</td><td><a href="#255">255(5)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>15515</td><td><a href="#255">255(6)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>15516</td><td><a href="#255">255(7)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>15517</td><td><a href="#267">267</a></td><td>Negate jump condition (Replace IFNONNULL with  IFNULL)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>15519</td><td><a href="#271">271</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>15518</td><td><a href="#271">271</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>15520</td><td><a href="#272">272</a></td><td>Replace a constant (Replace 6 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>15522</td><td><a href="#272">272</a></td><td>Replace a constant (Replace 6 with 5(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>15521</td><td><a href="#272">272</a></td><td>Replace a constant (Replace 6 with 7(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>15524</td><td><a href="#273">273</a></td><td>Replace a constant (Replace 1 with 0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>15523</td><td><a href="#273">273</a></td><td>Replace a constant (Replace 1 with 2(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>15525</td><td><a href="#273">273</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>15527</td><td><a href="#274">274</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>15526</td><td><a href="#274">274</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>15528</td><td><a href="#275">275</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>15529</td><td><a href="#276">276</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>15530</td><td><a href="#277">277</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>15531</td><td><a href="#277">277</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>15533</td><td><a href="#278">278</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>15532</td><td><a href="#278">278</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>15534</td><td><a href="#278">278</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>15536</td><td><a href="#279">279</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>15537</td><td><a href="#279">279</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>15535</td><td><a href="#279">279</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>15538</td><td><a href="#279">279(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>15539</td><td><a href="#282">282</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>15540</td><td><a href="#283">283</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>15541</td><td><a href="#283">283</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>15542</td><td><a href="#283">283</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>15543</td><td><a href="#284">284</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>15544</td><td><a href="#285">285</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>15545</td><td><a href="#285">285</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>15546</td><td><a href="#285">285</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>15547</td><td><a href="#287">287</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>15548</td><td><a href="#289">289</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>15551</td><td><a href="#310">310</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>15550</td><td><a href="#310">310</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>15554</td><td><a href="#310">310(1)</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>15555</td><td><a href="#310">310(1)</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>15557</td><td><a href="#310">310(2)</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>15556</td><td><a href="#310">310(2)</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>15549</td><td><a href="#310">310</a></td><td>Negate jump condition (Replace IFNONNULL with  IFNULL)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>15553</td><td><a href="#310">310(1)</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>15552</td><td><a href="#310">310</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>15560</td><td><a href="#312">312</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>15559</td><td><a href="#312">312</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>15564</td><td><a href="#312">312(1)</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>15563</td><td><a href="#312">312(1)</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>15566</td><td><a href="#312">312(2)</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>15565</td><td><a href="#312">312(2)</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>15558</td><td><a href="#312">312</a></td><td>Negate jump condition (Replace IFNONNULL with  IFNULL)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>15562</td><td><a href="#312">312(1)</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>15561</td><td><a href="#312">312</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>15567</td><td><a href="#314">314</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>15568</td><td><a href="#314">314(1)</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>15569</td><td><a href="#315">315</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>15570</td><td><a href="#315">315(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>15571</td><td><a href="#315">315(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>15572</td><td><a href="#315">315(3)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>15573</td><td><a href="#315">315(4)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>15574</td><td><a href="#315">315(5)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>15575</td><td><a href="#315">315(6)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>15576</td><td><a href="#315">315(7)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>15577</td><td><a href="#315">315(8)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>15578</td><td><a href="#315">315(9)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>15579</td><td><a href="#317">317</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>15580</td><td><a href="#318">318</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>15581</td><td><a href="#318">318(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>15582</td><td><a href="#321">321</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>15583</td><td><a href="#322">322</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>15584</td><td><a href="#322">322(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>15585</td><td><a href="#327">327</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>15586</td><td><a href="#328">328</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>15587</td><td><a href="#330">330</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>15588</td><td><a href="#332">332</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>15589</td><td><a href="#343">343</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>15590</td><td><a href="#344">344</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>15591</td><td><a href="#345">345</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>15592</td><td><a href="#356">356</a></td><td>Negate jump condition (Replace IF_ACMPNE with  IF_ACMPEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>15593</td><td><a href="#357">357</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>15594</td><td><a href="#357">357</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>15595</td><td><a href="#359">359</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>15596</td><td><a href="#360">360</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>15597</td><td><a href="#360">360</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>15599</td><td><a href="#363">363</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>15598</td><td><a href="#363">363</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>15600</td><td><a href="#364">364</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>15601</td><td><a href="#364">364</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>15603</td><td><a href="#366">366</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>15602</td><td><a href="#366">366</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>15605</td><td><a href="#367">367</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>15604</td><td><a href="#367">367</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>15607</td><td><a href="#369">369</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>15606</td><td><a href="#369">369</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>15608</td><td><a href="#370">370</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>15609</td><td><a href="#370">370</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>15611</td><td><a href="#372">372</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>15610</td><td><a href="#372">372</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>15613</td><td><a href="#381">381</a></td><td>Replace a constant (Replace 37 with 36(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>15614</td><td><a href="#381">381</a></td><td>Replace a constant (Replace 37 with 38(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>15612</td><td><a href="#381">381</a></td><td>Replace a constant (Replace 37 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>15615</td><td><a href="#382">382</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>15616</td><td><a href="#383">383</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>15617</td><td><a href="#396">396</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>15618</td><td><a href="#407">407</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>15619</td><td><a href="#408">408</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>15620</td><td><a href="#421">421</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>15621</td><td><a href="#422">422</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+</table>
+</body>
+</html>

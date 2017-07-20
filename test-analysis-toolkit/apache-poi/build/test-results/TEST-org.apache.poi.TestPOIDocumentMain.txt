@@ -1,0 +1,9 @@
+Testsuite: org.apache.poi.TestPOIDocumentMain
+Tests run: 6, Failures: 0, Errors: 0, Time elapsed: 0.163 sec
+
+Testcase: testReadProperties took 0.116 sec
+Testcase: testReadProperties2 took 0.005 sec
+Testcase: testWriteProperties took 0.014 sec
+Testcase: testWriteReadProperties took 0.007 sec
+Testcase: testCreateNewProperties took 0.009 sec
+Testcase: testCreateNewPropertiesOnExistingFile took 0.007 sec

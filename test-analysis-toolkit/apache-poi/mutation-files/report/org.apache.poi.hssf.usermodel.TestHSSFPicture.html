@@ -1,0 +1,574 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN
+"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>
+org.apache.poi.hssf.usermodel.TestHSSFPicture
+</title>
+<link href="prettify.css" type="text/css" rel="stylesheet" />
+<script type="text/javascript" src="prettify.js"></script>
+</head>
+<body onload="prettyPrint()">
+<h2>Javalanche report for class:<br/> org.apache.poi.hssf.usermodel.TestHSSFPicture </h2><pre class="prettyprint" style="border: 1px solid #888;padding: 2px"><span class="nocode"><a name="1">  1: </a></span>/* ====================================================================
+<span class="nocode"><a name="2">  2: </a></span>   Licensed to the Apache Software Foundation (ASF) under one or more
+<span class="nocode"><a name="3">  3: </a></span>   contributor license agreements.  See the NOTICE file distributed with
+<span class="nocode"><a name="4">  4: </a></span>   this work for additional information regarding copyright ownership.
+<span class="nocode"><a name="5">  5: </a></span>   The ASF licenses this file to You under the Apache License, Version 2.0
+<span class="nocode"><a name="6">  6: </a></span>   (the &quot;License&quot;); you may not use this file except in compliance with
+<span class="nocode"><a name="7">  7: </a></span>   the License.  You may obtain a copy of the License at
+<span class="nocode"><a name="8">  8: </a></span>
+<span class="nocode"><a name="9">  9: </a></span>      http://www.apache.org/licenses/LICENSE-2.0
+<span class="nocode"><a name="10"> 10: </a></span>
+<span class="nocode"><a name="11"> 11: </a></span>   Unless required by applicable law or agreed to in writing, software
+<span class="nocode"><a name="12"> 12: </a></span>   distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+<span class="nocode"><a name="13"> 13: </a></span>   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+<span class="nocode"><a name="14"> 14: </a></span>   See the License for the specific language governing permissions and
+<span class="nocode"><a name="15"> 15: </a></span>   limitations under the License.
+<span class="nocode"><a name="16"> 16: </a></span>==================================================================== */
+<span class="nocode"><a name="17"> 17: </a></span>
+<span class="nocode"><a name="18"> 18: </a></span>package org.apache.poi.hssf.usermodel;
+<span class="nocode"><a name="19"> 19: </a></span>
+<span class="nocode"><a name="20"> 20: </a></span>import org.apache.poi.hssf.HSSFTestDataSamples;
+<span class="nocode"><a name="21"> 21: </a></span>import org.apache.poi.hssf.HSSFITestDataProvider;
+<span class="nocode"><a name="22"> 22: </a></span>import org.apache.poi.ss.usermodel.BaseTestPicture;
+<span class="nocode"><a name="23"> 23: </a></span>import org.apache.poi.ss.usermodel.PictureData;
+<span class="nocode"><a name="24"> 24: </a></span>import org.apache.poi.ss.usermodel.Workbook;
+<span class="nocode"><a name="25"> 25: </a></span>
+<span class="nocode"><a name="26"> 26: </a></span>import java.util.Arrays;
+<span class="nocode"><a name="27"> 27: </a></span>import java.util.List;
+<span class="nocode"><a name="28"> 28: </a></span>
+<span class="nocode"><a name="29"> 29: </a></span>/**
+<span class="nocode"><a name="30"> 30: </a></span> * Test &lt;code&gt;HSSFPicture&lt;/code&gt;.
+<span class="nocode"><a name="31"> 31: </a></span> *
+<span class="nocode"><a name="32"> 32: </a></span> * @author Yegor Kozlov (yegor at apache.org)
+<span class="nocode"><a name="33"> 33: </a></span> */
+<span class="nocode"><a name="34"> 34: </a></span>public final class TestHSSFPicture extends BaseTestPicture {
+<span class="nocode"><a name="35"> 35: </a></span>
+<span class="nocode"><a name="36"> 36: </a></span>    public TestHSSFPicture() {
+<span class="nocode"><a name="37"> 37: </a></span>        super(HSSFITestDataProvider.instance);
+<span class="nocode"><a name="38"> 38: </a></span>    }
+<span class="nocode"><a name="39"> 39: </a></span>
+<span class="nocode"><a name="40"> 40: </a></span>    public void testResize() {
+<span class="nocode"><a name="41"> 41: </a></span>        baseTestResize(new HSSFClientAnchor(0, 0, 848, 240, (short)0, 0, (short)1, 9));
+<span class="nocode"><a name="42"> 42: </a></span>    }
+<span class="nocode"><a name="43"> 43: </a></span>
+<span class="nocode"><a name="44"> 44: </a></span>    /**
+<span class="nocode"><a name="45"> 45: </a></span>     * Bug # 45829 reported ArithmeticException (/ by zero) when resizing png with zero DPI.
+<span class="nocode"><a name="46"> 46: </a></span>     */
+<span class="nocode"><a name="47"> 47: </a></span>    public void test45829() {
+<span class="nocode"><a name="48"> 48: </a></span>        HSSFWorkbook wb = new HSSFWorkbook();
+<span class="nocode"><a name="49"> 49: </a></span>        HSSFSheet sh1 = wb.createSheet();
+<span class="nocode"><a name="50"> 50: </a></span>        HSSFPatriarch p1 = sh1.createDrawingPatriarch();
+<span class="nocode"><a name="51"> 51: </a></span>
+<span class="nocode"><a name="52"> 52: </a></span>        byte[] pictureData = HSSFTestDataSamples.getTestDataFileContent(&quot;45829.png&quot;);
+<span class="nocode"><a name="53"> 53: </a></span>        int idx1 = wb.addPicture( pictureData, HSSFWorkbook.PICTURE_TYPE_PNG );
+<span class="nocode"><a name="54"> 54: </a></span>        HSSFPicture pic = p1.createPicture(new HSSFClientAnchor(), idx1);
+<span class="nocode"><a name="55"> 55: </a></span>        pic.resize();
+<span class="nocode"><a name="56"> 56: </a></span>    }
+<span class="nocode"><a name="57"> 57: </a></span>
+<span class="nocode"><a name="58"> 58: </a></span>
+<span class="nocode"><a name="59"> 59: </a></span>    public void testAddPictures(){
+<span class="nocode"><a name="60"> 60: </a></span>        HSSFWorkbook wb = new HSSFWorkbook();
+<span class="nocode"><a name="61"> 61: </a></span>        
+<span class="nocode"><a name="62"> 62: </a></span>        HSSFSheet sh = wb.createSheet(&quot;Pictures&quot;);
+<span class="nocode"><a name="63"> 63: </a></span>        HSSFPatriarch dr = sh.createDrawingPatriarch();
+<span class="nocode"><a name="64"> 64: </a></span>        assertEquals(0, dr.getChildren().size());
+<span class="nocode"><a name="65"> 65: </a></span>        HSSFClientAnchor anchor = wb.getCreationHelper().createClientAnchor();
+<span class="nocode"><a name="66"> 66: </a></span>
+<span class="nocode"><a name="67"> 67: </a></span>        //register a picture
+<span class="nocode"><a name="68"> 68: </a></span>        byte[] data1 = new byte[]{1, 2, 3};
+<span class="nocode"><a name="69"> 69: </a></span>        int idx1 = wb.addPicture(data1, Workbook.PICTURE_TYPE_JPEG);
+<span class="nocode"><a name="70"> 70: </a></span>        assertEquals(1, idx1);
+<span class="nocode"><a name="71"> 71: </a></span>        HSSFPicture p1 = dr.createPicture(anchor, idx1);
+<span class="nocode"><a name="72"> 72: </a></span>        assertTrue(Arrays.equals(data1, p1.getPictureData().getData()));
+<span class="nocode"><a name="73"> 73: </a></span>
+<span class="nocode"><a name="74"> 74: </a></span>        // register another one
+<span class="nocode"><a name="75"> 75: </a></span>        byte[] data2 = new byte[]{4, 5, 6};
+<span class="nocode"><a name="76"> 76: </a></span>        int idx2 = wb.addPicture(data2, Workbook.PICTURE_TYPE_JPEG);
+<span class="nocode"><a name="77"> 77: </a></span>        assertEquals(2, idx2);
+<span class="nocode"><a name="78"> 78: </a></span>        HSSFPicture p2 = dr.createPicture(anchor, idx2);
+<span class="nocode"><a name="79"> 79: </a></span>        assertEquals(2, dr.getChildren().size());
+<span class="nocode"><a name="80"> 80: </a></span>        assertTrue(Arrays.equals(data2, p2.getPictureData().getData()));
+<span class="nocode"><a name="81"> 81: </a></span>
+<span class="nocode"><a name="82"> 82: </a></span>        // confirm that HSSFPatriarch.getChildren() returns two picture shapes 
+<span class="nocode"><a name="83"> 83: </a></span>        assertTrue(Arrays.equals(data1, ((HSSFPicture)dr.getChildren().get(0)).getPictureData().getData()));
+<span class="nocode"><a name="84"> 84: </a></span>        assertTrue(Arrays.equals(data2, ((HSSFPicture)dr.getChildren().get(1)).getPictureData().getData()));
+<span class="nocode"><a name="85"> 85: </a></span>
+<span class="nocode"><a name="86"> 86: </a></span>        // write, read back and verify that our pictures are there
+<span class="nocode"><a name="87"> 87: </a></span>        wb = HSSFTestDataSamples.writeOutAndReadBack(wb);
+<span class="nocode"><a name="88"> 88: </a></span>        List&lt;? extends PictureData&gt; lst2 =  wb.getAllPictures();
+<span class="nocode"><a name="89"> 89: </a></span>        assertEquals(2, lst2.size());
+<span class="nocode"><a name="90"> 90: </a></span>        assertTrue(Arrays.equals(data1, lst2.get(0).getData()));
+<span class="nocode"><a name="91"> 91: </a></span>        assertTrue(Arrays.equals(data2, lst2.get(1).getData()));
+<span class="nocode"><a name="92"> 92: </a></span>
+<span class="nocode"><a name="93"> 93: </a></span>        // confirm that the pictures are in the Sheet's drawing
+<span class="nocode"><a name="94"> 94: </a></span>        sh = wb.getSheet(&quot;Pictures&quot;);
+<span class="nocode"><a name="95"> 95: </a></span>        dr = sh.createDrawingPatriarch();
+<span class="nocode"><a name="96"> 96: </a></span>        assertEquals(2, dr.getChildren().size());
+<span class="nocode"><a name="97"> 97: </a></span>        assertTrue(Arrays.equals(data1, ((HSSFPicture)dr.getChildren().get(0)).getPictureData().getData()));
+<span class="nocode"><a name="98"> 98: </a></span>        assertTrue(Arrays.equals(data2, ((HSSFPicture)dr.getChildren().get(1)).getPictureData().getData()));
+<span class="nocode"><a name="99"> 99: </a></span>
+<span class="nocode"><a name="100">100: </a></span>        // add a third picture
+<span class="nocode"><a name="101">101: </a></span>        byte[] data3 = new byte[]{7, 8, 9};
+<span class="nocode"><a name="102">102: </a></span>        // picture index must increment across write-read
+<span class="nocode"><a name="103">103: </a></span>        int idx3 = wb.addPicture(data3, Workbook.PICTURE_TYPE_JPEG);
+<span class="nocode"><a name="104">104: </a></span>        assertEquals(3, idx3);
+<span class="nocode"><a name="105">105: </a></span>        HSSFPicture p3 = dr.createPicture(anchor, idx3);
+<span class="nocode"><a name="106">106: </a></span>        assertTrue(Arrays.equals(data3, p3.getPictureData().getData()));
+<span class="nocode"><a name="107">107: </a></span>        assertEquals(3, dr.getChildren().size());
+<span class="nocode"><a name="108">108: </a></span>        assertTrue(Arrays.equals(data1, ((HSSFPicture)dr.getChildren().get(0)).getPictureData().getData()));
+<span class="nocode"><a name="109">109: </a></span>        assertTrue(Arrays.equals(data2, ((HSSFPicture)dr.getChildren().get(1)).getPictureData().getData()));
+<span class="nocode"><a name="110">110: </a></span>        assertTrue(Arrays.equals(data3, ((HSSFPicture)dr.getChildren().get(2)).getPictureData().getData()));
+<span class="nocode"><a name="111">111: </a></span>
+<span class="nocode"><a name="112">112: </a></span>        // write and read again
+<span class="nocode"><a name="113">113: </a></span>        wb = HSSFTestDataSamples.writeOutAndReadBack(wb);
+<span class="nocode"><a name="114">114: </a></span>        List&lt;? extends PictureData&gt; lst3 =  wb.getAllPictures();
+<span class="nocode"><a name="115">115: </a></span>        // all three should be there
+<span class="nocode"><a name="116">116: </a></span>        assertEquals(3, lst3.size());
+<span class="nocode"><a name="117">117: </a></span>        assertTrue(Arrays.equals(data1, lst3.get(0).getData()));
+<span class="nocode"><a name="118">118: </a></span>        assertTrue(Arrays.equals(data2, lst3.get(1).getData()));
+<span class="nocode"><a name="119">119: </a></span>        assertTrue(Arrays.equals(data3, lst3.get(2).getData()));
+<span class="nocode"><a name="120">120: </a></span>
+<span class="nocode"><a name="121">121: </a></span>        sh = wb.getSheet(&quot;Pictures&quot;);
+<span class="nocode"><a name="122">122: </a></span>        dr = sh.createDrawingPatriarch();
+<span class="nocode"><a name="123">123: </a></span>        assertEquals(3, dr.getChildren().size());
+<span class="nocode"><a name="124">124: </a></span>
+<span class="nocode"><a name="125">125: </a></span>        // forth picture
+<span class="nocode"><a name="126">126: </a></span>        byte[] data4 = new byte[]{10, 11, 12};
+<span class="nocode"><a name="127">127: </a></span>        int idx4 = wb.addPicture(data4, Workbook.PICTURE_TYPE_JPEG);
+<span class="nocode"><a name="128">128: </a></span>        assertEquals(4, idx4);
+<span class="nocode"><a name="129">129: </a></span>        dr.createPicture(anchor, idx4);
+<span class="nocode"><a name="130">130: </a></span>        assertEquals(4, dr.getChildren().size());
+<span class="nocode"><a name="131">131: </a></span>        assertTrue(Arrays.equals(data1, ((HSSFPicture)dr.getChildren().get(0)).getPictureData().getData()));
+<span class="nocode"><a name="132">132: </a></span>        assertTrue(Arrays.equals(data2, ((HSSFPicture)dr.getChildren().get(1)).getPictureData().getData()));
+<span class="nocode"><a name="133">133: </a></span>        assertTrue(Arrays.equals(data3, ((HSSFPicture)dr.getChildren().get(2)).getPictureData().getData()));
+<span class="nocode"><a name="134">134: </a></span>        assertTrue(Arrays.equals(data4, ((HSSFPicture)dr.getChildren().get(3)).getPictureData().getData()));
+<span class="nocode"><a name="135">135: </a></span>
+<span class="nocode"><a name="136">136: </a></span>        wb = HSSFTestDataSamples.writeOutAndReadBack(wb);
+<span class="nocode"><a name="137">137: </a></span>        List&lt;? extends PictureData&gt; lst4 =  wb.getAllPictures();
+<span class="nocode"><a name="138">138: </a></span>        assertEquals(4, lst4.size());
+<span class="nocode"><a name="139">139: </a></span>        assertTrue(Arrays.equals(data1, lst4.get(0).getData()));
+<span class="nocode"><a name="140">140: </a></span>        assertTrue(Arrays.equals(data2, lst4.get(1).getData()));
+<span class="nocode"><a name="141">141: </a></span>        assertTrue(Arrays.equals(data3, lst4.get(2).getData()));
+<span class="nocode"><a name="142">142: </a></span>        assertTrue(Arrays.equals(data4, lst4.get(3).getData()));
+<span class="nocode"><a name="143">143: </a></span>        sh = wb.getSheet(&quot;Pictures&quot;);
+<span class="nocode"><a name="144">144: </a></span>        dr = sh.createDrawingPatriarch();
+<span class="nocode"><a name="145">145: </a></span>        assertEquals(4, dr.getChildren().size());
+<span class="nocode"><a name="146">146: </a></span>        assertTrue(Arrays.equals(data1, ((HSSFPicture)dr.getChildren().get(0)).getPictureData().getData()));
+<span class="nocode"><a name="147">147: </a></span>        assertTrue(Arrays.equals(data2, ((HSSFPicture)dr.getChildren().get(1)).getPictureData().getData()));
+<span class="nocode"><a name="148">148: </a></span>        assertTrue(Arrays.equals(data3, ((HSSFPicture)dr.getChildren().get(2)).getPictureData().getData()));
+<span class="nocode"><a name="149">149: </a></span>        assertTrue(Arrays.equals(data4, ((HSSFPicture)dr.getChildren().get(3)).getPictureData().getData()));
+<span class="nocode"><a name="150">150: </a></span>    }
+<span class="nocode"><a name="151">151: </a></span>
+<span class="nocode"><a name="152">152: </a></span>
+<span class="nocode"><a name="153">153: </a></span>public TestHSSFPicture (String name) {super(name, HSSFITestDataProvider.instance);}
+<span class="nocode"><a name="154">154: </a></span>}
+</pre><table class="mutation_table" summary="Mutations">
+<tr><th>ID</th><th>Line</th><th>Type</th><th>Detected</th></tr><tr><td>27309</td><td><a href="#41">41</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27308</td><td><a href="#41">41</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27310</td><td><a href="#41">41(1)</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27311</td><td><a href="#41">41(1)</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27314</td><td><a href="#41">41(2)</a></td><td>Replace a constant (Replace 848 with 847(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27312</td><td><a href="#41">41(2)</a></td><td>Replace a constant (Replace 848 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27313</td><td><a href="#41">41(2)</a></td><td>Replace a constant (Replace 848 with 849(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27316</td><td><a href="#41">41(3)</a></td><td>Replace a constant (Replace 240 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27315</td><td><a href="#41">41(3)</a></td><td>Replace a constant (Replace 240 with 239(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27317</td><td><a href="#41">41(3)</a></td><td>Replace a constant (Replace 240 with 241(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27319</td><td><a href="#41">41(4)</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27318</td><td><a href="#41">41(4)</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27321</td><td><a href="#41">41(5)</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27320</td><td><a href="#41">41(5)</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27322</td><td><a href="#41">41(6)</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27323</td><td><a href="#41">41(6)</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27325</td><td><a href="#41">41(7)</a></td><td>Replace a constant (Replace 9 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27326</td><td><a href="#41">41(7)</a></td><td>Replace a constant (Replace 9 with 8(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27324</td><td><a href="#41">41(7)</a></td><td>Replace a constant (Replace 9 with 10(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27327</td><td><a href="#41">41</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>27328</td><td><a href="#49">49</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27329</td><td><a href="#50">50</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27330</td><td><a href="#52">52</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27331</td><td><a href="#53">53</a></td><td>Replace a constant (Replace 6 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>27332</td><td><a href="#53">53</a></td><td>Replace a constant (Replace 6 with 7(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>27333</td><td><a href="#53">53</a></td><td>Replace a constant (Replace 6 with 5(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>27334</td><td><a href="#53">53</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27335</td><td><a href="#54">54</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27336</td><td><a href="#55">55</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>27337</td><td><a href="#62">62</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27338</td><td><a href="#63">63</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27340</td><td><a href="#64">64</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27339</td><td><a href="#64">64</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27341</td><td><a href="#64">64</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27342</td><td><a href="#64">64(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>27343</td><td><a href="#64">64(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>27344</td><td><a href="#65">65</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27345</td><td><a href="#65">65(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27348</td><td><a href="#68">68</a></td><td>Replace a constant (Replace 3 with 4(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>27347</td><td><a href="#68">68</a></td><td>Replace a constant (Replace 3 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27346</td><td><a href="#68">68</a></td><td>Replace a constant (Replace 3 with 2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27349</td><td><a href="#68">68(1)</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>27350</td><td><a href="#68">68(1)</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27352</td><td><a href="#68">68(2)</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>27351</td><td><a href="#68">68(2)</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>27353</td><td><a href="#68">68(3)</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>27354</td><td><a href="#68">68(3)</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>27355</td><td><a href="#68">68(4)</a></td><td>Replace a constant (Replace 2 with 3(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>27356</td><td><a href="#68">68(4)</a></td><td>Replace a constant (Replace 2 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>27357</td><td><a href="#68">68(4)</a></td><td>Replace a constant (Replace 2 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>27358</td><td><a href="#68">68(5)</a></td><td>Replace a constant (Replace 2 with 3(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27360</td><td><a href="#68">68(5)</a></td><td>Replace a constant (Replace 2 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>27359</td><td><a href="#68">68(5)</a></td><td>Replace a constant (Replace 2 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>27361</td><td><a href="#68">68(6)</a></td><td>Replace a constant (Replace 3 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>27362</td><td><a href="#68">68(6)</a></td><td>Replace a constant (Replace 3 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>27363</td><td><a href="#68">68(6)</a></td><td>Replace a constant (Replace 3 with 4(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>27365</td><td><a href="#69">69</a></td><td>Replace a constant (Replace 5 with 6(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>27364</td><td><a href="#69">69</a></td><td>Replace a constant (Replace 5 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27366</td><td><a href="#69">69</a></td><td>Replace a constant (Replace 5 with 4(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27367</td><td><a href="#69">69</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27369</td><td><a href="#70">70</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27368</td><td><a href="#70">70</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27370</td><td><a href="#70">70</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>27371</td><td><a href="#71">71</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27372</td><td><a href="#72">72</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27373</td><td><a href="#72">72(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27374</td><td><a href="#72">72(2)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27375</td><td><a href="#72">72(3)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>27376</td><td><a href="#75">75</a></td><td>Replace a constant (Replace 3 with 2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27378</td><td><a href="#75">75</a></td><td>Replace a constant (Replace 3 with 4(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>27377</td><td><a href="#75">75</a></td><td>Replace a constant (Replace 3 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27379</td><td><a href="#75">75(1)</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>27380</td><td><a href="#75">75(1)</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27381</td><td><a href="#75">75(2)</a></td><td>Replace a constant (Replace 4 with 3(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>27382</td><td><a href="#75">75(2)</a></td><td>Replace a constant (Replace 4 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>27383</td><td><a href="#75">75(2)</a></td><td>Replace a constant (Replace 4 with 5(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>27384</td><td><a href="#75">75(3)</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>27385</td><td><a href="#75">75(3)</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>27386</td><td><a href="#75">75(4)</a></td><td>Replace a constant (Replace 5 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>27388</td><td><a href="#75">75(4)</a></td><td>Replace a constant (Replace 5 with 4(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>27387</td><td><a href="#75">75(4)</a></td><td>Replace a constant (Replace 5 with 6(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>27389</td><td><a href="#75">75(5)</a></td><td>Replace a constant (Replace 2 with 3(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27390</td><td><a href="#75">75(5)</a></td><td>Replace a constant (Replace 2 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>27391</td><td><a href="#75">75(5)</a></td><td>Replace a constant (Replace 2 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>27393</td><td><a href="#75">75(6)</a></td><td>Replace a constant (Replace 6 with 7(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>27394</td><td><a href="#75">75(6)</a></td><td>Replace a constant (Replace 6 with 5(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>27392</td><td><a href="#75">75(6)</a></td><td>Replace a constant (Replace 6 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>27396</td><td><a href="#76">76</a></td><td>Replace a constant (Replace 5 with 6(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>27395</td><td><a href="#76">76</a></td><td>Replace a constant (Replace 5 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27397</td><td><a href="#76">76</a></td><td>Replace a constant (Replace 5 with 4(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27398</td><td><a href="#76">76</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27400</td><td><a href="#77">77</a></td><td>Replace a constant (Replace 2 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27399</td><td><a href="#77">77</a></td><td>Replace a constant (Replace 2 with 3(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27401</td><td><a href="#77">77</a></td><td>Replace a constant (Replace 2 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27402</td><td><a href="#77">77</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>27403</td><td><a href="#78">78</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27405</td><td><a href="#79">79</a></td><td>Replace a constant (Replace 2 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27406</td><td><a href="#79">79</a></td><td>Replace a constant (Replace 2 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27404</td><td><a href="#79">79</a></td><td>Replace a constant (Replace 2 with 3(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27407</td><td><a href="#79">79</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27408</td><td><a href="#79">79(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27409</td><td><a href="#79">79(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>27410</td><td><a href="#80">80</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27411</td><td><a href="#80">80(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27412</td><td><a href="#80">80(2)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27413</td><td><a href="#80">80(3)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>27415</td><td><a href="#83">83</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27416</td><td><a href="#83">83</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27414</td><td><a href="#83">83</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27417</td><td><a href="#83">83(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27418</td><td><a href="#83">83(2)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27419</td><td><a href="#83">83(3)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27420</td><td><a href="#83">83(4)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27421</td><td><a href="#83">83(5)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>27424</td><td><a href="#84">84</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27423</td><td><a href="#84">84</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27422</td><td><a href="#84">84</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27425</td><td><a href="#84">84(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27426</td><td><a href="#84">84(2)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27427</td><td><a href="#84">84(3)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27428</td><td><a href="#84">84(4)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27429</td><td><a href="#84">84(5)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>27430</td><td><a href="#87">87</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27431</td><td><a href="#88">88</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27432</td><td><a href="#89">89</a></td><td>Replace a constant (Replace 2 with 3(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27434</td><td><a href="#89">89</a></td><td>Replace a constant (Replace 2 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27433</td><td><a href="#89">89</a></td><td>Replace a constant (Replace 2 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27435</td><td><a href="#89">89</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27436</td><td><a href="#89">89(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>27438</td><td><a href="#90">90</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27437</td><td><a href="#90">90</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27439</td><td><a href="#90">90</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27440</td><td><a href="#90">90(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27441</td><td><a href="#90">90(2)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27442</td><td><a href="#90">90(3)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>27443</td><td><a href="#91">91</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27444</td><td><a href="#91">91</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27445</td><td><a href="#91">91</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27446</td><td><a href="#91">91(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27447</td><td><a href="#91">91(2)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27448</td><td><a href="#91">91(3)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>27449</td><td><a href="#94">94</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27450</td><td><a href="#95">95</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27452</td><td><a href="#96">96</a></td><td>Replace a constant (Replace 2 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27453</td><td><a href="#96">96</a></td><td>Replace a constant (Replace 2 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27451</td><td><a href="#96">96</a></td><td>Replace a constant (Replace 2 with 3(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27454</td><td><a href="#96">96</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27455</td><td><a href="#96">96(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27456</td><td><a href="#96">96(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>27459</td><td><a href="#97">97</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27458</td><td><a href="#97">97</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27457</td><td><a href="#97">97</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27460</td><td><a href="#97">97(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27461</td><td><a href="#97">97(2)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27462</td><td><a href="#97">97(3)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27463</td><td><a href="#97">97(4)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27464</td><td><a href="#97">97(5)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>27467</td><td><a href="#98">98</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27466</td><td><a href="#98">98</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27465</td><td><a href="#98">98</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27468</td><td><a href="#98">98(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27469</td><td><a href="#98">98(2)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27470</td><td><a href="#98">98(3)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27471</td><td><a href="#98">98(4)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27472</td><td><a href="#98">98(5)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>27475</td><td><a href="#101">101</a></td><td>Replace a constant (Replace 3 with 4(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>27474</td><td><a href="#101">101</a></td><td>Replace a constant (Replace 3 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27473</td><td><a href="#101">101</a></td><td>Replace a constant (Replace 3 with 2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27477</td><td><a href="#101">101(1)</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27476</td><td><a href="#101">101(1)</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>27480</td><td><a href="#101">101(2)</a></td><td>Replace a constant (Replace 7 with 8(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>27478</td><td><a href="#101">101(2)</a></td><td>Replace a constant (Replace 7 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>27479</td><td><a href="#101">101(2)</a></td><td>Replace a constant (Replace 7 with 6(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>27482</td><td><a href="#101">101(3)</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>27481</td><td><a href="#101">101(3)</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>27484</td><td><a href="#101">101(4)</a></td><td>Replace a constant (Replace 8 with 7(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>27485</td><td><a href="#101">101(4)</a></td><td>Replace a constant (Replace 8 with 9(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>27483</td><td><a href="#101">101(4)</a></td><td>Replace a constant (Replace 8 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>27486</td><td><a href="#101">101(5)</a></td><td>Replace a constant (Replace 2 with 3(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27488</td><td><a href="#101">101(5)</a></td><td>Replace a constant (Replace 2 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>27487</td><td><a href="#101">101(5)</a></td><td>Replace a constant (Replace 2 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>27491</td><td><a href="#101">101(6)</a></td><td>Replace a constant (Replace 9 with 8(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>27489</td><td><a href="#101">101(6)</a></td><td>Replace a constant (Replace 9 with 10(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>27490</td><td><a href="#101">101(6)</a></td><td>Replace a constant (Replace 9 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>27494</td><td><a href="#103">103</a></td><td>Replace a constant (Replace 5 with 4(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27493</td><td><a href="#103">103</a></td><td>Replace a constant (Replace 5 with 6(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>27492</td><td><a href="#103">103</a></td><td>Replace a constant (Replace 5 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27495</td><td><a href="#103">103</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27497</td><td><a href="#104">104</a></td><td>Replace a constant (Replace 3 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27498</td><td><a href="#104">104</a></td><td>Replace a constant (Replace 3 with 4(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27496</td><td><a href="#104">104</a></td><td>Replace a constant (Replace 3 with 2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27499</td><td><a href="#104">104</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>27500</td><td><a href="#105">105</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27501</td><td><a href="#106">106</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27502</td><td><a href="#106">106(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27503</td><td><a href="#106">106(2)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27504</td><td><a href="#106">106(3)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>27505</td><td><a href="#107">107</a></td><td>Replace a constant (Replace 3 with 2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27507</td><td><a href="#107">107</a></td><td>Replace a constant (Replace 3 with 4(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27506</td><td><a href="#107">107</a></td><td>Replace a constant (Replace 3 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27508</td><td><a href="#107">107</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27509</td><td><a href="#107">107(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27510</td><td><a href="#107">107(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>27512</td><td><a href="#108">108</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27513</td><td><a href="#108">108</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27511</td><td><a href="#108">108</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27514</td><td><a href="#108">108(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27515</td><td><a href="#108">108(2)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27516</td><td><a href="#108">108(3)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27517</td><td><a href="#108">108(4)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27518</td><td><a href="#108">108(5)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>27521</td><td><a href="#109">109</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27520</td><td><a href="#109">109</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27519</td><td><a href="#109">109</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27522</td><td><a href="#109">109(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27523</td><td><a href="#109">109(2)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27524</td><td><a href="#109">109(3)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27525</td><td><a href="#109">109(4)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27526</td><td><a href="#109">109(5)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>27530</td><td><a href="#110">110</a></td><td>Replace a constant (Replace 2 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27529</td><td><a href="#110">110</a></td><td>Replace a constant (Replace 2 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27528</td><td><a href="#110">110</a></td><td>Replace a constant (Replace 2 with 3(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27527</td><td><a href="#110">110</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27531</td><td><a href="#110">110(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27532</td><td><a href="#110">110(2)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27533</td><td><a href="#110">110(3)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27534</td><td><a href="#110">110(4)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27535</td><td><a href="#110">110(5)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>27536</td><td><a href="#113">113</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27537</td><td><a href="#114">114</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27538</td><td><a href="#116">116</a></td><td>Replace a constant (Replace 3 with 2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27539</td><td><a href="#116">116</a></td><td>Replace a constant (Replace 3 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27540</td><td><a href="#116">116</a></td><td>Replace a constant (Replace 3 with 4(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27541</td><td><a href="#116">116</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27542</td><td><a href="#116">116(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>27544</td><td><a href="#117">117</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27543</td><td><a href="#117">117</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27545</td><td><a href="#117">117</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27546</td><td><a href="#117">117(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27547</td><td><a href="#117">117(2)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27548</td><td><a href="#117">117(3)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>27550</td><td><a href="#118">118</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27549</td><td><a href="#118">118</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27551</td><td><a href="#118">118</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27552</td><td><a href="#118">118(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27553</td><td><a href="#118">118(2)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27554</td><td><a href="#118">118(3)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>27555</td><td><a href="#119">119</a></td><td>Replace a constant (Replace 2 with 3(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27557</td><td><a href="#119">119</a></td><td>Replace a constant (Replace 2 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27556</td><td><a href="#119">119</a></td><td>Replace a constant (Replace 2 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27558</td><td><a href="#119">119</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27559</td><td><a href="#119">119(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27560</td><td><a href="#119">119(2)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27561</td><td><a href="#119">119(3)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>27562</td><td><a href="#121">121</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27563</td><td><a href="#122">122</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27566</td><td><a href="#123">123</a></td><td>Replace a constant (Replace 3 with 4(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27565</td><td><a href="#123">123</a></td><td>Replace a constant (Replace 3 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27564</td><td><a href="#123">123</a></td><td>Replace a constant (Replace 3 with 2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27567</td><td><a href="#123">123</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27568</td><td><a href="#123">123(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27569</td><td><a href="#123">123(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>27570</td><td><a href="#126">126</a></td><td>Replace a constant (Replace 3 with 2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27572</td><td><a href="#126">126</a></td><td>Replace a constant (Replace 3 with 4(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>27571</td><td><a href="#126">126</a></td><td>Replace a constant (Replace 3 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27573</td><td><a href="#126">126(1)</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>27574</td><td><a href="#126">126(1)</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27576</td><td><a href="#126">126(2)</a></td><td>Replace a constant (Replace 10 with 9(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>27575</td><td><a href="#126">126(2)</a></td><td>Replace a constant (Replace 10 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>27577</td><td><a href="#126">126(2)</a></td><td>Replace a constant (Replace 10 with 11(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>27579</td><td><a href="#126">126(3)</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>27578</td><td><a href="#126">126(3)</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>27582</td><td><a href="#126">126(4)</a></td><td>Replace a constant (Replace 11 with 12(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>27580</td><td><a href="#126">126(4)</a></td><td>Replace a constant (Replace 11 with 10(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>27581</td><td><a href="#126">126(4)</a></td><td>Replace a constant (Replace 11 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>27585</td><td><a href="#126">126(5)</a></td><td>Replace a constant (Replace 2 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>27583</td><td><a href="#126">126(5)</a></td><td>Replace a constant (Replace 2 with 3(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27584</td><td><a href="#126">126(5)</a></td><td>Replace a constant (Replace 2 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>27587</td><td><a href="#126">126(6)</a></td><td>Replace a constant (Replace 12 with 13(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>27586</td><td><a href="#126">126(6)</a></td><td>Replace a constant (Replace 12 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>27588</td><td><a href="#126">126(6)</a></td><td>Replace a constant (Replace 12 with 11(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>27590</td><td><a href="#127">127</a></td><td>Replace a constant (Replace 5 with 6(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>27589</td><td><a href="#127">127</a></td><td>Replace a constant (Replace 5 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27591</td><td><a href="#127">127</a></td><td>Replace a constant (Replace 5 with 4(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27592</td><td><a href="#127">127</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27595</td><td><a href="#128">128</a></td><td>Replace a constant (Replace 4 with 5(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27594</td><td><a href="#128">128</a></td><td>Replace a constant (Replace 4 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27593</td><td><a href="#128">128</a></td><td>Replace a constant (Replace 4 with 3(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27596</td><td><a href="#128">128</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>27597</td><td><a href="#129">129</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27598</td><td><a href="#130">130</a></td><td>Replace a constant (Replace 4 with 3(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27599</td><td><a href="#130">130</a></td><td>Replace a constant (Replace 4 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27600</td><td><a href="#130">130</a></td><td>Replace a constant (Replace 4 with 5(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27601</td><td><a href="#130">130</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27602</td><td><a href="#130">130(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27603</td><td><a href="#130">130(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>27606</td><td><a href="#131">131</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27605</td><td><a href="#131">131</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27604</td><td><a href="#131">131</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27607</td><td><a href="#131">131(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27608</td><td><a href="#131">131(2)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27609</td><td><a href="#131">131(3)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27610</td><td><a href="#131">131(4)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27611</td><td><a href="#131">131(5)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>27614</td><td><a href="#132">132</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27613</td><td><a href="#132">132</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27612</td><td><a href="#132">132</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27615</td><td><a href="#132">132(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27616</td><td><a href="#132">132(2)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27617</td><td><a href="#132">132(3)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27618</td><td><a href="#132">132(4)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27619</td><td><a href="#132">132(5)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>27623</td><td><a href="#133">133</a></td><td>Replace a constant (Replace 2 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27621</td><td><a href="#133">133</a></td><td>Replace a constant (Replace 2 with 3(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27622</td><td><a href="#133">133</a></td><td>Replace a constant (Replace 2 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27620</td><td><a href="#133">133</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27624</td><td><a href="#133">133(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27625</td><td><a href="#133">133(2)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27626</td><td><a href="#133">133(3)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27627</td><td><a href="#133">133(4)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27628</td><td><a href="#133">133(5)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>27631</td><td><a href="#134">134</a></td><td>Replace a constant (Replace 3 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27630</td><td><a href="#134">134</a></td><td>Replace a constant (Replace 3 with 2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27632</td><td><a href="#134">134</a></td><td>Replace a constant (Replace 3 with 4(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27629</td><td><a href="#134">134</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27633</td><td><a href="#134">134(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27634</td><td><a href="#134">134(2)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27635</td><td><a href="#134">134(3)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27636</td><td><a href="#134">134(4)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27637</td><td><a href="#134">134(5)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>27638</td><td><a href="#136">136</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27639</td><td><a href="#137">137</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27641</td><td><a href="#138">138</a></td><td>Replace a constant (Replace 4 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27640</td><td><a href="#138">138</a></td><td>Replace a constant (Replace 4 with 3(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27642</td><td><a href="#138">138</a></td><td>Replace a constant (Replace 4 with 5(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27643</td><td><a href="#138">138</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27644</td><td><a href="#138">138(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>27646</td><td><a href="#139">139</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27645</td><td><a href="#139">139</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27647</td><td><a href="#139">139</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27648</td><td><a href="#139">139(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27649</td><td><a href="#139">139(2)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27650</td><td><a href="#139">139(3)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>27651</td><td><a href="#140">140</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27652</td><td><a href="#140">140</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27653</td><td><a href="#140">140</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27654</td><td><a href="#140">140(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27655</td><td><a href="#140">140(2)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27656</td><td><a href="#140">140(3)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>27657</td><td><a href="#141">141</a></td><td>Replace a constant (Replace 2 with 3(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27658</td><td><a href="#141">141</a></td><td>Replace a constant (Replace 2 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27659</td><td><a href="#141">141</a></td><td>Replace a constant (Replace 2 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27660</td><td><a href="#141">141</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27661</td><td><a href="#141">141(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27662</td><td><a href="#141">141(2)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27663</td><td><a href="#141">141(3)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>27666</td><td><a href="#142">142</a></td><td>Replace a constant (Replace 3 with 4(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27665</td><td><a href="#142">142</a></td><td>Replace a constant (Replace 3 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27664</td><td><a href="#142">142</a></td><td>Replace a constant (Replace 3 with 2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27667</td><td><a href="#142">142</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27668</td><td><a href="#142">142(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27669</td><td><a href="#142">142(2)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27670</td><td><a href="#142">142(3)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>27671</td><td><a href="#143">143</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27672</td><td><a href="#144">144</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27675</td><td><a href="#145">145</a></td><td>Replace a constant (Replace 4 with 5(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27674</td><td><a href="#145">145</a></td><td>Replace a constant (Replace 4 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27673</td><td><a href="#145">145</a></td><td>Replace a constant (Replace 4 with 3(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27676</td><td><a href="#145">145</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27677</td><td><a href="#145">145(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27678</td><td><a href="#145">145(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>27681</td><td><a href="#146">146</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27680</td><td><a href="#146">146</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27679</td><td><a href="#146">146</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27682</td><td><a href="#146">146(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27683</td><td><a href="#146">146(2)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27684</td><td><a href="#146">146(3)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27685</td><td><a href="#146">146(4)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27686</td><td><a href="#146">146(5)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>27689</td><td><a href="#147">147</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27688</td><td><a href="#147">147</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27687</td><td><a href="#147">147</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27690</td><td><a href="#147">147(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27691</td><td><a href="#147">147(2)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27692</td><td><a href="#147">147(3)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27693</td><td><a href="#147">147(4)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27694</td><td><a href="#147">147(5)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>27697</td><td><a href="#148">148</a></td><td>Replace a constant (Replace 2 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27696</td><td><a href="#148">148</a></td><td>Replace a constant (Replace 2 with 3(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27698</td><td><a href="#148">148</a></td><td>Replace a constant (Replace 2 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27695</td><td><a href="#148">148</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27699</td><td><a href="#148">148(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27700</td><td><a href="#148">148(2)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27701</td><td><a href="#148">148(3)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27702</td><td><a href="#148">148(4)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27703</td><td><a href="#148">148(5)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>27707</td><td><a href="#149">149</a></td><td>Replace a constant (Replace 3 with 4(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27706</td><td><a href="#149">149</a></td><td>Replace a constant (Replace 3 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27705</td><td><a href="#149">149</a></td><td>Replace a constant (Replace 3 with 2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>27704</td><td><a href="#149">149</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27708</td><td><a href="#149">149(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27709</td><td><a href="#149">149(2)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27710</td><td><a href="#149">149(3)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27711</td><td><a href="#149">149(4)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>27712</td><td><a href="#149">149(5)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+</table>
+</body>
+</html>

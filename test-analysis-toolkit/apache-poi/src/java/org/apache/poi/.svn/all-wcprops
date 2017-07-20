@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/repos/asf/!svn/ver/1306781/poi/trunk/src/java/org/apache/poi
+END
+POIOLE2TextExtractor.java
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/repos/asf/!svn/ver/1155336/poi/trunk/src/java/org/apache/poi/POIOLE2TextExtractor.java
+END
+EncryptedDocumentException.java
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/repos/asf/!svn/ver/712084/poi/trunk/src/java/org/apache/poi/EncryptedDocumentException.java
+END
+OldFileFormatException.java
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/repos/asf/!svn/ver/775526/poi/trunk/src/java/org/apache/poi/OldFileFormatException.java
+END
+POIDocument.java
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/repos/asf/!svn/ver/1212511/poi/trunk/src/java/org/apache/poi/POIDocument.java
+END
+POITextExtractor.java
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/repos/asf/!svn/ver/712084/poi/trunk/src/java/org/apache/poi/POITextExtractor.java
+END

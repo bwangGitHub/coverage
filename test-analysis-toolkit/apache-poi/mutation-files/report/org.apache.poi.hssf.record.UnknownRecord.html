@@ -1,0 +1,338 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN
+"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>
+org.apache.poi.hssf.record.UnknownRecord
+</title>
+<link href="prettify.css" type="text/css" rel="stylesheet" />
+<script type="text/javascript" src="prettify.js"></script>
+</head>
+<body onload="prettyPrint()">
+<h2>Javalanche report for class:<br/> org.apache.poi.hssf.record.UnknownRecord </h2><pre class="prettyprint" style="border: 1px solid #888;padding: 2px"><span class="nocode"><a name="1">  1: </a></span>/* ====================================================================
+<span class="nocode"><a name="2">  2: </a></span>   Licensed to the Apache Software Foundation (ASF) under one or more
+<span class="nocode"><a name="3">  3: </a></span>   contributor license agreements.  See the NOTICE file distributed with
+<span class="nocode"><a name="4">  4: </a></span>   this work for additional information regarding copyright ownership.
+<span class="nocode"><a name="5">  5: </a></span>   The ASF licenses this file to You under the Apache License, Version 2.0
+<span class="nocode"><a name="6">  6: </a></span>   (the &quot;License&quot;); you may not use this file except in compliance with
+<span class="nocode"><a name="7">  7: </a></span>   the License.  You may obtain a copy of the License at
+<span class="nocode"><a name="8">  8: </a></span>
+<span class="nocode"><a name="9">  9: </a></span>       http://www.apache.org/licenses/LICENSE-2.0
+<span class="nocode"><a name="10"> 10: </a></span>
+<span class="nocode"><a name="11"> 11: </a></span>   Unless required by applicable law or agreed to in writing, software
+<span class="nocode"><a name="12"> 12: </a></span>   distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+<span class="nocode"><a name="13"> 13: </a></span>   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+<span class="nocode"><a name="14"> 14: </a></span>   See the License for the specific language governing permissions and
+<span class="nocode"><a name="15"> 15: </a></span>   limitations under the License.
+<span class="nocode"><a name="16"> 16: </a></span>==================================================================== */
+<span class="nocode"><a name="17"> 17: </a></span>
+<span class="nocode"><a name="18"> 18: </a></span>package org.apache.poi.hssf.record;
+<span class="nocode"><a name="19"> 19: </a></span>
+<span class="nocode"><a name="20"> 20: </a></span>import org.apache.poi.hssf.record.aggregates.PageSettingsBlock;
+<span class="nocode"><a name="21"> 21: </a></span>import org.apache.poi.util.HexDump;
+<span class="nocode"><a name="22"> 22: </a></span>import org.apache.poi.util.LittleEndianOutput;
+<span class="nocode"><a name="23"> 23: </a></span>
+<span class="nocode"><a name="24"> 24: </a></span>/**
+<span class="nocode"><a name="25"> 25: </a></span> * Title:        Unknown Record (for debugging)&lt;p/&gt;
+<span class="nocode"><a name="26"> 26: </a></span> * Description:  Unknown record just tells you the sid so you can figure out
+<span class="nocode"><a name="27"> 27: </a></span> *               what records you are missing.  Also helps us read/modify sheets we
+<span class="nocode"><a name="28"> 28: </a></span> *               don't know all the records to.  (HSSF leaves these alone!) &lt;p/&gt;
+<span class="nocode"><a name="29"> 29: </a></span> * Company:      SuperLink Software, Inc.&lt;P&gt;
+<span class="nocode"><a name="30"> 30: </a></span> * @author Andrew C. Oliver (acoliver at apache dot org)
+<span class="nocode"><a name="31"> 31: </a></span> * @author Jason Height (jheight at chariot dot net dot au)
+<span class="nocode"><a name="32"> 32: </a></span> * @author Glen Stampoultzis (glens at apache.org)
+<span class="nocode"><a name="33"> 33: </a></span> */
+<span class="nocode"><a name="34"> 34: </a></span>public final class UnknownRecord extends StandardRecord {
+<span class="nocode"><a name="35"> 35: </a></span>
+<span class="nocode"><a name="36"> 36: </a></span>	/*
+<span class="nocode"><a name="37"> 37: </a></span>	 * Some Record IDs used by POI as 'milestones' in the record stream
+<span class="nocode"><a name="38"> 38: </a></span>	 */
+<span class="nocode"><a name="39"> 39: </a></span>	/**
+<span class="nocode"><a name="40"> 40: </a></span>	 * seems to be part of the {@link PageSettingsBlock}. Not interpreted by POI.
+<span class="nocode"><a name="41"> 41: </a></span>	 * The name 'PRINTSIZE' was taken from OOO source.&lt;br/&gt;
+<span class="nocode"><a name="42"> 42: </a></span>	 * The few POI test samples with this record have data { 0x03, 0x00 }.
+<span class="nocode"><a name="43"> 43: </a></span>	 */
+<span class="nocode"><a name="44"> 44: </a></span>	public static final int PRINTSIZE_0033       = 0x0033;
+<span class="nocode"><a name="45"> 45: </a></span>	/**
+<span class="nocode"><a name="46"> 46: </a></span>	 * Environment-Specific Print Record
+<span class="nocode"><a name="47"> 47: </a></span>	 */
+<span class="nocode"><a name="48"> 48: </a></span>	public static final int PLS_004D             = 0x004D;
+<span class="nocode"><a name="49"> 49: </a></span>	public static final int SHEETPR_0081         = 0x0081;
+<span class="nocode"><a name="50"> 50: </a></span>	public static final int SORT_0090            = 0x0090;
+<span class="nocode"><a name="51"> 51: </a></span>	public static final int STANDARDWIDTH_0099   = 0x0099;
+<span class="nocode"><a name="52"> 52: </a></span>	public static final int SCL_00A0             = 0x00A0;
+<span class="nocode"><a name="53"> 53: </a></span>	public static final int BITMAP_00E9          = 0x00E9;
+<span class="nocode"><a name="54"> 54: </a></span>	public static final int PHONETICPR_00EF      = 0x00EF;
+<span class="nocode"><a name="55"> 55: </a></span>	public static final int LABELRANGES_015F     = 0x015F;
+<span class="nocode"><a name="56"> 56: </a></span>	public static final int QUICKTIP_0800        = 0x0800;
+<span class="nocode"><a name="57"> 57: </a></span>	public static final int SHEETEXT_0862        = 0x0862; // OOO calls this SHEETLAYOUT
+<span class="nocode"><a name="58"> 58: </a></span>	public static final int SHEETPROTECTION_0867 = 0x0867;
+<span class="nocode"><a name="59"> 59: </a></span>	public static final int HEADER_FOOTER_089C   = 0x089C;
+<span class="nocode"><a name="60"> 60: </a></span>    public static final int CODENAME_1BA         = 0x01BA;
+<span class="nocode"><a name="61"> 61: </a></span>
+<span class="nocode"><a name="62"> 62: </a></span>	private int _sid;
+<span class="nocode"><a name="63"> 63: </a></span>	private byte[] _rawData;
+<span class="nocode"><a name="64"> 64: </a></span>
+<span class="nocode"><a name="65"> 65: </a></span>	/**
+<span class="nocode"><a name="66"> 66: </a></span>	 * @param id	id of the record -not validated, just stored for serialization
+<span class="nocode"><a name="67"> 67: </a></span>	 * @param data  the data
+<span class="nocode"><a name="68"> 68: </a></span>	 */
+<span class="nocode"><a name="69"> 69: </a></span>	public UnknownRecord(int id, byte[] data) {
+<span class="nocode"><a name="70"> 70: </a></span>		_sid = id &amp; 0xFFFF;
+<span class="nocode"><a name="71"> 71: </a></span>		_rawData = data;
+<span class="nocode"><a name="72"> 72: </a></span>	}
+<span class="nocode"><a name="73"> 73: </a></span>
+<span class="nocode"><a name="74"> 74: </a></span>
+<span class="nocode"><a name="75"> 75: </a></span>	/**
+<span class="nocode"><a name="76"> 76: </a></span>	 * construct an unknown record.  No fields are interpreted and the record will
+<span class="nocode"><a name="77"> 77: </a></span>	 * be serialized in its original form more or less
+<span class="nocode"><a name="78"> 78: </a></span>	 * @param in the RecordInputstream to read the record from
+<span class="nocode"><a name="79"> 79: </a></span>	 */
+<span class="nocode"><a name="80"> 80: </a></span>	public UnknownRecord(RecordInputStream in) {
+<span class="nocode"><a name="81"> 81: </a></span>		_sid = in.getSid();
+<span class="nocode"><a name="82"> 82: </a></span>		_rawData = in.readRemainder();
+<span class="nocode"><a name="83"> 83: </a></span>		if (false &amp;&amp; getBiffName(_sid) == null) {
+<span class="nocode"><a name="84"> 84: </a></span>			// unknown sids in the range 0x0004-0x0013 are probably 'sub-records' of ObjectRecord
+<span class="nocode"><a name="85"> 85: </a></span>			// those sids are in a different number space.
+<span class="nocode"><a name="86"> 86: </a></span>			// TODO - put unknown OBJ sub-records in a different class
+<span class="nocode"><a name="87"> 87: </a></span>			System.out.println(&quot;Unknown record 0x&quot; + Integer.toHexString(_sid).toUpperCase());
+<span class="nocode"><a name="88"> 88: </a></span>		}
+<span class="nocode"><a name="89"> 89: </a></span>	}
+<span class="nocode"><a name="90"> 90: </a></span>
+<span class="nocode"><a name="91"> 91: </a></span>	/**
+<span class="nocode"><a name="92"> 92: </a></span>	 * spit the record out AS IS. no interpretation or identification
+<span class="nocode"><a name="93"> 93: </a></span>	 */
+<span class="nocode"><a name="94"> 94: </a></span>	public void serialize(LittleEndianOutput out) {
+<span class="nocode"><a name="95"> 95: </a></span>		out.write(_rawData);
+<span class="nocode"><a name="96"> 96: </a></span>	}
+<span class="nocode"><a name="97"> 97: </a></span>
+<span class="nocode"><a name="98"> 98: </a></span>	protected int getDataSize() {
+<span class="nocode"><a name="99"> 99: </a></span>		return _rawData.length;
+<span class="nocode"><a name="100">100: </a></span>	}
+<span class="nocode"><a name="101">101: </a></span>
+<span class="nocode"><a name="102">102: </a></span>	/**
+<span class="nocode"><a name="103">103: </a></span>	 * print a sort of string representation ([UNKNOWN RECORD] id = x [/UNKNOWN RECORD])
+<span class="nocode"><a name="104">104: </a></span>	 */
+<span class="nocode"><a name="105">105: </a></span>	public String toString() {
+<span class="nocode"><a name="106">106: </a></span>		String biffName = getBiffName(_sid);
+<span class="nocode"><a name="107">107: </a></span>		if (biffName == null) {
+<span class="nocode"><a name="108">108: </a></span>			biffName = &quot;UNKNOWNRECORD&quot;;
+<span class="nocode"><a name="109">109: </a></span>		}
+<span class="nocode"><a name="110">110: </a></span>		StringBuffer sb = new StringBuffer();
+<span class="nocode"><a name="111">111: </a></span>
+<span class="nocode"><a name="112">112: </a></span>		sb.append(&quot;[&quot;).append(biffName).append(&quot;] (0x&quot;);
+<span class="nocode"><a name="113">113: </a></span>		sb.append(Integer.toHexString(_sid).toUpperCase() + &quot;)\n&quot;);
+<span class="nocode"><a name="114">114: </a></span>		if (_rawData.length &gt; 0) {
+<span class="nocode"><a name="115">115: </a></span>			sb.append(&quot;  rawData=&quot;).append(HexDump.toHex(_rawData)).append(&quot;\n&quot;);
+<span class="nocode"><a name="116">116: </a></span>		}
+<span class="nocode"><a name="117">117: </a></span>		sb.append(&quot;[/&quot;).append(biffName).append(&quot;]\n&quot;);
+<span class="nocode"><a name="118">118: </a></span>		return sb.toString();
+<span class="nocode"><a name="119">119: </a></span>	}
+<span class="nocode"><a name="120">120: </a></span>
+<span class="nocode"><a name="121">121: </a></span>	public short getSid() {
+<span class="nocode"><a name="122">122: </a></span>		return (short) _sid;
+<span class="nocode"><a name="123">123: </a></span>	}
+<span class="nocode"><a name="124">124: </a></span>
+<span class="nocode"><a name="125">125: </a></span>	/**
+<span class="nocode"><a name="126">126: </a></span>	 * These BIFF record types are known but still uninterpreted by POI
+<span class="nocode"><a name="127">127: </a></span>	 *
+<span class="nocode"><a name="128">128: </a></span>	 * @return the documented name of this BIFF record type, &lt;code&gt;null&lt;/code&gt; if unknown to POI
+<span class="nocode"><a name="129">129: </a></span>	 */
+<span class="nocode"><a name="130">130: </a></span>	public static String getBiffName(int sid) {
+<span class="nocode"><a name="131">131: </a></span>		// Note to POI developers:
+<span class="nocode"><a name="132">132: </a></span>		// Make sure you delete the corresponding entry from
+<span class="nocode"><a name="133">133: </a></span>		// this method any time a new Record subclass is created.
+<span class="nocode"><a name="134">134: </a></span>		switch (sid) {
+<span class="nocode"><a name="135">135: </a></span>			case PRINTSIZE_0033: return &quot;PRINTSIZE&quot;;
+<span class="nocode"><a name="136">136: </a></span>			case PLS_004D: return &quot;PLS&quot;;
+<span class="nocode"><a name="137">137: </a></span>			case 0x0050: return &quot;DCON&quot;; // Data Consolidation Information
+<span class="nocode"><a name="138">138: </a></span>			case 0x007F: return &quot;IMDATA&quot;;
+<span class="nocode"><a name="139">139: </a></span>			case SHEETPR_0081: return &quot;SHEETPR&quot;;
+<span class="nocode"><a name="140">140: </a></span>			case SORT_0090: return &quot;SORT&quot;; // Sorting Options
+<span class="nocode"><a name="141">141: </a></span>			case 0x0094: return &quot;LHRECORD&quot;; // .WK? File Conversion Information
+<span class="nocode"><a name="142">142: </a></span>			case STANDARDWIDTH_0099: return &quot;STANDARDWIDTH&quot;; //Standard Column Width
+<span class="nocode"><a name="143">143: </a></span>			case SCL_00A0: return &quot;SCL&quot;; // Window Zoom Magnification
+<span class="nocode"><a name="144">144: </a></span>			case 0x00AE: return &quot;SCENMAN&quot;; // Scenario Output Data
+<span class="nocode"><a name="145">145: </a></span>
+<span class="nocode"><a name="146">146: </a></span>			case 0x00B2: return &quot;SXVI&quot;;        // (pivot table) View Item
+<span class="nocode"><a name="147">147: </a></span>			case 0x00B4: return &quot;SXIVD&quot;;       // (pivot table) Row/Column Field IDs
+<span class="nocode"><a name="148">148: </a></span>			case 0x00B5: return &quot;SXLI&quot;;        // (pivot table) Line Item Array
+<span class="nocode"><a name="149">149: </a></span>
+<span class="nocode"><a name="150">150: </a></span>			case 0x00D3: return &quot;OBPROJ&quot;;
+<span class="nocode"><a name="151">151: </a></span>			case 0x00DC: return &quot;PARAMQRY&quot;;
+<span class="nocode"><a name="152">152: </a></span>			case 0x00DE: return &quot;OLESIZE&quot;;
+<span class="nocode"><a name="153">153: </a></span>			case BITMAP_00E9: return &quot;BITMAP&quot;;
+<span class="nocode"><a name="154">154: </a></span>			case PHONETICPR_00EF: return &quot;PHONETICPR&quot;;
+<span class="nocode"><a name="155">155: </a></span>			case 0x00F1: return &quot;SXEX&quot;;        // PivotTable View Extended Information
+<span class="nocode"><a name="156">156: </a></span>
+<span class="nocode"><a name="157">157: </a></span>			case LABELRANGES_015F: return &quot;LABELRANGES&quot;;
+<span class="nocode"><a name="158">158: </a></span>			case 0x01BA: return &quot;CODENAME&quot;;
+<span class="nocode"><a name="159">159: </a></span>			case 0x01A9: return &quot;USERBVIEW&quot;;
+<span class="nocode"><a name="160">160: </a></span>			case 0x01AD: return &quot;QSI&quot;;
+<span class="nocode"><a name="161">161: </a></span>
+<span class="nocode"><a name="162">162: </a></span>			case 0x01C0: return &quot;EXCEL9FILE&quot;;
+<span class="nocode"><a name="163">163: </a></span>
+<span class="nocode"><a name="164">164: </a></span>			case 0x0802: return &quot;QSISXTAG&quot;;   // Pivot Table and Query Table Extensions
+<span class="nocode"><a name="165">165: </a></span>			case 0x0803: return &quot;DBQUERYEXT&quot;;
+<span class="nocode"><a name="166">166: </a></span>			case 0x0805: return &quot;TXTQUERY&quot;;
+<span class="nocode"><a name="167">167: </a></span>			case 0x0810: return &quot;SXVIEWEX9&quot;;  // Pivot Table Extensions
+<span class="nocode"><a name="168">168: </a></span>
+<span class="nocode"><a name="169">169: </a></span>			case 0x0812: return &quot;CONTINUEFRT&quot;;
+<span class="nocode"><a name="170">170: </a></span>			case QUICKTIP_0800: return &quot;QUICKTIP&quot;;
+<span class="nocode"><a name="171">171: </a></span>			case SHEETEXT_0862: return &quot;SHEETEXT&quot;;
+<span class="nocode"><a name="172">172: </a></span>			case 0x0863: return &quot;BOOKEXT&quot;;
+<span class="nocode"><a name="173">173: </a></span>			case 0x0864: return &quot;SXADDL&quot;;    // Pivot Table Additional Info
+<span class="nocode"><a name="174">174: </a></span>			case SHEETPROTECTION_0867: return &quot;SHEETPROTECTION&quot;;
+<span class="nocode"><a name="175">175: </a></span>			case 0x086B: return &quot;DATALABEXTCONTENTS&quot;;
+<span class="nocode"><a name="176">176: </a></span>			case 0x086C: return &quot;CELLWATCH&quot;;
+<span class="nocode"><a name="177">177: </a></span>			case 0x0874: return &quot;DROPDOWNOBJIDS&quot;;
+<span class="nocode"><a name="178">178: </a></span>			case 0x0876: return &quot;DCONN&quot;;
+<span class="nocode"><a name="179">179: </a></span>			case 0x087B: return &quot;CFEX&quot;;
+<span class="nocode"><a name="180">180: </a></span>			case 0x087C: return &quot;XFCRC&quot;;
+<span class="nocode"><a name="181">181: </a></span>			case 0x087D: return &quot;XFEXT&quot;;
+<span class="nocode"><a name="182">182: </a></span>			case 0x087F: return &quot;CONTINUEFRT12&quot;;
+<span class="nocode"><a name="183">183: </a></span>			case 0x088B: return &quot;PLV&quot;;
+<span class="nocode"><a name="184">184: </a></span>			case 0x088C: return &quot;COMPAT12&quot;;
+<span class="nocode"><a name="185">185: </a></span>			case 0x088D: return &quot;DXF&quot;;
+<span class="nocode"><a name="186">186: </a></span>			case 0x0892: return &quot;STYLEEXT&quot;;
+<span class="nocode"><a name="187">187: </a></span>			case 0x0896: return &quot;THEME&quot;;
+<span class="nocode"><a name="188">188: </a></span>			case 0x0897: return &quot;GUIDTYPELIB&quot;;
+<span class="nocode"><a name="189">189: </a></span>			case 0x089A: return &quot;MTRSETTINGS&quot;;
+<span class="nocode"><a name="190">190: </a></span>			case 0x089B: return &quot;COMPRESSPICTURES&quot;;
+<span class="nocode"><a name="191">191: </a></span>			case HEADER_FOOTER_089C: return &quot;HEADERFOOTER&quot;;
+<span class="nocode"><a name="192">192: </a></span>			case 0x08A1: return &quot;SHAPEPROPSSTREAM&quot;;
+<span class="nocode"><a name="193">193: </a></span>			case 0x08A3: return &quot;FORCEFULLCALCULATION&quot;;
+<span class="nocode"><a name="194">194: </a></span>			case 0x08A4: return &quot;SHAPEPROPSSTREAM&quot;;
+<span class="nocode"><a name="195">195: </a></span>			case 0x08A5: return &quot;TEXTPROPSSTREAM&quot;;
+<span class="nocode"><a name="196">196: </a></span>			case 0x08A6: return &quot;RICHTEXTSTREAM&quot;;
+<span class="nocode"><a name="197">197: </a></span>
+<span class="nocode"><a name="198">198: </a></span>			case 0x08C8: return &quot;PLV{Mac Excel}&quot;;
+<span class="nocode"><a name="199">199: </a></span>
+<span class="nocode"><a name="200">200: </a></span>
+<span class="nocode"><a name="201">201: </a></span>		}
+<span class="nocode"><a name="202">202: </a></span>		if (isObservedButUnknown(sid)) {
+<span class="nocode"><a name="203">203: </a></span>			return &quot;UNKNOWN-&quot; + Integer.toHexString(sid).toUpperCase();
+<span class="nocode"><a name="204">204: </a></span>		}
+<span class="nocode"><a name="205">205: </a></span>
+<span class="nocode"><a name="206">206: </a></span>		return null;
+<span class="nocode"><a name="207">207: </a></span>	}
+<span class="nocode"><a name="208">208: </a></span>
+<span class="nocode"><a name="209">209: </a></span>	/**
+<span class="nocode"><a name="210">210: </a></span>	 * @return &lt;code&gt;true&lt;/code&gt; if the unknown record id has been observed in POI unit tests
+<span class="nocode"><a name="211">211: </a></span>	 */
+<span class="nocode"><a name="212">212: </a></span>	private static boolean isObservedButUnknown(int sid) {
+<span class="nocode"><a name="213">213: </a></span>		switch (sid) {
+<span class="nocode"><a name="214">214: </a></span>			case 0x0033:
+<span class="nocode"><a name="215">215: </a></span>				// contains 2 bytes of data: 0x0001 or 0x0003
+<span class="nocode"><a name="216">216: </a></span>			case 0x0034:
+<span class="nocode"><a name="217">217: </a></span>				// Seems to be written by MSAccess
+<span class="nocode"><a name="218">218: </a></span>				// contains text &quot;[Microsoft JET Created Table]0021010&quot;
+<span class="nocode"><a name="219">219: </a></span>				// appears after last cell value record and before WINDOW2
+<span class="nocode"><a name="220">220: </a></span>			case 0x01BD:
+<span class="nocode"><a name="221">221: </a></span>			case 0x01C2:
+<span class="nocode"><a name="222">222: </a></span>				// Written by Excel 2007
+<span class="nocode"><a name="223">223: </a></span>				// rawData is multiple of 12 bytes long
+<span class="nocode"><a name="224">224: </a></span>				// appears after last cell value record and before WINDOW2 or drawing records
+<span class="nocode"><a name="225">225: </a></span>			case 0x089D:
+<span class="nocode"><a name="226">226: </a></span>			case 0x089E:
+<span class="nocode"><a name="227">227: </a></span>			case 0x08A7:
+<span class="nocode"><a name="228">228: </a></span>
+<span class="nocode"><a name="229">229: </a></span>			case 0x1001:
+<span class="nocode"><a name="230">230: </a></span>			case 0x1006:
+<span class="nocode"><a name="231">231: </a></span>			case 0x1007:
+<span class="nocode"><a name="232">232: </a></span>			case 0x1009:
+<span class="nocode"><a name="233">233: </a></span>			case 0x100A:
+<span class="nocode"><a name="234">234: </a></span>			case 0x100B:
+<span class="nocode"><a name="235">235: </a></span>			case 0x100C:
+<span class="nocode"><a name="236">236: </a></span>			case 0x1014:
+<span class="nocode"><a name="237">237: </a></span>			case 0x1017:
+<span class="nocode"><a name="238">238: </a></span>			case 0x1018:
+<span class="nocode"><a name="239">239: </a></span>			case 0x1019:
+<span class="nocode"><a name="240">240: </a></span>			case 0x101A:
+<span class="nocode"><a name="241">241: </a></span>			case 0x101B:
+<span class="nocode"><a name="242">242: </a></span>			case 0x101D:
+<span class="nocode"><a name="243">243: </a></span>			case 0x101E:
+<span class="nocode"><a name="244">244: </a></span>			case 0x101F:
+<span class="nocode"><a name="245">245: </a></span>			case 0x1020:
+<span class="nocode"><a name="246">246: </a></span>			case 0x1021:
+<span class="nocode"><a name="247">247: </a></span>			case 0x1022:
+<span class="nocode"><a name="248">248: </a></span>			case 0x1024:
+<span class="nocode"><a name="249">249: </a></span>			case 0x1025:
+<span class="nocode"><a name="250">250: </a></span>			case 0x1026:
+<span class="nocode"><a name="251">251: </a></span>			case 0x1027:
+<span class="nocode"><a name="252">252: </a></span>			case 0x1032:
+<span class="nocode"><a name="253">253: </a></span>			case 0x1033:
+<span class="nocode"><a name="254">254: </a></span>			case 0x1034:
+<span class="nocode"><a name="255">255: </a></span>			case 0x1035:
+<span class="nocode"><a name="256">256: </a></span>			case 0x103A:
+<span class="nocode"><a name="257">257: </a></span>			case 0x1041:
+<span class="nocode"><a name="258">258: </a></span>			case 0x1043:
+<span class="nocode"><a name="259">259: </a></span>			case 0x1044:
+<span class="nocode"><a name="260">260: </a></span>			case 0x1045:
+<span class="nocode"><a name="261">261: </a></span>			case 0x1046:
+<span class="nocode"><a name="262">262: </a></span>			case 0x104A:
+<span class="nocode"><a name="263">263: </a></span>			case 0x104B:
+<span class="nocode"><a name="264">264: </a></span>			case 0x104E:
+<span class="nocode"><a name="265">265: </a></span>			case 0x104F:
+<span class="nocode"><a name="266">266: </a></span>			case 0x1051:
+<span class="nocode"><a name="267">267: </a></span>			case 0x105C:
+<span class="nocode"><a name="268">268: </a></span>			case 0x105D:
+<span class="nocode"><a name="269">269: </a></span>			case 0x105F:
+<span class="nocode"><a name="270">270: </a></span>			case 0x1060:
+<span class="nocode"><a name="271">271: </a></span>			case 0x1062:
+<span class="nocode"><a name="272">272: </a></span>			case 0x1063:
+<span class="nocode"><a name="273">273: </a></span>			case 0x1064:
+<span class="nocode"><a name="274">274: </a></span>			case 0x1065:
+<span class="nocode"><a name="275">275: </a></span>			case 0x1066:
+<span class="nocode"><a name="276">276: </a></span>				return true;
+<span class="nocode"><a name="277">277: </a></span>		}
+<span class="nocode"><a name="278">278: </a></span>		return false;
+<span class="nocode"><a name="279">279: </a></span>	}
+<span class="nocode"><a name="280">280: </a></span>
+<span class="nocode"><a name="281">281: </a></span>	public Object clone() {
+<span class="nocode"><a name="282">282: </a></span>		// immutable - OK to return this
+<span class="nocode"><a name="283">283: </a></span>		return this;
+<span class="nocode"><a name="284">284: </a></span>	}
+<span class="nocode"><a name="285">285: </a></span>}
+</pre><table class="mutation_table" summary="Mutations">
+<tr><th>ID</th><th>Line</th><th>Type</th><th>Detected</th></tr><tr><td>34474</td><td><a href="#70">70</a></td><td>Replace a constant (Replace 65535 with 65534(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>34473</td><td><a href="#70">70</a></td><td>Replace a constant (Replace 65535 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>34472</td><td><a href="#70">70</a></td><td>Replace a constant (Replace 65535 with 65536(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>34475</td><td><a href="#70">70</a></td><td>Replace arithmetic operator (Replace IAND with IOR)</td><td><img src="detected.png"/></td></tr>
+<tr><td>34476</td><td><a href="#81">81</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>34477</td><td><a href="#82">82</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>34478</td><td><a href="#95">95</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>34479</td><td><a href="#106">106</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>34480</td><td><a href="#107">107</a></td><td>Negate jump condition (Replace IFNONNULL with  IFNULL)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>34481</td><td><a href="#112">112</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>34482</td><td><a href="#112">112(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>34483</td><td><a href="#112">112(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>34484</td><td><a href="#113">113</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>34485</td><td><a href="#113">113(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>34486</td><td><a href="#113">113(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>34487</td><td><a href="#113">113(3)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>34488</td><td><a href="#113">113(4)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>34489</td><td><a href="#113">113(5)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>34490</td><td><a href="#114">114</a></td><td>Negate jump condition (Replace IFLE with  IFGT)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>34491</td><td><a href="#115">115</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>34492</td><td><a href="#115">115(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>34493</td><td><a href="#115">115(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>34494</td><td><a href="#115">115(3)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>34495</td><td><a href="#117">117</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>34496</td><td><a href="#117">117(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>34497</td><td><a href="#117">117(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>34498</td><td><a href="#118">118</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>34500</td><td><a href="#202">202</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>34499</td><td><a href="#202">202</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>34501</td><td><a href="#203">203</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>34502</td><td><a href="#203">203(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>34503</td><td><a href="#203">203(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>34504</td><td><a href="#203">203(3)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>34505</td><td><a href="#203">203(4)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>34506</td><td><a href="#276">276</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>34507</td><td><a href="#276">276</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>34508</td><td><a href="#278">278</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>34509</td><td><a href="#278">278</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+</table>
+</body>
+</html>

@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/repos/asf/!svn/ver/1024420/poi/trunk/src/scratchpad/src/org/apache/poi/hslf/usermodel
+END
+PictureData.java
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/repos/asf/!svn/ver/777204/poi/trunk/src/scratchpad/src/org/apache/poi/hslf/usermodel/PictureData.java
+END
+RichTextRun.java
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/repos/asf/!svn/ver/805492/poi/trunk/src/scratchpad/src/org/apache/poi/hslf/usermodel/RichTextRun.java
+END
+ObjectData.java
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/repos/asf/!svn/ver/712084/poi/trunk/src/scratchpad/src/org/apache/poi/hslf/usermodel/ObjectData.java
+END
+SlideShow.java
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/repos/asf/!svn/ver/1024420/poi/trunk/src/scratchpad/src/org/apache/poi/hslf/usermodel/SlideShow.java
+END
+SoundData.java
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/repos/asf/!svn/ver/1024411/poi/trunk/src/scratchpad/src/org/apache/poi/hslf/usermodel/SoundData.java
+END

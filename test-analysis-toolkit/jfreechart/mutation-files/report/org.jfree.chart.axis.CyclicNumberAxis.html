@@ -1,0 +1,1771 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN
+"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>
+org.jfree.chart.axis.CyclicNumberAxis
+</title>
+<link href="prettify.css" type="text/css" rel="stylesheet" />
+<script type="text/javascript" src="prettify.js"></script>
+</head>
+<body onload="prettyPrint()">
+<h2>Javalanche report for class:<br/> org.jfree.chart.axis.CyclicNumberAxis </h2><pre class="prettyprint" style="border: 1px solid #888;padding: 2px"><span class="nocode"><a name="1">  1: </a></span>/* ===========================================================
+<span class="nocode"><a name="2">  2: </a></span> * JFreeChart : a free chart library for the Java(tm) platform
+<span class="nocode"><a name="3">  3: </a></span> * ===========================================================
+<span class="nocode"><a name="4">  4: </a></span> *
+<span class="nocode"><a name="5">  5: </a></span> * (C) Copyright 2000-2007, by Object Refinery Limited and Contributors.
+<span class="nocode"><a name="6">  6: </a></span> *
+<span class="nocode"><a name="7">  7: </a></span> * Project Info:  http://www.jfree.org/jfreechart/index.html
+<span class="nocode"><a name="8">  8: </a></span> *
+<span class="nocode"><a name="9">  9: </a></span> * This library is free software; you can redistribute it and/or modify it 
+<span class="nocode"><a name="10"> 10: </a></span> * under the terms of the GNU Lesser General Public License as published by 
+<span class="nocode"><a name="11"> 11: </a></span> * the Free Software Foundation; either version 2.1 of the License, or 
+<span class="nocode"><a name="12"> 12: </a></span> * (at your option) any later version.
+<span class="nocode"><a name="13"> 13: </a></span> *
+<span class="nocode"><a name="14"> 14: </a></span> * This library is distributed in the hope that it will be useful, but 
+<span class="nocode"><a name="15"> 15: </a></span> * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY 
+<span class="nocode"><a name="16"> 16: </a></span> * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public 
+<span class="nocode"><a name="17"> 17: </a></span> * License for more details.
+<span class="nocode"><a name="18"> 18: </a></span> *
+<span class="nocode"><a name="19"> 19: </a></span> * You should have received a copy of the GNU Lesser General Public
+<span class="nocode"><a name="20"> 20: </a></span> * License along with this library; if not, write to the Free Software
+<span class="nocode"><a name="21"> 21: </a></span> * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, 
+<span class="nocode"><a name="22"> 22: </a></span> * USA.  
+<span class="nocode"><a name="23"> 23: </a></span> *
+<span class="nocode"><a name="24"> 24: </a></span> * [Java is a trademark or registered trademark of Sun Microsystems, Inc. 
+<span class="nocode"><a name="25"> 25: </a></span> * in the United States and other countries.]
+<span class="nocode"><a name="26"> 26: </a></span> *
+<span class="nocode"><a name="27"> 27: </a></span> * ---------------------
+<span class="nocode"><a name="28"> 28: </a></span> * CyclicNumberAxis.java
+<span class="nocode"><a name="29"> 29: </a></span> * ---------------------
+<span class="nocode"><a name="30"> 30: </a></span> * (C) Copyright 2003-2007, by Nicolas Brodu and Contributors.
+<span class="nocode"><a name="31"> 31: </a></span> *
+<span class="nocode"><a name="32"> 32: </a></span> * Original Author:  Nicolas Brodu;
+<span class="nocode"><a name="33"> 33: </a></span> * Contributor(s):   David Gilbert (for Object Refinery Limited);
+<span class="nocode"><a name="34"> 34: </a></span> *
+<span class="nocode"><a name="35"> 35: </a></span> * Changes
+<span class="nocode"><a name="36"> 36: </a></span> * -------
+<span class="nocode"><a name="37"> 37: </a></span> * 19-Nov-2003 : Initial import to JFreeChart from the JSynoptic project (NB);
+<span class="nocode"><a name="38"> 38: </a></span> * 16-Mar-2004 : Added plotState to draw() method (DG);
+<span class="nocode"><a name="39"> 39: </a></span> * 07-Apr-2004 : Modifed text bounds calculation (DG);
+<span class="nocode"><a name="40"> 40: </a></span> * 21-Apr-2005 : Replaced Insets with RectangleInsets, removed redundant
+<span class="nocode"><a name="41"> 41: </a></span> *               argument in selectAutoTickUnit() (DG);
+<span class="nocode"><a name="42"> 42: </a></span> * 22-Apr-2005 : Renamed refreshHorizontalTicks() --&gt; refreshTicksHorizontal
+<span class="nocode"><a name="43"> 43: </a></span> *               (for consistency with other classes) and removed unused
+<span class="nocode"><a name="44"> 44: </a></span> *               parameters (DG);
+<span class="nocode"><a name="45"> 45: </a></span> * 08-Jun-2005 : Fixed equals() method to handle GradientPaint (DG);
+<span class="nocode"><a name="46"> 46: </a></span> *
+<span class="nocode"><a name="47"> 47: </a></span> */
+<span class="nocode"><a name="48"> 48: </a></span>
+<span class="nocode"><a name="49"> 49: </a></span>package org.jfree.chart.axis;
+<span class="nocode"><a name="50"> 50: </a></span>
+<span class="nocode"><a name="51"> 51: </a></span>import java.awt.BasicStroke;
+<span class="nocode"><a name="52"> 52: </a></span>import java.awt.Color;
+<span class="nocode"><a name="53"> 53: </a></span>import java.awt.Font;
+<span class="nocode"><a name="54"> 54: </a></span>import java.awt.FontMetrics;
+<span class="nocode"><a name="55"> 55: </a></span>import java.awt.Graphics2D;
+<span class="nocode"><a name="56"> 56: </a></span>import java.awt.Paint;
+<span class="nocode"><a name="57"> 57: </a></span>import java.awt.Stroke;
+<span class="nocode"><a name="58"> 58: </a></span>import java.awt.geom.Line2D;
+<span class="nocode"><a name="59"> 59: </a></span>import java.awt.geom.Rectangle2D;
+<span class="nocode"><a name="60"> 60: </a></span>import java.io.IOException;
+<span class="nocode"><a name="61"> 61: </a></span>import java.io.ObjectInputStream;
+<span class="nocode"><a name="62"> 62: </a></span>import java.io.ObjectOutputStream;
+<span class="nocode"><a name="63"> 63: </a></span>import java.text.NumberFormat;
+<span class="nocode"><a name="64"> 64: </a></span>import java.util.List;
+<span class="nocode"><a name="65"> 65: </a></span>
+<span class="nocode"><a name="66"> 66: </a></span>import org.jfree.chart.plot.Plot;
+<span class="nocode"><a name="67"> 67: </a></span>import org.jfree.chart.plot.PlotRenderingInfo;
+<span class="nocode"><a name="68"> 68: </a></span>import org.jfree.data.Range;
+<span class="nocode"><a name="69"> 69: </a></span>import org.jfree.io.SerialUtilities;
+<span class="nocode"><a name="70"> 70: </a></span>import org.jfree.text.TextUtilities;
+<span class="nocode"><a name="71"> 71: </a></span>import org.jfree.ui.RectangleEdge;
+<span class="nocode"><a name="72"> 72: </a></span>import org.jfree.ui.TextAnchor;
+<span class="nocode"><a name="73"> 73: </a></span>import org.jfree.util.ObjectUtilities;
+<span class="nocode"><a name="74"> 74: </a></span>import org.jfree.util.PaintUtilities;
+<span class="nocode"><a name="75"> 75: </a></span>
+<span class="nocode"><a name="76"> 76: </a></span>/**
+<span class="nocode"><a name="77"> 77: </a></span>This class extends NumberAxis and handles cycling.
+<span class="nocode"><a name="78"> 78: </a></span> 
+<span class="nocode"><a name="79"> 79: </a></span>Traditional representation of data in the range x0..x1
+<span class="nocode"><a name="80"> 80: </a></span>&lt;pre&gt;
+<span class="nocode"><a name="81"> 81: </a></span>|-------------------------|
+<span class="nocode"><a name="82"> 82: </a></span>x0                       x1
+<span class="nocode"><a name="83"> 83: </a></span>&lt;/pre&gt; 
+<span class="nocode"><a name="84"> 84: </a></span>
+<span class="nocode"><a name="85"> 85: </a></span>Here, the range bounds are at the axis extremities.
+<span class="nocode"><a name="86"> 86: </a></span>With cyclic axis, however, the time is split in 
+<span class="nocode"><a name="87"> 87: </a></span>&quot;cycles&quot;, or &quot;time frames&quot;, or the same duration : the period.
+<span class="nocode"><a name="88"> 88: </a></span>
+<span class="nocode"><a name="89"> 89: </a></span>A cycle axis cannot by definition handle a larger interval 
+<span class="nocode"><a name="90"> 90: </a></span>than the period : &lt;pre&gt;x1 - x0 &gt;= period&lt;/pre&gt;. Thus, at most a full 
+<span class="nocode"><a name="91"> 91: </a></span>period can be represented with such an axis.
+<span class="nocode"><a name="92"> 92: </a></span>
+<span class="nocode"><a name="93"> 93: </a></span>The cycle bound is the number between x0 and x1 which marks 
+<span class="nocode"><a name="94"> 94: </a></span>the beginning of new time frame:
+<span class="nocode"><a name="95"> 95: </a></span>&lt;pre&gt;
+<span class="nocode"><a name="96"> 96: </a></span>|---------------------|----------------------------|
+<span class="nocode"><a name="97"> 97: </a></span>x0                   cb                           x1
+<span class="nocode"><a name="98"> 98: </a></span>&lt;---previous cycle---&gt;&lt;-------current cycle--------&gt;
+<span class="nocode"><a name="99"> 99: </a></span>&lt;/pre&gt;
+<span class="nocode"><a name="100">100: </a></span>
+<span class="nocode"><a name="101">101: </a></span>It is actually a multiple of the period, plus optionally 
+<span class="nocode"><a name="102">102: </a></span>a start offset: &lt;pre&gt;cb = n * period + offset&lt;/pre&gt;
+<span class="nocode"><a name="103">103: </a></span>
+<span class="nocode"><a name="104">104: </a></span>Thus, by definition, two consecutive cycle bounds 
+<span class="nocode"><a name="105">105: </a></span>period apart, which is precisely why it is called a 
+<span class="nocode"><a name="106">106: </a></span>period.
+<span class="nocode"><a name="107">107: </a></span>
+<span class="nocode"><a name="108">108: </a></span>The visual representation of a cyclic axis is like that:
+<span class="nocode"><a name="109">109: </a></span>&lt;pre&gt;
+<span class="nocode"><a name="110">110: </a></span>|----------------------------|---------------------|
+<span class="nocode"><a name="111">111: </a></span>cb                         x1|x0                  cb
+<span class="nocode"><a name="112">112: </a></span>&lt;-------current cycle--------&gt;&lt;---previous cycle---&gt;
+<span class="nocode"><a name="113">113: </a></span>&lt;/pre&gt;
+<span class="nocode"><a name="114">114: </a></span>
+<span class="nocode"><a name="115">115: </a></span>The cycle bound is at the axis ends, then current 
+<span class="nocode"><a name="116">116: </a></span>cycle is shown, then the last cycle. When using 
+<span class="nocode"><a name="117">117: </a></span>dynamic data, the visual effect is the current cycle 
+<span class="nocode"><a name="118">118: </a></span>erases the last cycle as x grows. Then, the next cycle 
+<span class="nocode"><a name="119">119: </a></span>bound is reached, and the process starts over, erasing 
+<span class="nocode"><a name="120">120: </a></span>the previous cycle.
+<span class="nocode"><a name="121">121: </a></span>
+<span class="nocode"><a name="122">122: </a></span>A Cyclic item renderer is provided to do exactly this.
+<span class="nocode"><a name="123">123: </a></span>
+<span class="nocode"><a name="124">124: </a></span> */
+<span class="nocode"><a name="125">125: </a></span>public class CyclicNumberAxis extends NumberAxis {
+<span class="nocode"><a name="126">126: </a></span>
+<span class="nocode"><a name="127">127: </a></span>    /** For serialization. */
+<span class="nocode"><a name="128">128: </a></span>    static final long serialVersionUID = -7514160997164582554L;
+<span class="nocode"><a name="129">129: </a></span>
+<span class="nocode"><a name="130">130: </a></span>    /** The default axis line stroke. */
+<span class="nocode"><a name="131">131: </a></span>    public static Stroke DEFAULT_ADVANCE_LINE_STROKE = new BasicStroke(1.0f);
+<span class="nocode"><a name="132">132: </a></span>    
+<span class="nocode"><a name="133">133: </a></span>    /** The default axis line paint. */
+<span class="nocode"><a name="134">134: </a></span>    public static final Paint DEFAULT_ADVANCE_LINE_PAINT = Color.gray;
+<span class="nocode"><a name="135">135: </a></span>    
+<span class="nocode"><a name="136">136: </a></span>    /** The offset. */
+<span class="nocode"><a name="137">137: </a></span>    protected double offset;
+<span class="nocode"><a name="138">138: </a></span>    
+<span class="nocode"><a name="139">139: </a></span>    /** The period.*/
+<span class="nocode"><a name="140">140: </a></span>    protected double period;
+<span class="nocode"><a name="141">141: </a></span>    
+<span class="nocode"><a name="142">142: </a></span>    /** ??. */
+<span class="nocode"><a name="143">143: </a></span>    protected boolean boundMappedToLastCycle;
+<span class="nocode"><a name="144">144: </a></span>    
+<span class="nocode"><a name="145">145: </a></span>    /** A flag that controls whether or not the advance line is visible. */
+<span class="nocode"><a name="146">146: </a></span>    protected boolean advanceLineVisible;
+<span class="nocode"><a name="147">147: </a></span>
+<span class="nocode"><a name="148">148: </a></span>    /** The advance line stroke. */
+<span class="nocode"><a name="149">149: </a></span>    protected transient Stroke advanceLineStroke = DEFAULT_ADVANCE_LINE_STROKE;
+<span class="nocode"><a name="150">150: </a></span>    
+<span class="nocode"><a name="151">151: </a></span>    /** The advance line paint. */
+<span class="nocode"><a name="152">152: </a></span>    protected transient Paint advanceLinePaint;
+<span class="nocode"><a name="153">153: </a></span>    
+<span class="nocode"><a name="154">154: </a></span>    private transient boolean internalMarkerWhenTicksOverlap;
+<span class="nocode"><a name="155">155: </a></span>    private transient Tick internalMarkerCycleBoundTick;
+<span class="nocode"><a name="156">156: </a></span>    
+<span class="nocode"><a name="157">157: </a></span>    /** 
+<span class="nocode"><a name="158">158: </a></span>     * Creates a CycleNumberAxis with the given period.
+<span class="nocode"><a name="159">159: </a></span>     * 
+<span class="nocode"><a name="160">160: </a></span>     * @param period  the period.
+<span class="nocode"><a name="161">161: </a></span>     */
+<span class="nocode"><a name="162">162: </a></span>    public CyclicNumberAxis(double period) {
+<span class="nocode"><a name="163">163: </a></span>        this(period, 0.0);
+<span class="nocode"><a name="164">164: </a></span>    }
+<span class="nocode"><a name="165">165: </a></span>
+<span class="nocode"><a name="166">166: </a></span>    /** 
+<span class="nocode"><a name="167">167: </a></span>     * Creates a CycleNumberAxis with the given period and offset.
+<span class="nocode"><a name="168">168: </a></span>     * 
+<span class="nocode"><a name="169">169: </a></span>     * @param period  the period.
+<span class="nocode"><a name="170">170: </a></span>     * @param offset  the offset.
+<span class="nocode"><a name="171">171: </a></span>     */
+<span class="nocode"><a name="172">172: </a></span>    public CyclicNumberAxis(double period, double offset) {
+<span class="nocode"><a name="173">173: </a></span>        this(period, offset, null);
+<span class="nocode"><a name="174">174: </a></span>    }
+<span class="nocode"><a name="175">175: </a></span>
+<span class="nocode"><a name="176">176: </a></span>    /** 
+<span class="nocode"><a name="177">177: </a></span>     * Creates a named CycleNumberAxis with the given period.
+<span class="nocode"><a name="178">178: </a></span>     * 
+<span class="nocode"><a name="179">179: </a></span>     * @param period  the period.
+<span class="nocode"><a name="180">180: </a></span>     * @param label  the label.
+<span class="nocode"><a name="181">181: </a></span>     */
+<span class="nocode"><a name="182">182: </a></span>    public CyclicNumberAxis(double period, String label) {
+<span class="nocode"><a name="183">183: </a></span>        this(0, period, label);
+<span class="nocode"><a name="184">184: </a></span>    }
+<span class="nocode"><a name="185">185: </a></span>    
+<span class="nocode"><a name="186">186: </a></span>    /** 
+<span class="nocode"><a name="187">187: </a></span>     * Creates a named CycleNumberAxis with the given period and offset.
+<span class="nocode"><a name="188">188: </a></span>     * 
+<span class="nocode"><a name="189">189: </a></span>     * @param period  the period.
+<span class="nocode"><a name="190">190: </a></span>     * @param offset  the offset.
+<span class="nocode"><a name="191">191: </a></span>     * @param label  the label.
+<span class="nocode"><a name="192">192: </a></span>     */
+<span class="nocode"><a name="193">193: </a></span>    public CyclicNumberAxis(double period, double offset, String label) {
+<span class="nocode"><a name="194">194: </a></span>        super(label);
+<span class="nocode"><a name="195">195: </a></span>        this.period = period;
+<span class="nocode"><a name="196">196: </a></span>        this.offset = offset;
+<span class="nocode"><a name="197">197: </a></span>        setFixedAutoRange(period);
+<span class="nocode"><a name="198">198: </a></span>        this.advanceLineVisible = true;
+<span class="nocode"><a name="199">199: </a></span>        this.advanceLinePaint = DEFAULT_ADVANCE_LINE_PAINT;
+<span class="nocode"><a name="200">200: </a></span>    }
+<span class="nocode"><a name="201">201: </a></span>        
+<span class="nocode"><a name="202">202: </a></span>    /**
+<span class="nocode"><a name="203">203: </a></span>     * The advance line is the line drawn at the limit of the current cycle, 
+<span class="nocode"><a name="204">204: </a></span>     * when erasing the previous cycle. 
+<span class="nocode"><a name="205">205: </a></span>     * 
+<span class="nocode"><a name="206">206: </a></span>     * @return A boolean.
+<span class="nocode"><a name="207">207: </a></span>     */
+<span class="nocode"><a name="208">208: </a></span>    public boolean isAdvanceLineVisible() {
+<span class="nocode"><a name="209">209: </a></span>        return this.advanceLineVisible;
+<span class="nocode"><a name="210">210: </a></span>    }
+<span class="nocode"><a name="211">211: </a></span>    
+<span class="nocode"><a name="212">212: </a></span>    /**
+<span class="nocode"><a name="213">213: </a></span>     * The advance line is the line drawn at the limit of the current cycle, 
+<span class="nocode"><a name="214">214: </a></span>     * when erasing the previous cycle. 
+<span class="nocode"><a name="215">215: </a></span>     * 
+<span class="nocode"><a name="216">216: </a></span>     * @param visible  the flag.
+<span class="nocode"><a name="217">217: </a></span>     */
+<span class="nocode"><a name="218">218: </a></span>    public void setAdvanceLineVisible(boolean visible) {
+<span class="nocode"><a name="219">219: </a></span>        this.advanceLineVisible = visible;
+<span class="nocode"><a name="220">220: </a></span>    }
+<span class="nocode"><a name="221">221: </a></span>    
+<span class="nocode"><a name="222">222: </a></span>    /**
+<span class="nocode"><a name="223">223: </a></span>     * The advance line is the line drawn at the limit of the current cycle, 
+<span class="nocode"><a name="224">224: </a></span>     * when erasing the previous cycle. 
+<span class="nocode"><a name="225">225: </a></span>     * 
+<span class="nocode"><a name="226">226: </a></span>     * @return The paint (never &lt;code&gt;null&lt;/code&gt;).
+<span class="nocode"><a name="227">227: </a></span>     */
+<span class="nocode"><a name="228">228: </a></span>    public Paint getAdvanceLinePaint() {
+<span class="nocode"><a name="229">229: </a></span>        return this.advanceLinePaint;
+<span class="nocode"><a name="230">230: </a></span>    }
+<span class="nocode"><a name="231">231: </a></span>
+<span class="nocode"><a name="232">232: </a></span>    /**
+<span class="nocode"><a name="233">233: </a></span>     * The advance line is the line drawn at the limit of the current cycle, 
+<span class="nocode"><a name="234">234: </a></span>     * when erasing the previous cycle. 
+<span class="nocode"><a name="235">235: </a></span>     * 
+<span class="nocode"><a name="236">236: </a></span>     * @param paint  the paint (&lt;code&gt;null&lt;/code&gt; not permitted).
+<span class="nocode"><a name="237">237: </a></span>     */
+<span class="nocode"><a name="238">238: </a></span>    public void setAdvanceLinePaint(Paint paint) {
+<span class="nocode"><a name="239">239: </a></span>        if (paint == null) {
+<span class="nocode"><a name="240">240: </a></span>            throw new IllegalArgumentException(&quot;Null 'paint' argument.&quot;);
+<span class="nocode"><a name="241">241: </a></span>        }
+<span class="nocode"><a name="242">242: </a></span>        this.advanceLinePaint = paint;
+<span class="nocode"><a name="243">243: </a></span>    }
+<span class="nocode"><a name="244">244: </a></span>    
+<span class="nocode"><a name="245">245: </a></span>    /**
+<span class="nocode"><a name="246">246: </a></span>     * The advance line is the line drawn at the limit of the current cycle, 
+<span class="nocode"><a name="247">247: </a></span>     * when erasing the previous cycle. 
+<span class="nocode"><a name="248">248: </a></span>     * 
+<span class="nocode"><a name="249">249: </a></span>     * @return The stroke (never &lt;code&gt;null&lt;/code&gt;).
+<span class="nocode"><a name="250">250: </a></span>     */
+<span class="nocode"><a name="251">251: </a></span>    public Stroke getAdvanceLineStroke() {
+<span class="nocode"><a name="252">252: </a></span>        return this.advanceLineStroke;
+<span class="nocode"><a name="253">253: </a></span>    }
+<span class="nocode"><a name="254">254: </a></span>    /**
+<span class="nocode"><a name="255">255: </a></span>     * The advance line is the line drawn at the limit of the current cycle, 
+<span class="nocode"><a name="256">256: </a></span>     * when erasing the previous cycle. 
+<span class="nocode"><a name="257">257: </a></span>     * 
+<span class="nocode"><a name="258">258: </a></span>     * @param stroke  the stroke (&lt;code&gt;null&lt;/code&gt; not permitted).
+<span class="nocode"><a name="259">259: </a></span>     */
+<span class="nocode"><a name="260">260: </a></span>    public void setAdvanceLineStroke(Stroke stroke) {
+<span class="nocode"><a name="261">261: </a></span>        if (stroke == null) {
+<span class="nocode"><a name="262">262: </a></span>            throw new IllegalArgumentException(&quot;Null 'stroke' argument.&quot;);
+<span class="nocode"><a name="263">263: </a></span>        }
+<span class="nocode"><a name="264">264: </a></span>        this.advanceLineStroke = stroke;
+<span class="nocode"><a name="265">265: </a></span>    }
+<span class="nocode"><a name="266">266: </a></span>    
+<span class="nocode"><a name="267">267: </a></span>    /**
+<span class="nocode"><a name="268">268: </a></span>     * The cycle bound can be associated either with the current or with the 
+<span class="nocode"><a name="269">269: </a></span>     * last cycle.  It's up to the user's choice to decide which, as this is 
+<span class="nocode"><a name="270">270: </a></span>     * just a convention.  By default, the cycle bound is mapped to the current
+<span class="nocode"><a name="271">271: </a></span>     * cycle.
+<span class="nocode"><a name="272">272: </a></span>     * &lt;br&gt;
+<span class="nocode"><a name="273">273: </a></span>     * Note that this has no effect on visual appearance, as the cycle bound is
+<span class="nocode"><a name="274">274: </a></span>     * mapped successively for both axis ends. Use this function for correct 
+<span class="nocode"><a name="275">275: </a></span>     * results in translateValueToJava2D. 
+<span class="nocode"><a name="276">276: </a></span>     *  
+<span class="nocode"><a name="277">277: </a></span>     * @return &lt;code&gt;true&lt;/code&gt; if the cycle bound is mapped to the last 
+<span class="nocode"><a name="278">278: </a></span>     *         cycle, &lt;code&gt;false&lt;/code&gt; if it is bound to the current cycle 
+<span class="nocode"><a name="279">279: </a></span>     *         (default)
+<span class="nocode"><a name="280">280: </a></span>     */
+<span class="nocode"><a name="281">281: </a></span>    public boolean isBoundMappedToLastCycle() {
+<span class="nocode"><a name="282">282: </a></span>        return this.boundMappedToLastCycle;
+<span class="nocode"><a name="283">283: </a></span>    }
+<span class="nocode"><a name="284">284: </a></span>    
+<span class="nocode"><a name="285">285: </a></span>    /**
+<span class="nocode"><a name="286">286: </a></span>     * The cycle bound can be associated either with the current or with the 
+<span class="nocode"><a name="287">287: </a></span>     * last cycle.  It's up to the user's choice to decide which, as this is 
+<span class="nocode"><a name="288">288: </a></span>     * just a convention. By default, the cycle bound is mapped to the current 
+<span class="nocode"><a name="289">289: </a></span>     * cycle. 
+<span class="nocode"><a name="290">290: </a></span>     * &lt;br&gt;
+<span class="nocode"><a name="291">291: </a></span>     * Note that this has no effect on visual appearance, as the cycle bound is
+<span class="nocode"><a name="292">292: </a></span>     * mapped successively for both axis ends. Use this function for correct 
+<span class="nocode"><a name="293">293: </a></span>     * results in valueToJava2D.
+<span class="nocode"><a name="294">294: </a></span>     *  
+<span class="nocode"><a name="295">295: </a></span>     * @param boundMappedToLastCycle Set it to true to map the cycle bound to 
+<span class="nocode"><a name="296">296: </a></span>     *        the last cycle.
+<span class="nocode"><a name="297">297: </a></span>     */
+<span class="nocode"><a name="298">298: </a></span>    public void setBoundMappedToLastCycle(boolean boundMappedToLastCycle) {
+<span class="nocode"><a name="299">299: </a></span>        this.boundMappedToLastCycle = boundMappedToLastCycle;
+<span class="nocode"><a name="300">300: </a></span>    }
+<span class="nocode"><a name="301">301: </a></span>    
+<span class="nocode"><a name="302">302: </a></span>    /**
+<span class="nocode"><a name="303">303: </a></span>     * Selects a tick unit when the axis is displayed horizontally.
+<span class="nocode"><a name="304">304: </a></span>     * 
+<span class="nocode"><a name="305">305: </a></span>     * @param g2  the graphics device.
+<span class="nocode"><a name="306">306: </a></span>     * @param drawArea  the drawing area.
+<span class="nocode"><a name="307">307: </a></span>     * @param dataArea  the data area.
+<span class="nocode"><a name="308">308: </a></span>     * @param edge  the side of the rectangle on which the axis is displayed.
+<span class="nocode"><a name="309">309: </a></span>     */
+<span class="nocode"><a name="310">310: </a></span>    protected void selectHorizontalAutoTickUnit(Graphics2D g2,
+<span class="nocode"><a name="311">311: </a></span>                                                Rectangle2D drawArea, 
+<span class="nocode"><a name="312">312: </a></span>                                                Rectangle2D dataArea,
+<span class="nocode"><a name="313">313: </a></span>                                                RectangleEdge edge) {
+<span class="nocode"><a name="314">314: </a></span>
+<span class="nocode"><a name="315">315: </a></span>        double tickLabelWidth 
+<span class="nocode"><a name="316">316: </a></span>            = estimateMaximumTickLabelWidth(g2, getTickUnit());
+<span class="nocode"><a name="317">317: </a></span>        
+<span class="nocode"><a name="318">318: </a></span>        // Compute number of labels
+<span class="nocode"><a name="319">319: </a></span>        double n = getRange().getLength() 
+<span class="nocode"><a name="320">320: </a></span>                   * tickLabelWidth / dataArea.getWidth();
+<span class="nocode"><a name="321">321: </a></span>
+<span class="nocode"><a name="322">322: </a></span>        setTickUnit(
+<span class="nocode"><a name="323">323: </a></span>            (NumberTickUnit) getStandardTickUnits().getCeilingTickUnit(n), 
+<span class="nocode"><a name="324">324: </a></span>            false, false
+<span class="nocode"><a name="325">325: </a></span>        );
+<span class="nocode"><a name="326">326: </a></span>        
+<span class="nocode"><a name="327">327: </a></span>     }
+<span class="nocode"><a name="328">328: </a></span>
+<span class="nocode"><a name="329">329: </a></span>    /**
+<span class="nocode"><a name="330">330: </a></span>     * Selects a tick unit when the axis is displayed vertically.
+<span class="nocode"><a name="331">331: </a></span>     * 
+<span class="nocode"><a name="332">332: </a></span>     * @param g2  the graphics device.
+<span class="nocode"><a name="333">333: </a></span>     * @param drawArea  the drawing area.
+<span class="nocode"><a name="334">334: </a></span>     * @param dataArea  the data area.
+<span class="nocode"><a name="335">335: </a></span>     * @param edge  the side of the rectangle on which the axis is displayed.
+<span class="nocode"><a name="336">336: </a></span>     */
+<span class="nocode"><a name="337">337: </a></span>    protected void selectVerticalAutoTickUnit(Graphics2D g2,
+<span class="nocode"><a name="338">338: </a></span>                                                Rectangle2D drawArea, 
+<span class="nocode"><a name="339">339: </a></span>                                                Rectangle2D dataArea,
+<span class="nocode"><a name="340">340: </a></span>                                                RectangleEdge edge) {
+<span class="nocode"><a name="341">341: </a></span>
+<span class="nocode"><a name="342">342: </a></span>        double tickLabelWidth 
+<span class="nocode"><a name="343">343: </a></span>            = estimateMaximumTickLabelWidth(g2, getTickUnit());
+<span class="nocode"><a name="344">344: </a></span>
+<span class="nocode"><a name="345">345: </a></span>        // Compute number of labels
+<span class="nocode"><a name="346">346: </a></span>        double n = getRange().getLength() 
+<span class="nocode"><a name="347">347: </a></span>                   * tickLabelWidth / dataArea.getHeight();
+<span class="nocode"><a name="348">348: </a></span>
+<span class="nocode"><a name="349">349: </a></span>        setTickUnit(
+<span class="nocode"><a name="350">350: </a></span>            (NumberTickUnit) getStandardTickUnits().getCeilingTickUnit(n), 
+<span class="nocode"><a name="351">351: </a></span>            false, false
+<span class="nocode"><a name="352">352: </a></span>        );
+<span class="nocode"><a name="353">353: </a></span>        
+<span class="nocode"><a name="354">354: </a></span>     }
+<span class="nocode"><a name="355">355: </a></span>
+<span class="nocode"><a name="356">356: </a></span>    /** 
+<span class="nocode"><a name="357">357: </a></span>     * A special Number tick that also hold information about the cycle bound 
+<span class="nocode"><a name="358">358: </a></span>     * mapping for this tick.  This is especially useful for having a tick at 
+<span class="nocode"><a name="359">359: </a></span>     * each axis end with the cycle bound value.  See also 
+<span class="nocode"><a name="360">360: </a></span>     * isBoundMappedToLastCycle()
+<span class="nocode"><a name="361">361: </a></span>     */
+<span class="nocode"><a name="362">362: </a></span>    protected static class CycleBoundTick extends NumberTick {
+<span class="nocode"><a name="363">363: </a></span>        
+<span class="nocode"><a name="364">364: </a></span>        /** Map to last cycle. */
+<span class="nocode"><a name="365">365: </a></span>        public boolean mapToLastCycle;
+<span class="nocode"><a name="366">366: </a></span>        
+<span class="nocode"><a name="367">367: </a></span>        /**
+<span class="nocode"><a name="368">368: </a></span>         * Creates a new tick.
+<span class="nocode"><a name="369">369: </a></span>         * 
+<span class="nocode"><a name="370">370: </a></span>         * @param mapToLastCycle  map to last cycle?
+<span class="nocode"><a name="371">371: </a></span>         * @param number  the number.
+<span class="nocode"><a name="372">372: </a></span>         * @param label  the label.
+<span class="nocode"><a name="373">373: </a></span>         * @param textAnchor  the text anchor.
+<span class="nocode"><a name="374">374: </a></span>         * @param rotationAnchor  the rotation anchor.
+<span class="nocode"><a name="375">375: </a></span>         * @param angle  the rotation angle.
+<span class="nocode"><a name="376">376: </a></span>         */
+<span class="nocode"><a name="377">377: </a></span>        public CycleBoundTick(boolean mapToLastCycle, Number number, 
+<span class="nocode"><a name="378">378: </a></span>                              String label, TextAnchor textAnchor,
+<span class="nocode"><a name="379">379: </a></span>                              TextAnchor rotationAnchor, double angle) {
+<span class="nocode"><a name="380">380: </a></span>            super(number, label, textAnchor, rotationAnchor, angle);
+<span class="nocode"><a name="381">381: </a></span>            this.mapToLastCycle = mapToLastCycle;
+<span class="nocode"><a name="382">382: </a></span>        }
+<span class="nocode"><a name="383">383: </a></span>    }
+<span class="nocode"><a name="384">384: </a></span>    
+<span class="nocode"><a name="385">385: </a></span>    /**
+<span class="nocode"><a name="386">386: </a></span>     * Calculates the anchor point for a tick.
+<span class="nocode"><a name="387">387: </a></span>     * 
+<span class="nocode"><a name="388">388: </a></span>     * @param tick  the tick.
+<span class="nocode"><a name="389">389: </a></span>     * @param cursor  the cursor.
+<span class="nocode"><a name="390">390: </a></span>     * @param dataArea  the data area.
+<span class="nocode"><a name="391">391: </a></span>     * @param edge  the side on which the axis is displayed.
+<span class="nocode"><a name="392">392: </a></span>     * 
+<span class="nocode"><a name="393">393: </a></span>     * @return The anchor point.
+<span class="nocode"><a name="394">394: </a></span>     */
+<span class="nocode"><a name="395">395: </a></span>    protected float[] calculateAnchorPoint(ValueTick tick, double cursor, 
+<span class="nocode"><a name="396">396: </a></span>                                           Rectangle2D dataArea, 
+<span class="nocode"><a name="397">397: </a></span>                                           RectangleEdge edge) {
+<span class="nocode"><a name="398">398: </a></span>        if (tick instanceof CycleBoundTick) {
+<span class="nocode"><a name="399">399: </a></span>            boolean mapsav = this.boundMappedToLastCycle;
+<span class="nocode"><a name="400">400: </a></span>            this.boundMappedToLastCycle 
+<span class="nocode"><a name="401">401: </a></span>                = ((CycleBoundTick) tick).mapToLastCycle;
+<span class="nocode"><a name="402">402: </a></span>            float[] ret = super.calculateAnchorPoint(
+<span class="nocode"><a name="403">403: </a></span>                tick, cursor, dataArea, edge
+<span class="nocode"><a name="404">404: </a></span>            );
+<span class="nocode"><a name="405">405: </a></span>            this.boundMappedToLastCycle = mapsav;
+<span class="nocode"><a name="406">406: </a></span>            return ret;
+<span class="nocode"><a name="407">407: </a></span>        }
+<span class="nocode"><a name="408">408: </a></span>        return super.calculateAnchorPoint(tick, cursor, dataArea, edge);
+<span class="nocode"><a name="409">409: </a></span>    }
+<span class="nocode"><a name="410">410: </a></span>    
+<span class="nocode"><a name="411">411: </a></span>    
+<span class="nocode"><a name="412">412: </a></span>    
+<span class="nocode"><a name="413">413: </a></span>    /**
+<span class="nocode"><a name="414">414: </a></span>     * Builds a list of ticks for the axis.  This method is called when the 
+<span class="nocode"><a name="415">415: </a></span>     * axis is at the top or bottom of the chart (so the axis is &quot;horizontal&quot;).
+<span class="nocode"><a name="416">416: </a></span>     * 
+<span class="nocode"><a name="417">417: </a></span>     * @param g2  the graphics device.
+<span class="nocode"><a name="418">418: </a></span>     * @param dataArea  the data area.
+<span class="nocode"><a name="419">419: </a></span>     * @param edge  the edge.
+<span class="nocode"><a name="420">420: </a></span>     * 
+<span class="nocode"><a name="421">421: </a></span>     * @return A list of ticks.
+<span class="nocode"><a name="422">422: </a></span>     */
+<span class="nocode"><a name="423">423: </a></span>    protected List refreshTicksHorizontal(Graphics2D g2, 
+<span class="nocode"><a name="424">424: </a></span>                                          Rectangle2D dataArea, 
+<span class="nocode"><a name="425">425: </a></span>                                          RectangleEdge edge) {
+<span class="nocode"><a name="426">426: </a></span>
+<span class="nocode"><a name="427">427: </a></span>        List result = new java.util.ArrayList();
+<span class="nocode"><a name="428">428: </a></span>
+<span class="nocode"><a name="429">429: </a></span>        Font tickLabelFont = getTickLabelFont();
+<span class="nocode"><a name="430">430: </a></span>        g2.setFont(tickLabelFont);
+<span class="nocode"><a name="431">431: </a></span>        
+<span class="nocode"><a name="432">432: </a></span>        if (isAutoTickUnitSelection()) {
+<span class="nocode"><a name="433">433: </a></span>            selectAutoTickUnit(g2, dataArea, edge);
+<span class="nocode"><a name="434">434: </a></span>        }
+<span class="nocode"><a name="435">435: </a></span>
+<span class="nocode"><a name="436">436: </a></span>        double unit = getTickUnit().getSize();
+<span class="nocode"><a name="437">437: </a></span>        double cycleBound = getCycleBound();
+<span class="nocode"><a name="438">438: </a></span>        double currentTickValue = Math.ceil(cycleBound / unit) * unit;
+<span class="nocode"><a name="439">439: </a></span>        double upperValue = getRange().getUpperBound();
+<span class="nocode"><a name="440">440: </a></span>        boolean cycled = false;
+<span class="nocode"><a name="441">441: </a></span>
+<span class="nocode"><a name="442">442: </a></span>        boolean boundMapping = this.boundMappedToLastCycle; 
+<span class="nocode"><a name="443">443: </a></span>        this.boundMappedToLastCycle = false; 
+<span class="nocode"><a name="444">444: </a></span>        
+<span class="nocode"><a name="445">445: </a></span>        CycleBoundTick lastTick = null; 
+<span class="nocode"><a name="446">446: </a></span>        float lastX = 0.0f;
+<span class="nocode"><a name="447">447: </a></span>
+<span class="nocode"><a name="448">448: </a></span>        if (upperValue == cycleBound) {
+<span class="nocode"><a name="449">449: </a></span>            currentTickValue = calculateLowestVisibleTickValue();
+<span class="nocode"><a name="450">450: </a></span>            cycled = true;
+<span class="nocode"><a name="451">451: </a></span>            this.boundMappedToLastCycle = true;
+<span class="nocode"><a name="452">452: </a></span>        }
+<span class="nocode"><a name="453">453: </a></span>        
+<span class="nocode"><a name="454">454: </a></span>        while (currentTickValue &lt;= upperValue) {
+<span class="nocode"><a name="455">455: </a></span>            
+<span class="nocode"><a name="456">456: </a></span>            // Cycle when necessary
+<span class="nocode"><a name="457">457: </a></span>            boolean cyclenow = false;
+<span class="nocode"><a name="458">458: </a></span>            if ((currentTickValue + unit &gt; upperValue) &amp;&amp; !cycled) {
+<span class="nocode"><a name="459">459: </a></span>                cyclenow = true;
+<span class="nocode"><a name="460">460: </a></span>            }
+<span class="nocode"><a name="461">461: </a></span>            
+<span class="nocode"><a name="462">462: </a></span>            double xx = valueToJava2D(currentTickValue, dataArea, edge);
+<span class="nocode"><a name="463">463: </a></span>            String tickLabel;
+<span class="nocode"><a name="464">464: </a></span>            NumberFormat formatter = getNumberFormatOverride();
+<span class="nocode"><a name="465">465: </a></span>            if (formatter != null) {
+<span class="nocode"><a name="466">466: </a></span>                tickLabel = formatter.format(currentTickValue);
+<span class="nocode"><a name="467">467: </a></span>            }
+<span class="nocode"><a name="468">468: </a></span>            else {
+<span class="nocode"><a name="469">469: </a></span>                tickLabel = getTickUnit().valueToString(currentTickValue);
+<span class="nocode"><a name="470">470: </a></span>            }
+<span class="nocode"><a name="471">471: </a></span>            float x = (float) xx;
+<span class="nocode"><a name="472">472: </a></span>            TextAnchor anchor = null;
+<span class="nocode"><a name="473">473: </a></span>            TextAnchor rotationAnchor = null;
+<span class="nocode"><a name="474">474: </a></span>            double angle = 0.0;
+<span class="nocode"><a name="475">475: </a></span>            if (isVerticalTickLabels()) {
+<span class="nocode"><a name="476">476: </a></span>                if (edge == RectangleEdge.TOP) {
+<span class="nocode"><a name="477">477: </a></span>                    angle = Math.PI / 2.0;
+<span class="nocode"><a name="478">478: </a></span>                }
+<span class="nocode"><a name="479">479: </a></span>                else {
+<span class="nocode"><a name="480">480: </a></span>                    angle = -Math.PI / 2.0;
+<span class="nocode"><a name="481">481: </a></span>                }
+<span class="nocode"><a name="482">482: </a></span>                anchor = TextAnchor.CENTER_RIGHT;
+<span class="nocode"><a name="483">483: </a></span>                // If tick overlap when cycling, update last tick too
+<span class="nocode"><a name="484">484: </a></span>                if ((lastTick != null) &amp;&amp; (lastX == x) 
+<span class="nocode"><a name="485">485: </a></span>                        &amp;&amp; (currentTickValue != cycleBound)) {
+<span class="nocode"><a name="486">486: </a></span>                    anchor = isInverted() 
+<span class="nocode"><a name="487">487: </a></span>                        ? TextAnchor.TOP_RIGHT : TextAnchor.BOTTOM_RIGHT;
+<span class="nocode"><a name="488">488: </a></span>                    result.remove(result.size() - 1);
+<span class="nocode"><a name="489">489: </a></span>                    result.add(new CycleBoundTick(
+<span class="nocode"><a name="490">490: </a></span>                        this.boundMappedToLastCycle, lastTick.getNumber(), 
+<span class="nocode"><a name="491">491: </a></span>                        lastTick.getText(), anchor, anchor, 
+<span class="nocode"><a name="492">492: </a></span>                        lastTick.getAngle())
+<span class="nocode"><a name="493">493: </a></span>                    );
+<span class="nocode"><a name="494">494: </a></span>                    this.internalMarkerWhenTicksOverlap = true;
+<span class="nocode"><a name="495">495: </a></span>                    anchor = isInverted() 
+<span class="nocode"><a name="496">496: </a></span>                        ? TextAnchor.BOTTOM_RIGHT : TextAnchor.TOP_RIGHT;
+<span class="nocode"><a name="497">497: </a></span>                }
+<span class="nocode"><a name="498">498: </a></span>                rotationAnchor = anchor;
+<span class="nocode"><a name="499">499: </a></span>            }
+<span class="nocode"><a name="500">500: </a></span>            else {
+<span class="nocode"><a name="501">501: </a></span>                if (edge == RectangleEdge.TOP) {
+<span class="nocode"><a name="502">502: </a></span>                    anchor = TextAnchor.BOTTOM_CENTER; 
+<span class="nocode"><a name="503">503: </a></span>                    if ((lastTick != null) &amp;&amp; (lastX == x) 
+<span class="nocode"><a name="504">504: </a></span>                            &amp;&amp; (currentTickValue != cycleBound)) {
+<span class="nocode"><a name="505">505: </a></span>                        anchor = isInverted() 
+<span class="nocode"><a name="506">506: </a></span>                            ? TextAnchor.BOTTOM_LEFT : TextAnchor.BOTTOM_RIGHT;
+<span class="nocode"><a name="507">507: </a></span>                        result.remove(result.size() - 1);
+<span class="nocode"><a name="508">508: </a></span>                        result.add(new CycleBoundTick(
+<span class="nocode"><a name="509">509: </a></span>                            this.boundMappedToLastCycle, lastTick.getNumber(),
+<span class="nocode"><a name="510">510: </a></span>                            lastTick.getText(), anchor, anchor, 
+<span class="nocode"><a name="511">511: </a></span>                            lastTick.getAngle())
+<span class="nocode"><a name="512">512: </a></span>                        );
+<span class="nocode"><a name="513">513: </a></span>                        this.internalMarkerWhenTicksOverlap = true;
+<span class="nocode"><a name="514">514: </a></span>                        anchor = isInverted() 
+<span class="nocode"><a name="515">515: </a></span>                            ? TextAnchor.BOTTOM_RIGHT : TextAnchor.BOTTOM_LEFT;
+<span class="nocode"><a name="516">516: </a></span>                    }
+<span class="nocode"><a name="517">517: </a></span>                    rotationAnchor = anchor;
+<span class="nocode"><a name="518">518: </a></span>                }
+<span class="nocode"><a name="519">519: </a></span>                else {
+<span class="nocode"><a name="520">520: </a></span>                    anchor = TextAnchor.TOP_CENTER; 
+<span class="nocode"><a name="521">521: </a></span>                    if ((lastTick != null) &amp;&amp; (lastX == x) 
+<span class="nocode"><a name="522">522: </a></span>                            &amp;&amp; (currentTickValue != cycleBound)) {
+<span class="nocode"><a name="523">523: </a></span>                        anchor = isInverted() 
+<span class="nocode"><a name="524">524: </a></span>                            ? TextAnchor.TOP_LEFT : TextAnchor.TOP_RIGHT;
+<span class="nocode"><a name="525">525: </a></span>                        result.remove(result.size() - 1);
+<span class="nocode"><a name="526">526: </a></span>                        result.add(new CycleBoundTick(
+<span class="nocode"><a name="527">527: </a></span>                            this.boundMappedToLastCycle, lastTick.getNumber(),
+<span class="nocode"><a name="528">528: </a></span>                            lastTick.getText(), anchor, anchor, 
+<span class="nocode"><a name="529">529: </a></span>                            lastTick.getAngle())
+<span class="nocode"><a name="530">530: </a></span>                        );
+<span class="nocode"><a name="531">531: </a></span>                        this.internalMarkerWhenTicksOverlap = true;
+<span class="nocode"><a name="532">532: </a></span>                        anchor = isInverted() 
+<span class="nocode"><a name="533">533: </a></span>                            ? TextAnchor.TOP_RIGHT : TextAnchor.TOP_LEFT;
+<span class="nocode"><a name="534">534: </a></span>                    }
+<span class="nocode"><a name="535">535: </a></span>                    rotationAnchor = anchor;
+<span class="nocode"><a name="536">536: </a></span>                }
+<span class="nocode"><a name="537">537: </a></span>            }
+<span class="nocode"><a name="538">538: </a></span>
+<span class="nocode"><a name="539">539: </a></span>            CycleBoundTick tick = new CycleBoundTick(
+<span class="nocode"><a name="540">540: </a></span>                this.boundMappedToLastCycle, 
+<span class="nocode"><a name="541">541: </a></span>                new Double(currentTickValue), tickLabel, anchor, 
+<span class="nocode"><a name="542">542: </a></span>                rotationAnchor, angle
+<span class="nocode"><a name="543">543: </a></span>            );
+<span class="nocode"><a name="544">544: </a></span>            if (currentTickValue == cycleBound) {
+<span class="nocode"><a name="545">545: </a></span>                this.internalMarkerCycleBoundTick = tick; 
+<span class="nocode"><a name="546">546: </a></span>            }
+<span class="nocode"><a name="547">547: </a></span>            result.add(tick);
+<span class="nocode"><a name="548">548: </a></span>            lastTick = tick;
+<span class="nocode"><a name="549">549: </a></span>            lastX = x;
+<span class="nocode"><a name="550">550: </a></span>            
+<span class="nocode"><a name="551">551: </a></span>            currentTickValue += unit;
+<span class="nocode"><a name="552">552: </a></span>            
+<span class="nocode"><a name="553">553: </a></span>            if (cyclenow) {
+<span class="nocode"><a name="554">554: </a></span>                currentTickValue = calculateLowestVisibleTickValue();
+<span class="nocode"><a name="555">555: </a></span>                upperValue = cycleBound;
+<span class="nocode"><a name="556">556: </a></span>                cycled = true;
+<span class="nocode"><a name="557">557: </a></span>                this.boundMappedToLastCycle = true; 
+<span class="nocode"><a name="558">558: </a></span>            }
+<span class="nocode"><a name="559">559: </a></span>
+<span class="nocode"><a name="560">560: </a></span>        }
+<span class="nocode"><a name="561">561: </a></span>        this.boundMappedToLastCycle = boundMapping; 
+<span class="nocode"><a name="562">562: </a></span>        return result;
+<span class="nocode"><a name="563">563: </a></span>        
+<span class="nocode"><a name="564">564: </a></span>    }
+<span class="nocode"><a name="565">565: </a></span>
+<span class="nocode"><a name="566">566: </a></span>    /**
+<span class="nocode"><a name="567">567: </a></span>     * Builds a list of ticks for the axis.  This method is called when the 
+<span class="nocode"><a name="568">568: </a></span>     * axis is at the left or right of the chart (so the axis is &quot;vertical&quot;).
+<span class="nocode"><a name="569">569: </a></span>     * 
+<span class="nocode"><a name="570">570: </a></span>     * @param g2  the graphics device.
+<span class="nocode"><a name="571">571: </a></span>     * @param dataArea  the data area.
+<span class="nocode"><a name="572">572: </a></span>     * @param edge  the edge.
+<span class="nocode"><a name="573">573: </a></span>     * 
+<span class="nocode"><a name="574">574: </a></span>     * @return A list of ticks.
+<span class="nocode"><a name="575">575: </a></span>     */
+<span class="nocode"><a name="576">576: </a></span>    protected List refreshVerticalTicks(Graphics2D g2, 
+<span class="nocode"><a name="577">577: </a></span>                                        Rectangle2D dataArea, 
+<span class="nocode"><a name="578">578: </a></span>                                        RectangleEdge edge) {
+<span class="nocode"><a name="579">579: </a></span>        
+<span class="nocode"><a name="580">580: </a></span>        List result = new java.util.ArrayList();
+<span class="nocode"><a name="581">581: </a></span>        result.clear();
+<span class="nocode"><a name="582">582: </a></span>
+<span class="nocode"><a name="583">583: </a></span>        Font tickLabelFont = getTickLabelFont();
+<span class="nocode"><a name="584">584: </a></span>        g2.setFont(tickLabelFont);
+<span class="nocode"><a name="585">585: </a></span>        if (isAutoTickUnitSelection()) {
+<span class="nocode"><a name="586">586: </a></span>            selectAutoTickUnit(g2, dataArea, edge);
+<span class="nocode"><a name="587">587: </a></span>        }
+<span class="nocode"><a name="588">588: </a></span>
+<span class="nocode"><a name="589">589: </a></span>        double unit = getTickUnit().getSize();
+<span class="nocode"><a name="590">590: </a></span>        double cycleBound = getCycleBound();
+<span class="nocode"><a name="591">591: </a></span>        double currentTickValue = Math.ceil(cycleBound / unit) * unit;
+<span class="nocode"><a name="592">592: </a></span>        double upperValue = getRange().getUpperBound();
+<span class="nocode"><a name="593">593: </a></span>        boolean cycled = false;
+<span class="nocode"><a name="594">594: </a></span>
+<span class="nocode"><a name="595">595: </a></span>        boolean boundMapping = this.boundMappedToLastCycle; 
+<span class="nocode"><a name="596">596: </a></span>        this.boundMappedToLastCycle = true; 
+<span class="nocode"><a name="597">597: </a></span>
+<span class="nocode"><a name="598">598: </a></span>        NumberTick lastTick = null;
+<span class="nocode"><a name="599">599: </a></span>        float lastY = 0.0f;
+<span class="nocode"><a name="600">600: </a></span>
+<span class="nocode"><a name="601">601: </a></span>        if (upperValue == cycleBound) {
+<span class="nocode"><a name="602">602: </a></span>            currentTickValue = calculateLowestVisibleTickValue();
+<span class="nocode"><a name="603">603: </a></span>            cycled = true;
+<span class="nocode"><a name="604">604: </a></span>            this.boundMappedToLastCycle = true;
+<span class="nocode"><a name="605">605: </a></span>        }
+<span class="nocode"><a name="606">606: </a></span>        
+<span class="nocode"><a name="607">607: </a></span>        while (currentTickValue &lt;= upperValue) {
+<span class="nocode"><a name="608">608: </a></span>            
+<span class="nocode"><a name="609">609: </a></span>            // Cycle when necessary
+<span class="nocode"><a name="610">610: </a></span>            boolean cyclenow = false;
+<span class="nocode"><a name="611">611: </a></span>            if ((currentTickValue + unit &gt; upperValue) &amp;&amp; !cycled) {
+<span class="nocode"><a name="612">612: </a></span>                cyclenow = true;
+<span class="nocode"><a name="613">613: </a></span>            }
+<span class="nocode"><a name="614">614: </a></span>
+<span class="nocode"><a name="615">615: </a></span>            double yy = valueToJava2D(currentTickValue, dataArea, edge);
+<span class="nocode"><a name="616">616: </a></span>            String tickLabel;
+<span class="nocode"><a name="617">617: </a></span>            NumberFormat formatter = getNumberFormatOverride();
+<span class="nocode"><a name="618">618: </a></span>            if (formatter != null) {
+<span class="nocode"><a name="619">619: </a></span>                tickLabel = formatter.format(currentTickValue);
+<span class="nocode"><a name="620">620: </a></span>            }
+<span class="nocode"><a name="621">621: </a></span>            else {
+<span class="nocode"><a name="622">622: </a></span>                tickLabel = getTickUnit().valueToString(currentTickValue);
+<span class="nocode"><a name="623">623: </a></span>            }
+<span class="nocode"><a name="624">624: </a></span>
+<span class="nocode"><a name="625">625: </a></span>            float y = (float) yy;
+<span class="nocode"><a name="626">626: </a></span>            TextAnchor anchor = null;
+<span class="nocode"><a name="627">627: </a></span>            TextAnchor rotationAnchor = null;
+<span class="nocode"><a name="628">628: </a></span>            double angle = 0.0;
+<span class="nocode"><a name="629">629: </a></span>            if (isVerticalTickLabels()) {
+<span class="nocode"><a name="630">630: </a></span>
+<span class="nocode"><a name="631">631: </a></span>                if (edge == RectangleEdge.LEFT) {
+<span class="nocode"><a name="632">632: </a></span>                    anchor = TextAnchor.BOTTOM_CENTER; 
+<span class="nocode"><a name="633">633: </a></span>                    if ((lastTick != null) &amp;&amp; (lastY == y) 
+<span class="nocode"><a name="634">634: </a></span>                            &amp;&amp; (currentTickValue != cycleBound)) {
+<span class="nocode"><a name="635">635: </a></span>                        anchor = isInverted() 
+<span class="nocode"><a name="636">636: </a></span>                            ? TextAnchor.BOTTOM_LEFT : TextAnchor.BOTTOM_RIGHT;
+<span class="nocode"><a name="637">637: </a></span>                        result.remove(result.size() - 1);
+<span class="nocode"><a name="638">638: </a></span>                        result.add(new CycleBoundTick(
+<span class="nocode"><a name="639">639: </a></span>                            this.boundMappedToLastCycle, lastTick.getNumber(),
+<span class="nocode"><a name="640">640: </a></span>                            lastTick.getText(), anchor, anchor, 
+<span class="nocode"><a name="641">641: </a></span>                            lastTick.getAngle())
+<span class="nocode"><a name="642">642: </a></span>                        );
+<span class="nocode"><a name="643">643: </a></span>                        this.internalMarkerWhenTicksOverlap = true;
+<span class="nocode"><a name="644">644: </a></span>                        anchor = isInverted() 
+<span class="nocode"><a name="645">645: </a></span>                            ? TextAnchor.BOTTOM_RIGHT : TextAnchor.BOTTOM_LEFT;
+<span class="nocode"><a name="646">646: </a></span>                    }
+<span class="nocode"><a name="647">647: </a></span>                    rotationAnchor = anchor;
+<span class="nocode"><a name="648">648: </a></span>                    angle = -Math.PI / 2.0;
+<span class="nocode"><a name="649">649: </a></span>                }
+<span class="nocode"><a name="650">650: </a></span>                else {
+<span class="nocode"><a name="651">651: </a></span>                    anchor = TextAnchor.BOTTOM_CENTER; 
+<span class="nocode"><a name="652">652: </a></span>                    if ((lastTick != null) &amp;&amp; (lastY == y) 
+<span class="nocode"><a name="653">653: </a></span>                            &amp;&amp; (currentTickValue != cycleBound)) {
+<span class="nocode"><a name="654">654: </a></span>                        anchor = isInverted() 
+<span class="nocode"><a name="655">655: </a></span>                            ? TextAnchor.BOTTOM_RIGHT : TextAnchor.BOTTOM_LEFT;
+<span class="nocode"><a name="656">656: </a></span>                        result.remove(result.size() - 1);
+<span class="nocode"><a name="657">657: </a></span>                        result.add(new CycleBoundTick(
+<span class="nocode"><a name="658">658: </a></span>                            this.boundMappedToLastCycle, lastTick.getNumber(),
+<span class="nocode"><a name="659">659: </a></span>                            lastTick.getText(), anchor, anchor, 
+<span class="nocode"><a name="660">660: </a></span>                            lastTick.getAngle())
+<span class="nocode"><a name="661">661: </a></span>                        );
+<span class="nocode"><a name="662">662: </a></span>                        this.internalMarkerWhenTicksOverlap = true;
+<span class="nocode"><a name="663">663: </a></span>                        anchor = isInverted() 
+<span class="nocode"><a name="664">664: </a></span>                            ? TextAnchor.BOTTOM_LEFT : TextAnchor.BOTTOM_RIGHT;
+<span class="nocode"><a name="665">665: </a></span>                    }
+<span class="nocode"><a name="666">666: </a></span>                    rotationAnchor = anchor;
+<span class="nocode"><a name="667">667: </a></span>                    angle = Math.PI / 2.0;
+<span class="nocode"><a name="668">668: </a></span>                }
+<span class="nocode"><a name="669">669: </a></span>            }
+<span class="nocode"><a name="670">670: </a></span>            else {
+<span class="nocode"><a name="671">671: </a></span>                if (edge == RectangleEdge.LEFT) {
+<span class="nocode"><a name="672">672: </a></span>                    anchor = TextAnchor.CENTER_RIGHT; 
+<span class="nocode"><a name="673">673: </a></span>                    if ((lastTick != null) &amp;&amp; (lastY == y) 
+<span class="nocode"><a name="674">674: </a></span>                            &amp;&amp; (currentTickValue != cycleBound)) {
+<span class="nocode"><a name="675">675: </a></span>                        anchor = isInverted() 
+<span class="nocode"><a name="676">676: </a></span>                            ? TextAnchor.BOTTOM_RIGHT : TextAnchor.TOP_RIGHT;
+<span class="nocode"><a name="677">677: </a></span>                        result.remove(result.size() - 1);
+<span class="nocode"><a name="678">678: </a></span>                        result.add(new CycleBoundTick(
+<span class="nocode"><a name="679">679: </a></span>                            this.boundMappedToLastCycle, lastTick.getNumber(),
+<span class="nocode"><a name="680">680: </a></span>                            lastTick.getText(), anchor, anchor, 
+<span class="nocode"><a name="681">681: </a></span>                            lastTick.getAngle())
+<span class="nocode"><a name="682">682: </a></span>                        );
+<span class="nocode"><a name="683">683: </a></span>                        this.internalMarkerWhenTicksOverlap = true;
+<span class="nocode"><a name="684">684: </a></span>                        anchor = isInverted() 
+<span class="nocode"><a name="685">685: </a></span>                            ? TextAnchor.TOP_RIGHT : TextAnchor.BOTTOM_RIGHT;
+<span class="nocode"><a name="686">686: </a></span>                    }
+<span class="nocode"><a name="687">687: </a></span>                    rotationAnchor = anchor;
+<span class="nocode"><a name="688">688: </a></span>                }
+<span class="nocode"><a name="689">689: </a></span>                else {
+<span class="nocode"><a name="690">690: </a></span>                    anchor = TextAnchor.CENTER_LEFT; 
+<span class="nocode"><a name="691">691: </a></span>                    if ((lastTick != null) &amp;&amp; (lastY == y) 
+<span class="nocode"><a name="692">692: </a></span>                            &amp;&amp; (currentTickValue != cycleBound)) {
+<span class="nocode"><a name="693">693: </a></span>                        anchor = isInverted() 
+<span class="nocode"><a name="694">694: </a></span>                            ? TextAnchor.BOTTOM_LEFT : TextAnchor.TOP_LEFT;
+<span class="nocode"><a name="695">695: </a></span>                        result.remove(result.size() - 1);
+<span class="nocode"><a name="696">696: </a></span>                        result.add(new CycleBoundTick(
+<span class="nocode"><a name="697">697: </a></span>                            this.boundMappedToLastCycle, lastTick.getNumber(),
+<span class="nocode"><a name="698">698: </a></span>                            lastTick.getText(), anchor, anchor, 
+<span class="nocode"><a name="699">699: </a></span>                            lastTick.getAngle())
+<span class="nocode"><a name="700">700: </a></span>                        );
+<span class="nocode"><a name="701">701: </a></span>                        this.internalMarkerWhenTicksOverlap = true;
+<span class="nocode"><a name="702">702: </a></span>                        anchor = isInverted() 
+<span class="nocode"><a name="703">703: </a></span>                            ? TextAnchor.TOP_LEFT : TextAnchor.BOTTOM_LEFT;
+<span class="nocode"><a name="704">704: </a></span>                    }
+<span class="nocode"><a name="705">705: </a></span>                    rotationAnchor = anchor;
+<span class="nocode"><a name="706">706: </a></span>                }
+<span class="nocode"><a name="707">707: </a></span>            }
+<span class="nocode"><a name="708">708: </a></span>
+<span class="nocode"><a name="709">709: </a></span>            CycleBoundTick tick = new CycleBoundTick(
+<span class="nocode"><a name="710">710: </a></span>                this.boundMappedToLastCycle, new Double(currentTickValue), 
+<span class="nocode"><a name="711">711: </a></span>                tickLabel, anchor, rotationAnchor, angle
+<span class="nocode"><a name="712">712: </a></span>            );
+<span class="nocode"><a name="713">713: </a></span>            if (currentTickValue == cycleBound) {
+<span class="nocode"><a name="714">714: </a></span>                this.internalMarkerCycleBoundTick = tick; 
+<span class="nocode"><a name="715">715: </a></span>            }
+<span class="nocode"><a name="716">716: </a></span>            result.add(tick);
+<span class="nocode"><a name="717">717: </a></span>            lastTick = tick;
+<span class="nocode"><a name="718">718: </a></span>            lastY = y;
+<span class="nocode"><a name="719">719: </a></span>            
+<span class="nocode"><a name="720">720: </a></span>            if (currentTickValue == cycleBound) {
+<span class="nocode"><a name="721">721: </a></span>                this.internalMarkerCycleBoundTick = tick;
+<span class="nocode"><a name="722">722: </a></span>            }
+<span class="nocode"><a name="723">723: </a></span>
+<span class="nocode"><a name="724">724: </a></span>            currentTickValue += unit;
+<span class="nocode"><a name="725">725: </a></span>            
+<span class="nocode"><a name="726">726: </a></span>            if (cyclenow) {
+<span class="nocode"><a name="727">727: </a></span>                currentTickValue = calculateLowestVisibleTickValue();
+<span class="nocode"><a name="728">728: </a></span>                upperValue = cycleBound;
+<span class="nocode"><a name="729">729: </a></span>                cycled = true;
+<span class="nocode"><a name="730">730: </a></span>                this.boundMappedToLastCycle = false; 
+<span class="nocode"><a name="731">731: </a></span>            }
+<span class="nocode"><a name="732">732: </a></span>
+<span class="nocode"><a name="733">733: </a></span>        }
+<span class="nocode"><a name="734">734: </a></span>        this.boundMappedToLastCycle = boundMapping; 
+<span class="nocode"><a name="735">735: </a></span>        return result;
+<span class="nocode"><a name="736">736: </a></span>    }
+<span class="nocode"><a name="737">737: </a></span>    
+<span class="nocode"><a name="738">738: </a></span>    /**
+<span class="nocode"><a name="739">739: </a></span>     * Converts a coordinate from Java 2D space to data space.
+<span class="nocode"><a name="740">740: </a></span>     * 
+<span class="nocode"><a name="741">741: </a></span>     * @param java2DValue  the coordinate in Java2D space.
+<span class="nocode"><a name="742">742: </a></span>     * @param dataArea  the data area.
+<span class="nocode"><a name="743">743: </a></span>     * @param edge  the edge.
+<span class="nocode"><a name="744">744: </a></span>     * 
+<span class="nocode"><a name="745">745: </a></span>     * @return The data value.
+<span class="nocode"><a name="746">746: </a></span>     */
+<span class="nocode"><a name="747">747: </a></span>    public double java2DToValue(double java2DValue, Rectangle2D dataArea, 
+<span class="nocode"><a name="748">748: </a></span>                                RectangleEdge edge) {
+<span class="nocode"><a name="749">749: </a></span>        Range range = getRange();
+<span class="nocode"><a name="750">750: </a></span>        
+<span class="nocode"><a name="751">751: </a></span>        double vmax = range.getUpperBound();
+<span class="nocode"><a name="752">752: </a></span>        double vp = getCycleBound();
+<span class="nocode"><a name="753">753: </a></span>
+<span class="nocode"><a name="754">754: </a></span>        double jmin = 0.0;
+<span class="nocode"><a name="755">755: </a></span>        double jmax = 0.0;
+<span class="nocode"><a name="756">756: </a></span>        if (RectangleEdge.isTopOrBottom(edge)) {
+<span class="nocode"><a name="757">757: </a></span>            jmin = dataArea.getMinX();
+<span class="nocode"><a name="758">758: </a></span>            jmax = dataArea.getMaxX();
+<span class="nocode"><a name="759">759: </a></span>        }
+<span class="nocode"><a name="760">760: </a></span>        else if (RectangleEdge.isLeftOrRight(edge)) {
+<span class="nocode"><a name="761">761: </a></span>            jmin = dataArea.getMaxY();
+<span class="nocode"><a name="762">762: </a></span>            jmax = dataArea.getMinY();
+<span class="nocode"><a name="763">763: </a></span>        }
+<span class="nocode"><a name="764">764: </a></span>        
+<span class="nocode"><a name="765">765: </a></span>        if (isInverted()) {
+<span class="nocode"><a name="766">766: </a></span>            double jbreak = jmax - (vmax - vp) * (jmax - jmin) / this.period;
+<span class="nocode"><a name="767">767: </a></span>            if (java2DValue &gt;= jbreak) { 
+<span class="nocode"><a name="768">768: </a></span>                return vp + (jmax - java2DValue) * this.period / (jmax - jmin);
+<span class="nocode"><a name="769">769: </a></span>            } 
+<span class="nocode"><a name="770">770: </a></span>            else {
+<span class="nocode"><a name="771">771: </a></span>                return vp - (java2DValue - jmin) * this.period / (jmax - jmin);
+<span class="nocode"><a name="772">772: </a></span>            }
+<span class="nocode"><a name="773">773: </a></span>        }
+<span class="nocode"><a name="774">774: </a></span>        else {
+<span class="nocode"><a name="775">775: </a></span>            double jbreak = (vmax - vp) * (jmax - jmin) / this.period + jmin;
+<span class="nocode"><a name="776">776: </a></span>            if (java2DValue &lt;= jbreak) { 
+<span class="nocode"><a name="777">777: </a></span>                return vp + (java2DValue - jmin) * this.period / (jmax - jmin);
+<span class="nocode"><a name="778">778: </a></span>            } 
+<span class="nocode"><a name="779">779: </a></span>            else {
+<span class="nocode"><a name="780">780: </a></span>                return vp - (jmax - java2DValue) * this.period / (jmax - jmin);
+<span class="nocode"><a name="781">781: </a></span>            }
+<span class="nocode"><a name="782">782: </a></span>        }
+<span class="nocode"><a name="783">783: </a></span>    }
+<span class="nocode"><a name="784">784: </a></span>    
+<span class="nocode"><a name="785">785: </a></span>    /**
+<span class="nocode"><a name="786">786: </a></span>     * Translates a value from data space to Java 2D space.
+<span class="nocode"><a name="787">787: </a></span>     * 
+<span class="nocode"><a name="788">788: </a></span>     * @param value  the data value.
+<span class="nocode"><a name="789">789: </a></span>     * @param dataArea  the data area.
+<span class="nocode"><a name="790">790: </a></span>     * @param edge  the edge.
+<span class="nocode"><a name="791">791: </a></span>     * 
+<span class="nocode"><a name="792">792: </a></span>     * @return The Java 2D value.
+<span class="nocode"><a name="793">793: </a></span>     */
+<span class="nocode"><a name="794">794: </a></span>    public double valueToJava2D(double value, Rectangle2D dataArea, 
+<span class="nocode"><a name="795">795: </a></span>                                RectangleEdge edge) {
+<span class="nocode"><a name="796">796: </a></span>        Range range = getRange();
+<span class="nocode"><a name="797">797: </a></span>        
+<span class="nocode"><a name="798">798: </a></span>        double vmin = range.getLowerBound();
+<span class="nocode"><a name="799">799: </a></span>        double vmax = range.getUpperBound();
+<span class="nocode"><a name="800">800: </a></span>        double vp = getCycleBound();
+<span class="nocode"><a name="801">801: </a></span>
+<span class="nocode"><a name="802">802: </a></span>        if ((value &lt; vmin) || (value &gt; vmax)) {
+<span class="nocode"><a name="803">803: </a></span>            return Double.NaN;
+<span class="nocode"><a name="804">804: </a></span>        }
+<span class="nocode"><a name="805">805: </a></span>        
+<span class="nocode"><a name="806">806: </a></span>        
+<span class="nocode"><a name="807">807: </a></span>        double jmin = 0.0;
+<span class="nocode"><a name="808">808: </a></span>        double jmax = 0.0;
+<span class="nocode"><a name="809">809: </a></span>        if (RectangleEdge.isTopOrBottom(edge)) {
+<span class="nocode"><a name="810">810: </a></span>            jmin = dataArea.getMinX();
+<span class="nocode"><a name="811">811: </a></span>            jmax = dataArea.getMaxX();
+<span class="nocode"><a name="812">812: </a></span>        }
+<span class="nocode"><a name="813">813: </a></span>        else if (RectangleEdge.isLeftOrRight(edge)) {
+<span class="nocode"><a name="814">814: </a></span>            jmax = dataArea.getMinY();
+<span class="nocode"><a name="815">815: </a></span>            jmin = dataArea.getMaxY();
+<span class="nocode"><a name="816">816: </a></span>        }
+<span class="nocode"><a name="817">817: </a></span>
+<span class="nocode"><a name="818">818: </a></span>        if (isInverted()) {
+<span class="nocode"><a name="819">819: </a></span>            if (value == vp) {
+<span class="nocode"><a name="820">820: </a></span>                return this.boundMappedToLastCycle ? jmin : jmax; 
+<span class="nocode"><a name="821">821: </a></span>            }
+<span class="nocode"><a name="822">822: </a></span>            else if (value &gt; vp) {
+<span class="nocode"><a name="823">823: </a></span>                return jmax - (value - vp) * (jmax - jmin) / this.period;
+<span class="nocode"><a name="824">824: </a></span>            } 
+<span class="nocode"><a name="825">825: </a></span>            else {
+<span class="nocode"><a name="826">826: </a></span>                return jmin + (vp - value) * (jmax - jmin) / this.period;
+<span class="nocode"><a name="827">827: </a></span>            }
+<span class="nocode"><a name="828">828: </a></span>        }
+<span class="nocode"><a name="829">829: </a></span>        else {
+<span class="nocode"><a name="830">830: </a></span>            if (value == vp) {
+<span class="nocode"><a name="831">831: </a></span>                return this.boundMappedToLastCycle ? jmax : jmin; 
+<span class="nocode"><a name="832">832: </a></span>            }
+<span class="nocode"><a name="833">833: </a></span>            else if (value &gt;= vp) {
+<span class="nocode"><a name="834">834: </a></span>                return jmin + (value - vp) * (jmax - jmin) / this.period;
+<span class="nocode"><a name="835">835: </a></span>            } 
+<span class="nocode"><a name="836">836: </a></span>            else {
+<span class="nocode"><a name="837">837: </a></span>                return jmax - (vp - value) * (jmax - jmin) / this.period;
+<span class="nocode"><a name="838">838: </a></span>            }
+<span class="nocode"><a name="839">839: </a></span>        }
+<span class="nocode"><a name="840">840: </a></span>    }
+<span class="nocode"><a name="841">841: </a></span>    
+<span class="nocode"><a name="842">842: </a></span>    /**
+<span class="nocode"><a name="843">843: </a></span>     * Centers the range about the given value.
+<span class="nocode"><a name="844">844: </a></span>     * 
+<span class="nocode"><a name="845">845: </a></span>     * @param value  the data value.
+<span class="nocode"><a name="846">846: </a></span>     */
+<span class="nocode"><a name="847">847: </a></span>    public void centerRange(double value) {
+<span class="nocode"><a name="848">848: </a></span>        setRange(value - this.period / 2.0, value + this.period / 2.0);
+<span class="nocode"><a name="849">849: </a></span>    }
+<span class="nocode"><a name="850">850: </a></span>
+<span class="nocode"><a name="851">851: </a></span>    /** 
+<span class="nocode"><a name="852">852: </a></span>     * This function is nearly useless since the auto range is fixed for this 
+<span class="nocode"><a name="853">853: </a></span>     * class to the period.  The period is extended if necessary to fit the 
+<span class="nocode"><a name="854">854: </a></span>     * minimum size.
+<span class="nocode"><a name="855">855: </a></span>     * 
+<span class="nocode"><a name="856">856: </a></span>     * @param size  the size.
+<span class="nocode"><a name="857">857: </a></span>     * @param notify  notify?
+<span class="nocode"><a name="858">858: </a></span>     * 
+<span class="nocode"><a name="859">859: </a></span>     * @see org.jfree.chart.axis.ValueAxis#setAutoRangeMinimumSize(double, 
+<span class="nocode"><a name="860">860: </a></span>     *      boolean)
+<span class="nocode"><a name="861">861: </a></span>     */
+<span class="nocode"><a name="862">862: </a></span>    public void setAutoRangeMinimumSize(double size, boolean notify) {
+<span class="nocode"><a name="863">863: </a></span>        if (size &gt; this.period) {
+<span class="nocode"><a name="864">864: </a></span>            this.period = size;
+<span class="nocode"><a name="865">865: </a></span>        }
+<span class="nocode"><a name="866">866: </a></span>        super.setAutoRangeMinimumSize(size, notify);
+<span class="nocode"><a name="867">867: </a></span>    }
+<span class="nocode"><a name="868">868: </a></span>
+<span class="nocode"><a name="869">869: </a></span>    /** 
+<span class="nocode"><a name="870">870: </a></span>     * The auto range is fixed for this class to the period by default. 
+<span class="nocode"><a name="871">871: </a></span>     * This function will thus set a new period.
+<span class="nocode"><a name="872">872: </a></span>     * 
+<span class="nocode"><a name="873">873: </a></span>     * @param length  the length.
+<span class="nocode"><a name="874">874: </a></span>     * 
+<span class="nocode"><a name="875">875: </a></span>     * @see org.jfree.chart.axis.ValueAxis#setFixedAutoRange(double)
+<span class="nocode"><a name="876">876: </a></span>     */
+<span class="nocode"><a name="877">877: </a></span>    public void setFixedAutoRange(double length) {
+<span class="nocode"><a name="878">878: </a></span>        this.period = length;
+<span class="nocode"><a name="879">879: </a></span>        super.setFixedAutoRange(length);
+<span class="nocode"><a name="880">880: </a></span>    }
+<span class="nocode"><a name="881">881: </a></span>
+<span class="nocode"><a name="882">882: </a></span>    /** 
+<span class="nocode"><a name="883">883: </a></span>     * Sets a new axis range. The period is extended to fit the range size, if 
+<span class="nocode"><a name="884">884: </a></span>     * necessary.
+<span class="nocode"><a name="885">885: </a></span>     * 
+<span class="nocode"><a name="886">886: </a></span>     * @param range  the range.
+<span class="nocode"><a name="887">887: </a></span>     * @param turnOffAutoRange  switch off the auto range.
+<span class="nocode"><a name="888">888: </a></span>     * @param notify notify?
+<span class="nocode"><a name="889">889: </a></span>     * 
+<span class="nocode"><a name="890">890: </a></span>     * @see org.jfree.chart.axis.ValueAxis#setRange(Range, boolean, boolean) 
+<span class="nocode"><a name="891">891: </a></span>     */
+<span class="nocode"><a name="892">892: </a></span>    public void setRange(Range range, boolean turnOffAutoRange, 
+<span class="nocode"><a name="893">893: </a></span>                         boolean notify) {
+<span class="nocode"><a name="894">894: </a></span>        double size = range.getUpperBound() - range.getLowerBound();
+<span class="nocode"><a name="895">895: </a></span>        if (size &gt; this.period) {
+<span class="nocode"><a name="896">896: </a></span>            this.period = size;
+<span class="nocode"><a name="897">897: </a></span>        }
+<span class="nocode"><a name="898">898: </a></span>        super.setRange(range, turnOffAutoRange, notify);
+<span class="nocode"><a name="899">899: </a></span>    }
+<span class="nocode"><a name="900">900: </a></span>    
+<span class="nocode"><a name="901">901: </a></span>    /**
+<span class="nocode"><a name="902">902: </a></span>     * The cycle bound is defined as the higest value x such that 
+<span class="nocode"><a name="903">903: </a></span>     * &quot;offset + period * i = x&quot;, with i and integer and x &amp;lt; 
+<span class="nocode"><a name="904">904: </a></span>     * range.getUpperBound() This is the value which is at both ends of the 
+<span class="nocode"><a name="905">905: </a></span>     * axis :  x...up|low...x
+<span class="nocode"><a name="906">906: </a></span>     * The values from x to up are the valued in the current cycle.
+<span class="nocode"><a name="907">907: </a></span>     * The values from low to x are the valued in the previous cycle.
+<span class="nocode"><a name="908">908: </a></span>     * 
+<span class="nocode"><a name="909">909: </a></span>     * @return The cycle bound.
+<span class="nocode"><a name="910">910: </a></span>     */
+<span class="nocode"><a name="911">911: </a></span>    public double getCycleBound() {
+<span class="nocode"><a name="912">912: </a></span>        return Math.floor(
+<span class="nocode"><a name="913">913: </a></span>            (getRange().getUpperBound() - this.offset) / this.period
+<span class="nocode"><a name="914">914: </a></span>        ) * this.period + this.offset;
+<span class="nocode"><a name="915">915: </a></span>    }
+<span class="nocode"><a name="916">916: </a></span>    
+<span class="nocode"><a name="917">917: </a></span>    /**
+<span class="nocode"><a name="918">918: </a></span>     * The cycle bound is a multiple of the period, plus optionally a start 
+<span class="nocode"><a name="919">919: </a></span>     * offset.
+<span class="nocode"><a name="920">920: </a></span>     * &lt;P&gt;
+<span class="nocode"><a name="921">921: </a></span>     * &lt;pre&gt;cb = n * period + offset&lt;/pre&gt;&lt;br&gt;
+<span class="nocode"><a name="922">922: </a></span>     * 
+<span class="nocode"><a name="923">923: </a></span>     * @return The current offset.
+<span class="nocode"><a name="924">924: </a></span>     * 
+<span class="nocode"><a name="925">925: </a></span>     * @see #getCycleBound()
+<span class="nocode"><a name="926">926: </a></span>     */
+<span class="nocode"><a name="927">927: </a></span>    public double getOffset() {
+<span class="nocode"><a name="928">928: </a></span>        return this.offset;
+<span class="nocode"><a name="929">929: </a></span>    }
+<span class="nocode"><a name="930">930: </a></span>    
+<span class="nocode"><a name="931">931: </a></span>    /**
+<span class="nocode"><a name="932">932: </a></span>     * The cycle bound is a multiple of the period, plus optionally a start 
+<span class="nocode"><a name="933">933: </a></span>     * offset.
+<span class="nocode"><a name="934">934: </a></span>     * &lt;P&gt;
+<span class="nocode"><a name="935">935: </a></span>     * &lt;pre&gt;cb = n * period + offset&lt;/pre&gt;&lt;br&gt;
+<span class="nocode"><a name="936">936: </a></span>     * 
+<span class="nocode"><a name="937">937: </a></span>     * @param offset The offset to set.
+<span class="nocode"><a name="938">938: </a></span>     *
+<span class="nocode"><a name="939">939: </a></span>     * @see #getCycleBound() 
+<span class="nocode"><a name="940">940: </a></span>     */
+<span class="nocode"><a name="941">941: </a></span>    public void setOffset(double offset) {
+<span class="nocode"><a name="942">942: </a></span>        this.offset = offset;
+<span class="nocode"><a name="943">943: </a></span>    }
+<span class="nocode"><a name="944">944: </a></span>    
+<span class="nocode"><a name="945">945: </a></span>    /**
+<span class="nocode"><a name="946">946: </a></span>     * The cycle bound is a multiple of the period, plus optionally a start 
+<span class="nocode"><a name="947">947: </a></span>     * offset.
+<span class="nocode"><a name="948">948: </a></span>     * &lt;P&gt;
+<span class="nocode"><a name="949">949: </a></span>     * &lt;pre&gt;cb = n * period + offset&lt;/pre&gt;&lt;br&gt;
+<span class="nocode"><a name="950">950: </a></span>     * 
+<span class="nocode"><a name="951">951: </a></span>     * @return The current period.
+<span class="nocode"><a name="952">952: </a></span>     * 
+<span class="nocode"><a name="953">953: </a></span>     * @see #getCycleBound()
+<span class="nocode"><a name="954">954: </a></span>     */
+<span class="nocode"><a name="955">955: </a></span>    public double getPeriod() {
+<span class="nocode"><a name="956">956: </a></span>        return this.period;
+<span class="nocode"><a name="957">957: </a></span>    }
+<span class="nocode"><a name="958">958: </a></span>    
+<span class="nocode"><a name="959">959: </a></span>    /**
+<span class="nocode"><a name="960">960: </a></span>     * The cycle bound is a multiple of the period, plus optionally a start 
+<span class="nocode"><a name="961">961: </a></span>     * offset.
+<span class="nocode"><a name="962">962: </a></span>     * &lt;P&gt;
+<span class="nocode"><a name="963">963: </a></span>     * &lt;pre&gt;cb = n * period + offset&lt;/pre&gt;&lt;br&gt;
+<span class="nocode"><a name="964">964: </a></span>     * 
+<span class="nocode"><a name="965">965: </a></span>     * @param period The period to set.
+<span class="nocode"><a name="966">966: </a></span>     * 
+<span class="nocode"><a name="967">967: </a></span>     * @see #getCycleBound()
+<span class="nocode"><a name="968">968: </a></span>     */
+<span class="nocode"><a name="969">969: </a></span>    public void setPeriod(double period) {
+<span class="nocode"><a name="970">970: </a></span>        this.period = period;
+<span class="nocode"><a name="971">971: </a></span>    }
+<span class="nocode"><a name="972">972: </a></span>
+<span class="nocode"><a name="973">973: </a></span>    /**
+<span class="nocode"><a name="974">974: </a></span>     * Draws the tick marks and labels.
+<span class="nocode"><a name="975">975: </a></span>     * 
+<span class="nocode"><a name="976">976: </a></span>     * @param g2  the graphics device.
+<span class="nocode"><a name="977">977: </a></span>     * @param cursor  the cursor.
+<span class="nocode"><a name="978">978: </a></span>     * @param plotArea  the plot area.
+<span class="nocode"><a name="979">979: </a></span>     * @param dataArea  the area inside the axes.
+<span class="nocode"><a name="980">980: </a></span>     * @param edge  the side on which the axis is displayed.
+<span class="nocode"><a name="981">981: </a></span>     * 
+<span class="nocode"><a name="982">982: </a></span>     * @return The axis state.
+<span class="nocode"><a name="983">983: </a></span>     */
+<span class="nocode"><a name="984">984: </a></span>    protected AxisState drawTickMarksAndLabels(Graphics2D g2, double cursor, 
+<span class="nocode"><a name="985">985: </a></span>                                               Rectangle2D plotArea, 
+<span class="nocode"><a name="986">986: </a></span>                                               Rectangle2D dataArea, 
+<span class="nocode"><a name="987">987: </a></span>                                               RectangleEdge edge) {
+<span class="nocode"><a name="988">988: </a></span>        this.internalMarkerWhenTicksOverlap = false;
+<span class="nocode"><a name="989">989: </a></span>        AxisState ret = super.drawTickMarksAndLabels(
+<span class="nocode"><a name="990">990: </a></span>            g2, cursor, plotArea, dataArea, edge
+<span class="nocode"><a name="991">991: </a></span>        );
+<span class="nocode"><a name="992">992: </a></span>        
+<span class="nocode"><a name="993">993: </a></span>        // continue and separate the labels only if necessary
+<span class="nocode"><a name="994">994: </a></span>        if (!this.internalMarkerWhenTicksOverlap) {
+<span class="nocode"><a name="995">995: </a></span>            return ret;
+<span class="nocode"><a name="996">996: </a></span>        }
+<span class="nocode"><a name="997">997: </a></span>        
+<span class="nocode"><a name="998">998: </a></span>        double ol = getTickMarkOutsideLength();
+<span class="nocode"><a name="999">999: </a></span>        FontMetrics fm = g2.getFontMetrics(getTickLabelFont());
+<span class="nocode"><a name="1000">1000: </a></span>        
+<span class="nocode"><a name="1001">1001: </a></span>        if (isVerticalTickLabels()) {
+<span class="nocode"><a name="1002">1002: </a></span>            ol = fm.getMaxAdvance(); 
+<span class="nocode"><a name="1003">1003: </a></span>        }
+<span class="nocode"><a name="1004">1004: </a></span>        else {
+<span class="nocode"><a name="1005">1005: </a></span>            ol = fm.getHeight();
+<span class="nocode"><a name="1006">1006: </a></span>        }
+<span class="nocode"><a name="1007">1007: </a></span>        
+<span class="nocode"><a name="1008">1008: </a></span>        double il = 0;
+<span class="nocode"><a name="1009">1009: </a></span>        if (isTickMarksVisible()) {
+<span class="nocode"><a name="1010">1010: </a></span>            float xx = (float) valueToJava2D(
+<span class="nocode"><a name="1011">1011: </a></span>                getRange().getUpperBound(), dataArea, edge
+<span class="nocode"><a name="1012">1012: </a></span>            );
+<span class="nocode"><a name="1013">1013: </a></span>            Line2D mark = null;
+<span class="nocode"><a name="1014">1014: </a></span>            g2.setStroke(getTickMarkStroke());
+<span class="nocode"><a name="1015">1015: </a></span>            g2.setPaint(getTickMarkPaint());
+<span class="nocode"><a name="1016">1016: </a></span>            if (edge == RectangleEdge.LEFT) {
+<span class="nocode"><a name="1017">1017: </a></span>                mark = new Line2D.Double(cursor - ol, xx, cursor + il, xx);
+<span class="nocode"><a name="1018">1018: </a></span>            }
+<span class="nocode"><a name="1019">1019: </a></span>            else if (edge == RectangleEdge.RIGHT) {
+<span class="nocode"><a name="1020">1020: </a></span>                mark = new Line2D.Double(cursor + ol, xx, cursor - il, xx);
+<span class="nocode"><a name="1021">1021: </a></span>            }
+<span class="nocode"><a name="1022">1022: </a></span>            else if (edge == RectangleEdge.TOP) {
+<span class="nocode"><a name="1023">1023: </a></span>                mark = new Line2D.Double(xx, cursor - ol, xx, cursor + il);
+<span class="nocode"><a name="1024">1024: </a></span>            }
+<span class="nocode"><a name="1025">1025: </a></span>            else if (edge == RectangleEdge.BOTTOM) {
+<span class="nocode"><a name="1026">1026: </a></span>                mark = new Line2D.Double(xx, cursor + ol, xx, cursor - il);
+<span class="nocode"><a name="1027">1027: </a></span>            }
+<span class="nocode"><a name="1028">1028: </a></span>            g2.draw(mark);
+<span class="nocode"><a name="1029">1029: </a></span>        }
+<span class="nocode"><a name="1030">1030: </a></span>        return ret;
+<span class="nocode"><a name="1031">1031: </a></span>    }
+<span class="nocode"><a name="1032">1032: </a></span>    
+<span class="nocode"><a name="1033">1033: </a></span>    /**
+<span class="nocode"><a name="1034">1034: </a></span>     * Draws the axis.
+<span class="nocode"><a name="1035">1035: </a></span>     * 
+<span class="nocode"><a name="1036">1036: </a></span>     * @param g2  the graphics device (&lt;code&gt;null&lt;/code&gt; not permitted).
+<span class="nocode"><a name="1037">1037: </a></span>     * @param cursor  the cursor position.
+<span class="nocode"><a name="1038">1038: </a></span>     * @param plotArea  the plot area (&lt;code&gt;null&lt;/code&gt; not permitted).
+<span class="nocode"><a name="1039">1039: </a></span>     * @param dataArea  the data area (&lt;code&gt;null&lt;/code&gt; not permitted).
+<span class="nocode"><a name="1040">1040: </a></span>     * @param edge  the edge (&lt;code&gt;null&lt;/code&gt; not permitted).
+<span class="nocode"><a name="1041">1041: </a></span>     * @param plotState  collects information about the plot 
+<span class="nocode"><a name="1042">1042: </a></span>     *                   (&lt;code&gt;null&lt;/code&gt; permitted).
+<span class="nocode"><a name="1043">1043: </a></span>     * 
+<span class="nocode"><a name="1044">1044: </a></span>     * @return The axis state (never &lt;code&gt;null&lt;/code&gt;).
+<span class="nocode"><a name="1045">1045: </a></span>     */
+<span class="nocode"><a name="1046">1046: </a></span>    public AxisState draw(Graphics2D g2, 
+<span class="nocode"><a name="1047">1047: </a></span>                          double cursor,
+<span class="nocode"><a name="1048">1048: </a></span>                          Rectangle2D plotArea, 
+<span class="nocode"><a name="1049">1049: </a></span>                          Rectangle2D dataArea, 
+<span class="nocode"><a name="1050">1050: </a></span>                          RectangleEdge edge,
+<span class="nocode"><a name="1051">1051: </a></span>                          PlotRenderingInfo plotState) {
+<span class="nocode"><a name="1052">1052: </a></span>        
+<span class="nocode"><a name="1053">1053: </a></span>        AxisState ret = super.draw(
+<span class="nocode"><a name="1054">1054: </a></span>            g2, cursor, plotArea, dataArea, edge, plotState
+<span class="nocode"><a name="1055">1055: </a></span>        );
+<span class="nocode"><a name="1056">1056: </a></span>        if (isAdvanceLineVisible()) {
+<span class="nocode"><a name="1057">1057: </a></span>            double xx = valueToJava2D(
+<span class="nocode"><a name="1058">1058: </a></span>                getRange().getUpperBound(), dataArea, edge
+<span class="nocode"><a name="1059">1059: </a></span>            );
+<span class="nocode"><a name="1060">1060: </a></span>            Line2D mark = null;
+<span class="nocode"><a name="1061">1061: </a></span>            g2.setStroke(getAdvanceLineStroke());
+<span class="nocode"><a name="1062">1062: </a></span>            g2.setPaint(getAdvanceLinePaint());
+<span class="nocode"><a name="1063">1063: </a></span>            if (edge == RectangleEdge.LEFT) {
+<span class="nocode"><a name="1064">1064: </a></span>                mark = new Line2D.Double(
+<span class="nocode"><a name="1065">1065: </a></span>                    cursor, xx, cursor + dataArea.getWidth(), xx
+<span class="nocode"><a name="1066">1066: </a></span>                );
+<span class="nocode"><a name="1067">1067: </a></span>            }
+<span class="nocode"><a name="1068">1068: </a></span>            else if (edge == RectangleEdge.RIGHT) {
+<span class="nocode"><a name="1069">1069: </a></span>                mark = new Line2D.Double(
+<span class="nocode"><a name="1070">1070: </a></span>                    cursor - dataArea.getWidth(), xx, cursor, xx
+<span class="nocode"><a name="1071">1071: </a></span>                );
+<span class="nocode"><a name="1072">1072: </a></span>            }
+<span class="nocode"><a name="1073">1073: </a></span>            else if (edge == RectangleEdge.TOP) {
+<span class="nocode"><a name="1074">1074: </a></span>                mark = new Line2D.Double(
+<span class="nocode"><a name="1075">1075: </a></span>                    xx, cursor + dataArea.getHeight(), xx, cursor
+<span class="nocode"><a name="1076">1076: </a></span>                );
+<span class="nocode"><a name="1077">1077: </a></span>            }
+<span class="nocode"><a name="1078">1078: </a></span>            else if (edge == RectangleEdge.BOTTOM) {
+<span class="nocode"><a name="1079">1079: </a></span>                mark = new Line2D.Double(
+<span class="nocode"><a name="1080">1080: </a></span>                    xx, cursor, xx, cursor - dataArea.getHeight()
+<span class="nocode"><a name="1081">1081: </a></span>                );
+<span class="nocode"><a name="1082">1082: </a></span>            }
+<span class="nocode"><a name="1083">1083: </a></span>            g2.draw(mark);
+<span class="nocode"><a name="1084">1084: </a></span>        }
+<span class="nocode"><a name="1085">1085: </a></span>        return ret;
+<span class="nocode"><a name="1086">1086: </a></span>    }
+<span class="nocode"><a name="1087">1087: </a></span>
+<span class="nocode"><a name="1088">1088: </a></span>    /**
+<span class="nocode"><a name="1089">1089: </a></span>     * Reserve some space on each axis side because we draw a centered label at
+<span class="nocode"><a name="1090">1090: </a></span>     * each extremity. 
+<span class="nocode"><a name="1091">1091: </a></span>     * 
+<span class="nocode"><a name="1092">1092: </a></span>     * @param g2  the graphics device.
+<span class="nocode"><a name="1093">1093: </a></span>     * @param plot  the plot.
+<span class="nocode"><a name="1094">1094: </a></span>     * @param plotArea  the plot area.
+<span class="nocode"><a name="1095">1095: </a></span>     * @param edge  the edge.
+<span class="nocode"><a name="1096">1096: </a></span>     * @param space  the space already reserved.
+<span class="nocode"><a name="1097">1097: </a></span>     * 
+<span class="nocode"><a name="1098">1098: </a></span>     * @return The reserved space.
+<span class="nocode"><a name="1099">1099: </a></span>     */
+<span class="nocode"><a name="1100">1100: </a></span>    public AxisSpace reserveSpace(Graphics2D g2, 
+<span class="nocode"><a name="1101">1101: </a></span>                                  Plot plot, 
+<span class="nocode"><a name="1102">1102: </a></span>                                  Rectangle2D plotArea, 
+<span class="nocode"><a name="1103">1103: </a></span>                                  RectangleEdge edge, 
+<span class="nocode"><a name="1104">1104: </a></span>                                  AxisSpace space) {
+<span class="nocode"><a name="1105">1105: </a></span>        
+<span class="nocode"><a name="1106">1106: </a></span>        this.internalMarkerCycleBoundTick = null;
+<span class="nocode"><a name="1107">1107: </a></span>        AxisSpace ret = super.reserveSpace(g2, plot, plotArea, edge, space);
+<span class="nocode"><a name="1108">1108: </a></span>        if (this.internalMarkerCycleBoundTick == null) {
+<span class="nocode"><a name="1109">1109: </a></span>            return ret;
+<span class="nocode"><a name="1110">1110: </a></span>        }
+<span class="nocode"><a name="1111">1111: </a></span>
+<span class="nocode"><a name="1112">1112: </a></span>        FontMetrics fm = g2.getFontMetrics(getTickLabelFont());
+<span class="nocode"><a name="1113">1113: </a></span>        Rectangle2D r = TextUtilities.getTextBounds(
+<span class="nocode"><a name="1114">1114: </a></span>            this.internalMarkerCycleBoundTick.getText(), g2, fm
+<span class="nocode"><a name="1115">1115: </a></span>        );
+<span class="nocode"><a name="1116">1116: </a></span>
+<span class="nocode"><a name="1117">1117: </a></span>        if (RectangleEdge.isTopOrBottom(edge)) {
+<span class="nocode"><a name="1118">1118: </a></span>            if (isVerticalTickLabels()) {
+<span class="nocode"><a name="1119">1119: </a></span>                space.add(r.getHeight() / 2, RectangleEdge.RIGHT);
+<span class="nocode"><a name="1120">1120: </a></span>            }
+<span class="nocode"><a name="1121">1121: </a></span>            else {
+<span class="nocode"><a name="1122">1122: </a></span>                space.add(r.getWidth() / 2, RectangleEdge.RIGHT);
+<span class="nocode"><a name="1123">1123: </a></span>            }
+<span class="nocode"><a name="1124">1124: </a></span>        }
+<span class="nocode"><a name="1125">1125: </a></span>        else if (RectangleEdge.isLeftOrRight(edge)) {
+<span class="nocode"><a name="1126">1126: </a></span>            if (isVerticalTickLabels()) {
+<span class="nocode"><a name="1127">1127: </a></span>                space.add(r.getWidth() / 2, RectangleEdge.TOP);
+<span class="nocode"><a name="1128">1128: </a></span>            }
+<span class="nocode"><a name="1129">1129: </a></span>            else {
+<span class="nocode"><a name="1130">1130: </a></span>                space.add(r.getHeight() / 2, RectangleEdge.TOP);
+<span class="nocode"><a name="1131">1131: </a></span>            }
+<span class="nocode"><a name="1132">1132: </a></span>        }
+<span class="nocode"><a name="1133">1133: </a></span>        
+<span class="nocode"><a name="1134">1134: </a></span>        return ret;
+<span class="nocode"><a name="1135">1135: </a></span>        
+<span class="nocode"><a name="1136">1136: </a></span>    }
+<span class="nocode"><a name="1137">1137: </a></span>
+<span class="nocode"><a name="1138">1138: </a></span>    /**
+<span class="nocode"><a name="1139">1139: </a></span>     * Provides serialization support.
+<span class="nocode"><a name="1140">1140: </a></span>     *
+<span class="nocode"><a name="1141">1141: </a></span>     * @param stream  the output stream.
+<span class="nocode"><a name="1142">1142: </a></span>     *
+<span class="nocode"><a name="1143">1143: </a></span>     * @throws IOException  if there is an I/O error.
+<span class="nocode"><a name="1144">1144: </a></span>     */
+<span class="nocode"><a name="1145">1145: </a></span>    private void writeObject(ObjectOutputStream stream) throws IOException {
+<span class="nocode"><a name="1146">1146: </a></span>    
+<span class="nocode"><a name="1147">1147: </a></span>        stream.defaultWriteObject();
+<span class="nocode"><a name="1148">1148: </a></span>        SerialUtilities.writePaint(this.advanceLinePaint, stream);
+<span class="nocode"><a name="1149">1149: </a></span>        SerialUtilities.writeStroke(this.advanceLineStroke, stream);
+<span class="nocode"><a name="1150">1150: </a></span>    
+<span class="nocode"><a name="1151">1151: </a></span>    }
+<span class="nocode"><a name="1152">1152: </a></span>    
+<span class="nocode"><a name="1153">1153: </a></span>    /**
+<span class="nocode"><a name="1154">1154: </a></span>     * Provides serialization support.
+<span class="nocode"><a name="1155">1155: </a></span>     *
+<span class="nocode"><a name="1156">1156: </a></span>     * @param stream  the input stream.
+<span class="nocode"><a name="1157">1157: </a></span>     *
+<span class="nocode"><a name="1158">1158: </a></span>     * @throws IOException  if there is an I/O error.
+<span class="nocode"><a name="1159">1159: </a></span>     * @throws ClassNotFoundException  if there is a classpath problem.
+<span class="nocode"><a name="1160">1160: </a></span>     */
+<span class="nocode"><a name="1161">1161: </a></span>    private void readObject(ObjectInputStream stream) 
+<span class="nocode"><a name="1162">1162: </a></span>        throws IOException, ClassNotFoundException {
+<span class="nocode"><a name="1163">1163: </a></span>    
+<span class="nocode"><a name="1164">1164: </a></span>        stream.defaultReadObject();
+<span class="nocode"><a name="1165">1165: </a></span>        this.advanceLinePaint = SerialUtilities.readPaint(stream);
+<span class="nocode"><a name="1166">1166: </a></span>        this.advanceLineStroke = SerialUtilities.readStroke(stream);
+<span class="nocode"><a name="1167">1167: </a></span>    
+<span class="nocode"><a name="1168">1168: </a></span>    }
+<span class="nocode"><a name="1169">1169: </a></span>     
+<span class="nocode"><a name="1170">1170: </a></span>    
+<span class="nocode"><a name="1171">1171: </a></span>    /**
+<span class="nocode"><a name="1172">1172: </a></span>     * Tests the axis for equality with another object.
+<span class="nocode"><a name="1173">1173: </a></span>     * 
+<span class="nocode"><a name="1174">1174: </a></span>     * @param obj  the object to test against.
+<span class="nocode"><a name="1175">1175: </a></span>     * 
+<span class="nocode"><a name="1176">1176: </a></span>     * @return A boolean.
+<span class="nocode"><a name="1177">1177: </a></span>     */
+<span class="nocode"><a name="1178">1178: </a></span>    public boolean equals(Object obj) {
+<span class="nocode"><a name="1179">1179: </a></span>        if (obj == this) {
+<span class="nocode"><a name="1180">1180: </a></span>            return true;
+<span class="nocode"><a name="1181">1181: </a></span>        }
+<span class="nocode"><a name="1182">1182: </a></span>        if (!(obj instanceof CyclicNumberAxis)) {
+<span class="nocode"><a name="1183">1183: </a></span>            return false;
+<span class="nocode"><a name="1184">1184: </a></span>        }
+<span class="nocode"><a name="1185">1185: </a></span>        if (!super.equals(obj)) {
+<span class="nocode"><a name="1186">1186: </a></span>            return false;
+<span class="nocode"><a name="1187">1187: </a></span>        }
+<span class="nocode"><a name="1188">1188: </a></span>        CyclicNumberAxis that = (CyclicNumberAxis) obj;      
+<span class="nocode"><a name="1189">1189: </a></span>        if (this.period != that.period) {
+<span class="nocode"><a name="1190">1190: </a></span>            return false;
+<span class="nocode"><a name="1191">1191: </a></span>        }
+<span class="nocode"><a name="1192">1192: </a></span>        if (this.offset != that.offset) {
+<span class="nocode"><a name="1193">1193: </a></span>            return false;
+<span class="nocode"><a name="1194">1194: </a></span>        }
+<span class="nocode"><a name="1195">1195: </a></span>        if (!PaintUtilities.equal(this.advanceLinePaint, 
+<span class="nocode"><a name="1196">1196: </a></span>                that.advanceLinePaint)) {
+<span class="nocode"><a name="1197">1197: </a></span>            return false;
+<span class="nocode"><a name="1198">1198: </a></span>        }
+<span class="nocode"><a name="1199">1199: </a></span>        if (!ObjectUtilities.equal(this.advanceLineStroke, 
+<span class="nocode"><a name="1200">1200: </a></span>                that.advanceLineStroke)) {
+<span class="nocode"><a name="1201">1201: </a></span>            return false;
+<span class="nocode"><a name="1202">1202: </a></span>        }
+<span class="nocode"><a name="1203">1203: </a></span>        if (this.advanceLineVisible != that.advanceLineVisible) {
+<span class="nocode"><a name="1204">1204: </a></span>            return false;
+<span class="nocode"><a name="1205">1205: </a></span>        }
+<span class="nocode"><a name="1206">1206: </a></span>        if (this.boundMappedToLastCycle != that.boundMappedToLastCycle) {
+<span class="nocode"><a name="1207">1207: </a></span>            return false;
+<span class="nocode"><a name="1208">1208: </a></span>        }
+<span class="nocode"><a name="1209">1209: </a></span>        return true;
+<span class="nocode"><a name="1210">1210: </a></span>    }
+<span class="nocode"><a name="1211">1211: </a></span>}
+</pre><table class="mutation_table" summary="Mutations">
+<tr><th>ID</th><th>Line</th><th>Type</th><th>Detected</th></tr><tr><td>46453</td><td><a href="#163">163</a></td><td>Replace a constant (Replace 0 with 1(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46454</td><td><a href="#163">163</a></td><td>Replace a constant (Replace 0 with -1(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46455</td><td><a href="#183">183</a></td><td>Replace a constant (Replace 0 with 1(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46456</td><td><a href="#183">183</a></td><td>Replace a constant (Replace 0 with -1(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46457</td><td><a href="#197">197</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46458</td><td><a href="#198">198</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>46459</td><td><a href="#198">198</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46460</td><td><a href="#239">239</a></td><td>Negate jump condition (Replace IFNONNULL with  IFNULL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>46461</td><td><a href="#261">261</a></td><td>Negate jump condition (Replace IFNONNULL with  IFNULL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>46462</td><td><a href="#315">315</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46463</td><td><a href="#315">315(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46466</td><td><a href="#319">319</a></td><td>Replace arithmetic operator (Replace DMUL with DADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46468</td><td><a href="#319">319(1)</a></td><td>Replace arithmetic operator (Replace DDIV with DMUL)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46464</td><td><a href="#319">319</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46465</td><td><a href="#319">319(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46467</td><td><a href="#319">319(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46472</td><td><a href="#322">322</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46471</td><td><a href="#322">322</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46474</td><td><a href="#322">322(1)</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46473</td><td><a href="#322">322(1)</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46469</td><td><a href="#322">322</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46470</td><td><a href="#322">322(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46475</td><td><a href="#322">322(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46476</td><td><a href="#342">342</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46477</td><td><a href="#342">342(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46480</td><td><a href="#346">346</a></td><td>Replace arithmetic operator (Replace DMUL with DADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46482</td><td><a href="#346">346(1)</a></td><td>Replace arithmetic operator (Replace DDIV with DMUL)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46478</td><td><a href="#346">346</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46479</td><td><a href="#346">346(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46481</td><td><a href="#346">346(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46486</td><td><a href="#349">349</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46485</td><td><a href="#349">349</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46488</td><td><a href="#349">349(1)</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46487</td><td><a href="#349">349(1)</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46483</td><td><a href="#349">349</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46484</td><td><a href="#349">349(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46489</td><td><a href="#349">349(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46490</td><td><a href="#398">398</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46491</td><td><a href="#402">402</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46492</td><td><a href="#408">408</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46493</td><td><a href="#429">429</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46494</td><td><a href="#430">430</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46496</td><td><a href="#432">432</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46495</td><td><a href="#432">432</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46497</td><td><a href="#433">433</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46498</td><td><a href="#436">436</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46499</td><td><a href="#436">436(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46500</td><td><a href="#437">437</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46501</td><td><a href="#438">438</a></td><td>Replace arithmetic operator (Replace DDIV with DMUL)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46503</td><td><a href="#438">438(1)</a></td><td>Replace arithmetic operator (Replace DMUL with DADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46502</td><td><a href="#438">438</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46504</td><td><a href="#439">439</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46505</td><td><a href="#439">439(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46507</td><td><a href="#440">440</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46506</td><td><a href="#440">440</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46508</td><td><a href="#443">443</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46509</td><td><a href="#443">443</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46510</td><td><a href="#446">446</a></td><td>Replace a constant (Replace 0 with 1(FLOAT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46511</td><td><a href="#446">446</a></td><td>Replace a constant (Replace 0 with -1(FLOAT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46512</td><td><a href="#448">448</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46513</td><td><a href="#449">449</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46514</td><td><a href="#450">450</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46515</td><td><a href="#450">450</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46516</td><td><a href="#451">451</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46517</td><td><a href="#451">451</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46518</td><td><a href="#454">454</a></td><td>Negate jump condition (Replace IFGT with  IFLE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46519</td><td><a href="#457">457</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46520</td><td><a href="#457">457</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46522</td><td><a href="#458">458</a></td><td>Negate jump condition (Replace IFLE with  IFGT)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46523</td><td><a href="#458">458(1)</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46521</td><td><a href="#458">458</a></td><td>Replace arithmetic operator (Replace DADD with DSUB)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46525</td><td><a href="#459">459</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46524</td><td><a href="#459">459</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46526</td><td><a href="#462">462</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46527</td><td><a href="#464">464</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46528</td><td><a href="#465">465</a></td><td>Negate jump condition (Replace IFNULL with  IFNONNULL)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46529</td><td><a href="#466">466</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46530</td><td><a href="#469">469</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46531</td><td><a href="#469">469(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46533</td><td><a href="#474">474</a></td><td>Replace a constant (Replace 0 with -1(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46532</td><td><a href="#474">474</a></td><td>Replace a constant (Replace 0 with 1(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46535</td><td><a href="#475">475</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46534</td><td><a href="#475">475</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46536</td><td><a href="#476">476</a></td><td>Negate jump condition (Replace IF_ACMPNE with  IF_ACMPEQ)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46539</td><td><a href="#477">477</a></td><td>Replace a constant (Replace 1.5707963267948966 with 0.5707963267948966(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46538</td><td><a href="#477">477</a></td><td>Replace a constant (Replace 1.5707963267948966 with 2.5707963267948966(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46537</td><td><a href="#477">477</a></td><td>Replace a constant (Replace 1.5707963267948966 with 0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46541</td><td><a href="#480">480</a></td><td>Replace a constant (Replace -1.5707963267948966 with -2.5707963267948966(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46540</td><td><a href="#480">480</a></td><td>Replace a constant (Replace -1.5707963267948966 with 0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46542</td><td><a href="#480">480</a></td><td>Replace a constant (Replace -1.5707963267948966 with -0.5707963267948966(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46543</td><td><a href="#484">484</a></td><td>Negate jump condition (Replace IFNULL with  IFNONNULL)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46544</td><td><a href="#484">484(1)</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46545</td><td><a href="#484">484(2)</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46547</td><td><a href="#486">486</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46546</td><td><a href="#486">486</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46550</td><td><a href="#488">488</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46549</td><td><a href="#488">488</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46551</td><td><a href="#488">488</a></td><td>Replace arithmetic operator (Replace ISUB with IADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46548</td><td><a href="#488">488</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46552</td><td><a href="#488">488(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46553</td><td><a href="#489">489</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46554</td><td><a href="#489">489(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46555</td><td><a href="#489">489(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46556</td><td><a href="#489">489(3)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46557</td><td><a href="#494">494</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46558</td><td><a href="#494">494</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46560</td><td><a href="#495">495</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46559</td><td><a href="#495">495</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46561</td><td><a href="#501">501</a></td><td>Negate jump condition (Replace IF_ACMPNE with  IF_ACMPEQ)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46562</td><td><a href="#503">503</a></td><td>Negate jump condition (Replace IFNULL with  IFNONNULL)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46563</td><td><a href="#503">503(1)</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46564</td><td><a href="#503">503(2)</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46566</td><td><a href="#505">505</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46565</td><td><a href="#505">505</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46569</td><td><a href="#507">507</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46568</td><td><a href="#507">507</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46570</td><td><a href="#507">507</a></td><td>Replace arithmetic operator (Replace ISUB with IADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46567</td><td><a href="#507">507</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46571</td><td><a href="#507">507(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46572</td><td><a href="#508">508</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46573</td><td><a href="#508">508(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46574</td><td><a href="#508">508(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46575</td><td><a href="#508">508(3)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46577</td><td><a href="#513">513</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46576</td><td><a href="#513">513</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46579</td><td><a href="#514">514</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46578</td><td><a href="#514">514</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46580</td><td><a href="#521">521</a></td><td>Negate jump condition (Replace IFNULL with  IFNONNULL)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46581</td><td><a href="#521">521(1)</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46582</td><td><a href="#521">521(2)</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46584</td><td><a href="#523">523</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46583</td><td><a href="#523">523</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46586</td><td><a href="#525">525</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46587</td><td><a href="#525">525</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46588</td><td><a href="#525">525</a></td><td>Replace arithmetic operator (Replace ISUB with IADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46585</td><td><a href="#525">525</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46589</td><td><a href="#525">525(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46590</td><td><a href="#526">526</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46591</td><td><a href="#526">526(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46592</td><td><a href="#526">526(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46593</td><td><a href="#526">526(3)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46595</td><td><a href="#531">531</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46594</td><td><a href="#531">531</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46597</td><td><a href="#532">532</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46596</td><td><a href="#532">532</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46598</td><td><a href="#544">544</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46599</td><td><a href="#547">547</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46600</td><td><a href="#551">551</a></td><td>Replace arithmetic operator (Replace DADD with DSUB)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46601</td><td><a href="#553">553</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46602</td><td><a href="#554">554</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46604</td><td><a href="#556">556</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46603</td><td><a href="#556">556</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46606</td><td><a href="#557">557</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46605</td><td><a href="#557">557</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46607</td><td><a href="#581">581</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46608</td><td><a href="#583">583</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46609</td><td><a href="#584">584</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46611</td><td><a href="#585">585</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46610</td><td><a href="#585">585</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46612</td><td><a href="#586">586</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46613</td><td><a href="#589">589</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46614</td><td><a href="#589">589(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46615</td><td><a href="#590">590</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46616</td><td><a href="#591">591</a></td><td>Replace arithmetic operator (Replace DDIV with DMUL)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46618</td><td><a href="#591">591(1)</a></td><td>Replace arithmetic operator (Replace DMUL with DADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46617</td><td><a href="#591">591</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46619</td><td><a href="#592">592</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46620</td><td><a href="#592">592(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46622</td><td><a href="#593">593</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46621</td><td><a href="#593">593</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46623</td><td><a href="#596">596</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46624</td><td><a href="#596">596</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46626</td><td><a href="#599">599</a></td><td>Replace a constant (Replace 0 with -1(FLOAT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46625</td><td><a href="#599">599</a></td><td>Replace a constant (Replace 0 with 1(FLOAT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46627</td><td><a href="#601">601</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46628</td><td><a href="#602">602</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46629</td><td><a href="#603">603</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46630</td><td><a href="#603">603</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46631</td><td><a href="#604">604</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46632</td><td><a href="#604">604</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46633</td><td><a href="#607">607</a></td><td>Negate jump condition (Replace IFGT with  IFLE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46635</td><td><a href="#610">610</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46634</td><td><a href="#610">610</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46637</td><td><a href="#611">611</a></td><td>Negate jump condition (Replace IFLE with  IFGT)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46638</td><td><a href="#611">611(1)</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46636</td><td><a href="#611">611</a></td><td>Replace arithmetic operator (Replace DADD with DSUB)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46639</td><td><a href="#612">612</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46640</td><td><a href="#612">612</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46641</td><td><a href="#615">615</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46642</td><td><a href="#617">617</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46643</td><td><a href="#618">618</a></td><td>Negate jump condition (Replace IFNULL with  IFNONNULL)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46644</td><td><a href="#619">619</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46645</td><td><a href="#622">622</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46646</td><td><a href="#622">622(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46648</td><td><a href="#628">628</a></td><td>Replace a constant (Replace 0 with -1(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46647</td><td><a href="#628">628</a></td><td>Replace a constant (Replace 0 with 1(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46650</td><td><a href="#629">629</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46649</td><td><a href="#629">629</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46651</td><td><a href="#631">631</a></td><td>Negate jump condition (Replace IF_ACMPNE with  IF_ACMPEQ)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46652</td><td><a href="#633">633</a></td><td>Negate jump condition (Replace IFNULL with  IFNONNULL)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46653</td><td><a href="#633">633(1)</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46654</td><td><a href="#633">633(2)</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46656</td><td><a href="#635">635</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46655</td><td><a href="#635">635</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46658</td><td><a href="#637">637</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46659</td><td><a href="#637">637</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46660</td><td><a href="#637">637</a></td><td>Replace arithmetic operator (Replace ISUB with IADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46657</td><td><a href="#637">637</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46661</td><td><a href="#637">637(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46662</td><td><a href="#638">638</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46663</td><td><a href="#638">638(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46664</td><td><a href="#638">638(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46665</td><td><a href="#638">638(3)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46667</td><td><a href="#643">643</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46666</td><td><a href="#643">643</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46669</td><td><a href="#644">644</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46668</td><td><a href="#644">644</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46670</td><td><a href="#648">648</a></td><td>Replace a constant (Replace -1.5707963267948966 with 0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46672</td><td><a href="#648">648</a></td><td>Replace a constant (Replace -1.5707963267948966 with -0.5707963267948966(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46671</td><td><a href="#648">648</a></td><td>Replace a constant (Replace -1.5707963267948966 with -2.5707963267948966(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46673</td><td><a href="#652">652</a></td><td>Negate jump condition (Replace IFNULL with  IFNONNULL)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46674</td><td><a href="#652">652(1)</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46675</td><td><a href="#652">652(2)</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46677</td><td><a href="#654">654</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46676</td><td><a href="#654">654</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46680</td><td><a href="#656">656</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46679</td><td><a href="#656">656</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46681</td><td><a href="#656">656</a></td><td>Replace arithmetic operator (Replace ISUB with IADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46678</td><td><a href="#656">656</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46682</td><td><a href="#656">656(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46683</td><td><a href="#657">657</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46684</td><td><a href="#657">657(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46685</td><td><a href="#657">657(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46686</td><td><a href="#657">657(3)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46687</td><td><a href="#662">662</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46688</td><td><a href="#662">662</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46690</td><td><a href="#663">663</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46689</td><td><a href="#663">663</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46692</td><td><a href="#667">667</a></td><td>Replace a constant (Replace 1.5707963267948966 with 2.5707963267948966(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46693</td><td><a href="#667">667</a></td><td>Replace a constant (Replace 1.5707963267948966 with 0.5707963267948966(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46691</td><td><a href="#667">667</a></td><td>Replace a constant (Replace 1.5707963267948966 with 0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46694</td><td><a href="#671">671</a></td><td>Negate jump condition (Replace IF_ACMPNE with  IF_ACMPEQ)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46695</td><td><a href="#673">673</a></td><td>Negate jump condition (Replace IFNULL with  IFNONNULL)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46696</td><td><a href="#673">673(1)</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46697</td><td><a href="#673">673(2)</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46699</td><td><a href="#675">675</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46698</td><td><a href="#675">675</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46702</td><td><a href="#677">677</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46701</td><td><a href="#677">677</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46703</td><td><a href="#677">677</a></td><td>Replace arithmetic operator (Replace ISUB with IADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46700</td><td><a href="#677">677</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46704</td><td><a href="#677">677(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46705</td><td><a href="#678">678</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46706</td><td><a href="#678">678(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46707</td><td><a href="#678">678(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46708</td><td><a href="#678">678(3)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46710</td><td><a href="#683">683</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46709</td><td><a href="#683">683</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46712</td><td><a href="#684">684</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46711</td><td><a href="#684">684</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46713</td><td><a href="#691">691</a></td><td>Negate jump condition (Replace IFNULL with  IFNONNULL)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46714</td><td><a href="#691">691(1)</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46715</td><td><a href="#691">691(2)</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46717</td><td><a href="#693">693</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46716</td><td><a href="#693">693</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46720</td><td><a href="#695">695</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46719</td><td><a href="#695">695</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46721</td><td><a href="#695">695</a></td><td>Replace arithmetic operator (Replace ISUB with IADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46718</td><td><a href="#695">695</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46722</td><td><a href="#695">695(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46723</td><td><a href="#696">696</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46724</td><td><a href="#696">696(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46725</td><td><a href="#696">696(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46726</td><td><a href="#696">696(3)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46727</td><td><a href="#701">701</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46728</td><td><a href="#701">701</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46730</td><td><a href="#702">702</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46729</td><td><a href="#702">702</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46731</td><td><a href="#713">713</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46732</td><td><a href="#716">716</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46733</td><td><a href="#720">720</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46734</td><td><a href="#724">724</a></td><td>Replace arithmetic operator (Replace DADD with DSUB)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46735</td><td><a href="#726">726</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46736</td><td><a href="#727">727</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46738</td><td><a href="#729">729</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46737</td><td><a href="#729">729</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46740</td><td><a href="#730">730</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46739</td><td><a href="#730">730</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46741</td><td><a href="#749">749</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46742</td><td><a href="#751">751</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46743</td><td><a href="#752">752</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46745</td><td><a href="#754">754</a></td><td>Replace a constant (Replace 0 with -1(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46744</td><td><a href="#754">754</a></td><td>Replace a constant (Replace 0 with 1(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46746</td><td><a href="#755">755</a></td><td>Replace a constant (Replace 0 with 1(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46747</td><td><a href="#755">755</a></td><td>Replace a constant (Replace 0 with -1(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46749</td><td><a href="#756">756</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46748</td><td><a href="#756">756</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46750</td><td><a href="#757">757</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46751</td><td><a href="#758">758</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46753</td><td><a href="#760">760</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46752</td><td><a href="#760">760</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46754</td><td><a href="#761">761</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46755</td><td><a href="#762">762</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46757</td><td><a href="#765">765</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46756</td><td><a href="#765">765</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46758</td><td><a href="#766">766</a></td><td>Replace arithmetic operator (Replace DSUB with DADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46759</td><td><a href="#766">766(1)</a></td><td>Replace arithmetic operator (Replace DSUB with DADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46760</td><td><a href="#766">766(2)</a></td><td>Replace arithmetic operator (Replace DMUL with DADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46761</td><td><a href="#766">766(3)</a></td><td>Replace arithmetic operator (Replace DDIV with DMUL)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46762</td><td><a href="#766">766(4)</a></td><td>Replace arithmetic operator (Replace DSUB with DADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46763</td><td><a href="#767">767</a></td><td>Negate jump condition (Replace IFLT with  IFGE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46764</td><td><a href="#768">768</a></td><td>Replace arithmetic operator (Replace DSUB with DADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46765</td><td><a href="#768">768(1)</a></td><td>Replace arithmetic operator (Replace DMUL with DADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46766</td><td><a href="#768">768(2)</a></td><td>Replace arithmetic operator (Replace DSUB with DADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46767</td><td><a href="#768">768(3)</a></td><td>Replace arithmetic operator (Replace DDIV with DMUL)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46768</td><td><a href="#768">768(4)</a></td><td>Replace arithmetic operator (Replace DADD with DSUB)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46769</td><td><a href="#771">771</a></td><td>Replace arithmetic operator (Replace DSUB with DADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46770</td><td><a href="#771">771(1)</a></td><td>Replace arithmetic operator (Replace DMUL with DADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46771</td><td><a href="#771">771(2)</a></td><td>Replace arithmetic operator (Replace DSUB with DADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46772</td><td><a href="#771">771(3)</a></td><td>Replace arithmetic operator (Replace DDIV with DMUL)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46773</td><td><a href="#771">771(4)</a></td><td>Replace arithmetic operator (Replace DSUB with DADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46774</td><td><a href="#775">775</a></td><td>Replace arithmetic operator (Replace DSUB with DADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46775</td><td><a href="#775">775(1)</a></td><td>Replace arithmetic operator (Replace DSUB with DADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46776</td><td><a href="#775">775(2)</a></td><td>Replace arithmetic operator (Replace DMUL with DADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46777</td><td><a href="#775">775(3)</a></td><td>Replace arithmetic operator (Replace DDIV with DMUL)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46778</td><td><a href="#775">775(4)</a></td><td>Replace arithmetic operator (Replace DADD with DSUB)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46779</td><td><a href="#776">776</a></td><td>Negate jump condition (Replace IFGT with  IFLE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46780</td><td><a href="#777">777</a></td><td>Replace arithmetic operator (Replace DSUB with DADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46781</td><td><a href="#777">777(1)</a></td><td>Replace arithmetic operator (Replace DMUL with DADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46782</td><td><a href="#777">777(2)</a></td><td>Replace arithmetic operator (Replace DSUB with DADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46783</td><td><a href="#777">777(3)</a></td><td>Replace arithmetic operator (Replace DDIV with DMUL)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46784</td><td><a href="#777">777(4)</a></td><td>Replace arithmetic operator (Replace DADD with DSUB)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46785</td><td><a href="#780">780</a></td><td>Replace arithmetic operator (Replace DSUB with DADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46786</td><td><a href="#780">780(1)</a></td><td>Replace arithmetic operator (Replace DMUL with DADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46787</td><td><a href="#780">780(2)</a></td><td>Replace arithmetic operator (Replace DSUB with DADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46788</td><td><a href="#780">780(3)</a></td><td>Replace arithmetic operator (Replace DDIV with DMUL)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46789</td><td><a href="#780">780(4)</a></td><td>Replace arithmetic operator (Replace DSUB with DADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46790</td><td><a href="#796">796</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46791</td><td><a href="#798">798</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46792</td><td><a href="#799">799</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46793</td><td><a href="#800">800</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46794</td><td><a href="#802">802</a></td><td>Negate jump condition (Replace IFLT with  IFGE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46795</td><td><a href="#802">802(1)</a></td><td>Negate jump condition (Replace IFLE with  IFGT)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46797</td><td><a href="#803">803</a></td><td>Replace a constant (Replace NaN with NaN(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46796</td><td><a href="#803">803</a></td><td>Replace a constant (Replace NaN with 0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46799</td><td><a href="#807">807</a></td><td>Replace a constant (Replace 0 with -1(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46798</td><td><a href="#807">807</a></td><td>Replace a constant (Replace 0 with 1(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46800</td><td><a href="#808">808</a></td><td>Replace a constant (Replace 0 with 1(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46801</td><td><a href="#808">808</a></td><td>Replace a constant (Replace 0 with -1(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46803</td><td><a href="#809">809</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46802</td><td><a href="#809">809</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46804</td><td><a href="#810">810</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46805</td><td><a href="#811">811</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46807</td><td><a href="#813">813</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46806</td><td><a href="#813">813</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46808</td><td><a href="#814">814</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46809</td><td><a href="#815">815</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46811</td><td><a href="#818">818</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46810</td><td><a href="#818">818</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46812</td><td><a href="#819">819</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46813</td><td><a href="#820">820</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46814</td><td><a href="#822">822</a></td><td>Negate jump condition (Replace IFLE with  IFGT)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46815</td><td><a href="#823">823</a></td><td>Replace arithmetic operator (Replace DSUB with DADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46816</td><td><a href="#823">823(1)</a></td><td>Replace arithmetic operator (Replace DSUB with DADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46817</td><td><a href="#823">823(2)</a></td><td>Replace arithmetic operator (Replace DMUL with DADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46818</td><td><a href="#823">823(3)</a></td><td>Replace arithmetic operator (Replace DDIV with DMUL)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46819</td><td><a href="#823">823(4)</a></td><td>Replace arithmetic operator (Replace DSUB with DADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46820</td><td><a href="#826">826</a></td><td>Replace arithmetic operator (Replace DSUB with DADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46821</td><td><a href="#826">826(1)</a></td><td>Replace arithmetic operator (Replace DSUB with DADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46822</td><td><a href="#826">826(2)</a></td><td>Replace arithmetic operator (Replace DMUL with DADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46823</td><td><a href="#826">826(3)</a></td><td>Replace arithmetic operator (Replace DDIV with DMUL)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46824</td><td><a href="#826">826(4)</a></td><td>Replace arithmetic operator (Replace DADD with DSUB)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46825</td><td><a href="#830">830</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46826</td><td><a href="#831">831</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46827</td><td><a href="#833">833</a></td><td>Negate jump condition (Replace IFLT with  IFGE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46828</td><td><a href="#834">834</a></td><td>Replace arithmetic operator (Replace DSUB with DADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46829</td><td><a href="#834">834(1)</a></td><td>Replace arithmetic operator (Replace DSUB with DADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46830</td><td><a href="#834">834(2)</a></td><td>Replace arithmetic operator (Replace DMUL with DADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46831</td><td><a href="#834">834(3)</a></td><td>Replace arithmetic operator (Replace DDIV with DMUL)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46832</td><td><a href="#834">834(4)</a></td><td>Replace arithmetic operator (Replace DADD with DSUB)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46833</td><td><a href="#837">837</a></td><td>Replace arithmetic operator (Replace DSUB with DADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46834</td><td><a href="#837">837(1)</a></td><td>Replace arithmetic operator (Replace DSUB with DADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46835</td><td><a href="#837">837(2)</a></td><td>Replace arithmetic operator (Replace DMUL with DADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46836</td><td><a href="#837">837(3)</a></td><td>Replace arithmetic operator (Replace DDIV with DMUL)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46837</td><td><a href="#837">837(4)</a></td><td>Replace arithmetic operator (Replace DSUB with DADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46838</td><td><a href="#848">848</a></td><td>Replace a constant (Replace 2.0 with 3.0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46840</td><td><a href="#848">848</a></td><td>Replace a constant (Replace 2.0 with 1.0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46839</td><td><a href="#848">848</a></td><td>Replace a constant (Replace 2.0 with 0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46844</td><td><a href="#848">848(1)</a></td><td>Replace a constant (Replace 2.0 with 0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46843</td><td><a href="#848">848(1)</a></td><td>Replace a constant (Replace 2.0 with 3.0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46845</td><td><a href="#848">848(1)</a></td><td>Replace a constant (Replace 2.0 with 1.0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46841</td><td><a href="#848">848</a></td><td>Replace arithmetic operator (Replace DDIV with DMUL)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46842</td><td><a href="#848">848(1)</a></td><td>Replace arithmetic operator (Replace DSUB with DADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46846</td><td><a href="#848">848(2)</a></td><td>Replace arithmetic operator (Replace DDIV with DMUL)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46847</td><td><a href="#848">848(3)</a></td><td>Replace arithmetic operator (Replace DADD with DSUB)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46848</td><td><a href="#848">848</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46849</td><td><a href="#863">863</a></td><td>Negate jump condition (Replace IFLE with  IFGT)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46850</td><td><a href="#866">866</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46851</td><td><a href="#879">879</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46854</td><td><a href="#894">894</a></td><td>Replace arithmetic operator (Replace DSUB with DADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46852</td><td><a href="#894">894</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46853</td><td><a href="#894">894(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46855</td><td><a href="#895">895</a></td><td>Negate jump condition (Replace IFLE with  IFGT)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46856</td><td><a href="#898">898</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46859</td><td><a href="#912">912</a></td><td>Replace arithmetic operator (Replace DSUB with DADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46860</td><td><a href="#912">912(1)</a></td><td>Replace arithmetic operator (Replace DDIV with DMUL)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46862</td><td><a href="#912">912(2)</a></td><td>Replace arithmetic operator (Replace DMUL with DADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46863</td><td><a href="#912">912(3)</a></td><td>Replace arithmetic operator (Replace DADD with DSUB)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46857</td><td><a href="#912">912</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46858</td><td><a href="#912">912(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46861</td><td><a href="#912">912(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46864</td><td><a href="#988">988</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46865</td><td><a href="#988">988</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46866</td><td><a href="#989">989</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46867</td><td><a href="#994">994</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46868</td><td><a href="#998">998</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46869</td><td><a href="#999">999</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46870</td><td><a href="#999">999(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46872</td><td><a href="#1001">1001</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46871</td><td><a href="#1001">1001</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46873</td><td><a href="#1002">1002</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46874</td><td><a href="#1005">1005</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46876</td><td><a href="#1008">1008</a></td><td>Replace a constant (Replace 0 with -1(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46875</td><td><a href="#1008">1008</a></td><td>Replace a constant (Replace 0 with 1(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46878</td><td><a href="#1009">1009</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46877</td><td><a href="#1009">1009</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46879</td><td><a href="#1010">1010</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46880</td><td><a href="#1010">1010(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46881</td><td><a href="#1010">1010(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46882</td><td><a href="#1014">1014</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46883</td><td><a href="#1014">1014(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46884</td><td><a href="#1015">1015</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46885</td><td><a href="#1015">1015(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46886</td><td><a href="#1016">1016</a></td><td>Negate jump condition (Replace IF_ACMPNE with  IF_ACMPEQ)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46887</td><td><a href="#1017">1017</a></td><td>Replace arithmetic operator (Replace DSUB with DADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46888</td><td><a href="#1017">1017(1)</a></td><td>Replace arithmetic operator (Replace DADD with DSUB)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46889</td><td><a href="#1019">1019</a></td><td>Negate jump condition (Replace IF_ACMPNE with  IF_ACMPEQ)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46890</td><td><a href="#1020">1020</a></td><td>Replace arithmetic operator (Replace DADD with DSUB)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46891</td><td><a href="#1020">1020(1)</a></td><td>Replace arithmetic operator (Replace DSUB with DADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46892</td><td><a href="#1022">1022</a></td><td>Negate jump condition (Replace IF_ACMPNE with  IF_ACMPEQ)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46893</td><td><a href="#1023">1023</a></td><td>Replace arithmetic operator (Replace DSUB with DADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46894</td><td><a href="#1023">1023(1)</a></td><td>Replace arithmetic operator (Replace DADD with DSUB)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46895</td><td><a href="#1025">1025</a></td><td>Negate jump condition (Replace IF_ACMPNE with  IF_ACMPEQ)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46896</td><td><a href="#1026">1026</a></td><td>Replace arithmetic operator (Replace DADD with DSUB)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46897</td><td><a href="#1026">1026(1)</a></td><td>Replace arithmetic operator (Replace DSUB with DADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46898</td><td><a href="#1028">1028</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46899</td><td><a href="#1053">1053</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46901</td><td><a href="#1056">1056</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46900</td><td><a href="#1056">1056</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46902</td><td><a href="#1057">1057</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46903</td><td><a href="#1057">1057(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46904</td><td><a href="#1057">1057(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46905</td><td><a href="#1061">1061</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46906</td><td><a href="#1061">1061(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46907</td><td><a href="#1062">1062</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46908</td><td><a href="#1062">1062(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46909</td><td><a href="#1063">1063</a></td><td>Negate jump condition (Replace IF_ACMPNE with  IF_ACMPEQ)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46911</td><td><a href="#1064">1064</a></td><td>Replace arithmetic operator (Replace DADD with DSUB)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46910</td><td><a href="#1064">1064</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46912</td><td><a href="#1068">1068</a></td><td>Negate jump condition (Replace IF_ACMPNE with  IF_ACMPEQ)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46914</td><td><a href="#1069">1069</a></td><td>Replace arithmetic operator (Replace DSUB with DADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46913</td><td><a href="#1069">1069</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46915</td><td><a href="#1073">1073</a></td><td>Negate jump condition (Replace IF_ACMPNE with  IF_ACMPEQ)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46917</td><td><a href="#1074">1074</a></td><td>Replace arithmetic operator (Replace DADD with DSUB)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46916</td><td><a href="#1074">1074</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46918</td><td><a href="#1078">1078</a></td><td>Negate jump condition (Replace IF_ACMPNE with  IF_ACMPEQ)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46920</td><td><a href="#1079">1079</a></td><td>Replace arithmetic operator (Replace DSUB with DADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46919</td><td><a href="#1079">1079</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46921</td><td><a href="#1083">1083</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46922</td><td><a href="#1107">1107</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46923</td><td><a href="#1108">1108</a></td><td>Negate jump condition (Replace IFNONNULL with  IFNULL)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46924</td><td><a href="#1112">1112</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46925</td><td><a href="#1112">1112(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46926</td><td><a href="#1113">1113</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46927</td><td><a href="#1113">1113(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46929</td><td><a href="#1117">1117</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46928</td><td><a href="#1117">1117</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46931</td><td><a href="#1118">1118</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46930</td><td><a href="#1118">1118</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46933</td><td><a href="#1119">1119</a></td><td>Replace a constant (Replace 2.0 with 3.0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46934</td><td><a href="#1119">1119</a></td><td>Replace a constant (Replace 2.0 with 0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46935</td><td><a href="#1119">1119</a></td><td>Replace a constant (Replace 2.0 with 1.0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46936</td><td><a href="#1119">1119</a></td><td>Replace arithmetic operator (Replace DDIV with DMUL)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46932</td><td><a href="#1119">1119</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46937</td><td><a href="#1119">1119(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46941</td><td><a href="#1122">1122</a></td><td>Replace a constant (Replace 2.0 with 1.0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46939</td><td><a href="#1122">1122</a></td><td>Replace a constant (Replace 2.0 with 3.0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46940</td><td><a href="#1122">1122</a></td><td>Replace a constant (Replace 2.0 with 0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46942</td><td><a href="#1122">1122</a></td><td>Replace arithmetic operator (Replace DDIV with DMUL)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46938</td><td><a href="#1122">1122</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46943</td><td><a href="#1122">1122(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46945</td><td><a href="#1125">1125</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46944</td><td><a href="#1125">1125</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46947</td><td><a href="#1126">1126</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46946</td><td><a href="#1126">1126</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46949</td><td><a href="#1127">1127</a></td><td>Replace a constant (Replace 2.0 with 3.0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46951</td><td><a href="#1127">1127</a></td><td>Replace a constant (Replace 2.0 with 1.0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46950</td><td><a href="#1127">1127</a></td><td>Replace a constant (Replace 2.0 with 0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46952</td><td><a href="#1127">1127</a></td><td>Replace arithmetic operator (Replace DDIV with DMUL)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46948</td><td><a href="#1127">1127</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46953</td><td><a href="#1127">1127(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46956</td><td><a href="#1130">1130</a></td><td>Replace a constant (Replace 2.0 with 0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46957</td><td><a href="#1130">1130</a></td><td>Replace a constant (Replace 2.0 with 1.0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46955</td><td><a href="#1130">1130</a></td><td>Replace a constant (Replace 2.0 with 3.0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46958</td><td><a href="#1130">1130</a></td><td>Replace arithmetic operator (Replace DDIV with DMUL)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46954</td><td><a href="#1130">1130</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46959</td><td><a href="#1130">1130(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46960</td><td><a href="#1147">1147</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>46961</td><td><a href="#1148">1148</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>46962</td><td><a href="#1149">1149</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>46963</td><td><a href="#1164">1164</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>46964</td><td><a href="#1165">1165</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>46965</td><td><a href="#1166">1166</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>46966</td><td><a href="#1179">1179</a></td><td>Negate jump condition (Replace IF_ACMPNE with  IF_ACMPEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>46967</td><td><a href="#1180">1180</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46968</td><td><a href="#1180">1180</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46969</td><td><a href="#1182">1182</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>46970</td><td><a href="#1183">1183</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46971</td><td><a href="#1183">1183</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46973</td><td><a href="#1185">1185</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>46972</td><td><a href="#1185">1185</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46975</td><td><a href="#1186">1186</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46974</td><td><a href="#1186">1186</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46976</td><td><a href="#1189">1189</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>46978</td><td><a href="#1190">1190</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>46977</td><td><a href="#1190">1190</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>46979</td><td><a href="#1192">1192</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>46980</td><td><a href="#1193">1193</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>46981</td><td><a href="#1193">1193</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>46983</td><td><a href="#1195">1195</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>46982</td><td><a href="#1195">1195</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>46984</td><td><a href="#1197">1197</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>46985</td><td><a href="#1197">1197</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>46987</td><td><a href="#1199">1199</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>46986</td><td><a href="#1199">1199</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>46988</td><td><a href="#1201">1201</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>46989</td><td><a href="#1201">1201</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>46990</td><td><a href="#1203">1203</a></td><td>Negate jump condition (Replace IF_ICMPEQ with  IF_ICMPNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>46991</td><td><a href="#1204">1204</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46992</td><td><a href="#1204">1204</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>46993</td><td><a href="#1206">1206</a></td><td>Negate jump condition (Replace IF_ICMPEQ with  IF_ICMPNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>46995</td><td><a href="#1207">1207</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>46994</td><td><a href="#1207">1207</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>46997</td><td><a href="#1209">1209</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>46996</td><td><a href="#1209">1209</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+</table>
+</body>
+</html>

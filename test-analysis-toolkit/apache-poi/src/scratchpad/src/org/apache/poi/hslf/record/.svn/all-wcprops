@@ -1,0 +1,431 @@
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/repos/asf/!svn/ver/1305778/poi/trunk/src/scratchpad/src/org/apache/poi/hslf/record
+END
+ExControlAtom.java
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/repos/asf/!svn/ver/814335/poi/trunk/src/scratchpad/src/org/apache/poi/hslf/record/ExControlAtom.java
+END
+DummyRecordWithChildren.java
+K 25
+svn:wc:ra_dav:version-url
+V 111
+/repos/asf/!svn/ver/777204/poi/trunk/src/scratchpad/src/org/apache/poi/hslf/record/DummyRecordWithChildren.java
+END
+Slide.java
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/repos/asf/!svn/ver/777204/poi/trunk/src/scratchpad/src/org/apache/poi/hslf/record/Slide.java
+END
+MainMaster.java
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/repos/asf/!svn/ver/1024390/poi/trunk/src/scratchpad/src/org/apache/poi/hslf/record/MainMaster.java
+END
+OutlineTextRefAtom.java
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/repos/asf/!svn/ver/777204/poi/trunk/src/scratchpad/src/org/apache/poi/hslf/record/OutlineTextRefAtom.java
+END
+CurrentUserAtom.java
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/repos/asf/!svn/ver/775526/poi/trunk/src/scratchpad/src/org/apache/poi/hslf/record/CurrentUserAtom.java
+END
+ExHyperlink.java
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/repos/asf/!svn/ver/712084/poi/trunk/src/scratchpad/src/org/apache/poi/hslf/record/ExHyperlink.java
+END
+ExMCIMovie.java
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/repos/asf/!svn/ver/814335/poi/trunk/src/scratchpad/src/org/apache/poi/hslf/record/ExMCIMovie.java
+END
+ParentAwareRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/repos/asf/!svn/ver/777204/poi/trunk/src/scratchpad/src/org/apache/poi/hslf/record/ParentAwareRecord.java
+END
+NotesAtom.java
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/repos/asf/!svn/ver/805284/poi/trunk/src/scratchpad/src/org/apache/poi/hslf/record/NotesAtom.java
+END
+ExEmbed.java
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/repos/asf/!svn/ver/712084/poi/trunk/src/scratchpad/src/org/apache/poi/hslf/record/ExEmbed.java
+END
+ExControl.java
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/repos/asf/!svn/ver/814335/poi/trunk/src/scratchpad/src/org/apache/poi/hslf/record/ExControl.java
+END
+TextRulerAtom.java
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/repos/asf/!svn/ver/814335/poi/trunk/src/scratchpad/src/org/apache/poi/hslf/record/TextRulerAtom.java
+END
+RecordContainer.java
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/repos/asf/!svn/ver/930525/poi/trunk/src/scratchpad/src/org/apache/poi/hslf/record/RecordContainer.java
+END
+Notes.java
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/repos/asf/!svn/ver/777204/poi/trunk/src/scratchpad/src/org/apache/poi/hslf/record/Notes.java
+END
+TextSpecInfoAtom.java
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/repos/asf/!svn/ver/1024390/poi/trunk/src/scratchpad/src/org/apache/poi/hslf/record/TextSpecInfoAtom.java
+END
+RecordAtom.java
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/repos/asf/!svn/ver/777204/poi/trunk/src/scratchpad/src/org/apache/poi/hslf/record/RecordAtom.java
+END
+UnknownRecordPlaceholder.java
+K 25
+svn:wc:ra_dav:version-url
+V 112
+/repos/asf/!svn/ver/777204/poi/trunk/src/scratchpad/src/org/apache/poi/hslf/record/UnknownRecordPlaceholder.java
+END
+RecordTypes.java
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/repos/asf/!svn/ver/1024390/poi/trunk/src/scratchpad/src/org/apache/poi/hslf/record/RecordTypes.java
+END
+SoundCollection.java
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/repos/asf/!svn/ver/814335/poi/trunk/src/scratchpad/src/org/apache/poi/hslf/record/SoundCollection.java
+END
+OEShapeAtom.java
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/repos/asf/!svn/ver/814335/poi/trunk/src/scratchpad/src/org/apache/poi/hslf/record/OEShapeAtom.java
+END
+PPDrawingGroup.java
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/repos/asf/!svn/ver/805262/poi/trunk/src/scratchpad/src/org/apache/poi/hslf/record/PPDrawingGroup.java
+END
+TxMasterStyleAtom.java
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/repos/asf/!svn/ver/805492/poi/trunk/src/scratchpad/src/org/apache/poi/hslf/record/TxMasterStyleAtom.java
+END
+RoundTripHFPlaceholder12.java
+K 25
+svn:wc:ra_dav:version-url
+V 112
+/repos/asf/!svn/ver/805262/poi/trunk/src/scratchpad/src/org/apache/poi/hslf/record/RoundTripHFPlaceholder12.java
+END
+TextBytesAtom.java
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/repos/asf/!svn/ver/777204/poi/trunk/src/scratchpad/src/org/apache/poi/hslf/record/TextBytesAtom.java
+END
+AnimationInfoAtom.java
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/repos/asf/!svn/ver/814335/poi/trunk/src/scratchpad/src/org/apache/poi/hslf/record/AnimationInfoAtom.java
+END
+DummyPositionSensitiveRecordWithChildren.java
+K 25
+svn:wc:ra_dav:version-url
+V 128
+/repos/asf/!svn/ver/777204/poi/trunk/src/scratchpad/src/org/apache/poi/hslf/record/DummyPositionSensitiveRecordWithChildren.java
+END
+Record.java
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/repos/asf/!svn/ver/1024390/poi/trunk/src/scratchpad/src/org/apache/poi/hslf/record/Record.java
+END
+TextHeaderAtom.java
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/repos/asf/!svn/ver/805284/poi/trunk/src/scratchpad/src/org/apache/poi/hslf/record/TextHeaderAtom.java
+END
+HeadersFootersContainer.java
+K 25
+svn:wc:ra_dav:version-url
+V 111
+/repos/asf/!svn/ver/777204/poi/trunk/src/scratchpad/src/org/apache/poi/hslf/record/HeadersFootersContainer.java
+END
+FontCollection.java
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/repos/asf/!svn/ver/1024390/poi/trunk/src/scratchpad/src/org/apache/poi/hslf/record/FontCollection.java
+END
+ColorSchemeAtom.java
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/repos/asf/!svn/ver/805284/poi/trunk/src/scratchpad/src/org/apache/poi/hslf/record/ColorSchemeAtom.java
+END
+ExObjListAtom.java
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/repos/asf/!svn/ver/712084/poi/trunk/src/scratchpad/src/org/apache/poi/hslf/record/ExObjListAtom.java
+END
+ExOleObjStg.java
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/repos/asf/!svn/ver/1305778/poi/trunk/src/scratchpad/src/org/apache/poi/hslf/record/ExOleObjStg.java
+END
+StyleTextPropAtom.java
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/repos/asf/!svn/ver/1024411/poi/trunk/src/scratchpad/src/org/apache/poi/hslf/record/StyleTextPropAtom.java
+END
+AnimationInfo.java
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/repos/asf/!svn/ver/814335/poi/trunk/src/scratchpad/src/org/apache/poi/hslf/record/AnimationInfo.java
+END
+SlideListWithText.java
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/repos/asf/!svn/ver/1024390/poi/trunk/src/scratchpad/src/org/apache/poi/hslf/record/SlideListWithText.java
+END
+PositionDependentRecordContainer.java
+K 25
+svn:wc:ra_dav:version-url
+V 121
+/repos/asf/!svn/ver/1024390/poi/trunk/src/scratchpad/src/org/apache/poi/hslf/record/PositionDependentRecordContainer.java
+END
+ExObjList.java
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/repos/asf/!svn/ver/1024390/poi/trunk/src/scratchpad/src/org/apache/poi/hslf/record/ExObjList.java
+END
+Environment.java
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/repos/asf/!svn/ver/777204/poi/trunk/src/scratchpad/src/org/apache/poi/hslf/record/Environment.java
+END
+UserEditAtom.java
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/repos/asf/!svn/ver/1024390/poi/trunk/src/scratchpad/src/org/apache/poi/hslf/record/UserEditAtom.java
+END
+CString.java
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/repos/asf/!svn/ver/823348/poi/trunk/src/scratchpad/src/org/apache/poi/hslf/record/CString.java
+END
+InteractiveInfoAtom.java
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/repos/asf/!svn/ver/805262/poi/trunk/src/scratchpad/src/org/apache/poi/hslf/record/InteractiveInfoAtom.java
+END
+PositionDependentRecordAtom.java
+K 25
+svn:wc:ra_dav:version-url
+V 116
+/repos/asf/!svn/ver/1024368/poi/trunk/src/scratchpad/src/org/apache/poi/hslf/record/PositionDependentRecordAtom.java
+END
+SheetContainer.java
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/repos/asf/!svn/ver/777204/poi/trunk/src/scratchpad/src/org/apache/poi/hslf/record/SheetContainer.java
+END
+PersistPtrHolder.java
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/repos/asf/!svn/ver/1024368/poi/trunk/src/scratchpad/src/org/apache/poi/hslf/record/PersistPtrHolder.java
+END
+Comment2000Atom.java
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/repos/asf/!svn/ver/777204/poi/trunk/src/scratchpad/src/org/apache/poi/hslf/record/Comment2000Atom.java
+END
+TextCharsAtom.java
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/repos/asf/!svn/ver/777204/poi/trunk/src/scratchpad/src/org/apache/poi/hslf/record/TextCharsAtom.java
+END
+TxInteractiveInfoAtom.java
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/repos/asf/!svn/ver/777204/poi/trunk/src/scratchpad/src/org/apache/poi/hslf/record/TxInteractiveInfoAtom.java
+END
+OEPlaceholderAtom.java
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/repos/asf/!svn/ver/777204/poi/trunk/src/scratchpad/src/org/apache/poi/hslf/record/OEPlaceholderAtom.java
+END
+PersistRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/repos/asf/!svn/ver/814335/poi/trunk/src/scratchpad/src/org/apache/poi/hslf/record/PersistRecord.java
+END
+EscherTextboxWrapper.java
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/repos/asf/!svn/ver/805284/poi/trunk/src/scratchpad/src/org/apache/poi/hslf/record/EscherTextboxWrapper.java
+END
+ExOleObjAtom.java
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/repos/asf/!svn/ver/712084/poi/trunk/src/scratchpad/src/org/apache/poi/hslf/record/ExOleObjAtom.java
+END
+InteractiveInfo.java
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/repos/asf/!svn/ver/712084/poi/trunk/src/scratchpad/src/org/apache/poi/hslf/record/InteractiveInfo.java
+END
+PositionDependentRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 112
+/repos/asf/!svn/ver/1024368/poi/trunk/src/scratchpad/src/org/apache/poi/hslf/record/PositionDependentRecord.java
+END
+ExMediaAtom.java
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/repos/asf/!svn/ver/814335/poi/trunk/src/scratchpad/src/org/apache/poi/hslf/record/ExMediaAtom.java
+END
+HeadersFootersAtom.java
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/repos/asf/!svn/ver/777204/poi/trunk/src/scratchpad/src/org/apache/poi/hslf/record/HeadersFootersAtom.java
+END
+DocumentAtom.java
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/repos/asf/!svn/ver/805284/poi/trunk/src/scratchpad/src/org/apache/poi/hslf/record/DocumentAtom.java
+END
+Comment2000.java
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/repos/asf/!svn/ver/811814/poi/trunk/src/scratchpad/src/org/apache/poi/hslf/record/Comment2000.java
+END
+ExVideoContainer.java
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/repos/asf/!svn/ver/814335/poi/trunk/src/scratchpad/src/org/apache/poi/hslf/record/ExVideoContainer.java
+END
+DocumentEncryptionAtom.java
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/repos/asf/!svn/ver/805262/poi/trunk/src/scratchpad/src/org/apache/poi/hslf/record/DocumentEncryptionAtom.java
+END
+ExAviMovie.java
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/repos/asf/!svn/ver/814335/poi/trunk/src/scratchpad/src/org/apache/poi/hslf/record/ExAviMovie.java
+END
+Document.java
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/repos/asf/!svn/ver/786501/poi/trunk/src/scratchpad/src/org/apache/poi/hslf/record/Document.java
+END
+SlideAtom.java
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/repos/asf/!svn/ver/805284/poi/trunk/src/scratchpad/src/org/apache/poi/hslf/record/SlideAtom.java
+END
+SoundData.java
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/repos/asf/!svn/ver/814335/poi/trunk/src/scratchpad/src/org/apache/poi/hslf/record/SoundData.java
+END
+ExHyperlinkAtom.java
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/repos/asf/!svn/ver/805262/poi/trunk/src/scratchpad/src/org/apache/poi/hslf/record/ExHyperlinkAtom.java
+END
+FontEntityAtom.java
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/repos/asf/!svn/ver/805262/poi/trunk/src/scratchpad/src/org/apache/poi/hslf/record/FontEntityAtom.java
+END
+Sound.java
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/repos/asf/!svn/ver/814335/poi/trunk/src/scratchpad/src/org/apache/poi/hslf/record/Sound.java
+END
+ExEmbedAtom.java
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/repos/asf/!svn/ver/712084/poi/trunk/src/scratchpad/src/org/apache/poi/hslf/record/ExEmbedAtom.java
+END
+PPDrawing.java
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/repos/asf/!svn/ver/805262/poi/trunk/src/scratchpad/src/org/apache/poi/hslf/record/PPDrawing.java
+END
+SlidePersistAtom.java
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/repos/asf/!svn/ver/805284/poi/trunk/src/scratchpad/src/org/apache/poi/hslf/record/SlidePersistAtom.java
+END

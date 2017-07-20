@@ -1,0 +1,119 @@
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/repos/asf/!svn/ver/1296979/poi/trunk/src/testcases/org/apache/poi/util
+END
+TestShortList.java
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/repos/asf/!svn/ver/784284/poi/trunk/src/testcases/org/apache/poi/util/TestShortList.java
+END
+LocalTestNode.java
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/repos/asf/!svn/ver/823348/poi/trunk/src/testcases/org/apache/poi/util/LocalTestNode.java
+END
+TestIntegerField.java
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/repos/asf/!svn/ver/784284/poi/trunk/src/testcases/org/apache/poi/util/TestIntegerField.java
+END
+AllPOIUtilTests.java
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/repos/asf/!svn/ver/814335/poi/trunk/src/testcases/org/apache/poi/util/AllPOIUtilTests.java
+END
+TestShortField.java
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/repos/asf/!svn/ver/784284/poi/trunk/src/testcases/org/apache/poi/util/TestShortField.java
+END
+TestLongField.java
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/repos/asf/!svn/ver/712084/poi/trunk/src/testcases/org/apache/poi/util/TestLongField.java
+END
+DummyPOILogger.java
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/repos/asf/!svn/ver/1044405/poi/trunk/src/testcases/org/apache/poi/util/DummyPOILogger.java
+END
+TestBinaryTree.java
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/repos/asf/!svn/ver/823348/poi/trunk/src/testcases/org/apache/poi/util/TestBinaryTree.java
+END
+TestStringUtil.java
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/repos/asf/!svn/ver/898295/poi/trunk/src/testcases/org/apache/poi/util/TestStringUtil.java
+END
+TestTempFile.java
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/repos/asf/!svn/ver/712084/poi/trunk/src/testcases/org/apache/poi/util/TestTempFile.java
+END
+TestByteField.java
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/repos/asf/!svn/ver/784284/poi/trunk/src/testcases/org/apache/poi/util/TestByteField.java
+END
+TestHexDump.java
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/repos/asf/!svn/ver/712084/poi/trunk/src/testcases/org/apache/poi/util/TestHexDump.java
+END
+TestLittleEndianStreams.java
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/repos/asf/!svn/ver/836298/poi/trunk/src/testcases/org/apache/poi/util/TestLittleEndianStreams.java
+END
+TestLittleEndian.java
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/repos/asf/!svn/ver/1296979/poi/trunk/src/testcases/org/apache/poi/util/TestLittleEndian.java
+END
+TestArrayUtil.java
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/repos/asf/!svn/ver/823348/poi/trunk/src/testcases/org/apache/poi/util/TestArrayUtil.java
+END
+TestPOILogFactory.java
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/repos/asf/!svn/ver/784284/poi/trunk/src/testcases/org/apache/poi/util/TestPOILogFactory.java
+END
+TestBitField.java
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/repos/asf/!svn/ver/1141977/poi/trunk/src/testcases/org/apache/poi/util/TestBitField.java
+END
+TestIntList.java
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/repos/asf/!svn/ver/784284/poi/trunk/src/testcases/org/apache/poi/util/TestIntList.java
+END
+TestPOILogger.java
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/repos/asf/!svn/ver/823348/poi/trunk/src/testcases/org/apache/poi/util/TestPOILogger.java
+END

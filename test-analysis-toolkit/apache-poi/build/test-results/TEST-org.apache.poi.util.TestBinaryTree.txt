@@ -1,0 +1,23 @@
+Testsuite: org.apache.poi.util.TestBinaryTree
+Tests run: 20, Failures: 0, Errors: 0, Time elapsed: 0.598 sec
+
+Testcase: testEquals took 0.058 sec
+Testcase: testConstructors took 0.035 sec
+Testcase: testRemove took 0.018 sec
+Testcase: testSize took 0.023 sec
+Testcase: testIsEmpty took 0.025 sec
+Testcase: testContainsKey took 0.026 sec
+Testcase: testContainsValue took 0.021 sec
+Testcase: testGet took 0.015 sec
+Testcase: testPut took 0.013 sec
+Testcase: testPutAll took 0.011 sec
+Testcase: testClear took 0.006 sec
+Testcase: testKeySet took 0.072 sec
+Testcase: testValues took 0.079 sec
+Testcase: testEntrySet took 0.026 sec
+Testcase: testHashCode took 0.01 sec
+Testcase: testGetKeyForValue took 0.006 sec
+Testcase: testRemoveValue took 0.006 sec
+Testcase: testEntrySetByValue took 0.026 sec
+Testcase: testKeySetByValue took 0.06 sec
+Testcase: testValuesByValue took 0.061 sec

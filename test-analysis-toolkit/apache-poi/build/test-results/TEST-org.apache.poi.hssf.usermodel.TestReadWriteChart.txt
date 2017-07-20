@@ -1,0 +1,4 @@
+Testsuite: org.apache.poi.hssf.usermodel.TestReadWriteChart
+Tests run: 1, Failures: 0, Errors: 0, Time elapsed: 0.001 sec
+
+Testcase: testBOFandEOFRecords took 0 sec

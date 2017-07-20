@@ -1,0 +1,6 @@
+Testsuite: org.apache.poi.ss.formula.TestMissingWorkbook
+Tests run: 3, Failures: 0, Errors: 0, Time elapsed: 0.003 sec
+
+Testcase: testMissingWorkbookMissing took 0.001 sec
+Testcase: testMissingWorkbookMissingOverride took 0.001 sec
+Testcase: testExistingWorkbook took 0.001 sec

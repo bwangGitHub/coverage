@@ -1,0 +1,254 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN
+"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>
+org.apache.poi.ss.formula.functions.XYNumericFunction
+</title>
+<link href="prettify.css" type="text/css" rel="stylesheet" />
+<script type="text/javascript" src="prettify.js"></script>
+</head>
+<body onload="prettyPrint()">
+<h2>Javalanche report for class:<br/> org.apache.poi.ss.formula.functions.XYNumericFunction </h2><pre class="prettyprint" style="border: 1px solid #888;padding: 2px"><span class="nocode"><a name="1">  1: </a></span>/* ====================================================================
+<span class="nocode"><a name="2">  2: </a></span>   Licensed to the Apache Software Foundation (ASF) under one or more
+<span class="nocode"><a name="3">  3: </a></span>   contributor license agreements.  See the NOTICE file distributed with
+<span class="nocode"><a name="4">  4: </a></span>   this work for additional information regarding copyright ownership.
+<span class="nocode"><a name="5">  5: </a></span>   The ASF licenses this file to You under the Apache License, Version 2.0
+<span class="nocode"><a name="6">  6: </a></span>   (the &quot;License&quot;); you may not use this file except in compliance with
+<span class="nocode"><a name="7">  7: </a></span>   the License.  You may obtain a copy of the License at
+<span class="nocode"><a name="8">  8: </a></span>
+<span class="nocode"><a name="9">  9: </a></span>       http://www.apache.org/licenses/LICENSE-2.0
+<span class="nocode"><a name="10"> 10: </a></span>
+<span class="nocode"><a name="11"> 11: </a></span>   Unless required by applicable law or agreed to in writing, software
+<span class="nocode"><a name="12"> 12: </a></span>   distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+<span class="nocode"><a name="13"> 13: </a></span>   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+<span class="nocode"><a name="14"> 14: </a></span>   See the License for the specific language governing permissions and
+<span class="nocode"><a name="15"> 15: </a></span>   limitations under the License.
+<span class="nocode"><a name="16"> 16: </a></span>==================================================================== */
+<span class="nocode"><a name="17"> 17: </a></span>
+<span class="nocode"><a name="18"> 18: </a></span>package org.apache.poi.ss.formula.functions;
+<span class="nocode"><a name="19"> 19: </a></span>
+<span class="nocode"><a name="20"> 20: </a></span>import org.apache.poi.ss.formula.eval.ErrorEval;
+<span class="nocode"><a name="21"> 21: </a></span>import org.apache.poi.ss.formula.eval.EvaluationException;
+<span class="nocode"><a name="22"> 22: </a></span>import org.apache.poi.ss.formula.eval.NumberEval;
+<span class="nocode"><a name="23"> 23: </a></span>import org.apache.poi.ss.formula.eval.RefEval;
+<span class="nocode"><a name="24"> 24: </a></span>import org.apache.poi.ss.formula.eval.ValueEval;
+<span class="nocode"><a name="25"> 25: </a></span>import org.apache.poi.ss.formula.functions.LookupUtils.ValueVector;
+<span class="nocode"><a name="26"> 26: </a></span>import org.apache.poi.ss.formula.TwoDEval;
+<span class="nocode"><a name="27"> 27: </a></span>
+<span class="nocode"><a name="28"> 28: </a></span>/**
+<span class="nocode"><a name="29"> 29: </a></span> * @author Amol S. Deshmukh &amp;lt; amolweb at ya hoo dot com &amp;gt;
+<span class="nocode"><a name="30"> 30: </a></span> */
+<span class="nocode"><a name="31"> 31: </a></span>public abstract class XYNumericFunction extends Fixed2ArgFunction {
+<span class="nocode"><a name="32"> 32: </a></span>
+<span class="nocode"><a name="33"> 33: </a></span>	private static abstract class ValueArray implements ValueVector {
+<span class="nocode"><a name="34"> 34: </a></span>		private final int _size;
+<span class="nocode"><a name="35"> 35: </a></span>		protected ValueArray(int size) {
+<span class="nocode"><a name="36"> 36: </a></span>			_size = size;
+<span class="nocode"><a name="37"> 37: </a></span>		}
+<span class="nocode"><a name="38"> 38: </a></span>		public ValueEval getItem(int index) {
+<span class="nocode"><a name="39"> 39: </a></span>			if (index &lt; 0 || index &gt; _size) {
+<span class="nocode"><a name="40"> 40: </a></span>				throw new IllegalArgumentException(&quot;Specified index &quot; + index
+<span class="nocode"><a name="41"> 41: </a></span>						+ &quot; is outside range (0..&quot; + (_size - 1) + &quot;)&quot;);
+<span class="nocode"><a name="42"> 42: </a></span>			}
+<span class="nocode"><a name="43"> 43: </a></span>			return getItemInternal(index);
+<span class="nocode"><a name="44"> 44: </a></span>		}
+<span class="nocode"><a name="45"> 45: </a></span>		protected abstract ValueEval getItemInternal(int index);
+<span class="nocode"><a name="46"> 46: </a></span>		public final int getSize() {
+<span class="nocode"><a name="47"> 47: </a></span>			return _size;
+<span class="nocode"><a name="48"> 48: </a></span>		}
+<span class="nocode"><a name="49"> 49: </a></span>	}
+<span class="nocode"><a name="50"> 50: </a></span>
+<span class="nocode"><a name="51"> 51: </a></span>	private static final class SingleCellValueArray extends ValueArray {
+<span class="nocode"><a name="52"> 52: </a></span>		private final ValueEval _value;
+<span class="nocode"><a name="53"> 53: </a></span>		public SingleCellValueArray(ValueEval value) {
+<span class="nocode"><a name="54"> 54: </a></span>			super(1);
+<span class="nocode"><a name="55"> 55: </a></span>			_value = value;
+<span class="nocode"><a name="56"> 56: </a></span>		}
+<span class="nocode"><a name="57"> 57: </a></span>		protected ValueEval getItemInternal(int index) {
+<span class="nocode"><a name="58"> 58: </a></span>			return _value;
+<span class="nocode"><a name="59"> 59: </a></span>		}
+<span class="nocode"><a name="60"> 60: </a></span>	}
+<span class="nocode"><a name="61"> 61: </a></span>
+<span class="nocode"><a name="62"> 62: </a></span>	private static final class RefValueArray extends ValueArray {
+<span class="nocode"><a name="63"> 63: </a></span>		private final RefEval _ref;
+<span class="nocode"><a name="64"> 64: </a></span>		public RefValueArray(RefEval ref) {
+<span class="nocode"><a name="65"> 65: </a></span>			super(1);
+<span class="nocode"><a name="66"> 66: </a></span>			_ref = ref;
+<span class="nocode"><a name="67"> 67: </a></span>		}
+<span class="nocode"><a name="68"> 68: </a></span>		protected ValueEval getItemInternal(int index) {
+<span class="nocode"><a name="69"> 69: </a></span>			return _ref.getInnerValueEval();
+<span class="nocode"><a name="70"> 70: </a></span>		}
+<span class="nocode"><a name="71"> 71: </a></span>	}
+<span class="nocode"><a name="72"> 72: </a></span>
+<span class="nocode"><a name="73"> 73: </a></span>	private static final class AreaValueArray extends ValueArray {
+<span class="nocode"><a name="74"> 74: </a></span>		private final TwoDEval _ae;
+<span class="nocode"><a name="75"> 75: </a></span>		private final int _width;
+<span class="nocode"><a name="76"> 76: </a></span>
+<span class="nocode"><a name="77"> 77: </a></span>		public AreaValueArray(TwoDEval ae) {
+<span class="nocode"><a name="78"> 78: </a></span>			super(ae.getWidth() * ae.getHeight());
+<span class="nocode"><a name="79"> 79: </a></span>			_ae = ae;
+<span class="nocode"><a name="80"> 80: </a></span>			_width = ae.getWidth();
+<span class="nocode"><a name="81"> 81: </a></span>		}
+<span class="nocode"><a name="82"> 82: </a></span>		protected ValueEval getItemInternal(int index) {
+<span class="nocode"><a name="83"> 83: </a></span>			int rowIx = index / _width;
+<span class="nocode"><a name="84"> 84: </a></span>			int colIx = index % _width;
+<span class="nocode"><a name="85"> 85: </a></span>			return _ae.getValue(rowIx, colIx);
+<span class="nocode"><a name="86"> 86: </a></span>		}
+<span class="nocode"><a name="87"> 87: </a></span>	}
+<span class="nocode"><a name="88"> 88: </a></span>
+<span class="nocode"><a name="89"> 89: </a></span>	protected static interface Accumulator {
+<span class="nocode"><a name="90"> 90: </a></span>		double accumulate(double x, double y);
+<span class="nocode"><a name="91"> 91: </a></span>	}
+<span class="nocode"><a name="92"> 92: </a></span>
+<span class="nocode"><a name="93"> 93: </a></span>	/**
+<span class="nocode"><a name="94"> 94: </a></span>	 * Constructs a new instance of the Accumulator used to calculated this function
+<span class="nocode"><a name="95"> 95: </a></span>	 */
+<span class="nocode"><a name="96"> 96: </a></span>	protected abstract Accumulator createAccumulator();
+<span class="nocode"><a name="97"> 97: </a></span>
+<span class="nocode"><a name="98"> 98: </a></span>	public ValueEval evaluate(int srcRowIndex, int srcColumnIndex, ValueEval arg0, ValueEval arg1) {
+<span class="nocode"><a name="99"> 99: </a></span>
+<span class="nocode"><a name="100">100: </a></span>		double result;
+<span class="nocode"><a name="101">101: </a></span>		try {
+<span class="nocode"><a name="102">102: </a></span>			ValueVector vvX = createValueVector(arg0);
+<span class="nocode"><a name="103">103: </a></span>			ValueVector vvY = createValueVector(arg1);
+<span class="nocode"><a name="104">104: </a></span>			int size = vvX.getSize();
+<span class="nocode"><a name="105">105: </a></span>			if (size == 0 || vvY.getSize() != size) {
+<span class="nocode"><a name="106">106: </a></span>				return ErrorEval.NA;
+<span class="nocode"><a name="107">107: </a></span>			}
+<span class="nocode"><a name="108">108: </a></span>			result = evaluateInternal(vvX, vvY, size);
+<span class="nocode"><a name="109">109: </a></span>		} catch (EvaluationException e) {
+<span class="nocode"><a name="110">110: </a></span>			return e.getErrorEval();
+<span class="nocode"><a name="111">111: </a></span>		}
+<span class="nocode"><a name="112">112: </a></span>		if (Double.isNaN(result) || Double.isInfinite(result)) {
+<span class="nocode"><a name="113">113: </a></span>			return ErrorEval.NUM_ERROR;
+<span class="nocode"><a name="114">114: </a></span>		}
+<span class="nocode"><a name="115">115: </a></span>		return new NumberEval(result);
+<span class="nocode"><a name="116">116: </a></span>	}
+<span class="nocode"><a name="117">117: </a></span>
+<span class="nocode"><a name="118">118: </a></span>	private double evaluateInternal(ValueVector x, ValueVector y, int size)
+<span class="nocode"><a name="119">119: </a></span>			throws EvaluationException {
+<span class="nocode"><a name="120">120: </a></span>		Accumulator acc = createAccumulator();
+<span class="nocode"><a name="121">121: </a></span>
+<span class="nocode"><a name="122">122: </a></span>		// error handling is as if the x is fully evaluated before y
+<span class="nocode"><a name="123">123: </a></span>		ErrorEval firstXerr = null;
+<span class="nocode"><a name="124">124: </a></span>		ErrorEval firstYerr = null;
+<span class="nocode"><a name="125">125: </a></span>		boolean accumlatedSome = false;
+<span class="nocode"><a name="126">126: </a></span>		double result = 0.0;
+<span class="nocode"><a name="127">127: </a></span>
+<span class="nocode"><a name="128">128: </a></span>		for (int i = 0; i &lt; size; i++) {
+<span class="nocode"><a name="129">129: </a></span>			ValueEval vx = x.getItem(i);
+<span class="nocode"><a name="130">130: </a></span>			ValueEval vy = y.getItem(i);
+<span class="nocode"><a name="131">131: </a></span>			if (vx instanceof ErrorEval) {
+<span class="nocode"><a name="132">132: </a></span>				if (firstXerr == null) {
+<span class="nocode"><a name="133">133: </a></span>					firstXerr = (ErrorEval) vx;
+<span class="nocode"><a name="134">134: </a></span>					continue;
+<span class="nocode"><a name="135">135: </a></span>				}
+<span class="nocode"><a name="136">136: </a></span>			}
+<span class="nocode"><a name="137">137: </a></span>			if (vy instanceof ErrorEval) {
+<span class="nocode"><a name="138">138: </a></span>				if (firstYerr == null) {
+<span class="nocode"><a name="139">139: </a></span>					firstYerr = (ErrorEval) vy;
+<span class="nocode"><a name="140">140: </a></span>					continue;
+<span class="nocode"><a name="141">141: </a></span>				}
+<span class="nocode"><a name="142">142: </a></span>			}
+<span class="nocode"><a name="143">143: </a></span>			// only count pairs if both elements are numbers
+<span class="nocode"><a name="144">144: </a></span>			if (vx instanceof NumberEval &amp;&amp; vy instanceof NumberEval) {
+<span class="nocode"><a name="145">145: </a></span>				accumlatedSome = true;
+<span class="nocode"><a name="146">146: </a></span>				NumberEval nx = (NumberEval) vx;
+<span class="nocode"><a name="147">147: </a></span>				NumberEval ny = (NumberEval) vy;
+<span class="nocode"><a name="148">148: </a></span>				result += acc.accumulate(nx.getNumberValue(), ny.getNumberValue());
+<span class="nocode"><a name="149">149: </a></span>			} else {
+<span class="nocode"><a name="150">150: </a></span>				// all other combinations of value types are silently ignored
+<span class="nocode"><a name="151">151: </a></span>			}
+<span class="nocode"><a name="152">152: </a></span>		}
+<span class="nocode"><a name="153">153: </a></span>		if (firstXerr != null) {
+<span class="nocode"><a name="154">154: </a></span>			throw new EvaluationException(firstXerr);
+<span class="nocode"><a name="155">155: </a></span>		}
+<span class="nocode"><a name="156">156: </a></span>		if (firstYerr != null) {
+<span class="nocode"><a name="157">157: </a></span>			throw new EvaluationException(firstYerr);
+<span class="nocode"><a name="158">158: </a></span>		}
+<span class="nocode"><a name="159">159: </a></span>		if (!accumlatedSome) {
+<span class="nocode"><a name="160">160: </a></span>			throw new EvaluationException(ErrorEval.DIV_ZERO);
+<span class="nocode"><a name="161">161: </a></span>		}
+<span class="nocode"><a name="162">162: </a></span>		return result;
+<span class="nocode"><a name="163">163: </a></span>	}
+<span class="nocode"><a name="164">164: </a></span>
+<span class="nocode"><a name="165">165: </a></span>	private static ValueVector createValueVector(ValueEval arg) throws EvaluationException {
+<span class="nocode"><a name="166">166: </a></span>		if (arg instanceof ErrorEval) {
+<span class="nocode"><a name="167">167: </a></span>			throw new EvaluationException((ErrorEval) arg);
+<span class="nocode"><a name="168">168: </a></span>		}
+<span class="nocode"><a name="169">169: </a></span>		if (arg instanceof TwoDEval) {
+<span class="nocode"><a name="170">170: </a></span>			return new AreaValueArray((TwoDEval) arg);
+<span class="nocode"><a name="171">171: </a></span>		}
+<span class="nocode"><a name="172">172: </a></span>		if (arg instanceof RefEval) {
+<span class="nocode"><a name="173">173: </a></span>			return new RefValueArray((RefEval) arg);
+<span class="nocode"><a name="174">174: </a></span>		}
+<span class="nocode"><a name="175">175: </a></span>		return new SingleCellValueArray(arg);
+<span class="nocode"><a name="176">176: </a></span>	}
+<span class="nocode"><a name="177">177: </a></span>}
+</pre><table class="mutation_table" summary="Mutations">
+<tr><th>ID</th><th>Line</th><th>Type</th><th>Detected</th></tr><tr><td>61877</td><td><a href="#39">39</a></td><td>Negate jump condition (Replace IFLT with  IFGE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>61878</td><td><a href="#39">39(1)</a></td><td>Negate jump condition (Replace IF_ICMPLE with  IF_ICMPGT)</td><td><img src="detected.png"/></td></tr>
+<tr><td>61883</td><td><a href="#40">40</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>61882</td><td><a href="#40">40</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>61884</td><td><a href="#40">40</a></td><td>Replace arithmetic operator (Replace ISUB with IADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>61879</td><td><a href="#40">40</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>61880</td><td><a href="#40">40(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>61881</td><td><a href="#40">40(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>61885</td><td><a href="#40">40(3)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>61886</td><td><a href="#40">40(4)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>61887</td><td><a href="#40">40(5)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>61888</td><td><a href="#43">43</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>63518</td><td><a href="#54">54</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>63519</td><td><a href="#54">54</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>63516</td><td><a href="#65">65</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>63515</td><td><a href="#65">65</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>63517</td><td><a href="#69">69</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>61872</td><td><a href="#78">78</a></td><td>Replace arithmetic operator (Replace IMUL with IADD)</td><td><img src="detected.png"/></td></tr>
+<tr><td>61873</td><td><a href="#80">80</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>61874</td><td><a href="#83">83</a></td><td>Replace arithmetic operator (Replace IDIV with IMUL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>61875</td><td><a href="#84">84</a></td><td>Replace arithmetic operator (Replace IREM with IDIV)</td><td><img src="detected.png"/></td></tr>
+<tr><td>61876</td><td><a href="#85">85</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>34126</td><td><a href="#102">102</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>34127</td><td><a href="#103">103</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>34128</td><td><a href="#104">104</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>34129</td><td><a href="#105">105</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>34131</td><td><a href="#105">105(1)</a></td><td>Negate jump condition (Replace IF_ICMPEQ with  IF_ICMPNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>34130</td><td><a href="#105">105</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>34132</td><td><a href="#108">108</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>34133</td><td><a href="#110">110</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>34135</td><td><a href="#112">112</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>34137</td><td><a href="#112">112(1)</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>34134</td><td><a href="#112">112</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>34136</td><td><a href="#112">112(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>34138</td><td><a href="#120">120</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>34140</td><td><a href="#125">125</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>34139</td><td><a href="#125">125</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>34142</td><td><a href="#126">126</a></td><td>Replace a constant (Replace 0 with -1(DOUBLE))</td><td><img src="detected.png"/></td></tr>
+<tr><td>34141</td><td><a href="#126">126</a></td><td>Replace a constant (Replace 0 with 1(DOUBLE))</td><td><img src="detected.png"/></td></tr>
+<tr><td>34144</td><td><a href="#128">128</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>34143</td><td><a href="#128">128</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>34145</td><td><a href="#128">128</a></td><td>Negate jump condition (Replace IF_ICMPGE with  IF_ICMPLT)</td><td><img src="detected.png"/></td></tr>
+<tr><td>34146</td><td><a href="#129">129</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>34147</td><td><a href="#130">130</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>34148</td><td><a href="#131">131</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>34149</td><td><a href="#132">132</a></td><td>Negate jump condition (Replace IFNONNULL with  IFNULL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>34150</td><td><a href="#137">137</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>34151</td><td><a href="#138">138</a></td><td>Negate jump condition (Replace IFNONNULL with  IFNULL)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>34152</td><td><a href="#144">144</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>34153</td><td><a href="#144">144(1)</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>34155</td><td><a href="#145">145</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>34154</td><td><a href="#145">145</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>34159</td><td><a href="#148">148</a></td><td>Replace arithmetic operator (Replace DADD with DSUB)</td><td><img src="detected.png"/></td></tr>
+<tr><td>34156</td><td><a href="#148">148</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>34157</td><td><a href="#148">148(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>34158</td><td><a href="#148">148(2)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>34160</td><td><a href="#153">153</a></td><td>Negate jump condition (Replace IFNULL with  IFNONNULL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>34161</td><td><a href="#156">156</a></td><td>Negate jump condition (Replace IFNULL with  IFNONNULL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>34162</td><td><a href="#159">159</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>34163</td><td><a href="#166">166</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>34164</td><td><a href="#169">169</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>34165</td><td><a href="#172">172</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="detected.png"/></td></tr>
+</table>
+</body>
+</html>

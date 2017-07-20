@@ -1,0 +1,826 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN
+"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>
+org.apache.poi.ss.formula.functions.NumericFunction
+</title>
+<link href="prettify.css" type="text/css" rel="stylesheet" />
+<script type="text/javascript" src="prettify.js"></script>
+</head>
+<body onload="prettyPrint()">
+<h2>Javalanche report for class:<br/> org.apache.poi.ss.formula.functions.NumericFunction </h2><pre class="prettyprint" style="border: 1px solid #888;padding: 2px"><span class="nocode"><a name="1">  1: </a></span>/* ====================================================================
+<span class="nocode"><a name="2">  2: </a></span>   Licensed to the Apache Software Foundation (ASF) under one or more
+<span class="nocode"><a name="3">  3: </a></span>   contributor license agreements.  See the NOTICE file distributed with
+<span class="nocode"><a name="4">  4: </a></span>   this work for additional information regarding copyright ownership.
+<span class="nocode"><a name="5">  5: </a></span>   The ASF licenses this file to You under the Apache License, Version 2.0
+<span class="nocode"><a name="6">  6: </a></span>   (the &quot;License&quot;); you may not use this file except in compliance with
+<span class="nocode"><a name="7">  7: </a></span>   the License.  You may obtain a copy of the License at
+<span class="nocode"><a name="8">  8: </a></span>
+<span class="nocode"><a name="9">  9: </a></span>       http://www.apache.org/licenses/LICENSE-2.0
+<span class="nocode"><a name="10"> 10: </a></span>
+<span class="nocode"><a name="11"> 11: </a></span>   Unless required by applicable law or agreed to in writing, software
+<span class="nocode"><a name="12"> 12: </a></span>   distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+<span class="nocode"><a name="13"> 13: </a></span>   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+<span class="nocode"><a name="14"> 14: </a></span>   See the License for the specific language governing permissions and
+<span class="nocode"><a name="15"> 15: </a></span>   limitations under the License.
+<span class="nocode"><a name="16"> 16: </a></span>==================================================================== */
+<span class="nocode"><a name="17"> 17: </a></span>
+<span class="nocode"><a name="18"> 18: </a></span>package org.apache.poi.ss.formula.functions;
+<span class="nocode"><a name="19"> 19: </a></span>
+<span class="nocode"><a name="20"> 20: </a></span>import org.apache.poi.ss.formula.eval.*;
+<span class="nocode"><a name="21"> 21: </a></span>
+<span class="nocode"><a name="22"> 22: </a></span>/**
+<span class="nocode"><a name="23"> 23: </a></span> * @author Amol S. Deshmukh &amp;lt; amolweb at ya hoo dot com &amp;gt;
+<span class="nocode"><a name="24"> 24: </a></span> * @author Josh Micich
+<span class="nocode"><a name="25"> 25: </a></span> * @author Stephen Wolke (smwolke at geistig.com)
+<span class="nocode"><a name="26"> 26: </a></span> */
+<span class="nocode"><a name="27"> 27: </a></span>public abstract class NumericFunction implements Function {
+<span class="nocode"><a name="28"> 28: </a></span>
+<span class="nocode"><a name="29"> 29: </a></span>	static final double ZERO = 0.0;
+<span class="nocode"><a name="30"> 30: </a></span>	static final double TEN = 10.0;
+<span class="nocode"><a name="31"> 31: </a></span>	static final double LOG_10_TO_BASE_e = Math.log(TEN);
+<span class="nocode"><a name="32"> 32: </a></span>
+<span class="nocode"><a name="33"> 33: </a></span>	protected static final double singleOperandEvaluate(ValueEval arg, int srcRowIndex, int srcColumnIndex) throws EvaluationException {
+<span class="nocode"><a name="34"> 34: </a></span>		if (arg == null) {
+<span class="nocode"><a name="35"> 35: </a></span>			throw new IllegalArgumentException(&quot;arg must not be null&quot;);
+<span class="nocode"><a name="36"> 36: </a></span>		}
+<span class="nocode"><a name="37"> 37: </a></span>		ValueEval ve = OperandResolver.getSingleValue(arg, srcRowIndex, srcColumnIndex);
+<span class="nocode"><a name="38"> 38: </a></span>		double result = OperandResolver.coerceValueToDouble(ve);
+<span class="nocode"><a name="39"> 39: </a></span>		checkValue(result);
+<span class="nocode"><a name="40"> 40: </a></span>		return result;
+<span class="nocode"><a name="41"> 41: </a></span>	}
+<span class="nocode"><a name="42"> 42: </a></span>
+<span class="nocode"><a name="43"> 43: </a></span>	/**
+<span class="nocode"><a name="44"> 44: </a></span>	 * @throws EvaluationException (#NUM!) if &lt;tt&gt;result&lt;/tt&gt; is &lt;tt&gt;NaN&lt;/&gt; or &lt;tt&gt;Infinity&lt;/tt&gt;
+<span class="nocode"><a name="45"> 45: </a></span>	 */
+<span class="nocode"><a name="46"> 46: </a></span>	public static final void checkValue(double result) throws EvaluationException {
+<span class="nocode"><a name="47"> 47: </a></span>		if (Double.isNaN(result) || Double.isInfinite(result)) {
+<span class="nocode"><a name="48"> 48: </a></span>			throw new EvaluationException(ErrorEval.NUM_ERROR);
+<span class="nocode"><a name="49"> 49: </a></span>		}
+<span class="nocode"><a name="50"> 50: </a></span>	}
+<span class="nocode"><a name="51"> 51: </a></span>
+<span class="nocode"><a name="52"> 52: </a></span>	public final ValueEval evaluate(ValueEval[] args, int srcCellRow, int srcCellCol) {
+<span class="nocode"><a name="53"> 53: </a></span>		double result;
+<span class="nocode"><a name="54"> 54: </a></span>		try {
+<span class="nocode"><a name="55"> 55: </a></span>			result = eval(args, srcCellRow, srcCellCol);
+<span class="nocode"><a name="56"> 56: </a></span>			checkValue(result);
+<span class="nocode"><a name="57"> 57: </a></span>		} catch (EvaluationException e) {
+<span class="nocode"><a name="58"> 58: </a></span>			return e.getErrorEval();
+<span class="nocode"><a name="59"> 59: </a></span>		}
+<span class="nocode"><a name="60"> 60: </a></span>		return new NumberEval(result);
+<span class="nocode"><a name="61"> 61: </a></span>	}
+<span class="nocode"><a name="62"> 62: </a></span>
+<span class="nocode"><a name="63"> 63: </a></span>	protected abstract double eval(ValueEval[] args, int srcCellRow, int srcCellCol) throws EvaluationException;
+<span class="nocode"><a name="64"> 64: </a></span>
+<span class="nocode"><a name="65"> 65: </a></span>	/* -------------------------------------------------------------------------- */
+<span class="nocode"><a name="66"> 66: </a></span>	// intermediate sub-classes (one-arg, two-arg and multi-arg)
+<span class="nocode"><a name="67"> 67: </a></span>
+<span class="nocode"><a name="68"> 68: </a></span>	public static abstract class OneArg extends Fixed1ArgFunction {
+<span class="nocode"><a name="69"> 69: </a></span>		protected OneArg() {
+<span class="nocode"><a name="70"> 70: </a></span>			// no fields to initialise
+<span class="nocode"><a name="71"> 71: </a></span>		}
+<span class="nocode"><a name="72"> 72: </a></span>		public ValueEval evaluate(int srcRowIndex, int srcColumnIndex, ValueEval arg0) {
+<span class="nocode"><a name="73"> 73: </a></span>			double result;
+<span class="nocode"><a name="74"> 74: </a></span>			try {
+<span class="nocode"><a name="75"> 75: </a></span>				double d = singleOperandEvaluate(arg0, srcRowIndex, srcColumnIndex);
+<span class="nocode"><a name="76"> 76: </a></span>				result = evaluate(d);
+<span class="nocode"><a name="77"> 77: </a></span>				checkValue(result);
+<span class="nocode"><a name="78"> 78: </a></span>			} catch (EvaluationException e) {
+<span class="nocode"><a name="79"> 79: </a></span>				return e.getErrorEval();
+<span class="nocode"><a name="80"> 80: </a></span>			}
+<span class="nocode"><a name="81"> 81: </a></span>			return new NumberEval(result);
+<span class="nocode"><a name="82"> 82: </a></span>		}
+<span class="nocode"><a name="83"> 83: </a></span>		protected final double eval(ValueEval[] args, int srcCellRow, int srcCellCol) throws EvaluationException {
+<span class="nocode"><a name="84"> 84: </a></span>			if (args.length != 1) {
+<span class="nocode"><a name="85"> 85: </a></span>				throw new EvaluationException(ErrorEval.VALUE_INVALID);
+<span class="nocode"><a name="86"> 86: </a></span>			}
+<span class="nocode"><a name="87"> 87: </a></span>			double d = singleOperandEvaluate(args[0], srcCellRow, srcCellCol);
+<span class="nocode"><a name="88"> 88: </a></span>			return evaluate(d);
+<span class="nocode"><a name="89"> 89: </a></span>		}
+<span class="nocode"><a name="90"> 90: </a></span>		protected abstract double evaluate(double d) throws EvaluationException;
+<span class="nocode"><a name="91"> 91: </a></span>	}
+<span class="nocode"><a name="92"> 92: </a></span>
+<span class="nocode"><a name="93"> 93: </a></span>	public static abstract class TwoArg extends Fixed2ArgFunction {
+<span class="nocode"><a name="94"> 94: </a></span>		protected TwoArg() {
+<span class="nocode"><a name="95"> 95: </a></span>			// no fields to initialise
+<span class="nocode"><a name="96"> 96: </a></span>		}
+<span class="nocode"><a name="97"> 97: </a></span>
+<span class="nocode"><a name="98"> 98: </a></span>
+<span class="nocode"><a name="99"> 99: </a></span>		public ValueEval evaluate(int srcRowIndex, int srcColumnIndex, ValueEval arg0, ValueEval arg1) {
+<span class="nocode"><a name="100">100: </a></span>			double result;
+<span class="nocode"><a name="101">101: </a></span>			try {
+<span class="nocode"><a name="102">102: </a></span>				double d0 = singleOperandEvaluate(arg0, srcRowIndex, srcColumnIndex);
+<span class="nocode"><a name="103">103: </a></span>				double d1 = singleOperandEvaluate(arg1, srcRowIndex, srcColumnIndex);
+<span class="nocode"><a name="104">104: </a></span>				result =  evaluate(d0, d1);
+<span class="nocode"><a name="105">105: </a></span>				checkValue(result);
+<span class="nocode"><a name="106">106: </a></span>			} catch (EvaluationException e) {
+<span class="nocode"><a name="107">107: </a></span>				return e.getErrorEval();
+<span class="nocode"><a name="108">108: </a></span>			}
+<span class="nocode"><a name="109">109: </a></span>			return new NumberEval(result);
+<span class="nocode"><a name="110">110: </a></span>		}
+<span class="nocode"><a name="111">111: </a></span>
+<span class="nocode"><a name="112">112: </a></span>		protected abstract double evaluate(double d0, double d1) throws EvaluationException;
+<span class="nocode"><a name="113">113: </a></span>	}
+<span class="nocode"><a name="114">114: </a></span>
+<span class="nocode"><a name="115">115: </a></span>	/* -------------------------------------------------------------------------- */
+<span class="nocode"><a name="116">116: </a></span>
+<span class="nocode"><a name="117">117: </a></span>	public static final Function ABS = new OneArg() {
+<span class="nocode"><a name="118">118: </a></span>		protected double evaluate(double d) {
+<span class="nocode"><a name="119">119: </a></span>			return Math.abs(d);
+<span class="nocode"><a name="120">120: </a></span>		}
+<span class="nocode"><a name="121">121: </a></span>	};
+<span class="nocode"><a name="122">122: </a></span>	public static final Function ACOS = new OneArg() {
+<span class="nocode"><a name="123">123: </a></span>		protected double evaluate(double d) {
+<span class="nocode"><a name="124">124: </a></span>			return Math.acos(d);
+<span class="nocode"><a name="125">125: </a></span>		}
+<span class="nocode"><a name="126">126: </a></span>	};
+<span class="nocode"><a name="127">127: </a></span>	public static final Function ACOSH = new OneArg() {
+<span class="nocode"><a name="128">128: </a></span>		protected double evaluate(double d) {
+<span class="nocode"><a name="129">129: </a></span>			return MathX.acosh(d);
+<span class="nocode"><a name="130">130: </a></span>		}
+<span class="nocode"><a name="131">131: </a></span>	};
+<span class="nocode"><a name="132">132: </a></span>	public static final Function ASIN = new OneArg() {
+<span class="nocode"><a name="133">133: </a></span>		protected double evaluate(double d) {
+<span class="nocode"><a name="134">134: </a></span>			return Math.asin(d);
+<span class="nocode"><a name="135">135: </a></span>		}
+<span class="nocode"><a name="136">136: </a></span>	};
+<span class="nocode"><a name="137">137: </a></span>	public static final Function ASINH = new OneArg() {
+<span class="nocode"><a name="138">138: </a></span>		protected double evaluate(double d) {
+<span class="nocode"><a name="139">139: </a></span>			return MathX.asinh(d);
+<span class="nocode"><a name="140">140: </a></span>		}
+<span class="nocode"><a name="141">141: </a></span>	};
+<span class="nocode"><a name="142">142: </a></span>	public static final Function ATAN = new OneArg() {
+<span class="nocode"><a name="143">143: </a></span>		protected double evaluate(double d) {
+<span class="nocode"><a name="144">144: </a></span>			return Math.atan(d);
+<span class="nocode"><a name="145">145: </a></span>		}
+<span class="nocode"><a name="146">146: </a></span>	};
+<span class="nocode"><a name="147">147: </a></span>	public static final Function ATANH = new OneArg() {
+<span class="nocode"><a name="148">148: </a></span>		protected double evaluate(double d) {
+<span class="nocode"><a name="149">149: </a></span>			return MathX.atanh(d);
+<span class="nocode"><a name="150">150: </a></span>		}
+<span class="nocode"><a name="151">151: </a></span>	};
+<span class="nocode"><a name="152">152: </a></span>	public static final Function COS = new OneArg() {
+<span class="nocode"><a name="153">153: </a></span>		protected double evaluate(double d) {
+<span class="nocode"><a name="154">154: </a></span>			return Math.cos(d);
+<span class="nocode"><a name="155">155: </a></span>		}
+<span class="nocode"><a name="156">156: </a></span>	};
+<span class="nocode"><a name="157">157: </a></span>	public static final Function COSH = new OneArg() {
+<span class="nocode"><a name="158">158: </a></span>		protected double evaluate(double d) {
+<span class="nocode"><a name="159">159: </a></span>			return MathX.cosh(d);
+<span class="nocode"><a name="160">160: </a></span>		}
+<span class="nocode"><a name="161">161: </a></span>	};
+<span class="nocode"><a name="162">162: </a></span>	public static final Function DEGREES = new OneArg() {
+<span class="nocode"><a name="163">163: </a></span>		protected double evaluate(double d) {
+<span class="nocode"><a name="164">164: </a></span>			return Math.toDegrees(d);
+<span class="nocode"><a name="165">165: </a></span>		}
+<span class="nocode"><a name="166">166: </a></span>	};
+<span class="nocode"><a name="167">167: </a></span>	static final NumberEval DOLLAR_ARG2_DEFAULT = new NumberEval(2.0);
+<span class="nocode"><a name="168">168: </a></span>	public static final Function DOLLAR = new Var1or2ArgFunction() {
+<span class="nocode"><a name="169">169: </a></span>		public ValueEval evaluate(int srcRowIndex, int srcColumnIndex, ValueEval arg0) {
+<span class="nocode"><a name="170">170: </a></span>			return evaluate(srcRowIndex, srcColumnIndex, arg0, DOLLAR_ARG2_DEFAULT);
+<span class="nocode"><a name="171">171: </a></span>		}
+<span class="nocode"><a name="172">172: </a></span>
+<span class="nocode"><a name="173">173: </a></span>		public ValueEval evaluate(int srcRowIndex, int srcColumnIndex, ValueEval arg0,
+<span class="nocode"><a name="174">174: </a></span>				ValueEval arg1) {
+<span class="nocode"><a name="175">175: </a></span>			double val;
+<span class="nocode"><a name="176">176: </a></span>			double d1;
+<span class="nocode"><a name="177">177: </a></span>			try {
+<span class="nocode"><a name="178">178: </a></span>				val = singleOperandEvaluate(arg0, srcRowIndex, srcColumnIndex);
+<span class="nocode"><a name="179">179: </a></span>				d1 = singleOperandEvaluate(arg1, srcRowIndex, srcColumnIndex);
+<span class="nocode"><a name="180">180: </a></span>			} catch (EvaluationException e) {
+<span class="nocode"><a name="181">181: </a></span>				return e.getErrorEval();
+<span class="nocode"><a name="182">182: </a></span>			}
+<span class="nocode"><a name="183">183: </a></span>			// second arg converts to int by truncating toward zero
+<span class="nocode"><a name="184">184: </a></span>			int nPlaces = (int)d1;
+<span class="nocode"><a name="185">185: </a></span>
+<span class="nocode"><a name="186">186: </a></span>			if (nPlaces &gt; 127) {
+<span class="nocode"><a name="187">187: </a></span>				return ErrorEval.VALUE_INVALID;
+<span class="nocode"><a name="188">188: </a></span>			}
+<span class="nocode"><a name="189">189: </a></span>
+<span class="nocode"><a name="190">190: </a></span>
+<span class="nocode"><a name="191">191: </a></span>			// TODO - DOLLAR() function impl is NQR
+<span class="nocode"><a name="192">192: </a></span>			// result should be StringEval, with leading '$' and thousands separators
+<span class="nocode"><a name="193">193: </a></span>			// current junits are asserting incorrect behaviour
+<span class="nocode"><a name="194">194: </a></span>			return new NumberEval(val);
+<span class="nocode"><a name="195">195: </a></span>		}
+<span class="nocode"><a name="196">196: </a></span>	};
+<span class="nocode"><a name="197">197: </a></span>	public static final Function EXP = new OneArg() {
+<span class="nocode"><a name="198">198: </a></span>		protected double evaluate(double d) {
+<span class="nocode"><a name="199">199: </a></span>			return Math.pow(Math.E, d);
+<span class="nocode"><a name="200">200: </a></span>		}
+<span class="nocode"><a name="201">201: </a></span>	};
+<span class="nocode"><a name="202">202: </a></span>	public static final Function FACT = new OneArg() {
+<span class="nocode"><a name="203">203: </a></span>		protected double evaluate(double d) {
+<span class="nocode"><a name="204">204: </a></span>			return MathX.factorial((int)d);
+<span class="nocode"><a name="205">205: </a></span>		}
+<span class="nocode"><a name="206">206: </a></span>	};
+<span class="nocode"><a name="207">207: </a></span>	public static final Function INT = new OneArg() {
+<span class="nocode"><a name="208">208: </a></span>		protected double evaluate(double d) {
+<span class="nocode"><a name="209">209: </a></span>			return Math.round(d-0.5);
+<span class="nocode"><a name="210">210: </a></span>		}
+<span class="nocode"><a name="211">211: </a></span>	};
+<span class="nocode"><a name="212">212: </a></span>	public static final Function LN = new OneArg() {
+<span class="nocode"><a name="213">213: </a></span>		protected double evaluate(double d) {
+<span class="nocode"><a name="214">214: </a></span>			return Math.log(d);
+<span class="nocode"><a name="215">215: </a></span>		}
+<span class="nocode"><a name="216">216: </a></span>	};
+<span class="nocode"><a name="217">217: </a></span>	public static final Function LOG10 = new OneArg() {
+<span class="nocode"><a name="218">218: </a></span>		protected double evaluate(double d) {
+<span class="nocode"><a name="219">219: </a></span>			return Math.log(d) / LOG_10_TO_BASE_e;
+<span class="nocode"><a name="220">220: </a></span>		}
+<span class="nocode"><a name="221">221: </a></span>	};
+<span class="nocode"><a name="222">222: </a></span>	public static final Function RADIANS = new OneArg() {
+<span class="nocode"><a name="223">223: </a></span>		protected double evaluate(double d) {
+<span class="nocode"><a name="224">224: </a></span>			return Math.toRadians(d);
+<span class="nocode"><a name="225">225: </a></span>		}
+<span class="nocode"><a name="226">226: </a></span>	};
+<span class="nocode"><a name="227">227: </a></span>	public static final Function SIGN = new OneArg() {
+<span class="nocode"><a name="228">228: </a></span>		protected double evaluate(double d) {
+<span class="nocode"><a name="229">229: </a></span>			return MathX.sign(d);
+<span class="nocode"><a name="230">230: </a></span>		}
+<span class="nocode"><a name="231">231: </a></span>	};
+<span class="nocode"><a name="232">232: </a></span>	public static final Function SIN = new OneArg() {
+<span class="nocode"><a name="233">233: </a></span>		protected double evaluate(double d) {
+<span class="nocode"><a name="234">234: </a></span>			return Math.sin(d);
+<span class="nocode"><a name="235">235: </a></span>		}
+<span class="nocode"><a name="236">236: </a></span>	};
+<span class="nocode"><a name="237">237: </a></span>	public static final Function SINH = new OneArg() {
+<span class="nocode"><a name="238">238: </a></span>		protected double evaluate(double d) {
+<span class="nocode"><a name="239">239: </a></span>			return MathX.sinh(d);
+<span class="nocode"><a name="240">240: </a></span>		}
+<span class="nocode"><a name="241">241: </a></span>	};
+<span class="nocode"><a name="242">242: </a></span>	public static final Function SQRT = new OneArg() {
+<span class="nocode"><a name="243">243: </a></span>		protected double evaluate(double d) {
+<span class="nocode"><a name="244">244: </a></span>			return Math.sqrt(d);
+<span class="nocode"><a name="245">245: </a></span>		}
+<span class="nocode"><a name="246">246: </a></span>	};
+<span class="nocode"><a name="247">247: </a></span>
+<span class="nocode"><a name="248">248: </a></span>	public static final Function TAN = new OneArg() {
+<span class="nocode"><a name="249">249: </a></span>		protected double evaluate(double d) {
+<span class="nocode"><a name="250">250: </a></span>			return Math.tan(d);
+<span class="nocode"><a name="251">251: </a></span>		}
+<span class="nocode"><a name="252">252: </a></span>	};
+<span class="nocode"><a name="253">253: </a></span>	public static final Function TANH = new OneArg() {
+<span class="nocode"><a name="254">254: </a></span>		protected double evaluate(double d) {
+<span class="nocode"><a name="255">255: </a></span>			return MathX.tanh(d);
+<span class="nocode"><a name="256">256: </a></span>		}
+<span class="nocode"><a name="257">257: </a></span>	};
+<span class="nocode"><a name="258">258: </a></span>
+<span class="nocode"><a name="259">259: </a></span>	/* -------------------------------------------------------------------------- */
+<span class="nocode"><a name="260">260: </a></span>
+<span class="nocode"><a name="261">261: </a></span>	public static final Function ATAN2 = new TwoArg() {
+<span class="nocode"><a name="262">262: </a></span>		protected double evaluate(double d0, double d1) throws EvaluationException {
+<span class="nocode"><a name="263">263: </a></span>			if (d0 == ZERO &amp;&amp; d1 == ZERO) {
+<span class="nocode"><a name="264">264: </a></span>				throw new EvaluationException(ErrorEval.DIV_ZERO);
+<span class="nocode"><a name="265">265: </a></span>			}
+<span class="nocode"><a name="266">266: </a></span>			return Math.atan2(d1, d0);
+<span class="nocode"><a name="267">267: </a></span>		}
+<span class="nocode"><a name="268">268: </a></span>	};
+<span class="nocode"><a name="269">269: </a></span>	public static final Function CEILING = new TwoArg() {
+<span class="nocode"><a name="270">270: </a></span>		protected double evaluate(double d0, double d1) {
+<span class="nocode"><a name="271">271: </a></span>			return MathX.ceiling(d0, d1);
+<span class="nocode"><a name="272">272: </a></span>		}
+<span class="nocode"><a name="273">273: </a></span>	};
+<span class="nocode"><a name="274">274: </a></span>	public static final Function COMBIN = new TwoArg() {
+<span class="nocode"><a name="275">275: </a></span>		protected double evaluate(double d0, double d1) throws EvaluationException {
+<span class="nocode"><a name="276">276: </a></span>			if (d0 &gt; Integer.MAX_VALUE || d1 &gt; Integer.MAX_VALUE) {
+<span class="nocode"><a name="277">277: </a></span>				throw new EvaluationException(ErrorEval.NUM_ERROR);
+<span class="nocode"><a name="278">278: </a></span>			}
+<span class="nocode"><a name="279">279: </a></span>			return  MathX.nChooseK((int) d0, (int) d1);
+<span class="nocode"><a name="280">280: </a></span>		}
+<span class="nocode"><a name="281">281: </a></span>	};
+<span class="nocode"><a name="282">282: </a></span>	public static final Function FLOOR = new TwoArg() {
+<span class="nocode"><a name="283">283: </a></span>		protected double evaluate(double d0, double d1) throws EvaluationException {
+<span class="nocode"><a name="284">284: </a></span>			if (d1 == ZERO) {
+<span class="nocode"><a name="285">285: </a></span>				if (d0 == ZERO) {
+<span class="nocode"><a name="286">286: </a></span>					return ZERO;
+<span class="nocode"><a name="287">287: </a></span>				}
+<span class="nocode"><a name="288">288: </a></span>				throw new EvaluationException(ErrorEval.DIV_ZERO);
+<span class="nocode"><a name="289">289: </a></span>			}
+<span class="nocode"><a name="290">290: </a></span>			return MathX.floor(d0, d1);
+<span class="nocode"><a name="291">291: </a></span>		}
+<span class="nocode"><a name="292">292: </a></span>	};
+<span class="nocode"><a name="293">293: </a></span>	public static final Function MOD = new TwoArg() {
+<span class="nocode"><a name="294">294: </a></span>		protected double evaluate(double d0, double d1) throws EvaluationException {
+<span class="nocode"><a name="295">295: </a></span>			if (d1 == ZERO) {
+<span class="nocode"><a name="296">296: </a></span>				throw new EvaluationException(ErrorEval.DIV_ZERO);
+<span class="nocode"><a name="297">297: </a></span>			}
+<span class="nocode"><a name="298">298: </a></span>			return MathX.mod(d0, d1);
+<span class="nocode"><a name="299">299: </a></span>		}
+<span class="nocode"><a name="300">300: </a></span>	};
+<span class="nocode"><a name="301">301: </a></span>	public static final Function POWER = new TwoArg() {
+<span class="nocode"><a name="302">302: </a></span>		protected double evaluate(double d0, double d1) {
+<span class="nocode"><a name="303">303: </a></span>			return Math.pow(d0, d1);
+<span class="nocode"><a name="304">304: </a></span>		}
+<span class="nocode"><a name="305">305: </a></span>	};
+<span class="nocode"><a name="306">306: </a></span>	public static final Function ROUND = new TwoArg() {
+<span class="nocode"><a name="307">307: </a></span>		protected double evaluate(double d0, double d1) {
+<span class="nocode"><a name="308">308: </a></span>			return MathX.round(d0, (int)d1);
+<span class="nocode"><a name="309">309: </a></span>		}
+<span class="nocode"><a name="310">310: </a></span>	};
+<span class="nocode"><a name="311">311: </a></span>	public static final Function ROUNDDOWN = new TwoArg() {
+<span class="nocode"><a name="312">312: </a></span>		protected double evaluate(double d0, double d1) {
+<span class="nocode"><a name="313">313: </a></span>			return MathX.roundDown(d0, (int)d1);
+<span class="nocode"><a name="314">314: </a></span>		}
+<span class="nocode"><a name="315">315: </a></span>	};
+<span class="nocode"><a name="316">316: </a></span>	public static final Function ROUNDUP = new TwoArg() {
+<span class="nocode"><a name="317">317: </a></span>		protected double evaluate(double d0, double d1) {
+<span class="nocode"><a name="318">318: </a></span>			return MathX.roundUp(d0, (int)d1);
+<span class="nocode"><a name="319">319: </a></span>		}
+<span class="nocode"><a name="320">320: </a></span>	};
+<span class="nocode"><a name="321">321: </a></span>	static final NumberEval TRUNC_ARG2_DEFAULT = new NumberEval(0);
+<span class="nocode"><a name="322">322: </a></span>	public static final Function TRUNC = new Var1or2ArgFunction() {
+<span class="nocode"><a name="323">323: </a></span>
+<span class="nocode"><a name="324">324: </a></span>		public ValueEval evaluate(int srcRowIndex, int srcColumnIndex, ValueEval arg0) {
+<span class="nocode"><a name="325">325: </a></span>			return evaluate(srcRowIndex, srcColumnIndex, arg0, TRUNC_ARG2_DEFAULT);
+<span class="nocode"><a name="326">326: </a></span>		}
+<span class="nocode"><a name="327">327: </a></span>
+<span class="nocode"><a name="328">328: </a></span>		public ValueEval evaluate(int srcRowIndex, int srcColumnIndex, ValueEval arg0, ValueEval arg1) {
+<span class="nocode"><a name="329">329: </a></span>			double result;
+<span class="nocode"><a name="330">330: </a></span>			try {
+<span class="nocode"><a name="331">331: </a></span>				double d0 = singleOperandEvaluate(arg0, srcRowIndex, srcColumnIndex);
+<span class="nocode"><a name="332">332: </a></span>				double d1 = singleOperandEvaluate(arg1, srcRowIndex, srcColumnIndex);
+<span class="nocode"><a name="333">333: </a></span>				double multi = Math.pow(10d,d1);
+<span class="nocode"><a name="334">334: </a></span>				if(d0 &lt; 0) result = -Math.floor(-d0 * multi) / multi;
+<span class="nocode"><a name="335">335: </a></span>                else result = Math.floor(d0 * multi) / multi;
+<span class="nocode"><a name="336">336: </a></span>				checkValue(result);
+<span class="nocode"><a name="337">337: </a></span>			}catch (EvaluationException e) {
+<span class="nocode"><a name="338">338: </a></span>				return e.getErrorEval();
+<span class="nocode"><a name="339">339: </a></span>			}
+<span class="nocode"><a name="340">340: </a></span>			return new NumberEval(result);
+<span class="nocode"><a name="341">341: </a></span>		}
+<span class="nocode"><a name="342">342: </a></span>	};
+<span class="nocode"><a name="343">343: </a></span>
+<span class="nocode"><a name="344">344: </a></span>	/* -------------------------------------------------------------------------- */
+<span class="nocode"><a name="345">345: </a></span>
+<span class="nocode"><a name="346">346: </a></span>	private static final class Log extends Var1or2ArgFunction {
+<span class="nocode"><a name="347">347: </a></span>		public Log() {
+<span class="nocode"><a name="348">348: </a></span>			// no instance fields
+<span class="nocode"><a name="349">349: </a></span>		}
+<span class="nocode"><a name="350">350: </a></span>		public ValueEval evaluate(int srcRowIndex, int srcColumnIndex, ValueEval arg0) {
+<span class="nocode"><a name="351">351: </a></span>			double result;
+<span class="nocode"><a name="352">352: </a></span>			try {
+<span class="nocode"><a name="353">353: </a></span>				double d0 = NumericFunction.singleOperandEvaluate(arg0, srcRowIndex, srcColumnIndex);
+<span class="nocode"><a name="354">354: </a></span>				result = Math.log(d0) / LOG_10_TO_BASE_e;
+<span class="nocode"><a name="355">355: </a></span>				NumericFunction.checkValue(result);
+<span class="nocode"><a name="356">356: </a></span>			} catch (EvaluationException e) {
+<span class="nocode"><a name="357">357: </a></span>				return e.getErrorEval();
+<span class="nocode"><a name="358">358: </a></span>			}
+<span class="nocode"><a name="359">359: </a></span>			return new NumberEval(result);
+<span class="nocode"><a name="360">360: </a></span>		}
+<span class="nocode"><a name="361">361: </a></span>		public ValueEval evaluate(int srcRowIndex, int srcColumnIndex, ValueEval arg0,
+<span class="nocode"><a name="362">362: </a></span>				ValueEval arg1) {
+<span class="nocode"><a name="363">363: </a></span>			double result;
+<span class="nocode"><a name="364">364: </a></span>			try {
+<span class="nocode"><a name="365">365: </a></span>				double d0 = NumericFunction.singleOperandEvaluate(arg0, srcRowIndex, srcColumnIndex);
+<span class="nocode"><a name="366">366: </a></span>				double d1 = NumericFunction.singleOperandEvaluate(arg1, srcRowIndex, srcColumnIndex);
+<span class="nocode"><a name="367">367: </a></span>				double logE = Math.log(d0);
+<span class="nocode"><a name="368">368: </a></span>				double base = d1;
+<span class="nocode"><a name="369">369: </a></span>				if (base == Math.E) {
+<span class="nocode"><a name="370">370: </a></span>					result = logE;
+<span class="nocode"><a name="371">371: </a></span>				} else {
+<span class="nocode"><a name="372">372: </a></span>					result = logE / Math.log(base);
+<span class="nocode"><a name="373">373: </a></span>				}
+<span class="nocode"><a name="374">374: </a></span>				NumericFunction.checkValue(result);
+<span class="nocode"><a name="375">375: </a></span>			} catch (EvaluationException e) {
+<span class="nocode"><a name="376">376: </a></span>				return e.getErrorEval();
+<span class="nocode"><a name="377">377: </a></span>			}
+<span class="nocode"><a name="378">378: </a></span>			return new NumberEval(result);
+<span class="nocode"><a name="379">379: </a></span>		}
+<span class="nocode"><a name="380">380: </a></span>	}
+<span class="nocode"><a name="381">381: </a></span>
+<span class="nocode"><a name="382">382: </a></span>	public static final Function LOG = new Log();
+<span class="nocode"><a name="383">383: </a></span>
+<span class="nocode"><a name="384">384: </a></span>	static final NumberEval PI_EVAL = new NumberEval(Math.PI);
+<span class="nocode"><a name="385">385: </a></span>	public static final Function PI = new Fixed0ArgFunction() {
+<span class="nocode"><a name="386">386: </a></span>		public ValueEval evaluate(int srcRowIndex, int srcColumnIndex) {
+<span class="nocode"><a name="387">387: </a></span>			return PI_EVAL;
+<span class="nocode"><a name="388">388: </a></span>		}
+<span class="nocode"><a name="389">389: </a></span>	};
+<span class="nocode"><a name="390">390: </a></span>	public static final Function RAND = new Fixed0ArgFunction() {
+<span class="nocode"><a name="391">391: </a></span>		public ValueEval evaluate(int srcRowIndex, int srcColumnIndex) {
+<span class="nocode"><a name="392">392: </a></span>			return new NumberEval(Math.random());
+<span class="nocode"><a name="393">393: </a></span>		}
+<span class="nocode"><a name="394">394: </a></span>	};
+<span class="nocode"><a name="395">395: </a></span>    public static final Function POISSON = new Fixed3ArgFunction() {
+<span class="nocode"><a name="396">396: </a></span>
+<span class="nocode"><a name="397">397: </a></span>        private final static double DEFAULT_RETURN_RESULT =1;
+<span class="nocode"><a name="398">398: </a></span>        
+<span class="nocode"><a name="399">399: </a></span>        /**
+<span class="nocode"><a name="400">400: </a></span>         * This checks is x = 0 and the mean = 0.
+<span class="nocode"><a name="401">401: </a></span>         * Excel currently returns the value 1 where as the
+<span class="nocode"><a name="402">402: </a></span>         * maths common implementation will error.
+<span class="nocode"><a name="403">403: </a></span>         * @param x  The number.
+<span class="nocode"><a name="404">404: </a></span>         * @param mean The mean.
+<span class="nocode"><a name="405">405: </a></span>         * @return If a default value should be returned.
+<span class="nocode"><a name="406">406: </a></span>         */
+<span class="nocode"><a name="407">407: </a></span>        private boolean isDefaultResult(double x, double mean) {
+<span class="nocode"><a name="408">408: </a></span>
+<span class="nocode"><a name="409">409: </a></span>            if ( x == 0 &amp;&amp; mean == 0 ) {
+<span class="nocode"><a name="410">410: </a></span>                return true;
+<span class="nocode"><a name="411">411: </a></span>            }
+<span class="nocode"><a name="412">412: </a></span>            return false;
+<span class="nocode"><a name="413">413: </a></span>        }
+<span class="nocode"><a name="414">414: </a></span>
+<span class="nocode"><a name="415">415: </a></span>        private boolean checkArgument(double aDouble) throws EvaluationException {
+<span class="nocode"><a name="416">416: </a></span>
+<span class="nocode"><a name="417">417: </a></span>            NumericFunction.checkValue(aDouble);
+<span class="nocode"><a name="418">418: </a></span>
+<span class="nocode"><a name="419">419: </a></span>            // make sure that the number is positive
+<span class="nocode"><a name="420">420: </a></span>            if (aDouble &lt; 0) {
+<span class="nocode"><a name="421">421: </a></span>                throw new EvaluationException(ErrorEval.NUM_ERROR);
+<span class="nocode"><a name="422">422: </a></span>            }
+<span class="nocode"><a name="423">423: </a></span>            
+<span class="nocode"><a name="424">424: </a></span>            return true;
+<span class="nocode"><a name="425">425: </a></span>        }
+<span class="nocode"><a name="426">426: </a></span>
+<span class="nocode"><a name="427">427: </a></span>        private double probability(int k, double lambda) {
+<span class="nocode"><a name="428">428: </a></span>            return Math.pow(lambda, k) * Math.exp(-lambda) / factorial(k);
+<span class="nocode"><a name="429">429: </a></span>        }
+<span class="nocode"><a name="430">430: </a></span>
+<span class="nocode"><a name="431">431: </a></span>        private double cumulativeProbability(int x, double lambda) {
+<span class="nocode"><a name="432">432: </a></span>            double result = 0;
+<span class="nocode"><a name="433">433: </a></span>            for(int k = 0; k &lt;= x; k++){
+<span class="nocode"><a name="434">434: </a></span>                result += probability(k, lambda);
+<span class="nocode"><a name="435">435: </a></span>            }
+<span class="nocode"><a name="436">436: </a></span>            return result;
+<span class="nocode"><a name="437">437: </a></span>        }
+<span class="nocode"><a name="438">438: </a></span>
+<span class="nocode"><a name="439">439: </a></span>        /** All long-representable factorials */
+<span class="nocode"><a name="440">440: </a></span>        private final long[] FACTORIALS = new long[] {
+<span class="nocode"><a name="441">441: </a></span>                           1l,                  1l,                   2l,
+<span class="nocode"><a name="442">442: </a></span>                           6l,                 24l,                 120l,
+<span class="nocode"><a name="443">443: </a></span>                         720l,               5040l,               40320l,
+<span class="nocode"><a name="444">444: </a></span>                      362880l,            3628800l,            39916800l,
+<span class="nocode"><a name="445">445: </a></span>                   479001600l,         6227020800l,         87178291200l,
+<span class="nocode"><a name="446">446: </a></span>               1307674368000l,     20922789888000l,     355687428096000l,
+<span class="nocode"><a name="447">447: </a></span>            6402373705728000l, 121645100408832000l, 2432902008176640000l };
+<span class="nocode"><a name="448">448: </a></span>
+<span class="nocode"><a name="449">449: </a></span>
+<span class="nocode"><a name="450">450: </a></span>        public long factorial(final int n) {
+<span class="nocode"><a name="451">451: </a></span>            if (n &lt; 0 || n &gt; 20) {
+<span class="nocode"><a name="452">452: </a></span>                throw new IllegalArgumentException(&quot;Valid argument should be in the range [0..20]&quot;);
+<span class="nocode"><a name="453">453: </a></span>            }
+<span class="nocode"><a name="454">454: </a></span>            return FACTORIALS[n];
+<span class="nocode"><a name="455">455: </a></span>        }
+<span class="nocode"><a name="456">456: </a></span>
+<span class="nocode"><a name="457">457: </a></span>        public ValueEval evaluate(int srcRowIndex, int srcColumnIndex, ValueEval arg0, ValueEval arg1, ValueEval arg2) {
+<span class="nocode"><a name="458">458: </a></span>
+<span class="nocode"><a name="459">459: </a></span>            // arguments/result for this function
+<span class="nocode"><a name="460">460: </a></span>            double mean=0;
+<span class="nocode"><a name="461">461: </a></span>            double x=0;
+<span class="nocode"><a name="462">462: </a></span>            boolean cumulative = ((BoolEval)arg2).getBooleanValue();
+<span class="nocode"><a name="463">463: </a></span>            double result=0;
+<span class="nocode"><a name="464">464: </a></span>
+<span class="nocode"><a name="465">465: </a></span>            try {
+<span class="nocode"><a name="466">466: </a></span>				x = NumericFunction.singleOperandEvaluate(arg0, srcRowIndex, srcColumnIndex);
+<span class="nocode"><a name="467">467: </a></span>				mean = NumericFunction.singleOperandEvaluate(arg1, srcRowIndex, srcColumnIndex);
+<span class="nocode"><a name="468">468: </a></span>
+<span class="nocode"><a name="469">469: </a></span>                // check for default result : excel implementation for 0,0
+<span class="nocode"><a name="470">470: </a></span>                // is different to Math Common.
+<span class="nocode"><a name="471">471: </a></span>                if (isDefaultResult(x,mean)) {
+<span class="nocode"><a name="472">472: </a></span>                    return new NumberEval(DEFAULT_RETURN_RESULT); 
+<span class="nocode"><a name="473">473: </a></span>                }
+<span class="nocode"><a name="474">474: </a></span>                // check the arguments : as per excel function def
+<span class="nocode"><a name="475">475: </a></span>                checkArgument(x);
+<span class="nocode"><a name="476">476: </a></span>                checkArgument(mean);
+<span class="nocode"><a name="477">477: </a></span>
+<span class="nocode"><a name="478">478: </a></span>                // truncate x : as per excel function def
+<span class="nocode"><a name="479">479: </a></span>                if ( cumulative ) {
+<span class="nocode"><a name="480">480: </a></span>                    result = cumulativeProbability((int)x, mean);
+<span class="nocode"><a name="481">481: </a></span>                } else {
+<span class="nocode"><a name="482">482: </a></span>                    result = probability((int)x, mean);
+<span class="nocode"><a name="483">483: </a></span>                }
+<span class="nocode"><a name="484">484: </a></span>
+<span class="nocode"><a name="485">485: </a></span>                // check the result
+<span class="nocode"><a name="486">486: </a></span>                NumericFunction.checkValue(result);
+<span class="nocode"><a name="487">487: </a></span>
+<span class="nocode"><a name="488">488: </a></span>			} catch (EvaluationException e) {
+<span class="nocode"><a name="489">489: </a></span>				return e.getErrorEval();
+<span class="nocode"><a name="490">490: </a></span>			}
+<span class="nocode"><a name="491">491: </a></span>            
+<span class="nocode"><a name="492">492: </a></span>            return new NumberEval(result);
+<span class="nocode"><a name="493">493: </a></span>
+<span class="nocode"><a name="494">494: </a></span>        }
+<span class="nocode"><a name="495">495: </a></span>    };
+<span class="nocode"><a name="496">496: </a></span>}
+</pre><table class="mutation_table" summary="Mutations">
+<tr><th>ID</th><th>Line</th><th>Type</th><th>Detected</th></tr><tr><td>59265</td><td><a href="#34">34</a></td><td>Negate jump condition (Replace IFNONNULL with  IFNULL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>59266</td><td><a href="#37">37</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>59267</td><td><a href="#38">38</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>59268</td><td><a href="#39">39</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59270</td><td><a href="#47">47</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>59272</td><td><a href="#47">47(1)</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>59269</td><td><a href="#47">47</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>59271</td><td><a href="#47">47(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>59273</td><td><a href="#55">55</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59274</td><td><a href="#56">56</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59275</td><td><a href="#58">58</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59277</td><td><a href="#75">75</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>59278</td><td><a href="#76">76</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>59279</td><td><a href="#77">77</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>59280</td><td><a href="#79">79</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>59282</td><td><a href="#84">84</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59281</td><td><a href="#84">84</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59283</td><td><a href="#84">84</a></td><td>Negate jump condition (Replace IF_ICMPEQ with  IF_ICMPNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59285</td><td><a href="#87">87</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59284</td><td><a href="#87">87</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59286</td><td><a href="#87">87</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59287</td><td><a href="#88">88</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59340</td><td><a href="#102">102</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>59341</td><td><a href="#103">103</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>59342</td><td><a href="#104">104</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>59343</td><td><a href="#105">105</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>59344</td><td><a href="#107">107</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>59276</td><td><a href="#119">119</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>59288</td><td><a href="#124">124</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>59289</td><td><a href="#129">129</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>59290</td><td><a href="#134">134</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>59291</td><td><a href="#139">139</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>59292</td><td><a href="#144">144</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>59293</td><td><a href="#149">149</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>59294</td><td><a href="#154">154</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>59295</td><td><a href="#159">159</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>59296</td><td><a href="#164">164</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>59297</td><td><a href="#170">170</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>59298</td><td><a href="#178">178</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>59299</td><td><a href="#179">179</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59300</td><td><a href="#181">181</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>59302</td><td><a href="#186">186</a></td><td>Replace a constant (Replace 127 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>59303</td><td><a href="#186">186</a></td><td>Replace a constant (Replace 127 with 128(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59301</td><td><a href="#186">186</a></td><td>Replace a constant (Replace 127 with 126(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59304</td><td><a href="#186">186</a></td><td>Negate jump condition (Replace IF_ICMPLE with  IF_ICMPGT)</td><td><img src="detected.png"/></td></tr>
+<tr><td>59315</td><td><a href="#199">199</a></td><td>Replace a constant (Replace 2.718281828459045 with 3.718281828459045(DOUBLE))</td><td><img src="detected.png"/></td></tr>
+<tr><td>59313</td><td><a href="#199">199</a></td><td>Replace a constant (Replace 2.718281828459045 with 0(DOUBLE))</td><td><img src="detected.png"/></td></tr>
+<tr><td>59314</td><td><a href="#199">199</a></td><td>Replace a constant (Replace 2.718281828459045 with 1.718281828459045(DOUBLE))</td><td><img src="detected.png"/></td></tr>
+<tr><td>59316</td><td><a href="#199">199</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>59317</td><td><a href="#204">204</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>59319</td><td><a href="#209">209</a></td><td>Replace a constant (Replace 0.5 with 1.5(DOUBLE))</td><td><img src="detected.png"/></td></tr>
+<tr><td>59320</td><td><a href="#209">209</a></td><td>Replace a constant (Replace 0.5 with -0.5(DOUBLE))</td><td><img src="detected.png"/></td></tr>
+<tr><td>59318</td><td><a href="#209">209</a></td><td>Replace a constant (Replace 0.5 with 0(DOUBLE))</td><td><img src="detected.png"/></td></tr>
+<tr><td>59321</td><td><a href="#209">209</a></td><td>Replace arithmetic operator (Replace DSUB with DADD)</td><td><img src="detected.png"/></td></tr>
+<tr><td>59322</td><td><a href="#209">209</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>59323</td><td><a href="#214">214</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>59325</td><td><a href="#219">219</a></td><td>Replace arithmetic operator (Replace DDIV with DMUL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>59324</td><td><a href="#219">219</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>59326</td><td><a href="#224">224</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>59327</td><td><a href="#229">229</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>59328</td><td><a href="#234">234</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>59329</td><td><a href="#239">239</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>59330</td><td><a href="#244">244</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>59331</td><td><a href="#250">250</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>59332</td><td><a href="#255">255</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>59334</td><td><a href="#263">263</a></td><td>Replace a constant (Replace 0 with -1(DOUBLE))</td><td><img src="detected.png"/></td></tr>
+<tr><td>59333</td><td><a href="#263">263</a></td><td>Replace a constant (Replace 0 with 1(DOUBLE))</td><td><img src="detected.png"/></td></tr>
+<tr><td>59336</td><td><a href="#263">263(1)</a></td><td>Replace a constant (Replace 0 with 1(DOUBLE))</td><td><img src="detected.png"/></td></tr>
+<tr><td>59337</td><td><a href="#263">263(1)</a></td><td>Replace a constant (Replace 0 with -1(DOUBLE))</td><td><img src="detected.png"/></td></tr>
+<tr><td>59335</td><td><a href="#263">263</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>59338</td><td><a href="#263">263(1)</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>59339</td><td><a href="#266">266</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>59345</td><td><a href="#271">271</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>59346</td><td><a href="#276">276</a></td><td>Replace a constant (Replace 2.147483647E9 with 0(DOUBLE))</td><td><img src="detected.png"/></td></tr>
+<tr><td>59348</td><td><a href="#276">276</a></td><td>Replace a constant (Replace 2.147483647E9 with 2.147483646E9(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59347</td><td><a href="#276">276</a></td><td>Replace a constant (Replace 2.147483647E9 with 2.147483648E9(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59352</td><td><a href="#276">276(1)</a></td><td>Replace a constant (Replace 2.147483647E9 with 2.147483646E9(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59350</td><td><a href="#276">276(1)</a></td><td>Replace a constant (Replace 2.147483647E9 with 0(DOUBLE))</td><td><img src="detected.png"/></td></tr>
+<tr><td>59351</td><td><a href="#276">276(1)</a></td><td>Replace a constant (Replace 2.147483647E9 with 2.147483648E9(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59349</td><td><a href="#276">276</a></td><td>Negate jump condition (Replace IFGT with  IFLE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>59353</td><td><a href="#276">276(1)</a></td><td>Negate jump condition (Replace IFLE with  IFGT)</td><td><img src="detected.png"/></td></tr>
+<tr><td>59354</td><td><a href="#279">279</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>59356</td><td><a href="#284">284</a></td><td>Replace a constant (Replace 0 with -1(DOUBLE))</td><td><img src="detected.png"/></td></tr>
+<tr><td>59355</td><td><a href="#284">284</a></td><td>Replace a constant (Replace 0 with 1(DOUBLE))</td><td><img src="detected.png"/></td></tr>
+<tr><td>59357</td><td><a href="#284">284</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>59359</td><td><a href="#285">285</a></td><td>Replace a constant (Replace 0 with -1(DOUBLE))</td><td><img src="detected.png"/></td></tr>
+<tr><td>59358</td><td><a href="#285">285</a></td><td>Replace a constant (Replace 0 with 1(DOUBLE))</td><td><img src="detected.png"/></td></tr>
+<tr><td>59360</td><td><a href="#285">285</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>59361</td><td><a href="#286">286</a></td><td>Replace a constant (Replace 0 with 1(DOUBLE))</td><td><img src="detected.png"/></td></tr>
+<tr><td>59362</td><td><a href="#286">286</a></td><td>Replace a constant (Replace 0 with -1(DOUBLE))</td><td><img src="detected.png"/></td></tr>
+<tr><td>59363</td><td><a href="#290">290</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>59364</td><td><a href="#295">295</a></td><td>Replace a constant (Replace 0 with 1(DOUBLE))</td><td><img src="detected.png"/></td></tr>
+<tr><td>59365</td><td><a href="#295">295</a></td><td>Replace a constant (Replace 0 with -1(DOUBLE))</td><td><img src="detected.png"/></td></tr>
+<tr><td>59366</td><td><a href="#295">295</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>59367</td><td><a href="#298">298</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>59368</td><td><a href="#303">303</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>59369</td><td><a href="#308">308</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>59370</td><td><a href="#313">313</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>59371</td><td><a href="#318">318</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>59372</td><td><a href="#325">325</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>59373</td><td><a href="#331">331</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>59374</td><td><a href="#332">332</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>59377</td><td><a href="#333">333</a></td><td>Replace a constant (Replace 10.0 with 11.0(DOUBLE))</td><td><img src="detected.png"/></td></tr>
+<tr><td>59375</td><td><a href="#333">333</a></td><td>Replace a constant (Replace 10.0 with 0(DOUBLE))</td><td><img src="detected.png"/></td></tr>
+<tr><td>59376</td><td><a href="#333">333</a></td><td>Replace a constant (Replace 10.0 with 9.0(DOUBLE))</td><td><img src="detected.png"/></td></tr>
+<tr><td>59378</td><td><a href="#333">333</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>59379</td><td><a href="#334">334</a></td><td>Replace a constant (Replace 0 with 1(DOUBLE))</td><td><img src="detected.png"/></td></tr>
+<tr><td>59380</td><td><a href="#334">334</a></td><td>Replace a constant (Replace 0 with -1(DOUBLE))</td><td><img src="detected.png"/></td></tr>
+<tr><td>59381</td><td><a href="#334">334</a></td><td>Negate jump condition (Replace IFGE with  IFLT)</td><td><img src="detected.png"/></td></tr>
+<tr><td>59382</td><td><a href="#334">334</a></td><td>Replace arithmetic operator (Replace DNEG with remove right opereand)</td><td><img src="detected.png"/></td></tr>
+<tr><td>59383</td><td><a href="#334">334(1)</a></td><td>Replace arithmetic operator (Replace DMUL with DADD)</td><td><img src="detected.png"/></td></tr>
+<tr><td>59385</td><td><a href="#334">334(2)</a></td><td>Replace arithmetic operator (Replace DNEG with remove right opereand)</td><td><img src="detected.png"/></td></tr>
+<tr><td>59386</td><td><a href="#334">334(3)</a></td><td>Replace arithmetic operator (Replace DDIV with DMUL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>59384</td><td><a href="#334">334</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>59387</td><td><a href="#335">335</a></td><td>Replace arithmetic operator (Replace DMUL with DADD)</td><td><img src="detected.png"/></td></tr>
+<tr><td>59389</td><td><a href="#335">335(1)</a></td><td>Replace arithmetic operator (Replace DDIV with DMUL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>59388</td><td><a href="#335">335</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>59390</td><td><a href="#336">336</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59391</td><td><a href="#338">338</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>59392</td><td><a href="#353">353</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59394</td><td><a href="#354">354</a></td><td>Replace arithmetic operator (Replace DDIV with DMUL)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59393</td><td><a href="#354">354</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>59395</td><td><a href="#355">355</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>59396</td><td><a href="#357">357</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>59397</td><td><a href="#365">365</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>59398</td><td><a href="#366">366</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>59399</td><td><a href="#367">367</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>59402</td><td><a href="#369">369</a></td><td>Replace a constant (Replace 2.718281828459045 with 3.718281828459045(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59401</td><td><a href="#369">369</a></td><td>Replace a constant (Replace 2.718281828459045 with 1.718281828459045(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59400</td><td><a href="#369">369</a></td><td>Replace a constant (Replace 2.718281828459045 with 0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59403</td><td><a href="#369">369</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>59405</td><td><a href="#372">372</a></td><td>Replace arithmetic operator (Replace DDIV with DMUL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>59404</td><td><a href="#372">372</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>59406</td><td><a href="#374">374</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>59407</td><td><a href="#376">376</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>59408</td><td><a href="#392">392</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59535</td><td><a href="#409">409</a></td><td>Replace a constant (Replace 0 with -1(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59534</td><td><a href="#409">409</a></td><td>Replace a constant (Replace 0 with 1(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59537</td><td><a href="#409">409(1)</a></td><td>Replace a constant (Replace 0 with 1(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59538</td><td><a href="#409">409(1)</a></td><td>Replace a constant (Replace 0 with -1(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59536</td><td><a href="#409">409</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59539</td><td><a href="#409">409(1)</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59541</td><td><a href="#410">410</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59540</td><td><a href="#410">410</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59543</td><td><a href="#412">412</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>59542</td><td><a href="#412">412</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>59544</td><td><a href="#417">417</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59546</td><td><a href="#420">420</a></td><td>Replace a constant (Replace 0 with -1(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59545</td><td><a href="#420">420</a></td><td>Replace a constant (Replace 0 with 1(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59547</td><td><a href="#420">420</a></td><td>Negate jump condition (Replace IFGE with  IFLT)</td><td><img src="detected.png"/></td></tr>
+<tr><td>59548</td><td><a href="#424">424</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59549</td><td><a href="#424">424</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59551</td><td><a href="#428">428</a></td><td>Replace arithmetic operator (Replace DNEG with remove right opereand)</td><td><img src="detected.png"/></td></tr>
+<tr><td>59553</td><td><a href="#428">428(1)</a></td><td>Replace arithmetic operator (Replace DMUL with DADD)</td><td><img src="detected.png"/></td></tr>
+<tr><td>59555</td><td><a href="#428">428(2)</a></td><td>Replace arithmetic operator (Replace DDIV with DMUL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>59550</td><td><a href="#428">428</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>59552</td><td><a href="#428">428(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>59554</td><td><a href="#428">428(2)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>59557</td><td><a href="#432">432</a></td><td>Replace a constant (Replace 0 with -1(DOUBLE))</td><td><img src="detected.png"/></td></tr>
+<tr><td>59556</td><td><a href="#432">432</a></td><td>Replace a constant (Replace 0 with 1(DOUBLE))</td><td><img src="detected.png"/></td></tr>
+<tr><td>59559</td><td><a href="#433">433</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>59558</td><td><a href="#433">433</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>59560</td><td><a href="#433">433</a></td><td>Negate jump condition (Replace IF_ICMPGT with  IF_ICMPLE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>59562</td><td><a href="#434">434</a></td><td>Replace arithmetic operator (Replace DADD with DSUB)</td><td><img src="detected.png"/></td></tr>
+<tr><td>59561</td><td><a href="#434">434</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>59411</td><td><a href="#440">440</a></td><td>Replace a constant (Replace 21 with 22(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59409</td><td><a href="#440">440</a></td><td>Replace a constant (Replace 21 with 20(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59410</td><td><a href="#440">440</a></td><td>Replace a constant (Replace 21 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59412</td><td><a href="#440">440(1)</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59413</td><td><a href="#440">440(1)</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59415</td><td><a href="#440">440(2)</a></td><td>Replace a constant (Replace 1 with 0(LONG))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59414</td><td><a href="#440">440(2)</a></td><td>Replace a constant (Replace 1 with 2(LONG))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59416</td><td><a href="#440">440(3)</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59417</td><td><a href="#440">440(3)</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59419</td><td><a href="#440">440(4)</a></td><td>Replace a constant (Replace 1 with 0(LONG))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59418</td><td><a href="#440">440(4)</a></td><td>Replace a constant (Replace 1 with 2(LONG))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59420</td><td><a href="#440">440(5)</a></td><td>Replace a constant (Replace 2 with 3(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59421</td><td><a href="#440">440(5)</a></td><td>Replace a constant (Replace 2 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59422</td><td><a href="#440">440(5)</a></td><td>Replace a constant (Replace 2 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59425</td><td><a href="#440">440(6)</a></td><td>Replace a constant (Replace 2 with 0(LONG))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59424</td><td><a href="#440">440(6)</a></td><td>Replace a constant (Replace 2 with 1(LONG))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59423</td><td><a href="#440">440(6)</a></td><td>Replace a constant (Replace 2 with 3(LONG))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59426</td><td><a href="#440">440(7)</a></td><td>Replace a constant (Replace 3 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59428</td><td><a href="#440">440(7)</a></td><td>Replace a constant (Replace 3 with 4(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59427</td><td><a href="#440">440(7)</a></td><td>Replace a constant (Replace 3 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59429</td><td><a href="#440">440(8)</a></td><td>Replace a constant (Replace 6 with 0(LONG))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59430</td><td><a href="#440">440(8)</a></td><td>Replace a constant (Replace 6 with 7(LONG))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59431</td><td><a href="#440">440(8)</a></td><td>Replace a constant (Replace 6 with 5(LONG))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59432</td><td><a href="#440">440(9)</a></td><td>Replace a constant (Replace 4 with 3(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59434</td><td><a href="#440">440(9)</a></td><td>Replace a constant (Replace 4 with 5(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59433</td><td><a href="#440">440(9)</a></td><td>Replace a constant (Replace 4 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59435</td><td><a href="#440">440(10)</a></td><td>Replace a constant (Replace 24 with 0(LONG))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59437</td><td><a href="#440">440(10)</a></td><td>Replace a constant (Replace 24 with 25(LONG))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59436</td><td><a href="#440">440(10)</a></td><td>Replace a constant (Replace 24 with 23(LONG))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59438</td><td><a href="#440">440(11)</a></td><td>Replace a constant (Replace 5 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59439</td><td><a href="#440">440(11)</a></td><td>Replace a constant (Replace 5 with 6(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59440</td><td><a href="#440">440(11)</a></td><td>Replace a constant (Replace 5 with 4(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59441</td><td><a href="#440">440(12)</a></td><td>Replace a constant (Replace 120 with 0(LONG))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59443</td><td><a href="#440">440(12)</a></td><td>Replace a constant (Replace 120 with 119(LONG))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59442</td><td><a href="#440">440(12)</a></td><td>Replace a constant (Replace 120 with 121(LONG))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59446</td><td><a href="#440">440(13)</a></td><td>Replace a constant (Replace 6 with 5(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59444</td><td><a href="#440">440(13)</a></td><td>Replace a constant (Replace 6 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59445</td><td><a href="#440">440(13)</a></td><td>Replace a constant (Replace 6 with 7(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59447</td><td><a href="#440">440(14)</a></td><td>Replace a constant (Replace 720 with 719(LONG))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59449</td><td><a href="#440">440(14)</a></td><td>Replace a constant (Replace 720 with 721(LONG))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59448</td><td><a href="#440">440(14)</a></td><td>Replace a constant (Replace 720 with 0(LONG))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59451</td><td><a href="#440">440(15)</a></td><td>Replace a constant (Replace 7 with 6(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59452</td><td><a href="#440">440(15)</a></td><td>Replace a constant (Replace 7 with 8(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59450</td><td><a href="#440">440(15)</a></td><td>Replace a constant (Replace 7 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59455</td><td><a href="#440">440(16)</a></td><td>Replace a constant (Replace 5040 with 5041(LONG))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59453</td><td><a href="#440">440(16)</a></td><td>Replace a constant (Replace 5040 with 0(LONG))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59454</td><td><a href="#440">440(16)</a></td><td>Replace a constant (Replace 5040 with 5039(LONG))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59457</td><td><a href="#440">440(17)</a></td><td>Replace a constant (Replace 8 with 7(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59456</td><td><a href="#440">440(17)</a></td><td>Replace a constant (Replace 8 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59458</td><td><a href="#440">440(17)</a></td><td>Replace a constant (Replace 8 with 9(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59459</td><td><a href="#440">440(18)</a></td><td>Replace a constant (Replace 40320 with 0(LONG))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59460</td><td><a href="#440">440(18)</a></td><td>Replace a constant (Replace 40320 with 40321(LONG))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59461</td><td><a href="#440">440(18)</a></td><td>Replace a constant (Replace 40320 with 40319(LONG))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59464</td><td><a href="#440">440(19)</a></td><td>Replace a constant (Replace 9 with 8(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59462</td><td><a href="#440">440(19)</a></td><td>Replace a constant (Replace 9 with 10(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59463</td><td><a href="#440">440(19)</a></td><td>Replace a constant (Replace 9 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59466</td><td><a href="#440">440(20)</a></td><td>Replace a constant (Replace 362880 with 362881(LONG))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59465</td><td><a href="#440">440(20)</a></td><td>Replace a constant (Replace 362880 with 0(LONG))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59467</td><td><a href="#440">440(20)</a></td><td>Replace a constant (Replace 362880 with 362879(LONG))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59470</td><td><a href="#440">440(21)</a></td><td>Replace a constant (Replace 10 with 11(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59469</td><td><a href="#440">440(21)</a></td><td>Replace a constant (Replace 10 with 9(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59468</td><td><a href="#440">440(21)</a></td><td>Replace a constant (Replace 10 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59473</td><td><a href="#440">440(22)</a></td><td>Replace a constant (Replace 3628800 with 3628799(LONG))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59471</td><td><a href="#440">440(22)</a></td><td>Replace a constant (Replace 3628800 with 0(LONG))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59472</td><td><a href="#440">440(22)</a></td><td>Replace a constant (Replace 3628800 with 3628801(LONG))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59475</td><td><a href="#440">440(23)</a></td><td>Replace a constant (Replace 11 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59474</td><td><a href="#440">440(23)</a></td><td>Replace a constant (Replace 11 with 10(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59476</td><td><a href="#440">440(23)</a></td><td>Replace a constant (Replace 11 with 12(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59477</td><td><a href="#440">440(24)</a></td><td>Replace a constant (Replace 39916800 with 0(LONG))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59479</td><td><a href="#440">440(24)</a></td><td>Replace a constant (Replace 39916800 with 39916801(LONG))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59478</td><td><a href="#440">440(24)</a></td><td>Replace a constant (Replace 39916800 with 39916799(LONG))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59480</td><td><a href="#440">440(25)</a></td><td>Replace a constant (Replace 12 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59482</td><td><a href="#440">440(25)</a></td><td>Replace a constant (Replace 12 with 11(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59481</td><td><a href="#440">440(25)</a></td><td>Replace a constant (Replace 12 with 13(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59485</td><td><a href="#440">440(26)</a></td><td>Replace a constant (Replace 479001600 with 479001599(LONG))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59483</td><td><a href="#440">440(26)</a></td><td>Replace a constant (Replace 479001600 with 0(LONG))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59484</td><td><a href="#440">440(26)</a></td><td>Replace a constant (Replace 479001600 with 479001601(LONG))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59487</td><td><a href="#440">440(27)</a></td><td>Replace a constant (Replace 13 with 14(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59486</td><td><a href="#440">440(27)</a></td><td>Replace a constant (Replace 13 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59488</td><td><a href="#440">440(27)</a></td><td>Replace a constant (Replace 13 with 12(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59491</td><td><a href="#440">440(28)</a></td><td>Replace a constant (Replace 6227020800 with 6227020799(LONG))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59489</td><td><a href="#440">440(28)</a></td><td>Replace a constant (Replace 6227020800 with 0(LONG))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59490</td><td><a href="#440">440(28)</a></td><td>Replace a constant (Replace 6227020800 with 6227020801(LONG))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59493</td><td><a href="#440">440(29)</a></td><td>Replace a constant (Replace 14 with 15(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59492</td><td><a href="#440">440(29)</a></td><td>Replace a constant (Replace 14 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59494</td><td><a href="#440">440(29)</a></td><td>Replace a constant (Replace 14 with 13(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59495</td><td><a href="#440">440(30)</a></td><td>Replace a constant (Replace 87178291200 with 87178291201(LONG))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59496</td><td><a href="#440">440(30)</a></td><td>Replace a constant (Replace 87178291200 with 0(LONG))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59497</td><td><a href="#440">440(30)</a></td><td>Replace a constant (Replace 87178291200 with 87178291199(LONG))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59499</td><td><a href="#440">440(31)</a></td><td>Replace a constant (Replace 15 with 16(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59498</td><td><a href="#440">440(31)</a></td><td>Replace a constant (Replace 15 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59500</td><td><a href="#440">440(31)</a></td><td>Replace a constant (Replace 15 with 14(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59501</td><td><a href="#440">440(32)</a></td><td>Replace a constant (Replace 1307674368000 with 1307674367999(LONG))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59503</td><td><a href="#440">440(32)</a></td><td>Replace a constant (Replace 1307674368000 with 1307674368001(LONG))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59502</td><td><a href="#440">440(32)</a></td><td>Replace a constant (Replace 1307674368000 with 0(LONG))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59504</td><td><a href="#440">440(33)</a></td><td>Replace a constant (Replace 16 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59506</td><td><a href="#440">440(33)</a></td><td>Replace a constant (Replace 16 with 15(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59505</td><td><a href="#440">440(33)</a></td><td>Replace a constant (Replace 16 with 17(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59508</td><td><a href="#440">440(34)</a></td><td>Replace a constant (Replace 20922789888000 with 20922789887999(LONG))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59507</td><td><a href="#440">440(34)</a></td><td>Replace a constant (Replace 20922789888000 with 0(LONG))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59509</td><td><a href="#440">440(34)</a></td><td>Replace a constant (Replace 20922789888000 with 20922789888001(LONG))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59512</td><td><a href="#440">440(35)</a></td><td>Replace a constant (Replace 17 with 16(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59510</td><td><a href="#440">440(35)</a></td><td>Replace a constant (Replace 17 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59511</td><td><a href="#440">440(35)</a></td><td>Replace a constant (Replace 17 with 18(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59513</td><td><a href="#440">440(36)</a></td><td>Replace a constant (Replace 355687428096000 with 0(LONG))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59514</td><td><a href="#440">440(36)</a></td><td>Replace a constant (Replace 355687428096000 with 355687428096001(LONG))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59515</td><td><a href="#440">440(36)</a></td><td>Replace a constant (Replace 355687428096000 with 355687428095999(LONG))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59517</td><td><a href="#440">440(37)</a></td><td>Replace a constant (Replace 18 with 19(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59516</td><td><a href="#440">440(37)</a></td><td>Replace a constant (Replace 18 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59518</td><td><a href="#440">440(37)</a></td><td>Replace a constant (Replace 18 with 17(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59519</td><td><a href="#440">440(38)</a></td><td>Replace a constant (Replace 6402373705728000 with 6402373705727999(LONG))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59521</td><td><a href="#440">440(38)</a></td><td>Replace a constant (Replace 6402373705728000 with 6402373705728001(LONG))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59520</td><td><a href="#440">440(38)</a></td><td>Replace a constant (Replace 6402373705728000 with 0(LONG))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59524</td><td><a href="#440">440(39)</a></td><td>Replace a constant (Replace 19 with 18(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59522</td><td><a href="#440">440(39)</a></td><td>Replace a constant (Replace 19 with 20(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59523</td><td><a href="#440">440(39)</a></td><td>Replace a constant (Replace 19 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59526</td><td><a href="#440">440(40)</a></td><td>Replace a constant (Replace 121645100408832000 with 0(LONG))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59525</td><td><a href="#440">440(40)</a></td><td>Replace a constant (Replace 121645100408832000 with 121645100408831999(LONG))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59527</td><td><a href="#440">440(40)</a></td><td>Replace a constant (Replace 121645100408832000 with 121645100408832001(LONG))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59530</td><td><a href="#440">440(41)</a></td><td>Replace a constant (Replace 20 with 19(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59529</td><td><a href="#440">440(41)</a></td><td>Replace a constant (Replace 20 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59528</td><td><a href="#440">440(41)</a></td><td>Replace a constant (Replace 20 with 21(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59532</td><td><a href="#440">440(42)</a></td><td>Replace a constant (Replace 2432902008176640000 with 2432902008176639999(LONG))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59533</td><td><a href="#440">440(42)</a></td><td>Replace a constant (Replace 2432902008176640000 with 2432902008176640001(LONG))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59531</td><td><a href="#440">440(42)</a></td><td>Replace a constant (Replace 2432902008176640000 with 0(LONG))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59566</td><td><a href="#451">451</a></td><td>Replace a constant (Replace 20 with 19(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59564</td><td><a href="#451">451</a></td><td>Replace a constant (Replace 20 with 21(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59565</td><td><a href="#451">451</a></td><td>Replace a constant (Replace 20 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>59563</td><td><a href="#451">451</a></td><td>Negate jump condition (Replace IFLT with  IFGE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>59567</td><td><a href="#451">451(1)</a></td><td>Negate jump condition (Replace IF_ICMPLE with  IF_ICMPGT)</td><td><img src="detected.png"/></td></tr>
+<tr><td>59569</td><td><a href="#460">460</a></td><td>Replace a constant (Replace 0 with -1(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59568</td><td><a href="#460">460</a></td><td>Replace a constant (Replace 0 with 1(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59570</td><td><a href="#461">461</a></td><td>Replace a constant (Replace 0 with 1(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59571</td><td><a href="#461">461</a></td><td>Replace a constant (Replace 0 with -1(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59572</td><td><a href="#462">462</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>59573</td><td><a href="#463">463</a></td><td>Replace a constant (Replace 0 with 1(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59574</td><td><a href="#463">463</a></td><td>Replace a constant (Replace 0 with -1(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59575</td><td><a href="#466">466</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>59576</td><td><a href="#467">467</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>59578</td><td><a href="#471">471</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>59577</td><td><a href="#471">471</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59579</td><td><a href="#472">472</a></td><td>Replace a constant (Replace 1 with 2(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59580</td><td><a href="#472">472</a></td><td>Replace a constant (Replace 1 with 0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59581</td><td><a href="#475">475</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59582</td><td><a href="#476">476</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59583</td><td><a href="#479">479</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>59584</td><td><a href="#480">480</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>59585</td><td><a href="#482">482</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>59586</td><td><a href="#486">486</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59587</td><td><a href="#489">489</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+</table>
+</body>
+</html>

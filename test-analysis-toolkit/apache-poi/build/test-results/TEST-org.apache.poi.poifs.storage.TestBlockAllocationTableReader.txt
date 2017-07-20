@@ -1,0 +1,7 @@
+Testsuite: org.apache.poi.poifs.storage.TestBlockAllocationTableReader
+Tests run: 4, Failures: 0, Errors: 0, Time elapsed: 0.02 sec
+
+Testcase: testReadingConstructor took 0.018 sec
+Testcase: testSmallBATConstructor took 0.002 sec
+Testcase: testFetchBlocks took 0 sec
+Testcase: testBadSectorAllocationTableSize_bug48085 took 0 sec

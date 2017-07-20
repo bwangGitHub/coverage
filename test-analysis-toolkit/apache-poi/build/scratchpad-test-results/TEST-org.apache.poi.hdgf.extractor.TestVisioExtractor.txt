@@ -1,0 +1,7 @@
+Testsuite: org.apache.poi.hdgf.extractor.TestVisioExtractor
+Tests run: 4, Failures: 0, Errors: 0, Time elapsed: 0.18 sec
+
+Testcase: testCreation took 0.034 sec
+Testcase: testExtraction took 0.005 sec
+Testcase: testProblemFiles took 0.136 sec
+Testcase: testMain took 0.005 sec

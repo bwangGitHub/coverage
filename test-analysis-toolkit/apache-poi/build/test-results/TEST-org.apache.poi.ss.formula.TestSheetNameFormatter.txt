@@ -1,0 +1,7 @@
+Testsuite: org.apache.poi.ss.formula.TestSheetNameFormatter
+Tests run: 4, Failures: 0, Errors: 0, Time elapsed: 0.001 sec
+
+Testcase: testFormat took 0 sec
+Testcase: testBooleanLiterals took 0 sec
+Testcase: testLooksLikePlainCellReference took 0 sec
+Testcase: testCellRange took 0 sec

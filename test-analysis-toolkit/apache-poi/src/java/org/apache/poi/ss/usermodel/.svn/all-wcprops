@@ -1,0 +1,347 @@
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/repos/asf/!svn/ver/1296979/poi/trunk/src/java/org/apache/poi/ss/usermodel
+END
+FormulaEvaluator.java
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/repos/asf/!svn/ver/1101033/poi/trunk/src/java/org/apache/poi/ss/usermodel/FormulaEvaluator.java
+END
+Header.java
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/repos/asf/!svn/ver/1038688/poi/trunk/src/java/org/apache/poi/ss/usermodel/Header.java
+END
+FontScheme.java
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/repos/asf/!svn/ver/814335/poi/trunk/src/java/org/apache/poi/ss/usermodel/FontScheme.java
+END
+Drawing.java
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/repos/asf/!svn/ver/1125275/poi/trunk/src/java/org/apache/poi/ss/usermodel/Drawing.java
+END
+CellRange.java
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/repos/asf/!svn/ver/893897/poi/trunk/src/java/org/apache/poi/ss/usermodel/CellRange.java
+END
+Textbox.java
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/repos/asf/!svn/ver/763332/poi/trunk/src/java/org/apache/poi/ss/usermodel/Textbox.java
+END
+BorderStyle.java
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/repos/asf/!svn/ver/814335/poi/trunk/src/java/org/apache/poi/ss/usermodel/BorderStyle.java
+END
+ConditionalFormatting.java
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/repos/asf/!svn/ver/1296979/poi/trunk/src/java/org/apache/poi/ss/usermodel/ConditionalFormatting.java
+END
+Chart.java
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/repos/asf/!svn/ver/1296979/poi/trunk/src/java/org/apache/poi/ss/usermodel/Chart.java
+END
+BuiltinFormats.java
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/repos/asf/!svn/ver/1069396/poi/trunk/src/java/org/apache/poi/ss/usermodel/BuiltinFormats.java
+END
+Comment.java
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/repos/asf/!svn/ver/884918/poi/trunk/src/java/org/apache/poi/ss/usermodel/Comment.java
+END
+IndexedColors.java
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/repos/asf/!svn/ver/1152099/poi/trunk/src/java/org/apache/poi/ss/usermodel/IndexedColors.java
+END
+PrintCellComments.java
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/repos/asf/!svn/ver/814335/poi/trunk/src/java/org/apache/poi/ss/usermodel/PrintCellComments.java
+END
+CreationHelper.java
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/repos/asf/!svn/ver/816006/poi/trunk/src/java/org/apache/poi/ss/usermodel/CreationHelper.java
+END
+Hyperlink.java
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/repos/asf/!svn/ver/763332/poi/trunk/src/java/org/apache/poi/ss/usermodel/Hyperlink.java
+END
+PictureData.java
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/repos/asf/!svn/ver/995360/poi/trunk/src/java/org/apache/poi/ss/usermodel/PictureData.java
+END
+Font.java
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/repos/asf/!svn/ver/948089/poi/trunk/src/java/org/apache/poi/ss/usermodel/Font.java
+END
+HeaderFooter.java
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/repos/asf/!svn/ver/712196/poi/trunk/src/java/org/apache/poi/ss/usermodel/HeaderFooter.java
+END
+FontFamily.java
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/repos/asf/!svn/ver/814335/poi/trunk/src/java/org/apache/poi/ss/usermodel/FontFamily.java
+END
+PageOrder.java
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/repos/asf/!svn/ver/814335/poi/trunk/src/java/org/apache/poi/ss/usermodel/PageOrder.java
+END
+Sheet.java
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/repos/asf/!svn/ver/1152099/poi/trunk/src/java/org/apache/poi/ss/usermodel/Sheet.java
+END
+VerticalAlignment.java
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/repos/asf/!svn/ver/814335/poi/trunk/src/java/org/apache/poi/ss/usermodel/VerticalAlignment.java
+END
+Picture.java
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/repos/asf/!svn/ver/1148637/poi/trunk/src/java/org/apache/poi/ss/usermodel/Picture.java
+END
+CellValue.java
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/repos/asf/!svn/ver/1037436/poi/trunk/src/java/org/apache/poi/ss/usermodel/CellValue.java
+END
+PrintSetup.java
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/repos/asf/!svn/ver/929064/poi/trunk/src/java/org/apache/poi/ss/usermodel/PrintSetup.java
+END
+FormulaError.java
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/repos/asf/!svn/ver/989100/poi/trunk/src/java/org/apache/poi/ss/usermodel/FormulaError.java
+END
+FontCharset.java
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/repos/asf/!svn/ver/1077950/poi/trunk/src/java/org/apache/poi/ss/usermodel/FontCharset.java
+END
+Name.java
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/repos/asf/!svn/ver/816016/poi/trunk/src/java/org/apache/poi/ss/usermodel/Name.java
+END
+DataValidationHelper.java
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/repos/asf/!svn/ver/944869/poi/trunk/src/java/org/apache/poi/ss/usermodel/DataValidationHelper.java
+END
+DataValidation.java
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/repos/asf/!svn/ver/944869/poi/trunk/src/java/org/apache/poi/ss/usermodel/DataValidation.java
+END
+ConditionalFormattingRule.java
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/repos/asf/!svn/ver/1152099/poi/trunk/src/java/org/apache/poi/ss/usermodel/ConditionalFormattingRule.java
+END
+SheetConditionalFormatting.java
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/repos/asf/!svn/ver/1212511/poi/trunk/src/java/org/apache/poi/ss/usermodel/SheetConditionalFormatting.java
+END
+HorizontalAlignment.java
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/repos/asf/!svn/ver/814335/poi/trunk/src/java/org/apache/poi/ss/usermodel/HorizontalAlignment.java
+END
+DataValidationConstraint.java
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/repos/asf/!svn/ver/944869/poi/trunk/src/java/org/apache/poi/ss/usermodel/DataValidationConstraint.java
+END
+DataFormatter.java
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/repos/asf/!svn/ver/1231144/poi/trunk/src/java/org/apache/poi/ss/usermodel/DataFormatter.java
+END
+Workbook.java
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/repos/asf/!svn/ver/1212511/poi/trunk/src/java/org/apache/poi/ss/usermodel/Workbook.java
+END
+Footer.java
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/repos/asf/!svn/ver/1038688/poi/trunk/src/java/org/apache/poi/ss/usermodel/Footer.java
+END
+CellStyle.java
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/repos/asf/!svn/ver/948511/poi/trunk/src/java/org/apache/poi/ss/usermodel/CellStyle.java
+END
+FontFormatting.java
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/repos/asf/!svn/ver/1152099/poi/trunk/src/java/org/apache/poi/ss/usermodel/FontFormatting.java
+END
+PaperSize.java
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/repos/asf/!svn/ver/814335/poi/trunk/src/java/org/apache/poi/ss/usermodel/PaperSize.java
+END
+ExcelStyleDateFormatter.java
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/repos/asf/!svn/ver/1083173/poi/trunk/src/java/org/apache/poi/ss/usermodel/ExcelStyleDateFormatter.java
+END
+Row.java
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/repos/asf/!svn/ver/1144348/poi/trunk/src/java/org/apache/poi/ss/usermodel/Row.java
+END
+BorderFormatting.java
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/repos/asf/!svn/ver/1152099/poi/trunk/src/java/org/apache/poi/ss/usermodel/BorderFormatting.java
+END
+PatternFormatting.java
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/repos/asf/!svn/ver/1152099/poi/trunk/src/java/org/apache/poi/ss/usermodel/PatternFormatting.java
+END
+PrintOrientation.java
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/repos/asf/!svn/ver/814335/poi/trunk/src/java/org/apache/poi/ss/usermodel/PrintOrientation.java
+END
+ClientAnchor.java
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/repos/asf/!svn/ver/1102666/poi/trunk/src/java/org/apache/poi/ss/usermodel/ClientAnchor.java
+END
+DateUtil.java
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/repos/asf/!svn/ver/1083173/poi/trunk/src/java/org/apache/poi/ss/usermodel/DateUtil.java
+END
+FontUnderline.java
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/repos/asf/!svn/ver/814335/poi/trunk/src/java/org/apache/poi/ss/usermodel/FontUnderline.java
+END
+AutoFilter.java
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/repos/asf/!svn/ver/983630/poi/trunk/src/java/org/apache/poi/ss/usermodel/AutoFilter.java
+END
+Color.java
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/repos/asf/!svn/ver/948511/poi/trunk/src/java/org/apache/poi/ss/usermodel/Color.java
+END
+Cell.java
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/repos/asf/!svn/ver/951466/poi/trunk/src/java/org/apache/poi/ss/usermodel/Cell.java
+END
+RichTextString.java
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/repos/asf/!svn/ver/763332/poi/trunk/src/java/org/apache/poi/ss/usermodel/RichTextString.java
+END
+DataFormat.java
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/repos/asf/!svn/ver/763332/poi/trunk/src/java/org/apache/poi/ss/usermodel/DataFormat.java
+END
+ShapeTypes.java
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/repos/asf/!svn/ver/814335/poi/trunk/src/java/org/apache/poi/ss/usermodel/ShapeTypes.java
+END
+FillPatternType.java
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/repos/asf/!svn/ver/814335/poi/trunk/src/java/org/apache/poi/ss/usermodel/FillPatternType.java
+END
+ErrorConstants.java
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/repos/asf/!svn/ver/712084/poi/trunk/src/java/org/apache/poi/ss/usermodel/ErrorConstants.java
+END
+ComparisonOperator.java
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/repos/asf/!svn/ver/1152099/poi/trunk/src/java/org/apache/poi/ss/usermodel/ComparisonOperator.java
+END

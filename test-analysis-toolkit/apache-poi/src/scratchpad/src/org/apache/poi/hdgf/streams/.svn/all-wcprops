@@ -1,0 +1,53 @@
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/repos/asf/!svn/ver/1225092/poi/trunk/src/scratchpad/src/org/apache/poi/hdgf/streams
+END
+Stream.java
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/repos/asf/!svn/ver/777204/poi/trunk/src/scratchpad/src/org/apache/poi/hdgf/streams/Stream.java
+END
+UnknownStream.java
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/repos/asf/!svn/ver/777204/poi/trunk/src/scratchpad/src/org/apache/poi/hdgf/streams/UnknownStream.java
+END
+CompressedStreamStore.java
+K 25
+svn:wc:ra_dav:version-url
+V 111
+/repos/asf/!svn/ver/1051377/poi/trunk/src/scratchpad/src/org/apache/poi/hdgf/streams/CompressedStreamStore.java
+END
+TrailerStream.java
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/repos/asf/!svn/ver/777204/poi/trunk/src/scratchpad/src/org/apache/poi/hdgf/streams/TrailerStream.java
+END
+ChunkStream.java
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/repos/asf/!svn/ver/1225092/poi/trunk/src/scratchpad/src/org/apache/poi/hdgf/streams/ChunkStream.java
+END
+StringsStream.java
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/repos/asf/!svn/ver/777204/poi/trunk/src/scratchpad/src/org/apache/poi/hdgf/streams/StringsStream.java
+END
+PointerContainingStream.java
+K 25
+svn:wc:ra_dav:version-url
+V 112
+/repos/asf/!svn/ver/777204/poi/trunk/src/scratchpad/src/org/apache/poi/hdgf/streams/PointerContainingStream.java
+END
+StreamStore.java
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/repos/asf/!svn/ver/777204/poi/trunk/src/scratchpad/src/org/apache/poi/hdgf/streams/StreamStore.java
+END

@@ -1,0 +1,6 @@
+Testsuite: org.apache.poi.hssf.usermodel.TestHSSFClientAnchor
+Tests run: 3, Failures: 0, Errors: 0, Time elapsed: 0 sec
+
+Testcase: testGetAnchorHeightInPoints took 0 sec
+Testcase: testConvertAnchor took 0 sec
+Testcase: testAnchorHeightInPoints took 0 sec

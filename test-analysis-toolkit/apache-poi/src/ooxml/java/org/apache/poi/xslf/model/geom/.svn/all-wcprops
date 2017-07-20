@@ -1,0 +1,215 @@
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/repos/asf/!svn/ver/1296977/poi/trunk/src/ooxml/java/org/apache/poi/xslf/model/geom
+END
+MoveToCommand.java
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/repos/asf/!svn/ver/1198658/poi/trunk/src/ooxml/java/org/apache/poi/xslf/model/geom/MoveToCommand.java
+END
+IAdjustableShape.java
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/repos/asf/!svn/ver/1198658/poi/trunk/src/ooxml/java/org/apache/poi/xslf/model/geom/IAdjustableShape.java
+END
+LiteralValueExpression.java
+K 25
+svn:wc:ra_dav:version-url
+V 111
+/repos/asf/!svn/ver/1189105/poi/trunk/src/ooxml/java/org/apache/poi/xslf/model/geom/LiteralValueExpression.java
+END
+SqrtExpression.java
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/repos/asf/!svn/ver/1189105/poi/trunk/src/ooxml/java/org/apache/poi/xslf/model/geom/SqrtExpression.java
+END
+AddSubtractExpression.java
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/repos/asf/!svn/ver/1189105/poi/trunk/src/ooxml/java/org/apache/poi/xslf/model/geom/AddSubtractExpression.java
+END
+ClosePathCommand.java
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/repos/asf/!svn/ver/1189105/poi/trunk/src/ooxml/java/org/apache/poi/xslf/model/geom/ClosePathCommand.java
+END
+Context.java
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/repos/asf/!svn/ver/1198658/poi/trunk/src/ooxml/java/org/apache/poi/xslf/model/geom/Context.java
+END
+MultiplyDivideExpression.java
+K 25
+svn:wc:ra_dav:version-url
+V 113
+/repos/asf/!svn/ver/1189105/poi/trunk/src/ooxml/java/org/apache/poi/xslf/model/geom/MultiplyDivideExpression.java
+END
+CurveToCommand.java
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/repos/asf/!svn/ver/1189657/poi/trunk/src/ooxml/java/org/apache/poi/xslf/model/geom/CurveToCommand.java
+END
+IfElseExpression.java
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/repos/asf/!svn/ver/1189105/poi/trunk/src/ooxml/java/org/apache/poi/xslf/model/geom/IfElseExpression.java
+END
+LineToCommand.java
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/repos/asf/!svn/ver/1198658/poi/trunk/src/ooxml/java/org/apache/poi/xslf/model/geom/LineToCommand.java
+END
+PathCommand.java
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/repos/asf/!svn/ver/1189105/poi/trunk/src/ooxml/java/org/apache/poi/xslf/model/geom/PathCommand.java
+END
+QuadToCommand.java
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/repos/asf/!svn/ver/1189657/poi/trunk/src/ooxml/java/org/apache/poi/xslf/model/geom/QuadToCommand.java
+END
+ModExpression.java
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/repos/asf/!svn/ver/1189105/poi/trunk/src/ooxml/java/org/apache/poi/xslf/model/geom/ModExpression.java
+END
+SinArcTanExpression.java
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/repos/asf/!svn/ver/1189105/poi/trunk/src/ooxml/java/org/apache/poi/xslf/model/geom/SinArcTanExpression.java
+END
+MinExpression.java
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/repos/asf/!svn/ver/1189105/poi/trunk/src/ooxml/java/org/apache/poi/xslf/model/geom/MinExpression.java
+END
+MaxExpression.java
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/repos/asf/!svn/ver/1189105/poi/trunk/src/ooxml/java/org/apache/poi/xslf/model/geom/MaxExpression.java
+END
+SinExpression.java
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/repos/asf/!svn/ver/1189105/poi/trunk/src/ooxml/java/org/apache/poi/xslf/model/geom/SinExpression.java
+END
+ExpressionParser.java
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/repos/asf/!svn/ver/1189105/poi/trunk/src/ooxml/java/org/apache/poi/xslf/model/geom/ExpressionParser.java
+END
+Outline.java
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/repos/asf/!svn/ver/1198658/poi/trunk/src/ooxml/java/org/apache/poi/xslf/model/geom/Outline.java
+END
+AbsExpression.java
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/repos/asf/!svn/ver/1189105/poi/trunk/src/ooxml/java/org/apache/poi/xslf/model/geom/AbsExpression.java
+END
+PresetGeometries.java
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/repos/asf/!svn/ver/1204477/poi/trunk/src/ooxml/java/org/apache/poi/xslf/model/geom/PresetGeometries.java
+END
+CustomGeometry.java
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/repos/asf/!svn/ver/1296977/poi/trunk/src/ooxml/java/org/apache/poi/xslf/model/geom/CustomGeometry.java
+END
+AdjustValue.java
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/repos/asf/!svn/ver/1189105/poi/trunk/src/ooxml/java/org/apache/poi/xslf/model/geom/AdjustValue.java
+END
+ArcTanExpression.java
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/repos/asf/!svn/ver/1189105/poi/trunk/src/ooxml/java/org/apache/poi/xslf/model/geom/ArcTanExpression.java
+END
+CosineArcTanExpression.java
+K 25
+svn:wc:ra_dav:version-url
+V 111
+/repos/asf/!svn/ver/1189105/poi/trunk/src/ooxml/java/org/apache/poi/xslf/model/geom/CosineArcTanExpression.java
+END
+Path.java
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/repos/asf/!svn/ver/1296977/poi/trunk/src/ooxml/java/org/apache/poi/xslf/model/geom/Path.java
+END
+AddDivideExpression.java
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/repos/asf/!svn/ver/1189105/poi/trunk/src/ooxml/java/org/apache/poi/xslf/model/geom/AddDivideExpression.java
+END
+Guide.java
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/repos/asf/!svn/ver/1189105/poi/trunk/src/ooxml/java/org/apache/poi/xslf/model/geom/Guide.java
+END
+Expression.java
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/repos/asf/!svn/ver/1189105/poi/trunk/src/ooxml/java/org/apache/poi/xslf/model/geom/Expression.java
+END
+TanExpression.java
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/repos/asf/!svn/ver/1189105/poi/trunk/src/ooxml/java/org/apache/poi/xslf/model/geom/TanExpression.java
+END
+CosExpression.java
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/repos/asf/!svn/ver/1189105/poi/trunk/src/ooxml/java/org/apache/poi/xslf/model/geom/CosExpression.java
+END
+Formula.java
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/repos/asf/!svn/ver/1189657/poi/trunk/src/ooxml/java/org/apache/poi/xslf/model/geom/Formula.java
+END
+PinExpression.java
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/repos/asf/!svn/ver/1189105/poi/trunk/src/ooxml/java/org/apache/poi/xslf/model/geom/PinExpression.java
+END
+ArcToCommand.java
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/repos/asf/!svn/ver/1198658/poi/trunk/src/ooxml/java/org/apache/poi/xslf/model/geom/ArcToCommand.java
+END

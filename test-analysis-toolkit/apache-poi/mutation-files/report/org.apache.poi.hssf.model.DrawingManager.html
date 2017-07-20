@@ -1,0 +1,276 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN
+"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>
+org.apache.poi.hssf.model.DrawingManager
+</title>
+<link href="prettify.css" type="text/css" rel="stylesheet" />
+<script type="text/javascript" src="prettify.js"></script>
+</head>
+<body onload="prettyPrint()">
+<h2>Javalanche report for class:<br/> org.apache.poi.hssf.model.DrawingManager </h2><pre class="prettyprint" style="border: 1px solid #888;padding: 2px"><span class="nocode"><a name="1">  1: </a></span>/* ====================================================================
+<span class="nocode"><a name="2">  2: </a></span>   Licensed to the Apache Software Foundation (ASF) under one or more
+<span class="nocode"><a name="3">  3: </a></span>   contributor license agreements.  See the NOTICE file distributed with
+<span class="nocode"><a name="4">  4: </a></span>   this work for additional information regarding copyright ownership.
+<span class="nocode"><a name="5">  5: </a></span>   The ASF licenses this file to You under the Apache License, Version 2.0
+<span class="nocode"><a name="6">  6: </a></span>   (the &quot;License&quot;); you may not use this file except in compliance with
+<span class="nocode"><a name="7">  7: </a></span>   the License.  You may obtain a copy of the License at
+<span class="nocode"><a name="8">  8: </a></span>
+<span class="nocode"><a name="9">  9: </a></span>       http://www.apache.org/licenses/LICENSE-2.0
+<span class="nocode"><a name="10"> 10: </a></span>
+<span class="nocode"><a name="11"> 11: </a></span>   Unless required by applicable law or agreed to in writing, software
+<span class="nocode"><a name="12"> 12: </a></span>   distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+<span class="nocode"><a name="13"> 13: </a></span>   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+<span class="nocode"><a name="14"> 14: </a></span>   See the License for the specific language governing permissions and
+<span class="nocode"><a name="15"> 15: </a></span>   limitations under the License.
+<span class="nocode"><a name="16"> 16: </a></span>==================================================================== */
+<span class="nocode"><a name="17"> 17: </a></span>
+<span class="nocode"><a name="18"> 18: </a></span>package org.apache.poi.hssf.model;
+<span class="nocode"><a name="19"> 19: </a></span>
+<span class="nocode"><a name="20"> 20: </a></span>import org.apache.poi.ddf.EscherDggRecord;
+<span class="nocode"><a name="21"> 21: </a></span>import org.apache.poi.ddf.EscherDgRecord;
+<span class="nocode"><a name="22"> 22: </a></span>
+<span class="nocode"><a name="23"> 23: </a></span>import java.util.Map;
+<span class="nocode"><a name="24"> 24: </a></span>import java.util.HashMap;
+<span class="nocode"><a name="25"> 25: </a></span>
+<span class="nocode"><a name="26"> 26: </a></span>/**
+<span class="nocode"><a name="27"> 27: </a></span> * Provides utilities to manage drawing groups.
+<span class="nocode"><a name="28"> 28: </a></span> *
+<span class="nocode"><a name="29"> 29: </a></span> * @author Glen Stampoultzis (glens at apache.org)
+<span class="nocode"><a name="30"> 30: </a></span> */
+<span class="nocode"><a name="31"> 31: </a></span>public class DrawingManager
+<span class="nocode"><a name="32"> 32: </a></span>{
+<span class="nocode"><a name="33"> 33: </a></span>    EscherDggRecord dgg;
+<span class="nocode"><a name="34"> 34: </a></span>    Map dgMap = new HashMap(); // key = Short(drawingId), value=EscherDgRecord
+<span class="nocode"><a name="35"> 35: </a></span>
+<span class="nocode"><a name="36"> 36: </a></span>    public DrawingManager( EscherDggRecord dgg )
+<span class="nocode"><a name="37"> 37: </a></span>    {
+<span class="nocode"><a name="38"> 38: </a></span>        this.dgg = dgg;
+<span class="nocode"><a name="39"> 39: </a></span>    }
+<span class="nocode"><a name="40"> 40: </a></span>
+<span class="nocode"><a name="41"> 41: </a></span>    public EscherDgRecord createDgRecord()
+<span class="nocode"><a name="42"> 42: </a></span>    {
+<span class="nocode"><a name="43"> 43: </a></span>        EscherDgRecord dg = new EscherDgRecord();
+<span class="nocode"><a name="44"> 44: </a></span>        dg.setRecordId( EscherDgRecord.RECORD_ID );
+<span class="nocode"><a name="45"> 45: </a></span>        short dgId = findNewDrawingGroupId();
+<span class="nocode"><a name="46"> 46: </a></span>        dg.setOptions( (short) ( dgId &lt;&lt; 4 ) );
+<span class="nocode"><a name="47"> 47: </a></span>        dg.setNumShapes( 0 );
+<span class="nocode"><a name="48"> 48: </a></span>        dg.setLastMSOSPID( -1 );
+<span class="nocode"><a name="49"> 49: </a></span>        dgg.addCluster( dgId, 0 );
+<span class="nocode"><a name="50"> 50: </a></span>        dgg.setDrawingsSaved( dgg.getDrawingsSaved() + 1 );
+<span class="nocode"><a name="51"> 51: </a></span>        dgMap.put( Short.valueOf( dgId ), dg );
+<span class="nocode"><a name="52"> 52: </a></span>        return dg;
+<span class="nocode"><a name="53"> 53: </a></span>    }
+<span class="nocode"><a name="54"> 54: </a></span>
+<span class="nocode"><a name="55"> 55: </a></span>    /**
+<span class="nocode"><a name="56"> 56: </a></span>     * Allocates new shape id for the new drawing group id.
+<span class="nocode"><a name="57"> 57: </a></span>     *
+<span class="nocode"><a name="58"> 58: </a></span>     * @return a new shape id.
+<span class="nocode"><a name="59"> 59: </a></span>     */
+<span class="nocode"><a name="60"> 60: </a></span>    public int allocateShapeId(short drawingGroupId)
+<span class="nocode"><a name="61"> 61: </a></span>    {
+<span class="nocode"><a name="62"> 62: </a></span>        // Get the last shape id for this drawing group.
+<span class="nocode"><a name="63"> 63: </a></span>        EscherDgRecord dg = (EscherDgRecord) dgMap.get(Short.valueOf(drawingGroupId));
+<span class="nocode"><a name="64"> 64: </a></span>        int lastShapeId = dg.getLastMSOSPID();
+<span class="nocode"><a name="65"> 65: </a></span>
+<span class="nocode"><a name="66"> 66: </a></span>
+<span class="nocode"><a name="67"> 67: </a></span>        // Have we run out of shapes for this cluster?
+<span class="nocode"><a name="68"> 68: </a></span>        int newShapeId = 0;
+<span class="nocode"><a name="69"> 69: </a></span>        if (lastShapeId % 1024 == 1023)
+<span class="nocode"><a name="70"> 70: </a></span>        {
+<span class="nocode"><a name="71"> 71: </a></span>            // Yes:
+<span class="nocode"><a name="72"> 72: </a></span>                // Find the starting shape id of the next free cluster
+<span class="nocode"><a name="73"> 73: </a></span>            newShapeId = findFreeSPIDBlock();
+<span class="nocode"><a name="74"> 74: </a></span>                // Create a new cluster in the dgg record.
+<span class="nocode"><a name="75"> 75: </a></span>            dgg.addCluster(drawingGroupId, 1);
+<span class="nocode"><a name="76"> 76: </a></span>        }
+<span class="nocode"><a name="77"> 77: </a></span>        else
+<span class="nocode"><a name="78"> 78: </a></span>        {
+<span class="nocode"><a name="79"> 79: </a></span>            // No:
+<span class="nocode"><a name="80"> 80: </a></span>                // Find the cluster for this drawing group with free space.
+<span class="nocode"><a name="81"> 81: </a></span>            for (int i = 0; i &lt; dgg.getFileIdClusters().length; i++)
+<span class="nocode"><a name="82"> 82: </a></span>            {
+<span class="nocode"><a name="83"> 83: </a></span>                EscherDggRecord.FileIdCluster c = dgg.getFileIdClusters()[i];
+<span class="nocode"><a name="84"> 84: </a></span>                if (c.getDrawingGroupId() == drawingGroupId)
+<span class="nocode"><a name="85"> 85: </a></span>                {
+<span class="nocode"><a name="86"> 86: </a></span>                    if (c.getNumShapeIdsUsed() != 1024)
+<span class="nocode"><a name="87"> 87: </a></span>                    {
+<span class="nocode"><a name="88"> 88: </a></span>                        // Increment the number of shapes used for this cluster.
+<span class="nocode"><a name="89"> 89: </a></span>                        c.incrementShapeId();
+<span class="nocode"><a name="90"> 90: </a></span>                    }
+<span class="nocode"><a name="91"> 91: </a></span>                }
+<span class="nocode"><a name="92"> 92: </a></span>                // If the last shape id = -1 then we know to find a free block;
+<span class="nocode"><a name="93"> 93: </a></span>                if (dg.getLastMSOSPID() == -1)
+<span class="nocode"><a name="94"> 94: </a></span>                {
+<span class="nocode"><a name="95"> 95: </a></span>                    newShapeId = findFreeSPIDBlock();
+<span class="nocode"><a name="96"> 96: </a></span>                }
+<span class="nocode"><a name="97"> 97: </a></span>                else
+<span class="nocode"><a name="98"> 98: </a></span>                {
+<span class="nocode"><a name="99"> 99: </a></span>                    // The new shape id to be the last shapeid of this cluster + 1
+<span class="nocode"><a name="100">100: </a></span>                    newShapeId = dg.getLastMSOSPID() + 1;
+<span class="nocode"><a name="101">101: </a></span>                }
+<span class="nocode"><a name="102">102: </a></span>            }
+<span class="nocode"><a name="103">103: </a></span>        }
+<span class="nocode"><a name="104">104: </a></span>        // Increment the total number of shapes used in the dgg.
+<span class="nocode"><a name="105">105: </a></span>        dgg.setNumShapesSaved(dgg.getNumShapesSaved() + 1);
+<span class="nocode"><a name="106">106: </a></span>        // Is the new shape id &gt;= max shape id for dgg?
+<span class="nocode"><a name="107">107: </a></span>        if (newShapeId &gt;= dgg.getShapeIdMax())
+<span class="nocode"><a name="108">108: </a></span>        {
+<span class="nocode"><a name="109">109: </a></span>            // Yes:
+<span class="nocode"><a name="110">110: </a></span>                // Set the max shape id = new shape id + 1
+<span class="nocode"><a name="111">111: </a></span>            dgg.setShapeIdMax(newShapeId + 1);
+<span class="nocode"><a name="112">112: </a></span>        }
+<span class="nocode"><a name="113">113: </a></span>        // Set last shape id for this drawing group.
+<span class="nocode"><a name="114">114: </a></span>        dg.setLastMSOSPID(newShapeId);
+<span class="nocode"><a name="115">115: </a></span>        // Increased the number of shapes used for this drawing group.
+<span class="nocode"><a name="116">116: </a></span>        dg.incrementShapeCount();
+<span class="nocode"><a name="117">117: </a></span>
+<span class="nocode"><a name="118">118: </a></span>
+<span class="nocode"><a name="119">119: </a></span>        return newShapeId;
+<span class="nocode"><a name="120">120: </a></span>    }
+<span class="nocode"><a name="121">121: </a></span>
+<span class="nocode"><a name="122">122: </a></span>    ////////////  Non-public methods /////////////
+<span class="nocode"><a name="123">123: </a></span>    short findNewDrawingGroupId()
+<span class="nocode"><a name="124">124: </a></span>    {
+<span class="nocode"><a name="125">125: </a></span>        short dgId = 1;
+<span class="nocode"><a name="126">126: </a></span>        while ( drawingGroupExists( dgId ) )
+<span class="nocode"><a name="127">127: </a></span>            dgId++;
+<span class="nocode"><a name="128">128: </a></span>        return dgId;
+<span class="nocode"><a name="129">129: </a></span>    }
+<span class="nocode"><a name="130">130: </a></span>
+<span class="nocode"><a name="131">131: </a></span>    boolean drawingGroupExists( short dgId )
+<span class="nocode"><a name="132">132: </a></span>    {
+<span class="nocode"><a name="133">133: </a></span>        for ( int i = 0; i &lt; dgg.getFileIdClusters().length; i++ )
+<span class="nocode"><a name="134">134: </a></span>        {
+<span class="nocode"><a name="135">135: </a></span>            if ( dgg.getFileIdClusters()[i].getDrawingGroupId() == dgId )
+<span class="nocode"><a name="136">136: </a></span>                return true;
+<span class="nocode"><a name="137">137: </a></span>        }
+<span class="nocode"><a name="138">138: </a></span>        return false;
+<span class="nocode"><a name="139">139: </a></span>    }
+<span class="nocode"><a name="140">140: </a></span>
+<span class="nocode"><a name="141">141: </a></span>    int findFreeSPIDBlock()
+<span class="nocode"><a name="142">142: </a></span>    {
+<span class="nocode"><a name="143">143: </a></span>        int max = dgg.getShapeIdMax();
+<span class="nocode"><a name="144">144: </a></span>        int next = ( ( max / 1024 ) + 1 ) * 1024;
+<span class="nocode"><a name="145">145: </a></span>        return next;
+<span class="nocode"><a name="146">146: </a></span>    }
+<span class="nocode"><a name="147">147: </a></span>
+<span class="nocode"><a name="148">148: </a></span>    public EscherDggRecord getDgg()
+<span class="nocode"><a name="149">149: </a></span>    {
+<span class="nocode"><a name="150">150: </a></span>        return dgg;
+<span class="nocode"><a name="151">151: </a></span>    }
+<span class="nocode"><a name="152">152: </a></span>
+<span class="nocode"><a name="153">153: </a></span>}
+</pre><table class="mutation_table" summary="Mutations">
+<tr><th>ID</th><th>Line</th><th>Type</th><th>Detected</th></tr><tr><td>63541</td><td><a href="#44">44</a></td><td>Replace a constant (Replace -4088 with -4089(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>63540</td><td><a href="#44">44</a></td><td>Replace a constant (Replace -4088 with -4087(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>63539</td><td><a href="#44">44</a></td><td>Replace a constant (Replace -4088 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>63542</td><td><a href="#44">44</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>63543</td><td><a href="#45">45</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>63545</td><td><a href="#46">46</a></td><td>Replace a constant (Replace 4 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>63546</td><td><a href="#46">46</a></td><td>Replace a constant (Replace 4 with 5(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>63544</td><td><a href="#46">46</a></td><td>Replace a constant (Replace 4 with 3(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>63547</td><td><a href="#46">46</a></td><td>Replace arithmetic operator (Replace ISHL with ISHR)</td><td><img src="detected.png"/></td></tr>
+<tr><td>63548</td><td><a href="#46">46</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>63549</td><td><a href="#47">47</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>63550</td><td><a href="#47">47</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>63551</td><td><a href="#47">47</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>63552</td><td><a href="#48">48</a></td><td>Replace a constant (Replace -1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>63553</td><td><a href="#48">48</a></td><td>Replace a constant (Replace -1 with -2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>63554</td><td><a href="#48">48</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>63556</td><td><a href="#49">49</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>63555</td><td><a href="#49">49</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>63557</td><td><a href="#49">49</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>63560</td><td><a href="#50">50</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>63559</td><td><a href="#50">50</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>63561</td><td><a href="#50">50</a></td><td>Replace arithmetic operator (Replace IADD with ISUB)</td><td><img src="detected.png"/></td></tr>
+<tr><td>63558</td><td><a href="#50">50</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>63562</td><td><a href="#50">50(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>63563</td><td><a href="#51">51</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>63564</td><td><a href="#51">51(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>63565</td><td><a href="#63">63</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>63566</td><td><a href="#63">63(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>63567</td><td><a href="#64">64</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>63568</td><td><a href="#68">68</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>63569</td><td><a href="#68">68</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>63570</td><td><a href="#69">69</a></td><td>Replace a constant (Replace 1024 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>63572</td><td><a href="#69">69</a></td><td>Replace a constant (Replace 1024 with 1023(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>63571</td><td><a href="#69">69</a></td><td>Replace a constant (Replace 1024 with 1025(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>63576</td><td><a href="#69">69(1)</a></td><td>Replace a constant (Replace 1023 with 1024(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>63574</td><td><a href="#69">69(1)</a></td><td>Replace a constant (Replace 1023 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>63575</td><td><a href="#69">69(1)</a></td><td>Replace a constant (Replace 1023 with 1022(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>63577</td><td><a href="#69">69</a></td><td>Negate jump condition (Replace IF_ICMPNE with  IF_ICMPEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>63573</td><td><a href="#69">69</a></td><td>Replace arithmetic operator (Replace IREM with IDIV)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>63578</td><td><a href="#73">73</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>63579</td><td><a href="#75">75</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>63580</td><td><a href="#75">75</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>63581</td><td><a href="#75">75</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>63582</td><td><a href="#81">81</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>63583</td><td><a href="#81">81</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>63585</td><td><a href="#81">81</a></td><td>Negate jump condition (Replace IF_ICMPGE with  IF_ICMPLT)</td><td><img src="detected.png"/></td></tr>
+<tr><td>63584</td><td><a href="#81">81</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>63586</td><td><a href="#83">83</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>63588</td><td><a href="#84">84</a></td><td>Negate jump condition (Replace IF_ICMPNE with  IF_ICMPEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>63587</td><td><a href="#84">84</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>63592</td><td><a href="#86">86</a></td><td>Replace a constant (Replace 1024 with 1023(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>63591</td><td><a href="#86">86</a></td><td>Replace a constant (Replace 1024 with 1025(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>63590</td><td><a href="#86">86</a></td><td>Replace a constant (Replace 1024 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>63593</td><td><a href="#86">86</a></td><td>Negate jump condition (Replace IF_ICMPEQ with  IF_ICMPNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>63589</td><td><a href="#86">86</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>63594</td><td><a href="#89">89</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>63597</td><td><a href="#93">93</a></td><td>Replace a constant (Replace -1 with -2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>63596</td><td><a href="#93">93</a></td><td>Replace a constant (Replace -1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>63598</td><td><a href="#93">93</a></td><td>Negate jump condition (Replace IF_ICMPNE with  IF_ICMPEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>63595</td><td><a href="#93">93</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>63599</td><td><a href="#95">95</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>63601</td><td><a href="#100">100</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>63602</td><td><a href="#100">100</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>63603</td><td><a href="#100">100</a></td><td>Replace arithmetic operator (Replace IADD with ISUB)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>63600</td><td><a href="#100">100</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>63605</td><td><a href="#105">105</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>63606</td><td><a href="#105">105</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>63607</td><td><a href="#105">105</a></td><td>Replace arithmetic operator (Replace IADD with ISUB)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>63604</td><td><a href="#105">105</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>63608</td><td><a href="#105">105(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>63610</td><td><a href="#107">107</a></td><td>Negate jump condition (Replace IF_ICMPLT with  IF_ICMPGE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>63609</td><td><a href="#107">107</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>63612</td><td><a href="#111">111</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>63611</td><td><a href="#111">111</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>63613</td><td><a href="#111">111</a></td><td>Replace arithmetic operator (Replace IADD with ISUB)</td><td><img src="detected.png"/></td></tr>
+<tr><td>63614</td><td><a href="#111">111</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>63615</td><td><a href="#114">114</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>63616</td><td><a href="#116">116</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>63618</td><td><a href="#125">125</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>63617</td><td><a href="#125">125</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>63620</td><td><a href="#126">126</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>63619</td><td><a href="#126">126</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>63621</td><td><a href="#127">127</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>63622</td><td><a href="#127">127</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>63623</td><td><a href="#127">127</a></td><td>Replace arithmetic operator (Replace IADD with ISUB)</td><td><img src="detected.png"/></td></tr>
+<tr><td>63624</td><td><a href="#133">133</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>63625</td><td><a href="#133">133</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>63627</td><td><a href="#133">133</a></td><td>Negate jump condition (Replace IF_ICMPGE with  IF_ICMPLT)</td><td><img src="detected.png"/></td></tr>
+<tr><td>63626</td><td><a href="#133">133</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>63630</td><td><a href="#135">135</a></td><td>Negate jump condition (Replace IF_ICMPNE with  IF_ICMPEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>63628</td><td><a href="#135">135</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>63629</td><td><a href="#135">135(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>63632</td><td><a href="#136">136</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>63631</td><td><a href="#136">136</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>63634</td><td><a href="#138">138</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>63633</td><td><a href="#138">138</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>63635</td><td><a href="#143">143</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>63637</td><td><a href="#144">144</a></td><td>Replace a constant (Replace 1024 with 1025(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>63636</td><td><a href="#144">144</a></td><td>Replace a constant (Replace 1024 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>63638</td><td><a href="#144">144</a></td><td>Replace a constant (Replace 1024 with 1023(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>63640</td><td><a href="#144">144(1)</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>63641</td><td><a href="#144">144(1)</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>63645</td><td><a href="#144">144(2)</a></td><td>Replace a constant (Replace 1024 with 1023(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>63643</td><td><a href="#144">144(2)</a></td><td>Replace a constant (Replace 1024 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>63644</td><td><a href="#144">144(2)</a></td><td>Replace a constant (Replace 1024 with 1025(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>63639</td><td><a href="#144">144</a></td><td>Replace arithmetic operator (Replace IDIV with IMUL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>63642</td><td><a href="#144">144(1)</a></td><td>Replace arithmetic operator (Replace IADD with ISUB)</td><td><img src="detected.png"/></td></tr>
+<tr><td>63646</td><td><a href="#144">144(2)</a></td><td>Replace arithmetic operator (Replace IMUL with IADD)</td><td><img src="detected.png"/></td></tr>
+</table>
+</body>
+</html>

@@ -1,0 +1,115 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN
+"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>
+org.apache.poi.ss.formula.constant.ErrorConstant
+</title>
+<link href="prettify.css" type="text/css" rel="stylesheet" />
+<script type="text/javascript" src="prettify.js"></script>
+</head>
+<body onload="prettyPrint()">
+<h2>Javalanche report for class:<br/> org.apache.poi.ss.formula.constant.ErrorConstant </h2><pre class="prettyprint" style="border: 1px solid #888;padding: 2px"><span class="nocode"><a name="1">  1: </a></span>/* ====================================================================
+<span class="nocode"><a name="2">  2: </a></span>   Licensed to the Apache Software Foundation (ASF) under one or more
+<span class="nocode"><a name="3">  3: </a></span>   contributor license agreements.  See the NOTICE file distributed with
+<span class="nocode"><a name="4">  4: </a></span>   this work for additional information regarding copyright ownership.
+<span class="nocode"><a name="5">  5: </a></span>   The ASF licenses this file to You under the Apache License, Version 2.0
+<span class="nocode"><a name="6">  6: </a></span>   (the &quot;License&quot;); you may not use this file except in compliance with
+<span class="nocode"><a name="7">  7: </a></span>   the License.  You may obtain a copy of the License at
+<span class="nocode"><a name="8">  8: </a></span>
+<span class="nocode"><a name="9">  9: </a></span>       http://www.apache.org/licenses/LICENSE-2.0
+<span class="nocode"><a name="10"> 10: </a></span>
+<span class="nocode"><a name="11"> 11: </a></span>   Unless required by applicable law or agreed to in writing, software
+<span class="nocode"><a name="12"> 12: </a></span>   distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+<span class="nocode"><a name="13"> 13: </a></span>   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+<span class="nocode"><a name="14"> 14: </a></span>   See the License for the specific language governing permissions and
+<span class="nocode"><a name="15"> 15: </a></span>   limitations under the License.
+<span class="nocode"><a name="16"> 16: </a></span>==================================================================== */
+<span class="nocode"><a name="17"> 17: </a></span>
+<span class="nocode"><a name="18"> 18: </a></span>package org.apache.poi.ss.formula.constant;
+<span class="nocode"><a name="19"> 19: </a></span>
+<span class="nocode"><a name="20"> 20: </a></span>import org.apache.poi.ss.usermodel.ErrorConstants;
+<span class="nocode"><a name="21"> 21: </a></span>/**
+<span class="nocode"><a name="22"> 22: </a></span> * Represents a constant error code value as encoded in a constant values array. &lt;p/&gt;
+<span class="nocode"><a name="23"> 23: </a></span> * 
+<span class="nocode"><a name="24"> 24: </a></span> * This class is a type-safe wrapper for a 16-bit int value performing a similar job to 
+<span class="nocode"><a name="25"> 25: </a></span> * &lt;tt&gt;ErrorEval&lt;/tt&gt;.
+<span class="nocode"><a name="26"> 26: </a></span> * 
+<span class="nocode"><a name="27"> 27: </a></span> * @author Josh Micich
+<span class="nocode"><a name="28"> 28: </a></span> */
+<span class="nocode"><a name="29"> 29: </a></span>public class ErrorConstant {
+<span class="nocode"><a name="30"> 30: </a></span>	// convenient access to name space
+<span class="nocode"><a name="31"> 31: </a></span>	private static final ErrorConstants EC = null;
+<span class="nocode"><a name="32"> 32: </a></span>
+<span class="nocode"><a name="33"> 33: </a></span>	private static final ErrorConstant NULL = new ErrorConstant(EC.ERROR_NULL);
+<span class="nocode"><a name="34"> 34: </a></span>	private static final ErrorConstant DIV_0 = new ErrorConstant(EC.ERROR_DIV_0);
+<span class="nocode"><a name="35"> 35: </a></span>	private static final ErrorConstant VALUE = new ErrorConstant(EC.ERROR_VALUE);
+<span class="nocode"><a name="36"> 36: </a></span>	private static final ErrorConstant REF = new ErrorConstant(EC.ERROR_REF);
+<span class="nocode"><a name="37"> 37: </a></span>	private static final ErrorConstant NAME = new ErrorConstant(EC.ERROR_NAME);
+<span class="nocode"><a name="38"> 38: </a></span>	private static final ErrorConstant NUM = new ErrorConstant(EC.ERROR_NUM);
+<span class="nocode"><a name="39"> 39: </a></span>	private static final ErrorConstant NA = new ErrorConstant(EC.ERROR_NA);
+<span class="nocode"><a name="40"> 40: </a></span>
+<span class="nocode"><a name="41"> 41: </a></span>	private final int _errorCode;
+<span class="nocode"><a name="42"> 42: </a></span>
+<span class="nocode"><a name="43"> 43: </a></span>	private ErrorConstant(int errorCode) {
+<span class="nocode"><a name="44"> 44: </a></span>		_errorCode = errorCode;
+<span class="nocode"><a name="45"> 45: </a></span>	}
+<span class="nocode"><a name="46"> 46: </a></span>	
+<span class="nocode"><a name="47"> 47: </a></span>	public int getErrorCode() {
+<span class="nocode"><a name="48"> 48: </a></span>		return _errorCode;
+<span class="nocode"><a name="49"> 49: </a></span>	}
+<span class="nocode"><a name="50"> 50: </a></span>	public String getText() {
+<span class="nocode"><a name="51"> 51: </a></span>		if(ErrorConstants.isValidCode(_errorCode)) {
+<span class="nocode"><a name="52"> 52: </a></span>			return ErrorConstants.getText(_errorCode);
+<span class="nocode"><a name="53"> 53: </a></span>		}
+<span class="nocode"><a name="54"> 54: </a></span>		return &quot;unknown error code (&quot; + _errorCode + &quot;)&quot;;
+<span class="nocode"><a name="55"> 55: </a></span>	}
+<span class="nocode"><a name="56"> 56: </a></span>
+<span class="nocode"><a name="57"> 57: </a></span>	public static ErrorConstant valueOf(int errorCode) {
+<span class="nocode"><a name="58"> 58: </a></span>		switch (errorCode) {
+<span class="nocode"><a name="59"> 59: </a></span>			case ErrorConstants.ERROR_NULL:  return NULL;
+<span class="nocode"><a name="60"> 60: </a></span>			case ErrorConstants.ERROR_DIV_0: return DIV_0;
+<span class="nocode"><a name="61"> 61: </a></span>			case ErrorConstants.ERROR_VALUE: return VALUE;
+<span class="nocode"><a name="62"> 62: </a></span>			case ErrorConstants.ERROR_REF:   return REF;
+<span class="nocode"><a name="63"> 63: </a></span>			case ErrorConstants.ERROR_NAME:  return NAME;
+<span class="nocode"><a name="64"> 64: </a></span>			case ErrorConstants.ERROR_NUM:   return NUM;
+<span class="nocode"><a name="65"> 65: </a></span>			case ErrorConstants.ERROR_NA:	return NA;
+<span class="nocode"><a name="66"> 66: </a></span>		}
+<span class="nocode"><a name="67"> 67: </a></span>		System.err.println(&quot;Warning - unexpected error code (&quot; + errorCode + &quot;)&quot;);
+<span class="nocode"><a name="68"> 68: </a></span>		return new ErrorConstant(errorCode);
+<span class="nocode"><a name="69"> 69: </a></span>	}
+<span class="nocode"><a name="70"> 70: </a></span>	public String toString() {
+<span class="nocode"><a name="71"> 71: </a></span>		StringBuffer sb = new StringBuffer(64);
+<span class="nocode"><a name="72"> 72: </a></span>		sb.append(getClass().getName()).append(&quot; [&quot;);
+<span class="nocode"><a name="73"> 73: </a></span>		sb.append(getText());
+<span class="nocode"><a name="74"> 74: </a></span>		sb.append(&quot;]&quot;);
+<span class="nocode"><a name="75"> 75: </a></span>		return sb.toString();
+<span class="nocode"><a name="76"> 76: </a></span>	}
+<span class="nocode"><a name="77"> 77: </a></span>}
+</pre><table class="mutation_table" summary="Mutations">
+<tr><th>ID</th><th>Line</th><th>Type</th><th>Detected</th></tr><tr><td>35184</td><td><a href="#51">51</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>35183</td><td><a href="#51">51</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>35185</td><td><a href="#52">52</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>35186</td><td><a href="#54">54</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>35187</td><td><a href="#54">54(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>35188</td><td><a href="#54">54(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>35189</td><td><a href="#54">54(3)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>35190</td><td><a href="#67">67</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>35191</td><td><a href="#67">67(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>35192</td><td><a href="#67">67(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>35193</td><td><a href="#67">67(3)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>35194</td><td><a href="#67">67(4)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>35195</td><td><a href="#71">71</a></td><td>Replace a constant (Replace 64 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>35196</td><td><a href="#71">71</a></td><td>Replace a constant (Replace 64 with 65(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>35197</td><td><a href="#71">71</a></td><td>Replace a constant (Replace 64 with 63(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>35198</td><td><a href="#72">72</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>35199</td><td><a href="#72">72(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>35200</td><td><a href="#72">72(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>35201</td><td><a href="#72">72(3)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>35202</td><td><a href="#73">73</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>35203</td><td><a href="#73">73(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>35204</td><td><a href="#74">74</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>35205</td><td><a href="#75">75</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+</table>
+</body>
+</html>

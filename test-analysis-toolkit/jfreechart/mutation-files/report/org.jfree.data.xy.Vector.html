@@ -1,0 +1,205 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN
+"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>
+org.jfree.data.xy.Vector
+</title>
+<link href="prettify.css" type="text/css" rel="stylesheet" />
+<script type="text/javascript" src="prettify.js"></script>
+</head>
+<body onload="prettyPrint()">
+<h2>Javalanche report for class:<br/> org.jfree.data.xy.Vector </h2><pre class="prettyprint" style="border: 1px solid #888;padding: 2px"><span class="nocode"><a name="1">  1: </a></span>/* ===========================================================
+<span class="nocode"><a name="2">  2: </a></span> * JFreeChart : a free chart library for the Java(tm) platform
+<span class="nocode"><a name="3">  3: </a></span> * ===========================================================
+<span class="nocode"><a name="4">  4: </a></span> *
+<span class="nocode"><a name="5">  5: </a></span> * (C) Copyright 2000-2007, by Object Refinery Limited and Contributors.
+<span class="nocode"><a name="6">  6: </a></span> *
+<span class="nocode"><a name="7">  7: </a></span> * Project Info:  http://www.jfree.org/jfreechart/index.html
+<span class="nocode"><a name="8">  8: </a></span> *
+<span class="nocode"><a name="9">  9: </a></span> * This library is free software; you can redistribute it and/or modify it 
+<span class="nocode"><a name="10"> 10: </a></span> * under the terms of the GNU Lesser General Public License as published by 
+<span class="nocode"><a name="11"> 11: </a></span> * the Free Software Foundation; either version 2.1 of the License, or 
+<span class="nocode"><a name="12"> 12: </a></span> * (at your option) any later version.
+<span class="nocode"><a name="13"> 13: </a></span> *
+<span class="nocode"><a name="14"> 14: </a></span> * This library is distributed in the hope that it will be useful, but 
+<span class="nocode"><a name="15"> 15: </a></span> * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY 
+<span class="nocode"><a name="16"> 16: </a></span> * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public 
+<span class="nocode"><a name="17"> 17: </a></span> * License for more details.
+<span class="nocode"><a name="18"> 18: </a></span> *
+<span class="nocode"><a name="19"> 19: </a></span> * You should have received a copy of the GNU Lesser General Public
+<span class="nocode"><a name="20"> 20: </a></span> * License along with this library; if not, write to the Free Software
+<span class="nocode"><a name="21"> 21: </a></span> * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, 
+<span class="nocode"><a name="22"> 22: </a></span> * USA.  
+<span class="nocode"><a name="23"> 23: </a></span> *
+<span class="nocode"><a name="24"> 24: </a></span> * [Java is a trademark or registered trademark of Sun Microsystems, Inc. 
+<span class="nocode"><a name="25"> 25: </a></span> * in the United States and other countries.]
+<span class="nocode"><a name="26"> 26: </a></span> *
+<span class="nocode"><a name="27"> 27: </a></span> * -----------
+<span class="nocode"><a name="28"> 28: </a></span> * Vector.java
+<span class="nocode"><a name="29"> 29: </a></span> * -----------
+<span class="nocode"><a name="30"> 30: </a></span> * (C) Copyright 2007, by Object Refinery Limited.
+<span class="nocode"><a name="31"> 31: </a></span> *
+<span class="nocode"><a name="32"> 32: </a></span> * Original Author:  David Gilbert (for Object Refinery Limited);
+<span class="nocode"><a name="33"> 33: </a></span> * Contributor(s):   -;
+<span class="nocode"><a name="34"> 34: </a></span> *
+<span class="nocode"><a name="35"> 35: </a></span> * Changes
+<span class="nocode"><a name="36"> 36: </a></span> * -------
+<span class="nocode"><a name="37"> 37: </a></span> * 30-Jan-2007 : Version 1 (DG);
+<span class="nocode"><a name="38"> 38: </a></span> * 24-May-2007 : Added getLength() and getAngle() methods, thanks to 
+<span class="nocode"><a name="39"> 39: </a></span> *               matinh (DG);
+<span class="nocode"><a name="40"> 40: </a></span> * 25-May-2007 : Moved from experimental to the main source tree (DG);
+<span class="nocode"><a name="41"> 41: </a></span> *
+<span class="nocode"><a name="42"> 42: </a></span> */
+<span class="nocode"><a name="43"> 43: </a></span>
+<span class="nocode"><a name="44"> 44: </a></span>package org.jfree.data.xy;
+<span class="nocode"><a name="45"> 45: </a></span>
+<span class="nocode"><a name="46"> 46: </a></span>import java.io.Serializable;
+<span class="nocode"><a name="47"> 47: </a></span>
+<span class="nocode"><a name="48"> 48: </a></span>/**
+<span class="nocode"><a name="49"> 49: </a></span> * A vector.
+<span class="nocode"><a name="50"> 50: </a></span> * 
+<span class="nocode"><a name="51"> 51: </a></span> * @since 1.0.6
+<span class="nocode"><a name="52"> 52: </a></span> */
+<span class="nocode"><a name="53"> 53: </a></span>public class Vector implements Serializable {
+<span class="nocode"><a name="54"> 54: </a></span>    
+<span class="nocode"><a name="55"> 55: </a></span>    /** The vector x. */
+<span class="nocode"><a name="56"> 56: </a></span>    private double x;
+<span class="nocode"><a name="57"> 57: </a></span>    
+<span class="nocode"><a name="58"> 58: </a></span>    /** The vector y. */
+<span class="nocode"><a name="59"> 59: </a></span>    private double y;
+<span class="nocode"><a name="60"> 60: </a></span>    
+<span class="nocode"><a name="61"> 61: </a></span>    /** 
+<span class="nocode"><a name="62"> 62: </a></span>     * Creates a new instance of &lt;code&gt;Vector&lt;/code&gt;.
+<span class="nocode"><a name="63"> 63: </a></span>     *
+<span class="nocode"><a name="64"> 64: </a></span>     * @param x  the x-component.
+<span class="nocode"><a name="65"> 65: </a></span>     * @param y  the y-component.  
+<span class="nocode"><a name="66"> 66: </a></span>     */
+<span class="nocode"><a name="67"> 67: </a></span>    public Vector(double x, double y) {
+<span class="nocode"><a name="68"> 68: </a></span>        this.x = x;
+<span class="nocode"><a name="69"> 69: </a></span>        this.y = y;
+<span class="nocode"><a name="70"> 70: </a></span>    }
+<span class="nocode"><a name="71"> 71: </a></span>    
+<span class="nocode"><a name="72"> 72: </a></span>    /**
+<span class="nocode"><a name="73"> 73: </a></span>     * Returns the x-value.
+<span class="nocode"><a name="74"> 74: </a></span>     * 
+<span class="nocode"><a name="75"> 75: </a></span>     * @return The x-value.
+<span class="nocode"><a name="76"> 76: </a></span>     */
+<span class="nocode"><a name="77"> 77: </a></span>    public double getX() {
+<span class="nocode"><a name="78"> 78: </a></span>        return this.x;
+<span class="nocode"><a name="79"> 79: </a></span>    }
+<span class="nocode"><a name="80"> 80: </a></span>    
+<span class="nocode"><a name="81"> 81: </a></span>    /**
+<span class="nocode"><a name="82"> 82: </a></span>     * Returns the y-value.
+<span class="nocode"><a name="83"> 83: </a></span>     * 
+<span class="nocode"><a name="84"> 84: </a></span>     * @return The y-value.
+<span class="nocode"><a name="85"> 85: </a></span>     */
+<span class="nocode"><a name="86"> 86: </a></span>    public double getY() {
+<span class="nocode"><a name="87"> 87: </a></span>        return this.y;
+<span class="nocode"><a name="88"> 88: </a></span>    }
+<span class="nocode"><a name="89"> 89: </a></span>    
+<span class="nocode"><a name="90"> 90: </a></span>    /**
+<span class="nocode"><a name="91"> 91: </a></span>     * Returns the length of the vector.
+<span class="nocode"><a name="92"> 92: </a></span>     * 
+<span class="nocode"><a name="93"> 93: </a></span>     * @return The vector length.
+<span class="nocode"><a name="94"> 94: </a></span>     */
+<span class="nocode"><a name="95"> 95: </a></span>    public double getLength() {
+<span class="nocode"><a name="96"> 96: </a></span>        return Math.sqrt((this.x * this.x) + (this.y * this.y));
+<span class="nocode"><a name="97"> 97: </a></span>    }
+<span class="nocode"><a name="98"> 98: </a></span> 
+<span class="nocode"><a name="99"> 99: </a></span>    /**
+<span class="nocode"><a name="100">100: </a></span>     * Returns the angle of the vector.
+<span class="nocode"><a name="101">101: </a></span>     * 
+<span class="nocode"><a name="102">102: </a></span>     * @return The angle of the vector.
+<span class="nocode"><a name="103">103: </a></span>     */
+<span class="nocode"><a name="104">104: </a></span>    public double getAngle() {
+<span class="nocode"><a name="105">105: </a></span>        return Math.atan2(this.y, this.x);
+<span class="nocode"><a name="106">106: </a></span>    }
+<span class="nocode"><a name="107">107: </a></span>
+<span class="nocode"><a name="108">108: </a></span>    /**
+<span class="nocode"><a name="109">109: </a></span>     * Tests this vector for equality with an arbitrary object.
+<span class="nocode"><a name="110">110: </a></span>     * 
+<span class="nocode"><a name="111">111: </a></span>     * @param obj  the object (&lt;code&gt;null&lt;/code&gt; not permitted).
+<span class="nocode"><a name="112">112: </a></span>     * 
+<span class="nocode"><a name="113">113: </a></span>     * @return A boolean.
+<span class="nocode"><a name="114">114: </a></span>     */
+<span class="nocode"><a name="115">115: </a></span>    public boolean equals(Object obj) {
+<span class="nocode"><a name="116">116: </a></span>        if (obj == this) {
+<span class="nocode"><a name="117">117: </a></span>            return true;
+<span class="nocode"><a name="118">118: </a></span>        }
+<span class="nocode"><a name="119">119: </a></span>        if (!(obj instanceof Vector)) {
+<span class="nocode"><a name="120">120: </a></span>            return false;
+<span class="nocode"><a name="121">121: </a></span>        }
+<span class="nocode"><a name="122">122: </a></span>        Vector that = (Vector) obj;
+<span class="nocode"><a name="123">123: </a></span>        if (this.x != that.x) {
+<span class="nocode"><a name="124">124: </a></span>            return false;
+<span class="nocode"><a name="125">125: </a></span>        }
+<span class="nocode"><a name="126">126: </a></span>        if (this.y != that.y) {
+<span class="nocode"><a name="127">127: </a></span>            return false;
+<span class="nocode"><a name="128">128: </a></span>        }
+<span class="nocode"><a name="129">129: </a></span>        return true;
+<span class="nocode"><a name="130">130: </a></span>    }
+<span class="nocode"><a name="131">131: </a></span>
+<span class="nocode"><a name="132">132: </a></span>    /**
+<span class="nocode"><a name="133">133: </a></span>     * Returns a hash code for this instance.
+<span class="nocode"><a name="134">134: </a></span>     * 
+<span class="nocode"><a name="135">135: </a></span>     * @return A hash code.
+<span class="nocode"><a name="136">136: </a></span>     */
+<span class="nocode"><a name="137">137: </a></span>    public int hashCode() {
+<span class="nocode"><a name="138">138: </a></span>        int result = 193;
+<span class="nocode"><a name="139">139: </a></span>        long temp = Double.doubleToLongBits(this.x);
+<span class="nocode"><a name="140">140: </a></span>        result = 37 * result + (int) (temp ^ (temp &gt;&gt;&gt; 32));
+<span class="nocode"><a name="141">141: </a></span>        temp = Double.doubleToLongBits(this.y);
+<span class="nocode"><a name="142">142: </a></span>        result = 37 * result + (int) (temp ^ (temp &gt;&gt;&gt; 32));
+<span class="nocode"><a name="143">143: </a></span>        return result;
+<span class="nocode"><a name="144">144: </a></span>    }
+<span class="nocode"><a name="145">145: </a></span>    
+<span class="nocode"><a name="146">146: </a></span>}
+</pre><table class="mutation_table" summary="Mutations">
+<tr><th>ID</th><th>Line</th><th>Type</th><th>Detected</th></tr><tr><td>30664</td><td><a href="#96">96</a></td><td>Replace arithmetic operator (Replace DMUL with DADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>30665</td><td><a href="#96">96(1)</a></td><td>Replace arithmetic operator (Replace DMUL with DADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>30666</td><td><a href="#96">96(2)</a></td><td>Replace arithmetic operator (Replace DADD with DSUB)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>30667</td><td><a href="#96">96</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>30668</td><td><a href="#105">105</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>30669</td><td><a href="#116">116</a></td><td>Negate jump condition (Replace IF_ACMPNE with  IF_ACMPEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>30671</td><td><a href="#117">117</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>30670</td><td><a href="#117">117</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>30672</td><td><a href="#119">119</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>30674</td><td><a href="#120">120</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>30673</td><td><a href="#120">120</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>30675</td><td><a href="#123">123</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>30676</td><td><a href="#124">124</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>30677</td><td><a href="#124">124</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>30678</td><td><a href="#126">126</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>30680</td><td><a href="#127">127</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>30679</td><td><a href="#127">127</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>30681</td><td><a href="#129">129</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>30682</td><td><a href="#129">129</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>30685</td><td><a href="#138">138</a></td><td>Replace a constant (Replace 193 with 192(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>30684</td><td><a href="#138">138</a></td><td>Replace a constant (Replace 193 with 194(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>30683</td><td><a href="#138">138</a></td><td>Replace a constant (Replace 193 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>30686</td><td><a href="#139">139</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>30688</td><td><a href="#140">140</a></td><td>Replace a constant (Replace 37 with 36(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>30689</td><td><a href="#140">140</a></td><td>Replace a constant (Replace 37 with 38(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>30687</td><td><a href="#140">140</a></td><td>Replace a constant (Replace 37 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>30693</td><td><a href="#140">140(1)</a></td><td>Replace a constant (Replace 32 with 33(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>30691</td><td><a href="#140">140(1)</a></td><td>Replace a constant (Replace 32 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>30692</td><td><a href="#140">140(1)</a></td><td>Replace a constant (Replace 32 with 31(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>30690</td><td><a href="#140">140</a></td><td>Replace arithmetic operator (Replace IMUL with IADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>30694</td><td><a href="#140">140(1)</a></td><td>Replace arithmetic operator (Replace LUSHR with LSHR)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>30695</td><td><a href="#140">140(2)</a></td><td>Replace arithmetic operator (Replace LXOR with LOR)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>30696</td><td><a href="#140">140(3)</a></td><td>Replace arithmetic operator (Replace IADD with ISUB)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>30697</td><td><a href="#141">141</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>30698</td><td><a href="#142">142</a></td><td>Replace a constant (Replace 37 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>30699</td><td><a href="#142">142</a></td><td>Replace a constant (Replace 37 with 36(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>30700</td><td><a href="#142">142</a></td><td>Replace a constant (Replace 37 with 38(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>30702</td><td><a href="#142">142(1)</a></td><td>Replace a constant (Replace 32 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>30703</td><td><a href="#142">142(1)</a></td><td>Replace a constant (Replace 32 with 31(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>30704</td><td><a href="#142">142(1)</a></td><td>Replace a constant (Replace 32 with 33(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>30701</td><td><a href="#142">142</a></td><td>Replace arithmetic operator (Replace IMUL with IADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>30705</td><td><a href="#142">142(1)</a></td><td>Replace arithmetic operator (Replace LUSHR with LSHR)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>30706</td><td><a href="#142">142(2)</a></td><td>Replace arithmetic operator (Replace LXOR with LOR)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>30707</td><td><a href="#142">142(3)</a></td><td>Replace arithmetic operator (Replace IADD with ISUB)</td><td><img src="not_detected.png"/></td></tr>
+</table>
+</body>
+</html>

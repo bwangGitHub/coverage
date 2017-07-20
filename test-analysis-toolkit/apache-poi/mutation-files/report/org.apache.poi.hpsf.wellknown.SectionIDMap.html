@@ -1,0 +1,228 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN
+"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>
+org.apache.poi.hpsf.wellknown.SectionIDMap
+</title>
+<link href="prettify.css" type="text/css" rel="stylesheet" />
+<script type="text/javascript" src="prettify.js"></script>
+</head>
+<body onload="prettyPrint()">
+<h2>Javalanche report for class:<br/> org.apache.poi.hpsf.wellknown.SectionIDMap </h2><pre class="prettyprint" style="border: 1px solid #888;padding: 2px"><span class="nocode"><a name="1">  1: </a></span>/* ====================================================================
+<span class="nocode"><a name="2">  2: </a></span>   Licensed to the Apache Software Foundation (ASF) under one or more
+<span class="nocode"><a name="3">  3: </a></span>   contributor license agreements.  See the NOTICE file distributed with
+<span class="nocode"><a name="4">  4: </a></span>   this work for additional information regarding copyright ownership.
+<span class="nocode"><a name="5">  5: </a></span>   The ASF licenses this file to You under the Apache License, Version 2.0
+<span class="nocode"><a name="6">  6: </a></span>   (the &quot;License&quot;); you may not use this file except in compliance with
+<span class="nocode"><a name="7">  7: </a></span>   the License.  You may obtain a copy of the License at
+<span class="nocode"><a name="8">  8: </a></span>
+<span class="nocode"><a name="9">  9: </a></span>       http://www.apache.org/licenses/LICENSE-2.0
+<span class="nocode"><a name="10"> 10: </a></span>
+<span class="nocode"><a name="11"> 11: </a></span>   Unless required by applicable law or agreed to in writing, software
+<span class="nocode"><a name="12"> 12: </a></span>   distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+<span class="nocode"><a name="13"> 13: </a></span>   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+<span class="nocode"><a name="14"> 14: </a></span>   See the License for the specific language governing permissions and
+<span class="nocode"><a name="15"> 15: </a></span>   limitations under the License.
+<span class="nocode"><a name="16"> 16: </a></span>==================================================================== */
+<span class="nocode"><a name="17"> 17: </a></span>
+<span class="nocode"><a name="18"> 18: </a></span>package org.apache.poi.hpsf.wellknown;
+<span class="nocode"><a name="19"> 19: </a></span>
+<span class="nocode"><a name="20"> 20: </a></span>import java.util.HashMap;
+<span class="nocode"><a name="21"> 21: </a></span>
+<span class="nocode"><a name="22"> 22: </a></span>/**
+<span class="nocode"><a name="23"> 23: </a></span> * &lt;p&gt;Maps section format IDs to {@link PropertyIDMap}s. It is
+<span class="nocode"><a name="24"> 24: </a></span> * initialized with two well-known section format IDs: those of the
+<span class="nocode"><a name="25"> 25: </a></span> * &lt;tt&gt;\005SummaryInformation&lt;/tt&gt; stream and the
+<span class="nocode"><a name="26"> 26: </a></span> * &lt;tt&gt;\005DocumentSummaryInformation&lt;/tt&gt; stream.&lt;/p&gt;
+<span class="nocode"><a name="27"> 27: </a></span> *
+<span class="nocode"><a name="28"> 28: </a></span> * &lt;p&gt;If you have a section format ID you can use it as a key to query
+<span class="nocode"><a name="29"> 29: </a></span> * this map.  If you get a {@link PropertyIDMap} returned your section
+<span class="nocode"><a name="30"> 30: </a></span> * is well-known and you can query the {@link PropertyIDMap} for PID
+<span class="nocode"><a name="31"> 31: </a></span> * strings. If you get back &lt;code&gt;null&lt;/code&gt; you are on your own.&lt;/p&gt;
+<span class="nocode"><a name="32"> 32: </a></span> *
+<span class="nocode"><a name="33"> 33: </a></span> * &lt;p&gt;This {@link java.util.Map} expects the byte arrays of section format IDs
+<span class="nocode"><a name="34"> 34: </a></span> * as keys. A key maps to a {@link PropertyIDMap} describing the
+<span class="nocode"><a name="35"> 35: </a></span> * property IDs in sections with the specified section format ID.&lt;/p&gt;
+<span class="nocode"><a name="36"> 36: </a></span> *
+<span class="nocode"><a name="37"> 37: </a></span> * @author Rainer Klute (klute@rainer-klute.de)
+<span class="nocode"><a name="38"> 38: </a></span> */
+<span class="nocode"><a name="39"> 39: </a></span>public class SectionIDMap extends HashMap {
+<span class="nocode"><a name="40"> 40: </a></span>
+<span class="nocode"><a name="41"> 41: </a></span>    /**
+<span class="nocode"><a name="42"> 42: </a></span>     * &lt;p&gt;The SummaryInformation's section's format ID.&lt;/p&gt;
+<span class="nocode"><a name="43"> 43: </a></span>     */
+<span class="nocode"><a name="44"> 44: </a></span>    public static final byte[] SUMMARY_INFORMATION_ID = new byte[]
+<span class="nocode"><a name="45"> 45: </a></span>    {
+<span class="nocode"><a name="46"> 46: </a></span>        (byte) 0xF2, (byte) 0x9F, (byte) 0x85, (byte) 0xE0,
+<span class="nocode"><a name="47"> 47: </a></span>        (byte) 0x4F, (byte) 0xF9, (byte) 0x10, (byte) 0x68,
+<span class="nocode"><a name="48"> 48: </a></span>        (byte) 0xAB, (byte) 0x91, (byte) 0x08, (byte) 0x00,
+<span class="nocode"><a name="49"> 49: </a></span>        (byte) 0x2B, (byte) 0x27, (byte) 0xB3, (byte) 0xD9
+<span class="nocode"><a name="50"> 50: </a></span>    };
+<span class="nocode"><a name="51"> 51: </a></span>
+<span class="nocode"><a name="52"> 52: </a></span>    /**
+<span class="nocode"><a name="53"> 53: </a></span>     * &lt;p&gt;The DocumentSummaryInformation's first and second sections' format
+<span class="nocode"><a name="54"> 54: </a></span>     * ID.&lt;/p&gt;
+<span class="nocode"><a name="55"> 55: </a></span>     */
+<span class="nocode"><a name="56"> 56: </a></span>    public static final byte[][] DOCUMENT_SUMMARY_INFORMATION_ID = new byte[][]
+<span class="nocode"><a name="57"> 57: </a></span>    {
+<span class="nocode"><a name="58"> 58: </a></span>        {
+<span class="nocode"><a name="59"> 59: </a></span>            (byte) 0xD5, (byte) 0xCD, (byte) 0xD5, (byte) 0x02,
+<span class="nocode"><a name="60"> 60: </a></span>            (byte) 0x2E, (byte) 0x9C, (byte) 0x10, (byte) 0x1B,
+<span class="nocode"><a name="61"> 61: </a></span>            (byte) 0x93, (byte) 0x97, (byte) 0x08, (byte) 0x00,
+<span class="nocode"><a name="62"> 62: </a></span>            (byte) 0x2B, (byte) 0x2C, (byte) 0xF9, (byte) 0xAE
+<span class="nocode"><a name="63"> 63: </a></span>        },
+<span class="nocode"><a name="64"> 64: </a></span>        {
+<span class="nocode"><a name="65"> 65: </a></span>            (byte) 0xD5, (byte) 0xCD, (byte) 0xD5, (byte) 0x05,
+<span class="nocode"><a name="66"> 66: </a></span>            (byte) 0x2E, (byte) 0x9C, (byte) 0x10, (byte) 0x1B,
+<span class="nocode"><a name="67"> 67: </a></span>            (byte) 0x93, (byte) 0x97, (byte) 0x08, (byte) 0x00,
+<span class="nocode"><a name="68"> 68: </a></span>            (byte) 0x2B, (byte) 0x2C, (byte) 0xF9, (byte) 0xAE
+<span class="nocode"><a name="69"> 69: </a></span>        }
+<span class="nocode"><a name="70"> 70: </a></span>    };
+<span class="nocode"><a name="71"> 71: </a></span>
+<span class="nocode"><a name="72"> 72: </a></span>    /**
+<span class="nocode"><a name="73"> 73: </a></span>     * &lt;p&gt;A property without a known name is described by this string.&lt;/p&gt;
+<span class="nocode"><a name="74"> 74: </a></span>     */
+<span class="nocode"><a name="75"> 75: </a></span>    public static final String UNDEFINED = &quot;[undefined]&quot;;
+<span class="nocode"><a name="76"> 76: </a></span>
+<span class="nocode"><a name="77"> 77: </a></span>    /**
+<span class="nocode"><a name="78"> 78: </a></span>     * &lt;p&gt;The default section ID map. It maps section format IDs to
+<span class="nocode"><a name="79"> 79: </a></span>     * {@link PropertyIDMap}s.&lt;/p&gt;
+<span class="nocode"><a name="80"> 80: </a></span>     */
+<span class="nocode"><a name="81"> 81: </a></span>    private static SectionIDMap defaultMap;
+<span class="nocode"><a name="82"> 82: </a></span>
+<span class="nocode"><a name="83"> 83: </a></span>
+<span class="nocode"><a name="84"> 84: </a></span>
+<span class="nocode"><a name="85"> 85: </a></span>    /**
+<span class="nocode"><a name="86"> 86: </a></span>     * &lt;p&gt;Returns the singleton instance of the default {@link
+<span class="nocode"><a name="87"> 87: </a></span>     * SectionIDMap}.&lt;/p&gt;
+<span class="nocode"><a name="88"> 88: </a></span>     *
+<span class="nocode"><a name="89"> 89: </a></span>     * @return The instance value
+<span class="nocode"><a name="90"> 90: </a></span>     */
+<span class="nocode"><a name="91"> 91: </a></span>    public static SectionIDMap getInstance()
+<span class="nocode"><a name="92"> 92: </a></span>    {
+<span class="nocode"><a name="93"> 93: </a></span>        if (defaultMap == null)
+<span class="nocode"><a name="94"> 94: </a></span>        {
+<span class="nocode"><a name="95"> 95: </a></span>            final SectionIDMap m = new SectionIDMap();
+<span class="nocode"><a name="96"> 96: </a></span>            m.put(SUMMARY_INFORMATION_ID,
+<span class="nocode"><a name="97"> 97: </a></span>                  PropertyIDMap.getSummaryInformationProperties());
+<span class="nocode"><a name="98"> 98: </a></span>            m.put(DOCUMENT_SUMMARY_INFORMATION_ID[0],
+<span class="nocode"><a name="99"> 99: </a></span>                  PropertyIDMap.getDocumentSummaryInformationProperties());
+<span class="nocode"><a name="100">100: </a></span>            defaultMap = m;
+<span class="nocode"><a name="101">101: </a></span>        }
+<span class="nocode"><a name="102">102: </a></span>        return defaultMap;
+<span class="nocode"><a name="103">103: </a></span>    }
+<span class="nocode"><a name="104">104: </a></span>
+<span class="nocode"><a name="105">105: </a></span>
+<span class="nocode"><a name="106">106: </a></span>
+<span class="nocode"><a name="107">107: </a></span>    /**
+<span class="nocode"><a name="108">108: </a></span>     * &lt;p&gt;Returns the property ID string that is associated with a
+<span class="nocode"><a name="109">109: </a></span>     * given property ID in a section format ID's namespace.&lt;/p&gt;
+<span class="nocode"><a name="110">110: </a></span>     *
+<span class="nocode"><a name="111">111: </a></span>     * @param sectionFormatID Each section format ID has its own name
+<span class="nocode"><a name="112">112: </a></span>     * space of property ID strings and thus must be specified.
+<span class="nocode"><a name="113">113: </a></span>     * @param  pid The property ID
+<span class="nocode"><a name="114">114: </a></span>     * @return The well-known property ID string associated with the
+<span class="nocode"><a name="115">115: </a></span>     * property ID &lt;var&gt;pid&lt;/var&gt; in the name space spanned by &lt;var&gt;
+<span class="nocode"><a name="116">116: </a></span>     * sectionFormatID&lt;/var&gt; . If the &lt;var&gt;pid&lt;/var&gt;
+<span class="nocode"><a name="117">117: </a></span>     * /&lt;var&gt;sectionFormatID &lt;/var&gt; combination is not well-known, the
+<span class="nocode"><a name="118">118: </a></span>     * string &quot;[undefined]&quot; is returned.
+<span class="nocode"><a name="119">119: </a></span>     */
+<span class="nocode"><a name="120">120: </a></span>    public static String getPIDString(final byte[] sectionFormatID,
+<span class="nocode"><a name="121">121: </a></span>                                      final long pid)
+<span class="nocode"><a name="122">122: </a></span>    {
+<span class="nocode"><a name="123">123: </a></span>        final PropertyIDMap m = getInstance().get(sectionFormatID);
+<span class="nocode"><a name="124">124: </a></span>        if (m == null) {
+<span class="nocode"><a name="125">125: </a></span>            return UNDEFINED;
+<span class="nocode"><a name="126">126: </a></span>        }
+<span class="nocode"><a name="127">127: </a></span>        final String s = (String) m.get(pid);
+<span class="nocode"><a name="128">128: </a></span>        if (s == null)
+<span class="nocode"><a name="129">129: </a></span>            return UNDEFINED;
+<span class="nocode"><a name="130">130: </a></span>        return s;
+<span class="nocode"><a name="131">131: </a></span>    }
+<span class="nocode"><a name="132">132: </a></span>
+<span class="nocode"><a name="133">133: </a></span>
+<span class="nocode"><a name="134">134: </a></span>
+<span class="nocode"><a name="135">135: </a></span>    /**
+<span class="nocode"><a name="136">136: </a></span>     * &lt;p&gt;Returns the {@link PropertyIDMap} for a given section format
+<span class="nocode"><a name="137">137: </a></span>     * ID.&lt;/p&gt;
+<span class="nocode"><a name="138">138: </a></span>     *
+<span class="nocode"><a name="139">139: </a></span>     * @param sectionFormatID the section format ID
+<span class="nocode"><a name="140">140: </a></span>     * @return the property ID map
+<span class="nocode"><a name="141">141: </a></span>     */
+<span class="nocode"><a name="142">142: </a></span>    public PropertyIDMap get(final byte[] sectionFormatID)
+<span class="nocode"><a name="143">143: </a></span>    {
+<span class="nocode"><a name="144">144: </a></span>        return (PropertyIDMap) super.get(new String(sectionFormatID));
+<span class="nocode"><a name="145">145: </a></span>    }
+<span class="nocode"><a name="146">146: </a></span>
+<span class="nocode"><a name="147">147: </a></span>
+<span class="nocode"><a name="148">148: </a></span>
+<span class="nocode"><a name="149">149: </a></span>    /**
+<span class="nocode"><a name="150">150: </a></span>     * &lt;p&gt;Returns the {@link PropertyIDMap} for a given section format
+<span class="nocode"><a name="151">151: </a></span>     * ID.&lt;/p&gt;
+<span class="nocode"><a name="152">152: </a></span>     *
+<span class="nocode"><a name="153">153: </a></span>     * @param sectionFormatID A section format ID as a &lt;tt&gt;byte[]&lt;/tt&gt; .
+<span class="nocode"><a name="154">154: </a></span>     * @deprecated Use {@link #get(byte[])} instead!
+<span class="nocode"><a name="155">155: </a></span>     * @return the property ID map
+<span class="nocode"><a name="156">156: </a></span>     */
+<span class="nocode"><a name="157">157: </a></span>    public Object get(final Object sectionFormatID)
+<span class="nocode"><a name="158">158: </a></span>    {
+<span class="nocode"><a name="159">159: </a></span>        return get((byte[]) sectionFormatID);
+<span class="nocode"><a name="160">160: </a></span>    }
+<span class="nocode"><a name="161">161: </a></span>
+<span class="nocode"><a name="162">162: </a></span>
+<span class="nocode"><a name="163">163: </a></span>
+<span class="nocode"><a name="164">164: </a></span>    /**
+<span class="nocode"><a name="165">165: </a></span>     * &lt;p&gt;Associates a section format ID with a {@link
+<span class="nocode"><a name="166">166: </a></span>     * PropertyIDMap}.&lt;/p&gt;
+<span class="nocode"><a name="167">167: </a></span>     *
+<span class="nocode"><a name="168">168: </a></span>     * @param sectionFormatID the section format ID
+<span class="nocode"><a name="169">169: </a></span>     * @param propertyIDMap the property ID map
+<span class="nocode"><a name="170">170: </a></span>     * @return as defined by {@link java.util.Map#put}
+<span class="nocode"><a name="171">171: </a></span>     */
+<span class="nocode"><a name="172">172: </a></span>    public Object put(final byte[] sectionFormatID,
+<span class="nocode"><a name="173">173: </a></span>                      final PropertyIDMap propertyIDMap)
+<span class="nocode"><a name="174">174: </a></span>    {
+<span class="nocode"><a name="175">175: </a></span>        return super.put(new String(sectionFormatID), propertyIDMap);
+<span class="nocode"><a name="176">176: </a></span>    }
+<span class="nocode"><a name="177">177: </a></span>
+<span class="nocode"><a name="178">178: </a></span>
+<span class="nocode"><a name="179">179: </a></span>
+<span class="nocode"><a name="180">180: </a></span>    /**
+<span class="nocode"><a name="181">181: </a></span>     * @deprecated Use {@link #put(byte[], PropertyIDMap)} instead!
+<span class="nocode"><a name="182">182: </a></span>     *
+<span class="nocode"><a name="183">183: </a></span>     * @see #put(byte[], PropertyIDMap)
+<span class="nocode"><a name="184">184: </a></span>     *
+<span class="nocode"><a name="185">185: </a></span>     * @param key This parameter remains undocumented since the method is
+<span class="nocode"><a name="186">186: </a></span>     * deprecated.
+<span class="nocode"><a name="187">187: </a></span>     * @param value This parameter remains undocumented since the method is
+<span class="nocode"><a name="188">188: </a></span>     * deprecated.
+<span class="nocode"><a name="189">189: </a></span>     * @return The return value remains undocumented since the method is
+<span class="nocode"><a name="190">190: </a></span>     * deprecated.
+<span class="nocode"><a name="191">191: </a></span>     */
+<span class="nocode"><a name="192">192: </a></span>    public Object put(final Object key, final Object value)
+<span class="nocode"><a name="193">193: </a></span>    {
+<span class="nocode"><a name="194">194: </a></span>        return put((byte[]) key, (PropertyIDMap) value);
+<span class="nocode"><a name="195">195: </a></span>    }
+<span class="nocode"><a name="196">196: </a></span>
+<span class="nocode"><a name="197">197: </a></span>}
+</pre><table class="mutation_table" summary="Mutations">
+<tr><th>ID</th><th>Line</th><th>Type</th><th>Detected</th></tr><tr><td>49271</td><td><a href="#93">93</a></td><td>Negate jump condition (Replace IFNONNULL with  IFNULL)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>49272</td><td><a href="#96">96</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>49273</td><td><a href="#96">96(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>49274</td><td><a href="#98">98</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>49275</td><td><a href="#98">98</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>49276</td><td><a href="#98">98</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>49277</td><td><a href="#98">98(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>49278</td><td><a href="#123">123</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>49279</td><td><a href="#123">123(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>49280</td><td><a href="#124">124</a></td><td>Negate jump condition (Replace IFNONNULL with  IFNULL)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>49281</td><td><a href="#127">127</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>49282</td><td><a href="#128">128</a></td><td>Negate jump condition (Replace IFNONNULL with  IFNULL)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>49283</td><td><a href="#144">144</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>49284</td><td><a href="#159">159</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>49285</td><td><a href="#175">175</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>49286</td><td><a href="#194">194</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+</table>
+</body>
+</html>

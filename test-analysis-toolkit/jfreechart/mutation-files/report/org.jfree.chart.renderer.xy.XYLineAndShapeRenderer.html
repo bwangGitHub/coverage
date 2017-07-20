@@ -1,0 +1,1738 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN
+"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>
+org.jfree.chart.renderer.xy.XYLineAndShapeRenderer
+</title>
+<link href="prettify.css" type="text/css" rel="stylesheet" />
+<script type="text/javascript" src="prettify.js"></script>
+</head>
+<body onload="prettyPrint()">
+<h2>Javalanche report for class:<br/> org.jfree.chart.renderer.xy.XYLineAndShapeRenderer </h2><pre class="prettyprint" style="border: 1px solid #888;padding: 2px"><span class="nocode"><a name="1">  1: </a></span>/* ===========================================================
+<span class="nocode"><a name="2">  2: </a></span> * JFreeChart : a free chart library for the Java(tm) platform
+<span class="nocode"><a name="3">  3: </a></span> * ===========================================================
+<span class="nocode"><a name="4">  4: </a></span> *
+<span class="nocode"><a name="5">  5: </a></span> * (C) Copyright 2000-2007, by Object Refinery Limited and Contributors.
+<span class="nocode"><a name="6">  6: </a></span> *
+<span class="nocode"><a name="7">  7: </a></span> * Project Info:  http://www.jfree.org/jfreechart/index.html
+<span class="nocode"><a name="8">  8: </a></span> *
+<span class="nocode"><a name="9">  9: </a></span> * This library is free software; you can redistribute it and/or modify it 
+<span class="nocode"><a name="10"> 10: </a></span> * under the terms of the GNU Lesser General Public License as published by 
+<span class="nocode"><a name="11"> 11: </a></span> * the Free Software Foundation; either version 2.1 of the License, or 
+<span class="nocode"><a name="12"> 12: </a></span> * (at your option) any later version.
+<span class="nocode"><a name="13"> 13: </a></span> *
+<span class="nocode"><a name="14"> 14: </a></span> * This library is distributed in the hope that it will be useful, but 
+<span class="nocode"><a name="15"> 15: </a></span> * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY 
+<span class="nocode"><a name="16"> 16: </a></span> * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public 
+<span class="nocode"><a name="17"> 17: </a></span> * License for more details.
+<span class="nocode"><a name="18"> 18: </a></span> *
+<span class="nocode"><a name="19"> 19: </a></span> * You should have received a copy of the GNU Lesser General Public
+<span class="nocode"><a name="20"> 20: </a></span> * License along with this library; if not, write to the Free Software
+<span class="nocode"><a name="21"> 21: </a></span> * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, 
+<span class="nocode"><a name="22"> 22: </a></span> * USA.  
+<span class="nocode"><a name="23"> 23: </a></span> *
+<span class="nocode"><a name="24"> 24: </a></span> * [Java is a trademark or registered trademark of Sun Microsystems, Inc. 
+<span class="nocode"><a name="25"> 25: </a></span> * in the United States and other countries.]
+<span class="nocode"><a name="26"> 26: </a></span> *
+<span class="nocode"><a name="27"> 27: </a></span> * ---------------------------
+<span class="nocode"><a name="28"> 28: </a></span> * XYLineAndShapeRenderer.java
+<span class="nocode"><a name="29"> 29: </a></span> * ---------------------------
+<span class="nocode"><a name="30"> 30: </a></span> * (C) Copyright 2004-2007, by Object Refinery Limited.
+<span class="nocode"><a name="31"> 31: </a></span> *
+<span class="nocode"><a name="32"> 32: </a></span> * Original Author:  David Gilbert (for Object Refinery Limited);
+<span class="nocode"><a name="33"> 33: </a></span> * Contributor(s):   -;
+<span class="nocode"><a name="34"> 34: </a></span> *
+<span class="nocode"><a name="35"> 35: </a></span> * Changes:
+<span class="nocode"><a name="36"> 36: </a></span> * --------
+<span class="nocode"><a name="37"> 37: </a></span> * 27-Jan-2004 : Version 1 (DG);
+<span class="nocode"><a name="38"> 38: </a></span> * 10-Feb-2004 : Minor change to drawItem() method to make cut-and-paste 
+<span class="nocode"><a name="39"> 39: </a></span> *               overriding easier (DG);
+<span class="nocode"><a name="40"> 40: </a></span> * 25-Feb-2004 : Replaced CrosshairInfo with CrosshairState (DG);
+<span class="nocode"><a name="41"> 41: </a></span> * 25-Aug-2004 : Added support for chart entities (required for tooltips) (DG);
+<span class="nocode"><a name="42"> 42: </a></span> * 24-Sep-2004 : Added flag to allow whole series to be drawn as a path 
+<span class="nocode"><a name="43"> 43: </a></span> *               (necessary when using a dashed stroke with many data 
+<span class="nocode"><a name="44"> 44: </a></span> *               items) (DG);
+<span class="nocode"><a name="45"> 45: </a></span> * 04-Oct-2004 : Renamed BooleanUtils --&gt; BooleanUtilities (DG);
+<span class="nocode"><a name="46"> 46: </a></span> * 11-Nov-2004 : Now uses ShapeUtilities to translate shapes (DG);
+<span class="nocode"><a name="47"> 47: </a></span> * 27-Jan-2005 : The getLegendItem() method now omits hidden series (DG);
+<span class="nocode"><a name="48"> 48: </a></span> * 28-Jan-2005 : Added new constructor (DG);
+<span class="nocode"><a name="49"> 49: </a></span> * 09-Mar-2005 : Added fillPaint settings (DG);
+<span class="nocode"><a name="50"> 50: </a></span> * 20-Apr-2005 : Use generators for legend tooltips and URLs (DG);
+<span class="nocode"><a name="51"> 51: </a></span> * 22-Jul-2005 : Renamed defaultLinesVisible --&gt; baseLinesVisible, 
+<span class="nocode"><a name="52"> 52: </a></span> *               defaultShapesVisible --&gt; baseShapesVisible and
+<span class="nocode"><a name="53"> 53: </a></span> *               defaultShapesFilled --&gt; baseShapesFilled (DG);
+<span class="nocode"><a name="54"> 54: </a></span> * 29-Jul-2005 : Added code to draw item labels (DG);
+<span class="nocode"><a name="55"> 55: </a></span> * ------------- JFREECHART 1.0.x ---------------------------------------------
+<span class="nocode"><a name="56"> 56: </a></span> * 20-Jul-2006 : Set dataset and series indices in LegendItem (DG);
+<span class="nocode"><a name="57"> 57: </a></span> * 06-Feb-2007 : Fixed bug 1086307, crosshairs with multiple axes (DG);
+<span class="nocode"><a name="58"> 58: </a></span> * 21-Feb-2007 : Fixed bugs in clone() and equals() (DG);
+<span class="nocode"><a name="59"> 59: </a></span> * 20-Apr-2007 : Updated getLegendItem() for renderer change (DG);
+<span class="nocode"><a name="60"> 60: </a></span> * 18-May-2007 : Set dataset and seriesKey for LegendItem (DG);
+<span class="nocode"><a name="61"> 61: </a></span> * 08-Jun-2007 : Fix for bug 1731912 where entities are created even for data
+<span class="nocode"><a name="62"> 62: </a></span> *               items that are not displayed (DG);
+<span class="nocode"><a name="63"> 63: </a></span> * 26-Oct-2007 : Deprecated override attributes (DG);
+<span class="nocode"><a name="64"> 64: </a></span> *
+<span class="nocode"><a name="65"> 65: </a></span> */
+<span class="nocode"><a name="66"> 66: </a></span>
+<span class="nocode"><a name="67"> 67: </a></span>package org.jfree.chart.renderer.xy;
+<span class="nocode"><a name="68"> 68: </a></span>
+<span class="nocode"><a name="69"> 69: </a></span>import java.awt.Graphics2D;
+<span class="nocode"><a name="70"> 70: </a></span>import java.awt.Paint;
+<span class="nocode"><a name="71"> 71: </a></span>import java.awt.Shape;
+<span class="nocode"><a name="72"> 72: </a></span>import java.awt.Stroke;
+<span class="nocode"><a name="73"> 73: </a></span>import java.awt.geom.GeneralPath;
+<span class="nocode"><a name="74"> 74: </a></span>import java.awt.geom.Line2D;
+<span class="nocode"><a name="75"> 75: </a></span>import java.awt.geom.Rectangle2D;
+<span class="nocode"><a name="76"> 76: </a></span>import java.io.IOException;
+<span class="nocode"><a name="77"> 77: </a></span>import java.io.ObjectInputStream;
+<span class="nocode"><a name="78"> 78: </a></span>import java.io.ObjectOutputStream;
+<span class="nocode"><a name="79"> 79: </a></span>import java.io.Serializable;
+<span class="nocode"><a name="80"> 80: </a></span>
+<span class="nocode"><a name="81"> 81: </a></span>import org.jfree.chart.LegendItem;
+<span class="nocode"><a name="82"> 82: </a></span>import org.jfree.chart.axis.ValueAxis;
+<span class="nocode"><a name="83"> 83: </a></span>import org.jfree.chart.entity.EntityCollection;
+<span class="nocode"><a name="84"> 84: </a></span>import org.jfree.chart.event.RendererChangeEvent;
+<span class="nocode"><a name="85"> 85: </a></span>import org.jfree.chart.plot.CrosshairState;
+<span class="nocode"><a name="86"> 86: </a></span>import org.jfree.chart.plot.PlotOrientation;
+<span class="nocode"><a name="87"> 87: </a></span>import org.jfree.chart.plot.PlotRenderingInfo;
+<span class="nocode"><a name="88"> 88: </a></span>import org.jfree.chart.plot.XYPlot;
+<span class="nocode"><a name="89"> 89: </a></span>import org.jfree.data.xy.XYDataset;
+<span class="nocode"><a name="90"> 90: </a></span>import org.jfree.io.SerialUtilities;
+<span class="nocode"><a name="91"> 91: </a></span>import org.jfree.ui.RectangleEdge;
+<span class="nocode"><a name="92"> 92: </a></span>import org.jfree.util.BooleanList;
+<span class="nocode"><a name="93"> 93: </a></span>import org.jfree.util.BooleanUtilities;
+<span class="nocode"><a name="94"> 94: </a></span>import org.jfree.util.ObjectUtilities;
+<span class="nocode"><a name="95"> 95: </a></span>import org.jfree.util.PublicCloneable;
+<span class="nocode"><a name="96"> 96: </a></span>import org.jfree.util.ShapeUtilities;
+<span class="nocode"><a name="97"> 97: </a></span>
+<span class="nocode"><a name="98"> 98: </a></span>/**
+<span class="nocode"><a name="99"> 99: </a></span> * A renderer that connects data points with lines and/or draws shapes at each
+<span class="nocode"><a name="100">100: </a></span> * data point.  This renderer is designed for use with the {@link XYPlot} 
+<span class="nocode"><a name="101">101: </a></span> * class.
+<span class="nocode"><a name="102">102: </a></span> */
+<span class="nocode"><a name="103">103: </a></span>public class XYLineAndShapeRenderer extends AbstractXYItemRenderer 
+<span class="nocode"><a name="104">104: </a></span>                                    implements XYItemRenderer, 
+<span class="nocode"><a name="105">105: </a></span>                                               Cloneable,
+<span class="nocode"><a name="106">106: </a></span>                                               PublicCloneable,
+<span class="nocode"><a name="107">107: </a></span>                                               Serializable {
+<span class="nocode"><a name="108">108: </a></span>
+<span class="nocode"><a name="109">109: </a></span>    /** For serialization. */
+<span class="nocode"><a name="110">110: </a></span>    private static final long serialVersionUID = -7435246895986425885L;
+<span class="nocode"><a name="111">111: </a></span>    
+<span class="nocode"><a name="112">112: </a></span>    /** 
+<span class="nocode"><a name="113">113: </a></span>     * A flag that controls whether or not lines are visible for ALL series. 
+<span class="nocode"><a name="114">114: </a></span>     * 
+<span class="nocode"><a name="115">115: </a></span>     * @deprecated As of 1.0.7.
+<span class="nocode"><a name="116">116: </a></span>     */
+<span class="nocode"><a name="117">117: </a></span>    private Boolean linesVisible;
+<span class="nocode"><a name="118">118: </a></span>
+<span class="nocode"><a name="119">119: </a></span>    /** 
+<span class="nocode"><a name="120">120: </a></span>     * A table of flags that control (per series) whether or not lines are 
+<span class="nocode"><a name="121">121: </a></span>     * visible. 
+<span class="nocode"><a name="122">122: </a></span>     */
+<span class="nocode"><a name="123">123: </a></span>    private BooleanList seriesLinesVisible;
+<span class="nocode"><a name="124">124: </a></span>
+<span class="nocode"><a name="125">125: </a></span>    /** The default value returned by the getLinesVisible() method. */
+<span class="nocode"><a name="126">126: </a></span>    private boolean baseLinesVisible;
+<span class="nocode"><a name="127">127: </a></span>
+<span class="nocode"><a name="128">128: </a></span>    /** The shape that is used to represent a line in the legend. */
+<span class="nocode"><a name="129">129: </a></span>    private transient Shape legendLine;
+<span class="nocode"><a name="130">130: </a></span>    
+<span class="nocode"><a name="131">131: </a></span>    /** 
+<span class="nocode"><a name="132">132: </a></span>     * A flag that controls whether or not shapes are visible for ALL series.
+<span class="nocode"><a name="133">133: </a></span>     * 
+<span class="nocode"><a name="134">134: </a></span>     * @deprecated As of 1.0.7.
+<span class="nocode"><a name="135">135: </a></span>     */
+<span class="nocode"><a name="136">136: </a></span>    private Boolean shapesVisible;
+<span class="nocode"><a name="137">137: </a></span>
+<span class="nocode"><a name="138">138: </a></span>    /** 
+<span class="nocode"><a name="139">139: </a></span>     * A table of flags that control (per series) whether or not shapes are 
+<span class="nocode"><a name="140">140: </a></span>     * visible. 
+<span class="nocode"><a name="141">141: </a></span>     */
+<span class="nocode"><a name="142">142: </a></span>    private BooleanList seriesShapesVisible;
+<span class="nocode"><a name="143">143: </a></span>
+<span class="nocode"><a name="144">144: </a></span>    /** The default value returned by the getShapeVisible() method. */
+<span class="nocode"><a name="145">145: </a></span>    private boolean baseShapesVisible;
+<span class="nocode"><a name="146">146: </a></span>
+<span class="nocode"><a name="147">147: </a></span>    /** 
+<span class="nocode"><a name="148">148: </a></span>     * A flag that controls whether or not shapes are filled for ALL series. 
+<span class="nocode"><a name="149">149: </a></span>     * 
+<span class="nocode"><a name="150">150: </a></span>     * @deprecated As of 1.0.7.
+<span class="nocode"><a name="151">151: </a></span>     */
+<span class="nocode"><a name="152">152: </a></span>    private Boolean shapesFilled;
+<span class="nocode"><a name="153">153: </a></span>
+<span class="nocode"><a name="154">154: </a></span>    /** 
+<span class="nocode"><a name="155">155: </a></span>     * A table of flags that control (per series) whether or not shapes are 
+<span class="nocode"><a name="156">156: </a></span>     * filled. 
+<span class="nocode"><a name="157">157: </a></span>     */
+<span class="nocode"><a name="158">158: </a></span>    private BooleanList seriesShapesFilled;
+<span class="nocode"><a name="159">159: </a></span>
+<span class="nocode"><a name="160">160: </a></span>    /** The default value returned by the getShapeFilled() method. */
+<span class="nocode"><a name="161">161: </a></span>    private boolean baseShapesFilled;
+<span class="nocode"><a name="162">162: </a></span>    
+<span class="nocode"><a name="163">163: </a></span>    /** A flag that controls whether outlines are drawn for shapes. */
+<span class="nocode"><a name="164">164: </a></span>    private boolean drawOutlines;
+<span class="nocode"><a name="165">165: </a></span>    
+<span class="nocode"><a name="166">166: </a></span>    /** 
+<span class="nocode"><a name="167">167: </a></span>     * A flag that controls whether the fill paint is used for filling 
+<span class="nocode"><a name="168">168: </a></span>     * shapes. 
+<span class="nocode"><a name="169">169: </a></span>     */
+<span class="nocode"><a name="170">170: </a></span>    private boolean useFillPaint;
+<span class="nocode"><a name="171">171: </a></span>    
+<span class="nocode"><a name="172">172: </a></span>    /** 
+<span class="nocode"><a name="173">173: </a></span>     * A flag that controls whether the outline paint is used for drawing shape 
+<span class="nocode"><a name="174">174: </a></span>     * outlines. 
+<span class="nocode"><a name="175">175: </a></span>     */
+<span class="nocode"><a name="176">176: </a></span>    private boolean useOutlinePaint;
+<span class="nocode"><a name="177">177: </a></span>    
+<span class="nocode"><a name="178">178: </a></span>    /** 
+<span class="nocode"><a name="179">179: </a></span>     * A flag that controls whether or not each series is drawn as a single 
+<span class="nocode"><a name="180">180: </a></span>     * path. 
+<span class="nocode"><a name="181">181: </a></span>     */
+<span class="nocode"><a name="182">182: </a></span>    private boolean drawSeriesLineAsPath;
+<span class="nocode"><a name="183">183: </a></span>
+<span class="nocode"><a name="184">184: </a></span>    /**
+<span class="nocode"><a name="185">185: </a></span>     * Creates a new renderer with both lines and shapes visible.
+<span class="nocode"><a name="186">186: </a></span>     */
+<span class="nocode"><a name="187">187: </a></span>    public XYLineAndShapeRenderer() {
+<span class="nocode"><a name="188">188: </a></span>        this(true, true);
+<span class="nocode"><a name="189">189: </a></span>    }
+<span class="nocode"><a name="190">190: </a></span>    
+<span class="nocode"><a name="191">191: </a></span>    /**
+<span class="nocode"><a name="192">192: </a></span>     * Creates a new renderer.
+<span class="nocode"><a name="193">193: </a></span>     * 
+<span class="nocode"><a name="194">194: </a></span>     * @param lines  lines visible?
+<span class="nocode"><a name="195">195: </a></span>     * @param shapes  shapes visible?
+<span class="nocode"><a name="196">196: </a></span>     */
+<span class="nocode"><a name="197">197: </a></span>    public XYLineAndShapeRenderer(boolean lines, boolean shapes) {
+<span class="nocode"><a name="198">198: </a></span>        this.linesVisible = null;
+<span class="nocode"><a name="199">199: </a></span>        this.seriesLinesVisible = new BooleanList();
+<span class="nocode"><a name="200">200: </a></span>        this.baseLinesVisible = lines;
+<span class="nocode"><a name="201">201: </a></span>        this.legendLine = new Line2D.Double(-7.0, 0.0, 7.0, 0.0);
+<span class="nocode"><a name="202">202: </a></span>        
+<span class="nocode"><a name="203">203: </a></span>        this.shapesVisible = null;
+<span class="nocode"><a name="204">204: </a></span>        this.seriesShapesVisible = new BooleanList();
+<span class="nocode"><a name="205">205: </a></span>        this.baseShapesVisible = shapes;
+<span class="nocode"><a name="206">206: </a></span>        
+<span class="nocode"><a name="207">207: </a></span>        this.shapesFilled = null;
+<span class="nocode"><a name="208">208: </a></span>        this.useFillPaint = false;     // use item paint for fills by default
+<span class="nocode"><a name="209">209: </a></span>        this.seriesShapesFilled = new BooleanList();
+<span class="nocode"><a name="210">210: </a></span>        this.baseShapesFilled = true;
+<span class="nocode"><a name="211">211: </a></span>
+<span class="nocode"><a name="212">212: </a></span>        this.drawOutlines = true;     
+<span class="nocode"><a name="213">213: </a></span>        this.useOutlinePaint = false;  // use item paint for outlines by 
+<span class="nocode"><a name="214">214: </a></span>                                       // default, not outline paint
+<span class="nocode"><a name="215">215: </a></span>        
+<span class="nocode"><a name="216">216: </a></span>        this.drawSeriesLineAsPath = false;
+<span class="nocode"><a name="217">217: </a></span>    }
+<span class="nocode"><a name="218">218: </a></span>    
+<span class="nocode"><a name="219">219: </a></span>    /**
+<span class="nocode"><a name="220">220: </a></span>     * Returns a flag that controls whether or not each series is drawn as a 
+<span class="nocode"><a name="221">221: </a></span>     * single path.
+<span class="nocode"><a name="222">222: </a></span>     * 
+<span class="nocode"><a name="223">223: </a></span>     * @return A boolean.
+<span class="nocode"><a name="224">224: </a></span>     * 
+<span class="nocode"><a name="225">225: </a></span>     * @see #setDrawSeriesLineAsPath(boolean)
+<span class="nocode"><a name="226">226: </a></span>     */
+<span class="nocode"><a name="227">227: </a></span>    public boolean getDrawSeriesLineAsPath() {
+<span class="nocode"><a name="228">228: </a></span>        return this.drawSeriesLineAsPath;
+<span class="nocode"><a name="229">229: </a></span>    }
+<span class="nocode"><a name="230">230: </a></span>    
+<span class="nocode"><a name="231">231: </a></span>    /**
+<span class="nocode"><a name="232">232: </a></span>     * Sets the flag that controls whether or not each series is drawn as a 
+<span class="nocode"><a name="233">233: </a></span>     * single path and sends a {@link RendererChangeEvent} to all registered
+<span class="nocode"><a name="234">234: </a></span>     * listeners.
+<span class="nocode"><a name="235">235: </a></span>     * 
+<span class="nocode"><a name="236">236: </a></span>     * @param flag  the flag.
+<span class="nocode"><a name="237">237: </a></span>     * 
+<span class="nocode"><a name="238">238: </a></span>     * @see #getDrawSeriesLineAsPath()
+<span class="nocode"><a name="239">239: </a></span>     */
+<span class="nocode"><a name="240">240: </a></span>    public void setDrawSeriesLineAsPath(boolean flag) {
+<span class="nocode"><a name="241">241: </a></span>        if (this.drawSeriesLineAsPath != flag) {
+<span class="nocode"><a name="242">242: </a></span>            this.drawSeriesLineAsPath = flag;
+<span class="nocode"><a name="243">243: </a></span>            fireChangeEvent();
+<span class="nocode"><a name="244">244: </a></span>        }
+<span class="nocode"><a name="245">245: </a></span>    }
+<span class="nocode"><a name="246">246: </a></span>    
+<span class="nocode"><a name="247">247: </a></span>    /**
+<span class="nocode"><a name="248">248: </a></span>     * Returns the number of passes through the data that the renderer requires 
+<span class="nocode"><a name="249">249: </a></span>     * in order to draw the chart.  Most charts will require a single pass, but 
+<span class="nocode"><a name="250">250: </a></span>     * some require two passes.
+<span class="nocode"><a name="251">251: </a></span>     * 
+<span class="nocode"><a name="252">252: </a></span>     * @return The pass count.
+<span class="nocode"><a name="253">253: </a></span>     */
+<span class="nocode"><a name="254">254: </a></span>    public int getPassCount() {
+<span class="nocode"><a name="255">255: </a></span>        return 2;
+<span class="nocode"><a name="256">256: </a></span>    }
+<span class="nocode"><a name="257">257: </a></span>    
+<span class="nocode"><a name="258">258: </a></span>    // LINES VISIBLE
+<span class="nocode"><a name="259">259: </a></span>
+<span class="nocode"><a name="260">260: </a></span>    /**
+<span class="nocode"><a name="261">261: </a></span>     * Returns the flag used to control whether or not the shape for an item is 
+<span class="nocode"><a name="262">262: </a></span>     * visible.
+<span class="nocode"><a name="263">263: </a></span>     *
+<span class="nocode"><a name="264">264: </a></span>     * @param series  the series index (zero-based).
+<span class="nocode"><a name="265">265: </a></span>     * @param item  the item index (zero-based).
+<span class="nocode"><a name="266">266: </a></span>     *
+<span class="nocode"><a name="267">267: </a></span>     * @return A boolean.
+<span class="nocode"><a name="268">268: </a></span>     */
+<span class="nocode"><a name="269">269: </a></span>    public boolean getItemLineVisible(int series, int item) {
+<span class="nocode"><a name="270">270: </a></span>        Boolean flag = this.linesVisible;
+<span class="nocode"><a name="271">271: </a></span>        if (flag == null) {
+<span class="nocode"><a name="272">272: </a></span>            flag = getSeriesLinesVisible(series);
+<span class="nocode"><a name="273">273: </a></span>        }
+<span class="nocode"><a name="274">274: </a></span>        if (flag != null) {
+<span class="nocode"><a name="275">275: </a></span>            return flag.booleanValue();
+<span class="nocode"><a name="276">276: </a></span>        }
+<span class="nocode"><a name="277">277: </a></span>        else {
+<span class="nocode"><a name="278">278: </a></span>            return this.baseLinesVisible;   
+<span class="nocode"><a name="279">279: </a></span>        }
+<span class="nocode"><a name="280">280: </a></span>    }
+<span class="nocode"><a name="281">281: </a></span>
+<span class="nocode"><a name="282">282: </a></span>    /**
+<span class="nocode"><a name="283">283: </a></span>     * Returns a flag that controls whether or not lines are drawn for ALL 
+<span class="nocode"><a name="284">284: </a></span>     * series.  If this flag is &lt;code&gt;null&lt;/code&gt;, then the &quot;per series&quot; 
+<span class="nocode"><a name="285">285: </a></span>     * settings will apply.
+<span class="nocode"><a name="286">286: </a></span>     * 
+<span class="nocode"><a name="287">287: </a></span>     * @return A flag (possibly &lt;code&gt;null&lt;/code&gt;).
+<span class="nocode"><a name="288">288: </a></span>     * 
+<span class="nocode"><a name="289">289: </a></span>     * @see #setLinesVisible(Boolean)
+<span class="nocode"><a name="290">290: </a></span>     * 
+<span class="nocode"><a name="291">291: </a></span>     * @deprecated As of 1.0.7, use the per-series and base level settings.
+<span class="nocode"><a name="292">292: </a></span>     */
+<span class="nocode"><a name="293">293: </a></span>    public Boolean getLinesVisible() {
+<span class="nocode"><a name="294">294: </a></span>        return this.linesVisible;   
+<span class="nocode"><a name="295">295: </a></span>    }
+<span class="nocode"><a name="296">296: </a></span>    
+<span class="nocode"><a name="297">297: </a></span>    /**
+<span class="nocode"><a name="298">298: </a></span>     * Sets a flag that controls whether or not lines are drawn between the 
+<span class="nocode"><a name="299">299: </a></span>     * items in ALL series, and sends a {@link RendererChangeEvent} to all 
+<span class="nocode"><a name="300">300: </a></span>     * registered listeners.  You need to set this to &lt;code&gt;null&lt;/code&gt; if you 
+<span class="nocode"><a name="301">301: </a></span>     * want the &quot;per series&quot; settings to apply.
+<span class="nocode"><a name="302">302: </a></span>     *
+<span class="nocode"><a name="303">303: </a></span>     * @param visible  the flag (&lt;code&gt;null&lt;/code&gt; permitted).
+<span class="nocode"><a name="304">304: </a></span>     * 
+<span class="nocode"><a name="305">305: </a></span>     * @see #getLinesVisible()
+<span class="nocode"><a name="306">306: </a></span>     * 
+<span class="nocode"><a name="307">307: </a></span>     * @deprecated As of 1.0.7, use the per-series and base level settings.
+<span class="nocode"><a name="308">308: </a></span>     */
+<span class="nocode"><a name="309">309: </a></span>    public void setLinesVisible(Boolean visible) {
+<span class="nocode"><a name="310">310: </a></span>        this.linesVisible = visible;
+<span class="nocode"><a name="311">311: </a></span>        fireChangeEvent();
+<span class="nocode"><a name="312">312: </a></span>    }
+<span class="nocode"><a name="313">313: </a></span>
+<span class="nocode"><a name="314">314: </a></span>    /**
+<span class="nocode"><a name="315">315: </a></span>     * Sets a flag that controls whether or not lines are drawn between the 
+<span class="nocode"><a name="316">316: </a></span>     * items in ALL series, and sends a {@link RendererChangeEvent} to all 
+<span class="nocode"><a name="317">317: </a></span>     * registered listeners.
+<span class="nocode"><a name="318">318: </a></span>     *
+<span class="nocode"><a name="319">319: </a></span>     * @param visible  the flag.
+<span class="nocode"><a name="320">320: </a></span>     * 
+<span class="nocode"><a name="321">321: </a></span>     * @see #getLinesVisible()
+<span class="nocode"><a name="322">322: </a></span>     * 
+<span class="nocode"><a name="323">323: </a></span>     * @deprecated As of 1.0.7, use the per-series and base level settings.
+<span class="nocode"><a name="324">324: </a></span>     */
+<span class="nocode"><a name="325">325: </a></span>    public void setLinesVisible(boolean visible) {
+<span class="nocode"><a name="326">326: </a></span>        // we use BooleanUtilities here to preserve JRE 1.3.1 compatibility
+<span class="nocode"><a name="327">327: </a></span>        setLinesVisible(BooleanUtilities.valueOf(visible));
+<span class="nocode"><a name="328">328: </a></span>    }
+<span class="nocode"><a name="329">329: </a></span>
+<span class="nocode"><a name="330">330: </a></span>    /**
+<span class="nocode"><a name="331">331: </a></span>     * Returns the flag used to control whether or not the lines for a series 
+<span class="nocode"><a name="332">332: </a></span>     * are visible.
+<span class="nocode"><a name="333">333: </a></span>     *
+<span class="nocode"><a name="334">334: </a></span>     * @param series  the series index (zero-based).
+<span class="nocode"><a name="335">335: </a></span>     *
+<span class="nocode"><a name="336">336: </a></span>     * @return The flag (possibly &lt;code&gt;null&lt;/code&gt;).
+<span class="nocode"><a name="337">337: </a></span>     * 
+<span class="nocode"><a name="338">338: </a></span>     * @see #setSeriesLinesVisible(int, Boolean)
+<span class="nocode"><a name="339">339: </a></span>     */
+<span class="nocode"><a name="340">340: </a></span>    public Boolean getSeriesLinesVisible(int series) {
+<span class="nocode"><a name="341">341: </a></span>        return this.seriesLinesVisible.getBoolean(series);
+<span class="nocode"><a name="342">342: </a></span>    }
+<span class="nocode"><a name="343">343: </a></span>
+<span class="nocode"><a name="344">344: </a></span>    /**
+<span class="nocode"><a name="345">345: </a></span>     * Sets the 'lines visible' flag for a series and sends a 
+<span class="nocode"><a name="346">346: </a></span>     * {@link RendererChangeEvent} to all registered listeners.
+<span class="nocode"><a name="347">347: </a></span>     *
+<span class="nocode"><a name="348">348: </a></span>     * @param series  the series index (zero-based).
+<span class="nocode"><a name="349">349: </a></span>     * @param flag  the flag (&lt;code&gt;null&lt;/code&gt; permitted).
+<span class="nocode"><a name="350">350: </a></span>     * 
+<span class="nocode"><a name="351">351: </a></span>     * @see #getSeriesLinesVisible(int)
+<span class="nocode"><a name="352">352: </a></span>     */
+<span class="nocode"><a name="353">353: </a></span>    public void setSeriesLinesVisible(int series, Boolean flag) {
+<span class="nocode"><a name="354">354: </a></span>        this.seriesLinesVisible.setBoolean(series, flag);
+<span class="nocode"><a name="355">355: </a></span>        fireChangeEvent();
+<span class="nocode"><a name="356">356: </a></span>    }
+<span class="nocode"><a name="357">357: </a></span>
+<span class="nocode"><a name="358">358: </a></span>    /**
+<span class="nocode"><a name="359">359: </a></span>     * Sets the 'lines visible' flag for a series and sends a 
+<span class="nocode"><a name="360">360: </a></span>     * {@link RendererChangeEvent} to all registered listeners.
+<span class="nocode"><a name="361">361: </a></span>     * 
+<span class="nocode"><a name="362">362: </a></span>     * @param series  the series index (zero-based).
+<span class="nocode"><a name="363">363: </a></span>     * @param visible  the flag.
+<span class="nocode"><a name="364">364: </a></span>     * 
+<span class="nocode"><a name="365">365: </a></span>     * @see #getSeriesLinesVisible(int)
+<span class="nocode"><a name="366">366: </a></span>     */
+<span class="nocode"><a name="367">367: </a></span>    public void setSeriesLinesVisible(int series, boolean visible) {
+<span class="nocode"><a name="368">368: </a></span>        setSeriesLinesVisible(series, BooleanUtilities.valueOf(visible));
+<span class="nocode"><a name="369">369: </a></span>    }
+<span class="nocode"><a name="370">370: </a></span>    
+<span class="nocode"><a name="371">371: </a></span>    /**
+<span class="nocode"><a name="372">372: </a></span>     * Returns the base 'lines visible' attribute.
+<span class="nocode"><a name="373">373: </a></span>     *
+<span class="nocode"><a name="374">374: </a></span>     * @return The base flag.
+<span class="nocode"><a name="375">375: </a></span>     * 
+<span class="nocode"><a name="376">376: </a></span>     * @see #setBaseLinesVisible(boolean)
+<span class="nocode"><a name="377">377: </a></span>     */
+<span class="nocode"><a name="378">378: </a></span>    public boolean getBaseLinesVisible() {
+<span class="nocode"><a name="379">379: </a></span>        return this.baseLinesVisible;
+<span class="nocode"><a name="380">380: </a></span>    }
+<span class="nocode"><a name="381">381: </a></span>
+<span class="nocode"><a name="382">382: </a></span>    /**
+<span class="nocode"><a name="383">383: </a></span>     * Sets the base 'lines visible' flag and sends a 
+<span class="nocode"><a name="384">384: </a></span>     * {@link RendererChangeEvent} to all registered listeners.
+<span class="nocode"><a name="385">385: </a></span>     *
+<span class="nocode"><a name="386">386: </a></span>     * @param flag  the flag.
+<span class="nocode"><a name="387">387: </a></span>     * 
+<span class="nocode"><a name="388">388: </a></span>     * @see #getBaseLinesVisible()
+<span class="nocode"><a name="389">389: </a></span>     */
+<span class="nocode"><a name="390">390: </a></span>    public void setBaseLinesVisible(boolean flag) {
+<span class="nocode"><a name="391">391: </a></span>        this.baseLinesVisible = flag;
+<span class="nocode"><a name="392">392: </a></span>        fireChangeEvent();
+<span class="nocode"><a name="393">393: </a></span>    }
+<span class="nocode"><a name="394">394: </a></span>
+<span class="nocode"><a name="395">395: </a></span>    /**
+<span class="nocode"><a name="396">396: </a></span>     * Returns the shape used to represent a line in the legend.
+<span class="nocode"><a name="397">397: </a></span>     * 
+<span class="nocode"><a name="398">398: </a></span>     * @return The legend line (never &lt;code&gt;null&lt;/code&gt;).
+<span class="nocode"><a name="399">399: </a></span>     * 
+<span class="nocode"><a name="400">400: </a></span>     * @see #setLegendLine(Shape)
+<span class="nocode"><a name="401">401: </a></span>     */
+<span class="nocode"><a name="402">402: </a></span>    public Shape getLegendLine() {
+<span class="nocode"><a name="403">403: </a></span>        return this.legendLine;   
+<span class="nocode"><a name="404">404: </a></span>    }
+<span class="nocode"><a name="405">405: </a></span>    
+<span class="nocode"><a name="406">406: </a></span>    /**
+<span class="nocode"><a name="407">407: </a></span>     * Sets the shape used as a line in each legend item and sends a 
+<span class="nocode"><a name="408">408: </a></span>     * {@link RendererChangeEvent} to all registered listeners.
+<span class="nocode"><a name="409">409: </a></span>     * 
+<span class="nocode"><a name="410">410: </a></span>     * @param line  the line (&lt;code&gt;null&lt;/code&gt; not permitted).
+<span class="nocode"><a name="411">411: </a></span>     * 
+<span class="nocode"><a name="412">412: </a></span>     * @see #getLegendLine()
+<span class="nocode"><a name="413">413: </a></span>     */
+<span class="nocode"><a name="414">414: </a></span>    public void setLegendLine(Shape line) {
+<span class="nocode"><a name="415">415: </a></span>        if (line == null) {
+<span class="nocode"><a name="416">416: </a></span>            throw new IllegalArgumentException(&quot;Null 'line' argument.&quot;);   
+<span class="nocode"><a name="417">417: </a></span>        }
+<span class="nocode"><a name="418">418: </a></span>        this.legendLine = line;
+<span class="nocode"><a name="419">419: </a></span>        fireChangeEvent();
+<span class="nocode"><a name="420">420: </a></span>    }
+<span class="nocode"><a name="421">421: </a></span>
+<span class="nocode"><a name="422">422: </a></span>    // SHAPES VISIBLE
+<span class="nocode"><a name="423">423: </a></span>
+<span class="nocode"><a name="424">424: </a></span>    /**
+<span class="nocode"><a name="425">425: </a></span>     * Returns the flag used to control whether or not the shape for an item is
+<span class="nocode"><a name="426">426: </a></span>     * visible.
+<span class="nocode"><a name="427">427: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="428">428: </a></span>     * The default implementation passes control to the 
+<span class="nocode"><a name="429">429: </a></span>     * &lt;code&gt;getSeriesShapesVisible&lt;/code&gt; method. You can override this method
+<span class="nocode"><a name="430">430: </a></span>     * if you require different behaviour.
+<span class="nocode"><a name="431">431: </a></span>     *
+<span class="nocode"><a name="432">432: </a></span>     * @param series  the series index (zero-based).
+<span class="nocode"><a name="433">433: </a></span>     * @param item  the item index (zero-based).
+<span class="nocode"><a name="434">434: </a></span>     *
+<span class="nocode"><a name="435">435: </a></span>     * @return A boolean.
+<span class="nocode"><a name="436">436: </a></span>     */
+<span class="nocode"><a name="437">437: </a></span>    public boolean getItemShapeVisible(int series, int item) {
+<span class="nocode"><a name="438">438: </a></span>        Boolean flag = this.shapesVisible;
+<span class="nocode"><a name="439">439: </a></span>        if (flag == null) {
+<span class="nocode"><a name="440">440: </a></span>            flag = getSeriesShapesVisible(series);
+<span class="nocode"><a name="441">441: </a></span>        }
+<span class="nocode"><a name="442">442: </a></span>        if (flag != null) {
+<span class="nocode"><a name="443">443: </a></span>            return flag.booleanValue();   
+<span class="nocode"><a name="444">444: </a></span>        }
+<span class="nocode"><a name="445">445: </a></span>        else {
+<span class="nocode"><a name="446">446: </a></span>            return this.baseShapesVisible;
+<span class="nocode"><a name="447">447: </a></span>        }
+<span class="nocode"><a name="448">448: </a></span>    }
+<span class="nocode"><a name="449">449: </a></span>
+<span class="nocode"><a name="450">450: </a></span>    /**
+<span class="nocode"><a name="451">451: </a></span>     * Returns the flag that controls whether the shapes are visible for the 
+<span class="nocode"><a name="452">452: </a></span>     * items in ALL series.
+<span class="nocode"><a name="453">453: </a></span>     * 
+<span class="nocode"><a name="454">454: </a></span>     * @return The flag (possibly &lt;code&gt;null&lt;/code&gt;).
+<span class="nocode"><a name="455">455: </a></span>     * 
+<span class="nocode"><a name="456">456: </a></span>     * @see #setShapesVisible(Boolean)
+<span class="nocode"><a name="457">457: </a></span>     * 
+<span class="nocode"><a name="458">458: </a></span>     * @deprecated As of 1.0.7, use the per-series and base level settings.
+<span class="nocode"><a name="459">459: </a></span>     */
+<span class="nocode"><a name="460">460: </a></span>    public Boolean getShapesVisible() {
+<span class="nocode"><a name="461">461: </a></span>        return this.shapesVisible;    
+<span class="nocode"><a name="462">462: </a></span>    }
+<span class="nocode"><a name="463">463: </a></span>    
+<span class="nocode"><a name="464">464: </a></span>    /**
+<span class="nocode"><a name="465">465: </a></span>     * Sets the 'shapes visible' for ALL series and sends a 
+<span class="nocode"><a name="466">466: </a></span>     * {@link RendererChangeEvent} to all registered listeners.
+<span class="nocode"><a name="467">467: </a></span>     *
+<span class="nocode"><a name="468">468: </a></span>     * @param visible  the flag (&lt;code&gt;null&lt;/code&gt; permitted).
+<span class="nocode"><a name="469">469: </a></span>     * 
+<span class="nocode"><a name="470">470: </a></span>     * @see #getShapesVisible()
+<span class="nocode"><a name="471">471: </a></span>     * 
+<span class="nocode"><a name="472">472: </a></span>     * @deprecated As of 1.0.7, use the per-series and base level settings.
+<span class="nocode"><a name="473">473: </a></span>     */
+<span class="nocode"><a name="474">474: </a></span>    public void setShapesVisible(Boolean visible) {
+<span class="nocode"><a name="475">475: </a></span>        this.shapesVisible = visible;
+<span class="nocode"><a name="476">476: </a></span>        fireChangeEvent();
+<span class="nocode"><a name="477">477: </a></span>    }
+<span class="nocode"><a name="478">478: </a></span>
+<span class="nocode"><a name="479">479: </a></span>    /**
+<span class="nocode"><a name="480">480: </a></span>     * Sets the 'shapes visible' for ALL series and sends a 
+<span class="nocode"><a name="481">481: </a></span>     * {@link RendererChangeEvent} to all registered listeners.
+<span class="nocode"><a name="482">482: </a></span>     * 
+<span class="nocode"><a name="483">483: </a></span>     * @param visible  the flag.
+<span class="nocode"><a name="484">484: </a></span>     * 
+<span class="nocode"><a name="485">485: </a></span>     * @see #getShapesVisible()
+<span class="nocode"><a name="486">486: </a></span>     * 
+<span class="nocode"><a name="487">487: </a></span>     * @deprecated As of 1.0.7, use the per-series and base level settings.
+<span class="nocode"><a name="488">488: </a></span>     */
+<span class="nocode"><a name="489">489: </a></span>    public void setShapesVisible(boolean visible) {
+<span class="nocode"><a name="490">490: </a></span>        setShapesVisible(BooleanUtilities.valueOf(visible));
+<span class="nocode"><a name="491">491: </a></span>    }
+<span class="nocode"><a name="492">492: </a></span>
+<span class="nocode"><a name="493">493: </a></span>    /**
+<span class="nocode"><a name="494">494: </a></span>     * Returns the flag used to control whether or not the shapes for a series
+<span class="nocode"><a name="495">495: </a></span>     * are visible.
+<span class="nocode"><a name="496">496: </a></span>     *
+<span class="nocode"><a name="497">497: </a></span>     * @param series  the series index (zero-based).
+<span class="nocode"><a name="498">498: </a></span>     *
+<span class="nocode"><a name="499">499: </a></span>     * @return A boolean.
+<span class="nocode"><a name="500">500: </a></span>     * 
+<span class="nocode"><a name="501">501: </a></span>     * @see #setSeriesShapesVisible(int, Boolean)
+<span class="nocode"><a name="502">502: </a></span>     */
+<span class="nocode"><a name="503">503: </a></span>    public Boolean getSeriesShapesVisible(int series) {
+<span class="nocode"><a name="504">504: </a></span>        return this.seriesShapesVisible.getBoolean(series);
+<span class="nocode"><a name="505">505: </a></span>    }
+<span class="nocode"><a name="506">506: </a></span>
+<span class="nocode"><a name="507">507: </a></span>    /**
+<span class="nocode"><a name="508">508: </a></span>     * Sets the 'shapes visible' flag for a series and sends a 
+<span class="nocode"><a name="509">509: </a></span>     * {@link RendererChangeEvent} to all registered listeners.
+<span class="nocode"><a name="510">510: </a></span>     * 
+<span class="nocode"><a name="511">511: </a></span>     * @param series  the series index (zero-based).
+<span class="nocode"><a name="512">512: </a></span>     * @param visible  the flag.
+<span class="nocode"><a name="513">513: </a></span>     * 
+<span class="nocode"><a name="514">514: </a></span>     * @see #getSeriesShapesVisible(int)
+<span class="nocode"><a name="515">515: </a></span>     */
+<span class="nocode"><a name="516">516: </a></span>    public void setSeriesShapesVisible(int series, boolean visible) {
+<span class="nocode"><a name="517">517: </a></span>        setSeriesShapesVisible(series, BooleanUtilities.valueOf(visible));
+<span class="nocode"><a name="518">518: </a></span>    }
+<span class="nocode"><a name="519">519: </a></span>    
+<span class="nocode"><a name="520">520: </a></span>    /**
+<span class="nocode"><a name="521">521: </a></span>     * Sets the 'shapes visible' flag for a series and sends a 
+<span class="nocode"><a name="522">522: </a></span>     * {@link RendererChangeEvent} to all registered listeners.
+<span class="nocode"><a name="523">523: </a></span>     *
+<span class="nocode"><a name="524">524: </a></span>     * @param series  the series index (zero-based).
+<span class="nocode"><a name="525">525: </a></span>     * @param flag  the flag.
+<span class="nocode"><a name="526">526: </a></span>     * 
+<span class="nocode"><a name="527">527: </a></span>     * @see #getSeriesShapesVisible(int)
+<span class="nocode"><a name="528">528: </a></span>     */
+<span class="nocode"><a name="529">529: </a></span>    public void setSeriesShapesVisible(int series, Boolean flag) {
+<span class="nocode"><a name="530">530: </a></span>        this.seriesShapesVisible.setBoolean(series, flag);
+<span class="nocode"><a name="531">531: </a></span>        fireChangeEvent();
+<span class="nocode"><a name="532">532: </a></span>    }
+<span class="nocode"><a name="533">533: </a></span>
+<span class="nocode"><a name="534">534: </a></span>    /**
+<span class="nocode"><a name="535">535: </a></span>     * Returns the base 'shape visible' attribute.
+<span class="nocode"><a name="536">536: </a></span>     *
+<span class="nocode"><a name="537">537: </a></span>     * @return The base flag.
+<span class="nocode"><a name="538">538: </a></span>     * 
+<span class="nocode"><a name="539">539: </a></span>     * @see #setBaseShapesVisible(boolean)
+<span class="nocode"><a name="540">540: </a></span>     */
+<span class="nocode"><a name="541">541: </a></span>    public boolean getBaseShapesVisible() {
+<span class="nocode"><a name="542">542: </a></span>        return this.baseShapesVisible;
+<span class="nocode"><a name="543">543: </a></span>    }
+<span class="nocode"><a name="544">544: </a></span>
+<span class="nocode"><a name="545">545: </a></span>    /**
+<span class="nocode"><a name="546">546: </a></span>     * Sets the base 'shapes visible' flag and sends a 
+<span class="nocode"><a name="547">547: </a></span>     * {@link RendererChangeEvent} to all registered listeners.
+<span class="nocode"><a name="548">548: </a></span>     *
+<span class="nocode"><a name="549">549: </a></span>     * @param flag  the flag.
+<span class="nocode"><a name="550">550: </a></span>     * 
+<span class="nocode"><a name="551">551: </a></span>     * @see #getBaseShapesVisible()
+<span class="nocode"><a name="552">552: </a></span>     */
+<span class="nocode"><a name="553">553: </a></span>    public void setBaseShapesVisible(boolean flag) {
+<span class="nocode"><a name="554">554: </a></span>        this.baseShapesVisible = flag;
+<span class="nocode"><a name="555">555: </a></span>        fireChangeEvent();
+<span class="nocode"><a name="556">556: </a></span>    }
+<span class="nocode"><a name="557">557: </a></span>
+<span class="nocode"><a name="558">558: </a></span>    // SHAPES FILLED
+<span class="nocode"><a name="559">559: </a></span>
+<span class="nocode"><a name="560">560: </a></span>    /**
+<span class="nocode"><a name="561">561: </a></span>     * Returns the flag used to control whether or not the shape for an item 
+<span class="nocode"><a name="562">562: </a></span>     * is filled.
+<span class="nocode"><a name="563">563: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="564">564: </a></span>     * The default implementation passes control to the 
+<span class="nocode"><a name="565">565: </a></span>     * &lt;code&gt;getSeriesShapesFilled&lt;/code&gt; method. You can override this method
+<span class="nocode"><a name="566">566: </a></span>     * if you require different behaviour.
+<span class="nocode"><a name="567">567: </a></span>     *
+<span class="nocode"><a name="568">568: </a></span>     * @param series  the series index (zero-based).
+<span class="nocode"><a name="569">569: </a></span>     * @param item  the item index (zero-based).
+<span class="nocode"><a name="570">570: </a></span>     *
+<span class="nocode"><a name="571">571: </a></span>     * @return A boolean.
+<span class="nocode"><a name="572">572: </a></span>     */
+<span class="nocode"><a name="573">573: </a></span>    public boolean getItemShapeFilled(int series, int item) {
+<span class="nocode"><a name="574">574: </a></span>        Boolean flag = this.shapesFilled;
+<span class="nocode"><a name="575">575: </a></span>        if (flag == null) {
+<span class="nocode"><a name="576">576: </a></span>            flag = getSeriesShapesFilled(series);
+<span class="nocode"><a name="577">577: </a></span>        }
+<span class="nocode"><a name="578">578: </a></span>        if (flag != null) {
+<span class="nocode"><a name="579">579: </a></span>            return flag.booleanValue();   
+<span class="nocode"><a name="580">580: </a></span>        }
+<span class="nocode"><a name="581">581: </a></span>        else {
+<span class="nocode"><a name="582">582: </a></span>            return this.baseShapesFilled;   
+<span class="nocode"><a name="583">583: </a></span>        }
+<span class="nocode"><a name="584">584: </a></span>    }
+<span class="nocode"><a name="585">585: </a></span>    
+<span class="nocode"><a name="586">586: </a></span>    /**
+<span class="nocode"><a name="587">587: </a></span>     * Sets the 'shapes filled' for ALL series and sends a 
+<span class="nocode"><a name="588">588: </a></span>     * {@link RendererChangeEvent} to all registered listeners.
+<span class="nocode"><a name="589">589: </a></span>     *
+<span class="nocode"><a name="590">590: </a></span>     * @param filled  the flag.
+<span class="nocode"><a name="591">591: </a></span>     * 
+<span class="nocode"><a name="592">592: </a></span>     * @deprecated As of 1.0.7, use the per-series and base level settings.
+<span class="nocode"><a name="593">593: </a></span>     */
+<span class="nocode"><a name="594">594: </a></span>    public void setShapesFilled(boolean filled) {
+<span class="nocode"><a name="595">595: </a></span>        setShapesFilled(BooleanUtilities.valueOf(filled));
+<span class="nocode"><a name="596">596: </a></span>    }
+<span class="nocode"><a name="597">597: </a></span>
+<span class="nocode"><a name="598">598: </a></span>    /**
+<span class="nocode"><a name="599">599: </a></span>     * Sets the 'shapes filled' for ALL series and sends a 
+<span class="nocode"><a name="600">600: </a></span>     * {@link RendererChangeEvent} to all registered listeners.
+<span class="nocode"><a name="601">601: </a></span>     *
+<span class="nocode"><a name="602">602: </a></span>     * @param filled  the flag (&lt;code&gt;null&lt;/code&gt; permitted).
+<span class="nocode"><a name="603">603: </a></span>     * 
+<span class="nocode"><a name="604">604: </a></span>     * @deprecated As of 1.0.7, use the per-series and base level settings.
+<span class="nocode"><a name="605">605: </a></span>     */
+<span class="nocode"><a name="606">606: </a></span>    public void setShapesFilled(Boolean filled) {
+<span class="nocode"><a name="607">607: </a></span>        this.shapesFilled = filled;
+<span class="nocode"><a name="608">608: </a></span>        fireChangeEvent();
+<span class="nocode"><a name="609">609: </a></span>    }
+<span class="nocode"><a name="610">610: </a></span>    
+<span class="nocode"><a name="611">611: </a></span>    /**
+<span class="nocode"><a name="612">612: </a></span>     * Returns the flag used to control whether or not the shapes for a series
+<span class="nocode"><a name="613">613: </a></span>     * are filled.
+<span class="nocode"><a name="614">614: </a></span>     *
+<span class="nocode"><a name="615">615: </a></span>     * @param series  the series index (zero-based).
+<span class="nocode"><a name="616">616: </a></span>     *
+<span class="nocode"><a name="617">617: </a></span>     * @return A boolean.
+<span class="nocode"><a name="618">618: </a></span>     * 
+<span class="nocode"><a name="619">619: </a></span>     * @see #setSeriesShapesFilled(int, Boolean)
+<span class="nocode"><a name="620">620: </a></span>     */
+<span class="nocode"><a name="621">621: </a></span>    public Boolean getSeriesShapesFilled(int series) {
+<span class="nocode"><a name="622">622: </a></span>        return this.seriesShapesFilled.getBoolean(series);
+<span class="nocode"><a name="623">623: </a></span>    }
+<span class="nocode"><a name="624">624: </a></span>
+<span class="nocode"><a name="625">625: </a></span>    /**
+<span class="nocode"><a name="626">626: </a></span>     * Sets the 'shapes filled' flag for a series and sends a 
+<span class="nocode"><a name="627">627: </a></span>     * {@link RendererChangeEvent} to all registered listeners.
+<span class="nocode"><a name="628">628: </a></span>     *
+<span class="nocode"><a name="629">629: </a></span>     * @param series  the series index (zero-based).
+<span class="nocode"><a name="630">630: </a></span>     * @param flag  the flag.
+<span class="nocode"><a name="631">631: </a></span>     * 
+<span class="nocode"><a name="632">632: </a></span>     * @see #getSeriesShapesFilled(int)
+<span class="nocode"><a name="633">633: </a></span>     */
+<span class="nocode"><a name="634">634: </a></span>    public void setSeriesShapesFilled(int series, boolean flag) {
+<span class="nocode"><a name="635">635: </a></span>        setSeriesShapesFilled(series, BooleanUtilities.valueOf(flag));
+<span class="nocode"><a name="636">636: </a></span>    }
+<span class="nocode"><a name="637">637: </a></span>
+<span class="nocode"><a name="638">638: </a></span>    /**
+<span class="nocode"><a name="639">639: </a></span>     * Sets the 'shapes filled' flag for a series and sends a 
+<span class="nocode"><a name="640">640: </a></span>     * {@link RendererChangeEvent} to all registered listeners.
+<span class="nocode"><a name="641">641: </a></span>     *
+<span class="nocode"><a name="642">642: </a></span>     * @param series  the series index (zero-based).
+<span class="nocode"><a name="643">643: </a></span>     * @param flag  the flag.
+<span class="nocode"><a name="644">644: </a></span>     * 
+<span class="nocode"><a name="645">645: </a></span>     * @see #getSeriesShapesFilled(int)
+<span class="nocode"><a name="646">646: </a></span>     */
+<span class="nocode"><a name="647">647: </a></span>    public void setSeriesShapesFilled(int series, Boolean flag) {
+<span class="nocode"><a name="648">648: </a></span>        this.seriesShapesFilled.setBoolean(series, flag);
+<span class="nocode"><a name="649">649: </a></span>        fireChangeEvent();
+<span class="nocode"><a name="650">650: </a></span>    }
+<span class="nocode"><a name="651">651: </a></span>
+<span class="nocode"><a name="652">652: </a></span>    /**
+<span class="nocode"><a name="653">653: </a></span>     * Returns the base 'shape filled' attribute.
+<span class="nocode"><a name="654">654: </a></span>     *
+<span class="nocode"><a name="655">655: </a></span>     * @return The base flag.
+<span class="nocode"><a name="656">656: </a></span>     * 
+<span class="nocode"><a name="657">657: </a></span>     * @see #setBaseShapesFilled(boolean)
+<span class="nocode"><a name="658">658: </a></span>     */
+<span class="nocode"><a name="659">659: </a></span>    public boolean getBaseShapesFilled() {
+<span class="nocode"><a name="660">660: </a></span>        return this.baseShapesFilled;
+<span class="nocode"><a name="661">661: </a></span>    }
+<span class="nocode"><a name="662">662: </a></span>
+<span class="nocode"><a name="663">663: </a></span>    /**
+<span class="nocode"><a name="664">664: </a></span>     * Sets the base 'shapes filled' flag and sends a 
+<span class="nocode"><a name="665">665: </a></span>     * {@link RendererChangeEvent} to all registered listeners.
+<span class="nocode"><a name="666">666: </a></span>     *
+<span class="nocode"><a name="667">667: </a></span>     * @param flag  the flag.
+<span class="nocode"><a name="668">668: </a></span>     * 
+<span class="nocode"><a name="669">669: </a></span>     * @see #getBaseShapesFilled()
+<span class="nocode"><a name="670">670: </a></span>     */
+<span class="nocode"><a name="671">671: </a></span>    public void setBaseShapesFilled(boolean flag) {
+<span class="nocode"><a name="672">672: </a></span>        this.baseShapesFilled = flag;
+<span class="nocode"><a name="673">673: </a></span>        fireChangeEvent();
+<span class="nocode"><a name="674">674: </a></span>    }
+<span class="nocode"><a name="675">675: </a></span>
+<span class="nocode"><a name="676">676: </a></span>    /**
+<span class="nocode"><a name="677">677: </a></span>     * Returns &lt;code&gt;true&lt;/code&gt; if outlines should be drawn for shapes, and 
+<span class="nocode"><a name="678">678: </a></span>     * &lt;code&gt;false&lt;/code&gt; otherwise.
+<span class="nocode"><a name="679">679: </a></span>     * 
+<span class="nocode"><a name="680">680: </a></span>     * @return A boolean.
+<span class="nocode"><a name="681">681: </a></span>     * 
+<span class="nocode"><a name="682">682: </a></span>     * @see #setDrawOutlines(boolean)
+<span class="nocode"><a name="683">683: </a></span>     */
+<span class="nocode"><a name="684">684: </a></span>    public boolean getDrawOutlines() {
+<span class="nocode"><a name="685">685: </a></span>        return this.drawOutlines;
+<span class="nocode"><a name="686">686: </a></span>    }
+<span class="nocode"><a name="687">687: </a></span>    
+<span class="nocode"><a name="688">688: </a></span>    /**
+<span class="nocode"><a name="689">689: </a></span>     * Sets the flag that controls whether outlines are drawn for 
+<span class="nocode"><a name="690">690: </a></span>     * shapes, and sends a {@link RendererChangeEvent} to all registered 
+<span class="nocode"><a name="691">691: </a></span>     * listeners. 
+<span class="nocode"><a name="692">692: </a></span>     * &lt;P&gt;
+<span class="nocode"><a name="693">693: </a></span>     * In some cases, shapes look better if they do NOT have an outline, but 
+<span class="nocode"><a name="694">694: </a></span>     * this flag allows you to set your own preference.
+<span class="nocode"><a name="695">695: </a></span>     * 
+<span class="nocode"><a name="696">696: </a></span>     * @param flag  the flag.
+<span class="nocode"><a name="697">697: </a></span>     * 
+<span class="nocode"><a name="698">698: </a></span>     * @see #getDrawOutlines()
+<span class="nocode"><a name="699">699: </a></span>     */
+<span class="nocode"><a name="700">700: </a></span>    public void setDrawOutlines(boolean flag) {
+<span class="nocode"><a name="701">701: </a></span>        this.drawOutlines = flag;
+<span class="nocode"><a name="702">702: </a></span>        fireChangeEvent();
+<span class="nocode"><a name="703">703: </a></span>    }
+<span class="nocode"><a name="704">704: </a></span>    
+<span class="nocode"><a name="705">705: </a></span>    /**
+<span class="nocode"><a name="706">706: </a></span>     * Returns &lt;code&gt;true&lt;/code&gt; if the renderer should use the fill paint 
+<span class="nocode"><a name="707">707: </a></span>     * setting to fill shapes, and &lt;code&gt;false&lt;/code&gt; if it should just
+<span class="nocode"><a name="708">708: </a></span>     * use the regular paint.
+<span class="nocode"><a name="709">709: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="710">710: </a></span>     * Refer to &lt;code&gt;XYLineAndShapeRendererDemo2.java&lt;/code&gt; to see the
+<span class="nocode"><a name="711">711: </a></span>     * effect of this flag.
+<span class="nocode"><a name="712">712: </a></span>     * 
+<span class="nocode"><a name="713">713: </a></span>     * @return A boolean.
+<span class="nocode"><a name="714">714: </a></span>     * 
+<span class="nocode"><a name="715">715: </a></span>     * @see #setUseFillPaint(boolean)
+<span class="nocode"><a name="716">716: </a></span>     * @see #getUseOutlinePaint()
+<span class="nocode"><a name="717">717: </a></span>     */
+<span class="nocode"><a name="718">718: </a></span>    public boolean getUseFillPaint() {
+<span class="nocode"><a name="719">719: </a></span>        return this.useFillPaint;
+<span class="nocode"><a name="720">720: </a></span>    }
+<span class="nocode"><a name="721">721: </a></span>    
+<span class="nocode"><a name="722">722: </a></span>    /**
+<span class="nocode"><a name="723">723: </a></span>     * Sets the flag that controls whether the fill paint is used to fill 
+<span class="nocode"><a name="724">724: </a></span>     * shapes, and sends a {@link RendererChangeEvent} to all 
+<span class="nocode"><a name="725">725: </a></span>     * registered listeners.
+<span class="nocode"><a name="726">726: </a></span>     * 
+<span class="nocode"><a name="727">727: </a></span>     * @param flag  the flag.
+<span class="nocode"><a name="728">728: </a></span>     * 
+<span class="nocode"><a name="729">729: </a></span>     * @see #getUseFillPaint()
+<span class="nocode"><a name="730">730: </a></span>     */
+<span class="nocode"><a name="731">731: </a></span>    public void setUseFillPaint(boolean flag) {
+<span class="nocode"><a name="732">732: </a></span>        this.useFillPaint = flag;
+<span class="nocode"><a name="733">733: </a></span>        fireChangeEvent();
+<span class="nocode"><a name="734">734: </a></span>    }
+<span class="nocode"><a name="735">735: </a></span>    
+<span class="nocode"><a name="736">736: </a></span>    /**
+<span class="nocode"><a name="737">737: </a></span>     * Returns &lt;code&gt;true&lt;/code&gt; if the renderer should use the outline paint 
+<span class="nocode"><a name="738">738: </a></span>     * setting to draw shape outlines, and &lt;code&gt;false&lt;/code&gt; if it should just
+<span class="nocode"><a name="739">739: </a></span>     * use the regular paint.
+<span class="nocode"><a name="740">740: </a></span>     * 
+<span class="nocode"><a name="741">741: </a></span>     * @return A boolean.
+<span class="nocode"><a name="742">742: </a></span>     * 
+<span class="nocode"><a name="743">743: </a></span>     * @see #setUseOutlinePaint(boolean)
+<span class="nocode"><a name="744">744: </a></span>     * @see #getUseFillPaint()
+<span class="nocode"><a name="745">745: </a></span>     */
+<span class="nocode"><a name="746">746: </a></span>    public boolean getUseOutlinePaint() {
+<span class="nocode"><a name="747">747: </a></span>        return this.useOutlinePaint;
+<span class="nocode"><a name="748">748: </a></span>    }
+<span class="nocode"><a name="749">749: </a></span>    
+<span class="nocode"><a name="750">750: </a></span>    /**
+<span class="nocode"><a name="751">751: </a></span>     * Sets the flag that controls whether the outline paint is used to draw 
+<span class="nocode"><a name="752">752: </a></span>     * shape outlines, and sends a {@link RendererChangeEvent} to all 
+<span class="nocode"><a name="753">753: </a></span>     * registered listeners.
+<span class="nocode"><a name="754">754: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="755">755: </a></span>     * Refer to &lt;code&gt;XYLineAndShapeRendererDemo2.java&lt;/code&gt; to see the
+<span class="nocode"><a name="756">756: </a></span>     * effect of this flag.
+<span class="nocode"><a name="757">757: </a></span>     * 
+<span class="nocode"><a name="758">758: </a></span>     * @param flag  the flag.
+<span class="nocode"><a name="759">759: </a></span>     * 
+<span class="nocode"><a name="760">760: </a></span>     * @see #getUseOutlinePaint()
+<span class="nocode"><a name="761">761: </a></span>     */
+<span class="nocode"><a name="762">762: </a></span>    public void setUseOutlinePaint(boolean flag) {
+<span class="nocode"><a name="763">763: </a></span>        this.useOutlinePaint = flag;
+<span class="nocode"><a name="764">764: </a></span>        fireChangeEvent();
+<span class="nocode"><a name="765">765: </a></span>    }
+<span class="nocode"><a name="766">766: </a></span>    
+<span class="nocode"><a name="767">767: </a></span>    /**
+<span class="nocode"><a name="768">768: </a></span>     * Records the state for the renderer.  This is used to preserve state 
+<span class="nocode"><a name="769">769: </a></span>     * information between calls to the drawItem() method for a single chart 
+<span class="nocode"><a name="770">770: </a></span>     * drawing.
+<span class="nocode"><a name="771">771: </a></span>     */
+<span class="nocode"><a name="772">772: </a></span>    public static class State extends XYItemRendererState {
+<span class="nocode"><a name="773">773: </a></span>        
+<span class="nocode"><a name="774">774: </a></span>        /** The path for the current series. */
+<span class="nocode"><a name="775">775: </a></span>        public GeneralPath seriesPath;
+<span class="nocode"><a name="776">776: </a></span>        
+<span class="nocode"><a name="777">777: </a></span>        /** 
+<span class="nocode"><a name="778">778: </a></span>         * A flag that indicates if the last (x, y) point was 'good' 
+<span class="nocode"><a name="779">779: </a></span>         * (non-null). 
+<span class="nocode"><a name="780">780: </a></span>         */
+<span class="nocode"><a name="781">781: </a></span>        private boolean lastPointGood;
+<span class="nocode"><a name="782">782: </a></span>        
+<span class="nocode"><a name="783">783: </a></span>        /**
+<span class="nocode"><a name="784">784: </a></span>         * Creates a new state instance.
+<span class="nocode"><a name="785">785: </a></span>         * 
+<span class="nocode"><a name="786">786: </a></span>         * @param info  the plot rendering info.
+<span class="nocode"><a name="787">787: </a></span>         */
+<span class="nocode"><a name="788">788: </a></span>        public State(PlotRenderingInfo info) {
+<span class="nocode"><a name="789">789: </a></span>            super(info);
+<span class="nocode"><a name="790">790: </a></span>        }
+<span class="nocode"><a name="791">791: </a></span>        
+<span class="nocode"><a name="792">792: </a></span>        /**
+<span class="nocode"><a name="793">793: </a></span>         * Returns a flag that indicates if the last point drawn (in the 
+<span class="nocode"><a name="794">794: </a></span>         * current series) was 'good' (non-null).
+<span class="nocode"><a name="795">795: </a></span>         * 
+<span class="nocode"><a name="796">796: </a></span>         * @return A boolean.
+<span class="nocode"><a name="797">797: </a></span>         */
+<span class="nocode"><a name="798">798: </a></span>        public boolean isLastPointGood() {
+<span class="nocode"><a name="799">799: </a></span>            return this.lastPointGood;
+<span class="nocode"><a name="800">800: </a></span>        }
+<span class="nocode"><a name="801">801: </a></span>        
+<span class="nocode"><a name="802">802: </a></span>        /**
+<span class="nocode"><a name="803">803: </a></span>         * Sets a flag that indicates if the last point drawn (in the current 
+<span class="nocode"><a name="804">804: </a></span>         * series) was 'good' (non-null).
+<span class="nocode"><a name="805">805: </a></span>         * 
+<span class="nocode"><a name="806">806: </a></span>         * @param good  the flag.
+<span class="nocode"><a name="807">807: </a></span>         */
+<span class="nocode"><a name="808">808: </a></span>        public void setLastPointGood(boolean good) {
+<span class="nocode"><a name="809">809: </a></span>            this.lastPointGood = good;
+<span class="nocode"><a name="810">810: </a></span>        }
+<span class="nocode"><a name="811">811: </a></span>    }
+<span class="nocode"><a name="812">812: </a></span>    
+<span class="nocode"><a name="813">813: </a></span>    /**
+<span class="nocode"><a name="814">814: </a></span>     * Initialises the renderer.
+<span class="nocode"><a name="815">815: </a></span>     * &lt;P&gt;
+<span class="nocode"><a name="816">816: </a></span>     * This method will be called before the first item is rendered, giving the
+<span class="nocode"><a name="817">817: </a></span>     * renderer an opportunity to initialise any state information it wants to 
+<span class="nocode"><a name="818">818: </a></span>     * maintain.  The renderer can do nothing if it chooses.
+<span class="nocode"><a name="819">819: </a></span>     *
+<span class="nocode"><a name="820">820: </a></span>     * @param g2  the graphics device.
+<span class="nocode"><a name="821">821: </a></span>     * @param dataArea  the area inside the axes.
+<span class="nocode"><a name="822">822: </a></span>     * @param plot  the plot.
+<span class="nocode"><a name="823">823: </a></span>     * @param data  the data.
+<span class="nocode"><a name="824">824: </a></span>     * @param info  an optional info collection object to return data back to 
+<span class="nocode"><a name="825">825: </a></span>     *              the caller.
+<span class="nocode"><a name="826">826: </a></span>     *
+<span class="nocode"><a name="827">827: </a></span>     * @return The renderer state.
+<span class="nocode"><a name="828">828: </a></span>     */
+<span class="nocode"><a name="829">829: </a></span>    public XYItemRendererState initialise(Graphics2D g2,
+<span class="nocode"><a name="830">830: </a></span>                                          Rectangle2D dataArea,
+<span class="nocode"><a name="831">831: </a></span>                                          XYPlot plot,
+<span class="nocode"><a name="832">832: </a></span>                                          XYDataset data,
+<span class="nocode"><a name="833">833: </a></span>                                          PlotRenderingInfo info) {
+<span class="nocode"><a name="834">834: </a></span>
+<span class="nocode"><a name="835">835: </a></span>        State state = new State(info);
+<span class="nocode"><a name="836">836: </a></span>        state.seriesPath = new GeneralPath();
+<span class="nocode"><a name="837">837: </a></span>        return state;
+<span class="nocode"><a name="838">838: </a></span>
+<span class="nocode"><a name="839">839: </a></span>    }
+<span class="nocode"><a name="840">840: </a></span>    
+<span class="nocode"><a name="841">841: </a></span>    /**
+<span class="nocode"><a name="842">842: </a></span>     * Draws the visual representation of a single data item.
+<span class="nocode"><a name="843">843: </a></span>     *
+<span class="nocode"><a name="844">844: </a></span>     * @param g2  the graphics device.
+<span class="nocode"><a name="845">845: </a></span>     * @param state  the renderer state.
+<span class="nocode"><a name="846">846: </a></span>     * @param dataArea  the area within which the data is being drawn.
+<span class="nocode"><a name="847">847: </a></span>     * @param info  collects information about the drawing.
+<span class="nocode"><a name="848">848: </a></span>     * @param plot  the plot (can be used to obtain standard color 
+<span class="nocode"><a name="849">849: </a></span>     *              information etc).
+<span class="nocode"><a name="850">850: </a></span>     * @param domainAxis  the domain axis.
+<span class="nocode"><a name="851">851: </a></span>     * @param rangeAxis  the range axis.
+<span class="nocode"><a name="852">852: </a></span>     * @param dataset  the dataset.
+<span class="nocode"><a name="853">853: </a></span>     * @param series  the series index (zero-based).
+<span class="nocode"><a name="854">854: </a></span>     * @param item  the item index (zero-based).
+<span class="nocode"><a name="855">855: </a></span>     * @param crosshairState  crosshair information for the plot 
+<span class="nocode"><a name="856">856: </a></span>     *                        (&lt;code&gt;null&lt;/code&gt; permitted).
+<span class="nocode"><a name="857">857: </a></span>     * @param pass  the pass index.
+<span class="nocode"><a name="858">858: </a></span>     */
+<span class="nocode"><a name="859">859: </a></span>    public void drawItem(Graphics2D g2,
+<span class="nocode"><a name="860">860: </a></span>                         XYItemRendererState state,
+<span class="nocode"><a name="861">861: </a></span>                         Rectangle2D dataArea,
+<span class="nocode"><a name="862">862: </a></span>                         PlotRenderingInfo info,
+<span class="nocode"><a name="863">863: </a></span>                         XYPlot plot,
+<span class="nocode"><a name="864">864: </a></span>                         ValueAxis domainAxis,
+<span class="nocode"><a name="865">865: </a></span>                         ValueAxis rangeAxis,
+<span class="nocode"><a name="866">866: </a></span>                         XYDataset dataset,
+<span class="nocode"><a name="867">867: </a></span>                         int series,
+<span class="nocode"><a name="868">868: </a></span>                         int item,
+<span class="nocode"><a name="869">869: </a></span>                         CrosshairState crosshairState,
+<span class="nocode"><a name="870">870: </a></span>                         int pass) {
+<span class="nocode"><a name="871">871: </a></span>
+<span class="nocode"><a name="872">872: </a></span>        // do nothing if item is not visible
+<span class="nocode"><a name="873">873: </a></span>        if (!getItemVisible(series, item)) {
+<span class="nocode"><a name="874">874: </a></span>            return;   
+<span class="nocode"><a name="875">875: </a></span>        }
+<span class="nocode"><a name="876">876: </a></span>
+<span class="nocode"><a name="877">877: </a></span>        // first pass draws the background (lines, for instance)
+<span class="nocode"><a name="878">878: </a></span>        if (isLinePass(pass)) {
+<span class="nocode"><a name="879">879: </a></span>            if (item == 0) {
+<span class="nocode"><a name="880">880: </a></span>                if (this.drawSeriesLineAsPath) {
+<span class="nocode"><a name="881">881: </a></span>                    State s = (State) state;
+<span class="nocode"><a name="882">882: </a></span>                    s.seriesPath.reset();
+<span class="nocode"><a name="883">883: </a></span>                    s.lastPointGood = false;     
+<span class="nocode"><a name="884">884: </a></span>                }
+<span class="nocode"><a name="885">885: </a></span>            }
+<span class="nocode"><a name="886">886: </a></span>
+<span class="nocode"><a name="887">887: </a></span>            if (getItemLineVisible(series, item)) {
+<span class="nocode"><a name="888">888: </a></span>                if (this.drawSeriesLineAsPath) {
+<span class="nocode"><a name="889">889: </a></span>                    drawPrimaryLineAsPath(state, g2, plot, dataset, pass, 
+<span class="nocode"><a name="890">890: </a></span>                            series, item, domainAxis, rangeAxis, dataArea);
+<span class="nocode"><a name="891">891: </a></span>                }
+<span class="nocode"><a name="892">892: </a></span>                else {
+<span class="nocode"><a name="893">893: </a></span>                    drawPrimaryLine(state, g2, plot, dataset, pass, series, 
+<span class="nocode"><a name="894">894: </a></span>                            item, domainAxis, rangeAxis, dataArea);
+<span class="nocode"><a name="895">895: </a></span>                }
+<span class="nocode"><a name="896">896: </a></span>            }
+<span class="nocode"><a name="897">897: </a></span>        }
+<span class="nocode"><a name="898">898: </a></span>        // second pass adds shapes where the items are ..
+<span class="nocode"><a name="899">899: </a></span>        else if (isItemPass(pass)) {
+<span class="nocode"><a name="900">900: </a></span>
+<span class="nocode"><a name="901">901: </a></span>            // setup for collecting optional entity info...
+<span class="nocode"><a name="902">902: </a></span>            EntityCollection entities = null;
+<span class="nocode"><a name="903">903: </a></span>            if (info != null) {
+<span class="nocode"><a name="904">904: </a></span>                entities = info.getOwner().getEntityCollection();
+<span class="nocode"><a name="905">905: </a></span>            }
+<span class="nocode"><a name="906">906: </a></span>
+<span class="nocode"><a name="907">907: </a></span>            drawSecondaryPass(g2, plot, dataset, pass, series, item, 
+<span class="nocode"><a name="908">908: </a></span>                    domainAxis, dataArea, rangeAxis, crosshairState, entities);
+<span class="nocode"><a name="909">909: </a></span>        }
+<span class="nocode"><a name="910">910: </a></span>    }
+<span class="nocode"><a name="911">911: </a></span>
+<span class="nocode"><a name="912">912: </a></span>    /**
+<span class="nocode"><a name="913">913: </a></span>     * Returns &lt;code&gt;true&lt;/code&gt; if the specified pass is the one for drawing 
+<span class="nocode"><a name="914">914: </a></span>     * lines.
+<span class="nocode"><a name="915">915: </a></span>     * 
+<span class="nocode"><a name="916">916: </a></span>     * @param pass  the pass.
+<span class="nocode"><a name="917">917: </a></span>     * 
+<span class="nocode"><a name="918">918: </a></span>     * @return A boolean.
+<span class="nocode"><a name="919">919: </a></span>     */
+<span class="nocode"><a name="920">920: </a></span>    protected boolean isLinePass(int pass) {
+<span class="nocode"><a name="921">921: </a></span>        return pass == 0;
+<span class="nocode"><a name="922">922: </a></span>    }
+<span class="nocode"><a name="923">923: </a></span>
+<span class="nocode"><a name="924">924: </a></span>    /**
+<span class="nocode"><a name="925">925: </a></span>     * Returns &lt;code&gt;true&lt;/code&gt; if the specified pass is the one for drawing 
+<span class="nocode"><a name="926">926: </a></span>     * items.
+<span class="nocode"><a name="927">927: </a></span>     * 
+<span class="nocode"><a name="928">928: </a></span>     * @param pass  the pass.
+<span class="nocode"><a name="929">929: </a></span>     * 
+<span class="nocode"><a name="930">930: </a></span>     * @return A boolean.
+<span class="nocode"><a name="931">931: </a></span>     */
+<span class="nocode"><a name="932">932: </a></span>    protected boolean isItemPass(int pass) {
+<span class="nocode"><a name="933">933: </a></span>        return pass == 1;
+<span class="nocode"><a name="934">934: </a></span>    }
+<span class="nocode"><a name="935">935: </a></span>
+<span class="nocode"><a name="936">936: </a></span>    /**
+<span class="nocode"><a name="937">937: </a></span>     * Draws the item (first pass). This method draws the lines
+<span class="nocode"><a name="938">938: </a></span>     * connecting the items.
+<span class="nocode"><a name="939">939: </a></span>     *
+<span class="nocode"><a name="940">940: </a></span>     * @param g2  the graphics device.
+<span class="nocode"><a name="941">941: </a></span>     * @param state  the renderer state.
+<span class="nocode"><a name="942">942: </a></span>     * @param dataArea  the area within which the data is being drawn.
+<span class="nocode"><a name="943">943: </a></span>     * @param plot  the plot (can be used to obtain standard color 
+<span class="nocode"><a name="944">944: </a></span>     *              information etc).
+<span class="nocode"><a name="945">945: </a></span>     * @param domainAxis  the domain axis.
+<span class="nocode"><a name="946">946: </a></span>     * @param rangeAxis  the range axis.
+<span class="nocode"><a name="947">947: </a></span>     * @param dataset  the dataset.
+<span class="nocode"><a name="948">948: </a></span>     * @param pass  the pass.
+<span class="nocode"><a name="949">949: </a></span>     * @param series  the series index (zero-based).
+<span class="nocode"><a name="950">950: </a></span>     * @param item  the item index (zero-based).
+<span class="nocode"><a name="951">951: </a></span>     */
+<span class="nocode"><a name="952">952: </a></span>    protected void drawPrimaryLine(XYItemRendererState state,
+<span class="nocode"><a name="953">953: </a></span>                                   Graphics2D g2,
+<span class="nocode"><a name="954">954: </a></span>                                   XYPlot plot,
+<span class="nocode"><a name="955">955: </a></span>                                   XYDataset dataset,
+<span class="nocode"><a name="956">956: </a></span>                                   int pass,
+<span class="nocode"><a name="957">957: </a></span>                                   int series,
+<span class="nocode"><a name="958">958: </a></span>                                   int item,
+<span class="nocode"><a name="959">959: </a></span>                                   ValueAxis domainAxis,
+<span class="nocode"><a name="960">960: </a></span>                                   ValueAxis rangeAxis,
+<span class="nocode"><a name="961">961: </a></span>                                   Rectangle2D dataArea) {
+<span class="nocode"><a name="962">962: </a></span>        if (item == 0) {
+<span class="nocode"><a name="963">963: </a></span>            return;
+<span class="nocode"><a name="964">964: </a></span>        }
+<span class="nocode"><a name="965">965: </a></span>
+<span class="nocode"><a name="966">966: </a></span>        // get the data point...
+<span class="nocode"><a name="967">967: </a></span>        double x1 = dataset.getXValue(series, item);
+<span class="nocode"><a name="968">968: </a></span>        double y1 = dataset.getYValue(series, item);
+<span class="nocode"><a name="969">969: </a></span>        if (Double.isNaN(y1) || Double.isNaN(x1)) {
+<span class="nocode"><a name="970">970: </a></span>            return;
+<span class="nocode"><a name="971">971: </a></span>        }
+<span class="nocode"><a name="972">972: </a></span>
+<span class="nocode"><a name="973">973: </a></span>        double x0 = dataset.getXValue(series, item - 1);
+<span class="nocode"><a name="974">974: </a></span>        double y0 = dataset.getYValue(series, item - 1);
+<span class="nocode"><a name="975">975: </a></span>        if (Double.isNaN(y0) || Double.isNaN(x0)) {
+<span class="nocode"><a name="976">976: </a></span>            return;
+<span class="nocode"><a name="977">977: </a></span>        }
+<span class="nocode"><a name="978">978: </a></span>
+<span class="nocode"><a name="979">979: </a></span>        RectangleEdge xAxisLocation = plot.getDomainAxisEdge();
+<span class="nocode"><a name="980">980: </a></span>        RectangleEdge yAxisLocation = plot.getRangeAxisEdge();
+<span class="nocode"><a name="981">981: </a></span>
+<span class="nocode"><a name="982">982: </a></span>        double transX0 = domainAxis.valueToJava2D(x0, dataArea, xAxisLocation);
+<span class="nocode"><a name="983">983: </a></span>        double transY0 = rangeAxis.valueToJava2D(y0, dataArea, yAxisLocation);
+<span class="nocode"><a name="984">984: </a></span>
+<span class="nocode"><a name="985">985: </a></span>        double transX1 = domainAxis.valueToJava2D(x1, dataArea, xAxisLocation);
+<span class="nocode"><a name="986">986: </a></span>        double transY1 = rangeAxis.valueToJava2D(y1, dataArea, yAxisLocation);
+<span class="nocode"><a name="987">987: </a></span>
+<span class="nocode"><a name="988">988: </a></span>        // only draw if we have good values
+<span class="nocode"><a name="989">989: </a></span>        if (Double.isNaN(transX0) || Double.isNaN(transY0)
+<span class="nocode"><a name="990">990: </a></span>            || Double.isNaN(transX1) || Double.isNaN(transY1)) {
+<span class="nocode"><a name="991">991: </a></span>            return;
+<span class="nocode"><a name="992">992: </a></span>        }
+<span class="nocode"><a name="993">993: </a></span>
+<span class="nocode"><a name="994">994: </a></span>        PlotOrientation orientation = plot.getOrientation();
+<span class="nocode"><a name="995">995: </a></span>        if (orientation == PlotOrientation.HORIZONTAL) {
+<span class="nocode"><a name="996">996: </a></span>            state.workingLine.setLine(transY0, transX0, transY1, transX1);
+<span class="nocode"><a name="997">997: </a></span>        }
+<span class="nocode"><a name="998">998: </a></span>        else if (orientation == PlotOrientation.VERTICAL) {
+<span class="nocode"><a name="999">999: </a></span>            state.workingLine.setLine(transX0, transY0, transX1, transY1);
+<span class="nocode"><a name="1000">1000: </a></span>        }
+<span class="nocode"><a name="1001">1001: </a></span>
+<span class="nocode"><a name="1002">1002: </a></span>        if (state.workingLine.intersects(dataArea)) {
+<span class="nocode"><a name="1003">1003: </a></span>            drawFirstPassShape(g2, pass, series, item, state.workingLine);
+<span class="nocode"><a name="1004">1004: </a></span>        }
+<span class="nocode"><a name="1005">1005: </a></span>    }
+<span class="nocode"><a name="1006">1006: </a></span>
+<span class="nocode"><a name="1007">1007: </a></span>    /**
+<span class="nocode"><a name="1008">1008: </a></span>     * Draws the first pass shape.
+<span class="nocode"><a name="1009">1009: </a></span>     * 
+<span class="nocode"><a name="1010">1010: </a></span>     * @param g2  the graphics device.
+<span class="nocode"><a name="1011">1011: </a></span>     * @param pass  the pass.
+<span class="nocode"><a name="1012">1012: </a></span>     * @param series  the series index.
+<span class="nocode"><a name="1013">1013: </a></span>     * @param item  the item index.
+<span class="nocode"><a name="1014">1014: </a></span>     * @param shape  the shape.
+<span class="nocode"><a name="1015">1015: </a></span>     */
+<span class="nocode"><a name="1016">1016: </a></span>    protected void drawFirstPassShape(Graphics2D g2, int pass, int series,
+<span class="nocode"><a name="1017">1017: </a></span>                                      int item, Shape shape) {
+<span class="nocode"><a name="1018">1018: </a></span>        g2.setStroke(getItemStroke(series, item));
+<span class="nocode"><a name="1019">1019: </a></span>        g2.setPaint(getItemPaint(series, item));
+<span class="nocode"><a name="1020">1020: </a></span>        g2.draw(shape);
+<span class="nocode"><a name="1021">1021: </a></span>    }
+<span class="nocode"><a name="1022">1022: </a></span>
+<span class="nocode"><a name="1023">1023: </a></span>
+<span class="nocode"><a name="1024">1024: </a></span>    /**
+<span class="nocode"><a name="1025">1025: </a></span>     * Draws the item (first pass). This method draws the lines
+<span class="nocode"><a name="1026">1026: </a></span>     * connecting the items. Instead of drawing separate lines,
+<span class="nocode"><a name="1027">1027: </a></span>     * a GeneralPath is constructed and drawn at the end of
+<span class="nocode"><a name="1028">1028: </a></span>     * the series painting.
+<span class="nocode"><a name="1029">1029: </a></span>     *
+<span class="nocode"><a name="1030">1030: </a></span>     * @param g2  the graphics device.
+<span class="nocode"><a name="1031">1031: </a></span>     * @param state  the renderer state.
+<span class="nocode"><a name="1032">1032: </a></span>     * @param plot  the plot (can be used to obtain standard color information 
+<span class="nocode"><a name="1033">1033: </a></span>     *              etc).
+<span class="nocode"><a name="1034">1034: </a></span>     * @param dataset  the dataset.
+<span class="nocode"><a name="1035">1035: </a></span>     * @param pass  the pass.
+<span class="nocode"><a name="1036">1036: </a></span>     * @param series  the series index (zero-based).
+<span class="nocode"><a name="1037">1037: </a></span>     * @param item  the item index (zero-based).
+<span class="nocode"><a name="1038">1038: </a></span>     * @param domainAxis  the domain axis.
+<span class="nocode"><a name="1039">1039: </a></span>     * @param rangeAxis  the range axis.
+<span class="nocode"><a name="1040">1040: </a></span>     * @param dataArea  the area within which the data is being drawn.
+<span class="nocode"><a name="1041">1041: </a></span>     */
+<span class="nocode"><a name="1042">1042: </a></span>    protected void drawPrimaryLineAsPath(XYItemRendererState state,
+<span class="nocode"><a name="1043">1043: </a></span>                                         Graphics2D g2, XYPlot plot,
+<span class="nocode"><a name="1044">1044: </a></span>                                         XYDataset dataset,
+<span class="nocode"><a name="1045">1045: </a></span>                                         int pass,
+<span class="nocode"><a name="1046">1046: </a></span>                                         int series,
+<span class="nocode"><a name="1047">1047: </a></span>                                         int item,
+<span class="nocode"><a name="1048">1048: </a></span>                                         ValueAxis domainAxis,
+<span class="nocode"><a name="1049">1049: </a></span>                                         ValueAxis rangeAxis,
+<span class="nocode"><a name="1050">1050: </a></span>                                         Rectangle2D dataArea) {
+<span class="nocode"><a name="1051">1051: </a></span>
+<span class="nocode"><a name="1052">1052: </a></span>
+<span class="nocode"><a name="1053">1053: </a></span>        RectangleEdge xAxisLocation = plot.getDomainAxisEdge();
+<span class="nocode"><a name="1054">1054: </a></span>        RectangleEdge yAxisLocation = plot.getRangeAxisEdge();
+<span class="nocode"><a name="1055">1055: </a></span>
+<span class="nocode"><a name="1056">1056: </a></span>        // get the data point...
+<span class="nocode"><a name="1057">1057: </a></span>        double x1 = dataset.getXValue(series, item);
+<span class="nocode"><a name="1058">1058: </a></span>        double y1 = dataset.getYValue(series, item);
+<span class="nocode"><a name="1059">1059: </a></span>        double transX1 = domainAxis.valueToJava2D(x1, dataArea, xAxisLocation);
+<span class="nocode"><a name="1060">1060: </a></span>        double transY1 = rangeAxis.valueToJava2D(y1, dataArea, yAxisLocation);
+<span class="nocode"><a name="1061">1061: </a></span>
+<span class="nocode"><a name="1062">1062: </a></span>        State s = (State) state;
+<span class="nocode"><a name="1063">1063: </a></span>        // update path to reflect latest point
+<span class="nocode"><a name="1064">1064: </a></span>        if (!Double.isNaN(transX1) &amp;&amp; !Double.isNaN(transY1)) {
+<span class="nocode"><a name="1065">1065: </a></span>            float x = (float) transX1;
+<span class="nocode"><a name="1066">1066: </a></span>            float y = (float) transY1;
+<span class="nocode"><a name="1067">1067: </a></span>            PlotOrientation orientation = plot.getOrientation();
+<span class="nocode"><a name="1068">1068: </a></span>            if (orientation == PlotOrientation.HORIZONTAL) {
+<span class="nocode"><a name="1069">1069: </a></span>                x = (float) transY1;
+<span class="nocode"><a name="1070">1070: </a></span>                y = (float) transX1;
+<span class="nocode"><a name="1071">1071: </a></span>            }
+<span class="nocode"><a name="1072">1072: </a></span>            if (s.isLastPointGood()) {
+<span class="nocode"><a name="1073">1073: </a></span>                s.seriesPath.lineTo(x, y);
+<span class="nocode"><a name="1074">1074: </a></span>            }
+<span class="nocode"><a name="1075">1075: </a></span>            else {
+<span class="nocode"><a name="1076">1076: </a></span>                s.seriesPath.moveTo(x, y);
+<span class="nocode"><a name="1077">1077: </a></span>            }
+<span class="nocode"><a name="1078">1078: </a></span>            s.setLastPointGood(true);
+<span class="nocode"><a name="1079">1079: </a></span>        }
+<span class="nocode"><a name="1080">1080: </a></span>        else {
+<span class="nocode"><a name="1081">1081: </a></span>            s.setLastPointGood(false);
+<span class="nocode"><a name="1082">1082: </a></span>        }
+<span class="nocode"><a name="1083">1083: </a></span>        // if this is the last item, draw the path ...
+<span class="nocode"><a name="1084">1084: </a></span>        if (item == dataset.getItemCount(series) - 1) {
+<span class="nocode"><a name="1085">1085: </a></span>            // draw path
+<span class="nocode"><a name="1086">1086: </a></span>            drawFirstPassShape(g2, pass, series, item, s.seriesPath);
+<span class="nocode"><a name="1087">1087: </a></span>        }
+<span class="nocode"><a name="1088">1088: </a></span>    }
+<span class="nocode"><a name="1089">1089: </a></span>
+<span class="nocode"><a name="1090">1090: </a></span>    /**
+<span class="nocode"><a name="1091">1091: </a></span>     * Draws the item shapes and adds chart entities (second pass). This method 
+<span class="nocode"><a name="1092">1092: </a></span>     * draws the shapes which mark the item positions. If &lt;code&gt;entities&lt;/code&gt; 
+<span class="nocode"><a name="1093">1093: </a></span>     * is not &lt;code&gt;null&lt;/code&gt; it will be populated with entity information
+<span class="nocode"><a name="1094">1094: </a></span>     * for points that fall within the data area.
+<span class="nocode"><a name="1095">1095: </a></span>     *
+<span class="nocode"><a name="1096">1096: </a></span>     * @param g2  the graphics device.
+<span class="nocode"><a name="1097">1097: </a></span>     * @param plot  the plot (can be used to obtain standard color 
+<span class="nocode"><a name="1098">1098: </a></span>     *              information etc).
+<span class="nocode"><a name="1099">1099: </a></span>     * @param domainAxis  the domain axis.
+<span class="nocode"><a name="1100">1100: </a></span>     * @param dataArea  the area within which the data is being drawn.
+<span class="nocode"><a name="1101">1101: </a></span>     * @param rangeAxis  the range axis.
+<span class="nocode"><a name="1102">1102: </a></span>     * @param dataset  the dataset.
+<span class="nocode"><a name="1103">1103: </a></span>     * @param pass  the pass.
+<span class="nocode"><a name="1104">1104: </a></span>     * @param series  the series index (zero-based).
+<span class="nocode"><a name="1105">1105: </a></span>     * @param item  the item index (zero-based).
+<span class="nocode"><a name="1106">1106: </a></span>     * @param crosshairState  the crosshair state.
+<span class="nocode"><a name="1107">1107: </a></span>     * @param entities the entity collection.
+<span class="nocode"><a name="1108">1108: </a></span>     */
+<span class="nocode"><a name="1109">1109: </a></span>    protected void drawSecondaryPass(Graphics2D g2, XYPlot plot, 
+<span class="nocode"><a name="1110">1110: </a></span>                                     XYDataset dataset,
+<span class="nocode"><a name="1111">1111: </a></span>                                     int pass, int series, int item,
+<span class="nocode"><a name="1112">1112: </a></span>                                     ValueAxis domainAxis, 
+<span class="nocode"><a name="1113">1113: </a></span>                                     Rectangle2D dataArea,
+<span class="nocode"><a name="1114">1114: </a></span>                                     ValueAxis rangeAxis, 
+<span class="nocode"><a name="1115">1115: </a></span>                                     CrosshairState crosshairState,
+<span class="nocode"><a name="1116">1116: </a></span>                                     EntityCollection entities) {
+<span class="nocode"><a name="1117">1117: </a></span>
+<span class="nocode"><a name="1118">1118: </a></span>        Shape entityArea = null;
+<span class="nocode"><a name="1119">1119: </a></span>        
+<span class="nocode"><a name="1120">1120: </a></span>        // get the data point...
+<span class="nocode"><a name="1121">1121: </a></span>        double x1 = dataset.getXValue(series, item);
+<span class="nocode"><a name="1122">1122: </a></span>        double y1 = dataset.getYValue(series, item);
+<span class="nocode"><a name="1123">1123: </a></span>        if (Double.isNaN(y1) || Double.isNaN(x1)) {
+<span class="nocode"><a name="1124">1124: </a></span>            return;
+<span class="nocode"><a name="1125">1125: </a></span>        }
+<span class="nocode"><a name="1126">1126: </a></span>
+<span class="nocode"><a name="1127">1127: </a></span>        PlotOrientation orientation = plot.getOrientation();
+<span class="nocode"><a name="1128">1128: </a></span>        RectangleEdge xAxisLocation = plot.getDomainAxisEdge();
+<span class="nocode"><a name="1129">1129: </a></span>        RectangleEdge yAxisLocation = plot.getRangeAxisEdge();
+<span class="nocode"><a name="1130">1130: </a></span>        double transX1 = domainAxis.valueToJava2D(x1, dataArea, xAxisLocation);
+<span class="nocode"><a name="1131">1131: </a></span>        double transY1 = rangeAxis.valueToJava2D(y1, dataArea, yAxisLocation);
+<span class="nocode"><a name="1132">1132: </a></span>
+<span class="nocode"><a name="1133">1133: </a></span>        if (getItemShapeVisible(series, item)) {
+<span class="nocode"><a name="1134">1134: </a></span>            Shape shape = getItemShape(series, item);
+<span class="nocode"><a name="1135">1135: </a></span>            if (orientation == PlotOrientation.HORIZONTAL) {
+<span class="nocode"><a name="1136">1136: </a></span>                shape = ShapeUtilities.createTranslatedShape(shape, transY1, 
+<span class="nocode"><a name="1137">1137: </a></span>                        transX1);
+<span class="nocode"><a name="1138">1138: </a></span>            }
+<span class="nocode"><a name="1139">1139: </a></span>            else if (orientation == PlotOrientation.VERTICAL) {
+<span class="nocode"><a name="1140">1140: </a></span>                shape = ShapeUtilities.createTranslatedShape(shape, transX1, 
+<span class="nocode"><a name="1141">1141: </a></span>                        transY1);
+<span class="nocode"><a name="1142">1142: </a></span>            }
+<span class="nocode"><a name="1143">1143: </a></span>            entityArea = shape;
+<span class="nocode"><a name="1144">1144: </a></span>            if (shape.intersects(dataArea)) {
+<span class="nocode"><a name="1145">1145: </a></span>                if (getItemShapeFilled(series, item)) {
+<span class="nocode"><a name="1146">1146: </a></span>                    if (this.useFillPaint) {
+<span class="nocode"><a name="1147">1147: </a></span>                        g2.setPaint(getItemFillPaint(series, item));
+<span class="nocode"><a name="1148">1148: </a></span>                    }
+<span class="nocode"><a name="1149">1149: </a></span>                    else {
+<span class="nocode"><a name="1150">1150: </a></span>                        g2.setPaint(getItemPaint(series, item));
+<span class="nocode"><a name="1151">1151: </a></span>                    }
+<span class="nocode"><a name="1152">1152: </a></span>                    g2.fill(shape);
+<span class="nocode"><a name="1153">1153: </a></span>                }
+<span class="nocode"><a name="1154">1154: </a></span>                if (this.drawOutlines) {
+<span class="nocode"><a name="1155">1155: </a></span>                    if (getUseOutlinePaint()) {
+<span class="nocode"><a name="1156">1156: </a></span>                        g2.setPaint(getItemOutlinePaint(series, item));
+<span class="nocode"><a name="1157">1157: </a></span>                    }
+<span class="nocode"><a name="1158">1158: </a></span>                    else {
+<span class="nocode"><a name="1159">1159: </a></span>                        g2.setPaint(getItemPaint(series, item));
+<span class="nocode"><a name="1160">1160: </a></span>                    }
+<span class="nocode"><a name="1161">1161: </a></span>                    g2.setStroke(getItemOutlineStroke(series, item));
+<span class="nocode"><a name="1162">1162: </a></span>                    g2.draw(shape);
+<span class="nocode"><a name="1163">1163: </a></span>                }
+<span class="nocode"><a name="1164">1164: </a></span>            }
+<span class="nocode"><a name="1165">1165: </a></span>        }
+<span class="nocode"><a name="1166">1166: </a></span>
+<span class="nocode"><a name="1167">1167: </a></span>        double xx = transX1;
+<span class="nocode"><a name="1168">1168: </a></span>        double yy = transY1;
+<span class="nocode"><a name="1169">1169: </a></span>        if (orientation == PlotOrientation.HORIZONTAL) {
+<span class="nocode"><a name="1170">1170: </a></span>            xx = transY1;
+<span class="nocode"><a name="1171">1171: </a></span>            yy = transX1;
+<span class="nocode"><a name="1172">1172: </a></span>        }          
+<span class="nocode"><a name="1173">1173: </a></span>
+<span class="nocode"><a name="1174">1174: </a></span>        // draw the item label if there is one...
+<span class="nocode"><a name="1175">1175: </a></span>        if (isItemLabelVisible(series, item)) {
+<span class="nocode"><a name="1176">1176: </a></span>            drawItemLabel(g2, orientation, dataset, series, item, xx, yy, 
+<span class="nocode"><a name="1177">1177: </a></span>                    (y1 &lt; 0.0));
+<span class="nocode"><a name="1178">1178: </a></span>        }
+<span class="nocode"><a name="1179">1179: </a></span>
+<span class="nocode"><a name="1180">1180: </a></span>        int domainAxisIndex = plot.getDomainAxisIndex(domainAxis);
+<span class="nocode"><a name="1181">1181: </a></span>        int rangeAxisIndex = plot.getRangeAxisIndex(rangeAxis);
+<span class="nocode"><a name="1182">1182: </a></span>        updateCrosshairValues(crosshairState, x1, y1, domainAxisIndex, 
+<span class="nocode"><a name="1183">1183: </a></span>                rangeAxisIndex, transX1, transY1, plot.getOrientation());
+<span class="nocode"><a name="1184">1184: </a></span>
+<span class="nocode"><a name="1185">1185: </a></span>        // add an entity for the item, but only if it falls within the data
+<span class="nocode"><a name="1186">1186: </a></span>        // area...
+<span class="nocode"><a name="1187">1187: </a></span>        if (entities != null &amp;&amp; dataArea.contains(xx, yy)) {
+<span class="nocode"><a name="1188">1188: </a></span>            addEntity(entities, entityArea, dataset, series, item, xx, yy);
+<span class="nocode"><a name="1189">1189: </a></span>        }
+<span class="nocode"><a name="1190">1190: </a></span>    }
+<span class="nocode"><a name="1191">1191: </a></span>
+<span class="nocode"><a name="1192">1192: </a></span>
+<span class="nocode"><a name="1193">1193: </a></span>    /**
+<span class="nocode"><a name="1194">1194: </a></span>     * Returns a legend item for the specified series.
+<span class="nocode"><a name="1195">1195: </a></span>     *
+<span class="nocode"><a name="1196">1196: </a></span>     * @param datasetIndex  the dataset index (zero-based).
+<span class="nocode"><a name="1197">1197: </a></span>     * @param series  the series index (zero-based).
+<span class="nocode"><a name="1198">1198: </a></span>     *
+<span class="nocode"><a name="1199">1199: </a></span>     * @return A legend item for the series.
+<span class="nocode"><a name="1200">1200: </a></span>     */
+<span class="nocode"><a name="1201">1201: </a></span>    public LegendItem getLegendItem(int datasetIndex, int series) {
+<span class="nocode"><a name="1202">1202: </a></span>
+<span class="nocode"><a name="1203">1203: </a></span>        XYPlot plot = getPlot();
+<span class="nocode"><a name="1204">1204: </a></span>        if (plot == null) {
+<span class="nocode"><a name="1205">1205: </a></span>            return null;
+<span class="nocode"><a name="1206">1206: </a></span>        }
+<span class="nocode"><a name="1207">1207: </a></span>
+<span class="nocode"><a name="1208">1208: </a></span>        LegendItem result = null;
+<span class="nocode"><a name="1209">1209: </a></span>        XYDataset dataset = plot.getDataset(datasetIndex);
+<span class="nocode"><a name="1210">1210: </a></span>        if (dataset != null) {
+<span class="nocode"><a name="1211">1211: </a></span>            if (getItemVisible(series, 0)) {
+<span class="nocode"><a name="1212">1212: </a></span>                String label = getLegendItemLabelGenerator().generateLabel(
+<span class="nocode"><a name="1213">1213: </a></span>                        dataset, series);
+<span class="nocode"><a name="1214">1214: </a></span>                String description = label;
+<span class="nocode"><a name="1215">1215: </a></span>                String toolTipText = null;
+<span class="nocode"><a name="1216">1216: </a></span>                if (getLegendItemToolTipGenerator() != null) {
+<span class="nocode"><a name="1217">1217: </a></span>                    toolTipText = getLegendItemToolTipGenerator().generateLabel(
+<span class="nocode"><a name="1218">1218: </a></span>                            dataset, series);
+<span class="nocode"><a name="1219">1219: </a></span>                }
+<span class="nocode"><a name="1220">1220: </a></span>                String urlText = null;
+<span class="nocode"><a name="1221">1221: </a></span>                if (getLegendItemURLGenerator() != null) {
+<span class="nocode"><a name="1222">1222: </a></span>                    urlText = getLegendItemURLGenerator().generateLabel(
+<span class="nocode"><a name="1223">1223: </a></span>                            dataset, series);
+<span class="nocode"><a name="1224">1224: </a></span>                }
+<span class="nocode"><a name="1225">1225: </a></span>                boolean shapeIsVisible = getItemShapeVisible(series, 0);
+<span class="nocode"><a name="1226">1226: </a></span>                Shape shape = lookupSeriesShape(series);
+<span class="nocode"><a name="1227">1227: </a></span>                boolean shapeIsFilled = getItemShapeFilled(series, 0);
+<span class="nocode"><a name="1228">1228: </a></span>                Paint fillPaint = (this.useFillPaint 
+<span class="nocode"><a name="1229">1229: </a></span>                    ? lookupSeriesFillPaint(series) 
+<span class="nocode"><a name="1230">1230: </a></span>                    : lookupSeriesPaint(series));
+<span class="nocode"><a name="1231">1231: </a></span>                boolean shapeOutlineVisible = this.drawOutlines;  
+<span class="nocode"><a name="1232">1232: </a></span>                Paint outlinePaint = (this.useOutlinePaint 
+<span class="nocode"><a name="1233">1233: </a></span>                    ? lookupSeriesOutlinePaint(series) 
+<span class="nocode"><a name="1234">1234: </a></span>                    : lookupSeriesPaint(series));
+<span class="nocode"><a name="1235">1235: </a></span>                Stroke outlineStroke = lookupSeriesOutlineStroke(series);
+<span class="nocode"><a name="1236">1236: </a></span>                boolean lineVisible = getItemLineVisible(series, 0);
+<span class="nocode"><a name="1237">1237: </a></span>                Stroke lineStroke = lookupSeriesStroke(series);
+<span class="nocode"><a name="1238">1238: </a></span>                Paint linePaint = lookupSeriesPaint(series);
+<span class="nocode"><a name="1239">1239: </a></span>                result = new LegendItem(label, description, toolTipText, 
+<span class="nocode"><a name="1240">1240: </a></span>                        urlText, shapeIsVisible, shape, shapeIsFilled, 
+<span class="nocode"><a name="1241">1241: </a></span>                        fillPaint, shapeOutlineVisible, outlinePaint, 
+<span class="nocode"><a name="1242">1242: </a></span>                        outlineStroke, lineVisible, this.legendLine, 
+<span class="nocode"><a name="1243">1243: </a></span>                        lineStroke, linePaint);
+<span class="nocode"><a name="1244">1244: </a></span>                result.setSeriesKey(dataset.getSeriesKey(series));
+<span class="nocode"><a name="1245">1245: </a></span>                result.setSeriesIndex(series);
+<span class="nocode"><a name="1246">1246: </a></span>                result.setDataset(dataset);
+<span class="nocode"><a name="1247">1247: </a></span>                result.setDatasetIndex(datasetIndex);
+<span class="nocode"><a name="1248">1248: </a></span>            }
+<span class="nocode"><a name="1249">1249: </a></span>        }
+<span class="nocode"><a name="1250">1250: </a></span>
+<span class="nocode"><a name="1251">1251: </a></span>        return result;
+<span class="nocode"><a name="1252">1252: </a></span>
+<span class="nocode"><a name="1253">1253: </a></span>    }
+<span class="nocode"><a name="1254">1254: </a></span>    
+<span class="nocode"><a name="1255">1255: </a></span>    /**
+<span class="nocode"><a name="1256">1256: </a></span>     * Returns a clone of the renderer.
+<span class="nocode"><a name="1257">1257: </a></span>     * 
+<span class="nocode"><a name="1258">1258: </a></span>     * @return A clone.
+<span class="nocode"><a name="1259">1259: </a></span>     * 
+<span class="nocode"><a name="1260">1260: </a></span>     * @throws CloneNotSupportedException if the clone cannot be created.
+<span class="nocode"><a name="1261">1261: </a></span>     */
+<span class="nocode"><a name="1262">1262: </a></span>    public Object clone() throws CloneNotSupportedException {
+<span class="nocode"><a name="1263">1263: </a></span>        XYLineAndShapeRenderer clone = (XYLineAndShapeRenderer) super.clone();
+<span class="nocode"><a name="1264">1264: </a></span>        clone.seriesLinesVisible 
+<span class="nocode"><a name="1265">1265: </a></span>                = (BooleanList) this.seriesLinesVisible.clone();
+<span class="nocode"><a name="1266">1266: </a></span>        if (this.legendLine != null) {
+<span class="nocode"><a name="1267">1267: </a></span>            clone.legendLine = ShapeUtilities.clone(this.legendLine);
+<span class="nocode"><a name="1268">1268: </a></span>        }
+<span class="nocode"><a name="1269">1269: </a></span>        clone.seriesShapesVisible 
+<span class="nocode"><a name="1270">1270: </a></span>                = (BooleanList) this.seriesShapesVisible.clone();
+<span class="nocode"><a name="1271">1271: </a></span>        clone.seriesShapesFilled 
+<span class="nocode"><a name="1272">1272: </a></span>                = (BooleanList) this.seriesShapesFilled.clone();
+<span class="nocode"><a name="1273">1273: </a></span>        return clone;
+<span class="nocode"><a name="1274">1274: </a></span>    }
+<span class="nocode"><a name="1275">1275: </a></span>    
+<span class="nocode"><a name="1276">1276: </a></span>    /**
+<span class="nocode"><a name="1277">1277: </a></span>     * Tests this renderer for equality with an arbitrary object.
+<span class="nocode"><a name="1278">1278: </a></span>     *
+<span class="nocode"><a name="1279">1279: </a></span>     * @param obj  the object (&lt;code&gt;null&lt;/code&gt; permitted).
+<span class="nocode"><a name="1280">1280: </a></span>     *
+<span class="nocode"><a name="1281">1281: </a></span>     * @return &lt;code&gt;true&lt;/code&gt; or &lt;code&gt;false&lt;/code&gt;.
+<span class="nocode"><a name="1282">1282: </a></span>     */
+<span class="nocode"><a name="1283">1283: </a></span>    public boolean equals(Object obj) {
+<span class="nocode"><a name="1284">1284: </a></span>
+<span class="nocode"><a name="1285">1285: </a></span>        if (obj == this) {
+<span class="nocode"><a name="1286">1286: </a></span>            return true;
+<span class="nocode"><a name="1287">1287: </a></span>        }
+<span class="nocode"><a name="1288">1288: </a></span>        if (!(obj instanceof XYLineAndShapeRenderer)) {
+<span class="nocode"><a name="1289">1289: </a></span>            return false;
+<span class="nocode"><a name="1290">1290: </a></span>        }
+<span class="nocode"><a name="1291">1291: </a></span>        if (!super.equals(obj)) {
+<span class="nocode"><a name="1292">1292: </a></span>            return false;
+<span class="nocode"><a name="1293">1293: </a></span>        }
+<span class="nocode"><a name="1294">1294: </a></span>        XYLineAndShapeRenderer that = (XYLineAndShapeRenderer) obj;
+<span class="nocode"><a name="1295">1295: </a></span>        if (!ObjectUtilities.equal(this.linesVisible, that.linesVisible)) {
+<span class="nocode"><a name="1296">1296: </a></span>            return false;
+<span class="nocode"><a name="1297">1297: </a></span>        }
+<span class="nocode"><a name="1298">1298: </a></span>        if (!ObjectUtilities.equal(
+<span class="nocode"><a name="1299">1299: </a></span>            this.seriesLinesVisible, that.seriesLinesVisible)
+<span class="nocode"><a name="1300">1300: </a></span>        ) {
+<span class="nocode"><a name="1301">1301: </a></span>            return false;
+<span class="nocode"><a name="1302">1302: </a></span>        }
+<span class="nocode"><a name="1303">1303: </a></span>        if (this.baseLinesVisible != that.baseLinesVisible) {
+<span class="nocode"><a name="1304">1304: </a></span>            return false;
+<span class="nocode"><a name="1305">1305: </a></span>        }
+<span class="nocode"><a name="1306">1306: </a></span>        if (!ShapeUtilities.equal(this.legendLine, that.legendLine)) {
+<span class="nocode"><a name="1307">1307: </a></span>            return false;   
+<span class="nocode"><a name="1308">1308: </a></span>        }
+<span class="nocode"><a name="1309">1309: </a></span>        if (!ObjectUtilities.equal(this.shapesVisible, that.shapesVisible)) {
+<span class="nocode"><a name="1310">1310: </a></span>            return false;
+<span class="nocode"><a name="1311">1311: </a></span>        }
+<span class="nocode"><a name="1312">1312: </a></span>        if (!ObjectUtilities.equal(
+<span class="nocode"><a name="1313">1313: </a></span>            this.seriesShapesVisible, that.seriesShapesVisible)
+<span class="nocode"><a name="1314">1314: </a></span>        ) {
+<span class="nocode"><a name="1315">1315: </a></span>            return false;
+<span class="nocode"><a name="1316">1316: </a></span>        }
+<span class="nocode"><a name="1317">1317: </a></span>        if (this.baseShapesVisible != that.baseShapesVisible) {
+<span class="nocode"><a name="1318">1318: </a></span>            return false;
+<span class="nocode"><a name="1319">1319: </a></span>        }
+<span class="nocode"><a name="1320">1320: </a></span>        if (!ObjectUtilities.equal(this.shapesFilled, that.shapesFilled)) {
+<span class="nocode"><a name="1321">1321: </a></span>            return false;
+<span class="nocode"><a name="1322">1322: </a></span>        }
+<span class="nocode"><a name="1323">1323: </a></span>        if (!ObjectUtilities.equal(
+<span class="nocode"><a name="1324">1324: </a></span>            this.seriesShapesFilled, that.seriesShapesFilled)
+<span class="nocode"><a name="1325">1325: </a></span>        ) {
+<span class="nocode"><a name="1326">1326: </a></span>            return false;
+<span class="nocode"><a name="1327">1327: </a></span>        }
+<span class="nocode"><a name="1328">1328: </a></span>        if (this.baseShapesFilled != that.baseShapesFilled) {
+<span class="nocode"><a name="1329">1329: </a></span>            return false;
+<span class="nocode"><a name="1330">1330: </a></span>        }
+<span class="nocode"><a name="1331">1331: </a></span>        if (this.drawOutlines != that.drawOutlines) {
+<span class="nocode"><a name="1332">1332: </a></span>            return false;
+<span class="nocode"><a name="1333">1333: </a></span>        }
+<span class="nocode"><a name="1334">1334: </a></span>        if (this.useOutlinePaint != that.useOutlinePaint) {
+<span class="nocode"><a name="1335">1335: </a></span>            return false;
+<span class="nocode"><a name="1336">1336: </a></span>        }
+<span class="nocode"><a name="1337">1337: </a></span>        if (this.useFillPaint != that.useFillPaint) {
+<span class="nocode"><a name="1338">1338: </a></span>            return false;
+<span class="nocode"><a name="1339">1339: </a></span>        }
+<span class="nocode"><a name="1340">1340: </a></span>        if (this.drawSeriesLineAsPath != that.drawSeriesLineAsPath) {
+<span class="nocode"><a name="1341">1341: </a></span>            return false;
+<span class="nocode"><a name="1342">1342: </a></span>        }
+<span class="nocode"><a name="1343">1343: </a></span>        return true;
+<span class="nocode"><a name="1344">1344: </a></span>
+<span class="nocode"><a name="1345">1345: </a></span>    }
+<span class="nocode"><a name="1346">1346: </a></span>    
+<span class="nocode"><a name="1347">1347: </a></span>    /**
+<span class="nocode"><a name="1348">1348: </a></span>     * Provides serialization support.
+<span class="nocode"><a name="1349">1349: </a></span>     *
+<span class="nocode"><a name="1350">1350: </a></span>     * @param stream  the input stream.
+<span class="nocode"><a name="1351">1351: </a></span>     *
+<span class="nocode"><a name="1352">1352: </a></span>     * @throws IOException  if there is an I/O error.
+<span class="nocode"><a name="1353">1353: </a></span>     * @throws ClassNotFoundException  if there is a classpath problem.
+<span class="nocode"><a name="1354">1354: </a></span>     */
+<span class="nocode"><a name="1355">1355: </a></span>    private void readObject(ObjectInputStream stream) 
+<span class="nocode"><a name="1356">1356: </a></span>            throws IOException, ClassNotFoundException {
+<span class="nocode"><a name="1357">1357: </a></span>        stream.defaultReadObject();
+<span class="nocode"><a name="1358">1358: </a></span>        this.legendLine = SerialUtilities.readShape(stream);
+<span class="nocode"><a name="1359">1359: </a></span>    }
+<span class="nocode"><a name="1360">1360: </a></span>    
+<span class="nocode"><a name="1361">1361: </a></span>    /**
+<span class="nocode"><a name="1362">1362: </a></span>     * Provides serialization support.
+<span class="nocode"><a name="1363">1363: </a></span>     *
+<span class="nocode"><a name="1364">1364: </a></span>     * @param stream  the output stream.
+<span class="nocode"><a name="1365">1365: </a></span>     *
+<span class="nocode"><a name="1366">1366: </a></span>     * @throws IOException  if there is an I/O error.
+<span class="nocode"><a name="1367">1367: </a></span>     */
+<span class="nocode"><a name="1368">1368: </a></span>    private void writeObject(ObjectOutputStream stream) throws IOException {
+<span class="nocode"><a name="1369">1369: </a></span>        stream.defaultWriteObject();
+<span class="nocode"><a name="1370">1370: </a></span>        SerialUtilities.writeShape(this.legendLine, stream);
+<span class="nocode"><a name="1371">1371: </a></span>    }
+<span class="nocode"><a name="1372">1372: </a></span>  
+<span class="nocode"><a name="1373">1373: </a></span>}
+</pre><table class="mutation_table" summary="Mutations">
+<tr><th>ID</th><th>Line</th><th>Type</th><th>Detected</th></tr><tr><td>18647</td><td><a href="#188">188</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>18646</td><td><a href="#188">188</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>18648</td><td><a href="#188">188(1)</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>18649</td><td><a href="#188">188(1)</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18651</td><td><a href="#201">201</a></td><td>Replace a constant (Replace -7.0 with 0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18652</td><td><a href="#201">201</a></td><td>Replace a constant (Replace -7.0 with -8.0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18650</td><td><a href="#201">201</a></td><td>Replace a constant (Replace -7.0 with -6.0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18654</td><td><a href="#201">201(1)</a></td><td>Replace a constant (Replace 0 with -1(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18653</td><td><a href="#201">201(1)</a></td><td>Replace a constant (Replace 0 with 1(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18657</td><td><a href="#201">201(2)</a></td><td>Replace a constant (Replace 7.0 with 8.0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18655</td><td><a href="#201">201(2)</a></td><td>Replace a constant (Replace 7.0 with 6.0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18656</td><td><a href="#201">201(2)</a></td><td>Replace a constant (Replace 7.0 with 0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18659</td><td><a href="#201">201(3)</a></td><td>Replace a constant (Replace 0 with -1(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18658</td><td><a href="#201">201(3)</a></td><td>Replace a constant (Replace 0 with 1(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18661</td><td><a href="#208">208</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>18660</td><td><a href="#208">208</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>18663</td><td><a href="#210">210</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>18662</td><td><a href="#210">210</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>18665</td><td><a href="#212">212</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18664</td><td><a href="#212">212</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>18666</td><td><a href="#213">213</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>18667</td><td><a href="#213">213</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>18668</td><td><a href="#216">216</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>18669</td><td><a href="#216">216</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>18670</td><td><a href="#241">241</a></td><td>Negate jump condition (Replace IF_ICMPEQ with  IF_ICMPNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>18671</td><td><a href="#243">243</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18674</td><td><a href="#255">255</a></td><td>Replace a constant (Replace 2 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18673</td><td><a href="#255">255</a></td><td>Replace a constant (Replace 2 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18672</td><td><a href="#255">255</a></td><td>Replace a constant (Replace 2 with 3(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18675</td><td><a href="#271">271</a></td><td>Negate jump condition (Replace IFNONNULL with  IFNULL)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18676</td><td><a href="#272">272</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18677</td><td><a href="#274">274</a></td><td>Negate jump condition (Replace IFNULL with  IFNONNULL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>18678</td><td><a href="#275">275</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18679</td><td><a href="#311">311</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18680</td><td><a href="#327">327</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>18681</td><td><a href="#327">327(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>18682</td><td><a href="#341">341</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18683</td><td><a href="#354">354</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>18684</td><td><a href="#355">355</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18685</td><td><a href="#368">368</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>18686</td><td><a href="#368">368(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>18687</td><td><a href="#392">392</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18688</td><td><a href="#415">415</a></td><td>Negate jump condition (Replace IFNONNULL with  IFNULL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>18689</td><td><a href="#419">419</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18690</td><td><a href="#439">439</a></td><td>Negate jump condition (Replace IFNONNULL with  IFNULL)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18691</td><td><a href="#440">440</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18692</td><td><a href="#442">442</a></td><td>Negate jump condition (Replace IFNULL with  IFNONNULL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>18693</td><td><a href="#443">443</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18694</td><td><a href="#476">476</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18695</td><td><a href="#490">490</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>18696</td><td><a href="#490">490(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18697</td><td><a href="#504">504</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18698</td><td><a href="#517">517</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>18699</td><td><a href="#517">517(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>18700</td><td><a href="#530">530</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>18701</td><td><a href="#531">531</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18702</td><td><a href="#555">555</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18703</td><td><a href="#575">575</a></td><td>Negate jump condition (Replace IFNONNULL with  IFNULL)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18704</td><td><a href="#576">576</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18705</td><td><a href="#578">578</a></td><td>Negate jump condition (Replace IFNULL with  IFNONNULL)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18706</td><td><a href="#579">579</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18707</td><td><a href="#595">595</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>18708</td><td><a href="#595">595(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>18709</td><td><a href="#608">608</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18710</td><td><a href="#622">622</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18711</td><td><a href="#635">635</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>18712</td><td><a href="#635">635(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>18713</td><td><a href="#648">648</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>18714</td><td><a href="#649">649</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18715</td><td><a href="#673">673</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18716</td><td><a href="#702">702</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18717</td><td><a href="#733">733</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18718</td><td><a href="#764">764</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18720</td><td><a href="#873">873</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18719</td><td><a href="#873">873</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18722</td><td><a href="#878">878</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18721</td><td><a href="#878">878</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18723</td><td><a href="#879">879</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18724</td><td><a href="#880">880</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18725</td><td><a href="#882">882</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18726</td><td><a href="#883">883</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18727</td><td><a href="#883">883</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18728</td><td><a href="#883">883</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18730</td><td><a href="#887">887</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18729</td><td><a href="#887">887</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18731</td><td><a href="#888">888</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18732</td><td><a href="#889">889</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18733</td><td><a href="#893">893</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18735</td><td><a href="#899">899</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18734</td><td><a href="#899">899</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18736</td><td><a href="#903">903</a></td><td>Negate jump condition (Replace IFNULL with  IFNONNULL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>18737</td><td><a href="#904">904</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18738</td><td><a href="#904">904(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18739</td><td><a href="#907">907</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18741</td><td><a href="#921">921</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18742</td><td><a href="#921">921</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18744</td><td><a href="#921">921(1)</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18743</td><td><a href="#921">921(1)</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18740</td><td><a href="#921">921</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18745</td><td><a href="#933">933</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18746</td><td><a href="#933">933</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18749</td><td><a href="#933">933(1)</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18748</td><td><a href="#933">933(1)</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18751</td><td><a href="#933">933(2)</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18750</td><td><a href="#933">933(2)</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18747</td><td><a href="#933">933</a></td><td>Negate jump condition (Replace IF_ICMPNE with  IF_ICMPEQ)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18752</td><td><a href="#962">962</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>18753</td><td><a href="#967">967</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18754</td><td><a href="#968">968</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18756</td><td><a href="#969">969</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18758</td><td><a href="#969">969(1)</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18755</td><td><a href="#969">969</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18757</td><td><a href="#969">969(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18760</td><td><a href="#973">973</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18759</td><td><a href="#973">973</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>18761</td><td><a href="#973">973</a></td><td>Replace arithmetic operator (Replace ISUB with IADD)</td><td><img src="detected.png"/></td></tr>
+<tr><td>18762</td><td><a href="#973">973</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18764</td><td><a href="#974">974</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18763</td><td><a href="#974">974</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>18765</td><td><a href="#974">974</a></td><td>Replace arithmetic operator (Replace ISUB with IADD)</td><td><img src="detected.png"/></td></tr>
+<tr><td>18766</td><td><a href="#974">974</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18768</td><td><a href="#975">975</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18770</td><td><a href="#975">975(1)</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18767</td><td><a href="#975">975</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18769</td><td><a href="#975">975(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18771</td><td><a href="#979">979</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18772</td><td><a href="#980">980</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18773</td><td><a href="#982">982</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18774</td><td><a href="#983">983</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18775</td><td><a href="#985">985</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18776</td><td><a href="#986">986</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18778</td><td><a href="#989">989</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18780</td><td><a href="#989">989(1)</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18782</td><td><a href="#989">989(2)</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18784</td><td><a href="#989">989(3)</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18777</td><td><a href="#989">989</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18779</td><td><a href="#989">989(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18781</td><td><a href="#989">989(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18783</td><td><a href="#989">989(3)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18785</td><td><a href="#994">994</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18786</td><td><a href="#995">995</a></td><td>Negate jump condition (Replace IF_ACMPNE with  IF_ACMPEQ)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18787</td><td><a href="#996">996</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18788</td><td><a href="#998">998</a></td><td>Negate jump condition (Replace IF_ACMPNE with  IF_ACMPEQ)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18789</td><td><a href="#999">999</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18791</td><td><a href="#1002">1002</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18790</td><td><a href="#1002">1002</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18792</td><td><a href="#1003">1003</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18793</td><td><a href="#1018">1018</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>18794</td><td><a href="#1018">1018(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18795</td><td><a href="#1019">1019</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18796</td><td><a href="#1019">1019(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18797</td><td><a href="#1020">1020</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18798</td><td><a href="#1053">1053</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18799</td><td><a href="#1054">1054</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18800</td><td><a href="#1057">1057</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18801</td><td><a href="#1058">1058</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18802</td><td><a href="#1059">1059</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18803</td><td><a href="#1060">1060</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18805</td><td><a href="#1064">1064</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18807</td><td><a href="#1064">1064(1)</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18804</td><td><a href="#1064">1064</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18806</td><td><a href="#1064">1064(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18808</td><td><a href="#1067">1067</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18809</td><td><a href="#1068">1068</a></td><td>Negate jump condition (Replace IF_ACMPNE with  IF_ACMPEQ)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18811</td><td><a href="#1072">1072</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18810</td><td><a href="#1072">1072</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18812</td><td><a href="#1073">1073</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18813</td><td><a href="#1076">1076</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18814</td><td><a href="#1078">1078</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18815</td><td><a href="#1078">1078</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18816</td><td><a href="#1078">1078</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18818</td><td><a href="#1081">1081</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18817</td><td><a href="#1081">1081</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18819</td><td><a href="#1081">1081</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18822</td><td><a href="#1084">1084</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18821</td><td><a href="#1084">1084</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18824</td><td><a href="#1084">1084</a></td><td>Negate jump condition (Replace IF_ICMPNE with  IF_ICMPEQ)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18823</td><td><a href="#1084">1084</a></td><td>Replace arithmetic operator (Replace ISUB with IADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18820</td><td><a href="#1084">1084</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18825</td><td><a href="#1086">1086</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18826</td><td><a href="#1121">1121</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18827</td><td><a href="#1122">1122</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18829</td><td><a href="#1123">1123</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18831</td><td><a href="#1123">1123(1)</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18828</td><td><a href="#1123">1123</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18830</td><td><a href="#1123">1123(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18832</td><td><a href="#1127">1127</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18833</td><td><a href="#1128">1128</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18834</td><td><a href="#1129">1129</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18835</td><td><a href="#1130">1130</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18836</td><td><a href="#1131">1131</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18838</td><td><a href="#1133">1133</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18837</td><td><a href="#1133">1133</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18839</td><td><a href="#1134">1134</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>18840</td><td><a href="#1135">1135</a></td><td>Negate jump condition (Replace IF_ACMPNE with  IF_ACMPEQ)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18841</td><td><a href="#1136">1136</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18842</td><td><a href="#1139">1139</a></td><td>Negate jump condition (Replace IF_ACMPNE with  IF_ACMPEQ)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18843</td><td><a href="#1140">1140</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>18845</td><td><a href="#1144">1144</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18844</td><td><a href="#1144">1144</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18847</td><td><a href="#1145">1145</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18846</td><td><a href="#1145">1145</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18848</td><td><a href="#1146">1146</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18849</td><td><a href="#1147">1147</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18850</td><td><a href="#1147">1147(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18851</td><td><a href="#1150">1150</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18852</td><td><a href="#1150">1150(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18853</td><td><a href="#1152">1152</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18854</td><td><a href="#1154">1154</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18856</td><td><a href="#1155">1155</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18855</td><td><a href="#1155">1155</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18857</td><td><a href="#1156">1156</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18858</td><td><a href="#1156">1156(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18859</td><td><a href="#1159">1159</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18860</td><td><a href="#1159">1159(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18861</td><td><a href="#1161">1161</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>18862</td><td><a href="#1161">1161(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18863</td><td><a href="#1162">1162</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18864</td><td><a href="#1169">1169</a></td><td>Negate jump condition (Replace IF_ACMPNE with  IF_ACMPEQ)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18866</td><td><a href="#1175">1175</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18865</td><td><a href="#1175">1175</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18868</td><td><a href="#1176">1176</a></td><td>Replace a constant (Replace 0 with -1(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18867</td><td><a href="#1176">1176</a></td><td>Replace a constant (Replace 0 with 1(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18871</td><td><a href="#1176">1176(1)</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18870</td><td><a href="#1176">1176(1)</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18872</td><td><a href="#1176">1176(2)</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18873</td><td><a href="#1176">1176(2)</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18869</td><td><a href="#1176">1176</a></td><td>Negate jump condition (Replace IFGE with  IFLT)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18874</td><td><a href="#1176">1176</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18875</td><td><a href="#1180">1180</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18876</td><td><a href="#1181">1181</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18877</td><td><a href="#1182">1182</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>18878</td><td><a href="#1182">1182(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18879</td><td><a href="#1187">1187</a></td><td>Negate jump condition (Replace IFNULL with  IFNONNULL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>18881</td><td><a href="#1187">1187(1)</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18880</td><td><a href="#1187">1187</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18882</td><td><a href="#1188">1188</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18883</td><td><a href="#1203">1203</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>18884</td><td><a href="#1204">1204</a></td><td>Negate jump condition (Replace IFNONNULL with  IFNULL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>18885</td><td><a href="#1209">1209</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>18886</td><td><a href="#1210">1210</a></td><td>Negate jump condition (Replace IFNULL with  IFNONNULL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>18887</td><td><a href="#1211">1211</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18888</td><td><a href="#1211">1211</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18890</td><td><a href="#1211">1211</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>18889</td><td><a href="#1211">1211</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>18891</td><td><a href="#1212">1212</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>18892</td><td><a href="#1212">1212(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>18894</td><td><a href="#1216">1216</a></td><td>Negate jump condition (Replace IFNULL with  IFNONNULL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>18893</td><td><a href="#1216">1216</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18895</td><td><a href="#1217">1217</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18896</td><td><a href="#1217">1217(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18898</td><td><a href="#1221">1221</a></td><td>Negate jump condition (Replace IFNULL with  IFNONNULL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>18897</td><td><a href="#1221">1221</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18899</td><td><a href="#1222">1222</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18900</td><td><a href="#1222">1222(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18901</td><td><a href="#1225">1225</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18902</td><td><a href="#1225">1225</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18903</td><td><a href="#1225">1225</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18904</td><td><a href="#1226">1226</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>18906</td><td><a href="#1227">1227</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18905</td><td><a href="#1227">1227</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18907</td><td><a href="#1227">1227</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18908</td><td><a href="#1228">1228</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18909</td><td><a href="#1228">1228</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18910</td><td><a href="#1228">1228(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18911</td><td><a href="#1232">1232</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18912</td><td><a href="#1232">1232</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18913</td><td><a href="#1232">1232(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>18914</td><td><a href="#1235">1235</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>18916</td><td><a href="#1236">1236</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18915</td><td><a href="#1236">1236</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18917</td><td><a href="#1236">1236</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18918</td><td><a href="#1237">1237</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>18919</td><td><a href="#1238">1238</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18920</td><td><a href="#1244">1244</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18921</td><td><a href="#1244">1244(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18922</td><td><a href="#1245">1245</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18923</td><td><a href="#1246">1246</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18924</td><td><a href="#1247">1247</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>18925</td><td><a href="#1263">1263</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>18926</td><td><a href="#1264">1264</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>18927</td><td><a href="#1266">1266</a></td><td>Negate jump condition (Replace IFNULL with  IFNONNULL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>18928</td><td><a href="#1267">1267</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>18929</td><td><a href="#1269">1269</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>18930</td><td><a href="#1271">1271</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>18931</td><td><a href="#1285">1285</a></td><td>Negate jump condition (Replace IF_ACMPNE with  IF_ACMPEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>18932</td><td><a href="#1286">1286</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18933</td><td><a href="#1286">1286</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>18934</td><td><a href="#1288">1288</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>18936</td><td><a href="#1289">1289</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>18935</td><td><a href="#1289">1289</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>18938</td><td><a href="#1291">1291</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>18937</td><td><a href="#1291">1291</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>18940</td><td><a href="#1292">1292</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>18939</td><td><a href="#1292">1292</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>18942</td><td><a href="#1295">1295</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>18941</td><td><a href="#1295">1295</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>18944</td><td><a href="#1296">1296</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>18943</td><td><a href="#1296">1296</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>18946</td><td><a href="#1298">1298</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>18945</td><td><a href="#1298">1298</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>18948</td><td><a href="#1301">1301</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>18947</td><td><a href="#1301">1301</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>18949</td><td><a href="#1303">1303</a></td><td>Negate jump condition (Replace IF_ICMPEQ with  IF_ICMPNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18950</td><td><a href="#1304">1304</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>18951</td><td><a href="#1304">1304</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>18953</td><td><a href="#1306">1306</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>18952</td><td><a href="#1306">1306</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>18954</td><td><a href="#1307">1307</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>18955</td><td><a href="#1307">1307</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>18957</td><td><a href="#1309">1309</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>18956</td><td><a href="#1309">1309</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>18959</td><td><a href="#1310">1310</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>18958</td><td><a href="#1310">1310</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>18961</td><td><a href="#1312">1312</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>18960</td><td><a href="#1312">1312</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>18963</td><td><a href="#1315">1315</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>18962</td><td><a href="#1315">1315</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18964</td><td><a href="#1317">1317</a></td><td>Negate jump condition (Replace IF_ICMPEQ with  IF_ICMPNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>18966</td><td><a href="#1318">1318</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>18965</td><td><a href="#1318">1318</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>18968</td><td><a href="#1320">1320</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>18967</td><td><a href="#1320">1320</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>18969</td><td><a href="#1321">1321</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>18970</td><td><a href="#1321">1321</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>18972</td><td><a href="#1323">1323</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>18971</td><td><a href="#1323">1323</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>18973</td><td><a href="#1326">1326</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>18974</td><td><a href="#1326">1326</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18975</td><td><a href="#1328">1328</a></td><td>Negate jump condition (Replace IF_ICMPEQ with  IF_ICMPNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>18976</td><td><a href="#1329">1329</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>18977</td><td><a href="#1329">1329</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>18978</td><td><a href="#1331">1331</a></td><td>Negate jump condition (Replace IF_ICMPEQ with  IF_ICMPNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>18979</td><td><a href="#1332">1332</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>18980</td><td><a href="#1332">1332</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>18981</td><td><a href="#1334">1334</a></td><td>Negate jump condition (Replace IF_ICMPEQ with  IF_ICMPNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>18982</td><td><a href="#1335">1335</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>18983</td><td><a href="#1335">1335</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>18984</td><td><a href="#1337">1337</a></td><td>Negate jump condition (Replace IF_ICMPEQ with  IF_ICMPNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18986</td><td><a href="#1338">1338</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>18985</td><td><a href="#1338">1338</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>18987</td><td><a href="#1340">1340</a></td><td>Negate jump condition (Replace IF_ICMPEQ with  IF_ICMPNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18988</td><td><a href="#1341">1341</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>18989</td><td><a href="#1341">1341</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>18991</td><td><a href="#1343">1343</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>18990</td><td><a href="#1343">1343</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18992</td><td><a href="#1357">1357</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>18993</td><td><a href="#1358">1358</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>18994</td><td><a href="#1369">1369</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>18995</td><td><a href="#1370">1370</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+</table>
+</body>
+</html>

@@ -1,0 +1,18 @@
+Testsuite: org.apache.poi.ss.usermodel.TestDataFormatter
+Tests run: 15, Failures: 0, Errors: 0, Time elapsed: 0.012 sec
+
+Testcase: testLocale took 0.001 sec
+Testcase: testColours took 0 sec
+Testcase: testColoursAndBrackets took 0 sec
+Testcase: testNegativeZero took 0.001 sec
+Testcase: testFractions took 0.001 sec
+Testcase: testPaddingSpaces took 0 sec
+Testcase: testPaddingSpacesCSV took 0.001 sec
+Testcase: testMMMMM took 0 sec
+Testcase: testAMPM took 0.001 sec
+Testcase: testElapsedTime took 0.004 sec
+Testcase: testDateWindowing took 0 sec
+Testcase: testScientificNotation took 0.001 sec
+Testcase: testInvalidDate took 0 sec
+Testcase: testEscapes took 0.001 sec
+Testcase: testOther took 0 sec

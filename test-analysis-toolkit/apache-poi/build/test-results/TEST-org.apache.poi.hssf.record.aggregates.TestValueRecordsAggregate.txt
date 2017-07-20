@@ -1,0 +1,13 @@
+Testsuite: org.apache.poi.hssf.record.aggregates.TestValueRecordsAggregate
+Tests run: 10, Failures: 0, Errors: 0, Time elapsed: 0.003 sec
+
+Testcase: testSerialize took 0.001 sec
+Testcase: testSharedFormula took 0 sec
+Testcase: testInsertCell took 0 sec
+Testcase: testRemoveCell took 0 sec
+Testcase: testGetPhysicalNumberOfCells took 0 sec
+Testcase: testGetFirstCellNum took 0 sec
+Testcase: testGetLastCellNum took 0 sec
+Testcase: testSpuriousSharedFormulaFlag took 0.001 sec
+Testcase: testRemoveNewRow_bug46312 took 0 sec
+Testcase: testMultipleBlanks took 0 sec

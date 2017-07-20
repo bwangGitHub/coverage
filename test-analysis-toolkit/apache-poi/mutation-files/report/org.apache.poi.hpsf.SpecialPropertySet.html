@@ -1,0 +1,397 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN
+"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>
+org.apache.poi.hpsf.SpecialPropertySet
+</title>
+<link href="prettify.css" type="text/css" rel="stylesheet" />
+<script type="text/javascript" src="prettify.js"></script>
+</head>
+<body onload="prettyPrint()">
+<h2>Javalanche report for class:<br/> org.apache.poi.hpsf.SpecialPropertySet </h2><pre class="prettyprint" style="border: 1px solid #888;padding: 2px"><span class="nocode"><a name="1">  1: </a></span>/* ====================================================================
+<span class="nocode"><a name="2">  2: </a></span>   Licensed to the Apache Software Foundation (ASF) under one or more
+<span class="nocode"><a name="3">  3: </a></span>   contributor license agreements.  See the NOTICE file distributed with
+<span class="nocode"><a name="4">  4: </a></span>   this work for additional information regarding copyright ownership.
+<span class="nocode"><a name="5">  5: </a></span>   The ASF licenses this file to You under the Apache License, Version 2.0
+<span class="nocode"><a name="6">  6: </a></span>   (the &quot;License&quot;); you may not use this file except in compliance with
+<span class="nocode"><a name="7">  7: </a></span>   the License.  You may obtain a copy of the License at
+<span class="nocode"><a name="8">  8: </a></span>
+<span class="nocode"><a name="9">  9: </a></span>       http://www.apache.org/licenses/LICENSE-2.0
+<span class="nocode"><a name="10"> 10: </a></span>
+<span class="nocode"><a name="11"> 11: </a></span>   Unless required by applicable law or agreed to in writing, software
+<span class="nocode"><a name="12"> 12: </a></span>   distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+<span class="nocode"><a name="13"> 13: </a></span>   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+<span class="nocode"><a name="14"> 14: </a></span>   See the License for the specific language governing permissions and
+<span class="nocode"><a name="15"> 15: </a></span>   limitations under the License.
+<span class="nocode"><a name="16"> 16: </a></span>==================================================================== */
+<span class="nocode"><a name="17"> 17: </a></span>
+<span class="nocode"><a name="18"> 18: </a></span>package org.apache.poi.hpsf;
+<span class="nocode"><a name="19"> 19: </a></span>
+<span class="nocode"><a name="20"> 20: </a></span>import java.io.IOException;
+<span class="nocode"><a name="21"> 21: </a></span>import java.io.InputStream;
+<span class="nocode"><a name="22"> 22: </a></span>import java.io.OutputStream;
+<span class="nocode"><a name="23"> 23: </a></span>import java.util.List;
+<span class="nocode"><a name="24"> 24: </a></span>
+<span class="nocode"><a name="25"> 25: </a></span>import org.apache.poi.hpsf.wellknown.PropertyIDMap;
+<span class="nocode"><a name="26"> 26: </a></span>import org.apache.poi.poifs.filesystem.DirectoryEntry;
+<span class="nocode"><a name="27"> 27: </a></span>
+<span class="nocode"><a name="28"> 28: </a></span>/**
+<span class="nocode"><a name="29"> 29: </a></span> * &lt;p&gt;Abstract superclass for the convenience classes {@link
+<span class="nocode"><a name="30"> 30: </a></span> * SummaryInformation} and {@link DocumentSummaryInformation}.&lt;/p&gt;
+<span class="nocode"><a name="31"> 31: </a></span> *
+<span class="nocode"><a name="32"> 32: </a></span> * &lt;p&gt;The motivation behind this class is quite nasty if you look
+<span class="nocode"><a name="33"> 33: </a></span> * behind the scenes, but it serves the application programmer well by
+<span class="nocode"><a name="34"> 34: </a></span> * providing him with the easy-to-use {@link SummaryInformation} and
+<span class="nocode"><a name="35"> 35: </a></span> * {@link DocumentSummaryInformation} classes. When parsing the data a
+<span class="nocode"><a name="36"> 36: </a></span> * property set stream consists of (possibly coming from an {@link
+<span class="nocode"><a name="37"> 37: </a></span> * java.io.InputStream}) we want to read and process each byte only
+<span class="nocode"><a name="38"> 38: </a></span> * once. Since we don't know in advance which kind of property set we
+<span class="nocode"><a name="39"> 39: </a></span> * have, we can expect only the most general {@link
+<span class="nocode"><a name="40"> 40: </a></span> * PropertySet}. Creating a special subclass should be as easy as
+<span class="nocode"><a name="41"> 41: </a></span> * calling the special subclass' constructor and pass the general
+<span class="nocode"><a name="42"> 42: </a></span> * {@link PropertySet} in. To make things easy internally, the special
+<span class="nocode"><a name="43"> 43: </a></span> * class just holds a reference to the general {@link PropertySet} and
+<span class="nocode"><a name="44"> 44: </a></span> * delegates all method calls to it.&lt;/p&gt;
+<span class="nocode"><a name="45"> 45: </a></span> *
+<span class="nocode"><a name="46"> 46: </a></span> * &lt;p&gt;A cleaner implementation would have been like this: The {@link
+<span class="nocode"><a name="47"> 47: </a></span> * PropertySetFactory} parses the stream data into some internal
+<span class="nocode"><a name="48"> 48: </a></span> * object first.  Then it finds out whether the stream is a {@link
+<span class="nocode"><a name="49"> 49: </a></span> * SummaryInformation}, a {@link DocumentSummaryInformation} or a
+<span class="nocode"><a name="50"> 50: </a></span> * general {@link PropertySet}.  However, the current implementation
+<span class="nocode"><a name="51"> 51: </a></span> * went the other way round historically: the convenience classes came
+<span class="nocode"><a name="52"> 52: </a></span> * only late to my mind.&lt;/p&gt;
+<span class="nocode"><a name="53"> 53: </a></span> *
+<span class="nocode"><a name="54"> 54: </a></span> * @author Rainer Klute &lt;a
+<span class="nocode"><a name="55"> 55: </a></span> * href=&quot;mailto:klute@rainer-klute.de&quot;&gt;&amp;lt;klute@rainer-klute.de&amp;gt;&lt;/a&gt;
+<span class="nocode"><a name="56"> 56: </a></span> */
+<span class="nocode"><a name="57"> 57: </a></span>public abstract class SpecialPropertySet extends MutablePropertySet
+<span class="nocode"><a name="58"> 58: </a></span>{
+<span class="nocode"><a name="59"> 59: </a></span>	/**
+<span class="nocode"><a name="60"> 60: </a></span>	 * The id to name mapping of the properties
+<span class="nocode"><a name="61"> 61: </a></span>	 *  in this set.
+<span class="nocode"><a name="62"> 62: </a></span>	 */
+<span class="nocode"><a name="63"> 63: </a></span>	public abstract PropertyIDMap getPropertySetIDMap();
+<span class="nocode"><a name="64"> 64: </a></span>
+<span class="nocode"><a name="65"> 65: </a></span>    /**
+<span class="nocode"><a name="66"> 66: </a></span>     * &lt;p&gt;The &quot;real&quot; property set &lt;code&gt;SpecialPropertySet&lt;/code&gt;
+<span class="nocode"><a name="67"> 67: </a></span>     * delegates to.&lt;/p&gt;
+<span class="nocode"><a name="68"> 68: </a></span>     */
+<span class="nocode"><a name="69"> 69: </a></span>    private MutablePropertySet delegate;
+<span class="nocode"><a name="70"> 70: </a></span>
+<span class="nocode"><a name="71"> 71: </a></span>
+<span class="nocode"><a name="72"> 72: </a></span>
+<span class="nocode"><a name="73"> 73: </a></span>    /**
+<span class="nocode"><a name="74"> 74: </a></span>     * &lt;p&gt;Creates a &lt;code&gt;SpecialPropertySet&lt;/code&gt;.
+<span class="nocode"><a name="75"> 75: </a></span>     *
+<span class="nocode"><a name="76"> 76: </a></span>     * @param ps The property set to be encapsulated by the
+<span class="nocode"><a name="77"> 77: </a></span>     * &lt;code&gt;SpecialPropertySet&lt;/code&gt;
+<span class="nocode"><a name="78"> 78: </a></span>     */
+<span class="nocode"><a name="79"> 79: </a></span>    public SpecialPropertySet(final PropertySet ps)
+<span class="nocode"><a name="80"> 80: </a></span>    {
+<span class="nocode"><a name="81"> 81: </a></span>        delegate = new MutablePropertySet(ps);
+<span class="nocode"><a name="82"> 82: </a></span>    }
+<span class="nocode"><a name="83"> 83: </a></span>
+<span class="nocode"><a name="84"> 84: </a></span>
+<span class="nocode"><a name="85"> 85: </a></span>
+<span class="nocode"><a name="86"> 86: </a></span>    /**
+<span class="nocode"><a name="87"> 87: </a></span>     * &lt;p&gt;Creates a &lt;code&gt;SpecialPropertySet&lt;/code&gt;.
+<span class="nocode"><a name="88"> 88: </a></span>     *
+<span class="nocode"><a name="89"> 89: </a></span>     * @param ps The mutable property set to be encapsulated by the
+<span class="nocode"><a name="90"> 90: </a></span>     * &lt;code&gt;SpecialPropertySet&lt;/code&gt;
+<span class="nocode"><a name="91"> 91: </a></span>     */
+<span class="nocode"><a name="92"> 92: </a></span>    public SpecialPropertySet(final MutablePropertySet ps)
+<span class="nocode"><a name="93"> 93: </a></span>    {
+<span class="nocode"><a name="94"> 94: </a></span>        delegate = ps;
+<span class="nocode"><a name="95"> 95: </a></span>    }
+<span class="nocode"><a name="96"> 96: </a></span>
+<span class="nocode"><a name="97"> 97: </a></span>
+<span class="nocode"><a name="98"> 98: </a></span>
+<span class="nocode"><a name="99"> 99: </a></span>    /**
+<span class="nocode"><a name="100">100: </a></span>     * @see PropertySet#getByteOrder
+<span class="nocode"><a name="101">101: </a></span>     */
+<span class="nocode"><a name="102">102: </a></span>    public int getByteOrder()
+<span class="nocode"><a name="103">103: </a></span>    {
+<span class="nocode"><a name="104">104: </a></span>        return delegate.getByteOrder();
+<span class="nocode"><a name="105">105: </a></span>    }
+<span class="nocode"><a name="106">106: </a></span>
+<span class="nocode"><a name="107">107: </a></span>
+<span class="nocode"><a name="108">108: </a></span>
+<span class="nocode"><a name="109">109: </a></span>    /**
+<span class="nocode"><a name="110">110: </a></span>     * @see PropertySet#getFormat
+<span class="nocode"><a name="111">111: </a></span>     */
+<span class="nocode"><a name="112">112: </a></span>    public int getFormat()
+<span class="nocode"><a name="113">113: </a></span>    {
+<span class="nocode"><a name="114">114: </a></span>        return delegate.getFormat();
+<span class="nocode"><a name="115">115: </a></span>    }
+<span class="nocode"><a name="116">116: </a></span>
+<span class="nocode"><a name="117">117: </a></span>
+<span class="nocode"><a name="118">118: </a></span>
+<span class="nocode"><a name="119">119: </a></span>    /**
+<span class="nocode"><a name="120">120: </a></span>     * @see PropertySet#getOSVersion
+<span class="nocode"><a name="121">121: </a></span>     */
+<span class="nocode"><a name="122">122: </a></span>    public int getOSVersion()
+<span class="nocode"><a name="123">123: </a></span>    {
+<span class="nocode"><a name="124">124: </a></span>        return delegate.getOSVersion();
+<span class="nocode"><a name="125">125: </a></span>    }
+<span class="nocode"><a name="126">126: </a></span>
+<span class="nocode"><a name="127">127: </a></span>
+<span class="nocode"><a name="128">128: </a></span>
+<span class="nocode"><a name="129">129: </a></span>    /**
+<span class="nocode"><a name="130">130: </a></span>     * @see PropertySet#getClassID
+<span class="nocode"><a name="131">131: </a></span>     */
+<span class="nocode"><a name="132">132: </a></span>    public ClassID getClassID()
+<span class="nocode"><a name="133">133: </a></span>    {
+<span class="nocode"><a name="134">134: </a></span>        return delegate.getClassID();
+<span class="nocode"><a name="135">135: </a></span>    }
+<span class="nocode"><a name="136">136: </a></span>
+<span class="nocode"><a name="137">137: </a></span>
+<span class="nocode"><a name="138">138: </a></span>
+<span class="nocode"><a name="139">139: </a></span>    /**
+<span class="nocode"><a name="140">140: </a></span>     * @see PropertySet#getSectionCount
+<span class="nocode"><a name="141">141: </a></span>     */
+<span class="nocode"><a name="142">142: </a></span>    public int getSectionCount()
+<span class="nocode"><a name="143">143: </a></span>    {
+<span class="nocode"><a name="144">144: </a></span>        return delegate.getSectionCount();
+<span class="nocode"><a name="145">145: </a></span>    }
+<span class="nocode"><a name="146">146: </a></span>
+<span class="nocode"><a name="147">147: </a></span>
+<span class="nocode"><a name="148">148: </a></span>
+<span class="nocode"><a name="149">149: </a></span>    /**
+<span class="nocode"><a name="150">150: </a></span>     * @see PropertySet#getSections
+<span class="nocode"><a name="151">151: </a></span>     */
+<span class="nocode"><a name="152">152: </a></span>    public List getSections()
+<span class="nocode"><a name="153">153: </a></span>    {
+<span class="nocode"><a name="154">154: </a></span>        return delegate.getSections();
+<span class="nocode"><a name="155">155: </a></span>    }
+<span class="nocode"><a name="156">156: </a></span>
+<span class="nocode"><a name="157">157: </a></span>
+<span class="nocode"><a name="158">158: </a></span>
+<span class="nocode"><a name="159">159: </a></span>    /**
+<span class="nocode"><a name="160">160: </a></span>     * @see PropertySet#isSummaryInformation
+<span class="nocode"><a name="161">161: </a></span>     */
+<span class="nocode"><a name="162">162: </a></span>    public boolean isSummaryInformation()
+<span class="nocode"><a name="163">163: </a></span>    {
+<span class="nocode"><a name="164">164: </a></span>        return delegate.isSummaryInformation();
+<span class="nocode"><a name="165">165: </a></span>    }
+<span class="nocode"><a name="166">166: </a></span>
+<span class="nocode"><a name="167">167: </a></span>
+<span class="nocode"><a name="168">168: </a></span>
+<span class="nocode"><a name="169">169: </a></span>    /**
+<span class="nocode"><a name="170">170: </a></span>     * @see PropertySet#isDocumentSummaryInformation
+<span class="nocode"><a name="171">171: </a></span>     */
+<span class="nocode"><a name="172">172: </a></span>    public boolean isDocumentSummaryInformation()
+<span class="nocode"><a name="173">173: </a></span>    {
+<span class="nocode"><a name="174">174: </a></span>        return delegate.isDocumentSummaryInformation();
+<span class="nocode"><a name="175">175: </a></span>    }
+<span class="nocode"><a name="176">176: </a></span>
+<span class="nocode"><a name="177">177: </a></span>
+<span class="nocode"><a name="178">178: </a></span>
+<span class="nocode"><a name="179">179: </a></span>    /**
+<span class="nocode"><a name="180">180: </a></span>     * @see PropertySet#getSingleSection
+<span class="nocode"><a name="181">181: </a></span>     */
+<span class="nocode"><a name="182">182: </a></span>    public Section getFirstSection()
+<span class="nocode"><a name="183">183: </a></span>    {
+<span class="nocode"><a name="184">184: </a></span>        return delegate.getFirstSection();
+<span class="nocode"><a name="185">185: </a></span>    }
+<span class="nocode"><a name="186">186: </a></span>
+<span class="nocode"><a name="187">187: </a></span>
+<span class="nocode"><a name="188">188: </a></span>    /**
+<span class="nocode"><a name="189">189: </a></span>     * @see org.apache.poi.hpsf.MutablePropertySet#addSection(org.apache.poi.hpsf.Section)
+<span class="nocode"><a name="190">190: </a></span>     */
+<span class="nocode"><a name="191">191: </a></span>    public void addSection(final Section section)
+<span class="nocode"><a name="192">192: </a></span>    {
+<span class="nocode"><a name="193">193: </a></span>        delegate.addSection(section);
+<span class="nocode"><a name="194">194: </a></span>    }
+<span class="nocode"><a name="195">195: </a></span>
+<span class="nocode"><a name="196">196: </a></span>
+<span class="nocode"><a name="197">197: </a></span>
+<span class="nocode"><a name="198">198: </a></span>    /**
+<span class="nocode"><a name="199">199: </a></span>     * @see org.apache.poi.hpsf.MutablePropertySet#clearSections()
+<span class="nocode"><a name="200">200: </a></span>     */
+<span class="nocode"><a name="201">201: </a></span>    public void clearSections()
+<span class="nocode"><a name="202">202: </a></span>    {
+<span class="nocode"><a name="203">203: </a></span>        delegate.clearSections();
+<span class="nocode"><a name="204">204: </a></span>    }
+<span class="nocode"><a name="205">205: </a></span>
+<span class="nocode"><a name="206">206: </a></span>
+<span class="nocode"><a name="207">207: </a></span>
+<span class="nocode"><a name="208">208: </a></span>    /**
+<span class="nocode"><a name="209">209: </a></span>     * @see org.apache.poi.hpsf.MutablePropertySet#setByteOrder(int)
+<span class="nocode"><a name="210">210: </a></span>     */
+<span class="nocode"><a name="211">211: </a></span>    public void setByteOrder(final int byteOrder)
+<span class="nocode"><a name="212">212: </a></span>    {
+<span class="nocode"><a name="213">213: </a></span>        delegate.setByteOrder(byteOrder);
+<span class="nocode"><a name="214">214: </a></span>    }
+<span class="nocode"><a name="215">215: </a></span>
+<span class="nocode"><a name="216">216: </a></span>
+<span class="nocode"><a name="217">217: </a></span>
+<span class="nocode"><a name="218">218: </a></span>    /**
+<span class="nocode"><a name="219">219: </a></span>     * @see org.apache.poi.hpsf.MutablePropertySet#setClassID(org.apache.poi.hpsf.ClassID)
+<span class="nocode"><a name="220">220: </a></span>     */
+<span class="nocode"><a name="221">221: </a></span>    public void setClassID(final ClassID classID)
+<span class="nocode"><a name="222">222: </a></span>    {
+<span class="nocode"><a name="223">223: </a></span>        delegate.setClassID(classID);
+<span class="nocode"><a name="224">224: </a></span>    }
+<span class="nocode"><a name="225">225: </a></span>
+<span class="nocode"><a name="226">226: </a></span>
+<span class="nocode"><a name="227">227: </a></span>
+<span class="nocode"><a name="228">228: </a></span>    /**
+<span class="nocode"><a name="229">229: </a></span>     * @see org.apache.poi.hpsf.MutablePropertySet#setFormat(int)
+<span class="nocode"><a name="230">230: </a></span>     */
+<span class="nocode"><a name="231">231: </a></span>    public void setFormat(final int format)
+<span class="nocode"><a name="232">232: </a></span>    {
+<span class="nocode"><a name="233">233: </a></span>        delegate.setFormat(format);
+<span class="nocode"><a name="234">234: </a></span>    }
+<span class="nocode"><a name="235">235: </a></span>
+<span class="nocode"><a name="236">236: </a></span>
+<span class="nocode"><a name="237">237: </a></span>
+<span class="nocode"><a name="238">238: </a></span>    /**
+<span class="nocode"><a name="239">239: </a></span>     * @see org.apache.poi.hpsf.MutablePropertySet#setOSVersion(int)
+<span class="nocode"><a name="240">240: </a></span>     */
+<span class="nocode"><a name="241">241: </a></span>    public void setOSVersion(final int osVersion)
+<span class="nocode"><a name="242">242: </a></span>    {
+<span class="nocode"><a name="243">243: </a></span>        delegate.setOSVersion(osVersion);
+<span class="nocode"><a name="244">244: </a></span>    }
+<span class="nocode"><a name="245">245: </a></span>
+<span class="nocode"><a name="246">246: </a></span>
+<span class="nocode"><a name="247">247: </a></span>
+<span class="nocode"><a name="248">248: </a></span>    /**
+<span class="nocode"><a name="249">249: </a></span>     * @see org.apache.poi.hpsf.MutablePropertySet#toInputStream()
+<span class="nocode"><a name="250">250: </a></span>     */
+<span class="nocode"><a name="251">251: </a></span>    public InputStream toInputStream() throws IOException, WritingNotSupportedException
+<span class="nocode"><a name="252">252: </a></span>    {
+<span class="nocode"><a name="253">253: </a></span>        return delegate.toInputStream();
+<span class="nocode"><a name="254">254: </a></span>    }
+<span class="nocode"><a name="255">255: </a></span>
+<span class="nocode"><a name="256">256: </a></span>
+<span class="nocode"><a name="257">257: </a></span>
+<span class="nocode"><a name="258">258: </a></span>    /**
+<span class="nocode"><a name="259">259: </a></span>     * @see org.apache.poi.hpsf.MutablePropertySet#write(org.apache.poi.poifs.filesystem.DirectoryEntry, java.lang.String)
+<span class="nocode"><a name="260">260: </a></span>     */
+<span class="nocode"><a name="261">261: </a></span>    public void write(final DirectoryEntry dir, final String name) throws WritingNotSupportedException, IOException
+<span class="nocode"><a name="262">262: </a></span>    {
+<span class="nocode"><a name="263">263: </a></span>        delegate.write(dir, name);
+<span class="nocode"><a name="264">264: </a></span>    }
+<span class="nocode"><a name="265">265: </a></span>
+<span class="nocode"><a name="266">266: </a></span>
+<span class="nocode"><a name="267">267: </a></span>
+<span class="nocode"><a name="268">268: </a></span>    /**
+<span class="nocode"><a name="269">269: </a></span>     * @see org.apache.poi.hpsf.MutablePropertySet#write(java.io.OutputStream)
+<span class="nocode"><a name="270">270: </a></span>     */
+<span class="nocode"><a name="271">271: </a></span>    public void write(final OutputStream out) throws WritingNotSupportedException, IOException
+<span class="nocode"><a name="272">272: </a></span>    {
+<span class="nocode"><a name="273">273: </a></span>        delegate.write(out);
+<span class="nocode"><a name="274">274: </a></span>    }
+<span class="nocode"><a name="275">275: </a></span>
+<span class="nocode"><a name="276">276: </a></span>
+<span class="nocode"><a name="277">277: </a></span>
+<span class="nocode"><a name="278">278: </a></span>    /**
+<span class="nocode"><a name="279">279: </a></span>     * @see org.apache.poi.hpsf.PropertySet#equals(java.lang.Object)
+<span class="nocode"><a name="280">280: </a></span>     */
+<span class="nocode"><a name="281">281: </a></span>    public boolean equals(final Object o)
+<span class="nocode"><a name="282">282: </a></span>    {
+<span class="nocode"><a name="283">283: </a></span>        return delegate.equals(o);
+<span class="nocode"><a name="284">284: </a></span>    }
+<span class="nocode"><a name="285">285: </a></span>
+<span class="nocode"><a name="286">286: </a></span>
+<span class="nocode"><a name="287">287: </a></span>
+<span class="nocode"><a name="288">288: </a></span>    /**
+<span class="nocode"><a name="289">289: </a></span>     * @see org.apache.poi.hpsf.PropertySet#getProperties()
+<span class="nocode"><a name="290">290: </a></span>     */
+<span class="nocode"><a name="291">291: </a></span>    public Property[] getProperties() throws NoSingleSectionException
+<span class="nocode"><a name="292">292: </a></span>    {
+<span class="nocode"><a name="293">293: </a></span>        return delegate.getProperties();
+<span class="nocode"><a name="294">294: </a></span>    }
+<span class="nocode"><a name="295">295: </a></span>
+<span class="nocode"><a name="296">296: </a></span>
+<span class="nocode"><a name="297">297: </a></span>
+<span class="nocode"><a name="298">298: </a></span>    /**
+<span class="nocode"><a name="299">299: </a></span>     * @see org.apache.poi.hpsf.PropertySet#getProperty(int)
+<span class="nocode"><a name="300">300: </a></span>     */
+<span class="nocode"><a name="301">301: </a></span>    protected Object getProperty(final int id) throws NoSingleSectionException
+<span class="nocode"><a name="302">302: </a></span>    {
+<span class="nocode"><a name="303">303: </a></span>        return delegate.getProperty(id);
+<span class="nocode"><a name="304">304: </a></span>    }
+<span class="nocode"><a name="305">305: </a></span>
+<span class="nocode"><a name="306">306: </a></span>
+<span class="nocode"><a name="307">307: </a></span>
+<span class="nocode"><a name="308">308: </a></span>    /**
+<span class="nocode"><a name="309">309: </a></span>     * @see org.apache.poi.hpsf.PropertySet#getPropertyBooleanValue(int)
+<span class="nocode"><a name="310">310: </a></span>     */
+<span class="nocode"><a name="311">311: </a></span>    protected boolean getPropertyBooleanValue(final int id) throws NoSingleSectionException
+<span class="nocode"><a name="312">312: </a></span>    {
+<span class="nocode"><a name="313">313: </a></span>        return delegate.getPropertyBooleanValue(id);
+<span class="nocode"><a name="314">314: </a></span>    }
+<span class="nocode"><a name="315">315: </a></span>
+<span class="nocode"><a name="316">316: </a></span>
+<span class="nocode"><a name="317">317: </a></span>
+<span class="nocode"><a name="318">318: </a></span>    /**
+<span class="nocode"><a name="319">319: </a></span>     * @see org.apache.poi.hpsf.PropertySet#getPropertyIntValue(int)
+<span class="nocode"><a name="320">320: </a></span>     */
+<span class="nocode"><a name="321">321: </a></span>    protected int getPropertyIntValue(final int id) throws NoSingleSectionException
+<span class="nocode"><a name="322">322: </a></span>    {
+<span class="nocode"><a name="323">323: </a></span>        return delegate.getPropertyIntValue(id);
+<span class="nocode"><a name="324">324: </a></span>    }
+<span class="nocode"><a name="325">325: </a></span>
+<span class="nocode"><a name="326">326: </a></span>
+<span class="nocode"><a name="327">327: </a></span>
+<span class="nocode"><a name="328">328: </a></span>    /**
+<span class="nocode"><a name="329">329: </a></span>     * @see org.apache.poi.hpsf.PropertySet#hashCode()
+<span class="nocode"><a name="330">330: </a></span>     */
+<span class="nocode"><a name="331">331: </a></span>    public int hashCode()
+<span class="nocode"><a name="332">332: </a></span>    {
+<span class="nocode"><a name="333">333: </a></span>        return delegate.hashCode();
+<span class="nocode"><a name="334">334: </a></span>    }
+<span class="nocode"><a name="335">335: </a></span>
+<span class="nocode"><a name="336">336: </a></span>
+<span class="nocode"><a name="337">337: </a></span>
+<span class="nocode"><a name="338">338: </a></span>    /**
+<span class="nocode"><a name="339">339: </a></span>     * @see org.apache.poi.hpsf.PropertySet#toString()
+<span class="nocode"><a name="340">340: </a></span>     */
+<span class="nocode"><a name="341">341: </a></span>    public String toString()
+<span class="nocode"><a name="342">342: </a></span>    {
+<span class="nocode"><a name="343">343: </a></span>        return delegate.toString();
+<span class="nocode"><a name="344">344: </a></span>    }
+<span class="nocode"><a name="345">345: </a></span>
+<span class="nocode"><a name="346">346: </a></span>
+<span class="nocode"><a name="347">347: </a></span>
+<span class="nocode"><a name="348">348: </a></span>    /**
+<span class="nocode"><a name="349">349: </a></span>     * @see org.apache.poi.hpsf.PropertySet#wasNull()
+<span class="nocode"><a name="350">350: </a></span>     */
+<span class="nocode"><a name="351">351: </a></span>    public boolean wasNull() throws NoSingleSectionException
+<span class="nocode"><a name="352">352: </a></span>    {
+<span class="nocode"><a name="353">353: </a></span>        return delegate.wasNull();
+<span class="nocode"><a name="354">354: </a></span>    }
+<span class="nocode"><a name="355">355: </a></span>
+<span class="nocode"><a name="356">356: </a></span>}
+</pre><table class="mutation_table" summary="Mutations">
+<tr><th>ID</th><th>Line</th><th>Type</th><th>Detected</th></tr><tr><td>10395</td><td><a href="#104">104</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>10396</td><td><a href="#114">114</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>10397</td><td><a href="#124">124</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>10398</td><td><a href="#134">134</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>10399</td><td><a href="#144">144</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>10400</td><td><a href="#154">154</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>10401</td><td><a href="#164">164</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>10402</td><td><a href="#174">174</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>10403</td><td><a href="#184">184</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>10404</td><td><a href="#193">193</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>10405</td><td><a href="#203">203</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>10406</td><td><a href="#213">213</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>10407</td><td><a href="#223">223</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>10408</td><td><a href="#233">233</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>10409</td><td><a href="#243">243</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>10410</td><td><a href="#253">253</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>10411</td><td><a href="#263">263</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>10412</td><td><a href="#273">273</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>10413</td><td><a href="#283">283</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>10414</td><td><a href="#293">293</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>10415</td><td><a href="#303">303</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>10416</td><td><a href="#313">313</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>10417</td><td><a href="#323">323</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>10418</td><td><a href="#333">333</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>10419</td><td><a href="#343">343</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>10420</td><td><a href="#353">353</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+</table>
+</body>
+</html>

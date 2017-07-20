@@ -1,0 +1,15 @@
+Testsuite: org.apache.poi.hslf.extractor.TestCruddyExtractor
+Tests run: 2, Failures: 0, Errors: 2, Time elapsed: 0.002 sec
+
+Testcase: testReadAsVector took 0.001 sec
+	Caused an ERROR
+null
+java.lang.NullPointerException
+	at org.apache.poi.hslf.extractor.TestCruddyExtractor.testReadAsVector(TestCruddyExtractor.java:67)
+
+Testcase: testReadAsString took 0 sec
+	Caused an ERROR
+null
+java.lang.NullPointerException
+	at org.apache.poi.hslf.extractor.TestCruddyExtractor.testReadAsString(TestCruddyExtractor.java:79)
+

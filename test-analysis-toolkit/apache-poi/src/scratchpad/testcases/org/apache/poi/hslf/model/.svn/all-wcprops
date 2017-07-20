@@ -1,0 +1,137 @@
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/repos/asf/!svn/ver/1295488/poi/trunk/src/scratchpad/testcases/org/apache/poi/hslf/model
+END
+TestPicture.java
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/repos/asf/!svn/ver/814335/poi/trunk/src/scratchpad/testcases/org/apache/poi/hslf/model/TestPicture.java
+END
+TestTextRunReWrite.java
+K 25
+svn:wc:ra_dav:version-url
+V 111
+/repos/asf/!svn/ver/806959/poi/trunk/src/scratchpad/testcases/org/apache/poi/hslf/model/TestTextRunReWrite.java
+END
+TestSlideMaster.java
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/repos/asf/!svn/ver/806959/poi/trunk/src/scratchpad/testcases/org/apache/poi/hslf/model/TestSlideMaster.java
+END
+TestHeadersFooters.java
+K 25
+svn:wc:ra_dav:version-url
+V 111
+/repos/asf/!svn/ver/806959/poi/trunk/src/scratchpad/testcases/org/apache/poi/hslf/model/TestHeadersFooters.java
+END
+TestOleEmbedding.java
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/repos/asf/!svn/ver/806959/poi/trunk/src/scratchpad/testcases/org/apache/poi/hslf/model/TestOleEmbedding.java
+END
+TestSlideChangeNotes.java
+K 25
+svn:wc:ra_dav:version-url
+V 113
+/repos/asf/!svn/ver/806959/poi/trunk/src/scratchpad/testcases/org/apache/poi/hslf/model/TestSlideChangeNotes.java
+END
+TestBackground.java
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/repos/asf/!svn/ver/1212381/poi/trunk/src/scratchpad/testcases/org/apache/poi/hslf/model/TestBackground.java
+END
+TestSetBoldItalic.java
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/repos/asf/!svn/ver/806959/poi/trunk/src/scratchpad/testcases/org/apache/poi/hslf/model/TestSetBoldItalic.java
+END
+TestShapes.java
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/repos/asf/!svn/ver/1292247/poi/trunk/src/scratchpad/testcases/org/apache/poi/hslf/model/TestShapes.java
+END
+TestSlides.java
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/repos/asf/!svn/ver/806959/poi/trunk/src/scratchpad/testcases/org/apache/poi/hslf/model/TestSlides.java
+END
+TestPPGraphics2D.java
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/repos/asf/!svn/ver/806959/poi/trunk/src/scratchpad/testcases/org/apache/poi/hslf/model/TestPPGraphics2D.java
+END
+TestLine.java
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/repos/asf/!svn/ver/805262/poi/trunk/src/scratchpad/testcases/org/apache/poi/hslf/model/TestLine.java
+END
+TestTable.java
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/repos/asf/!svn/ver/814335/poi/trunk/src/scratchpad/testcases/org/apache/poi/hslf/model/TestTable.java
+END
+AllHSLFModelTests.java
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/repos/asf/!svn/ver/746113/poi/trunk/src/scratchpad/testcases/org/apache/poi/hslf/model/AllHSLFModelTests.java
+END
+TestMovieShape.java
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/repos/asf/!svn/ver/814335/poi/trunk/src/scratchpad/testcases/org/apache/poi/hslf/model/TestMovieShape.java
+END
+TestImagePainter.java
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/repos/asf/!svn/ver/814335/poi/trunk/src/scratchpad/testcases/org/apache/poi/hslf/model/TestImagePainter.java
+END
+TestHyperlink.java
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/repos/asf/!svn/ver/806959/poi/trunk/src/scratchpad/testcases/org/apache/poi/hslf/model/TestHyperlink.java
+END
+TestFreeform.java
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/repos/asf/!svn/ver/814335/poi/trunk/src/scratchpad/testcases/org/apache/poi/hslf/model/TestFreeform.java
+END
+TestTextShape.java
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/repos/asf/!svn/ver/1292273/poi/trunk/src/scratchpad/testcases/org/apache/poi/hslf/model/TestTextShape.java
+END
+TestPPFont.java
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/repos/asf/!svn/ver/814335/poi/trunk/src/scratchpad/testcases/org/apache/poi/hslf/model/TestPPFont.java
+END
+TestSheet.java
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/repos/asf/!svn/ver/806959/poi/trunk/src/scratchpad/testcases/org/apache/poi/hslf/model/TestSheet.java
+END
+TestTextRun.java
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/repos/asf/!svn/ver/1295488/poi/trunk/src/scratchpad/testcases/org/apache/poi/hslf/model/TestTextRun.java
+END

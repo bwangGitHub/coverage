@@ -1,0 +1,321 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN
+"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>
+org.joda.time.base.BaseInterval
+</title>
+<link href="prettify.css" type="text/css" rel="stylesheet" />
+<script type="text/javascript" src="prettify.js"></script>
+</head>
+<body onload="prettyPrint()">
+<h2>Javalanche report for class:<br/> org.joda.time.base.BaseInterval </h2><pre class="prettyprint" style="border: 1px solid #888;padding: 2px"><span class="nocode"><a name="1">  1: </a></span>/*
+<span class="nocode"><a name="2">  2: </a></span> *  Copyright 2001-2011 Stephen Colebourne
+<span class="nocode"><a name="3">  3: </a></span> *
+<span class="nocode"><a name="4">  4: </a></span> *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+<span class="nocode"><a name="5">  5: </a></span> *  you may not use this file except in compliance with the License.
+<span class="nocode"><a name="6">  6: </a></span> *  You may obtain a copy of the License at
+<span class="nocode"><a name="7">  7: </a></span> *
+<span class="nocode"><a name="8">  8: </a></span> *      http://www.apache.org/licenses/LICENSE-2.0
+<span class="nocode"><a name="9">  9: </a></span> *
+<span class="nocode"><a name="10"> 10: </a></span> *  Unless required by applicable law or agreed to in writing, software
+<span class="nocode"><a name="11"> 11: </a></span> *  distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+<span class="nocode"><a name="12"> 12: </a></span> *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+<span class="nocode"><a name="13"> 13: </a></span> *  See the License for the specific language governing permissions and
+<span class="nocode"><a name="14"> 14: </a></span> *  limitations under the License.
+<span class="nocode"><a name="15"> 15: </a></span> */
+<span class="nocode"><a name="16"> 16: </a></span>package org.joda.time.base;
+<span class="nocode"><a name="17"> 17: </a></span>
+<span class="nocode"><a name="18"> 18: </a></span>import java.io.Serializable;
+<span class="nocode"><a name="19"> 19: </a></span>
+<span class="nocode"><a name="20"> 20: </a></span>import org.joda.time.Chronology;
+<span class="nocode"><a name="21"> 21: </a></span>import org.joda.time.DateTimeUtils;
+<span class="nocode"><a name="22"> 22: </a></span>import org.joda.time.MutableInterval;
+<span class="nocode"><a name="23"> 23: </a></span>import org.joda.time.ReadWritableInterval;
+<span class="nocode"><a name="24"> 24: </a></span>import org.joda.time.ReadableDuration;
+<span class="nocode"><a name="25"> 25: </a></span>import org.joda.time.ReadableInstant;
+<span class="nocode"><a name="26"> 26: </a></span>import org.joda.time.ReadableInterval;
+<span class="nocode"><a name="27"> 27: </a></span>import org.joda.time.ReadablePeriod;
+<span class="nocode"><a name="28"> 28: </a></span>import org.joda.time.chrono.ISOChronology;
+<span class="nocode"><a name="29"> 29: </a></span>import org.joda.time.convert.ConverterManager;
+<span class="nocode"><a name="30"> 30: </a></span>import org.joda.time.convert.IntervalConverter;
+<span class="nocode"><a name="31"> 31: </a></span>import org.joda.time.field.FieldUtils;
+<span class="nocode"><a name="32"> 32: </a></span>
+<span class="nocode"><a name="33"> 33: </a></span>/**
+<span class="nocode"><a name="34"> 34: </a></span> * BaseInterval is an abstract implementation of ReadableInterval that stores
+<span class="nocode"><a name="35"> 35: </a></span> * data in two &lt;code&gt;long&lt;/code&gt; millisecond fields.
+<span class="nocode"><a name="36"> 36: </a></span> * &lt;p&gt;
+<span class="nocode"><a name="37"> 37: </a></span> * This class should generally not be used directly by API users.
+<span class="nocode"><a name="38"> 38: </a></span> * The {@link ReadableInterval} interface should be used when different 
+<span class="nocode"><a name="39"> 39: </a></span> * kinds of interval objects are to be referenced.
+<span class="nocode"><a name="40"> 40: </a></span> * &lt;p&gt;
+<span class="nocode"><a name="41"> 41: </a></span> * BaseInterval subclasses may be mutable and not thread-safe.
+<span class="nocode"><a name="42"> 42: </a></span> *
+<span class="nocode"><a name="43"> 43: </a></span> * @author Brian S O'Neill
+<span class="nocode"><a name="44"> 44: </a></span> * @author Sean Geoghegan
+<span class="nocode"><a name="45"> 45: </a></span> * @author Stephen Colebourne
+<span class="nocode"><a name="46"> 46: </a></span> * @since 1.0
+<span class="nocode"><a name="47"> 47: </a></span> */
+<span class="nocode"><a name="48"> 48: </a></span>public abstract class BaseInterval
+<span class="nocode"><a name="49"> 49: </a></span>        extends AbstractInterval
+<span class="nocode"><a name="50"> 50: </a></span>        implements ReadableInterval, Serializable {
+<span class="nocode"><a name="51"> 51: </a></span>
+<span class="nocode"><a name="52"> 52: </a></span>    /** Serialization version */
+<span class="nocode"><a name="53"> 53: </a></span>    private static final long serialVersionUID = 576586928732749278L;
+<span class="nocode"><a name="54"> 54: </a></span>
+<span class="nocode"><a name="55"> 55: </a></span>    /** The chronology of the interval */
+<span class="nocode"><a name="56"> 56: </a></span>    private volatile Chronology iChronology;
+<span class="nocode"><a name="57"> 57: </a></span>    /** The start of the interval */
+<span class="nocode"><a name="58"> 58: </a></span>    private volatile long iStartMillis;
+<span class="nocode"><a name="59"> 59: </a></span>    /** The end of the interval */
+<span class="nocode"><a name="60"> 60: </a></span>    private volatile long iEndMillis;
+<span class="nocode"><a name="61"> 61: </a></span>
+<span class="nocode"><a name="62"> 62: </a></span>    /**
+<span class="nocode"><a name="63"> 63: </a></span>     * Constructs an interval from a start and end instant.
+<span class="nocode"><a name="64"> 64: </a></span>     * 
+<span class="nocode"><a name="65"> 65: </a></span>     * @param startInstant  start of this interval, as milliseconds from 1970-01-01T00:00:00Z.
+<span class="nocode"><a name="66"> 66: </a></span>     * @param endInstant  end of this interval, as milliseconds from 1970-01-01T00:00:00Z.
+<span class="nocode"><a name="67"> 67: </a></span>     * @param chrono  the chronology to use, null is ISO default
+<span class="nocode"><a name="68"> 68: </a></span>     * @throws IllegalArgumentException if the end is before the start
+<span class="nocode"><a name="69"> 69: </a></span>     */
+<span class="nocode"><a name="70"> 70: </a></span>    protected BaseInterval(long startInstant, long endInstant, Chronology chrono) {
+<span class="nocode"><a name="71"> 71: </a></span>        super();
+<span class="nocode"><a name="72"> 72: </a></span>        iChronology = DateTimeUtils.getChronology(chrono);
+<span class="nocode"><a name="73"> 73: </a></span>        checkInterval(startInstant, endInstant);
+<span class="nocode"><a name="74"> 74: </a></span>        iStartMillis = startInstant;
+<span class="nocode"><a name="75"> 75: </a></span>        iEndMillis = endInstant;
+<span class="nocode"><a name="76"> 76: </a></span>    }
+<span class="nocode"><a name="77"> 77: </a></span>
+<span class="nocode"><a name="78"> 78: </a></span>    /**
+<span class="nocode"><a name="79"> 79: </a></span>     * Constructs an interval from a start and end instant.
+<span class="nocode"><a name="80"> 80: </a></span>     * 
+<span class="nocode"><a name="81"> 81: </a></span>     * @param start  start of this interval, null means now
+<span class="nocode"><a name="82"> 82: </a></span>     * @param end  end of this interval, null means now
+<span class="nocode"><a name="83"> 83: </a></span>     * @throws IllegalArgumentException if the end is before the start
+<span class="nocode"><a name="84"> 84: </a></span>     */
+<span class="nocode"><a name="85"> 85: </a></span>    protected BaseInterval(ReadableInstant start, ReadableInstant end) {
+<span class="nocode"><a name="86"> 86: </a></span>        super();
+<span class="nocode"><a name="87"> 87: </a></span>        if (start == null &amp;&amp; end == null) {
+<span class="nocode"><a name="88"> 88: </a></span>            iStartMillis = iEndMillis = DateTimeUtils.currentTimeMillis();
+<span class="nocode"><a name="89"> 89: </a></span>            iChronology = ISOChronology.getInstance();
+<span class="nocode"><a name="90"> 90: </a></span>        } else {
+<span class="nocode"><a name="91"> 91: </a></span>            iChronology = DateTimeUtils.getInstantChronology(start);
+<span class="nocode"><a name="92"> 92: </a></span>            iStartMillis = DateTimeUtils.getInstantMillis(start);
+<span class="nocode"><a name="93"> 93: </a></span>            iEndMillis = DateTimeUtils.getInstantMillis(end);
+<span class="nocode"><a name="94"> 94: </a></span>            checkInterval(iStartMillis, iEndMillis);
+<span class="nocode"><a name="95"> 95: </a></span>        }
+<span class="nocode"><a name="96"> 96: </a></span>    }
+<span class="nocode"><a name="97"> 97: </a></span>
+<span class="nocode"><a name="98"> 98: </a></span>    /**
+<span class="nocode"><a name="99"> 99: </a></span>     * Constructs an interval from a start instant and a duration.
+<span class="nocode"><a name="100">100: </a></span>     * 
+<span class="nocode"><a name="101">101: </a></span>     * @param start  start of this interval, null means now
+<span class="nocode"><a name="102">102: </a></span>     * @param duration  the duration of this interval, null means zero length
+<span class="nocode"><a name="103">103: </a></span>     * @throws IllegalArgumentException if the end is before the start
+<span class="nocode"><a name="104">104: </a></span>     * @throws ArithmeticException if the end instant exceeds the capacity of a long
+<span class="nocode"><a name="105">105: </a></span>     */
+<span class="nocode"><a name="106">106: </a></span>    protected BaseInterval(ReadableInstant start, ReadableDuration duration) {
+<span class="nocode"><a name="107">107: </a></span>        super();
+<span class="nocode"><a name="108">108: </a></span>        iChronology = DateTimeUtils.getInstantChronology(start);
+<span class="nocode"><a name="109">109: </a></span>        iStartMillis = DateTimeUtils.getInstantMillis(start);
+<span class="nocode"><a name="110">110: </a></span>        long durationMillis = DateTimeUtils.getDurationMillis(duration);
+<span class="nocode"><a name="111">111: </a></span>        iEndMillis = FieldUtils.safeAdd(iStartMillis, durationMillis);
+<span class="nocode"><a name="112">112: </a></span>        checkInterval(iStartMillis, iEndMillis);
+<span class="nocode"><a name="113">113: </a></span>    }
+<span class="nocode"><a name="114">114: </a></span>
+<span class="nocode"><a name="115">115: </a></span>    /**
+<span class="nocode"><a name="116">116: </a></span>     * Constructs an interval from a millisecond duration and an end instant.
+<span class="nocode"><a name="117">117: </a></span>     * 
+<span class="nocode"><a name="118">118: </a></span>     * @param duration  the duration of this interval, null means zero length
+<span class="nocode"><a name="119">119: </a></span>     * @param end  end of this interval, null means now
+<span class="nocode"><a name="120">120: </a></span>     * @throws IllegalArgumentException if the end is before the start
+<span class="nocode"><a name="121">121: </a></span>     * @throws ArithmeticException if the start instant exceeds the capacity of a long
+<span class="nocode"><a name="122">122: </a></span>     */
+<span class="nocode"><a name="123">123: </a></span>    protected BaseInterval(ReadableDuration duration, ReadableInstant end) {
+<span class="nocode"><a name="124">124: </a></span>        super();
+<span class="nocode"><a name="125">125: </a></span>        iChronology = DateTimeUtils.getInstantChronology(end);
+<span class="nocode"><a name="126">126: </a></span>        iEndMillis = DateTimeUtils.getInstantMillis(end);
+<span class="nocode"><a name="127">127: </a></span>        long durationMillis = DateTimeUtils.getDurationMillis(duration);
+<span class="nocode"><a name="128">128: </a></span>        iStartMillis = FieldUtils.safeAdd(iEndMillis, -durationMillis);
+<span class="nocode"><a name="129">129: </a></span>        checkInterval(iStartMillis, iEndMillis);
+<span class="nocode"><a name="130">130: </a></span>    }
+<span class="nocode"><a name="131">131: </a></span>
+<span class="nocode"><a name="132">132: </a></span>    /**
+<span class="nocode"><a name="133">133: </a></span>     * Constructs an interval from a start instant and a time period.
+<span class="nocode"><a name="134">134: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="135">135: </a></span>     * When forming the interval, the chronology from the instant is used
+<span class="nocode"><a name="136">136: </a></span>     * if present, otherwise the chronology of the period is used.
+<span class="nocode"><a name="137">137: </a></span>     * 
+<span class="nocode"><a name="138">138: </a></span>     * @param start  start of this interval, null means now
+<span class="nocode"><a name="139">139: </a></span>     * @param period  the period of this interval, null means zero length
+<span class="nocode"><a name="140">140: </a></span>     * @throws IllegalArgumentException if the end is before the start
+<span class="nocode"><a name="141">141: </a></span>     * @throws ArithmeticException if the end instant exceeds the capacity of a long
+<span class="nocode"><a name="142">142: </a></span>     */
+<span class="nocode"><a name="143">143: </a></span>    protected BaseInterval(ReadableInstant start, ReadablePeriod period) {
+<span class="nocode"><a name="144">144: </a></span>        super();
+<span class="nocode"><a name="145">145: </a></span>        Chronology chrono = DateTimeUtils.getInstantChronology(start);
+<span class="nocode"><a name="146">146: </a></span>        iChronology = chrono;
+<span class="nocode"><a name="147">147: </a></span>        iStartMillis = DateTimeUtils.getInstantMillis(start);
+<span class="nocode"><a name="148">148: </a></span>        if (period == null) {
+<span class="nocode"><a name="149">149: </a></span>            iEndMillis = iStartMillis;
+<span class="nocode"><a name="150">150: </a></span>        } else {
+<span class="nocode"><a name="151">151: </a></span>            iEndMillis = chrono.add(period, iStartMillis, 1);
+<span class="nocode"><a name="152">152: </a></span>        }
+<span class="nocode"><a name="153">153: </a></span>        checkInterval(iStartMillis, iEndMillis);
+<span class="nocode"><a name="154">154: </a></span>    }
+<span class="nocode"><a name="155">155: </a></span>
+<span class="nocode"><a name="156">156: </a></span>    /**
+<span class="nocode"><a name="157">157: </a></span>     * Constructs an interval from a time period and an end instant.
+<span class="nocode"><a name="158">158: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="159">159: </a></span>     * When forming the interval, the chronology from the instant is used
+<span class="nocode"><a name="160">160: </a></span>     * if present, otherwise the chronology of the period is used.
+<span class="nocode"><a name="161">161: </a></span>     * 
+<span class="nocode"><a name="162">162: </a></span>     * @param period  the period of this interval, null means zero length
+<span class="nocode"><a name="163">163: </a></span>     * @param end  end of this interval, null means now
+<span class="nocode"><a name="164">164: </a></span>     * @throws IllegalArgumentException if the end is before the start
+<span class="nocode"><a name="165">165: </a></span>     * @throws ArithmeticException if the start instant exceeds the capacity of a long
+<span class="nocode"><a name="166">166: </a></span>     */
+<span class="nocode"><a name="167">167: </a></span>    protected BaseInterval(ReadablePeriod period, ReadableInstant end) {
+<span class="nocode"><a name="168">168: </a></span>        super();
+<span class="nocode"><a name="169">169: </a></span>        Chronology chrono = DateTimeUtils.getInstantChronology(end);
+<span class="nocode"><a name="170">170: </a></span>        iChronology = chrono;
+<span class="nocode"><a name="171">171: </a></span>        iEndMillis = DateTimeUtils.getInstantMillis(end);
+<span class="nocode"><a name="172">172: </a></span>        if (period == null) {
+<span class="nocode"><a name="173">173: </a></span>            iStartMillis = iEndMillis;
+<span class="nocode"><a name="174">174: </a></span>        } else {
+<span class="nocode"><a name="175">175: </a></span>            iStartMillis = chrono.add(period, iEndMillis, -1);
+<span class="nocode"><a name="176">176: </a></span>        }
+<span class="nocode"><a name="177">177: </a></span>        checkInterval(iStartMillis, iEndMillis);
+<span class="nocode"><a name="178">178: </a></span>    }
+<span class="nocode"><a name="179">179: </a></span>
+<span class="nocode"><a name="180">180: </a></span>    /**
+<span class="nocode"><a name="181">181: </a></span>     * Constructs a time interval converting or copying from another object
+<span class="nocode"><a name="182">182: </a></span>     * that describes an interval.
+<span class="nocode"><a name="183">183: </a></span>     * 
+<span class="nocode"><a name="184">184: </a></span>     * @param interval  the time interval to copy
+<span class="nocode"><a name="185">185: </a></span>     * @param chrono  the chronology to use, null means let converter decide
+<span class="nocode"><a name="186">186: </a></span>     * @throws IllegalArgumentException if the interval is invalid
+<span class="nocode"><a name="187">187: </a></span>     */
+<span class="nocode"><a name="188">188: </a></span>    protected BaseInterval(Object interval, Chronology chrono) {
+<span class="nocode"><a name="189">189: </a></span>        super();
+<span class="nocode"><a name="190">190: </a></span>        IntervalConverter converter = ConverterManager.getInstance().getIntervalConverter(interval);
+<span class="nocode"><a name="191">191: </a></span>        if (converter.isReadableInterval(interval, chrono)) {
+<span class="nocode"><a name="192">192: </a></span>            ReadableInterval input = (ReadableInterval) interval;
+<span class="nocode"><a name="193">193: </a></span>            iChronology = (chrono != null ? chrono : input.getChronology());
+<span class="nocode"><a name="194">194: </a></span>            iStartMillis = input.getStartMillis();
+<span class="nocode"><a name="195">195: </a></span>            iEndMillis = input.getEndMillis();
+<span class="nocode"><a name="196">196: </a></span>        } else if (this instanceof ReadWritableInterval) {
+<span class="nocode"><a name="197">197: </a></span>            converter.setInto((ReadWritableInterval) this, interval, chrono);
+<span class="nocode"><a name="198">198: </a></span>        } else {
+<span class="nocode"><a name="199">199: </a></span>            MutableInterval mi = new MutableInterval();
+<span class="nocode"><a name="200">200: </a></span>            converter.setInto(mi, interval, chrono);
+<span class="nocode"><a name="201">201: </a></span>            iChronology = mi.getChronology();
+<span class="nocode"><a name="202">202: </a></span>            iStartMillis = mi.getStartMillis();
+<span class="nocode"><a name="203">203: </a></span>            iEndMillis = mi.getEndMillis();
+<span class="nocode"><a name="204">204: </a></span>        }
+<span class="nocode"><a name="205">205: </a></span>        checkInterval(iStartMillis, iEndMillis);
+<span class="nocode"><a name="206">206: </a></span>    }
+<span class="nocode"><a name="207">207: </a></span>
+<span class="nocode"><a name="208">208: </a></span>    //-----------------------------------------------------------------------
+<span class="nocode"><a name="209">209: </a></span>    /**
+<span class="nocode"><a name="210">210: </a></span>     * Gets the chronology of this interval.
+<span class="nocode"><a name="211">211: </a></span>     *
+<span class="nocode"><a name="212">212: </a></span>     * @return the chronology
+<span class="nocode"><a name="213">213: </a></span>     */
+<span class="nocode"><a name="214">214: </a></span>    public Chronology getChronology() {
+<span class="nocode"><a name="215">215: </a></span>        return iChronology;
+<span class="nocode"><a name="216">216: </a></span>    }
+<span class="nocode"><a name="217">217: </a></span>
+<span class="nocode"><a name="218">218: </a></span>    /**
+<span class="nocode"><a name="219">219: </a></span>     * Gets the start of this time interval which is inclusive.
+<span class="nocode"><a name="220">220: </a></span>     *
+<span class="nocode"><a name="221">221: </a></span>     * @return the start of the time interval,
+<span class="nocode"><a name="222">222: </a></span>     *  millisecond instant from 1970-01-01T00:00:00Z
+<span class="nocode"><a name="223">223: </a></span>     */
+<span class="nocode"><a name="224">224: </a></span>    public long getStartMillis() {
+<span class="nocode"><a name="225">225: </a></span>        return iStartMillis;
+<span class="nocode"><a name="226">226: </a></span>    }
+<span class="nocode"><a name="227">227: </a></span>
+<span class="nocode"><a name="228">228: </a></span>    /**
+<span class="nocode"><a name="229">229: </a></span>     * Gets the end of this time interval which is exclusive.
+<span class="nocode"><a name="230">230: </a></span>     *
+<span class="nocode"><a name="231">231: </a></span>     * @return the end of the time interval,
+<span class="nocode"><a name="232">232: </a></span>     *  millisecond instant from 1970-01-01T00:00:00Z
+<span class="nocode"><a name="233">233: </a></span>     */
+<span class="nocode"><a name="234">234: </a></span>    public long getEndMillis() {
+<span class="nocode"><a name="235">235: </a></span>        return iEndMillis;
+<span class="nocode"><a name="236">236: </a></span>    }
+<span class="nocode"><a name="237">237: </a></span>
+<span class="nocode"><a name="238">238: </a></span>    //-----------------------------------------------------------------------
+<span class="nocode"><a name="239">239: </a></span>    /**
+<span class="nocode"><a name="240">240: </a></span>     * Sets this interval from two millisecond instants and a chronology.
+<span class="nocode"><a name="241">241: </a></span>     *
+<span class="nocode"><a name="242">242: </a></span>     * @param startInstant  the start of the time interval
+<span class="nocode"><a name="243">243: </a></span>     * @param endInstant  the start of the time interval
+<span class="nocode"><a name="244">244: </a></span>     * @param chrono  the chronology, not null
+<span class="nocode"><a name="245">245: </a></span>     * @throws IllegalArgumentException if the end is before the start
+<span class="nocode"><a name="246">246: </a></span>     */
+<span class="nocode"><a name="247">247: </a></span>    protected void setInterval(long startInstant, long endInstant, Chronology chrono) {
+<span class="nocode"><a name="248">248: </a></span>        checkInterval(startInstant, endInstant);
+<span class="nocode"><a name="249">249: </a></span>        iStartMillis = startInstant;
+<span class="nocode"><a name="250">250: </a></span>        iEndMillis = endInstant;
+<span class="nocode"><a name="251">251: </a></span>        iChronology = DateTimeUtils.getChronology(chrono);
+<span class="nocode"><a name="252">252: </a></span>    }
+<span class="nocode"><a name="253">253: </a></span>
+<span class="nocode"><a name="254">254: </a></span>}
+</pre><table class="mutation_table" summary="Mutations">
+<tr><th>ID</th><th>Line</th><th>Type</th><th>Detected</th></tr><tr><td>17094</td><td><a href="#72">72</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>17095</td><td><a href="#73">73</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>17096</td><td><a href="#87">87</a></td><td>Negate jump condition (Replace IFNONNULL with  IFNULL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>17097</td><td><a href="#87">87(1)</a></td><td>Negate jump condition (Replace IFNONNULL with  IFNULL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>17098</td><td><a href="#88">88</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>17099</td><td><a href="#89">89</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>17100</td><td><a href="#91">91</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>17101</td><td><a href="#92">92</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>17102</td><td><a href="#93">93</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>17103</td><td><a href="#94">94</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>17104</td><td><a href="#108">108</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>17105</td><td><a href="#109">109</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>17106</td><td><a href="#110">110</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>17107</td><td><a href="#111">111</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>17108</td><td><a href="#112">112</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>17109</td><td><a href="#125">125</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>17110</td><td><a href="#126">126</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>17111</td><td><a href="#127">127</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>17112</td><td><a href="#128">128</a></td><td>Replace arithmetic operator (Replace LNEG with remove right opereand)</td><td><img src="detected.png"/></td></tr>
+<tr><td>17113</td><td><a href="#128">128</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>17114</td><td><a href="#129">129</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>17115</td><td><a href="#145">145</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>17116</td><td><a href="#147">147</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>17117</td><td><a href="#148">148</a></td><td>Negate jump condition (Replace IFNONNULL with  IFNULL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>17118</td><td><a href="#151">151</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>17119</td><td><a href="#151">151</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>17120</td><td><a href="#151">151</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>17121</td><td><a href="#153">153</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>17122</td><td><a href="#169">169</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>17123</td><td><a href="#171">171</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>17124</td><td><a href="#172">172</a></td><td>Negate jump condition (Replace IFNONNULL with  IFNULL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>17125</td><td><a href="#175">175</a></td><td>Replace a constant (Replace -1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>17126</td><td><a href="#175">175</a></td><td>Replace a constant (Replace -1 with -2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>17127</td><td><a href="#175">175</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>17128</td><td><a href="#177">177</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>17129</td><td><a href="#190">190</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>17130</td><td><a href="#190">190(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>17132</td><td><a href="#191">191</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>17131</td><td><a href="#191">191</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>17133</td><td><a href="#193">193</a></td><td>Negate jump condition (Replace IFNULL with  IFNONNULL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>17134</td><td><a href="#193">193</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>17135</td><td><a href="#194">194</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>17136</td><td><a href="#195">195</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>17137</td><td><a href="#196">196</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>17138</td><td><a href="#197">197</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>17139</td><td><a href="#200">200</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>17140</td><td><a href="#201">201</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>17141</td><td><a href="#202">202</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>17142</td><td><a href="#203">203</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>17143</td><td><a href="#205">205</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>17144</td><td><a href="#248">248</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>17145</td><td><a href="#251">251</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+</table>
+</body>
+</html>

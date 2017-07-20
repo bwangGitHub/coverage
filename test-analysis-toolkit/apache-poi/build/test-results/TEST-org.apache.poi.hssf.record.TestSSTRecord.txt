@@ -1,0 +1,11 @@
+Testsuite: org.apache.poi.hssf.record.TestSSTRecord
+Tests run: 8, Failures: 0, Errors: 0, Time elapsed: 0.064 sec
+
+Testcase: testContinuedRecord took 0.045 sec
+Testcase: testHugeStrings took 0.004 sec
+Testcase: testSSTRecordBug took 0.005 sec
+Testcase: testSimpleAddString took 0 sec
+Testcase: testSimpleConstructor took 0 sec
+Testcase: testReadWriteDuplicatedRichText1 took 0.007 sec
+Testcase: test50779_1 took 0.002 sec
+Testcase: test50779_2 took 0.001 sec

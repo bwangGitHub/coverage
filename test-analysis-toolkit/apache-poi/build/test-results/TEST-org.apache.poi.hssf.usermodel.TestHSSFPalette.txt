@@ -1,0 +1,9 @@
+Testsuite: org.apache.poi.hssf.usermodel.TestHSSFPalette
+Tests run: 6, Failures: 0, Errors: 0, Time elapsed: 0.003 sec
+
+Testcase: testCustomPalette took 0.001 sec
+Testcase: testPaletteFromCellColours took 0 sec
+Testcase: testFindSimilar took 0.001 sec
+Testcase: testGnumericStrings took 0 sec
+Testcase: testBadIndexes took 0 sec
+Testcase: testAddColor took 0 sec

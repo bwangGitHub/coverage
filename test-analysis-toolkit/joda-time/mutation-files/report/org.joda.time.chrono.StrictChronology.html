@@ -1,0 +1,239 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN
+"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>
+org.joda.time.chrono.StrictChronology
+</title>
+<link href="prettify.css" type="text/css" rel="stylesheet" />
+<script type="text/javascript" src="prettify.js"></script>
+</head>
+<body onload="prettyPrint()">
+<h2>Javalanche report for class:<br/> org.joda.time.chrono.StrictChronology </h2><pre class="prettyprint" style="border: 1px solid #888;padding: 2px"><span class="nocode"><a name="1">  1: </a></span>/*
+<span class="nocode"><a name="2">  2: </a></span> *  Copyright 2001-2005 Stephen Colebourne
+<span class="nocode"><a name="3">  3: </a></span> *
+<span class="nocode"><a name="4">  4: </a></span> *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+<span class="nocode"><a name="5">  5: </a></span> *  you may not use this file except in compliance with the License.
+<span class="nocode"><a name="6">  6: </a></span> *  You may obtain a copy of the License at
+<span class="nocode"><a name="7">  7: </a></span> *
+<span class="nocode"><a name="8">  8: </a></span> *      http://www.apache.org/licenses/LICENSE-2.0
+<span class="nocode"><a name="9">  9: </a></span> *
+<span class="nocode"><a name="10"> 10: </a></span> *  Unless required by applicable law or agreed to in writing, software
+<span class="nocode"><a name="11"> 11: </a></span> *  distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+<span class="nocode"><a name="12"> 12: </a></span> *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+<span class="nocode"><a name="13"> 13: </a></span> *  See the License for the specific language governing permissions and
+<span class="nocode"><a name="14"> 14: </a></span> *  limitations under the License.
+<span class="nocode"><a name="15"> 15: </a></span> */
+<span class="nocode"><a name="16"> 16: </a></span>package org.joda.time.chrono;
+<span class="nocode"><a name="17"> 17: </a></span>
+<span class="nocode"><a name="18"> 18: </a></span>import org.joda.time.Chronology;
+<span class="nocode"><a name="19"> 19: </a></span>import org.joda.time.DateTimeField;
+<span class="nocode"><a name="20"> 20: </a></span>import org.joda.time.DateTimeZone;
+<span class="nocode"><a name="21"> 21: </a></span>import org.joda.time.field.StrictDateTimeField;
+<span class="nocode"><a name="22"> 22: </a></span>
+<span class="nocode"><a name="23"> 23: </a></span>/**
+<span class="nocode"><a name="24"> 24: </a></span> * Wraps another Chronology, ensuring all the fields are strict.
+<span class="nocode"><a name="25"> 25: </a></span> * &lt;p&gt;
+<span class="nocode"><a name="26"> 26: </a></span> * StrictChronology is thread-safe and immutable.
+<span class="nocode"><a name="27"> 27: </a></span> *
+<span class="nocode"><a name="28"> 28: </a></span> * @author Brian S O'Neill
+<span class="nocode"><a name="29"> 29: </a></span> * @since 1.0
+<span class="nocode"><a name="30"> 30: </a></span> * @see StrictDateTimeField
+<span class="nocode"><a name="31"> 31: </a></span> * @see LenientChronology
+<span class="nocode"><a name="32"> 32: </a></span> */
+<span class="nocode"><a name="33"> 33: </a></span>public final class StrictChronology extends AssembledChronology {
+<span class="nocode"><a name="34"> 34: </a></span>
+<span class="nocode"><a name="35"> 35: </a></span>    /** Serialization lock */
+<span class="nocode"><a name="36"> 36: </a></span>    private static final long serialVersionUID = 6633006628097111960L;
+<span class="nocode"><a name="37"> 37: </a></span>
+<span class="nocode"><a name="38"> 38: </a></span>    /**
+<span class="nocode"><a name="39"> 39: </a></span>     * Create a StrictChronology for any chronology.
+<span class="nocode"><a name="40"> 40: </a></span>     *
+<span class="nocode"><a name="41"> 41: </a></span>     * @param base the chronology to wrap
+<span class="nocode"><a name="42"> 42: </a></span>     * @throws IllegalArgumentException if chronology is null
+<span class="nocode"><a name="43"> 43: </a></span>     */
+<span class="nocode"><a name="44"> 44: </a></span>    public static StrictChronology getInstance(Chronology base) {
+<span class="nocode"><a name="45"> 45: </a></span>        if (base == null) {
+<span class="nocode"><a name="46"> 46: </a></span>            throw new IllegalArgumentException(&quot;Must supply a chronology&quot;);
+<span class="nocode"><a name="47"> 47: </a></span>        }
+<span class="nocode"><a name="48"> 48: </a></span>        return new StrictChronology(base);
+<span class="nocode"><a name="49"> 49: </a></span>    }
+<span class="nocode"><a name="50"> 50: </a></span>
+<span class="nocode"><a name="51"> 51: </a></span>    private transient Chronology iWithUTC;
+<span class="nocode"><a name="52"> 52: </a></span>
+<span class="nocode"><a name="53"> 53: </a></span>    /**
+<span class="nocode"><a name="54"> 54: </a></span>     * Create a StrictChronology for any chronology.
+<span class="nocode"><a name="55"> 55: </a></span>     *
+<span class="nocode"><a name="56"> 56: </a></span>     * @param base the chronology to wrap
+<span class="nocode"><a name="57"> 57: </a></span>     */
+<span class="nocode"><a name="58"> 58: </a></span>    private StrictChronology(Chronology base) {
+<span class="nocode"><a name="59"> 59: </a></span>        super(base, null);
+<span class="nocode"><a name="60"> 60: </a></span>    }
+<span class="nocode"><a name="61"> 61: </a></span>
+<span class="nocode"><a name="62"> 62: </a></span>    public Chronology withUTC() {
+<span class="nocode"><a name="63"> 63: </a></span>        if (iWithUTC == null) {
+<span class="nocode"><a name="64"> 64: </a></span>            if (getZone() == DateTimeZone.UTC) {
+<span class="nocode"><a name="65"> 65: </a></span>                iWithUTC = this;
+<span class="nocode"><a name="66"> 66: </a></span>            } else {
+<span class="nocode"><a name="67"> 67: </a></span>                iWithUTC = StrictChronology.getInstance(getBase().withUTC());
+<span class="nocode"><a name="68"> 68: </a></span>            }
+<span class="nocode"><a name="69"> 69: </a></span>        }
+<span class="nocode"><a name="70"> 70: </a></span>        return iWithUTC;
+<span class="nocode"><a name="71"> 71: </a></span>    }
+<span class="nocode"><a name="72"> 72: </a></span>
+<span class="nocode"><a name="73"> 73: </a></span>    public Chronology withZone(DateTimeZone zone) {
+<span class="nocode"><a name="74"> 74: </a></span>        if (zone == null) {
+<span class="nocode"><a name="75"> 75: </a></span>            zone = DateTimeZone.getDefault();
+<span class="nocode"><a name="76"> 76: </a></span>        }
+<span class="nocode"><a name="77"> 77: </a></span>        if (zone == DateTimeZone.UTC) {
+<span class="nocode"><a name="78"> 78: </a></span>            return withUTC();
+<span class="nocode"><a name="79"> 79: </a></span>        }
+<span class="nocode"><a name="80"> 80: </a></span>        if (zone == getZone()) {
+<span class="nocode"><a name="81"> 81: </a></span>            return this;
+<span class="nocode"><a name="82"> 82: </a></span>        }
+<span class="nocode"><a name="83"> 83: </a></span>        return StrictChronology.getInstance(getBase().withZone(zone));
+<span class="nocode"><a name="84"> 84: </a></span>    }
+<span class="nocode"><a name="85"> 85: </a></span>
+<span class="nocode"><a name="86"> 86: </a></span>    protected void assemble(Fields fields) {
+<span class="nocode"><a name="87"> 87: </a></span>        fields.year = convertField(fields.year);
+<span class="nocode"><a name="88"> 88: </a></span>        fields.yearOfEra = convertField(fields.yearOfEra);
+<span class="nocode"><a name="89"> 89: </a></span>        fields.yearOfCentury = convertField(fields.yearOfCentury);
+<span class="nocode"><a name="90"> 90: </a></span>        fields.centuryOfEra = convertField(fields.centuryOfEra);
+<span class="nocode"><a name="91"> 91: </a></span>        fields.era = convertField(fields.era);
+<span class="nocode"><a name="92"> 92: </a></span>        fields.dayOfWeek = convertField(fields.dayOfWeek);
+<span class="nocode"><a name="93"> 93: </a></span>        fields.dayOfMonth = convertField(fields.dayOfMonth);
+<span class="nocode"><a name="94"> 94: </a></span>        fields.dayOfYear = convertField(fields.dayOfYear);
+<span class="nocode"><a name="95"> 95: </a></span>        fields.monthOfYear = convertField(fields.monthOfYear);
+<span class="nocode"><a name="96"> 96: </a></span>        fields.weekOfWeekyear = convertField(fields.weekOfWeekyear);
+<span class="nocode"><a name="97"> 97: </a></span>        fields.weekyear = convertField(fields.weekyear);
+<span class="nocode"><a name="98"> 98: </a></span>        fields.weekyearOfCentury = convertField(fields.weekyearOfCentury);
+<span class="nocode"><a name="99"> 99: </a></span>
+<span class="nocode"><a name="100">100: </a></span>        fields.millisOfSecond = convertField(fields.millisOfSecond);
+<span class="nocode"><a name="101">101: </a></span>        fields.millisOfDay = convertField(fields.millisOfDay);
+<span class="nocode"><a name="102">102: </a></span>        fields.secondOfMinute = convertField(fields.secondOfMinute);
+<span class="nocode"><a name="103">103: </a></span>        fields.secondOfDay = convertField(fields.secondOfDay);
+<span class="nocode"><a name="104">104: </a></span>        fields.minuteOfHour = convertField(fields.minuteOfHour);
+<span class="nocode"><a name="105">105: </a></span>        fields.minuteOfDay = convertField(fields.minuteOfDay);
+<span class="nocode"><a name="106">106: </a></span>        fields.hourOfDay = convertField(fields.hourOfDay);
+<span class="nocode"><a name="107">107: </a></span>        fields.hourOfHalfday = convertField(fields.hourOfHalfday);
+<span class="nocode"><a name="108">108: </a></span>        fields.clockhourOfDay = convertField(fields.clockhourOfDay);
+<span class="nocode"><a name="109">109: </a></span>        fields.clockhourOfHalfday = convertField(fields.clockhourOfHalfday);
+<span class="nocode"><a name="110">110: </a></span>        fields.halfdayOfDay = convertField(fields.halfdayOfDay);
+<span class="nocode"><a name="111">111: </a></span>    }
+<span class="nocode"><a name="112">112: </a></span>
+<span class="nocode"><a name="113">113: </a></span>    private static final DateTimeField convertField(DateTimeField field) {
+<span class="nocode"><a name="114">114: </a></span>        return StrictDateTimeField.getInstance(field);
+<span class="nocode"><a name="115">115: </a></span>    }
+<span class="nocode"><a name="116">116: </a></span>
+<span class="nocode"><a name="117">117: </a></span>    //-----------------------------------------------------------------------
+<span class="nocode"><a name="118">118: </a></span>    /**
+<span class="nocode"><a name="119">119: </a></span>     * A strict chronology is only equal to a strict chronology with the
+<span class="nocode"><a name="120">120: </a></span>     * same base chronology.
+<span class="nocode"><a name="121">121: </a></span>     * 
+<span class="nocode"><a name="122">122: </a></span>     * @param obj  the object to compare to
+<span class="nocode"><a name="123">123: </a></span>     * @return true if equal
+<span class="nocode"><a name="124">124: </a></span>     * @since 1.4
+<span class="nocode"><a name="125">125: </a></span>     */
+<span class="nocode"><a name="126">126: </a></span>    public boolean equals(Object obj) {
+<span class="nocode"><a name="127">127: </a></span>        if (this == obj) {
+<span class="nocode"><a name="128">128: </a></span>            return true;
+<span class="nocode"><a name="129">129: </a></span>        }
+<span class="nocode"><a name="130">130: </a></span>        if (obj instanceof StrictChronology == false) {
+<span class="nocode"><a name="131">131: </a></span>            return false;
+<span class="nocode"><a name="132">132: </a></span>        }
+<span class="nocode"><a name="133">133: </a></span>        StrictChronology chrono = (StrictChronology) obj;
+<span class="nocode"><a name="134">134: </a></span>        return getBase().equals(chrono.getBase());
+<span class="nocode"><a name="135">135: </a></span>    }
+<span class="nocode"><a name="136">136: </a></span>
+<span class="nocode"><a name="137">137: </a></span>    /**
+<span class="nocode"><a name="138">138: </a></span>     * A suitable hashcode for the chronology.
+<span class="nocode"><a name="139">139: </a></span>     * 
+<span class="nocode"><a name="140">140: </a></span>     * @return the hashcode
+<span class="nocode"><a name="141">141: </a></span>     * @since 1.4
+<span class="nocode"><a name="142">142: </a></span>     */
+<span class="nocode"><a name="143">143: </a></span>    public int hashCode() {
+<span class="nocode"><a name="144">144: </a></span>        return 352831696 + getBase().hashCode() * 7;
+<span class="nocode"><a name="145">145: </a></span>    }
+<span class="nocode"><a name="146">146: </a></span>
+<span class="nocode"><a name="147">147: </a></span>    /**
+<span class="nocode"><a name="148">148: </a></span>     * A debugging string for the chronology.
+<span class="nocode"><a name="149">149: </a></span>     * 
+<span class="nocode"><a name="150">150: </a></span>     * @return the debugging string
+<span class="nocode"><a name="151">151: </a></span>     */
+<span class="nocode"><a name="152">152: </a></span>    public String toString() {
+<span class="nocode"><a name="153">153: </a></span>        return &quot;StrictChronology[&quot; + getBase().toString() + ']';
+<span class="nocode"><a name="154">154: </a></span>    }
+<span class="nocode"><a name="155">155: </a></span>
+<span class="nocode"><a name="156">156: </a></span>}
+</pre><table class="mutation_table" summary="Mutations">
+<tr><th>ID</th><th>Line</th><th>Type</th><th>Detected</th></tr><tr><td>488</td><td><a href="#45">45</a></td><td>Negate jump condition (Replace IFNONNULL with  IFNULL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>489</td><td><a href="#63">63</a></td><td>Negate jump condition (Replace IFNONNULL with  IFNULL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>491</td><td><a href="#64">64</a></td><td>Negate jump condition (Replace IF_ACMPNE with  IF_ACMPEQ)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>490</td><td><a href="#64">64</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>492</td><td><a href="#67">67</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>493</td><td><a href="#67">67(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>494</td><td><a href="#67">67(2)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>495</td><td><a href="#74">74</a></td><td>Negate jump condition (Replace IFNONNULL with  IFNULL)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>496</td><td><a href="#75">75</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>497</td><td><a href="#77">77</a></td><td>Negate jump condition (Replace IF_ACMPNE with  IF_ACMPEQ)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>498</td><td><a href="#78">78</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>500</td><td><a href="#80">80</a></td><td>Negate jump condition (Replace IF_ACMPNE with  IF_ACMPEQ)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>499</td><td><a href="#80">80</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>501</td><td><a href="#83">83</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>502</td><td><a href="#83">83(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>503</td><td><a href="#83">83(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>504</td><td><a href="#87">87</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>505</td><td><a href="#88">88</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>506</td><td><a href="#89">89</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>507</td><td><a href="#90">90</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>508</td><td><a href="#91">91</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>509</td><td><a href="#92">92</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>510</td><td><a href="#93">93</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>511</td><td><a href="#94">94</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>512</td><td><a href="#95">95</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>513</td><td><a href="#96">96</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>514</td><td><a href="#97">97</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>515</td><td><a href="#98">98</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>516</td><td><a href="#100">100</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>517</td><td><a href="#101">101</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>518</td><td><a href="#102">102</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>519</td><td><a href="#103">103</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>520</td><td><a href="#104">104</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>521</td><td><a href="#105">105</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>522</td><td><a href="#106">106</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>523</td><td><a href="#107">107</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>524</td><td><a href="#108">108</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>525</td><td><a href="#109">109</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>526</td><td><a href="#110">110</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>527</td><td><a href="#114">114</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>528</td><td><a href="#127">127</a></td><td>Negate jump condition (Replace IF_ACMPNE with  IF_ACMPEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>529</td><td><a href="#128">128</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>530</td><td><a href="#128">128</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>531</td><td><a href="#130">130</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>533</td><td><a href="#131">131</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>532</td><td><a href="#131">131</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>534</td><td><a href="#134">134</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>535</td><td><a href="#134">134(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>536</td><td><a href="#134">134(2)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>539</td><td><a href="#144">144</a></td><td>Replace a constant (Replace 352831696 with 352831697(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>537</td><td><a href="#144">144</a></td><td>Replace a constant (Replace 352831696 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>538</td><td><a href="#144">144</a></td><td>Replace a constant (Replace 352831696 with 352831695(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>542</td><td><a href="#144">144(1)</a></td><td>Replace a constant (Replace 7 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>544</td><td><a href="#144">144(1)</a></td><td>Replace a constant (Replace 7 with 8(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>543</td><td><a href="#144">144(1)</a></td><td>Replace a constant (Replace 7 with 6(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>545</td><td><a href="#144">144</a></td><td>Replace arithmetic operator (Replace IMUL with IADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>546</td><td><a href="#144">144(1)</a></td><td>Replace arithmetic operator (Replace IADD with ISUB)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>540</td><td><a href="#144">144</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>541</td><td><a href="#144">144(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>551</td><td><a href="#153">153</a></td><td>Replace a constant (Replace 93 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>552</td><td><a href="#153">153</a></td><td>Replace a constant (Replace 93 with 94(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>553</td><td><a href="#153">153</a></td><td>Replace a constant (Replace 93 with 92(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>547</td><td><a href="#153">153</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>548</td><td><a href="#153">153(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>549</td><td><a href="#153">153(2)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>550</td><td><a href="#153">153(3)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>554</td><td><a href="#153">153(4)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>555</td><td><a href="#153">153(5)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+</table>
+</body>
+</html>

@@ -1,0 +1,150 @@
+library(fields)
+
+# This function produces the same result as the built in
+# cor(x, y, method="spearman")
+# and the alternative
+# cor.test(x, y, method="spearman")
+# and can handle arbitrary ties
+spearmanRho <- function (cov, eff)
+{
+    # Rank the two vectors, using midranks for ties
+    rankedCov = rank(cov, ties="average")
+    rankedEff = rank(eff, ties="average")
+
+    # rho with tie adjustment is equal to the Pearson
+    # coefficient computed on the ranks (Gibbons 93)
+    rho = cor(rankedCov, rankedEff, method="pearson")
+
+    return (rho)
+}
+
+# This function can handle arbitrary ties in rank
+# It uses formula 5 from Adler 57 ("A Modification of Kendall's Tau...")
+kendallTau <- function (cov, eff)
+{
+    # Copy data into a new table
+    n = length(cov)
+    data = matrix(0, n, 2)
+    data[,1] = cov
+    data[,2] = eff
+
+    # Sort the table by coverage and then effectiveness
+    permutation = order(cov, eff)
+    data = t(rbind(cov[permutation], eff[permutation]))
+
+    # Compute the number of concordant and discordant pairs
+    C = 0
+    D = 0
+    for (i in 1:(n - 1))
+    {
+        currentRow = data[i,]
+
+        # Find rows where both coverage and effectiveness are larger than they are in the current row
+        conc = ((data[,1] > currentRow[1]) & (data[,2] > currentRow[2]))
+        
+        # Increase C by the number of concordant rows (those with higher values AND indices)
+        C = C + sum(conc[(i+1):n])
+
+        # Do the same for discordant rows now
+        disc = (data[,1] > currentRow[1]) & (data[,2] < currentRow[2])
+        D = D + sum(disc[(i+1):n])
+    }
+
+    maxPairs = 0.5*(n^2 - n)
+    print(paste(maxPairs - (C + D), " comparisons were ties out of a total of ", maxPairs, " comparisons"))
+    tau = (C - D) / (C + D)
+    return (tau)
+}
+
+isSignificant <- function(tauVec, n)
+{
+    zeds = tauVec * (3 * sqrt(n * (n - 1))) / sqrt(2 * (2*n + 5))
+    print("Zeds:")
+    print(zeds)
+    
+    print("Significant at 95% level?")
+    print(abs(zeds) >= 1.65)
+    
+    print("Significant at 99% level?")
+    print(abs(zeds) >= 2.33)
+    
+    print("Significant at 99.9% level?")
+    print(abs(zeds) >= 3.09)
+}
+
+## infiles <- commandArgs(trailingOnly = T)
+## singleResults <- read.csv(infiles[1], header=TRUE) #method.name,size,block.coverage,kill.score
+## randomResults <- read.csv(infiles[2], header=TRUE) #size,block.coverage,kill.score
+## sizes <- sort(unique(randomResults$size))
+## positions <- log(sizes)
+
+#singleResults <- read.csv("/media/batdrive/test-analysis-toolkit/test-subjects/joda-time-results/moddedMethod.csv", header=TRUE)
+randomResults <- read.csv("~/workspace/unified-test-analysis-toolkit/test-subjects/hsqldb-results/randomSuiteResults.csv", header=TRUE)
+sizes <- sort(unique(randomResults$size))
+positions <- log(sizes)
+
+# Determine the correlation between coverage and effectiveness for all sizes
+## print("Correlation for all sizes between block coverage and effectiveness:")
+## tau = kendallTau(randomResults$block.coverage, randomResults$kill.score)
+## n = nrow(randomResults)
+## isSignificant(tau, n)
+## print(tau)
+
+print("Correlation for all sizes between statement coverage and effectiveness:")
+tau = kendallTau(randomResults$stmt.coverage, randomResults$kill.score)
+n = nrow(randomResults)
+isSignificant(tau, n)
+print(tau)
+
+print("Correlation for all sizes between branch coverage and effectiveness:")
+tau = kendallTau(randomResults$branch.coverage, randomResults$kill.score)
+n = nrow(randomResults)
+isSignificant(tau, n)
+print(tau)
+
+print("Correlation for all sizes between modified condition coverage and effectiveness:")
+tau = kendallTau(randomResults$mc.coverage, randomResults$kill.score)
+n = nrow(randomResults)
+isSignificant(tau, n)
+print(tau)
+
+# Determine the correlation between coverage and effectiveness for fixed size
+## print("Correlations between block coverage and effectiveness for fixed size")
+## taus = matrix(0, length(sizes), 1)
+## for (i in 1:length(sizes))
+## {
+##     data = randomResults[randomResults$size == sizes[i],]
+##     taus[i, 1] = kendallTau(data$block.coverage, data$kill.score)
+## }
+## print(taus)
+## isSignificant(taus, 1000)
+
+print("Correlations between statement coverage and effectiveness for fixed size")
+taus = matrix(0, length(sizes), 1)
+for (i in 1:length(sizes))
+{
+    data = randomResults[randomResults$size == sizes[i],]
+    taus[i, 1] = kendallTau(data$stmt.coverage, data$kill.score)
+}
+print(taus)
+isSignificant(taus, 1000)
+
+print("Correlations between branch coverage and effectiveness for fixed size")
+taus = matrix(0, length(sizes), 1)
+for (i in 1:length(sizes))
+{
+    data = randomResults[randomResults$size == sizes[i],]
+    taus[i, 1] = kendallTau(data$branch.coverage, data$kill.score)
+}
+print(taus)
+isSignificant(taus, 1000)
+
+print("Correlations between modified condition coverage and effectiveness for fixed size")
+taus = matrix(0, length(sizes), 1)
+for (i in 1:length(sizes))
+{
+    data = randomResults[randomResults$size == sizes[i],]
+    taus[i, 1] = kendallTau(data$mc.coverage, data$kill.score)
+}
+print(taus)
+isSignificant(taus, 1000)

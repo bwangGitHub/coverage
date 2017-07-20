@@ -1,0 +1,8 @@
+Testsuite: org.apache.poi.hssf.model.TestDrawingManager
+Tests run: 5, Failures: 0, Errors: 0, Time elapsed: 0.001 sec
+
+Testcase: testFindFreeSPIDBlock took 0 sec
+Testcase: testFindNewDrawingGroupId took 0 sec
+Testcase: testDrawingGroupExists took 0 sec
+Testcase: testCreateDgRecord took 0 sec
+Testcase: testAllocateShapeId took 0 sec

@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/repos/asf/!svn/ver/1195068/poi/trunk/src/types/styles
+END
+hdftype_document.xsl
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/repos/asf/!svn/ver/781867/poi/trunk/src/types/styles/hdftype_document.xsl
+END
+hdftype_test.xsl
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/repos/asf/!svn/ver/712084/poi/trunk/src/types/styles/hdftype_test.xsl
+END
+hdftype.xsl
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/repos/asf/!svn/ver/1195068/poi/trunk/src/types/styles/hdftype.xsl
+END

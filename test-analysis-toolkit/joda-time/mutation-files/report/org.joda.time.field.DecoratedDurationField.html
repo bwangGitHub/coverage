@@ -1,0 +1,130 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN
+"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>
+org.joda.time.field.DecoratedDurationField
+</title>
+<link href="prettify.css" type="text/css" rel="stylesheet" />
+<script type="text/javascript" src="prettify.js"></script>
+</head>
+<body onload="prettyPrint()">
+<h2>Javalanche report for class:<br/> org.joda.time.field.DecoratedDurationField </h2><pre class="prettyprint" style="border: 1px solid #888;padding: 2px"><span class="nocode"><a name="1">  1: </a></span>/*
+<span class="nocode"><a name="2">  2: </a></span> *  Copyright 2001-2005 Stephen Colebourne
+<span class="nocode"><a name="3">  3: </a></span> *
+<span class="nocode"><a name="4">  4: </a></span> *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+<span class="nocode"><a name="5">  5: </a></span> *  you may not use this file except in compliance with the License.
+<span class="nocode"><a name="6">  6: </a></span> *  You may obtain a copy of the License at
+<span class="nocode"><a name="7">  7: </a></span> *
+<span class="nocode"><a name="8">  8: </a></span> *      http://www.apache.org/licenses/LICENSE-2.0
+<span class="nocode"><a name="9">  9: </a></span> *
+<span class="nocode"><a name="10"> 10: </a></span> *  Unless required by applicable law or agreed to in writing, software
+<span class="nocode"><a name="11"> 11: </a></span> *  distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+<span class="nocode"><a name="12"> 12: </a></span> *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+<span class="nocode"><a name="13"> 13: </a></span> *  See the License for the specific language governing permissions and
+<span class="nocode"><a name="14"> 14: </a></span> *  limitations under the License.
+<span class="nocode"><a name="15"> 15: </a></span> */
+<span class="nocode"><a name="16"> 16: </a></span>package org.joda.time.field;
+<span class="nocode"><a name="17"> 17: </a></span>
+<span class="nocode"><a name="18"> 18: </a></span>import org.joda.time.DurationField;
+<span class="nocode"><a name="19"> 19: </a></span>import org.joda.time.DurationFieldType;
+<span class="nocode"><a name="20"> 20: </a></span>
+<span class="nocode"><a name="21"> 21: </a></span>/**
+<span class="nocode"><a name="22"> 22: </a></span> * &lt;code&gt;DecoratedDurationField&lt;/code&gt; extends {@link BaseDurationField},
+<span class="nocode"><a name="23"> 23: </a></span> * implementing only the minimum required set of methods. These implemented
+<span class="nocode"><a name="24"> 24: </a></span> * methods delegate to a wrapped field.
+<span class="nocode"><a name="25"> 25: </a></span> * &lt;p&gt;
+<span class="nocode"><a name="26"> 26: </a></span> * This design allows new DurationField types to be defined that piggyback on
+<span class="nocode"><a name="27"> 27: </a></span> * top of another, inheriting all the safe method implementations from
+<span class="nocode"><a name="28"> 28: </a></span> * BaseDurationField. Should any method require pure delegation to the
+<span class="nocode"><a name="29"> 29: </a></span> * wrapped field, simply override and use the provided getWrappedField method.
+<span class="nocode"><a name="30"> 30: </a></span> * &lt;p&gt;
+<span class="nocode"><a name="31"> 31: </a></span> * DecoratedDurationField is thread-safe and immutable, and its subclasses must
+<span class="nocode"><a name="32"> 32: </a></span> * be as well.
+<span class="nocode"><a name="33"> 33: </a></span> *
+<span class="nocode"><a name="34"> 34: </a></span> * @author Brian S O'Neill
+<span class="nocode"><a name="35"> 35: </a></span> * @see DelegatedDurationField
+<span class="nocode"><a name="36"> 36: </a></span> * @since 1.0
+<span class="nocode"><a name="37"> 37: </a></span> */
+<span class="nocode"><a name="38"> 38: </a></span>public class DecoratedDurationField extends BaseDurationField {
+<span class="nocode"><a name="39"> 39: </a></span>
+<span class="nocode"><a name="40"> 40: </a></span>    private static final long serialVersionUID = 8019982251647420015L;
+<span class="nocode"><a name="41"> 41: </a></span>
+<span class="nocode"><a name="42"> 42: </a></span>    /** The DurationField being wrapped */
+<span class="nocode"><a name="43"> 43: </a></span>    private final DurationField iField;
+<span class="nocode"><a name="44"> 44: </a></span>
+<span class="nocode"><a name="45"> 45: </a></span>    /**
+<span class="nocode"><a name="46"> 46: </a></span>     * Constructor.
+<span class="nocode"><a name="47"> 47: </a></span>     * 
+<span class="nocode"><a name="48"> 48: </a></span>     * @param field  the base field
+<span class="nocode"><a name="49"> 49: </a></span>     * @param type  the type to actually use
+<span class="nocode"><a name="50"> 50: </a></span>     */
+<span class="nocode"><a name="51"> 51: </a></span>    public DecoratedDurationField(DurationField field, DurationFieldType type) {
+<span class="nocode"><a name="52"> 52: </a></span>        super(type);
+<span class="nocode"><a name="53"> 53: </a></span>        if (field == null) {
+<span class="nocode"><a name="54"> 54: </a></span>            throw new IllegalArgumentException(&quot;The field must not be null&quot;);
+<span class="nocode"><a name="55"> 55: </a></span>        }
+<span class="nocode"><a name="56"> 56: </a></span>        if (!field.isSupported()) {
+<span class="nocode"><a name="57"> 57: </a></span>            throw new IllegalArgumentException(&quot;The field must be supported&quot;);
+<span class="nocode"><a name="58"> 58: </a></span>        }
+<span class="nocode"><a name="59"> 59: </a></span>        iField = field;
+<span class="nocode"><a name="60"> 60: </a></span>    }
+<span class="nocode"><a name="61"> 61: </a></span>
+<span class="nocode"><a name="62"> 62: </a></span>    //-----------------------------------------------------------------------
+<span class="nocode"><a name="63"> 63: </a></span>    /**
+<span class="nocode"><a name="64"> 64: </a></span>     * Gets the wrapped duration field.
+<span class="nocode"><a name="65"> 65: </a></span>     * 
+<span class="nocode"><a name="66"> 66: </a></span>     * @return the wrapped DurationField
+<span class="nocode"><a name="67"> 67: </a></span>     */
+<span class="nocode"><a name="68"> 68: </a></span>    public final DurationField getWrappedField() {
+<span class="nocode"><a name="69"> 69: </a></span>        return iField;
+<span class="nocode"><a name="70"> 70: </a></span>    }
+<span class="nocode"><a name="71"> 71: </a></span>
+<span class="nocode"><a name="72"> 72: </a></span>    public boolean isPrecise() {
+<span class="nocode"><a name="73"> 73: </a></span>        return iField.isPrecise();
+<span class="nocode"><a name="74"> 74: </a></span>    }
+<span class="nocode"><a name="75"> 75: </a></span>
+<span class="nocode"><a name="76"> 76: </a></span>    public long getValueAsLong(long duration, long instant) {
+<span class="nocode"><a name="77"> 77: </a></span>        return iField.getValueAsLong(duration, instant);
+<span class="nocode"><a name="78"> 78: </a></span>    }
+<span class="nocode"><a name="79"> 79: </a></span>
+<span class="nocode"><a name="80"> 80: </a></span>    public long getMillis(int value, long instant) {
+<span class="nocode"><a name="81"> 81: </a></span>        return iField.getMillis(value, instant);
+<span class="nocode"><a name="82"> 82: </a></span>    }
+<span class="nocode"><a name="83"> 83: </a></span>
+<span class="nocode"><a name="84"> 84: </a></span>    public long getMillis(long value, long instant) {
+<span class="nocode"><a name="85"> 85: </a></span>        return iField.getMillis(value, instant);
+<span class="nocode"><a name="86"> 86: </a></span>    }
+<span class="nocode"><a name="87"> 87: </a></span>
+<span class="nocode"><a name="88"> 88: </a></span>    public long add(long instant, int value) {
+<span class="nocode"><a name="89"> 89: </a></span>        return iField.add(instant, value);
+<span class="nocode"><a name="90"> 90: </a></span>    }
+<span class="nocode"><a name="91"> 91: </a></span>
+<span class="nocode"><a name="92"> 92: </a></span>    public long add(long instant, long value) {
+<span class="nocode"><a name="93"> 93: </a></span>        return iField.add(instant, value);
+<span class="nocode"><a name="94"> 94: </a></span>    }
+<span class="nocode"><a name="95"> 95: </a></span>
+<span class="nocode"><a name="96"> 96: </a></span>    public long getDifferenceAsLong(long minuendInstant, long subtrahendInstant) {
+<span class="nocode"><a name="97"> 97: </a></span>        return iField.getDifferenceAsLong(minuendInstant, subtrahendInstant);
+<span class="nocode"><a name="98"> 98: </a></span>    }
+<span class="nocode"><a name="99"> 99: </a></span>
+<span class="nocode"><a name="100">100: </a></span>    public long getUnitMillis() {
+<span class="nocode"><a name="101">101: </a></span>        return iField.getUnitMillis();
+<span class="nocode"><a name="102">102: </a></span>    }
+<span class="nocode"><a name="103">103: </a></span>
+<span class="nocode"><a name="104">104: </a></span>}
+</pre><table class="mutation_table" summary="Mutations">
+<tr><th>ID</th><th>Line</th><th>Type</th><th>Detected</th></tr><tr><td>5790</td><td><a href="#53">53</a></td><td>Negate jump condition (Replace IFNONNULL with  IFNULL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>5792</td><td><a href="#56">56</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>5791</td><td><a href="#56">56</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>5793</td><td><a href="#73">73</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>5794</td><td><a href="#77">77</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>5795</td><td><a href="#81">81</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>5796</td><td><a href="#85">85</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>5797</td><td><a href="#89">89</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>5798</td><td><a href="#93">93</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>5799</td><td><a href="#97">97</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>5800</td><td><a href="#101">101</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+</table>
+</body>
+</html>

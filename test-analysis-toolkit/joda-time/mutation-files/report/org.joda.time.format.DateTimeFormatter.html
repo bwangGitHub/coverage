@@ -1,0 +1,1205 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN
+"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>
+org.joda.time.format.DateTimeFormatter
+</title>
+<link href="prettify.css" type="text/css" rel="stylesheet" />
+<script type="text/javascript" src="prettify.js"></script>
+</head>
+<body onload="prettyPrint()">
+<h2>Javalanche report for class:<br/> org.joda.time.format.DateTimeFormatter </h2><pre class="prettyprint" style="border: 1px solid #888;padding: 2px"><span class="nocode"><a name="1">  1: </a></span>/*
+<span class="nocode"><a name="2">  2: </a></span> *  Copyright 2001-2011 Stephen Colebourne
+<span class="nocode"><a name="3">  3: </a></span> *
+<span class="nocode"><a name="4">  4: </a></span> *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+<span class="nocode"><a name="5">  5: </a></span> *  you may not use this file except in compliance with the License.
+<span class="nocode"><a name="6">  6: </a></span> *  You may obtain a copy of the License at
+<span class="nocode"><a name="7">  7: </a></span> *
+<span class="nocode"><a name="8">  8: </a></span> *      http://www.apache.org/licenses/LICENSE-2.0
+<span class="nocode"><a name="9">  9: </a></span> *
+<span class="nocode"><a name="10"> 10: </a></span> *  Unless required by applicable law or agreed to in writing, software
+<span class="nocode"><a name="11"> 11: </a></span> *  distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+<span class="nocode"><a name="12"> 12: </a></span> *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+<span class="nocode"><a name="13"> 13: </a></span> *  See the License for the specific language governing permissions and
+<span class="nocode"><a name="14"> 14: </a></span> *  limitations under the License.
+<span class="nocode"><a name="15"> 15: </a></span> */
+<span class="nocode"><a name="16"> 16: </a></span>package org.joda.time.format;
+<span class="nocode"><a name="17"> 17: </a></span>
+<span class="nocode"><a name="18"> 18: </a></span>import java.io.IOException;
+<span class="nocode"><a name="19"> 19: </a></span>import java.io.Writer;
+<span class="nocode"><a name="20"> 20: </a></span>import java.util.Locale;
+<span class="nocode"><a name="21"> 21: </a></span>
+<span class="nocode"><a name="22"> 22: </a></span>import org.joda.time.Chronology;
+<span class="nocode"><a name="23"> 23: </a></span>import org.joda.time.DateTime;
+<span class="nocode"><a name="24"> 24: </a></span>import org.joda.time.DateTimeUtils;
+<span class="nocode"><a name="25"> 25: </a></span>import org.joda.time.DateTimeZone;
+<span class="nocode"><a name="26"> 26: </a></span>import org.joda.time.LocalDate;
+<span class="nocode"><a name="27"> 27: </a></span>import org.joda.time.LocalDateTime;
+<span class="nocode"><a name="28"> 28: </a></span>import org.joda.time.LocalTime;
+<span class="nocode"><a name="29"> 29: </a></span>import org.joda.time.MutableDateTime;
+<span class="nocode"><a name="30"> 30: </a></span>import org.joda.time.ReadWritableInstant;
+<span class="nocode"><a name="31"> 31: </a></span>import org.joda.time.ReadableInstant;
+<span class="nocode"><a name="32"> 32: </a></span>import org.joda.time.ReadablePartial;
+<span class="nocode"><a name="33"> 33: </a></span>
+<span class="nocode"><a name="34"> 34: </a></span>/**
+<span class="nocode"><a name="35"> 35: </a></span> * Controls the printing and parsing of a datetime to and from a string.
+<span class="nocode"><a name="36"> 36: </a></span> * &lt;p&gt;
+<span class="nocode"><a name="37"> 37: </a></span> * This class is the main API for printing and parsing used by most applications.
+<span class="nocode"><a name="38"> 38: </a></span> * Instances of this class are created via one of three factory classes:
+<span class="nocode"><a name="39"> 39: </a></span> * &lt;ul&gt;
+<span class="nocode"><a name="40"> 40: </a></span> * &lt;li&gt;{@link DateTimeFormat} - formats by pattern and style&lt;/li&gt;
+<span class="nocode"><a name="41"> 41: </a></span> * &lt;li&gt;{@link ISODateTimeFormat} - ISO8601 formats&lt;/li&gt;
+<span class="nocode"><a name="42"> 42: </a></span> * &lt;li&gt;{@link DateTimeFormatterBuilder} - complex formats created via method calls&lt;/li&gt;
+<span class="nocode"><a name="43"> 43: </a></span> * &lt;/ul&gt;
+<span class="nocode"><a name="44"> 44: </a></span> * &lt;p&gt;
+<span class="nocode"><a name="45"> 45: </a></span> * An instance of this class holds a reference internally to one printer and
+<span class="nocode"><a name="46"> 46: </a></span> * one parser. It is possible that one of these may be null, in which case the
+<span class="nocode"><a name="47"> 47: </a></span> * formatter cannot print/parse. This can be checked via the {@link #isPrinter()}
+<span class="nocode"><a name="48"> 48: </a></span> * and {@link #isParser()} methods.
+<span class="nocode"><a name="49"> 49: </a></span> * &lt;p&gt;
+<span class="nocode"><a name="50"> 50: </a></span> * The underlying printer/parser can be altered to behave exactly as required
+<span class="nocode"><a name="51"> 51: </a></span> * by using one of the decorator modifiers:
+<span class="nocode"><a name="52"> 52: </a></span> * &lt;ul&gt;
+<span class="nocode"><a name="53"> 53: </a></span> * &lt;li&gt;{@link #withLocale(Locale)} - returns a new formatter that uses the specified locale&lt;/li&gt;
+<span class="nocode"><a name="54"> 54: </a></span> * &lt;li&gt;{@link #withZone(DateTimeZone)} - returns a new formatter that uses the specified time zone&lt;/li&gt;
+<span class="nocode"><a name="55"> 55: </a></span> * &lt;li&gt;{@link #withChronology(Chronology)} - returns a new formatter that uses the specified chronology&lt;/li&gt;
+<span class="nocode"><a name="56"> 56: </a></span> * &lt;li&gt;{@link #withOffsetParsed()} - returns a new formatter that returns the parsed time zone offset&lt;/li&gt;
+<span class="nocode"><a name="57"> 57: </a></span> * &lt;/ul&gt;
+<span class="nocode"><a name="58"> 58: </a></span> * Each of these returns a new formatter (instances of this class are immutable).
+<span class="nocode"><a name="59"> 59: </a></span> * &lt;p&gt;
+<span class="nocode"><a name="60"> 60: </a></span> * The main methods of the class are the &lt;code&gt;printXxx&lt;/code&gt; and
+<span class="nocode"><a name="61"> 61: </a></span> * &lt;code&gt;parseXxx&lt;/code&gt; methods. These are used as follows:
+<span class="nocode"><a name="62"> 62: </a></span> * &lt;pre&gt;
+<span class="nocode"><a name="63"> 63: </a></span> * // print using the defaults (default locale, chronology/zone of the datetime)
+<span class="nocode"><a name="64"> 64: </a></span> * String dateStr = formatter.print(dt);
+<span class="nocode"><a name="65"> 65: </a></span> * // print using the French locale
+<span class="nocode"><a name="66"> 66: </a></span> * String dateStr = formatter.withLocale(Locale.FRENCH).print(dt);
+<span class="nocode"><a name="67"> 67: </a></span> * // print using the UTC zone
+<span class="nocode"><a name="68"> 68: </a></span> * String dateStr = formatter.withZone(DateTimeZone.UTC).print(dt);
+<span class="nocode"><a name="69"> 69: </a></span> * 
+<span class="nocode"><a name="70"> 70: </a></span> * // parse using the Paris zone
+<span class="nocode"><a name="71"> 71: </a></span> * DateTime date = formatter.withZone(DateTimeZone.forID(&quot;Europe/Paris&quot;)).parseDateTime(str);
+<span class="nocode"><a name="72"> 72: </a></span> * &lt;/pre&gt;
+<span class="nocode"><a name="73"> 73: </a></span> * 
+<span class="nocode"><a name="74"> 74: </a></span> * @author Brian S O'Neill
+<span class="nocode"><a name="75"> 75: </a></span> * @author Stephen Colebourne
+<span class="nocode"><a name="76"> 76: </a></span> * @author Fredrik Borgh
+<span class="nocode"><a name="77"> 77: </a></span> * @since 1.0
+<span class="nocode"><a name="78"> 78: </a></span> */
+<span class="nocode"><a name="79"> 79: </a></span>public class DateTimeFormatter {
+<span class="nocode"><a name="80"> 80: </a></span>
+<span class="nocode"><a name="81"> 81: </a></span>    /** The internal printer used to output the datetime. */
+<span class="nocode"><a name="82"> 82: </a></span>    private final DateTimePrinter iPrinter;
+<span class="nocode"><a name="83"> 83: </a></span>    /** The internal parser used to output the datetime. */
+<span class="nocode"><a name="84"> 84: </a></span>    private final DateTimeParser iParser;
+<span class="nocode"><a name="85"> 85: </a></span>    /** The locale to use for printing and parsing. */
+<span class="nocode"><a name="86"> 86: </a></span>    private final Locale iLocale;
+<span class="nocode"><a name="87"> 87: </a></span>    /** Whether the offset is parsed. */
+<span class="nocode"><a name="88"> 88: </a></span>    private final boolean iOffsetParsed;
+<span class="nocode"><a name="89"> 89: </a></span>    /** The chronology to use as an override. */
+<span class="nocode"><a name="90"> 90: </a></span>    private final Chronology iChrono;
+<span class="nocode"><a name="91"> 91: </a></span>    /** The zone to use as an override. */
+<span class="nocode"><a name="92"> 92: </a></span>    private final DateTimeZone iZone;
+<span class="nocode"><a name="93"> 93: </a></span>    /** The pivot year to use for two-digit year parsing. */
+<span class="nocode"><a name="94"> 94: </a></span>    private final Integer iPivotYear;
+<span class="nocode"><a name="95"> 95: </a></span>    /** The default year for parsing month/day without year. */
+<span class="nocode"><a name="96"> 96: </a></span>    private final int iDefaultYear;
+<span class="nocode"><a name="97"> 97: </a></span>
+<span class="nocode"><a name="98"> 98: </a></span>    /**
+<span class="nocode"><a name="99"> 99: </a></span>     * Creates a new formatter, however you will normally use the factory
+<span class="nocode"><a name="100">100: </a></span>     * or the builder.
+<span class="nocode"><a name="101">101: </a></span>     * 
+<span class="nocode"><a name="102">102: </a></span>     * @param printer  the internal printer, null if cannot print
+<span class="nocode"><a name="103">103: </a></span>     * @param parser  the internal parser, null if cannot parse
+<span class="nocode"><a name="104">104: </a></span>     */
+<span class="nocode"><a name="105">105: </a></span>    public DateTimeFormatter(
+<span class="nocode"><a name="106">106: </a></span>            DateTimePrinter printer, DateTimeParser parser) {
+<span class="nocode"><a name="107">107: </a></span>        super();
+<span class="nocode"><a name="108">108: </a></span>        iPrinter = printer;
+<span class="nocode"><a name="109">109: </a></span>        iParser = parser;
+<span class="nocode"><a name="110">110: </a></span>        iLocale = null;
+<span class="nocode"><a name="111">111: </a></span>        iOffsetParsed = false;
+<span class="nocode"><a name="112">112: </a></span>        iChrono = null;
+<span class="nocode"><a name="113">113: </a></span>        iZone = null;
+<span class="nocode"><a name="114">114: </a></span>        iPivotYear = null;
+<span class="nocode"><a name="115">115: </a></span>        iDefaultYear = 2000;
+<span class="nocode"><a name="116">116: </a></span>    }
+<span class="nocode"><a name="117">117: </a></span>
+<span class="nocode"><a name="118">118: </a></span>    /**
+<span class="nocode"><a name="119">119: </a></span>     * Constructor.
+<span class="nocode"><a name="120">120: </a></span>     */
+<span class="nocode"><a name="121">121: </a></span>    private DateTimeFormatter(
+<span class="nocode"><a name="122">122: </a></span>            DateTimePrinter printer, DateTimeParser parser,
+<span class="nocode"><a name="123">123: </a></span>            Locale locale, boolean offsetParsed,
+<span class="nocode"><a name="124">124: </a></span>            Chronology chrono, DateTimeZone zone,
+<span class="nocode"><a name="125">125: </a></span>            Integer pivotYear, int defaultYear) {
+<span class="nocode"><a name="126">126: </a></span>        super();
+<span class="nocode"><a name="127">127: </a></span>        iPrinter = printer;
+<span class="nocode"><a name="128">128: </a></span>        iParser = parser;
+<span class="nocode"><a name="129">129: </a></span>        iLocale = locale;
+<span class="nocode"><a name="130">130: </a></span>        iOffsetParsed = offsetParsed;
+<span class="nocode"><a name="131">131: </a></span>        iChrono = chrono;
+<span class="nocode"><a name="132">132: </a></span>        iZone = zone;
+<span class="nocode"><a name="133">133: </a></span>        iPivotYear = pivotYear;
+<span class="nocode"><a name="134">134: </a></span>        iDefaultYear = defaultYear;
+<span class="nocode"><a name="135">135: </a></span>    }
+<span class="nocode"><a name="136">136: </a></span>
+<span class="nocode"><a name="137">137: </a></span>    //-----------------------------------------------------------------------
+<span class="nocode"><a name="138">138: </a></span>    /**
+<span class="nocode"><a name="139">139: </a></span>     * Is this formatter capable of printing.
+<span class="nocode"><a name="140">140: </a></span>     * 
+<span class="nocode"><a name="141">141: </a></span>     * @return true if this is a printer
+<span class="nocode"><a name="142">142: </a></span>     */
+<span class="nocode"><a name="143">143: </a></span>    public boolean isPrinter() {
+<span class="nocode"><a name="144">144: </a></span>        return (iPrinter != null);
+<span class="nocode"><a name="145">145: </a></span>    }
+<span class="nocode"><a name="146">146: </a></span>
+<span class="nocode"><a name="147">147: </a></span>    /**
+<span class="nocode"><a name="148">148: </a></span>     * Gets the internal printer object that performs the real printing work.
+<span class="nocode"><a name="149">149: </a></span>     * 
+<span class="nocode"><a name="150">150: </a></span>     * @return the internal printer; is null if printing not supported
+<span class="nocode"><a name="151">151: </a></span>     */
+<span class="nocode"><a name="152">152: </a></span>    public DateTimePrinter getPrinter() {
+<span class="nocode"><a name="153">153: </a></span>        return iPrinter;
+<span class="nocode"><a name="154">154: </a></span>    }
+<span class="nocode"><a name="155">155: </a></span>
+<span class="nocode"><a name="156">156: </a></span>    /**
+<span class="nocode"><a name="157">157: </a></span>     * Is this formatter capable of parsing.
+<span class="nocode"><a name="158">158: </a></span>     * 
+<span class="nocode"><a name="159">159: </a></span>     * @return true if this is a parser
+<span class="nocode"><a name="160">160: </a></span>     */
+<span class="nocode"><a name="161">161: </a></span>    public boolean isParser() {
+<span class="nocode"><a name="162">162: </a></span>        return (iParser != null);
+<span class="nocode"><a name="163">163: </a></span>    }
+<span class="nocode"><a name="164">164: </a></span>
+<span class="nocode"><a name="165">165: </a></span>    /**
+<span class="nocode"><a name="166">166: </a></span>     * Gets the internal parser object that performs the real parsing work.
+<span class="nocode"><a name="167">167: </a></span>     * 
+<span class="nocode"><a name="168">168: </a></span>     * @return the internal parser; is null if parsing not supported
+<span class="nocode"><a name="169">169: </a></span>     */
+<span class="nocode"><a name="170">170: </a></span>    public DateTimeParser getParser() {
+<span class="nocode"><a name="171">171: </a></span>        return iParser;
+<span class="nocode"><a name="172">172: </a></span>    }
+<span class="nocode"><a name="173">173: </a></span>
+<span class="nocode"><a name="174">174: </a></span>    //-----------------------------------------------------------------------
+<span class="nocode"><a name="175">175: </a></span>    /**
+<span class="nocode"><a name="176">176: </a></span>     * Returns a new formatter with a different locale that will be used
+<span class="nocode"><a name="177">177: </a></span>     * for printing and parsing.
+<span class="nocode"><a name="178">178: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="179">179: </a></span>     * A DateTimeFormatter is immutable, so a new instance is returned,
+<span class="nocode"><a name="180">180: </a></span>     * and the original is unaltered and still usable.
+<span class="nocode"><a name="181">181: </a></span>     * 
+<span class="nocode"><a name="182">182: </a></span>     * @param locale the locale to use; if null, formatter uses default locale
+<span class="nocode"><a name="183">183: </a></span>     * at invocation time
+<span class="nocode"><a name="184">184: </a></span>     * @return the new formatter
+<span class="nocode"><a name="185">185: </a></span>     */
+<span class="nocode"><a name="186">186: </a></span>    public DateTimeFormatter withLocale(Locale locale) {
+<span class="nocode"><a name="187">187: </a></span>        if (locale == getLocale() || (locale != null &amp;&amp; locale.equals(getLocale()))) {
+<span class="nocode"><a name="188">188: </a></span>            return this;
+<span class="nocode"><a name="189">189: </a></span>        }
+<span class="nocode"><a name="190">190: </a></span>        return new DateTimeFormatter(iPrinter, iParser, locale,
+<span class="nocode"><a name="191">191: </a></span>                iOffsetParsed, iChrono, iZone, iPivotYear, iDefaultYear);
+<span class="nocode"><a name="192">192: </a></span>    }
+<span class="nocode"><a name="193">193: </a></span>
+<span class="nocode"><a name="194">194: </a></span>    /**
+<span class="nocode"><a name="195">195: </a></span>     * Gets the locale that will be used for printing and parsing.
+<span class="nocode"><a name="196">196: </a></span>     * 
+<span class="nocode"><a name="197">197: </a></span>     * @return the locale to use; if null, formatter uses default locale at
+<span class="nocode"><a name="198">198: </a></span>     * invocation time
+<span class="nocode"><a name="199">199: </a></span>     */
+<span class="nocode"><a name="200">200: </a></span>    public Locale getLocale() {
+<span class="nocode"><a name="201">201: </a></span>        return iLocale;
+<span class="nocode"><a name="202">202: </a></span>    }
+<span class="nocode"><a name="203">203: </a></span>
+<span class="nocode"><a name="204">204: </a></span>    //-----------------------------------------------------------------------
+<span class="nocode"><a name="205">205: </a></span>    /**
+<span class="nocode"><a name="206">206: </a></span>     * Returns a new formatter that will create a datetime with a time zone
+<span class="nocode"><a name="207">207: </a></span>     * equal to that of the offset of the parsed string.
+<span class="nocode"><a name="208">208: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="209">209: </a></span>     * After calling this method, a string '2004-06-09T10:20:30-08:00' will
+<span class="nocode"><a name="210">210: </a></span>     * create a datetime with a zone of -08:00 (a fixed zone, with no daylight
+<span class="nocode"><a name="211">211: </a></span>     * savings rules). If the parsed string represents a local time (no zone
+<span class="nocode"><a name="212">212: </a></span>     * offset) the parsed datetime will be in the default zone.
+<span class="nocode"><a name="213">213: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="214">214: </a></span>     * Calling this method sets the override zone to null.
+<span class="nocode"><a name="215">215: </a></span>     * Calling the override zone method sets this flag off.
+<span class="nocode"><a name="216">216: </a></span>     * 
+<span class="nocode"><a name="217">217: </a></span>     * @return the new formatter
+<span class="nocode"><a name="218">218: </a></span>     */
+<span class="nocode"><a name="219">219: </a></span>    public DateTimeFormatter withOffsetParsed() {
+<span class="nocode"><a name="220">220: </a></span>        if (iOffsetParsed == true) {
+<span class="nocode"><a name="221">221: </a></span>            return this;
+<span class="nocode"><a name="222">222: </a></span>        }
+<span class="nocode"><a name="223">223: </a></span>        return new DateTimeFormatter(iPrinter, iParser, iLocale,
+<span class="nocode"><a name="224">224: </a></span>                true, iChrono, null, iPivotYear, iDefaultYear);
+<span class="nocode"><a name="225">225: </a></span>    }
+<span class="nocode"><a name="226">226: </a></span>
+<span class="nocode"><a name="227">227: </a></span>    /**
+<span class="nocode"><a name="228">228: </a></span>     * Checks whether the offset from the string is used as the zone of
+<span class="nocode"><a name="229">229: </a></span>     * the parsed datetime.
+<span class="nocode"><a name="230">230: </a></span>     * 
+<span class="nocode"><a name="231">231: </a></span>     * @return true if the offset from the string is used as the zone
+<span class="nocode"><a name="232">232: </a></span>     */
+<span class="nocode"><a name="233">233: </a></span>    public boolean isOffsetParsed() {
+<span class="nocode"><a name="234">234: </a></span>        return iOffsetParsed;
+<span class="nocode"><a name="235">235: </a></span>    }
+<span class="nocode"><a name="236">236: </a></span>
+<span class="nocode"><a name="237">237: </a></span>    //-----------------------------------------------------------------------
+<span class="nocode"><a name="238">238: </a></span>    /**
+<span class="nocode"><a name="239">239: </a></span>     * Returns a new formatter that will use the specified chronology in
+<span class="nocode"><a name="240">240: </a></span>     * preference to that of the printed object, or ISO on a parse.
+<span class="nocode"><a name="241">241: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="242">242: </a></span>     * When printing, this chronolgy will be used in preference to the chronology
+<span class="nocode"><a name="243">243: </a></span>     * from the datetime that would otherwise be used.
+<span class="nocode"><a name="244">244: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="245">245: </a></span>     * When parsing, this chronology will be set on the parsed datetime.
+<span class="nocode"><a name="246">246: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="247">247: </a></span>     * A null chronology means no-override.
+<span class="nocode"><a name="248">248: </a></span>     * If both an override chronology and an override zone are set, the
+<span class="nocode"><a name="249">249: </a></span>     * override zone will take precedence over the zone in the chronology.
+<span class="nocode"><a name="250">250: </a></span>     * 
+<span class="nocode"><a name="251">251: </a></span>     * @param chrono  the chronology to use as an override
+<span class="nocode"><a name="252">252: </a></span>     * @return the new formatter
+<span class="nocode"><a name="253">253: </a></span>     */
+<span class="nocode"><a name="254">254: </a></span>    public DateTimeFormatter withChronology(Chronology chrono) {
+<span class="nocode"><a name="255">255: </a></span>        if (iChrono == chrono) {
+<span class="nocode"><a name="256">256: </a></span>            return this;
+<span class="nocode"><a name="257">257: </a></span>        }
+<span class="nocode"><a name="258">258: </a></span>        return new DateTimeFormatter(iPrinter, iParser, iLocale,
+<span class="nocode"><a name="259">259: </a></span>                iOffsetParsed, chrono, iZone, iPivotYear, iDefaultYear);
+<span class="nocode"><a name="260">260: </a></span>    }
+<span class="nocode"><a name="261">261: </a></span>
+<span class="nocode"><a name="262">262: </a></span>    /**
+<span class="nocode"><a name="263">263: </a></span>     * Gets the chronology to use as an override.
+<span class="nocode"><a name="264">264: </a></span>     * 
+<span class="nocode"><a name="265">265: </a></span>     * @return the chronology to use as an override
+<span class="nocode"><a name="266">266: </a></span>     */
+<span class="nocode"><a name="267">267: </a></span>    public Chronology getChronology() {
+<span class="nocode"><a name="268">268: </a></span>        return iChrono;
+<span class="nocode"><a name="269">269: </a></span>    }
+<span class="nocode"><a name="270">270: </a></span>
+<span class="nocode"><a name="271">271: </a></span>    /**
+<span class="nocode"><a name="272">272: </a></span>     * Gets the chronology to use as an override.
+<span class="nocode"><a name="273">273: </a></span>     * 
+<span class="nocode"><a name="274">274: </a></span>     * @return the chronology to use as an override
+<span class="nocode"><a name="275">275: </a></span>     * @deprecated Use the method with the correct spelling
+<span class="nocode"><a name="276">276: </a></span>     */
+<span class="nocode"><a name="277">277: </a></span>    @Deprecated
+<span class="nocode"><a name="278">278: </a></span>    public Chronology getChronolgy() {
+<span class="nocode"><a name="279">279: </a></span>        return iChrono;
+<span class="nocode"><a name="280">280: </a></span>    }
+<span class="nocode"><a name="281">281: </a></span>
+<span class="nocode"><a name="282">282: </a></span>    //-----------------------------------------------------------------------
+<span class="nocode"><a name="283">283: </a></span>    /**
+<span class="nocode"><a name="284">284: </a></span>     * Returns a new formatter that will use the UTC zone in preference
+<span class="nocode"><a name="285">285: </a></span>     * to the zone of the printed object, or default zone on a parse.
+<span class="nocode"><a name="286">286: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="287">287: </a></span>     * When printing, UTC will be used in preference to the zone
+<span class="nocode"><a name="288">288: </a></span>     * from the datetime that would otherwise be used.
+<span class="nocode"><a name="289">289: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="290">290: </a></span>     * When parsing, UTC will be set on the parsed datetime.
+<span class="nocode"><a name="291">291: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="292">292: </a></span>     * If both an override chronology and an override zone are set, the
+<span class="nocode"><a name="293">293: </a></span>     * override zone will take precedence over the zone in the chronology.
+<span class="nocode"><a name="294">294: </a></span>     * 
+<span class="nocode"><a name="295">295: </a></span>     * @return the new formatter, never null
+<span class="nocode"><a name="296">296: </a></span>     * @since 2.0
+<span class="nocode"><a name="297">297: </a></span>     */
+<span class="nocode"><a name="298">298: </a></span>    public DateTimeFormatter withZoneUTC() {
+<span class="nocode"><a name="299">299: </a></span>        return withZone(DateTimeZone.UTC);
+<span class="nocode"><a name="300">300: </a></span>    }
+<span class="nocode"><a name="301">301: </a></span>
+<span class="nocode"><a name="302">302: </a></span>    /**
+<span class="nocode"><a name="303">303: </a></span>     * Returns a new formatter that will use the specified zone in preference
+<span class="nocode"><a name="304">304: </a></span>     * to the zone of the printed object, or default zone on a parse.
+<span class="nocode"><a name="305">305: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="306">306: </a></span>     * When printing, this zone will be used in preference to the zone
+<span class="nocode"><a name="307">307: </a></span>     * from the datetime that would otherwise be used.
+<span class="nocode"><a name="308">308: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="309">309: </a></span>     * When parsing, this zone will be set on the parsed datetime.
+<span class="nocode"><a name="310">310: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="311">311: </a></span>     * A null zone means of no-override.
+<span class="nocode"><a name="312">312: </a></span>     * If both an override chronology and an override zone are set, the
+<span class="nocode"><a name="313">313: </a></span>     * override zone will take precedence over the zone in the chronology.
+<span class="nocode"><a name="314">314: </a></span>     * 
+<span class="nocode"><a name="315">315: </a></span>     * @param zone  the zone to use as an override
+<span class="nocode"><a name="316">316: </a></span>     * @return the new formatter
+<span class="nocode"><a name="317">317: </a></span>     */
+<span class="nocode"><a name="318">318: </a></span>    public DateTimeFormatter withZone(DateTimeZone zone) {
+<span class="nocode"><a name="319">319: </a></span>        if (iZone == zone) {
+<span class="nocode"><a name="320">320: </a></span>            return this;
+<span class="nocode"><a name="321">321: </a></span>        }
+<span class="nocode"><a name="322">322: </a></span>        return new DateTimeFormatter(iPrinter, iParser, iLocale,
+<span class="nocode"><a name="323">323: </a></span>                false, iChrono, zone, iPivotYear, iDefaultYear);
+<span class="nocode"><a name="324">324: </a></span>    }
+<span class="nocode"><a name="325">325: </a></span>
+<span class="nocode"><a name="326">326: </a></span>    /**
+<span class="nocode"><a name="327">327: </a></span>     * Gets the zone to use as an override.
+<span class="nocode"><a name="328">328: </a></span>     * 
+<span class="nocode"><a name="329">329: </a></span>     * @return the zone to use as an override
+<span class="nocode"><a name="330">330: </a></span>     */
+<span class="nocode"><a name="331">331: </a></span>    public DateTimeZone getZone() {
+<span class="nocode"><a name="332">332: </a></span>        return iZone;
+<span class="nocode"><a name="333">333: </a></span>    }
+<span class="nocode"><a name="334">334: </a></span>
+<span class="nocode"><a name="335">335: </a></span>    //-----------------------------------------------------------------------
+<span class="nocode"><a name="336">336: </a></span>    /**
+<span class="nocode"><a name="337">337: </a></span>     * Returns a new formatter that will use the specified pivot year for two
+<span class="nocode"><a name="338">338: </a></span>     * digit year parsing in preference to that stored in the parser.
+<span class="nocode"><a name="339">339: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="340">340: </a></span>     * This setting is useful for changing the pivot year of formats built
+<span class="nocode"><a name="341">341: </a></span>     * using a pattern - {@link DateTimeFormat#forPattern(String)}.
+<span class="nocode"><a name="342">342: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="343">343: </a></span>     * When parsing, this pivot year is used. Null means no-override.
+<span class="nocode"><a name="344">344: </a></span>     * There is no effect when printing.
+<span class="nocode"><a name="345">345: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="346">346: </a></span>     * The pivot year enables a two digit year to be converted to a four
+<span class="nocode"><a name="347">347: </a></span>     * digit year. The pivot represents the year in the middle of the
+<span class="nocode"><a name="348">348: </a></span>     * supported range of years. Thus the full range of years that will
+<span class="nocode"><a name="349">349: </a></span>     * be built is &lt;code&gt;(pivot - 50) .. (pivot + 49)&lt;/code&gt;.
+<span class="nocode"><a name="350">350: </a></span>     *
+<span class="nocode"><a name="351">351: </a></span>     * &lt;pre&gt;
+<span class="nocode"><a name="352">352: </a></span>     * pivot   supported range   00 is   20 is   40 is   60 is   80 is
+<span class="nocode"><a name="353">353: </a></span>     * ---------------------------------------------------------------
+<span class="nocode"><a name="354">354: </a></span>     * 1950      1900..1999      1900    1920    1940    1960    1980
+<span class="nocode"><a name="355">355: </a></span>     * 1975      1925..2024      2000    2020    1940    1960    1980
+<span class="nocode"><a name="356">356: </a></span>     * 2000      1950..2049      2000    2020    2040    1960    1980
+<span class="nocode"><a name="357">357: </a></span>     * 2025      1975..2074      2000    2020    2040    2060    1980
+<span class="nocode"><a name="358">358: </a></span>     * 2050      2000..2099      2000    2020    2040    2060    2080
+<span class="nocode"><a name="359">359: </a></span>     * &lt;/pre&gt;
+<span class="nocode"><a name="360">360: </a></span>     *
+<span class="nocode"><a name="361">361: </a></span>     * @param pivotYear  the pivot year to use as an override when parsing
+<span class="nocode"><a name="362">362: </a></span>     * @return the new formatter
+<span class="nocode"><a name="363">363: </a></span>     * @since 1.1
+<span class="nocode"><a name="364">364: </a></span>     */
+<span class="nocode"><a name="365">365: </a></span>    public DateTimeFormatter withPivotYear(Integer pivotYear) {
+<span class="nocode"><a name="366">366: </a></span>        if (iPivotYear == pivotYear || (iPivotYear != null &amp;&amp; iPivotYear.equals(pivotYear))) {
+<span class="nocode"><a name="367">367: </a></span>            return this;
+<span class="nocode"><a name="368">368: </a></span>        }
+<span class="nocode"><a name="369">369: </a></span>        return new DateTimeFormatter(iPrinter, iParser, iLocale,
+<span class="nocode"><a name="370">370: </a></span>                iOffsetParsed, iChrono, iZone, pivotYear, iDefaultYear);
+<span class="nocode"><a name="371">371: </a></span>    }
+<span class="nocode"><a name="372">372: </a></span>
+<span class="nocode"><a name="373">373: </a></span>    /**
+<span class="nocode"><a name="374">374: </a></span>     * Returns a new formatter that will use the specified pivot year for two
+<span class="nocode"><a name="375">375: </a></span>     * digit year parsing in preference to that stored in the parser.
+<span class="nocode"><a name="376">376: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="377">377: </a></span>     * This setting is useful for changing the pivot year of formats built
+<span class="nocode"><a name="378">378: </a></span>     * using a pattern - {@link DateTimeFormat#forPattern(String)}.
+<span class="nocode"><a name="379">379: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="380">380: </a></span>     * When parsing, this pivot year is used.
+<span class="nocode"><a name="381">381: </a></span>     * There is no effect when printing.
+<span class="nocode"><a name="382">382: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="383">383: </a></span>     * The pivot year enables a two digit year to be converted to a four
+<span class="nocode"><a name="384">384: </a></span>     * digit year. The pivot represents the year in the middle of the
+<span class="nocode"><a name="385">385: </a></span>     * supported range of years. Thus the full range of years that will
+<span class="nocode"><a name="386">386: </a></span>     * be built is &lt;code&gt;(pivot - 50) .. (pivot + 49)&lt;/code&gt;.
+<span class="nocode"><a name="387">387: </a></span>     *
+<span class="nocode"><a name="388">388: </a></span>     * &lt;pre&gt;
+<span class="nocode"><a name="389">389: </a></span>     * pivot   supported range   00 is   20 is   40 is   60 is   80 is
+<span class="nocode"><a name="390">390: </a></span>     * ---------------------------------------------------------------
+<span class="nocode"><a name="391">391: </a></span>     * 1950      1900..1999      1900    1920    1940    1960    1980
+<span class="nocode"><a name="392">392: </a></span>     * 1975      1925..2024      2000    2020    1940    1960    1980
+<span class="nocode"><a name="393">393: </a></span>     * 2000      1950..2049      2000    2020    2040    1960    1980
+<span class="nocode"><a name="394">394: </a></span>     * 2025      1975..2074      2000    2020    2040    2060    1980
+<span class="nocode"><a name="395">395: </a></span>     * 2050      2000..2099      2000    2020    2040    2060    2080
+<span class="nocode"><a name="396">396: </a></span>     * &lt;/pre&gt;
+<span class="nocode"><a name="397">397: </a></span>     *
+<span class="nocode"><a name="398">398: </a></span>     * @param pivotYear  the pivot year to use as an override when parsing
+<span class="nocode"><a name="399">399: </a></span>     * @return the new formatter
+<span class="nocode"><a name="400">400: </a></span>     * @since 1.1
+<span class="nocode"><a name="401">401: </a></span>     */
+<span class="nocode"><a name="402">402: </a></span>    public DateTimeFormatter withPivotYear(int pivotYear) {
+<span class="nocode"><a name="403">403: </a></span>        return withPivotYear(Integer.valueOf(pivotYear));
+<span class="nocode"><a name="404">404: </a></span>    }
+<span class="nocode"><a name="405">405: </a></span>
+<span class="nocode"><a name="406">406: </a></span>    /**
+<span class="nocode"><a name="407">407: </a></span>     * Gets the pivot year to use as an override.
+<span class="nocode"><a name="408">408: </a></span>     *
+<span class="nocode"><a name="409">409: </a></span>     * @return the pivot year to use as an override
+<span class="nocode"><a name="410">410: </a></span>     * @since 1.1
+<span class="nocode"><a name="411">411: </a></span>     */
+<span class="nocode"><a name="412">412: </a></span>    public Integer getPivotYear() {
+<span class="nocode"><a name="413">413: </a></span>      return iPivotYear;
+<span class="nocode"><a name="414">414: </a></span>    }
+<span class="nocode"><a name="415">415: </a></span>
+<span class="nocode"><a name="416">416: </a></span>    //-----------------------------------------------------------------------
+<span class="nocode"><a name="417">417: </a></span>    /**
+<span class="nocode"><a name="418">418: </a></span>     * Returns a new formatter that will use the specified default year.
+<span class="nocode"><a name="419">419: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="420">420: </a></span>     * The default year is used when parsing in the case where there is a
+<span class="nocode"><a name="421">421: </a></span>     * month or a day but not a year. Specifically, it is used if there is
+<span class="nocode"><a name="422">422: </a></span>     * a field parsed with a duration between the length of a month and the
+<span class="nocode"><a name="423">423: </a></span>     * length of a day inclusive.
+<span class="nocode"><a name="424">424: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="425">425: </a></span>     * This value is typically used to move the year from 1970 to a leap year
+<span class="nocode"><a name="426">426: </a></span>     * to enable February 29th to be parsed.
+<span class="nocode"><a name="427">427: </a></span>     * Unless customised, the year 2000 is used.
+<span class="nocode"><a name="428">428: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="429">429: </a></span>     * This setting has no effect when printing.
+<span class="nocode"><a name="430">430: </a></span>     *
+<span class="nocode"><a name="431">431: </a></span>     * @param defaultYear  the default year to use
+<span class="nocode"><a name="432">432: </a></span>     * @return the new formatter, not null
+<span class="nocode"><a name="433">433: </a></span>     * @since 2.0
+<span class="nocode"><a name="434">434: </a></span>     */
+<span class="nocode"><a name="435">435: </a></span>    public DateTimeFormatter withDefaultYear(int defaultYear) {
+<span class="nocode"><a name="436">436: </a></span>        return new DateTimeFormatter(iPrinter, iParser, iLocale,
+<span class="nocode"><a name="437">437: </a></span>                iOffsetParsed, iChrono, iZone, iPivotYear, defaultYear);
+<span class="nocode"><a name="438">438: </a></span>    }
+<span class="nocode"><a name="439">439: </a></span>
+<span class="nocode"><a name="440">440: </a></span>    /**
+<span class="nocode"><a name="441">441: </a></span>     * Gets the default year for parsing months and days.
+<span class="nocode"><a name="442">442: </a></span>     *
+<span class="nocode"><a name="443">443: </a></span>     * @return the default year for parsing months and days
+<span class="nocode"><a name="444">444: </a></span>     * @since 2.0
+<span class="nocode"><a name="445">445: </a></span>     */
+<span class="nocode"><a name="446">446: </a></span>    public int getDefaultYear() {
+<span class="nocode"><a name="447">447: </a></span>      return iDefaultYear;
+<span class="nocode"><a name="448">448: </a></span>    }
+<span class="nocode"><a name="449">449: </a></span>
+<span class="nocode"><a name="450">450: </a></span>    //-----------------------------------------------------------------------
+<span class="nocode"><a name="451">451: </a></span>    /**
+<span class="nocode"><a name="452">452: </a></span>     * Prints a ReadableInstant, using the chronology supplied by the instant.
+<span class="nocode"><a name="453">453: </a></span>     *
+<span class="nocode"><a name="454">454: </a></span>     * @param buf  the destination to format to, not null
+<span class="nocode"><a name="455">455: </a></span>     * @param instant  instant to format, null means now
+<span class="nocode"><a name="456">456: </a></span>     */
+<span class="nocode"><a name="457">457: </a></span>    public void printTo(StringBuffer buf, ReadableInstant instant) {
+<span class="nocode"><a name="458">458: </a></span>        long millis = DateTimeUtils.getInstantMillis(instant);
+<span class="nocode"><a name="459">459: </a></span>        Chronology chrono = DateTimeUtils.getInstantChronology(instant);
+<span class="nocode"><a name="460">460: </a></span>        printTo(buf, millis, chrono);
+<span class="nocode"><a name="461">461: </a></span>    }
+<span class="nocode"><a name="462">462: </a></span>
+<span class="nocode"><a name="463">463: </a></span>    /**
+<span class="nocode"><a name="464">464: </a></span>     * Prints a ReadableInstant, using the chronology supplied by the instant.
+<span class="nocode"><a name="465">465: </a></span>     *
+<span class="nocode"><a name="466">466: </a></span>     * @param out  the destination to format to, not null
+<span class="nocode"><a name="467">467: </a></span>     * @param instant  instant to format, null means now
+<span class="nocode"><a name="468">468: </a></span>     */
+<span class="nocode"><a name="469">469: </a></span>    public void printTo(Writer out, ReadableInstant instant) throws IOException {
+<span class="nocode"><a name="470">470: </a></span>        long millis = DateTimeUtils.getInstantMillis(instant);
+<span class="nocode"><a name="471">471: </a></span>        Chronology chrono = DateTimeUtils.getInstantChronology(instant);
+<span class="nocode"><a name="472">472: </a></span>        printTo(out, millis, chrono);
+<span class="nocode"><a name="473">473: </a></span>    }
+<span class="nocode"><a name="474">474: </a></span>
+<span class="nocode"><a name="475">475: </a></span>    /**
+<span class="nocode"><a name="476">476: </a></span>     * Prints a ReadableInstant, using the chronology supplied by the instant.
+<span class="nocode"><a name="477">477: </a></span>     *
+<span class="nocode"><a name="478">478: </a></span>     * @param appendable  the destination to format to, not null
+<span class="nocode"><a name="479">479: </a></span>     * @param instant  instant to format, null means now
+<span class="nocode"><a name="480">480: </a></span>     * @since 2.0
+<span class="nocode"><a name="481">481: </a></span>     */
+<span class="nocode"><a name="482">482: </a></span>    public void printTo(Appendable appendable, ReadableInstant instant) throws IOException {
+<span class="nocode"><a name="483">483: </a></span>        appendable.append(print(instant));
+<span class="nocode"><a name="484">484: </a></span>    }
+<span class="nocode"><a name="485">485: </a></span>
+<span class="nocode"><a name="486">486: </a></span>    //-----------------------------------------------------------------------
+<span class="nocode"><a name="487">487: </a></span>    /**
+<span class="nocode"><a name="488">488: </a></span>     * Prints an instant from milliseconds since 1970-01-01T00:00:00Z,
+<span class="nocode"><a name="489">489: </a></span>     * using ISO chronology in the default DateTimeZone.
+<span class="nocode"><a name="490">490: </a></span>     *
+<span class="nocode"><a name="491">491: </a></span>     * @param buf  the destination to format to, not null
+<span class="nocode"><a name="492">492: </a></span>     * @param instant  millis since 1970-01-01T00:00:00Z
+<span class="nocode"><a name="493">493: </a></span>     */
+<span class="nocode"><a name="494">494: </a></span>    public void printTo(StringBuffer buf, long instant) {
+<span class="nocode"><a name="495">495: </a></span>        printTo(buf, instant, null);
+<span class="nocode"><a name="496">496: </a></span>    }
+<span class="nocode"><a name="497">497: </a></span>
+<span class="nocode"><a name="498">498: </a></span>    /**
+<span class="nocode"><a name="499">499: </a></span>     * Prints an instant from milliseconds since 1970-01-01T00:00:00Z,
+<span class="nocode"><a name="500">500: </a></span>     * using ISO chronology in the default DateTimeZone.
+<span class="nocode"><a name="501">501: </a></span>     *
+<span class="nocode"><a name="502">502: </a></span>     * @param out  the destination to format to, not null
+<span class="nocode"><a name="503">503: </a></span>     * @param instant  millis since 1970-01-01T00:00:00Z
+<span class="nocode"><a name="504">504: </a></span>     */
+<span class="nocode"><a name="505">505: </a></span>    public void printTo(Writer out, long instant) throws IOException {
+<span class="nocode"><a name="506">506: </a></span>        printTo(out, instant, null);
+<span class="nocode"><a name="507">507: </a></span>    }
+<span class="nocode"><a name="508">508: </a></span>
+<span class="nocode"><a name="509">509: </a></span>    /**
+<span class="nocode"><a name="510">510: </a></span>     * Prints an instant from milliseconds since 1970-01-01T00:00:00Z,
+<span class="nocode"><a name="511">511: </a></span>     * using ISO chronology in the default DateTimeZone.
+<span class="nocode"><a name="512">512: </a></span>     *
+<span class="nocode"><a name="513">513: </a></span>     * @param appendable  the destination to format to, not null
+<span class="nocode"><a name="514">514: </a></span>     * @param instant  millis since 1970-01-01T00:00:00Z
+<span class="nocode"><a name="515">515: </a></span>     * @since 2.0
+<span class="nocode"><a name="516">516: </a></span>     */
+<span class="nocode"><a name="517">517: </a></span>    public void printTo(Appendable appendable, long instant) throws IOException {
+<span class="nocode"><a name="518">518: </a></span>        appendable.append(print(instant));
+<span class="nocode"><a name="519">519: </a></span>    }
+<span class="nocode"><a name="520">520: </a></span>
+<span class="nocode"><a name="521">521: </a></span>    //-----------------------------------------------------------------------
+<span class="nocode"><a name="522">522: </a></span>    /**
+<span class="nocode"><a name="523">523: </a></span>     * Prints a ReadablePartial.
+<span class="nocode"><a name="524">524: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="525">525: </a></span>     * Neither the override chronology nor the override zone are used
+<span class="nocode"><a name="526">526: </a></span>     * by this method.
+<span class="nocode"><a name="527">527: </a></span>     *
+<span class="nocode"><a name="528">528: </a></span>     * @param buf  the destination to format to, not null
+<span class="nocode"><a name="529">529: </a></span>     * @param partial  partial to format
+<span class="nocode"><a name="530">530: </a></span>     */
+<span class="nocode"><a name="531">531: </a></span>    public void printTo(StringBuffer buf, ReadablePartial partial) {
+<span class="nocode"><a name="532">532: </a></span>        DateTimePrinter printer = requirePrinter();
+<span class="nocode"><a name="533">533: </a></span>        if (partial == null) {
+<span class="nocode"><a name="534">534: </a></span>            throw new IllegalArgumentException(&quot;The partial must not be null&quot;);
+<span class="nocode"><a name="535">535: </a></span>        }
+<span class="nocode"><a name="536">536: </a></span>        printer.printTo(buf, partial, iLocale);
+<span class="nocode"><a name="537">537: </a></span>    }
+<span class="nocode"><a name="538">538: </a></span>
+<span class="nocode"><a name="539">539: </a></span>    /**
+<span class="nocode"><a name="540">540: </a></span>     * Prints a ReadablePartial.
+<span class="nocode"><a name="541">541: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="542">542: </a></span>     * Neither the override chronology nor the override zone are used
+<span class="nocode"><a name="543">543: </a></span>     * by this method.
+<span class="nocode"><a name="544">544: </a></span>     *
+<span class="nocode"><a name="545">545: </a></span>     * @param out  the destination to format to, not null
+<span class="nocode"><a name="546">546: </a></span>     * @param partial  partial to format
+<span class="nocode"><a name="547">547: </a></span>     */
+<span class="nocode"><a name="548">548: </a></span>    public void printTo(Writer out, ReadablePartial partial) throws IOException {
+<span class="nocode"><a name="549">549: </a></span>        DateTimePrinter printer = requirePrinter();
+<span class="nocode"><a name="550">550: </a></span>        if (partial == null) {
+<span class="nocode"><a name="551">551: </a></span>            throw new IllegalArgumentException(&quot;The partial must not be null&quot;);
+<span class="nocode"><a name="552">552: </a></span>        }
+<span class="nocode"><a name="553">553: </a></span>        printer.printTo(out, partial, iLocale);
+<span class="nocode"><a name="554">554: </a></span>    }
+<span class="nocode"><a name="555">555: </a></span>
+<span class="nocode"><a name="556">556: </a></span>    /**
+<span class="nocode"><a name="557">557: </a></span>     * Prints a ReadablePartial.
+<span class="nocode"><a name="558">558: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="559">559: </a></span>     * Neither the override chronology nor the override zone are used
+<span class="nocode"><a name="560">560: </a></span>     * by this method.
+<span class="nocode"><a name="561">561: </a></span>     *
+<span class="nocode"><a name="562">562: </a></span>     * @param appendable  the destination to format to, not null
+<span class="nocode"><a name="563">563: </a></span>     * @param partial  partial to format
+<span class="nocode"><a name="564">564: </a></span>     * @since 2.0
+<span class="nocode"><a name="565">565: </a></span>     */
+<span class="nocode"><a name="566">566: </a></span>    public void printTo(Appendable appendable, ReadablePartial partial) throws IOException {
+<span class="nocode"><a name="567">567: </a></span>        appendable.append(print(partial));
+<span class="nocode"><a name="568">568: </a></span>    }
+<span class="nocode"><a name="569">569: </a></span>
+<span class="nocode"><a name="570">570: </a></span>    //-----------------------------------------------------------------------
+<span class="nocode"><a name="571">571: </a></span>    /**
+<span class="nocode"><a name="572">572: </a></span>     * Prints a ReadableInstant to a String.
+<span class="nocode"><a name="573">573: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="574">574: </a></span>     * This method will use the override zone and the override chronololgy if
+<span class="nocode"><a name="575">575: </a></span>     * they are set. Otherwise it will use the chronology and zone of the instant.
+<span class="nocode"><a name="576">576: </a></span>     *
+<span class="nocode"><a name="577">577: </a></span>     * @param instant  instant to format, null means now
+<span class="nocode"><a name="578">578: </a></span>     * @return the printed result
+<span class="nocode"><a name="579">579: </a></span>     */
+<span class="nocode"><a name="580">580: </a></span>    public String print(ReadableInstant instant) {
+<span class="nocode"><a name="581">581: </a></span>        StringBuffer buf = new StringBuffer(requirePrinter().estimatePrintedLength());
+<span class="nocode"><a name="582">582: </a></span>        printTo(buf, instant);
+<span class="nocode"><a name="583">583: </a></span>        return buf.toString();
+<span class="nocode"><a name="584">584: </a></span>    }
+<span class="nocode"><a name="585">585: </a></span>
+<span class="nocode"><a name="586">586: </a></span>    /**
+<span class="nocode"><a name="587">587: </a></span>     * Prints a millisecond instant to a String.
+<span class="nocode"><a name="588">588: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="589">589: </a></span>     * This method will use the override zone and the override chronololgy if
+<span class="nocode"><a name="590">590: </a></span>     * they are set. Otherwise it will use the ISO chronology and default zone.
+<span class="nocode"><a name="591">591: </a></span>     *
+<span class="nocode"><a name="592">592: </a></span>     * @param instant  millis since 1970-01-01T00:00:00Z
+<span class="nocode"><a name="593">593: </a></span>     * @return the printed result
+<span class="nocode"><a name="594">594: </a></span>     */
+<span class="nocode"><a name="595">595: </a></span>    public String print(long instant) {
+<span class="nocode"><a name="596">596: </a></span>        StringBuffer buf = new StringBuffer(requirePrinter().estimatePrintedLength());
+<span class="nocode"><a name="597">597: </a></span>        printTo(buf, instant);
+<span class="nocode"><a name="598">598: </a></span>        return buf.toString();
+<span class="nocode"><a name="599">599: </a></span>    }
+<span class="nocode"><a name="600">600: </a></span>
+<span class="nocode"><a name="601">601: </a></span>    /**
+<span class="nocode"><a name="602">602: </a></span>     * Prints a ReadablePartial to a new String.
+<span class="nocode"><a name="603">603: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="604">604: </a></span>     * Neither the override chronology nor the override zone are used
+<span class="nocode"><a name="605">605: </a></span>     * by this method.
+<span class="nocode"><a name="606">606: </a></span>     *
+<span class="nocode"><a name="607">607: </a></span>     * @param partial  partial to format
+<span class="nocode"><a name="608">608: </a></span>     * @return the printed result
+<span class="nocode"><a name="609">609: </a></span>     */
+<span class="nocode"><a name="610">610: </a></span>    public String print(ReadablePartial partial) {
+<span class="nocode"><a name="611">611: </a></span>        StringBuffer buf = new StringBuffer(requirePrinter().estimatePrintedLength());
+<span class="nocode"><a name="612">612: </a></span>        printTo(buf, partial);
+<span class="nocode"><a name="613">613: </a></span>        return buf.toString();
+<span class="nocode"><a name="614">614: </a></span>    }
+<span class="nocode"><a name="615">615: </a></span>
+<span class="nocode"><a name="616">616: </a></span>    private void printTo(StringBuffer buf, long instant, Chronology chrono) {
+<span class="nocode"><a name="617">617: </a></span>        DateTimePrinter printer = requirePrinter();
+<span class="nocode"><a name="618">618: </a></span>        chrono = selectChronology(chrono);
+<span class="nocode"><a name="619">619: </a></span>        // Shift instant into local time (UTC) to avoid excessive offset
+<span class="nocode"><a name="620">620: </a></span>        // calculations when printing multiple fields in a composite printer.
+<span class="nocode"><a name="621">621: </a></span>        DateTimeZone zone = chrono.getZone();
+<span class="nocode"><a name="622">622: </a></span>        int offset = zone.getOffset(instant);
+<span class="nocode"><a name="623">623: </a></span>        long adjustedInstant = instant + offset;
+<span class="nocode"><a name="624">624: </a></span>        if ((instant ^ adjustedInstant) &lt; 0 &amp;&amp; (instant ^ offset) &gt;= 0) {
+<span class="nocode"><a name="625">625: </a></span>            // Time zone offset overflow, so revert to UTC.
+<span class="nocode"><a name="626">626: </a></span>            zone = DateTimeZone.UTC;
+<span class="nocode"><a name="627">627: </a></span>            offset = 0;
+<span class="nocode"><a name="628">628: </a></span>            adjustedInstant = instant;
+<span class="nocode"><a name="629">629: </a></span>        }
+<span class="nocode"><a name="630">630: </a></span>        printer.printTo(buf, adjustedInstant, chrono.withUTC(), offset, zone, iLocale);
+<span class="nocode"><a name="631">631: </a></span>    }
+<span class="nocode"><a name="632">632: </a></span>
+<span class="nocode"><a name="633">633: </a></span>    private void printTo(Writer buf, long instant, Chronology chrono) throws IOException {
+<span class="nocode"><a name="634">634: </a></span>        DateTimePrinter printer = requirePrinter();
+<span class="nocode"><a name="635">635: </a></span>        chrono = selectChronology(chrono);
+<span class="nocode"><a name="636">636: </a></span>        // Shift instant into local time (UTC) to avoid excessive offset
+<span class="nocode"><a name="637">637: </a></span>        // calculations when printing multiple fields in a composite printer.
+<span class="nocode"><a name="638">638: </a></span>        DateTimeZone zone = chrono.getZone();
+<span class="nocode"><a name="639">639: </a></span>        int offset = zone.getOffset(instant);
+<span class="nocode"><a name="640">640: </a></span>        long adjustedInstant = instant + offset;
+<span class="nocode"><a name="641">641: </a></span>        if ((instant ^ adjustedInstant) &lt; 0 &amp;&amp; (instant ^ offset) &gt;= 0) {
+<span class="nocode"><a name="642">642: </a></span>            // Time zone offset overflow, so revert to UTC.
+<span class="nocode"><a name="643">643: </a></span>            zone = DateTimeZone.UTC;
+<span class="nocode"><a name="644">644: </a></span>            offset = 0;
+<span class="nocode"><a name="645">645: </a></span>            adjustedInstant = instant;
+<span class="nocode"><a name="646">646: </a></span>        }
+<span class="nocode"><a name="647">647: </a></span>        printer.printTo(buf, adjustedInstant, chrono.withUTC(), offset, zone, iLocale);
+<span class="nocode"><a name="648">648: </a></span>    }
+<span class="nocode"><a name="649">649: </a></span>
+<span class="nocode"><a name="650">650: </a></span>    /**
+<span class="nocode"><a name="651">651: </a></span>     * Checks whether printing is supported.
+<span class="nocode"><a name="652">652: </a></span>     * 
+<span class="nocode"><a name="653">653: </a></span>     * @throws UnsupportedOperationException if printing is not supported
+<span class="nocode"><a name="654">654: </a></span>     */
+<span class="nocode"><a name="655">655: </a></span>    private DateTimePrinter requirePrinter() {
+<span class="nocode"><a name="656">656: </a></span>        DateTimePrinter printer = iPrinter;
+<span class="nocode"><a name="657">657: </a></span>        if (printer == null) {
+<span class="nocode"><a name="658">658: </a></span>            throw new UnsupportedOperationException(&quot;Printing not supported&quot;);
+<span class="nocode"><a name="659">659: </a></span>        }
+<span class="nocode"><a name="660">660: </a></span>        return printer;
+<span class="nocode"><a name="661">661: </a></span>    }
+<span class="nocode"><a name="662">662: </a></span>
+<span class="nocode"><a name="663">663: </a></span>    //-----------------------------------------------------------------------
+<span class="nocode"><a name="664">664: </a></span>    /**
+<span class="nocode"><a name="665">665: </a></span>     * Parses a datetime from the given text, at the given position, saving the
+<span class="nocode"><a name="666">666: </a></span>     * result into the fields of the given ReadWritableInstant. If the parse
+<span class="nocode"><a name="667">667: </a></span>     * succeeds, the return value is the new text position. Note that the parse
+<span class="nocode"><a name="668">668: </a></span>     * may succeed without fully reading the text and in this case those fields
+<span class="nocode"><a name="669">669: </a></span>     * that were read will be set.
+<span class="nocode"><a name="670">670: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="671">671: </a></span>     * Only those fields present in the string will be changed in the specified
+<span class="nocode"><a name="672">672: </a></span>     * instant. All other fields will remain unaltered. Thus if the string only
+<span class="nocode"><a name="673">673: </a></span>     * contains a year and a month, then the day and time will be retained from
+<span class="nocode"><a name="674">674: </a></span>     * the input instant. If this is not the behaviour you want, then reset the
+<span class="nocode"><a name="675">675: </a></span>     * fields before calling this method, or use {@link #parseDateTime(String)}
+<span class="nocode"><a name="676">676: </a></span>     * or {@link #parseMutableDateTime(String)}.
+<span class="nocode"><a name="677">677: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="678">678: </a></span>     * If it fails, the return value is negative, but the instant may still be
+<span class="nocode"><a name="679">679: </a></span>     * modified. To determine the position where the parse failed, apply the
+<span class="nocode"><a name="680">680: </a></span>     * one's complement operator (~) on the return value.
+<span class="nocode"><a name="681">681: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="682">682: </a></span>     * The parse will use the chronology of the instant.
+<span class="nocode"><a name="683">683: </a></span>     *
+<span class="nocode"><a name="684">684: </a></span>     * @param instant  an instant that will be modified, not null
+<span class="nocode"><a name="685">685: </a></span>     * @param text  the text to parse
+<span class="nocode"><a name="686">686: </a></span>     * @param position  position to start parsing from
+<span class="nocode"><a name="687">687: </a></span>     * @return new position, negative value means parse failed -
+<span class="nocode"><a name="688">688: </a></span>     *  apply complement operator (~) to get position of failure
+<span class="nocode"><a name="689">689: </a></span>     * @throws UnsupportedOperationException if parsing is not supported
+<span class="nocode"><a name="690">690: </a></span>     * @throws IllegalArgumentException if the instant is null
+<span class="nocode"><a name="691">691: </a></span>     * @throws IllegalArgumentException if any field is out of range
+<span class="nocode"><a name="692">692: </a></span>     */
+<span class="nocode"><a name="693">693: </a></span>    public int parseInto(ReadWritableInstant instant, String text, int position) {
+<span class="nocode"><a name="694">694: </a></span>        DateTimeParser parser = requireParser();
+<span class="nocode"><a name="695">695: </a></span>        if (instant == null) {
+<span class="nocode"><a name="696">696: </a></span>            throw new IllegalArgumentException(&quot;Instant must not be null&quot;);
+<span class="nocode"><a name="697">697: </a></span>        }
+<span class="nocode"><a name="698">698: </a></span>        
+<span class="nocode"><a name="699">699: </a></span>        long instantMillis = instant.getMillis();
+<span class="nocode"><a name="700">700: </a></span>        Chronology chrono = instant.getChronology();
+<span class="nocode"><a name="701">701: </a></span>        long instantLocal = instantMillis + chrono.getZone().getOffset(instantMillis);
+<span class="nocode"><a name="702">702: </a></span>        chrono = selectChronology(chrono);
+<span class="nocode"><a name="703">703: </a></span>        
+<span class="nocode"><a name="704">704: </a></span>        DateTimeParserBucket bucket = new DateTimeParserBucket(
+<span class="nocode"><a name="705">705: </a></span>            instantLocal, chrono, iLocale, iPivotYear, iDefaultYear);
+<span class="nocode"><a name="706">706: </a></span>        int newPos = parser.parseInto(bucket, text, position);
+<span class="nocode"><a name="707">707: </a></span>        instant.setMillis(bucket.computeMillis(false, text));
+<span class="nocode"><a name="708">708: </a></span>        if (iOffsetParsed &amp;&amp; bucket.getOffsetInteger() != null) {
+<span class="nocode"><a name="709">709: </a></span>            int parsedOffset = bucket.getOffsetInteger();
+<span class="nocode"><a name="710">710: </a></span>            DateTimeZone parsedZone = DateTimeZone.forOffsetMillis(parsedOffset);
+<span class="nocode"><a name="711">711: </a></span>            chrono = chrono.withZone(parsedZone);
+<span class="nocode"><a name="712">712: </a></span>        } else if (bucket.getZone() != null) {
+<span class="nocode"><a name="713">713: </a></span>            chrono = chrono.withZone(bucket.getZone());
+<span class="nocode"><a name="714">714: </a></span>        }
+<span class="nocode"><a name="715">715: </a></span>        instant.setChronology(chrono);
+<span class="nocode"><a name="716">716: </a></span>        if (iZone != null) {
+<span class="nocode"><a name="717">717: </a></span>            instant.setZone(iZone);
+<span class="nocode"><a name="718">718: </a></span>        }
+<span class="nocode"><a name="719">719: </a></span>        return newPos;
+<span class="nocode"><a name="720">720: </a></span>    }
+<span class="nocode"><a name="721">721: </a></span>
+<span class="nocode"><a name="722">722: </a></span>    /**
+<span class="nocode"><a name="723">723: </a></span>     * Parses a datetime from the given text, returning the number of
+<span class="nocode"><a name="724">724: </a></span>     * milliseconds since the epoch, 1970-01-01T00:00:00Z.
+<span class="nocode"><a name="725">725: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="726">726: </a></span>     * The parse will use the ISO chronology, and the default time zone.
+<span class="nocode"><a name="727">727: </a></span>     * If the text contains a time zone string then that will be taken into account.
+<span class="nocode"><a name="728">728: </a></span>     *
+<span class="nocode"><a name="729">729: </a></span>     * @param text  text to parse
+<span class="nocode"><a name="730">730: </a></span>     * @return parsed value expressed in milliseconds since the epoch
+<span class="nocode"><a name="731">731: </a></span>     * @throws UnsupportedOperationException if parsing is not supported
+<span class="nocode"><a name="732">732: </a></span>     * @throws IllegalArgumentException if the text to parse is invalid
+<span class="nocode"><a name="733">733: </a></span>     */
+<span class="nocode"><a name="734">734: </a></span>    public long parseMillis(String text) {
+<span class="nocode"><a name="735">735: </a></span>        DateTimeParser parser = requireParser();
+<span class="nocode"><a name="736">736: </a></span>        
+<span class="nocode"><a name="737">737: </a></span>        Chronology chrono = selectChronology(iChrono);
+<span class="nocode"><a name="738">738: </a></span>        DateTimeParserBucket bucket = new DateTimeParserBucket(0, chrono, iLocale, iPivotYear, iDefaultYear);
+<span class="nocode"><a name="739">739: </a></span>        int newPos = parser.parseInto(bucket, text, 0);
+<span class="nocode"><a name="740">740: </a></span>        if (newPos &gt;= 0) {
+<span class="nocode"><a name="741">741: </a></span>            if (newPos &gt;= text.length()) {
+<span class="nocode"><a name="742">742: </a></span>                return bucket.computeMillis(true, text);
+<span class="nocode"><a name="743">743: </a></span>            }
+<span class="nocode"><a name="744">744: </a></span>        } else {
+<span class="nocode"><a name="745">745: </a></span>            newPos = ~newPos;
+<span class="nocode"><a name="746">746: </a></span>        }
+<span class="nocode"><a name="747">747: </a></span>        throw new IllegalArgumentException(FormatUtils.createErrorMessage(text, newPos));
+<span class="nocode"><a name="748">748: </a></span>    }
+<span class="nocode"><a name="749">749: </a></span>
+<span class="nocode"><a name="750">750: </a></span>    /**
+<span class="nocode"><a name="751">751: </a></span>     * Parses only the local date from the given text, returning a new LocalDate.
+<span class="nocode"><a name="752">752: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="753">753: </a></span>     * This will parse the text fully according to the formatter, using the UTC zone.
+<span class="nocode"><a name="754">754: </a></span>     * Once parsed, only the local date will be used.
+<span class="nocode"><a name="755">755: </a></span>     * This means that any parsed time, time-zone or offset field is completely ignored.
+<span class="nocode"><a name="756">756: </a></span>     * It also means that the zone and offset-parsed settings are ignored.
+<span class="nocode"><a name="757">757: </a></span>     *
+<span class="nocode"><a name="758">758: </a></span>     * @param text  the text to parse, not null
+<span class="nocode"><a name="759">759: </a></span>     * @return the parsed date, never null
+<span class="nocode"><a name="760">760: </a></span>     * @throws UnsupportedOperationException if parsing is not supported
+<span class="nocode"><a name="761">761: </a></span>     * @throws IllegalArgumentException if the text to parse is invalid
+<span class="nocode"><a name="762">762: </a></span>     * @since 2.0
+<span class="nocode"><a name="763">763: </a></span>     */
+<span class="nocode"><a name="764">764: </a></span>    public LocalDate parseLocalDate(String text) {
+<span class="nocode"><a name="765">765: </a></span>        return parseLocalDateTime(text).toLocalDate();
+<span class="nocode"><a name="766">766: </a></span>    }
+<span class="nocode"><a name="767">767: </a></span>
+<span class="nocode"><a name="768">768: </a></span>    /**
+<span class="nocode"><a name="769">769: </a></span>     * Parses only the local time from the given text, returning a new LocalDate.
+<span class="nocode"><a name="770">770: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="771">771: </a></span>     * This will parse the text fully according to the formatter, using the UTC zone.
+<span class="nocode"><a name="772">772: </a></span>     * Once parsed, only the local time will be used.
+<span class="nocode"><a name="773">773: </a></span>     * This means that any parsed date, time-zone or offset field is completely ignored.
+<span class="nocode"><a name="774">774: </a></span>     * It also means that the zone and offset-parsed settings are ignored.
+<span class="nocode"><a name="775">775: </a></span>     *
+<span class="nocode"><a name="776">776: </a></span>     * @param text  the text to parse, not null
+<span class="nocode"><a name="777">777: </a></span>     * @return the parsed time, never null
+<span class="nocode"><a name="778">778: </a></span>     * @throws UnsupportedOperationException if parsing is not supported
+<span class="nocode"><a name="779">779: </a></span>     * @throws IllegalArgumentException if the text to parse is invalid
+<span class="nocode"><a name="780">780: </a></span>     * @since 2.0
+<span class="nocode"><a name="781">781: </a></span>     */
+<span class="nocode"><a name="782">782: </a></span>    public LocalTime parseLocalTime(String text) {
+<span class="nocode"><a name="783">783: </a></span>        return parseLocalDateTime(text).toLocalTime();
+<span class="nocode"><a name="784">784: </a></span>    }
+<span class="nocode"><a name="785">785: </a></span>
+<span class="nocode"><a name="786">786: </a></span>    /**
+<span class="nocode"><a name="787">787: </a></span>     * Parses only the local date-time from the given text, returning a new LocalDate.
+<span class="nocode"><a name="788">788: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="789">789: </a></span>     * This will parse the text fully according to the formatter, using the UTC zone.
+<span class="nocode"><a name="790">790: </a></span>     * Once parsed, only the local date-time will be used.
+<span class="nocode"><a name="791">791: </a></span>     * This means that any parsed time-zone or offset field is completely ignored.
+<span class="nocode"><a name="792">792: </a></span>     * It also means that the zone and offset-parsed settings are ignored.
+<span class="nocode"><a name="793">793: </a></span>     *
+<span class="nocode"><a name="794">794: </a></span>     * @param text  the text to parse, not null
+<span class="nocode"><a name="795">795: </a></span>     * @return the parsed date-time, never null
+<span class="nocode"><a name="796">796: </a></span>     * @throws UnsupportedOperationException if parsing is not supported
+<span class="nocode"><a name="797">797: </a></span>     * @throws IllegalArgumentException if the text to parse is invalid
+<span class="nocode"><a name="798">798: </a></span>     * @since 2.0
+<span class="nocode"><a name="799">799: </a></span>     */
+<span class="nocode"><a name="800">800: </a></span>    public LocalDateTime parseLocalDateTime(String text) {
+<span class="nocode"><a name="801">801: </a></span>        DateTimeParser parser = requireParser();
+<span class="nocode"><a name="802">802: </a></span>        
+<span class="nocode"><a name="803">803: </a></span>        Chronology chrono = selectChronology(null).withUTC();  // always use UTC, avoiding DST gaps
+<span class="nocode"><a name="804">804: </a></span>        DateTimeParserBucket bucket = new DateTimeParserBucket(0, chrono, iLocale, iPivotYear, iDefaultYear);
+<span class="nocode"><a name="805">805: </a></span>        int newPos = parser.parseInto(bucket, text, 0);
+<span class="nocode"><a name="806">806: </a></span>        if (newPos &gt;= 0) {
+<span class="nocode"><a name="807">807: </a></span>            if (newPos &gt;= text.length()) {
+<span class="nocode"><a name="808">808: </a></span>                long millis = bucket.computeMillis(true, text);
+<span class="nocode"><a name="809">809: </a></span>                if (bucket.getOffsetInteger() != null) {  // treat withOffsetParsed() as being true
+<span class="nocode"><a name="810">810: </a></span>                    int parsedOffset = bucket.getOffsetInteger();
+<span class="nocode"><a name="811">811: </a></span>                    DateTimeZone parsedZone = DateTimeZone.forOffsetMillis(parsedOffset);
+<span class="nocode"><a name="812">812: </a></span>                    chrono = chrono.withZone(parsedZone);
+<span class="nocode"><a name="813">813: </a></span>                } else if (bucket.getZone() != null) {
+<span class="nocode"><a name="814">814: </a></span>                    chrono = chrono.withZone(bucket.getZone());
+<span class="nocode"><a name="815">815: </a></span>                }
+<span class="nocode"><a name="816">816: </a></span>                return new LocalDateTime(millis, chrono);
+<span class="nocode"><a name="817">817: </a></span>            }
+<span class="nocode"><a name="818">818: </a></span>        } else {
+<span class="nocode"><a name="819">819: </a></span>            newPos = ~newPos;
+<span class="nocode"><a name="820">820: </a></span>        }
+<span class="nocode"><a name="821">821: </a></span>        throw new IllegalArgumentException(FormatUtils.createErrorMessage(text, newPos));
+<span class="nocode"><a name="822">822: </a></span>    }
+<span class="nocode"><a name="823">823: </a></span>
+<span class="nocode"><a name="824">824: </a></span>    /**
+<span class="nocode"><a name="825">825: </a></span>     * Parses a date-time from the given text, returning a new DateTime.
+<span class="nocode"><a name="826">826: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="827">827: </a></span>     * The parse will use the zone and chronology specified on this formatter.
+<span class="nocode"><a name="828">828: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="829">829: </a></span>     * If the text contains a time zone string then that will be taken into
+<span class="nocode"><a name="830">830: </a></span>     * account in adjusting the time of day as follows.
+<span class="nocode"><a name="831">831: </a></span>     * If the {@link #withOffsetParsed()} has been called, then the resulting
+<span class="nocode"><a name="832">832: </a></span>     * DateTime will have a fixed offset based on the parsed time zone.
+<span class="nocode"><a name="833">833: </a></span>     * Otherwise the resulting DateTime will have the zone of this formatter,
+<span class="nocode"><a name="834">834: </a></span>     * but the parsed zone may have caused the time to be adjusted.
+<span class="nocode"><a name="835">835: </a></span>     *
+<span class="nocode"><a name="836">836: </a></span>     * @param text  the text to parse, not null
+<span class="nocode"><a name="837">837: </a></span>     * @return the parsed date-time, never null
+<span class="nocode"><a name="838">838: </a></span>     * @throws UnsupportedOperationException if parsing is not supported
+<span class="nocode"><a name="839">839: </a></span>     * @throws IllegalArgumentException if the text to parse is invalid
+<span class="nocode"><a name="840">840: </a></span>     */
+<span class="nocode"><a name="841">841: </a></span>    public DateTime parseDateTime(String text) {
+<span class="nocode"><a name="842">842: </a></span>        DateTimeParser parser = requireParser();
+<span class="nocode"><a name="843">843: </a></span>        
+<span class="nocode"><a name="844">844: </a></span>        Chronology chrono = selectChronology(null);
+<span class="nocode"><a name="845">845: </a></span>        DateTimeParserBucket bucket = new DateTimeParserBucket(0, chrono, iLocale, iPivotYear, iDefaultYear);
+<span class="nocode"><a name="846">846: </a></span>        int newPos = parser.parseInto(bucket, text, 0);
+<span class="nocode"><a name="847">847: </a></span>        if (newPos &gt;= 0) {
+<span class="nocode"><a name="848">848: </a></span>            if (newPos &gt;= text.length()) {
+<span class="nocode"><a name="849">849: </a></span>                long millis = bucket.computeMillis(true, text);
+<span class="nocode"><a name="850">850: </a></span>                if (iOffsetParsed &amp;&amp; bucket.getOffsetInteger() != null) {
+<span class="nocode"><a name="851">851: </a></span>                    int parsedOffset = bucket.getOffsetInteger();
+<span class="nocode"><a name="852">852: </a></span>                    DateTimeZone parsedZone = DateTimeZone.forOffsetMillis(parsedOffset);
+<span class="nocode"><a name="853">853: </a></span>                    chrono = chrono.withZone(parsedZone);
+<span class="nocode"><a name="854">854: </a></span>                } else if (bucket.getZone() != null) {
+<span class="nocode"><a name="855">855: </a></span>                    chrono = chrono.withZone(bucket.getZone());
+<span class="nocode"><a name="856">856: </a></span>                }
+<span class="nocode"><a name="857">857: </a></span>                DateTime dt = new DateTime(millis, chrono);
+<span class="nocode"><a name="858">858: </a></span>                if (iZone != null) {
+<span class="nocode"><a name="859">859: </a></span>                    dt = dt.withZone(iZone);
+<span class="nocode"><a name="860">860: </a></span>                }
+<span class="nocode"><a name="861">861: </a></span>                return dt;
+<span class="nocode"><a name="862">862: </a></span>            }
+<span class="nocode"><a name="863">863: </a></span>        } else {
+<span class="nocode"><a name="864">864: </a></span>            newPos = ~newPos;
+<span class="nocode"><a name="865">865: </a></span>        }
+<span class="nocode"><a name="866">866: </a></span>        throw new IllegalArgumentException(FormatUtils.createErrorMessage(text, newPos));
+<span class="nocode"><a name="867">867: </a></span>    }
+<span class="nocode"><a name="868">868: </a></span>
+<span class="nocode"><a name="869">869: </a></span>    /**
+<span class="nocode"><a name="870">870: </a></span>     * Parses a date-time from the given text, returning a new MutableDateTime.
+<span class="nocode"><a name="871">871: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="872">872: </a></span>     * The parse will use the zone and chronology specified on this formatter.
+<span class="nocode"><a name="873">873: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="874">874: </a></span>     * If the text contains a time zone string then that will be taken into
+<span class="nocode"><a name="875">875: </a></span>     * account in adjusting the time of day as follows.
+<span class="nocode"><a name="876">876: </a></span>     * If the {@link #withOffsetParsed()} has been called, then the resulting
+<span class="nocode"><a name="877">877: </a></span>     * DateTime will have a fixed offset based on the parsed time zone.
+<span class="nocode"><a name="878">878: </a></span>     * Otherwise the resulting DateTime will have the zone of this formatter,
+<span class="nocode"><a name="879">879: </a></span>     * but the parsed zone may have caused the time to be adjusted.
+<span class="nocode"><a name="880">880: </a></span>     *
+<span class="nocode"><a name="881">881: </a></span>     * @param text  the text to parse, not null
+<span class="nocode"><a name="882">882: </a></span>     * @return the parsed date-time, never null
+<span class="nocode"><a name="883">883: </a></span>     * @throws UnsupportedOperationException if parsing is not supported
+<span class="nocode"><a name="884">884: </a></span>     * @throws IllegalArgumentException if the text to parse is invalid
+<span class="nocode"><a name="885">885: </a></span>     */
+<span class="nocode"><a name="886">886: </a></span>    public MutableDateTime parseMutableDateTime(String text) {
+<span class="nocode"><a name="887">887: </a></span>        DateTimeParser parser = requireParser();
+<span class="nocode"><a name="888">888: </a></span>        
+<span class="nocode"><a name="889">889: </a></span>        Chronology chrono = selectChronology(null);
+<span class="nocode"><a name="890">890: </a></span>        DateTimeParserBucket bucket = new DateTimeParserBucket(0, chrono, iLocale, iPivotYear, iDefaultYear);
+<span class="nocode"><a name="891">891: </a></span>        int newPos = parser.parseInto(bucket, text, 0);
+<span class="nocode"><a name="892">892: </a></span>        if (newPos &gt;= 0) {
+<span class="nocode"><a name="893">893: </a></span>            if (newPos &gt;= text.length()) {
+<span class="nocode"><a name="894">894: </a></span>                long millis = bucket.computeMillis(true, text);
+<span class="nocode"><a name="895">895: </a></span>                if (iOffsetParsed &amp;&amp; bucket.getOffsetInteger() != null) {
+<span class="nocode"><a name="896">896: </a></span>                    int parsedOffset = bucket.getOffsetInteger();
+<span class="nocode"><a name="897">897: </a></span>                    DateTimeZone parsedZone = DateTimeZone.forOffsetMillis(parsedOffset);
+<span class="nocode"><a name="898">898: </a></span>                    chrono = chrono.withZone(parsedZone);
+<span class="nocode"><a name="899">899: </a></span>                } else if (bucket.getZone() != null) {
+<span class="nocode"><a name="900">900: </a></span>                    chrono = chrono.withZone(bucket.getZone());
+<span class="nocode"><a name="901">901: </a></span>                }
+<span class="nocode"><a name="902">902: </a></span>                MutableDateTime dt = new MutableDateTime(millis, chrono);
+<span class="nocode"><a name="903">903: </a></span>                if (iZone != null) {
+<span class="nocode"><a name="904">904: </a></span>                    dt.setZone(iZone);
+<span class="nocode"><a name="905">905: </a></span>                }
+<span class="nocode"><a name="906">906: </a></span>                return dt;
+<span class="nocode"><a name="907">907: </a></span>            }
+<span class="nocode"><a name="908">908: </a></span>        } else {
+<span class="nocode"><a name="909">909: </a></span>            newPos = ~newPos;
+<span class="nocode"><a name="910">910: </a></span>        }
+<span class="nocode"><a name="911">911: </a></span>        throw new IllegalArgumentException(FormatUtils.createErrorMessage(text, newPos));
+<span class="nocode"><a name="912">912: </a></span>    }
+<span class="nocode"><a name="913">913: </a></span>
+<span class="nocode"><a name="914">914: </a></span>    /**
+<span class="nocode"><a name="915">915: </a></span>     * Checks whether parsing is supported.
+<span class="nocode"><a name="916">916: </a></span>     * 
+<span class="nocode"><a name="917">917: </a></span>     * @throws UnsupportedOperationException if parsing is not supported
+<span class="nocode"><a name="918">918: </a></span>     */
+<span class="nocode"><a name="919">919: </a></span>    private DateTimeParser requireParser() {
+<span class="nocode"><a name="920">920: </a></span>        DateTimeParser parser = iParser;
+<span class="nocode"><a name="921">921: </a></span>        if (parser == null) {
+<span class="nocode"><a name="922">922: </a></span>            throw new UnsupportedOperationException(&quot;Parsing not supported&quot;);
+<span class="nocode"><a name="923">923: </a></span>        }
+<span class="nocode"><a name="924">924: </a></span>        return parser;
+<span class="nocode"><a name="925">925: </a></span>    }
+<span class="nocode"><a name="926">926: </a></span>
+<span class="nocode"><a name="927">927: </a></span>    //-----------------------------------------------------------------------
+<span class="nocode"><a name="928">928: </a></span>    /**
+<span class="nocode"><a name="929">929: </a></span>     * Determines the correct chronology to use.
+<span class="nocode"><a name="930">930: </a></span>     *
+<span class="nocode"><a name="931">931: </a></span>     * @param chrono  the proposed chronology
+<span class="nocode"><a name="932">932: </a></span>     * @return the actual chronology
+<span class="nocode"><a name="933">933: </a></span>     */
+<span class="nocode"><a name="934">934: </a></span>    private Chronology selectChronology(Chronology chrono) {
+<span class="nocode"><a name="935">935: </a></span>        chrono = DateTimeUtils.getChronology(chrono);
+<span class="nocode"><a name="936">936: </a></span>        if (iChrono != null) {
+<span class="nocode"><a name="937">937: </a></span>            chrono = iChrono;
+<span class="nocode"><a name="938">938: </a></span>        }
+<span class="nocode"><a name="939">939: </a></span>        if (iZone != null) {
+<span class="nocode"><a name="940">940: </a></span>            chrono = chrono.withZone(iZone);
+<span class="nocode"><a name="941">941: </a></span>        }
+<span class="nocode"><a name="942">942: </a></span>        return chrono;
+<span class="nocode"><a name="943">943: </a></span>    }
+<span class="nocode"><a name="944">944: </a></span>
+<span class="nocode"><a name="945">945: </a></span>}
+</pre><table class="mutation_table" summary="Mutations">
+<tr><th>ID</th><th>Line</th><th>Type</th><th>Detected</th></tr><tr><td>12641</td><td><a href="#111">111</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>12642</td><td><a href="#111">111</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>12645</td><td><a href="#115">115</a></td><td>Replace a constant (Replace 2000 with 2001(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>12643</td><td><a href="#115">115</a></td><td>Replace a constant (Replace 2000 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>12644</td><td><a href="#115">115</a></td><td>Replace a constant (Replace 2000 with 1999(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>12647</td><td><a href="#144">144</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>12648</td><td><a href="#144">144</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>12649</td><td><a href="#144">144(1)</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>12650</td><td><a href="#144">144(1)</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>12646</td><td><a href="#144">144</a></td><td>Negate jump condition (Replace IFNULL with  IFNONNULL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>12653</td><td><a href="#162">162</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>12652</td><td><a href="#162">162</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>12654</td><td><a href="#162">162(1)</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>12655</td><td><a href="#162">162(1)</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>12651</td><td><a href="#162">162</a></td><td>Negate jump condition (Replace IFNULL with  IFNONNULL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>12657</td><td><a href="#187">187</a></td><td>Negate jump condition (Replace IF_ACMPEQ with  IF_ACMPNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>12658</td><td><a href="#187">187(1)</a></td><td>Negate jump condition (Replace IFNULL with  IFNONNULL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>12661</td><td><a href="#187">187(2)</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>12656</td><td><a href="#187">187</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>12659</td><td><a href="#187">187(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>12660</td><td><a href="#187">187(2)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>12663</td><td><a href="#220">220</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>12662</td><td><a href="#220">220</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>12664</td><td><a href="#220">220</a></td><td>Negate jump condition (Replace IF_ICMPNE with  IF_ICMPEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>12666</td><td><a href="#223">223</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>12665</td><td><a href="#223">223</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>12667</td><td><a href="#255">255</a></td><td>Negate jump condition (Replace IF_ACMPNE with  IF_ACMPEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>12668</td><td><a href="#299">299</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>12669</td><td><a href="#319">319</a></td><td>Negate jump condition (Replace IF_ACMPNE with  IF_ACMPEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>12671</td><td><a href="#322">322</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>12670</td><td><a href="#322">322</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>12672</td><td><a href="#366">366</a></td><td>Negate jump condition (Replace IF_ACMPEQ with  IF_ACMPNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>12673</td><td><a href="#366">366(1)</a></td><td>Negate jump condition (Replace IFNULL with  IFNONNULL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>12675</td><td><a href="#366">366(2)</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>12674</td><td><a href="#366">366</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>12676</td><td><a href="#403">403</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>12677</td><td><a href="#403">403(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>12678</td><td><a href="#458">458</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>12679</td><td><a href="#459">459</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>12680</td><td><a href="#460">460</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>12681</td><td><a href="#470">470</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>12682</td><td><a href="#471">471</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>12683</td><td><a href="#472">472</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>12684</td><td><a href="#483">483</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>12685</td><td><a href="#483">483(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>12686</td><td><a href="#495">495</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>12687</td><td><a href="#506">506</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>12688</td><td><a href="#518">518</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>12689</td><td><a href="#518">518(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>12690</td><td><a href="#532">532</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>12691</td><td><a href="#533">533</a></td><td>Negate jump condition (Replace IFNONNULL with  IFNULL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>12692</td><td><a href="#536">536</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>12693</td><td><a href="#549">549</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>12694</td><td><a href="#550">550</a></td><td>Negate jump condition (Replace IFNONNULL with  IFNULL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>12695</td><td><a href="#553">553</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>12696</td><td><a href="#567">567</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>12697</td><td><a href="#567">567(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>12698</td><td><a href="#581">581</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>12699</td><td><a href="#581">581(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>12700</td><td><a href="#582">582</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>12701</td><td><a href="#583">583</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>12702</td><td><a href="#596">596</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>12703</td><td><a href="#596">596(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>12704</td><td><a href="#597">597</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>12705</td><td><a href="#598">598</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>12706</td><td><a href="#611">611</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>12707</td><td><a href="#611">611(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>12708</td><td><a href="#612">612</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>12709</td><td><a href="#613">613</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>12710</td><td><a href="#617">617</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>12711</td><td><a href="#618">618</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>12712</td><td><a href="#621">621</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>12713</td><td><a href="#622">622</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>12714</td><td><a href="#623">623</a></td><td>Replace arithmetic operator (Replace LADD with LSUB)</td><td><img src="detected.png"/></td></tr>
+<tr><td>12716</td><td><a href="#624">624</a></td><td>Replace a constant (Replace 0 with 1(LONG))</td><td><img src="detected.png"/></td></tr>
+<tr><td>12717</td><td><a href="#624">624</a></td><td>Replace a constant (Replace 0 with -1(LONG))</td><td><img src="detected.png"/></td></tr>
+<tr><td>12721</td><td><a href="#624">624(1)</a></td><td>Replace a constant (Replace 0 with -1(LONG))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>12720</td><td><a href="#624">624(1)</a></td><td>Replace a constant (Replace 0 with 1(LONG))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>12718</td><td><a href="#624">624</a></td><td>Negate jump condition (Replace IFGE with  IFLT)</td><td><img src="detected.png"/></td></tr>
+<tr><td>12722</td><td><a href="#624">624(1)</a></td><td>Negate jump condition (Replace IFLT with  IFGE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>12715</td><td><a href="#624">624</a></td><td>Replace arithmetic operator (Replace LXOR with LOR)</td><td><img src="detected.png"/></td></tr>
+<tr><td>12719</td><td><a href="#624">624(1)</a></td><td>Replace arithmetic operator (Replace LXOR with LOR)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>12723</td><td><a href="#627">627</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>12724</td><td><a href="#627">627</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>12725</td><td><a href="#630">630</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>12726</td><td><a href="#630">630(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>12727</td><td><a href="#634">634</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>12728</td><td><a href="#635">635</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>12729</td><td><a href="#638">638</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>12730</td><td><a href="#639">639</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>12731</td><td><a href="#640">640</a></td><td>Replace arithmetic operator (Replace LADD with LSUB)</td><td><img src="detected.png"/></td></tr>
+<tr><td>12734</td><td><a href="#641">641</a></td><td>Replace a constant (Replace 0 with -1(LONG))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>12733</td><td><a href="#641">641</a></td><td>Replace a constant (Replace 0 with 1(LONG))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>12737</td><td><a href="#641">641(1)</a></td><td>Replace a constant (Replace 0 with 1(LONG))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>12738</td><td><a href="#641">641(1)</a></td><td>Replace a constant (Replace 0 with -1(LONG))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>12735</td><td><a href="#641">641</a></td><td>Negate jump condition (Replace IFGE with  IFLT)</td><td><img src="detected.png"/></td></tr>
+<tr><td>12739</td><td><a href="#641">641(1)</a></td><td>Negate jump condition (Replace IFLT with  IFGE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>12732</td><td><a href="#641">641</a></td><td>Replace arithmetic operator (Replace LXOR with LOR)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>12736</td><td><a href="#641">641(1)</a></td><td>Replace arithmetic operator (Replace LXOR with LOR)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>12740</td><td><a href="#644">644</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>12741</td><td><a href="#644">644</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>12742</td><td><a href="#647">647</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>12743</td><td><a href="#647">647(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>12744</td><td><a href="#657">657</a></td><td>Negate jump condition (Replace IFNONNULL with  IFNULL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>12745</td><td><a href="#694">694</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>12746</td><td><a href="#695">695</a></td><td>Negate jump condition (Replace IFNONNULL with  IFNULL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>12747</td><td><a href="#699">699</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>12748</td><td><a href="#700">700</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>12751</td><td><a href="#701">701</a></td><td>Replace arithmetic operator (Replace LADD with LSUB)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>12749</td><td><a href="#701">701</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>12750</td><td><a href="#701">701(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>12752</td><td><a href="#702">702</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>12753</td><td><a href="#706">706</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>12754</td><td><a href="#707">707</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>12755</td><td><a href="#707">707</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>12756</td><td><a href="#707">707</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>12757</td><td><a href="#707">707(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>12758</td><td><a href="#708">708</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>12760</td><td><a href="#708">708(1)</a></td><td>Negate jump condition (Replace IFNULL with  IFNONNULL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>12759</td><td><a href="#708">708</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>12761</td><td><a href="#709">709</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>12762</td><td><a href="#709">709(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>12763</td><td><a href="#710">710</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>12764</td><td><a href="#711">711</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>12766</td><td><a href="#712">712</a></td><td>Negate jump condition (Replace IFNULL with  IFNONNULL)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>12765</td><td><a href="#712">712</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>12767</td><td><a href="#713">713</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>12768</td><td><a href="#713">713(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>12769</td><td><a href="#715">715</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>12770</td><td><a href="#716">716</a></td><td>Negate jump condition (Replace IFNULL with  IFNONNULL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>12771</td><td><a href="#717">717</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>12772</td><td><a href="#735">735</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>12773</td><td><a href="#737">737</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>12774</td><td><a href="#738">738</a></td><td>Replace a constant (Replace 0 with 1(LONG))</td><td><img src="detected.png"/></td></tr>
+<tr><td>12775</td><td><a href="#738">738</a></td><td>Replace a constant (Replace 0 with -1(LONG))</td><td><img src="detected.png"/></td></tr>
+<tr><td>12777</td><td><a href="#739">739</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>12776</td><td><a href="#739">739</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>12778</td><td><a href="#739">739</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>12779</td><td><a href="#740">740</a></td><td>Negate jump condition (Replace IFLT with  IFGE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>12781</td><td><a href="#741">741</a></td><td>Negate jump condition (Replace IF_ICMPLT with  IF_ICMPGE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>12780</td><td><a href="#741">741</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>12782</td><td><a href="#742">742</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>12783</td><td><a href="#742">742</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>12784</td><td><a href="#742">742</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>12786</td><td><a href="#745">745</a></td><td>Replace a constant (Replace -1 with -2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>12785</td><td><a href="#745">745</a></td><td>Replace a constant (Replace -1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>12787</td><td><a href="#745">745</a></td><td>Replace arithmetic operator (Replace IXOR with IOR)</td><td><img src="detected.png"/></td></tr>
+<tr><td>12788</td><td><a href="#747">747</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>12789</td><td><a href="#765">765</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>12790</td><td><a href="#765">765(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>12791</td><td><a href="#783">783</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>12792</td><td><a href="#783">783(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>12793</td><td><a href="#801">801</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>12794</td><td><a href="#803">803</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>12795</td><td><a href="#803">803(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>12797</td><td><a href="#804">804</a></td><td>Replace a constant (Replace 0 with -1(LONG))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>12796</td><td><a href="#804">804</a></td><td>Replace a constant (Replace 0 with 1(LONG))</td><td><img src="detected.png"/></td></tr>
+<tr><td>12798</td><td><a href="#805">805</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>12799</td><td><a href="#805">805</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>12800</td><td><a href="#805">805</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>12801</td><td><a href="#806">806</a></td><td>Negate jump condition (Replace IFLT with  IFGE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>12803</td><td><a href="#807">807</a></td><td>Negate jump condition (Replace IF_ICMPLT with  IF_ICMPGE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>12802</td><td><a href="#807">807</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>12804</td><td><a href="#808">808</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>12805</td><td><a href="#808">808</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>12806</td><td><a href="#808">808</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>12808</td><td><a href="#809">809</a></td><td>Negate jump condition (Replace IFNULL with  IFNONNULL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>12807</td><td><a href="#809">809</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>12809</td><td><a href="#810">810</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>12810</td><td><a href="#810">810(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>12811</td><td><a href="#811">811</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>12812</td><td><a href="#812">812</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>12814</td><td><a href="#813">813</a></td><td>Negate jump condition (Replace IFNULL with  IFNONNULL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>12813</td><td><a href="#813">813</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>12815</td><td><a href="#814">814</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>12816</td><td><a href="#814">814(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>12817</td><td><a href="#819">819</a></td><td>Replace a constant (Replace -1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>12818</td><td><a href="#819">819</a></td><td>Replace a constant (Replace -1 with -2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>12819</td><td><a href="#819">819</a></td><td>Replace arithmetic operator (Replace IXOR with IOR)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>12820</td><td><a href="#821">821</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>12821</td><td><a href="#842">842</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>12822</td><td><a href="#844">844</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>12824</td><td><a href="#845">845</a></td><td>Replace a constant (Replace 0 with -1(LONG))</td><td><img src="detected.png"/></td></tr>
+<tr><td>12823</td><td><a href="#845">845</a></td><td>Replace a constant (Replace 0 with 1(LONG))</td><td><img src="detected.png"/></td></tr>
+<tr><td>12826</td><td><a href="#846">846</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>12825</td><td><a href="#846">846</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>12827</td><td><a href="#846">846</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>12828</td><td><a href="#847">847</a></td><td>Negate jump condition (Replace IFLT with  IFGE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>12830</td><td><a href="#848">848</a></td><td>Negate jump condition (Replace IF_ICMPLT with  IF_ICMPGE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>12829</td><td><a href="#848">848</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>12831</td><td><a href="#849">849</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>12832</td><td><a href="#849">849</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>12833</td><td><a href="#849">849</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>12834</td><td><a href="#850">850</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>12836</td><td><a href="#850">850(1)</a></td><td>Negate jump condition (Replace IFNULL with  IFNONNULL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>12835</td><td><a href="#850">850</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>12837</td><td><a href="#851">851</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>12838</td><td><a href="#851">851(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>12839</td><td><a href="#852">852</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>12840</td><td><a href="#853">853</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>12842</td><td><a href="#854">854</a></td><td>Negate jump condition (Replace IFNULL with  IFNONNULL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>12841</td><td><a href="#854">854</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>12843</td><td><a href="#855">855</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>12844</td><td><a href="#855">855(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>12845</td><td><a href="#858">858</a></td><td>Negate jump condition (Replace IFNULL with  IFNONNULL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>12846</td><td><a href="#859">859</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>12847</td><td><a href="#864">864</a></td><td>Replace a constant (Replace -1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>12848</td><td><a href="#864">864</a></td><td>Replace a constant (Replace -1 with -2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>12849</td><td><a href="#864">864</a></td><td>Replace arithmetic operator (Replace IXOR with IOR)</td><td><img src="detected.png"/></td></tr>
+<tr><td>12850</td><td><a href="#866">866</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>12851</td><td><a href="#887">887</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>12852</td><td><a href="#889">889</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>12853</td><td><a href="#890">890</a></td><td>Replace a constant (Replace 0 with 1(LONG))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>12854</td><td><a href="#890">890</a></td><td>Replace a constant (Replace 0 with -1(LONG))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>12856</td><td><a href="#891">891</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>12855</td><td><a href="#891">891</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>12857</td><td><a href="#891">891</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>12858</td><td><a href="#892">892</a></td><td>Negate jump condition (Replace IFLT with  IFGE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>12860</td><td><a href="#893">893</a></td><td>Negate jump condition (Replace IF_ICMPLT with  IF_ICMPGE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>12859</td><td><a href="#893">893</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>12862</td><td><a href="#894">894</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>12861</td><td><a href="#894">894</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>12863</td><td><a href="#894">894</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>12864</td><td><a href="#895">895</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>12866</td><td><a href="#895">895(1)</a></td><td>Negate jump condition (Replace IFNULL with  IFNONNULL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>12865</td><td><a href="#895">895</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>12867</td><td><a href="#896">896</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>12868</td><td><a href="#896">896(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>12869</td><td><a href="#897">897</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>12870</td><td><a href="#898">898</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>12872</td><td><a href="#899">899</a></td><td>Negate jump condition (Replace IFNULL with  IFNONNULL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>12871</td><td><a href="#899">899</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>12873</td><td><a href="#900">900</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>12874</td><td><a href="#900">900(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>12875</td><td><a href="#903">903</a></td><td>Negate jump condition (Replace IFNULL with  IFNONNULL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>12876</td><td><a href="#904">904</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>12878</td><td><a href="#909">909</a></td><td>Replace a constant (Replace -1 with -2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>12877</td><td><a href="#909">909</a></td><td>Replace a constant (Replace -1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>12879</td><td><a href="#909">909</a></td><td>Replace arithmetic operator (Replace IXOR with IOR)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>12880</td><td><a href="#911">911</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>12881</td><td><a href="#921">921</a></td><td>Negate jump condition (Replace IFNONNULL with  IFNULL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>12882</td><td><a href="#935">935</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>12883</td><td><a href="#936">936</a></td><td>Negate jump condition (Replace IFNULL with  IFNONNULL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>12884</td><td><a href="#939">939</a></td><td>Negate jump condition (Replace IFNULL with  IFNONNULL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>12885</td><td><a href="#940">940</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+</table>
+</body>
+</html>

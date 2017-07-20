@@ -1,0 +1,851 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN
+"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>
+org.jfree.chart.plot.dial.DialPointer
+</title>
+<link href="prettify.css" type="text/css" rel="stylesheet" />
+<script type="text/javascript" src="prettify.js"></script>
+</head>
+<body onload="prettyPrint()">
+<h2>Javalanche report for class:<br/> org.jfree.chart.plot.dial.DialPointer </h2><pre class="prettyprint" style="border: 1px solid #888;padding: 2px"><span class="nocode"><a name="1">  1: </a></span>/* ===========================================================
+<span class="nocode"><a name="2">  2: </a></span> * JFreeChart : a free chart library for the Java(tm) platform
+<span class="nocode"><a name="3">  3: </a></span> * ===========================================================
+<span class="nocode"><a name="4">  4: </a></span> *
+<span class="nocode"><a name="5">  5: </a></span> * (C) Copyright 2000-2007, by Object Refinery Limited and Contributors.
+<span class="nocode"><a name="6">  6: </a></span> *
+<span class="nocode"><a name="7">  7: </a></span> * Project Info:  http://www.jfree.org/jfreechart/index.html
+<span class="nocode"><a name="8">  8: </a></span> *
+<span class="nocode"><a name="9">  9: </a></span> * This library is free software; you can redistribute it and/or modify it 
+<span class="nocode"><a name="10"> 10: </a></span> * under the terms of the GNU Lesser General Public License as published by 
+<span class="nocode"><a name="11"> 11: </a></span> * the Free Software Foundation; either version 2.1 of the License, or 
+<span class="nocode"><a name="12"> 12: </a></span> * (at your option) any later version.
+<span class="nocode"><a name="13"> 13: </a></span> *
+<span class="nocode"><a name="14"> 14: </a></span> * This library is distributed in the hope that it will be useful, but 
+<span class="nocode"><a name="15"> 15: </a></span> * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY 
+<span class="nocode"><a name="16"> 16: </a></span> * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public 
+<span class="nocode"><a name="17"> 17: </a></span> * License for more details.
+<span class="nocode"><a name="18"> 18: </a></span> *
+<span class="nocode"><a name="19"> 19: </a></span> * You should have received a copy of the GNU Lesser General Public
+<span class="nocode"><a name="20"> 20: </a></span> * License along with this library; if not, write to the Free Software
+<span class="nocode"><a name="21"> 21: </a></span> * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, 
+<span class="nocode"><a name="22"> 22: </a></span> * USA.  
+<span class="nocode"><a name="23"> 23: </a></span> *
+<span class="nocode"><a name="24"> 24: </a></span> * [Java is a trademark or registered trademark of Sun Microsystems, Inc. 
+<span class="nocode"><a name="25"> 25: </a></span> * in the United States and other countries.]
+<span class="nocode"><a name="26"> 26: </a></span> *
+<span class="nocode"><a name="27"> 27: </a></span> * ----------------
+<span class="nocode"><a name="28"> 28: </a></span> * DialPointer.java
+<span class="nocode"><a name="29"> 29: </a></span> * ----------------
+<span class="nocode"><a name="30"> 30: </a></span> * (C) Copyright 2006-2007, by Object Refinery Limited.
+<span class="nocode"><a name="31"> 31: </a></span> *
+<span class="nocode"><a name="32"> 32: </a></span> * Original Author:  David Gilbert (for Object Refinery Limited);
+<span class="nocode"><a name="33"> 33: </a></span> * Contributor(s):   -;
+<span class="nocode"><a name="34"> 34: </a></span> *
+<span class="nocode"><a name="35"> 35: </a></span> * Changes
+<span class="nocode"><a name="36"> 36: </a></span> * -------
+<span class="nocode"><a name="37"> 37: </a></span> * 03-Nov-2006 : Version 1 (DG);
+<span class="nocode"><a name="38"> 38: </a></span> * 17-Oct-2007 : Added equals() overrides (DG);
+<span class="nocode"><a name="39"> 39: </a></span> * 24-Oct-2007 : Implemented PublicCloneable, changed default radius,
+<span class="nocode"><a name="40"> 40: </a></span> *               and added argument checks (DG);
+<span class="nocode"><a name="41"> 41: </a></span> * 23-Nov-2007 : Added fillPaint and outlinePaint attributes to 
+<span class="nocode"><a name="42"> 42: </a></span> *               DialPointer.Pointer (DG);
+<span class="nocode"><a name="43"> 43: </a></span> * 
+<span class="nocode"><a name="44"> 44: </a></span> */
+<span class="nocode"><a name="45"> 45: </a></span>
+<span class="nocode"><a name="46"> 46: </a></span>package org.jfree.chart.plot.dial;
+<span class="nocode"><a name="47"> 47: </a></span>
+<span class="nocode"><a name="48"> 48: </a></span>import java.awt.BasicStroke;
+<span class="nocode"><a name="49"> 49: </a></span>import java.awt.Color;
+<span class="nocode"><a name="50"> 50: </a></span>import java.awt.Graphics2D;
+<span class="nocode"><a name="51"> 51: </a></span>import java.awt.Paint;
+<span class="nocode"><a name="52"> 52: </a></span>import java.awt.Stroke;
+<span class="nocode"><a name="53"> 53: </a></span>import java.awt.geom.Arc2D;
+<span class="nocode"><a name="54"> 54: </a></span>import java.awt.geom.GeneralPath;
+<span class="nocode"><a name="55"> 55: </a></span>import java.awt.geom.Line2D;
+<span class="nocode"><a name="56"> 56: </a></span>import java.awt.geom.Point2D;
+<span class="nocode"><a name="57"> 57: </a></span>import java.awt.geom.Rectangle2D;
+<span class="nocode"><a name="58"> 58: </a></span>import java.io.IOException;
+<span class="nocode"><a name="59"> 59: </a></span>import java.io.ObjectInputStream;
+<span class="nocode"><a name="60"> 60: </a></span>import java.io.ObjectOutputStream;
+<span class="nocode"><a name="61"> 61: </a></span>import java.io.Serializable;
+<span class="nocode"><a name="62"> 62: </a></span>
+<span class="nocode"><a name="63"> 63: </a></span>import org.jfree.chart.HashUtilities;
+<span class="nocode"><a name="64"> 64: </a></span>import org.jfree.io.SerialUtilities;
+<span class="nocode"><a name="65"> 65: </a></span>import org.jfree.util.PaintUtilities;
+<span class="nocode"><a name="66"> 66: </a></span>import org.jfree.util.PublicCloneable;
+<span class="nocode"><a name="67"> 67: </a></span>
+<span class="nocode"><a name="68"> 68: </a></span>/**
+<span class="nocode"><a name="69"> 69: </a></span> * A base class for the pointer in a {@link DialPlot}.
+<span class="nocode"><a name="70"> 70: </a></span> * 
+<span class="nocode"><a name="71"> 71: </a></span> * @since 1.0.7
+<span class="nocode"><a name="72"> 72: </a></span> */
+<span class="nocode"><a name="73"> 73: </a></span>public abstract class DialPointer extends AbstractDialLayer 
+<span class="nocode"><a name="74"> 74: </a></span>        implements DialLayer, Cloneable, PublicCloneable, Serializable {
+<span class="nocode"><a name="75"> 75: </a></span>    
+<span class="nocode"><a name="76"> 76: </a></span>    /** The needle radius. */
+<span class="nocode"><a name="77"> 77: </a></span>    double radius;
+<span class="nocode"><a name="78"> 78: </a></span>    
+<span class="nocode"><a name="79"> 79: </a></span>    /**
+<span class="nocode"><a name="80"> 80: </a></span>     * The dataset index for the needle.
+<span class="nocode"><a name="81"> 81: </a></span>     */
+<span class="nocode"><a name="82"> 82: </a></span>    int datasetIndex;
+<span class="nocode"><a name="83"> 83: </a></span>    
+<span class="nocode"><a name="84"> 84: </a></span>    /** 
+<span class="nocode"><a name="85"> 85: </a></span>     * Creates a new &lt;code&gt;DialPointer&lt;/code&gt; instance.
+<span class="nocode"><a name="86"> 86: </a></span>     */
+<span class="nocode"><a name="87"> 87: </a></span>    protected DialPointer() {
+<span class="nocode"><a name="88"> 88: </a></span>        this(0);
+<span class="nocode"><a name="89"> 89: </a></span>    }
+<span class="nocode"><a name="90"> 90: </a></span>    
+<span class="nocode"><a name="91"> 91: </a></span>    /**
+<span class="nocode"><a name="92"> 92: </a></span>     * Creates a new pointer for the specified dataset.
+<span class="nocode"><a name="93"> 93: </a></span>     * 
+<span class="nocode"><a name="94"> 94: </a></span>     * @param datasetIndex  the dataset index.
+<span class="nocode"><a name="95"> 95: </a></span>     */
+<span class="nocode"><a name="96"> 96: </a></span>    protected DialPointer(int datasetIndex) {
+<span class="nocode"><a name="97"> 97: </a></span>        this.radius = 0.9;
+<span class="nocode"><a name="98"> 98: </a></span>        this.datasetIndex = datasetIndex;
+<span class="nocode"><a name="99"> 99: </a></span>    }
+<span class="nocode"><a name="100">100: </a></span>    
+<span class="nocode"><a name="101">101: </a></span>    /**
+<span class="nocode"><a name="102">102: </a></span>     * Returns the dataset index that the pointer maps to.
+<span class="nocode"><a name="103">103: </a></span>     * 
+<span class="nocode"><a name="104">104: </a></span>     * @return The dataset index.
+<span class="nocode"><a name="105">105: </a></span>     * 
+<span class="nocode"><a name="106">106: </a></span>     * @see #getDatasetIndex()
+<span class="nocode"><a name="107">107: </a></span>     */
+<span class="nocode"><a name="108">108: </a></span>    public int getDatasetIndex() {
+<span class="nocode"><a name="109">109: </a></span>        return this.datasetIndex;
+<span class="nocode"><a name="110">110: </a></span>    }
+<span class="nocode"><a name="111">111: </a></span>    
+<span class="nocode"><a name="112">112: </a></span>    /**
+<span class="nocode"><a name="113">113: </a></span>     * Sets the dataset index for the pointer and sends a 
+<span class="nocode"><a name="114">114: </a></span>     * {@link DialLayerChangeEvent} to all registered listeners.
+<span class="nocode"><a name="115">115: </a></span>     * 
+<span class="nocode"><a name="116">116: </a></span>     * @param index  the index.
+<span class="nocode"><a name="117">117: </a></span>     * 
+<span class="nocode"><a name="118">118: </a></span>     * @see #getDatasetIndex()
+<span class="nocode"><a name="119">119: </a></span>     */
+<span class="nocode"><a name="120">120: </a></span>    public void setDatasetIndex(int index) {
+<span class="nocode"><a name="121">121: </a></span>        this.datasetIndex = index;
+<span class="nocode"><a name="122">122: </a></span>        notifyListeners(new DialLayerChangeEvent(this));
+<span class="nocode"><a name="123">123: </a></span>    }
+<span class="nocode"><a name="124">124: </a></span>    
+<span class="nocode"><a name="125">125: </a></span>    /**
+<span class="nocode"><a name="126">126: </a></span>     * Returns the radius of the pointer, as a percentage of the dial's
+<span class="nocode"><a name="127">127: </a></span>     * framing rectangle.
+<span class="nocode"><a name="128">128: </a></span>     * 
+<span class="nocode"><a name="129">129: </a></span>     * @return The radius.
+<span class="nocode"><a name="130">130: </a></span>     * 
+<span class="nocode"><a name="131">131: </a></span>     * @see #setRadius(double)
+<span class="nocode"><a name="132">132: </a></span>     */
+<span class="nocode"><a name="133">133: </a></span>    public double getRadius() {
+<span class="nocode"><a name="134">134: </a></span>        return this.radius;
+<span class="nocode"><a name="135">135: </a></span>    }
+<span class="nocode"><a name="136">136: </a></span>    
+<span class="nocode"><a name="137">137: </a></span>    /**
+<span class="nocode"><a name="138">138: </a></span>     * Sets the radius of the pointer and sends a 
+<span class="nocode"><a name="139">139: </a></span>     * {@link DialLayerChangeEvent} to all registered listeners.
+<span class="nocode"><a name="140">140: </a></span>     * 
+<span class="nocode"><a name="141">141: </a></span>     * @param radius  the radius.
+<span class="nocode"><a name="142">142: </a></span>     * 
+<span class="nocode"><a name="143">143: </a></span>     * @see #getRadius()
+<span class="nocode"><a name="144">144: </a></span>     */
+<span class="nocode"><a name="145">145: </a></span>    public void setRadius(double radius) {
+<span class="nocode"><a name="146">146: </a></span>        this.radius = radius;
+<span class="nocode"><a name="147">147: </a></span>        notifyListeners(new DialLayerChangeEvent(this));
+<span class="nocode"><a name="148">148: </a></span>    }
+<span class="nocode"><a name="149">149: </a></span>    
+<span class="nocode"><a name="150">150: </a></span>    /**
+<span class="nocode"><a name="151">151: </a></span>     * Returns &lt;code&gt;true&lt;/code&gt; to indicate that this layer should be 
+<span class="nocode"><a name="152">152: </a></span>     * clipped within the dial window.
+<span class="nocode"><a name="153">153: </a></span>     * 
+<span class="nocode"><a name="154">154: </a></span>     * @return &lt;code&gt;true&lt;/code&gt;.
+<span class="nocode"><a name="155">155: </a></span>     */
+<span class="nocode"><a name="156">156: </a></span>    public boolean isClippedToWindow() {
+<span class="nocode"><a name="157">157: </a></span>        return true;
+<span class="nocode"><a name="158">158: </a></span>    }
+<span class="nocode"><a name="159">159: </a></span>    
+<span class="nocode"><a name="160">160: </a></span>    /**
+<span class="nocode"><a name="161">161: </a></span>     * Checks this instance for equality with an arbitrary object.
+<span class="nocode"><a name="162">162: </a></span>     * 
+<span class="nocode"><a name="163">163: </a></span>     * @param obj  the object (&lt;code&gt;null&lt;/code&gt; not permitted).
+<span class="nocode"><a name="164">164: </a></span>     * 
+<span class="nocode"><a name="165">165: </a></span>     * @return A boolean.
+<span class="nocode"><a name="166">166: </a></span>     */
+<span class="nocode"><a name="167">167: </a></span>    public boolean equals(Object obj) {
+<span class="nocode"><a name="168">168: </a></span>        if (obj == this) {
+<span class="nocode"><a name="169">169: </a></span>            return true;
+<span class="nocode"><a name="170">170: </a></span>        }
+<span class="nocode"><a name="171">171: </a></span>        if (!(obj instanceof DialPointer)) {
+<span class="nocode"><a name="172">172: </a></span>            return false;
+<span class="nocode"><a name="173">173: </a></span>        }
+<span class="nocode"><a name="174">174: </a></span>        DialPointer that = (DialPointer) obj;
+<span class="nocode"><a name="175">175: </a></span>        if (this.datasetIndex != that.datasetIndex) {
+<span class="nocode"><a name="176">176: </a></span>            return false;
+<span class="nocode"><a name="177">177: </a></span>        }
+<span class="nocode"><a name="178">178: </a></span>        if (this.radius != that.radius) {
+<span class="nocode"><a name="179">179: </a></span>            return false;
+<span class="nocode"><a name="180">180: </a></span>        }
+<span class="nocode"><a name="181">181: </a></span>        return super.equals(obj);
+<span class="nocode"><a name="182">182: </a></span>    }
+<span class="nocode"><a name="183">183: </a></span>    
+<span class="nocode"><a name="184">184: </a></span>    /**
+<span class="nocode"><a name="185">185: </a></span>     * Returns a hash code.
+<span class="nocode"><a name="186">186: </a></span>     * 
+<span class="nocode"><a name="187">187: </a></span>     * @return A hash code.
+<span class="nocode"><a name="188">188: </a></span>     */
+<span class="nocode"><a name="189">189: </a></span>    public int hashCode() {
+<span class="nocode"><a name="190">190: </a></span>        int result = 23;
+<span class="nocode"><a name="191">191: </a></span>        result = HashUtilities.hashCode(result, this.radius);
+<span class="nocode"><a name="192">192: </a></span>        return result;
+<span class="nocode"><a name="193">193: </a></span>    }
+<span class="nocode"><a name="194">194: </a></span>    
+<span class="nocode"><a name="195">195: </a></span>    /**
+<span class="nocode"><a name="196">196: </a></span>     * Returns a clone of the pointer.
+<span class="nocode"><a name="197">197: </a></span>     * 
+<span class="nocode"><a name="198">198: </a></span>     * @return a clone.
+<span class="nocode"><a name="199">199: </a></span>     * 
+<span class="nocode"><a name="200">200: </a></span>     * @throws CloneNotSupportedException if one of the attributes cannot
+<span class="nocode"><a name="201">201: </a></span>     *     be cloned.
+<span class="nocode"><a name="202">202: </a></span>     */
+<span class="nocode"><a name="203">203: </a></span>    public Object clone() throws CloneNotSupportedException {
+<span class="nocode"><a name="204">204: </a></span>        return super.clone();
+<span class="nocode"><a name="205">205: </a></span>    }
+<span class="nocode"><a name="206">206: </a></span>
+<span class="nocode"><a name="207">207: </a></span>    /**
+<span class="nocode"><a name="208">208: </a></span>     * A dial pointer that draws a thin line (like a pin).
+<span class="nocode"><a name="209">209: </a></span>     */
+<span class="nocode"><a name="210">210: </a></span>    public static class Pin extends DialPointer {
+<span class="nocode"><a name="211">211: </a></span>    
+<span class="nocode"><a name="212">212: </a></span>        /** For serialization. */
+<span class="nocode"><a name="213">213: </a></span>        static final long serialVersionUID = -8445860485367689750L;
+<span class="nocode"><a name="214">214: </a></span>
+<span class="nocode"><a name="215">215: </a></span>        /** The paint. */
+<span class="nocode"><a name="216">216: </a></span>        private transient Paint paint;
+<span class="nocode"><a name="217">217: </a></span>    
+<span class="nocode"><a name="218">218: </a></span>        /** The stroke. */
+<span class="nocode"><a name="219">219: </a></span>        private transient Stroke stroke;
+<span class="nocode"><a name="220">220: </a></span>        
+<span class="nocode"><a name="221">221: </a></span>        /**
+<span class="nocode"><a name="222">222: </a></span>         * Creates a new instance.
+<span class="nocode"><a name="223">223: </a></span>         */
+<span class="nocode"><a name="224">224: </a></span>        public Pin() {
+<span class="nocode"><a name="225">225: </a></span>            this(0);
+<span class="nocode"><a name="226">226: </a></span>        }
+<span class="nocode"><a name="227">227: </a></span>        
+<span class="nocode"><a name="228">228: </a></span>        /**
+<span class="nocode"><a name="229">229: </a></span>         * Creates a new instance.
+<span class="nocode"><a name="230">230: </a></span>         * 
+<span class="nocode"><a name="231">231: </a></span>         * @param datasetIndex  the dataset index.
+<span class="nocode"><a name="232">232: </a></span>         */
+<span class="nocode"><a name="233">233: </a></span>        public Pin(int datasetIndex) {
+<span class="nocode"><a name="234">234: </a></span>            super(datasetIndex);
+<span class="nocode"><a name="235">235: </a></span>            this.paint = Color.red;
+<span class="nocode"><a name="236">236: </a></span>            this.stroke = new BasicStroke(3.0f, BasicStroke.CAP_ROUND, 
+<span class="nocode"><a name="237">237: </a></span>                    BasicStroke.JOIN_BEVEL);
+<span class="nocode"><a name="238">238: </a></span>        }
+<span class="nocode"><a name="239">239: </a></span>        
+<span class="nocode"><a name="240">240: </a></span>        /**
+<span class="nocode"><a name="241">241: </a></span>         * Returns the paint.
+<span class="nocode"><a name="242">242: </a></span>         * 
+<span class="nocode"><a name="243">243: </a></span>         * @return The paint (never &lt;code&gt;null&lt;/code&gt;).
+<span class="nocode"><a name="244">244: </a></span>         * 
+<span class="nocode"><a name="245">245: </a></span>         * @see #setPaint(Paint)
+<span class="nocode"><a name="246">246: </a></span>         */
+<span class="nocode"><a name="247">247: </a></span>        public Paint getPaint() {
+<span class="nocode"><a name="248">248: </a></span>            return this.paint;
+<span class="nocode"><a name="249">249: </a></span>        }
+<span class="nocode"><a name="250">250: </a></span>        
+<span class="nocode"><a name="251">251: </a></span>        /**
+<span class="nocode"><a name="252">252: </a></span>         * Sets the paint and sends a {@link DialLayerChangeEvent} to all 
+<span class="nocode"><a name="253">253: </a></span>         * registered listeners.
+<span class="nocode"><a name="254">254: </a></span>         * 
+<span class="nocode"><a name="255">255: </a></span>         * @param paint  the paint (&lt;code&gt;null&lt;/code&gt; not permitted).
+<span class="nocode"><a name="256">256: </a></span>         * 
+<span class="nocode"><a name="257">257: </a></span>         * @see #getPaint()
+<span class="nocode"><a name="258">258: </a></span>         */
+<span class="nocode"><a name="259">259: </a></span>        public void setPaint(Paint paint) {
+<span class="nocode"><a name="260">260: </a></span>            if (paint == null) {
+<span class="nocode"><a name="261">261: </a></span>                throw new IllegalArgumentException(&quot;Null 'paint' argument.&quot;);
+<span class="nocode"><a name="262">262: </a></span>            }
+<span class="nocode"><a name="263">263: </a></span>            this.paint = paint;
+<span class="nocode"><a name="264">264: </a></span>            notifyListeners(new DialLayerChangeEvent(this));
+<span class="nocode"><a name="265">265: </a></span>        }
+<span class="nocode"><a name="266">266: </a></span>        
+<span class="nocode"><a name="267">267: </a></span>        /**
+<span class="nocode"><a name="268">268: </a></span>         * Returns the stroke.
+<span class="nocode"><a name="269">269: </a></span>         * 
+<span class="nocode"><a name="270">270: </a></span>         * @return The stroke (never &lt;code&gt;null&lt;/code&gt;).
+<span class="nocode"><a name="271">271: </a></span>         * 
+<span class="nocode"><a name="272">272: </a></span>         * @see #setStroke(Stroke)
+<span class="nocode"><a name="273">273: </a></span>         */
+<span class="nocode"><a name="274">274: </a></span>        public Stroke getStroke() {
+<span class="nocode"><a name="275">275: </a></span>            return this.stroke;
+<span class="nocode"><a name="276">276: </a></span>        }
+<span class="nocode"><a name="277">277: </a></span>        
+<span class="nocode"><a name="278">278: </a></span>        /**
+<span class="nocode"><a name="279">279: </a></span>         * Sets the stroke and sends a {@link DialLayerChangeEvent} to all 
+<span class="nocode"><a name="280">280: </a></span>         * registered listeners.
+<span class="nocode"><a name="281">281: </a></span>         * 
+<span class="nocode"><a name="282">282: </a></span>         * @param stroke  the stroke (&lt;code&gt;null&lt;/code&gt; not permitted).
+<span class="nocode"><a name="283">283: </a></span>         * 
+<span class="nocode"><a name="284">284: </a></span>         * @see #getStroke()
+<span class="nocode"><a name="285">285: </a></span>         */
+<span class="nocode"><a name="286">286: </a></span>        public void setStroke(Stroke stroke) {
+<span class="nocode"><a name="287">287: </a></span>            if (stroke == null) {
+<span class="nocode"><a name="288">288: </a></span>                throw new IllegalArgumentException(&quot;Null 'stroke' argument.&quot;);
+<span class="nocode"><a name="289">289: </a></span>            }
+<span class="nocode"><a name="290">290: </a></span>            this.stroke = stroke;
+<span class="nocode"><a name="291">291: </a></span>            notifyListeners(new DialLayerChangeEvent(this));
+<span class="nocode"><a name="292">292: </a></span>        }
+<span class="nocode"><a name="293">293: </a></span>        
+<span class="nocode"><a name="294">294: </a></span>        /**
+<span class="nocode"><a name="295">295: </a></span>         * Draws the pointer.
+<span class="nocode"><a name="296">296: </a></span>         * 
+<span class="nocode"><a name="297">297: </a></span>         * @param g2  the graphics target.
+<span class="nocode"><a name="298">298: </a></span>         * @param plot  the plot.
+<span class="nocode"><a name="299">299: </a></span>         * @param frame  the dial's reference frame.
+<span class="nocode"><a name="300">300: </a></span>         * @param view  the dial's view.
+<span class="nocode"><a name="301">301: </a></span>         */
+<span class="nocode"><a name="302">302: </a></span>        public void draw(Graphics2D g2, DialPlot plot, Rectangle2D frame, 
+<span class="nocode"><a name="303">303: </a></span>            Rectangle2D view) {
+<span class="nocode"><a name="304">304: </a></span>        
+<span class="nocode"><a name="305">305: </a></span>            g2.setPaint(this.paint);
+<span class="nocode"><a name="306">306: </a></span>            g2.setStroke(this.stroke);
+<span class="nocode"><a name="307">307: </a></span>            Rectangle2D arcRect = DialPlot.rectangleByRadius(frame, 
+<span class="nocode"><a name="308">308: </a></span>                    this.radius, this.radius);
+<span class="nocode"><a name="309">309: </a></span>
+<span class="nocode"><a name="310">310: </a></span>            double value = plot.getValue(this.datasetIndex);
+<span class="nocode"><a name="311">311: </a></span>            DialScale scale = plot.getScaleForDataset(this.datasetIndex);
+<span class="nocode"><a name="312">312: </a></span>            double angle = scale.valueToAngle(value);
+<span class="nocode"><a name="313">313: </a></span>        
+<span class="nocode"><a name="314">314: </a></span>            Arc2D arc = new Arc2D.Double(arcRect, angle, 0, Arc2D.OPEN);
+<span class="nocode"><a name="315">315: </a></span>            Point2D pt = arc.getEndPoint();
+<span class="nocode"><a name="316">316: </a></span>        
+<span class="nocode"><a name="317">317: </a></span>            Line2D line = new Line2D.Double(frame.getCenterX(), 
+<span class="nocode"><a name="318">318: </a></span>                    frame.getCenterY(), pt.getX(), pt.getY());
+<span class="nocode"><a name="319">319: </a></span>            g2.draw(line);
+<span class="nocode"><a name="320">320: </a></span>        }
+<span class="nocode"><a name="321">321: </a></span>        
+<span class="nocode"><a name="322">322: </a></span>        /**
+<span class="nocode"><a name="323">323: </a></span>         * Tests this pointer for equality with an arbitrary object.
+<span class="nocode"><a name="324">324: </a></span>         * 
+<span class="nocode"><a name="325">325: </a></span>         * @param obj  the object (&lt;code&gt;null&lt;/code&gt; permitted).
+<span class="nocode"><a name="326">326: </a></span>         * 
+<span class="nocode"><a name="327">327: </a></span>         * @return A boolean.
+<span class="nocode"><a name="328">328: </a></span>         */
+<span class="nocode"><a name="329">329: </a></span>        public boolean equals(Object obj) {
+<span class="nocode"><a name="330">330: </a></span>            if (obj == this) {
+<span class="nocode"><a name="331">331: </a></span>                return true;
+<span class="nocode"><a name="332">332: </a></span>            }
+<span class="nocode"><a name="333">333: </a></span>            if (!(obj instanceof DialPointer.Pin)) {
+<span class="nocode"><a name="334">334: </a></span>                return false;
+<span class="nocode"><a name="335">335: </a></span>            }
+<span class="nocode"><a name="336">336: </a></span>            DialPointer.Pin that = (DialPointer.Pin) obj;
+<span class="nocode"><a name="337">337: </a></span>            if (!PaintUtilities.equal(this.paint, that.paint)) {
+<span class="nocode"><a name="338">338: </a></span>                return false;
+<span class="nocode"><a name="339">339: </a></span>            }
+<span class="nocode"><a name="340">340: </a></span>            if (!this.stroke.equals(that.stroke)) {
+<span class="nocode"><a name="341">341: </a></span>                return false;
+<span class="nocode"><a name="342">342: </a></span>            }
+<span class="nocode"><a name="343">343: </a></span>            return super.equals(obj);
+<span class="nocode"><a name="344">344: </a></span>        }
+<span class="nocode"><a name="345">345: </a></span>        
+<span class="nocode"><a name="346">346: </a></span>        /**
+<span class="nocode"><a name="347">347: </a></span>         * Returns a hash code for this instance.
+<span class="nocode"><a name="348">348: </a></span>         * 
+<span class="nocode"><a name="349">349: </a></span>         * @return A hash code.
+<span class="nocode"><a name="350">350: </a></span>         */
+<span class="nocode"><a name="351">351: </a></span>        public int hashCode() {
+<span class="nocode"><a name="352">352: </a></span>            int result = super.hashCode();
+<span class="nocode"><a name="353">353: </a></span>            result = HashUtilities.hashCode(result, this.paint);
+<span class="nocode"><a name="354">354: </a></span>            result = HashUtilities.hashCode(result, this.stroke);
+<span class="nocode"><a name="355">355: </a></span>            return result;
+<span class="nocode"><a name="356">356: </a></span>        }
+<span class="nocode"><a name="357">357: </a></span>        
+<span class="nocode"><a name="358">358: </a></span>        /**
+<span class="nocode"><a name="359">359: </a></span>         * Provides serialization support.
+<span class="nocode"><a name="360">360: </a></span>         *
+<span class="nocode"><a name="361">361: </a></span>         * @param stream  the output stream.
+<span class="nocode"><a name="362">362: </a></span>         *
+<span class="nocode"><a name="363">363: </a></span>         * @throws IOException  if there is an I/O error.
+<span class="nocode"><a name="364">364: </a></span>         */
+<span class="nocode"><a name="365">365: </a></span>        private void writeObject(ObjectOutputStream stream) throws IOException {
+<span class="nocode"><a name="366">366: </a></span>            stream.defaultWriteObject();
+<span class="nocode"><a name="367">367: </a></span>            SerialUtilities.writePaint(this.paint, stream);
+<span class="nocode"><a name="368">368: </a></span>            SerialUtilities.writeStroke(this.stroke, stream);
+<span class="nocode"><a name="369">369: </a></span>        }
+<span class="nocode"><a name="370">370: </a></span>
+<span class="nocode"><a name="371">371: </a></span>        /**
+<span class="nocode"><a name="372">372: </a></span>         * Provides serialization support.
+<span class="nocode"><a name="373">373: </a></span>         *
+<span class="nocode"><a name="374">374: </a></span>         * @param stream  the input stream.
+<span class="nocode"><a name="375">375: </a></span>         *
+<span class="nocode"><a name="376">376: </a></span>         * @throws IOException  if there is an I/O error.
+<span class="nocode"><a name="377">377: </a></span>         * @throws ClassNotFoundException  if there is a classpath problem.
+<span class="nocode"><a name="378">378: </a></span>         */
+<span class="nocode"><a name="379">379: </a></span>        private void readObject(ObjectInputStream stream) 
+<span class="nocode"><a name="380">380: </a></span>                throws IOException, ClassNotFoundException {
+<span class="nocode"><a name="381">381: </a></span>            stream.defaultReadObject();
+<span class="nocode"><a name="382">382: </a></span>            this.paint = SerialUtilities.readPaint(stream);
+<span class="nocode"><a name="383">383: </a></span>            this.stroke = SerialUtilities.readStroke(stream);
+<span class="nocode"><a name="384">384: </a></span>        }
+<span class="nocode"><a name="385">385: </a></span>        
+<span class="nocode"><a name="386">386: </a></span>    }
+<span class="nocode"><a name="387">387: </a></span>    
+<span class="nocode"><a name="388">388: </a></span>    /**
+<span class="nocode"><a name="389">389: </a></span>     * A dial pointer.
+<span class="nocode"><a name="390">390: </a></span>     */
+<span class="nocode"><a name="391">391: </a></span>    public static class Pointer extends DialPointer {
+<span class="nocode"><a name="392">392: </a></span>        
+<span class="nocode"><a name="393">393: </a></span>        /** For serialization. */
+<span class="nocode"><a name="394">394: </a></span>        static final long serialVersionUID = -4180500011963176960L;
+<span class="nocode"><a name="395">395: </a></span>        
+<span class="nocode"><a name="396">396: </a></span>        /**
+<span class="nocode"><a name="397">397: </a></span>         * The radius that defines the width of the pointer at the base.
+<span class="nocode"><a name="398">398: </a></span>         */
+<span class="nocode"><a name="399">399: </a></span>        private double widthRadius;
+<span class="nocode"><a name="400">400: </a></span>    
+<span class="nocode"><a name="401">401: </a></span>        /** 
+<span class="nocode"><a name="402">402: </a></span>         * The fill paint.
+<span class="nocode"><a name="403">403: </a></span>         * 
+<span class="nocode"><a name="404">404: </a></span>         * @since 1.0.8
+<span class="nocode"><a name="405">405: </a></span>         */
+<span class="nocode"><a name="406">406: </a></span>        private transient Paint fillPaint;
+<span class="nocode"><a name="407">407: </a></span>        
+<span class="nocode"><a name="408">408: </a></span>        /** 
+<span class="nocode"><a name="409">409: </a></span>         * The outline paint.
+<span class="nocode"><a name="410">410: </a></span>         * 
+<span class="nocode"><a name="411">411: </a></span>         * @since 1.0.8
+<span class="nocode"><a name="412">412: </a></span>         */
+<span class="nocode"><a name="413">413: </a></span>        private transient Paint outlinePaint;
+<span class="nocode"><a name="414">414: </a></span>
+<span class="nocode"><a name="415">415: </a></span>        /**
+<span class="nocode"><a name="416">416: </a></span>         * Creates a new instance.
+<span class="nocode"><a name="417">417: </a></span>         */
+<span class="nocode"><a name="418">418: </a></span>        public Pointer() {
+<span class="nocode"><a name="419">419: </a></span>            this(0);
+<span class="nocode"><a name="420">420: </a></span>        }
+<span class="nocode"><a name="421">421: </a></span>        
+<span class="nocode"><a name="422">422: </a></span>        /**
+<span class="nocode"><a name="423">423: </a></span>         * Creates a new instance.
+<span class="nocode"><a name="424">424: </a></span>         * 
+<span class="nocode"><a name="425">425: </a></span>         * @param datasetIndex  the dataset index.
+<span class="nocode"><a name="426">426: </a></span>         */
+<span class="nocode"><a name="427">427: </a></span>        public Pointer(int datasetIndex) {
+<span class="nocode"><a name="428">428: </a></span>            super(datasetIndex);
+<span class="nocode"><a name="429">429: </a></span>            this.widthRadius = 0.05;
+<span class="nocode"><a name="430">430: </a></span>            this.fillPaint = Color.gray;
+<span class="nocode"><a name="431">431: </a></span>            this.outlinePaint = Color.black;
+<span class="nocode"><a name="432">432: </a></span>        }
+<span class="nocode"><a name="433">433: </a></span>        
+<span class="nocode"><a name="434">434: </a></span>        /**
+<span class="nocode"><a name="435">435: </a></span>         * Returns the width radius.
+<span class="nocode"><a name="436">436: </a></span>         * 
+<span class="nocode"><a name="437">437: </a></span>         * @return The width radius.
+<span class="nocode"><a name="438">438: </a></span>         * 
+<span class="nocode"><a name="439">439: </a></span>         * @see #setWidthRadius(double)
+<span class="nocode"><a name="440">440: </a></span>         */
+<span class="nocode"><a name="441">441: </a></span>        public double getWidthRadius() {
+<span class="nocode"><a name="442">442: </a></span>            return this.widthRadius;
+<span class="nocode"><a name="443">443: </a></span>        }
+<span class="nocode"><a name="444">444: </a></span>        
+<span class="nocode"><a name="445">445: </a></span>        /**
+<span class="nocode"><a name="446">446: </a></span>         * Sets the width radius and sends a {@link DialLayerChangeEvent} to 
+<span class="nocode"><a name="447">447: </a></span>         * all registered listeners.
+<span class="nocode"><a name="448">448: </a></span>         * 
+<span class="nocode"><a name="449">449: </a></span>         * @param radius  the radius
+<span class="nocode"><a name="450">450: </a></span>         * 
+<span class="nocode"><a name="451">451: </a></span>         * @see #getWidthRadius()
+<span class="nocode"><a name="452">452: </a></span>         */
+<span class="nocode"><a name="453">453: </a></span>        public void setWidthRadius(double radius) {
+<span class="nocode"><a name="454">454: </a></span>            this.widthRadius = radius;
+<span class="nocode"><a name="455">455: </a></span>            notifyListeners(new DialLayerChangeEvent(this));
+<span class="nocode"><a name="456">456: </a></span>        }
+<span class="nocode"><a name="457">457: </a></span>        
+<span class="nocode"><a name="458">458: </a></span>        /**
+<span class="nocode"><a name="459">459: </a></span>         * Returns the fill paint.
+<span class="nocode"><a name="460">460: </a></span>         * 
+<span class="nocode"><a name="461">461: </a></span>         * @return The paint (never &lt;code&gt;null&lt;/code&gt;).
+<span class="nocode"><a name="462">462: </a></span>         * 
+<span class="nocode"><a name="463">463: </a></span>         * @see #setFillPaint(Paint)
+<span class="nocode"><a name="464">464: </a></span>         * 
+<span class="nocode"><a name="465">465: </a></span>         * @since 1.0.8
+<span class="nocode"><a name="466">466: </a></span>         */
+<span class="nocode"><a name="467">467: </a></span>        public Paint getFillPaint() {
+<span class="nocode"><a name="468">468: </a></span>            return this.fillPaint;
+<span class="nocode"><a name="469">469: </a></span>        }
+<span class="nocode"><a name="470">470: </a></span>        
+<span class="nocode"><a name="471">471: </a></span>        /**
+<span class="nocode"><a name="472">472: </a></span>         * Sets the fill paint and sends a {@link DialLayerChangeEvent} to all 
+<span class="nocode"><a name="473">473: </a></span>         * registered listeners.
+<span class="nocode"><a name="474">474: </a></span>         * 
+<span class="nocode"><a name="475">475: </a></span>         * @param paint  the paint (&lt;code&gt;null&lt;/code&gt; not permitted).
+<span class="nocode"><a name="476">476: </a></span>         * 
+<span class="nocode"><a name="477">477: </a></span>         * @see #getFillPaint()
+<span class="nocode"><a name="478">478: </a></span>         * 
+<span class="nocode"><a name="479">479: </a></span>         * @since 1.0.8
+<span class="nocode"><a name="480">480: </a></span>         */
+<span class="nocode"><a name="481">481: </a></span>        public void setFillPaint(Paint paint) {
+<span class="nocode"><a name="482">482: </a></span>            if (paint == null) {
+<span class="nocode"><a name="483">483: </a></span>                throw new IllegalArgumentException(&quot;Null 'paint' argument.&quot;);
+<span class="nocode"><a name="484">484: </a></span>            }
+<span class="nocode"><a name="485">485: </a></span>            this.fillPaint = paint;
+<span class="nocode"><a name="486">486: </a></span>            notifyListeners(new DialLayerChangeEvent(this));
+<span class="nocode"><a name="487">487: </a></span>        }
+<span class="nocode"><a name="488">488: </a></span>        
+<span class="nocode"><a name="489">489: </a></span>        /**
+<span class="nocode"><a name="490">490: </a></span>         * Returns the outline paint.
+<span class="nocode"><a name="491">491: </a></span>         * 
+<span class="nocode"><a name="492">492: </a></span>         * @return The paint (never &lt;code&gt;null&lt;/code&gt;).
+<span class="nocode"><a name="493">493: </a></span>         * 
+<span class="nocode"><a name="494">494: </a></span>         * @see #setOutlinePaint(Paint)
+<span class="nocode"><a name="495">495: </a></span>         * 
+<span class="nocode"><a name="496">496: </a></span>         * @since 1.0.8
+<span class="nocode"><a name="497">497: </a></span>         */
+<span class="nocode"><a name="498">498: </a></span>        public Paint getOutlinePaint() {
+<span class="nocode"><a name="499">499: </a></span>            return this.outlinePaint;
+<span class="nocode"><a name="500">500: </a></span>        }
+<span class="nocode"><a name="501">501: </a></span>        
+<span class="nocode"><a name="502">502: </a></span>        /**
+<span class="nocode"><a name="503">503: </a></span>         * Sets the outline paint and sends a {@link DialLayerChangeEvent} to 
+<span class="nocode"><a name="504">504: </a></span>         * all registered listeners.
+<span class="nocode"><a name="505">505: </a></span>         * 
+<span class="nocode"><a name="506">506: </a></span>         * @param paint  the paint (&lt;code&gt;null&lt;/code&gt; not permitted).
+<span class="nocode"><a name="507">507: </a></span>         * 
+<span class="nocode"><a name="508">508: </a></span>         * @see #getOutlinePaint()
+<span class="nocode"><a name="509">509: </a></span>         * 
+<span class="nocode"><a name="510">510: </a></span>         * @since 1.0.8
+<span class="nocode"><a name="511">511: </a></span>         */
+<span class="nocode"><a name="512">512: </a></span>        public void setOutlinePaint(Paint paint) {
+<span class="nocode"><a name="513">513: </a></span>            if (paint == null) {
+<span class="nocode"><a name="514">514: </a></span>                throw new IllegalArgumentException(&quot;Null 'paint' argument.&quot;);
+<span class="nocode"><a name="515">515: </a></span>            }
+<span class="nocode"><a name="516">516: </a></span>            this.outlinePaint = paint;
+<span class="nocode"><a name="517">517: </a></span>            notifyListeners(new DialLayerChangeEvent(this));
+<span class="nocode"><a name="518">518: </a></span>        }
+<span class="nocode"><a name="519">519: </a></span>        
+<span class="nocode"><a name="520">520: </a></span>        /**
+<span class="nocode"><a name="521">521: </a></span>         * Draws the pointer.
+<span class="nocode"><a name="522">522: </a></span>         * 
+<span class="nocode"><a name="523">523: </a></span>         * @param g2  the graphics target.
+<span class="nocode"><a name="524">524: </a></span>         * @param plot  the plot.
+<span class="nocode"><a name="525">525: </a></span>         * @param frame  the dial's reference frame.
+<span class="nocode"><a name="526">526: </a></span>         * @param view  the dial's view.
+<span class="nocode"><a name="527">527: </a></span>         */
+<span class="nocode"><a name="528">528: </a></span>        public void draw(Graphics2D g2, DialPlot plot, Rectangle2D frame, 
+<span class="nocode"><a name="529">529: </a></span>                Rectangle2D view) {
+<span class="nocode"><a name="530">530: </a></span>        
+<span class="nocode"><a name="531">531: </a></span>            g2.setPaint(Color.blue);
+<span class="nocode"><a name="532">532: </a></span>            g2.setStroke(new BasicStroke(1.0f));
+<span class="nocode"><a name="533">533: </a></span>            Rectangle2D lengthRect = DialPlot.rectangleByRadius(frame, 
+<span class="nocode"><a name="534">534: </a></span>                    this.radius, this.radius);
+<span class="nocode"><a name="535">535: </a></span>            Rectangle2D widthRect = DialPlot.rectangleByRadius(frame, 
+<span class="nocode"><a name="536">536: </a></span>                    this.widthRadius, this.widthRadius);
+<span class="nocode"><a name="537">537: </a></span>            double value = plot.getValue(this.datasetIndex);
+<span class="nocode"><a name="538">538: </a></span>            DialScale scale = plot.getScaleForDataset(this.datasetIndex);
+<span class="nocode"><a name="539">539: </a></span>            double angle = scale.valueToAngle(value);
+<span class="nocode"><a name="540">540: </a></span>        
+<span class="nocode"><a name="541">541: </a></span>            Arc2D arc1 = new Arc2D.Double(lengthRect, angle, 0, Arc2D.OPEN);
+<span class="nocode"><a name="542">542: </a></span>            Point2D pt1 = arc1.getEndPoint();
+<span class="nocode"><a name="543">543: </a></span>            Arc2D arc2 = new Arc2D.Double(widthRect, angle - 90.0, 180.0, 
+<span class="nocode"><a name="544">544: </a></span>                    Arc2D.OPEN);
+<span class="nocode"><a name="545">545: </a></span>            Point2D pt2 = arc2.getStartPoint();
+<span class="nocode"><a name="546">546: </a></span>            Point2D pt3 = arc2.getEndPoint();
+<span class="nocode"><a name="547">547: </a></span>            Arc2D arc3 = new Arc2D.Double(widthRect, angle - 180.0, 0.0, 
+<span class="nocode"><a name="548">548: </a></span>                    Arc2D.OPEN);
+<span class="nocode"><a name="549">549: </a></span>            Point2D pt4 = arc3.getStartPoint();
+<span class="nocode"><a name="550">550: </a></span>        
+<span class="nocode"><a name="551">551: </a></span>            GeneralPath gp = new GeneralPath();
+<span class="nocode"><a name="552">552: </a></span>            gp.moveTo((float) pt1.getX(), (float) pt1.getY());
+<span class="nocode"><a name="553">553: </a></span>            gp.lineTo((float) pt2.getX(), (float) pt2.getY());
+<span class="nocode"><a name="554">554: </a></span>            gp.lineTo((float) pt4.getX(), (float) pt4.getY());
+<span class="nocode"><a name="555">555: </a></span>            gp.lineTo((float) pt3.getX(), (float) pt3.getY());
+<span class="nocode"><a name="556">556: </a></span>            gp.closePath();
+<span class="nocode"><a name="557">557: </a></span>            g2.setPaint(this.fillPaint);
+<span class="nocode"><a name="558">558: </a></span>            g2.fill(gp);
+<span class="nocode"><a name="559">559: </a></span>        
+<span class="nocode"><a name="560">560: </a></span>            g2.setPaint(this.outlinePaint);
+<span class="nocode"><a name="561">561: </a></span>            Line2D line = new Line2D.Double(frame.getCenterX(), 
+<span class="nocode"><a name="562">562: </a></span>                    frame.getCenterY(), pt1.getX(), pt1.getY());
+<span class="nocode"><a name="563">563: </a></span>            g2.draw(line);
+<span class="nocode"><a name="564">564: </a></span>        
+<span class="nocode"><a name="565">565: </a></span>            line.setLine(pt2, pt3);
+<span class="nocode"><a name="566">566: </a></span>            g2.draw(line);
+<span class="nocode"><a name="567">567: </a></span>        
+<span class="nocode"><a name="568">568: </a></span>            line.setLine(pt3, pt1);
+<span class="nocode"><a name="569">569: </a></span>            g2.draw(line);
+<span class="nocode"><a name="570">570: </a></span>        
+<span class="nocode"><a name="571">571: </a></span>            line.setLine(pt2, pt1);
+<span class="nocode"><a name="572">572: </a></span>            g2.draw(line);
+<span class="nocode"><a name="573">573: </a></span>        
+<span class="nocode"><a name="574">574: </a></span>            line.setLine(pt2, pt4);
+<span class="nocode"><a name="575">575: </a></span>            g2.draw(line);
+<span class="nocode"><a name="576">576: </a></span>
+<span class="nocode"><a name="577">577: </a></span>            line.setLine(pt3, pt4);
+<span class="nocode"><a name="578">578: </a></span>            g2.draw(line);
+<span class="nocode"><a name="579">579: </a></span>        }
+<span class="nocode"><a name="580">580: </a></span>        
+<span class="nocode"><a name="581">581: </a></span>        /**
+<span class="nocode"><a name="582">582: </a></span>         * Tests this pointer for equality with an arbitrary object.
+<span class="nocode"><a name="583">583: </a></span>         * 
+<span class="nocode"><a name="584">584: </a></span>         * @param obj  the object (&lt;code&gt;null&lt;/code&gt; permitted).
+<span class="nocode"><a name="585">585: </a></span>         * 
+<span class="nocode"><a name="586">586: </a></span>         * @return A boolean.
+<span class="nocode"><a name="587">587: </a></span>         */
+<span class="nocode"><a name="588">588: </a></span>        public boolean equals(Object obj) {
+<span class="nocode"><a name="589">589: </a></span>            if (obj == this) {
+<span class="nocode"><a name="590">590: </a></span>                return true;
+<span class="nocode"><a name="591">591: </a></span>            }
+<span class="nocode"><a name="592">592: </a></span>            if (!(obj instanceof DialPointer.Pointer)) {
+<span class="nocode"><a name="593">593: </a></span>                return false;
+<span class="nocode"><a name="594">594: </a></span>            }
+<span class="nocode"><a name="595">595: </a></span>            DialPointer.Pointer that = (DialPointer.Pointer) obj;
+<span class="nocode"><a name="596">596: </a></span>            
+<span class="nocode"><a name="597">597: </a></span>            if (this.widthRadius != that.widthRadius) {
+<span class="nocode"><a name="598">598: </a></span>                return false;
+<span class="nocode"><a name="599">599: </a></span>            }
+<span class="nocode"><a name="600">600: </a></span>            if (!PaintUtilities.equal(this.fillPaint, that.fillPaint)) {
+<span class="nocode"><a name="601">601: </a></span>                return false;
+<span class="nocode"><a name="602">602: </a></span>            }
+<span class="nocode"><a name="603">603: </a></span>            if (!PaintUtilities.equal(this.outlinePaint, that.outlinePaint)) {
+<span class="nocode"><a name="604">604: </a></span>                return false;
+<span class="nocode"><a name="605">605: </a></span>            }
+<span class="nocode"><a name="606">606: </a></span>            return super.equals(obj);
+<span class="nocode"><a name="607">607: </a></span>        }
+<span class="nocode"><a name="608">608: </a></span>        
+<span class="nocode"><a name="609">609: </a></span>        /**
+<span class="nocode"><a name="610">610: </a></span>         * Returns a hash code for this instance.
+<span class="nocode"><a name="611">611: </a></span>         * 
+<span class="nocode"><a name="612">612: </a></span>         * @return A hash code.
+<span class="nocode"><a name="613">613: </a></span>         */
+<span class="nocode"><a name="614">614: </a></span>        public int hashCode() {
+<span class="nocode"><a name="615">615: </a></span>            int result = super.hashCode();
+<span class="nocode"><a name="616">616: </a></span>            result = HashUtilities.hashCode(result, this.widthRadius);
+<span class="nocode"><a name="617">617: </a></span>            result = HashUtilities.hashCode(result, this.fillPaint);
+<span class="nocode"><a name="618">618: </a></span>            result = HashUtilities.hashCode(result, this.outlinePaint);
+<span class="nocode"><a name="619">619: </a></span>            return result;
+<span class="nocode"><a name="620">620: </a></span>        }
+<span class="nocode"><a name="621">621: </a></span>        
+<span class="nocode"><a name="622">622: </a></span>        /**
+<span class="nocode"><a name="623">623: </a></span>         * Provides serialization support.
+<span class="nocode"><a name="624">624: </a></span>         *
+<span class="nocode"><a name="625">625: </a></span>         * @param stream  the output stream.
+<span class="nocode"><a name="626">626: </a></span>         *
+<span class="nocode"><a name="627">627: </a></span>         * @throws IOException  if there is an I/O error.
+<span class="nocode"><a name="628">628: </a></span>         */
+<span class="nocode"><a name="629">629: </a></span>        private void writeObject(ObjectOutputStream stream) throws IOException {
+<span class="nocode"><a name="630">630: </a></span>            stream.defaultWriteObject();
+<span class="nocode"><a name="631">631: </a></span>            SerialUtilities.writePaint(this.fillPaint, stream);
+<span class="nocode"><a name="632">632: </a></span>            SerialUtilities.writePaint(this.outlinePaint, stream);
+<span class="nocode"><a name="633">633: </a></span>        }
+<span class="nocode"><a name="634">634: </a></span>
+<span class="nocode"><a name="635">635: </a></span>        /**
+<span class="nocode"><a name="636">636: </a></span>         * Provides serialization support.
+<span class="nocode"><a name="637">637: </a></span>         *
+<span class="nocode"><a name="638">638: </a></span>         * @param stream  the input stream.
+<span class="nocode"><a name="639">639: </a></span>         *
+<span class="nocode"><a name="640">640: </a></span>         * @throws IOException  if there is an I/O error.
+<span class="nocode"><a name="641">641: </a></span>         * @throws ClassNotFoundException  if there is a classpath problem.
+<span class="nocode"><a name="642">642: </a></span>         */
+<span class="nocode"><a name="643">643: </a></span>        private void readObject(ObjectInputStream stream) 
+<span class="nocode"><a name="644">644: </a></span>                throws IOException, ClassNotFoundException {
+<span class="nocode"><a name="645">645: </a></span>            stream.defaultReadObject();
+<span class="nocode"><a name="646">646: </a></span>            this.fillPaint = SerialUtilities.readPaint(stream);
+<span class="nocode"><a name="647">647: </a></span>            this.outlinePaint = SerialUtilities.readPaint(stream);
+<span class="nocode"><a name="648">648: </a></span>        }
+<span class="nocode"><a name="649">649: </a></span>       
+<span class="nocode"><a name="650">650: </a></span>    }
+<span class="nocode"><a name="651">651: </a></span>
+<span class="nocode"><a name="652">652: </a></span>}
+</pre><table class="mutation_table" summary="Mutations">
+<tr><th>ID</th><th>Line</th><th>Type</th><th>Detected</th></tr><tr><td>14125</td><td><a href="#88">88</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>14126</td><td><a href="#88">88</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>14127</td><td><a href="#97">97</a></td><td>Replace a constant (Replace 0.9 with 0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>14128</td><td><a href="#97">97</a></td><td>Replace a constant (Replace 0.9 with -0.09999999999999998(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>14129</td><td><a href="#97">97</a></td><td>Replace a constant (Replace 0.9 with 1.9(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>14130</td><td><a href="#122">122</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>14131</td><td><a href="#147">147</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>14132</td><td><a href="#157">157</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>14133</td><td><a href="#157">157</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>14134</td><td><a href="#168">168</a></td><td>Negate jump condition (Replace IF_ACMPNE with  IF_ACMPEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>14135</td><td><a href="#169">169</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>14136</td><td><a href="#169">169</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>14137</td><td><a href="#171">171</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>14139</td><td><a href="#172">172</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>14138</td><td><a href="#172">172</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>14140</td><td><a href="#175">175</a></td><td>Negate jump condition (Replace IF_ICMPEQ with  IF_ICMPNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>14142</td><td><a href="#176">176</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>14141</td><td><a href="#176">176</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>14143</td><td><a href="#178">178</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>14145</td><td><a href="#179">179</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>14144</td><td><a href="#179">179</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>14146</td><td><a href="#181">181</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>14148</td><td><a href="#190">190</a></td><td>Replace a constant (Replace 23 with 22(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>14147</td><td><a href="#190">190</a></td><td>Replace a constant (Replace 23 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>14149</td><td><a href="#190">190</a></td><td>Replace a constant (Replace 23 with 24(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>14150</td><td><a href="#191">191</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>14151</td><td><a href="#204">204</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>14189</td><td><a href="#225">225</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>14188</td><td><a href="#225">225</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>14190</td><td><a href="#236">236</a></td><td>Replace a constant (Replace 3.0 with 0(FLOAT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>14191</td><td><a href="#236">236</a></td><td>Replace a constant (Replace 3.0 with 4.0(FLOAT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>14192</td><td><a href="#236">236</a></td><td>Replace a constant (Replace 3.0 with 2.0(FLOAT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>14193</td><td><a href="#236">236(1)</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>14194</td><td><a href="#236">236(1)</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>14197</td><td><a href="#236">236(2)</a></td><td>Replace a constant (Replace 2 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>14196</td><td><a href="#236">236(2)</a></td><td>Replace a constant (Replace 2 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>14195</td><td><a href="#236">236(2)</a></td><td>Replace a constant (Replace 2 with 3(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>14198</td><td><a href="#260">260</a></td><td>Negate jump condition (Replace IFNONNULL with  IFNULL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>14199</td><td><a href="#264">264</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>14200</td><td><a href="#287">287</a></td><td>Negate jump condition (Replace IFNONNULL with  IFNULL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>14201</td><td><a href="#291">291</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>14202</td><td><a href="#305">305</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>14203</td><td><a href="#306">306</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>14204</td><td><a href="#307">307</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>14205</td><td><a href="#310">310</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>14206</td><td><a href="#311">311</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>14207</td><td><a href="#312">312</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>14208</td><td><a href="#314">314</a></td><td>Replace a constant (Replace 0 with 1(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>14209</td><td><a href="#314">314</a></td><td>Replace a constant (Replace 0 with -1(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>14210</td><td><a href="#314">314(1)</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>14211</td><td><a href="#314">314(1)</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>14212</td><td><a href="#315">315</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>14213</td><td><a href="#317">317</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>14214</td><td><a href="#317">317(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>14215</td><td><a href="#317">317(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>14216</td><td><a href="#317">317(3)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>14217</td><td><a href="#319">319</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>14218</td><td><a href="#330">330</a></td><td>Negate jump condition (Replace IF_ACMPNE with  IF_ACMPEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>14219</td><td><a href="#331">331</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>14220</td><td><a href="#331">331</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>14221</td><td><a href="#333">333</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>14222</td><td><a href="#334">334</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>14223</td><td><a href="#334">334</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>14225</td><td><a href="#337">337</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>14224</td><td><a href="#337">337</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>14227</td><td><a href="#338">338</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>14226</td><td><a href="#338">338</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>14229</td><td><a href="#340">340</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>14228</td><td><a href="#340">340</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>14230</td><td><a href="#341">341</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>14231</td><td><a href="#341">341</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>14232</td><td><a href="#343">343</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>14233</td><td><a href="#352">352</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>14234</td><td><a href="#353">353</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>14235</td><td><a href="#354">354</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>14236</td><td><a href="#366">366</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>14237</td><td><a href="#367">367</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>14238</td><td><a href="#368">368</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>14239</td><td><a href="#381">381</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>14240</td><td><a href="#382">382</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>14241</td><td><a href="#383">383</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>65421</td><td><a href="#419">419</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65420</td><td><a href="#419">419</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65422</td><td><a href="#429">429</a></td><td>Replace a constant (Replace 0.05 with 0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65424</td><td><a href="#429">429</a></td><td>Replace a constant (Replace 0.05 with -0.95(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65423</td><td><a href="#429">429</a></td><td>Replace a constant (Replace 0.05 with 1.05(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65425</td><td><a href="#455">455</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65426</td><td><a href="#482">482</a></td><td>Negate jump condition (Replace IFNONNULL with  IFNULL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>65427</td><td><a href="#486">486</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65428</td><td><a href="#513">513</a></td><td>Negate jump condition (Replace IFNONNULL with  IFNULL)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65429</td><td><a href="#517">517</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65430</td><td><a href="#531">531</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65431</td><td><a href="#532">532</a></td><td>Replace a constant (Replace 1 with 2(FLOAT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65432</td><td><a href="#532">532</a></td><td>Replace a constant (Replace 1 with 0(FLOAT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65433</td><td><a href="#532">532</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65434</td><td><a href="#533">533</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65435</td><td><a href="#535">535</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65436</td><td><a href="#537">537</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65437</td><td><a href="#538">538</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65438</td><td><a href="#539">539</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65439</td><td><a href="#541">541</a></td><td>Replace a constant (Replace 0 with 1(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65440</td><td><a href="#541">541</a></td><td>Replace a constant (Replace 0 with -1(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65441</td><td><a href="#541">541(1)</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65442</td><td><a href="#541">541(1)</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65443</td><td><a href="#542">542</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65446</td><td><a href="#543">543</a></td><td>Replace a constant (Replace 90.0 with 91.0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65445</td><td><a href="#543">543</a></td><td>Replace a constant (Replace 90.0 with 89.0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65444</td><td><a href="#543">543</a></td><td>Replace a constant (Replace 90.0 with 0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65448</td><td><a href="#543">543(1)</a></td><td>Replace a constant (Replace 180.0 with 179.0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65450</td><td><a href="#543">543(1)</a></td><td>Replace a constant (Replace 180.0 with 181.0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65449</td><td><a href="#543">543(1)</a></td><td>Replace a constant (Replace 180.0 with 0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65451</td><td><a href="#543">543(2)</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65452</td><td><a href="#543">543(2)</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65447</td><td><a href="#543">543</a></td><td>Replace arithmetic operator (Replace DSUB with DADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65453</td><td><a href="#545">545</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65454</td><td><a href="#546">546</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65456</td><td><a href="#547">547</a></td><td>Replace a constant (Replace 180.0 with 0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65455</td><td><a href="#547">547</a></td><td>Replace a constant (Replace 180.0 with 179.0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65457</td><td><a href="#547">547</a></td><td>Replace a constant (Replace 180.0 with 181.0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65459</td><td><a href="#547">547(1)</a></td><td>Replace a constant (Replace 0 with 1(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65460</td><td><a href="#547">547(1)</a></td><td>Replace a constant (Replace 0 with -1(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65462</td><td><a href="#547">547(2)</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65461</td><td><a href="#547">547(2)</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65458</td><td><a href="#547">547</a></td><td>Replace arithmetic operator (Replace DSUB with DADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65463</td><td><a href="#549">549</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65464</td><td><a href="#552">552</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65465</td><td><a href="#552">552(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65466</td><td><a href="#552">552(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65467</td><td><a href="#553">553</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65468</td><td><a href="#553">553(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65469</td><td><a href="#553">553(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65470</td><td><a href="#554">554</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65471</td><td><a href="#554">554(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65472</td><td><a href="#554">554(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65473</td><td><a href="#555">555</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65474</td><td><a href="#555">555(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65475</td><td><a href="#555">555(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65476</td><td><a href="#556">556</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65477</td><td><a href="#557">557</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65478</td><td><a href="#558">558</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65479</td><td><a href="#560">560</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65480</td><td><a href="#561">561</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65481</td><td><a href="#561">561(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65482</td><td><a href="#561">561(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65483</td><td><a href="#561">561(3)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65484</td><td><a href="#563">563</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65485</td><td><a href="#565">565</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65486</td><td><a href="#566">566</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65487</td><td><a href="#568">568</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65488</td><td><a href="#569">569</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65489</td><td><a href="#571">571</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65490</td><td><a href="#572">572</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65491</td><td><a href="#574">574</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65492</td><td><a href="#575">575</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65493</td><td><a href="#577">577</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65494</td><td><a href="#578">578</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65495</td><td><a href="#589">589</a></td><td>Negate jump condition (Replace IF_ACMPNE with  IF_ACMPEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>65496</td><td><a href="#590">590</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65497</td><td><a href="#590">590</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65498</td><td><a href="#592">592</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65499</td><td><a href="#593">593</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65500</td><td><a href="#593">593</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65501</td><td><a href="#597">597</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>65503</td><td><a href="#598">598</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65502</td><td><a href="#598">598</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65505</td><td><a href="#600">600</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>65504</td><td><a href="#600">600</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>65506</td><td><a href="#601">601</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>65507</td><td><a href="#601">601</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>65509</td><td><a href="#603">603</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>65508</td><td><a href="#603">603</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>65511</td><td><a href="#604">604</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>65510</td><td><a href="#604">604</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>65512</td><td><a href="#606">606</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65513</td><td><a href="#615">615</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65514</td><td><a href="#616">616</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65515</td><td><a href="#617">617</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65516</td><td><a href="#618">618</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65517</td><td><a href="#630">630</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>65518</td><td><a href="#631">631</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>65519</td><td><a href="#632">632</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>65520</td><td><a href="#645">645</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>65521</td><td><a href="#646">646</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>65522</td><td><a href="#647">647</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+</table>
+</body>
+</html>

@@ -1,0 +1,253 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN
+"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>
+org.jfree.chart.renderer.xy.YIntervalRenderer
+</title>
+<link href="prettify.css" type="text/css" rel="stylesheet" />
+<script type="text/javascript" src="prettify.js"></script>
+</head>
+<body onload="prettyPrint()">
+<h2>Javalanche report for class:<br/> org.jfree.chart.renderer.xy.YIntervalRenderer </h2><pre class="prettyprint" style="border: 1px solid #888;padding: 2px"><span class="nocode"><a name="1">  1: </a></span>/* ===========================================================
+<span class="nocode"><a name="2">  2: </a></span> * JFreeChart : a free chart library for the Java(tm) platform
+<span class="nocode"><a name="3">  3: </a></span> * ===========================================================
+<span class="nocode"><a name="4">  4: </a></span> *
+<span class="nocode"><a name="5">  5: </a></span> * (C) Copyright 2000-2007, by Object Refinery Limited and Contributors.
+<span class="nocode"><a name="6">  6: </a></span> *
+<span class="nocode"><a name="7">  7: </a></span> * Project Info:  http://www.jfree.org/jfreechart/index.html
+<span class="nocode"><a name="8">  8: </a></span> *
+<span class="nocode"><a name="9">  9: </a></span> * This library is free software; you can redistribute it and/or modify it 
+<span class="nocode"><a name="10"> 10: </a></span> * under the terms of the GNU Lesser General Public License as published by 
+<span class="nocode"><a name="11"> 11: </a></span> * the Free Software Foundation; either version 2.1 of the License, or 
+<span class="nocode"><a name="12"> 12: </a></span> * (at your option) any later version.
+<span class="nocode"><a name="13"> 13: </a></span> *
+<span class="nocode"><a name="14"> 14: </a></span> * This library is distributed in the hope that it will be useful, but 
+<span class="nocode"><a name="15"> 15: </a></span> * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY 
+<span class="nocode"><a name="16"> 16: </a></span> * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public 
+<span class="nocode"><a name="17"> 17: </a></span> * License for more details.
+<span class="nocode"><a name="18"> 18: </a></span> *
+<span class="nocode"><a name="19"> 19: </a></span> * You should have received a copy of the GNU Lesser General Public
+<span class="nocode"><a name="20"> 20: </a></span> * License along with this library; if not, write to the Free Software
+<span class="nocode"><a name="21"> 21: </a></span> * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, 
+<span class="nocode"><a name="22"> 22: </a></span> * USA.  
+<span class="nocode"><a name="23"> 23: </a></span> *
+<span class="nocode"><a name="24"> 24: </a></span> * [Java is a trademark or registered trademark of Sun Microsystems, Inc. 
+<span class="nocode"><a name="25"> 25: </a></span> * in the United States and other countries.]
+<span class="nocode"><a name="26"> 26: </a></span> *
+<span class="nocode"><a name="27"> 27: </a></span> * ----------------------
+<span class="nocode"><a name="28"> 28: </a></span> * YIntervalRenderer.java
+<span class="nocode"><a name="29"> 29: </a></span> * ----------------------
+<span class="nocode"><a name="30"> 30: </a></span> * (C) Copyright 2002-2007, by Object Refinery Limited.
+<span class="nocode"><a name="31"> 31: </a></span> *
+<span class="nocode"><a name="32"> 32: </a></span> * Original Author:  David Gilbert (for Object Refinery Limited);
+<span class="nocode"><a name="33"> 33: </a></span> * Contributor(s):   -;
+<span class="nocode"><a name="34"> 34: </a></span> *
+<span class="nocode"><a name="35"> 35: </a></span> * Changes
+<span class="nocode"><a name="36"> 36: </a></span> * -------
+<span class="nocode"><a name="37"> 37: </a></span> * 05-Nov-2002 : Version 1 (DG);
+<span class="nocode"><a name="38"> 38: </a></span> * 25-Mar-2003 : Implemented Serializable (DG);
+<span class="nocode"><a name="39"> 39: </a></span> * 01-May-2003 : Modified drawItem() method signature (DG);
+<span class="nocode"><a name="40"> 40: </a></span> * 20-Aug-2003 : Implemented Cloneable and PublicCloneable (DG);
+<span class="nocode"><a name="41"> 41: </a></span> * 16-Sep-2003 : Changed ChartRenderingInfo --&gt; PlotRenderingInfo (DG);
+<span class="nocode"><a name="42"> 42: </a></span> * 25-Feb-2004 : Replaced CrosshairInfo with CrosshairState (DG);
+<span class="nocode"><a name="43"> 43: </a></span> * 27-Sep-2004 : Access double values from dataset (DG);
+<span class="nocode"><a name="44"> 44: </a></span> * 11-Nov-2004 : Now uses ShapeUtilities to translate shapes (DG);
+<span class="nocode"><a name="45"> 45: </a></span> * 
+<span class="nocode"><a name="46"> 46: </a></span> */
+<span class="nocode"><a name="47"> 47: </a></span>
+<span class="nocode"><a name="48"> 48: </a></span>package org.jfree.chart.renderer.xy;
+<span class="nocode"><a name="49"> 49: </a></span>
+<span class="nocode"><a name="50"> 50: </a></span>import java.awt.Graphics2D;
+<span class="nocode"><a name="51"> 51: </a></span>import java.awt.Paint;
+<span class="nocode"><a name="52"> 52: </a></span>import java.awt.Shape;
+<span class="nocode"><a name="53"> 53: </a></span>import java.awt.Stroke;
+<span class="nocode"><a name="54"> 54: </a></span>import java.awt.geom.Line2D;
+<span class="nocode"><a name="55"> 55: </a></span>import java.awt.geom.Rectangle2D;
+<span class="nocode"><a name="56"> 56: </a></span>import java.io.Serializable;
+<span class="nocode"><a name="57"> 57: </a></span>
+<span class="nocode"><a name="58"> 58: </a></span>import org.jfree.chart.axis.ValueAxis;
+<span class="nocode"><a name="59"> 59: </a></span>import org.jfree.chart.entity.EntityCollection;
+<span class="nocode"><a name="60"> 60: </a></span>import org.jfree.chart.entity.XYItemEntity;
+<span class="nocode"><a name="61"> 61: </a></span>import org.jfree.chart.labels.XYToolTipGenerator;
+<span class="nocode"><a name="62"> 62: </a></span>import org.jfree.chart.plot.CrosshairState;
+<span class="nocode"><a name="63"> 63: </a></span>import org.jfree.chart.plot.PlotOrientation;
+<span class="nocode"><a name="64"> 64: </a></span>import org.jfree.chart.plot.PlotRenderingInfo;
+<span class="nocode"><a name="65"> 65: </a></span>import org.jfree.chart.plot.XYPlot;
+<span class="nocode"><a name="66"> 66: </a></span>import org.jfree.data.xy.IntervalXYDataset;
+<span class="nocode"><a name="67"> 67: </a></span>import org.jfree.data.xy.XYDataset;
+<span class="nocode"><a name="68"> 68: </a></span>import org.jfree.ui.RectangleEdge;
+<span class="nocode"><a name="69"> 69: </a></span>import org.jfree.util.PublicCloneable;
+<span class="nocode"><a name="70"> 70: </a></span>import org.jfree.util.ShapeUtilities;
+<span class="nocode"><a name="71"> 71: </a></span>
+<span class="nocode"><a name="72"> 72: </a></span>/**
+<span class="nocode"><a name="73"> 73: </a></span> * A renderer that draws a line connecting the start and end Y values for an 
+<span class="nocode"><a name="74"> 74: </a></span> * {@link XYPlot}.
+<span class="nocode"><a name="75"> 75: </a></span> */
+<span class="nocode"><a name="76"> 76: </a></span>public class YIntervalRenderer extends AbstractXYItemRenderer 
+<span class="nocode"><a name="77"> 77: </a></span>                               implements XYItemRenderer, 
+<span class="nocode"><a name="78"> 78: </a></span>                                          Cloneable,
+<span class="nocode"><a name="79"> 79: </a></span>                                          PublicCloneable,
+<span class="nocode"><a name="80"> 80: </a></span>                                          Serializable {
+<span class="nocode"><a name="81"> 81: </a></span>
+<span class="nocode"><a name="82"> 82: </a></span>    /** For serialization. */
+<span class="nocode"><a name="83"> 83: </a></span>    private static final long serialVersionUID = -2951586537224143260L;
+<span class="nocode"><a name="84"> 84: </a></span>    
+<span class="nocode"><a name="85"> 85: </a></span>    /**
+<span class="nocode"><a name="86"> 86: </a></span>     * The default constructor.
+<span class="nocode"><a name="87"> 87: </a></span>     */
+<span class="nocode"><a name="88"> 88: </a></span>    public YIntervalRenderer() {
+<span class="nocode"><a name="89"> 89: </a></span>        super();
+<span class="nocode"><a name="90"> 90: </a></span>    }
+<span class="nocode"><a name="91"> 91: </a></span>
+<span class="nocode"><a name="92"> 92: </a></span>    /**
+<span class="nocode"><a name="93"> 93: </a></span>     * Draws the visual representation of a single data item.
+<span class="nocode"><a name="94"> 94: </a></span>     *
+<span class="nocode"><a name="95"> 95: </a></span>     * @param g2  the graphics device.
+<span class="nocode"><a name="96"> 96: </a></span>     * @param state  the renderer state.
+<span class="nocode"><a name="97"> 97: </a></span>     * @param dataArea  the area within which the plot is being drawn.
+<span class="nocode"><a name="98"> 98: </a></span>     * @param info  collects information about the drawing.
+<span class="nocode"><a name="99"> 99: </a></span>     * @param plot  the plot (can be used to obtain standard color 
+<span class="nocode"><a name="100">100: </a></span>     *              information etc).
+<span class="nocode"><a name="101">101: </a></span>     * @param domainAxis  the domain axis.
+<span class="nocode"><a name="102">102: </a></span>     * @param rangeAxis  the range axis.
+<span class="nocode"><a name="103">103: </a></span>     * @param dataset  the dataset.
+<span class="nocode"><a name="104">104: </a></span>     * @param series  the series index (zero-based).
+<span class="nocode"><a name="105">105: </a></span>     * @param item  the item index (zero-based).
+<span class="nocode"><a name="106">106: </a></span>     * @param crosshairState  crosshair information for the plot 
+<span class="nocode"><a name="107">107: </a></span>     *                        (&lt;code&gt;null&lt;/code&gt; permitted).
+<span class="nocode"><a name="108">108: </a></span>     * @param pass  the pass index (ignored here).
+<span class="nocode"><a name="109">109: </a></span>     */
+<span class="nocode"><a name="110">110: </a></span>    public void drawItem(Graphics2D g2, 
+<span class="nocode"><a name="111">111: </a></span>                         XYItemRendererState state,
+<span class="nocode"><a name="112">112: </a></span>                         Rectangle2D dataArea,
+<span class="nocode"><a name="113">113: </a></span>                         PlotRenderingInfo info,
+<span class="nocode"><a name="114">114: </a></span>                         XYPlot plot, 
+<span class="nocode"><a name="115">115: </a></span>                         ValueAxis domainAxis, 
+<span class="nocode"><a name="116">116: </a></span>                         ValueAxis rangeAxis,
+<span class="nocode"><a name="117">117: </a></span>                         XYDataset dataset, 
+<span class="nocode"><a name="118">118: </a></span>                         int series, 
+<span class="nocode"><a name="119">119: </a></span>                         int item,
+<span class="nocode"><a name="120">120: </a></span>                         CrosshairState crosshairState, 
+<span class="nocode"><a name="121">121: </a></span>                         int pass) {
+<span class="nocode"><a name="122">122: </a></span>
+<span class="nocode"><a name="123">123: </a></span>        // setup for collecting optional entity info...
+<span class="nocode"><a name="124">124: </a></span>        Shape entityArea = null;
+<span class="nocode"><a name="125">125: </a></span>        EntityCollection entities = null;
+<span class="nocode"><a name="126">126: </a></span>        if (info != null) {
+<span class="nocode"><a name="127">127: </a></span>            entities = info.getOwner().getEntityCollection();
+<span class="nocode"><a name="128">128: </a></span>        }
+<span class="nocode"><a name="129">129: </a></span>
+<span class="nocode"><a name="130">130: </a></span>        IntervalXYDataset intervalDataset = (IntervalXYDataset) dataset;
+<span class="nocode"><a name="131">131: </a></span>
+<span class="nocode"><a name="132">132: </a></span>        double x = intervalDataset.getXValue(series, item);
+<span class="nocode"><a name="133">133: </a></span>        double yLow   = intervalDataset.getStartYValue(series, item);
+<span class="nocode"><a name="134">134: </a></span>        double yHigh  = intervalDataset.getEndYValue(series, item);
+<span class="nocode"><a name="135">135: </a></span>
+<span class="nocode"><a name="136">136: </a></span>        RectangleEdge xAxisLocation = plot.getDomainAxisEdge();
+<span class="nocode"><a name="137">137: </a></span>        RectangleEdge yAxisLocation = plot.getRangeAxisEdge();
+<span class="nocode"><a name="138">138: </a></span>        
+<span class="nocode"><a name="139">139: </a></span>        double xx = domainAxis.valueToJava2D(x, dataArea, xAxisLocation);
+<span class="nocode"><a name="140">140: </a></span>        double yyLow = rangeAxis.valueToJava2D(yLow, dataArea, yAxisLocation);
+<span class="nocode"><a name="141">141: </a></span>        double yyHigh = rangeAxis.valueToJava2D(yHigh, dataArea, yAxisLocation);
+<span class="nocode"><a name="142">142: </a></span>
+<span class="nocode"><a name="143">143: </a></span>        Paint p = getItemPaint(series, item);
+<span class="nocode"><a name="144">144: </a></span>        Stroke s = getItemStroke(series, item);
+<span class="nocode"><a name="145">145: </a></span>        
+<span class="nocode"><a name="146">146: </a></span>        Line2D line = null;
+<span class="nocode"><a name="147">147: </a></span>        Shape shape = getItemShape(series, item);
+<span class="nocode"><a name="148">148: </a></span>        Shape top = null;
+<span class="nocode"><a name="149">149: </a></span>        Shape bottom = null;
+<span class="nocode"><a name="150">150: </a></span>        PlotOrientation orientation = plot.getOrientation();
+<span class="nocode"><a name="151">151: </a></span>        if (orientation == PlotOrientation.HORIZONTAL) {
+<span class="nocode"><a name="152">152: </a></span>            line = new Line2D.Double(yyLow, xx, yyHigh, xx);
+<span class="nocode"><a name="153">153: </a></span>            top = ShapeUtilities.createTranslatedShape(shape, yyHigh, xx);
+<span class="nocode"><a name="154">154: </a></span>            bottom = ShapeUtilities.createTranslatedShape(shape, yyLow, xx);
+<span class="nocode"><a name="155">155: </a></span>        }
+<span class="nocode"><a name="156">156: </a></span>        else if (orientation == PlotOrientation.VERTICAL) {
+<span class="nocode"><a name="157">157: </a></span>            line = new Line2D.Double(xx, yyLow, xx, yyHigh);
+<span class="nocode"><a name="158">158: </a></span>            top = ShapeUtilities.createTranslatedShape(shape, xx, yyHigh);
+<span class="nocode"><a name="159">159: </a></span>            bottom = ShapeUtilities.createTranslatedShape(shape, xx, yyLow);
+<span class="nocode"><a name="160">160: </a></span>        }
+<span class="nocode"><a name="161">161: </a></span>        g2.setPaint(p);
+<span class="nocode"><a name="162">162: </a></span>        g2.setStroke(s);
+<span class="nocode"><a name="163">163: </a></span>        g2.draw(line);
+<span class="nocode"><a name="164">164: </a></span>
+<span class="nocode"><a name="165">165: </a></span>        g2.fill(top);
+<span class="nocode"><a name="166">166: </a></span>        g2.fill(bottom);
+<span class="nocode"><a name="167">167: </a></span>
+<span class="nocode"><a name="168">168: </a></span>        // add an entity for the item...
+<span class="nocode"><a name="169">169: </a></span>        if (entities != null) {
+<span class="nocode"><a name="170">170: </a></span>            if (entityArea == null) {
+<span class="nocode"><a name="171">171: </a></span>                entityArea = line.getBounds();
+<span class="nocode"><a name="172">172: </a></span>            }
+<span class="nocode"><a name="173">173: </a></span>            String tip = null;
+<span class="nocode"><a name="174">174: </a></span>            XYToolTipGenerator generator = getToolTipGenerator(series, item);
+<span class="nocode"><a name="175">175: </a></span>            if (generator != null) {
+<span class="nocode"><a name="176">176: </a></span>                tip = generator.generateToolTip(dataset, series, item);
+<span class="nocode"><a name="177">177: </a></span>            }
+<span class="nocode"><a name="178">178: </a></span>            String url = null;
+<span class="nocode"><a name="179">179: </a></span>            if (getURLGenerator() != null) {
+<span class="nocode"><a name="180">180: </a></span>                url = getURLGenerator().generateURL(dataset, series, item);
+<span class="nocode"><a name="181">181: </a></span>            }
+<span class="nocode"><a name="182">182: </a></span>            XYItemEntity entity = new XYItemEntity(entityArea, dataset, series,
+<span class="nocode"><a name="183">183: </a></span>                    item, tip, url);
+<span class="nocode"><a name="184">184: </a></span>            entities.add(entity);
+<span class="nocode"><a name="185">185: </a></span>        }
+<span class="nocode"><a name="186">186: </a></span>
+<span class="nocode"><a name="187">187: </a></span>    }
+<span class="nocode"><a name="188">188: </a></span>    
+<span class="nocode"><a name="189">189: </a></span>    /**
+<span class="nocode"><a name="190">190: </a></span>     * Returns a clone of the renderer.
+<span class="nocode"><a name="191">191: </a></span>     * 
+<span class="nocode"><a name="192">192: </a></span>     * @return A clone.
+<span class="nocode"><a name="193">193: </a></span>     * 
+<span class="nocode"><a name="194">194: </a></span>     * @throws CloneNotSupportedException  if the renderer cannot be cloned.
+<span class="nocode"><a name="195">195: </a></span>     */
+<span class="nocode"><a name="196">196: </a></span>    public Object clone() throws CloneNotSupportedException {
+<span class="nocode"><a name="197">197: </a></span>        return super.clone();
+<span class="nocode"><a name="198">198: </a></span>    }
+<span class="nocode"><a name="199">199: </a></span>
+<span class="nocode"><a name="200">200: </a></span>}
+</pre><table class="mutation_table" summary="Mutations">
+<tr><th>ID</th><th>Line</th><th>Type</th><th>Detected</th></tr><tr><td>56120</td><td><a href="#126">126</a></td><td>Negate jump condition (Replace IFNULL with  IFNONNULL)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>56121</td><td><a href="#127">127</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>56122</td><td><a href="#127">127(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>56123</td><td><a href="#132">132</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>56124</td><td><a href="#133">133</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>56125</td><td><a href="#134">134</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>56126</td><td><a href="#136">136</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>56127</td><td><a href="#137">137</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>56128</td><td><a href="#139">139</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>56129</td><td><a href="#140">140</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>56130</td><td><a href="#141">141</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>56131</td><td><a href="#143">143</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>56132</td><td><a href="#144">144</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>56133</td><td><a href="#147">147</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>56134</td><td><a href="#150">150</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>56135</td><td><a href="#151">151</a></td><td>Negate jump condition (Replace IF_ACMPNE with  IF_ACMPEQ)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>56136</td><td><a href="#153">153</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>56137</td><td><a href="#154">154</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>56138</td><td><a href="#156">156</a></td><td>Negate jump condition (Replace IF_ACMPNE with  IF_ACMPEQ)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>56139</td><td><a href="#158">158</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>56140</td><td><a href="#159">159</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>56141</td><td><a href="#161">161</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>56142</td><td><a href="#162">162</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>56143</td><td><a href="#163">163</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>56144</td><td><a href="#165">165</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>56145</td><td><a href="#166">166</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>56146</td><td><a href="#169">169</a></td><td>Negate jump condition (Replace IFNULL with  IFNONNULL)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>56147</td><td><a href="#170">170</a></td><td>Negate jump condition (Replace IFNONNULL with  IFNULL)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>56148</td><td><a href="#171">171</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>56149</td><td><a href="#174">174</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>56150</td><td><a href="#175">175</a></td><td>Negate jump condition (Replace IFNULL with  IFNONNULL)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>56151</td><td><a href="#176">176</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>56153</td><td><a href="#179">179</a></td><td>Negate jump condition (Replace IFNULL with  IFNONNULL)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>56152</td><td><a href="#179">179</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>56154</td><td><a href="#180">180</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>56155</td><td><a href="#180">180(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>56156</td><td><a href="#184">184</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>56157</td><td><a href="#197">197</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+</table>
+</body>
+</html>

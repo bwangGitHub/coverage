@@ -1,0 +1,137 @@
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/repos/asf/!svn/ver/1296977/poi/trunk/src/ooxml/testcases/org/apache/poi/xslf/usermodel
+END
+TestXSLFSlide.java
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/repos/asf/!svn/ver/1296977/poi/trunk/src/ooxml/testcases/org/apache/poi/xslf/usermodel/TestXSLFSlide.java
+END
+TestXSLFShape.java
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/repos/asf/!svn/ver/1212745/poi/trunk/src/ooxml/testcases/org/apache/poi/xslf/usermodel/TestXSLFShape.java
+END
+TestXSLFSlideShow.java
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/repos/asf/!svn/ver/1212745/poi/trunk/src/ooxml/testcases/org/apache/poi/xslf/usermodel/TestXSLFSlideShow.java
+END
+TestXSLFTheme.java
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/repos/asf/!svn/ver/1201687/poi/trunk/src/ooxml/testcases/org/apache/poi/xslf/usermodel/TestXSLFTheme.java
+END
+TestXSLFShapeContainer.java
+K 25
+svn:wc:ra_dav:version-url
+V 115
+/repos/asf/!svn/ver/1296977/poi/trunk/src/ooxml/testcases/org/apache/poi/xslf/usermodel/TestXSLFShapeContainer.java
+END
+TestXSLFHyperlink.java
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/repos/asf/!svn/ver/1201687/poi/trunk/src/ooxml/testcases/org/apache/poi/xslf/usermodel/TestXSLFHyperlink.java
+END
+TestXSLFTextShape.java
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/repos/asf/!svn/ver/1205902/poi/trunk/src/ooxml/testcases/org/apache/poi/xslf/usermodel/TestXSLFTextShape.java
+END
+TestXSLFSheet.java
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/repos/asf/!svn/ver/1201687/poi/trunk/src/ooxml/testcases/org/apache/poi/xslf/usermodel/TestXSLFSheet.java
+END
+TestXSLFTextRun.java
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/repos/asf/!svn/ver/1240026/poi/trunk/src/ooxml/testcases/org/apache/poi/xslf/usermodel/TestXSLFTextRun.java
+END
+TestXSLFSimpleShape.java
+K 25
+svn:wc:ra_dav:version-url
+V 112
+/repos/asf/!svn/ver/1201687/poi/trunk/src/ooxml/testcases/org/apache/poi/xslf/usermodel/TestXSLFSimpleShape.java
+END
+TestXSLFTextParagraph.java
+K 25
+svn:wc:ra_dav:version-url
+V 114
+/repos/asf/!svn/ver/1240026/poi/trunk/src/ooxml/testcases/org/apache/poi/xslf/usermodel/TestXSLFTextParagraph.java
+END
+TestXSLFConnectorShape.java
+K 25
+svn:wc:ra_dav:version-url
+V 115
+/repos/asf/!svn/ver/1201687/poi/trunk/src/ooxml/testcases/org/apache/poi/xslf/usermodel/TestXSLFConnectorShape.java
+END
+TestXSLFGroupShape.java
+K 25
+svn:wc:ra_dav:version-url
+V 111
+/repos/asf/!svn/ver/1212745/poi/trunk/src/ooxml/testcases/org/apache/poi/xslf/usermodel/TestXSLFGroupShape.java
+END
+TestXSLFColor.java
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/repos/asf/!svn/ver/1212745/poi/trunk/src/ooxml/testcases/org/apache/poi/xslf/usermodel/TestXSLFColor.java
+END
+TestXMLSlideShow.java
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/repos/asf/!svn/ver/1201687/poi/trunk/src/ooxml/testcases/org/apache/poi/xslf/usermodel/TestXMLSlideShow.java
+END
+TestPPTX2PNG.java
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/repos/asf/!svn/ver/1198658/poi/trunk/src/ooxml/testcases/org/apache/poi/xslf/usermodel/TestPPTX2PNG.java
+END
+TestXSLFFreeformShape.java
+K 25
+svn:wc:ra_dav:version-url
+V 114
+/repos/asf/!svn/ver/1212745/poi/trunk/src/ooxml/testcases/org/apache/poi/xslf/usermodel/TestXSLFFreeformShape.java
+END
+TestXSLFTable.java
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/repos/asf/!svn/ver/1291743/poi/trunk/src/ooxml/testcases/org/apache/poi/xslf/usermodel/TestXSLFTable.java
+END
+TestXSLFAutoShape.java
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/repos/asf/!svn/ver/1241885/poi/trunk/src/ooxml/testcases/org/apache/poi/xslf/usermodel/TestXSLFAutoShape.java
+END
+TestXSLFTableStyles.java
+K 25
+svn:wc:ra_dav:version-url
+V 112
+/repos/asf/!svn/ver/1201687/poi/trunk/src/ooxml/testcases/org/apache/poi/xslf/usermodel/TestXSLFTableStyles.java
+END
+TestXSLFPictureShape.java
+K 25
+svn:wc:ra_dav:version-url
+V 113
+/repos/asf/!svn/ver/1296977/poi/trunk/src/ooxml/testcases/org/apache/poi/xslf/usermodel/TestXSLFPictureShape.java
+END
+TestXSLFTextBox.java
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/repos/asf/!svn/ver/1210089/poi/trunk/src/ooxml/testcases/org/apache/poi/xslf/usermodel/TestXSLFTextBox.java
+END

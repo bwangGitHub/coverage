@@ -1,0 +1,59 @@
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/repos/asf/!svn/ver/1101397/poi/trunk/test-data/poifs
+END
+BlockSize4096.zvi
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/repos/asf/!svn/ver/953725/poi/trunk/test-data/poifs/BlockSize4096.zvi
+END
+BlockSize512.zvi
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/repos/asf/!svn/ver/940519/poi/trunk/test-data/poifs/BlockSize512.zvi
+END
+ShortLastBlock.qwp
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/repos/asf/!svn/ver/806959/poi/trunk/test-data/poifs/ShortLastBlock.qwp
+END
+ReferencesInvalidSectors.mpp
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/repos/asf/!svn/ver/933663/poi/trunk/test-data/poifs/ReferencesInvalidSectors.mpp
+END
+ShortLastBlock.wps
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/repos/asf/!svn/ver/806959/poi/trunk/test-data/poifs/ShortLastBlock.wps
+END
+protected_agile.docx
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/repos/asf/!svn/ver/1101397/poi/trunk/test-data/poifs/protected_agile.docx
+END
+Notes.ole2
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/repos/asf/!svn/ver/1026412/poi/trunk/test-data/poifs/Notes.ole2
+END
+protect.xlsx
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/repos/asf/!svn/ver/948825/poi/trunk/test-data/poifs/protect.xlsx
+END
+oleObject1.bin
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/repos/asf/!svn/ver/995415/poi/trunk/test-data/poifs/oleObject1.bin
+END

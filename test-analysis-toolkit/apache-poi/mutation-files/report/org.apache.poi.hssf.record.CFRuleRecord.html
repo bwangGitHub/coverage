@@ -1,0 +1,735 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN
+"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>
+org.apache.poi.hssf.record.CFRuleRecord
+</title>
+<link href="prettify.css" type="text/css" rel="stylesheet" />
+<script type="text/javascript" src="prettify.js"></script>
+</head>
+<body onload="prettyPrint()">
+<h2>Javalanche report for class:<br/> org.apache.poi.hssf.record.CFRuleRecord </h2><pre class="prettyprint" style="border: 1px solid #888;padding: 2px"><span class="nocode"><a name="1">  1: </a></span>/* ====================================================================
+<span class="nocode"><a name="2">  2: </a></span>   Licensed to the Apache Software Foundation (ASF) under one or more
+<span class="nocode"><a name="3">  3: </a></span>   contributor license agreements.  See the NOTICE file distributed with
+<span class="nocode"><a name="4">  4: </a></span>   this work for additional information regarding copyright ownership.
+<span class="nocode"><a name="5">  5: </a></span>   The ASF licenses this file to You under the Apache License, Version 2.0
+<span class="nocode"><a name="6">  6: </a></span>   (the &quot;License&quot;); you may not use this file except in compliance with
+<span class="nocode"><a name="7">  7: </a></span>   the License.  You may obtain a copy of the License at
+<span class="nocode"><a name="8">  8: </a></span>
+<span class="nocode"><a name="9">  9: </a></span>       http://www.apache.org/licenses/LICENSE-2.0
+<span class="nocode"><a name="10"> 10: </a></span>
+<span class="nocode"><a name="11"> 11: </a></span>   Unless required by applicable law or agreed to in writing, software
+<span class="nocode"><a name="12"> 12: </a></span>   distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+<span class="nocode"><a name="13"> 13: </a></span>   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+<span class="nocode"><a name="14"> 14: </a></span>   See the License for the specific language governing permissions and
+<span class="nocode"><a name="15"> 15: </a></span>   limitations under the License.
+<span class="nocode"><a name="16"> 16: </a></span>==================================================================== */
+<span class="nocode"><a name="17"> 17: </a></span>
+<span class="nocode"><a name="18"> 18: </a></span>package org.apache.poi.hssf.record;
+<span class="nocode"><a name="19"> 19: </a></span>
+<span class="nocode"><a name="20"> 20: </a></span>import org.apache.poi.hssf.model.HSSFFormulaParser;
+<span class="nocode"><a name="21"> 21: </a></span>import org.apache.poi.hssf.record.cf.BorderFormatting;
+<span class="nocode"><a name="22"> 22: </a></span>import org.apache.poi.hssf.record.cf.FontFormatting;
+<span class="nocode"><a name="23"> 23: </a></span>import org.apache.poi.hssf.record.cf.PatternFormatting;
+<span class="nocode"><a name="24"> 24: </a></span>import org.apache.poi.ss.formula.ptg.Ptg;
+<span class="nocode"><a name="25"> 25: </a></span>import org.apache.poi.hssf.usermodel.HSSFSheet;
+<span class="nocode"><a name="26"> 26: </a></span>import org.apache.poi.ss.formula.Formula;
+<span class="nocode"><a name="27"> 27: </a></span>import org.apache.poi.ss.formula.FormulaType;
+<span class="nocode"><a name="28"> 28: </a></span>import org.apache.poi.util.BitField;
+<span class="nocode"><a name="29"> 29: </a></span>import org.apache.poi.util.BitFieldFactory;
+<span class="nocode"><a name="30"> 30: </a></span>import org.apache.poi.util.LittleEndianOutput;
+<span class="nocode"><a name="31"> 31: </a></span>
+<span class="nocode"><a name="32"> 32: </a></span>/**
+<span class="nocode"><a name="33"> 33: </a></span> * Conditional Formatting Rule Record (0x01B1).&lt;br/&gt;
+<span class="nocode"><a name="34"> 34: </a></span> *
+<span class="nocode"><a name="35"> 35: </a></span> * @author Dmitriy Kumshayev
+<span class="nocode"><a name="36"> 36: </a></span> */
+<span class="nocode"><a name="37"> 37: </a></span>public final class CFRuleRecord extends StandardRecord {
+<span class="nocode"><a name="38"> 38: </a></span>
+<span class="nocode"><a name="39"> 39: </a></span>	public static final short sid = 0x01B1;
+<span class="nocode"><a name="40"> 40: </a></span>
+<span class="nocode"><a name="41"> 41: </a></span>	public static final class ComparisonOperator {
+<span class="nocode"><a name="42"> 42: </a></span>		public static final byte NO_COMPARISON = 0;
+<span class="nocode"><a name="43"> 43: </a></span>		public static final byte BETWEEN       = 1;
+<span class="nocode"><a name="44"> 44: </a></span>		public static final byte NOT_BETWEEN   = 2;
+<span class="nocode"><a name="45"> 45: </a></span>		public static final byte EQUAL         = 3;
+<span class="nocode"><a name="46"> 46: </a></span>		public static final byte NOT_EQUAL     = 4;
+<span class="nocode"><a name="47"> 47: </a></span>		public static final byte GT            = 5;
+<span class="nocode"><a name="48"> 48: </a></span>		public static final byte LT            = 6;
+<span class="nocode"><a name="49"> 49: </a></span>		public static final byte GE            = 7;
+<span class="nocode"><a name="50"> 50: </a></span>		public static final byte LE            = 8;
+<span class="nocode"><a name="51"> 51: </a></span>	}
+<span class="nocode"><a name="52"> 52: </a></span>
+<span class="nocode"><a name="53"> 53: </a></span>	private byte  field_1_condition_type;
+<span class="nocode"><a name="54"> 54: </a></span>	public static final byte CONDITION_TYPE_CELL_VALUE_IS = 1;
+<span class="nocode"><a name="55"> 55: </a></span>	public static final byte CONDITION_TYPE_FORMULA = 2;
+<span class="nocode"><a name="56"> 56: </a></span>
+<span class="nocode"><a name="57"> 57: </a></span>	private byte  field_2_comparison_operator;
+<span class="nocode"><a name="58"> 58: </a></span>
+<span class="nocode"><a name="59"> 59: </a></span>	private int   field_5_options;
+<span class="nocode"><a name="60"> 60: </a></span>
+<span class="nocode"><a name="61"> 61: </a></span>	private static final BitField modificationBits = bf(0x003FFFFF); // Bits: font,align,bord,patt,prot
+<span class="nocode"><a name="62"> 62: </a></span>	private static final BitField alignHor      = bf(0x00000001); // 0 = Horizontal alignment modified
+<span class="nocode"><a name="63"> 63: </a></span>	private static final BitField alignVer      = bf(0x00000002); // 0 = Vertical alignment modified
+<span class="nocode"><a name="64"> 64: </a></span>	private static final BitField alignWrap     = bf(0x00000004); // 0 = Text wrapped flag modified
+<span class="nocode"><a name="65"> 65: </a></span>	private static final BitField alignRot      = bf(0x00000008); // 0 = Text rotation modified
+<span class="nocode"><a name="66"> 66: </a></span>	private static final BitField alignJustLast = bf(0x00000010); // 0 = Justify last line flag modified
+<span class="nocode"><a name="67"> 67: </a></span>	private static final BitField alignIndent   = bf(0x00000020); // 0 = Indentation modified
+<span class="nocode"><a name="68"> 68: </a></span>	private static final BitField alignShrin    = bf(0x00000040); // 0 = Shrink to fit flag modified
+<span class="nocode"><a name="69"> 69: </a></span>	private static final BitField notUsed1      = bf(0x00000080); // Always 1
+<span class="nocode"><a name="70"> 70: </a></span>	private static final BitField protLocked    = bf(0x00000100); // 0 = Cell locked flag modified
+<span class="nocode"><a name="71"> 71: </a></span>	private static final BitField protHidden    = bf(0x00000200); // 0 = Cell hidden flag modified
+<span class="nocode"><a name="72"> 72: </a></span>	private static final BitField bordLeft      = bf(0x00000400); // 0 = Left border style and colour modified
+<span class="nocode"><a name="73"> 73: </a></span>	private static final BitField bordRight     = bf(0x00000800); // 0 = Right border style and colour modified
+<span class="nocode"><a name="74"> 74: </a></span>	private static final BitField bordTop       = bf(0x00001000); // 0 = Top border style and colour modified
+<span class="nocode"><a name="75"> 75: </a></span>	private static final BitField bordBot       = bf(0x00002000); // 0 = Bottom border style and colour modified
+<span class="nocode"><a name="76"> 76: </a></span>	private static final BitField bordTlBr      = bf(0x00004000); // 0 = Top-left to bottom-right border flag modified
+<span class="nocode"><a name="77"> 77: </a></span>	private static final BitField bordBlTr      = bf(0x00008000); // 0 = Bottom-left to top-right border flag modified
+<span class="nocode"><a name="78"> 78: </a></span>	private static final BitField pattStyle     = bf(0x00010000); // 0 = Pattern style modified
+<span class="nocode"><a name="79"> 79: </a></span>	private static final BitField pattCol       = bf(0x00020000); // 0 = Pattern colour modified
+<span class="nocode"><a name="80"> 80: </a></span>	private static final BitField pattBgCol     = bf(0x00040000); // 0 = Pattern background colour modified
+<span class="nocode"><a name="81"> 81: </a></span>	private static final BitField notUsed2      = bf(0x00380000); // Always 111
+<span class="nocode"><a name="82"> 82: </a></span>	private static final BitField undocumented  = bf(0x03C00000); // Undocumented bits
+<span class="nocode"><a name="83"> 83: </a></span>	private static final BitField fmtBlockBits  = bf(0x7C000000); // Bits: font,align,bord,patt,prot
+<span class="nocode"><a name="84"> 84: </a></span>	private static final BitField font          = bf(0x04000000); // 1 = Record contains font formatting block
+<span class="nocode"><a name="85"> 85: </a></span>	private static final BitField align         = bf(0x08000000); // 1 = Record contains alignment formatting block
+<span class="nocode"><a name="86"> 86: </a></span>	private static final BitField bord          = bf(0x10000000); // 1 = Record contains border formatting block
+<span class="nocode"><a name="87"> 87: </a></span>	private static final BitField patt          = bf(0x20000000); // 1 = Record contains pattern formatting block
+<span class="nocode"><a name="88"> 88: </a></span>	private static final BitField prot          = bf(0x40000000); // 1 = Record contains protection formatting block
+<span class="nocode"><a name="89"> 89: </a></span>	private static final BitField alignTextDir  = bf(0x80000000); // 0 = Text direction modified
+<span class="nocode"><a name="90"> 90: </a></span>
+<span class="nocode"><a name="91"> 91: </a></span>
+<span class="nocode"><a name="92"> 92: </a></span>	private static BitField bf(int i) {
+<span class="nocode"><a name="93"> 93: </a></span>		return BitFieldFactory.getInstance(i);
+<span class="nocode"><a name="94"> 94: </a></span>	}
+<span class="nocode"><a name="95"> 95: </a></span>
+<span class="nocode"><a name="96"> 96: </a></span>	private short field_6_not_used;
+<span class="nocode"><a name="97"> 97: </a></span>
+<span class="nocode"><a name="98"> 98: </a></span>	private FontFormatting _fontFormatting;
+<span class="nocode"><a name="99"> 99: </a></span>
+<span class="nocode"><a name="100">100: </a></span>	private BorderFormatting _borderFormatting;
+<span class="nocode"><a name="101">101: </a></span>
+<span class="nocode"><a name="102">102: </a></span>	private PatternFormatting _patternFormatting;
+<span class="nocode"><a name="103">103: </a></span>
+<span class="nocode"><a name="104">104: </a></span>	private Formula field_17_formula1;
+<span class="nocode"><a name="105">105: </a></span>	private Formula field_18_formula2;
+<span class="nocode"><a name="106">106: </a></span>
+<span class="nocode"><a name="107">107: </a></span>	/** Creates new CFRuleRecord */
+<span class="nocode"><a name="108">108: </a></span>	private CFRuleRecord(byte conditionType, byte comparisonOperation)
+<span class="nocode"><a name="109">109: </a></span>	{
+<span class="nocode"><a name="110">110: </a></span>		field_1_condition_type=conditionType;
+<span class="nocode"><a name="111">111: </a></span>		field_2_comparison_operator=comparisonOperation;
+<span class="nocode"><a name="112">112: </a></span>
+<span class="nocode"><a name="113">113: </a></span>		// Set modification flags to 1: by default options are not modified
+<span class="nocode"><a name="114">114: </a></span>		field_5_options = modificationBits.setValue(field_5_options, -1);
+<span class="nocode"><a name="115">115: </a></span>		// Set formatting block flags to 0 (no formatting blocks)
+<span class="nocode"><a name="116">116: </a></span>		field_5_options = fmtBlockBits.setValue(field_5_options, 0);
+<span class="nocode"><a name="117">117: </a></span>		field_5_options = undocumented.clear(field_5_options);
+<span class="nocode"><a name="118">118: </a></span>
+<span class="nocode"><a name="119">119: </a></span>		field_6_not_used = (short)0x8002; // Excel seems to write this value, but it doesn't seem to care what it reads
+<span class="nocode"><a name="120">120: </a></span>		_fontFormatting=null;
+<span class="nocode"><a name="121">121: </a></span>		_borderFormatting=null;
+<span class="nocode"><a name="122">122: </a></span>		_patternFormatting=null;
+<span class="nocode"><a name="123">123: </a></span>		field_17_formula1=Formula.create(Ptg.EMPTY_PTG_ARRAY);
+<span class="nocode"><a name="124">124: </a></span>		field_18_formula2=Formula.create(Ptg.EMPTY_PTG_ARRAY);
+<span class="nocode"><a name="125">125: </a></span>	}
+<span class="nocode"><a name="126">126: </a></span>
+<span class="nocode"><a name="127">127: </a></span>	private CFRuleRecord(byte conditionType, byte comparisonOperation, Ptg[] formula1, Ptg[] formula2) {
+<span class="nocode"><a name="128">128: </a></span>		this(conditionType, comparisonOperation);
+<span class="nocode"><a name="129">129: </a></span>		field_17_formula1 = Formula.create(formula1);
+<span class="nocode"><a name="130">130: </a></span>		field_18_formula2 = Formula.create(formula2);
+<span class="nocode"><a name="131">131: </a></span>	}
+<span class="nocode"><a name="132">132: </a></span>
+<span class="nocode"><a name="133">133: </a></span>	/**
+<span class="nocode"><a name="134">134: </a></span>	 * Creates a new comparison operation rule
+<span class="nocode"><a name="135">135: </a></span>	 */
+<span class="nocode"><a name="136">136: </a></span>    public static CFRuleRecord create(HSSFSheet sheet, String formulaText) {
+<span class="nocode"><a name="137">137: </a></span>        Ptg[] formula1 = parseFormula(formulaText, sheet);
+<span class="nocode"><a name="138">138: </a></span>        return new CFRuleRecord(CONDITION_TYPE_FORMULA, ComparisonOperator.NO_COMPARISON,
+<span class="nocode"><a name="139">139: </a></span>                formula1, null);
+<span class="nocode"><a name="140">140: </a></span>    }
+<span class="nocode"><a name="141">141: </a></span>	/**
+<span class="nocode"><a name="142">142: </a></span>	 * Creates a new comparison operation rule
+<span class="nocode"><a name="143">143: </a></span>	 */
+<span class="nocode"><a name="144">144: </a></span>	public static CFRuleRecord create(HSSFSheet sheet, byte comparisonOperation,
+<span class="nocode"><a name="145">145: </a></span>			String formulaText1, String formulaText2) {
+<span class="nocode"><a name="146">146: </a></span>		Ptg[] formula1 = parseFormula(formulaText1, sheet);
+<span class="nocode"><a name="147">147: </a></span>		Ptg[] formula2 = parseFormula(formulaText2, sheet);
+<span class="nocode"><a name="148">148: </a></span>		return new CFRuleRecord(CONDITION_TYPE_CELL_VALUE_IS, comparisonOperation, formula1, formula2);
+<span class="nocode"><a name="149">149: </a></span>	}
+<span class="nocode"><a name="150">150: </a></span>
+<span class="nocode"><a name="151">151: </a></span>	public CFRuleRecord(RecordInputStream in) {
+<span class="nocode"><a name="152">152: </a></span>		field_1_condition_type = in.readByte();
+<span class="nocode"><a name="153">153: </a></span>		field_2_comparison_operator = in.readByte();
+<span class="nocode"><a name="154">154: </a></span>		int field_3_formula1_len = in.readUShort();
+<span class="nocode"><a name="155">155: </a></span>		int field_4_formula2_len = in.readUShort();
+<span class="nocode"><a name="156">156: </a></span>		field_5_options = in.readInt();
+<span class="nocode"><a name="157">157: </a></span>		field_6_not_used = in.readShort();
+<span class="nocode"><a name="158">158: </a></span>
+<span class="nocode"><a name="159">159: </a></span>		if (containsFontFormattingBlock()) {
+<span class="nocode"><a name="160">160: </a></span>			_fontFormatting = new FontFormatting(in);
+<span class="nocode"><a name="161">161: </a></span>		}
+<span class="nocode"><a name="162">162: </a></span>
+<span class="nocode"><a name="163">163: </a></span>		if (containsBorderFormattingBlock()) {
+<span class="nocode"><a name="164">164: </a></span>			_borderFormatting = new BorderFormatting(in);
+<span class="nocode"><a name="165">165: </a></span>		}
+<span class="nocode"><a name="166">166: </a></span>
+<span class="nocode"><a name="167">167: </a></span>		if (containsPatternFormattingBlock()) {
+<span class="nocode"><a name="168">168: </a></span>			_patternFormatting = new PatternFormatting(in);
+<span class="nocode"><a name="169">169: </a></span>		}
+<span class="nocode"><a name="170">170: </a></span>
+<span class="nocode"><a name="171">171: </a></span>		// &quot;You may not use unions, intersections or array constants in Conditional Formatting criteria&quot;
+<span class="nocode"><a name="172">172: </a></span>		field_17_formula1 = Formula.read(field_3_formula1_len, in);
+<span class="nocode"><a name="173">173: </a></span>		field_18_formula2 = Formula.read(field_4_formula2_len, in);
+<span class="nocode"><a name="174">174: </a></span>	}
+<span class="nocode"><a name="175">175: </a></span>
+<span class="nocode"><a name="176">176: </a></span>	public byte getConditionType()
+<span class="nocode"><a name="177">177: </a></span>	{
+<span class="nocode"><a name="178">178: </a></span>		return field_1_condition_type;
+<span class="nocode"><a name="179">179: </a></span>	}
+<span class="nocode"><a name="180">180: </a></span>
+<span class="nocode"><a name="181">181: </a></span>	public boolean containsFontFormattingBlock()
+<span class="nocode"><a name="182">182: </a></span>	{
+<span class="nocode"><a name="183">183: </a></span>		return getOptionFlag(font);
+<span class="nocode"><a name="184">184: </a></span>	}
+<span class="nocode"><a name="185">185: </a></span>	public void setFontFormatting(FontFormatting fontFormatting)
+<span class="nocode"><a name="186">186: </a></span>	{
+<span class="nocode"><a name="187">187: </a></span>		_fontFormatting = fontFormatting;
+<span class="nocode"><a name="188">188: </a></span>		setOptionFlag(fontFormatting != null, font);
+<span class="nocode"><a name="189">189: </a></span>	}
+<span class="nocode"><a name="190">190: </a></span>	public FontFormatting getFontFormatting()
+<span class="nocode"><a name="191">191: </a></span>	{
+<span class="nocode"><a name="192">192: </a></span>		if( containsFontFormattingBlock())
+<span class="nocode"><a name="193">193: </a></span>		{
+<span class="nocode"><a name="194">194: </a></span>			return _fontFormatting;
+<span class="nocode"><a name="195">195: </a></span>		}
+<span class="nocode"><a name="196">196: </a></span>		return null;
+<span class="nocode"><a name="197">197: </a></span>	}
+<span class="nocode"><a name="198">198: </a></span>
+<span class="nocode"><a name="199">199: </a></span>	public boolean containsAlignFormattingBlock()
+<span class="nocode"><a name="200">200: </a></span>	{
+<span class="nocode"><a name="201">201: </a></span>		return getOptionFlag(align);
+<span class="nocode"><a name="202">202: </a></span>	}
+<span class="nocode"><a name="203">203: </a></span>	public void setAlignFormattingUnchanged()
+<span class="nocode"><a name="204">204: </a></span>	{
+<span class="nocode"><a name="205">205: </a></span>		setOptionFlag(false,align);
+<span class="nocode"><a name="206">206: </a></span>	}
+<span class="nocode"><a name="207">207: </a></span>
+<span class="nocode"><a name="208">208: </a></span>	public boolean containsBorderFormattingBlock()
+<span class="nocode"><a name="209">209: </a></span>	{
+<span class="nocode"><a name="210">210: </a></span>		return getOptionFlag(bord);
+<span class="nocode"><a name="211">211: </a></span>	}
+<span class="nocode"><a name="212">212: </a></span>	public void setBorderFormatting(BorderFormatting borderFormatting)
+<span class="nocode"><a name="213">213: </a></span>	{
+<span class="nocode"><a name="214">214: </a></span>		_borderFormatting = borderFormatting;
+<span class="nocode"><a name="215">215: </a></span>		setOptionFlag(borderFormatting != null, bord);
+<span class="nocode"><a name="216">216: </a></span>	}
+<span class="nocode"><a name="217">217: </a></span>	public BorderFormatting getBorderFormatting()
+<span class="nocode"><a name="218">218: </a></span>	{
+<span class="nocode"><a name="219">219: </a></span>		if( containsBorderFormattingBlock())
+<span class="nocode"><a name="220">220: </a></span>		{
+<span class="nocode"><a name="221">221: </a></span>			return _borderFormatting;
+<span class="nocode"><a name="222">222: </a></span>		}
+<span class="nocode"><a name="223">223: </a></span>		return null;
+<span class="nocode"><a name="224">224: </a></span>	}
+<span class="nocode"><a name="225">225: </a></span>
+<span class="nocode"><a name="226">226: </a></span>	public boolean containsPatternFormattingBlock()
+<span class="nocode"><a name="227">227: </a></span>	{
+<span class="nocode"><a name="228">228: </a></span>		return getOptionFlag(patt);
+<span class="nocode"><a name="229">229: </a></span>	}
+<span class="nocode"><a name="230">230: </a></span>	public void setPatternFormatting(PatternFormatting patternFormatting)
+<span class="nocode"><a name="231">231: </a></span>	{
+<span class="nocode"><a name="232">232: </a></span>		_patternFormatting = patternFormatting;
+<span class="nocode"><a name="233">233: </a></span>		setOptionFlag(patternFormatting!=null, patt);
+<span class="nocode"><a name="234">234: </a></span>	}
+<span class="nocode"><a name="235">235: </a></span>	public PatternFormatting getPatternFormatting()
+<span class="nocode"><a name="236">236: </a></span>	{
+<span class="nocode"><a name="237">237: </a></span>		if( containsPatternFormattingBlock())
+<span class="nocode"><a name="238">238: </a></span>		{
+<span class="nocode"><a name="239">239: </a></span>			return _patternFormatting;
+<span class="nocode"><a name="240">240: </a></span>		}
+<span class="nocode"><a name="241">241: </a></span>		return null;
+<span class="nocode"><a name="242">242: </a></span>	}
+<span class="nocode"><a name="243">243: </a></span>
+<span class="nocode"><a name="244">244: </a></span>	public boolean containsProtectionFormattingBlock()
+<span class="nocode"><a name="245">245: </a></span>	{
+<span class="nocode"><a name="246">246: </a></span>		return getOptionFlag(prot);
+<span class="nocode"><a name="247">247: </a></span>	}
+<span class="nocode"><a name="248">248: </a></span>	public void setProtectionFormattingUnchanged()
+<span class="nocode"><a name="249">249: </a></span>	{
+<span class="nocode"><a name="250">250: </a></span>		setOptionFlag(false,prot);
+<span class="nocode"><a name="251">251: </a></span>	}
+<span class="nocode"><a name="252">252: </a></span>
+<span class="nocode"><a name="253">253: </a></span>	public void setComparisonOperation(byte operation)
+<span class="nocode"><a name="254">254: </a></span>	{
+<span class="nocode"><a name="255">255: </a></span>		field_2_comparison_operator = operation;
+<span class="nocode"><a name="256">256: </a></span>	}
+<span class="nocode"><a name="257">257: </a></span>
+<span class="nocode"><a name="258">258: </a></span>	public byte getComparisonOperation()
+<span class="nocode"><a name="259">259: </a></span>	{
+<span class="nocode"><a name="260">260: </a></span>		return field_2_comparison_operator;
+<span class="nocode"><a name="261">261: </a></span>	}
+<span class="nocode"><a name="262">262: </a></span>
+<span class="nocode"><a name="263">263: </a></span>
+<span class="nocode"><a name="264">264: </a></span>	/**
+<span class="nocode"><a name="265">265: </a></span>	 * get the option flags
+<span class="nocode"><a name="266">266: </a></span>	 *
+<span class="nocode"><a name="267">267: </a></span>	 * @return bit mask
+<span class="nocode"><a name="268">268: </a></span>	 */
+<span class="nocode"><a name="269">269: </a></span>	public int getOptions()
+<span class="nocode"><a name="270">270: </a></span>	{
+<span class="nocode"><a name="271">271: </a></span>		return field_5_options;
+<span class="nocode"><a name="272">272: </a></span>	}
+<span class="nocode"><a name="273">273: </a></span>
+<span class="nocode"><a name="274">274: </a></span>	private boolean isModified(BitField field)
+<span class="nocode"><a name="275">275: </a></span>	{
+<span class="nocode"><a name="276">276: </a></span>		return !field.isSet(field_5_options);
+<span class="nocode"><a name="277">277: </a></span>	}
+<span class="nocode"><a name="278">278: </a></span>
+<span class="nocode"><a name="279">279: </a></span>	private void setModified(boolean modified, BitField field)
+<span class="nocode"><a name="280">280: </a></span>	{
+<span class="nocode"><a name="281">281: </a></span>		field_5_options = field.setBoolean(field_5_options, !modified);
+<span class="nocode"><a name="282">282: </a></span>	}
+<span class="nocode"><a name="283">283: </a></span>
+<span class="nocode"><a name="284">284: </a></span>	public boolean isLeftBorderModified()
+<span class="nocode"><a name="285">285: </a></span>	{
+<span class="nocode"><a name="286">286: </a></span>		return isModified(bordLeft);
+<span class="nocode"><a name="287">287: </a></span>	}
+<span class="nocode"><a name="288">288: </a></span>
+<span class="nocode"><a name="289">289: </a></span>	public void setLeftBorderModified(boolean modified)
+<span class="nocode"><a name="290">290: </a></span>	{
+<span class="nocode"><a name="291">291: </a></span>		setModified(modified,bordLeft);
+<span class="nocode"><a name="292">292: </a></span>	}
+<span class="nocode"><a name="293">293: </a></span>
+<span class="nocode"><a name="294">294: </a></span>	public boolean isRightBorderModified()
+<span class="nocode"><a name="295">295: </a></span>	{
+<span class="nocode"><a name="296">296: </a></span>		return isModified(bordRight);
+<span class="nocode"><a name="297">297: </a></span>	}
+<span class="nocode"><a name="298">298: </a></span>
+<span class="nocode"><a name="299">299: </a></span>	public void setRightBorderModified(boolean modified)
+<span class="nocode"><a name="300">300: </a></span>	{
+<span class="nocode"><a name="301">301: </a></span>		setModified(modified,bordRight);
+<span class="nocode"><a name="302">302: </a></span>	}
+<span class="nocode"><a name="303">303: </a></span>
+<span class="nocode"><a name="304">304: </a></span>	public boolean isTopBorderModified()
+<span class="nocode"><a name="305">305: </a></span>	{
+<span class="nocode"><a name="306">306: </a></span>		return isModified(bordTop);
+<span class="nocode"><a name="307">307: </a></span>	}
+<span class="nocode"><a name="308">308: </a></span>
+<span class="nocode"><a name="309">309: </a></span>	public void setTopBorderModified(boolean modified)
+<span class="nocode"><a name="310">310: </a></span>	{
+<span class="nocode"><a name="311">311: </a></span>		setModified(modified,bordTop);
+<span class="nocode"><a name="312">312: </a></span>	}
+<span class="nocode"><a name="313">313: </a></span>
+<span class="nocode"><a name="314">314: </a></span>	public boolean isBottomBorderModified()
+<span class="nocode"><a name="315">315: </a></span>	{
+<span class="nocode"><a name="316">316: </a></span>		return isModified(bordBot);
+<span class="nocode"><a name="317">317: </a></span>	}
+<span class="nocode"><a name="318">318: </a></span>
+<span class="nocode"><a name="319">319: </a></span>	public void setBottomBorderModified(boolean modified)
+<span class="nocode"><a name="320">320: </a></span>	{
+<span class="nocode"><a name="321">321: </a></span>		setModified(modified,bordBot);
+<span class="nocode"><a name="322">322: </a></span>	}
+<span class="nocode"><a name="323">323: </a></span>
+<span class="nocode"><a name="324">324: </a></span>	public boolean isTopLeftBottomRightBorderModified()
+<span class="nocode"><a name="325">325: </a></span>	{
+<span class="nocode"><a name="326">326: </a></span>		return isModified(bordTlBr);
+<span class="nocode"><a name="327">327: </a></span>	}
+<span class="nocode"><a name="328">328: </a></span>
+<span class="nocode"><a name="329">329: </a></span>	public void setTopLeftBottomRightBorderModified(boolean modified)
+<span class="nocode"><a name="330">330: </a></span>	{
+<span class="nocode"><a name="331">331: </a></span>		setModified(modified,bordTlBr);
+<span class="nocode"><a name="332">332: </a></span>	}
+<span class="nocode"><a name="333">333: </a></span>
+<span class="nocode"><a name="334">334: </a></span>	public boolean isBottomLeftTopRightBorderModified()
+<span class="nocode"><a name="335">335: </a></span>	{
+<span class="nocode"><a name="336">336: </a></span>		return isModified(bordBlTr);
+<span class="nocode"><a name="337">337: </a></span>	}
+<span class="nocode"><a name="338">338: </a></span>
+<span class="nocode"><a name="339">339: </a></span>	public void setBottomLeftTopRightBorderModified(boolean modified)
+<span class="nocode"><a name="340">340: </a></span>	{
+<span class="nocode"><a name="341">341: </a></span>		setModified(modified,bordBlTr);
+<span class="nocode"><a name="342">342: </a></span>	}
+<span class="nocode"><a name="343">343: </a></span>
+<span class="nocode"><a name="344">344: </a></span>	public boolean isPatternStyleModified()
+<span class="nocode"><a name="345">345: </a></span>	{
+<span class="nocode"><a name="346">346: </a></span>		return isModified(pattStyle);
+<span class="nocode"><a name="347">347: </a></span>	}
+<span class="nocode"><a name="348">348: </a></span>
+<span class="nocode"><a name="349">349: </a></span>	public void setPatternStyleModified(boolean modified)
+<span class="nocode"><a name="350">350: </a></span>	{
+<span class="nocode"><a name="351">351: </a></span>		setModified(modified,pattStyle);
+<span class="nocode"><a name="352">352: </a></span>	}
+<span class="nocode"><a name="353">353: </a></span>
+<span class="nocode"><a name="354">354: </a></span>	public boolean isPatternColorModified()
+<span class="nocode"><a name="355">355: </a></span>	{
+<span class="nocode"><a name="356">356: </a></span>		return isModified(pattCol);
+<span class="nocode"><a name="357">357: </a></span>	}
+<span class="nocode"><a name="358">358: </a></span>
+<span class="nocode"><a name="359">359: </a></span>	public void setPatternColorModified(boolean modified)
+<span class="nocode"><a name="360">360: </a></span>	{
+<span class="nocode"><a name="361">361: </a></span>		setModified(modified,pattCol);
+<span class="nocode"><a name="362">362: </a></span>	}
+<span class="nocode"><a name="363">363: </a></span>
+<span class="nocode"><a name="364">364: </a></span>	public boolean isPatternBackgroundColorModified()
+<span class="nocode"><a name="365">365: </a></span>	{
+<span class="nocode"><a name="366">366: </a></span>		return isModified(pattBgCol);
+<span class="nocode"><a name="367">367: </a></span>	}
+<span class="nocode"><a name="368">368: </a></span>
+<span class="nocode"><a name="369">369: </a></span>	public void setPatternBackgroundColorModified(boolean modified)
+<span class="nocode"><a name="370">370: </a></span>	{
+<span class="nocode"><a name="371">371: </a></span>		setModified(modified,pattBgCol);
+<span class="nocode"><a name="372">372: </a></span>	}
+<span class="nocode"><a name="373">373: </a></span>
+<span class="nocode"><a name="374">374: </a></span>	private boolean getOptionFlag(BitField field)
+<span class="nocode"><a name="375">375: </a></span>	{
+<span class="nocode"><a name="376">376: </a></span>		return field.isSet(field_5_options);
+<span class="nocode"><a name="377">377: </a></span>	}
+<span class="nocode"><a name="378">378: </a></span>
+<span class="nocode"><a name="379">379: </a></span>	private void setOptionFlag(boolean flag, BitField field)
+<span class="nocode"><a name="380">380: </a></span>	{
+<span class="nocode"><a name="381">381: </a></span>		field_5_options = field.setBoolean(field_5_options, flag);
+<span class="nocode"><a name="382">382: </a></span>	}
+<span class="nocode"><a name="383">383: </a></span>
+<span class="nocode"><a name="384">384: </a></span>	/**
+<span class="nocode"><a name="385">385: </a></span>	 * get the stack of the 1st expression as a list
+<span class="nocode"><a name="386">386: </a></span>	 *
+<span class="nocode"><a name="387">387: </a></span>	 * @return list of tokens (casts stack to a list and returns it!)
+<span class="nocode"><a name="388">388: </a></span>	 * this method can return null is we are unable to create Ptgs from
+<span class="nocode"><a name="389">389: </a></span>	 *	 existing excel file
+<span class="nocode"><a name="390">390: </a></span>	 * callers should check for null!
+<span class="nocode"><a name="391">391: </a></span>	 */
+<span class="nocode"><a name="392">392: </a></span>
+<span class="nocode"><a name="393">393: </a></span>	public Ptg[] getParsedExpression1()
+<span class="nocode"><a name="394">394: </a></span>	{
+<span class="nocode"><a name="395">395: </a></span>		return field_17_formula1.getTokens();
+<span class="nocode"><a name="396">396: </a></span>	}
+<span class="nocode"><a name="397">397: </a></span>	public void setParsedExpression1(Ptg[] ptgs) {
+<span class="nocode"><a name="398">398: </a></span>		field_17_formula1 = Formula.create(ptgs);
+<span class="nocode"><a name="399">399: </a></span>	}
+<span class="nocode"><a name="400">400: </a></span>
+<span class="nocode"><a name="401">401: </a></span>	/**
+<span class="nocode"><a name="402">402: </a></span>	 * get the stack of the 2nd expression as a list
+<span class="nocode"><a name="403">403: </a></span>	 *
+<span class="nocode"><a name="404">404: </a></span>	 * @return array of {@link Ptg}s, possibly &lt;code&gt;null&lt;/code&gt;
+<span class="nocode"><a name="405">405: </a></span>	 */
+<span class="nocode"><a name="406">406: </a></span>	public Ptg[] getParsedExpression2() {
+<span class="nocode"><a name="407">407: </a></span>		return Formula.getTokens(field_18_formula2);
+<span class="nocode"><a name="408">408: </a></span>	}
+<span class="nocode"><a name="409">409: </a></span>	public void setParsedExpression2(Ptg[] ptgs) {
+<span class="nocode"><a name="410">410: </a></span>		field_18_formula2 = Formula.create(ptgs);
+<span class="nocode"><a name="411">411: </a></span>	}
+<span class="nocode"><a name="412">412: </a></span>
+<span class="nocode"><a name="413">413: </a></span>	public short getSid()
+<span class="nocode"><a name="414">414: </a></span>	{
+<span class="nocode"><a name="415">415: </a></span>		return sid;
+<span class="nocode"><a name="416">416: </a></span>	}
+<span class="nocode"><a name="417">417: </a></span>
+<span class="nocode"><a name="418">418: </a></span>	/**
+<span class="nocode"><a name="419">419: </a></span>	 * @param ptgs must not be &lt;code&gt;null&lt;/code&gt;
+<span class="nocode"><a name="420">420: </a></span>	 * @return encoded size of the formula tokens (does not include 2 bytes for ushort length)
+<span class="nocode"><a name="421">421: </a></span>	 */
+<span class="nocode"><a name="422">422: </a></span>	private static int getFormulaSize(Formula formula) {
+<span class="nocode"><a name="423">423: </a></span>		return formula.getEncodedTokenSize();
+<span class="nocode"><a name="424">424: </a></span>	}
+<span class="nocode"><a name="425">425: </a></span>
+<span class="nocode"><a name="426">426: </a></span>	/**
+<span class="nocode"><a name="427">427: </a></span>	 * called by the class that is responsible for writing this sucker.
+<span class="nocode"><a name="428">428: </a></span>	 * Subclasses should implement this so that their data is passed back in a
+<span class="nocode"><a name="429">429: </a></span>	 * byte array.
+<span class="nocode"><a name="430">430: </a></span>	 *
+<span class="nocode"><a name="431">431: </a></span>	 * @param out the stream to write to
+<span class="nocode"><a name="432">432: </a></span>	 */
+<span class="nocode"><a name="433">433: </a></span>	public void serialize(LittleEndianOutput out) {
+<span class="nocode"><a name="434">434: </a></span>
+<span class="nocode"><a name="435">435: </a></span>		int formula1Len=getFormulaSize(field_17_formula1);
+<span class="nocode"><a name="436">436: </a></span>		int formula2Len=getFormulaSize(field_18_formula2);
+<span class="nocode"><a name="437">437: </a></span>
+<span class="nocode"><a name="438">438: </a></span>		out.writeByte(field_1_condition_type);
+<span class="nocode"><a name="439">439: </a></span>		out.writeByte(field_2_comparison_operator);
+<span class="nocode"><a name="440">440: </a></span>		out.writeShort(formula1Len);
+<span class="nocode"><a name="441">441: </a></span>		out.writeShort(formula2Len);
+<span class="nocode"><a name="442">442: </a></span>		out.writeInt(field_5_options);
+<span class="nocode"><a name="443">443: </a></span>		out.writeShort(field_6_not_used);
+<span class="nocode"><a name="444">444: </a></span>
+<span class="nocode"><a name="445">445: </a></span>		if (containsFontFormattingBlock()) {
+<span class="nocode"><a name="446">446: </a></span>			byte[] fontFormattingRawRecord  = _fontFormatting.getRawRecord();
+<span class="nocode"><a name="447">447: </a></span>			out.write(fontFormattingRawRecord);
+<span class="nocode"><a name="448">448: </a></span>		}
+<span class="nocode"><a name="449">449: </a></span>
+<span class="nocode"><a name="450">450: </a></span>		if (containsBorderFormattingBlock()) {
+<span class="nocode"><a name="451">451: </a></span>			_borderFormatting.serialize(out);
+<span class="nocode"><a name="452">452: </a></span>		}
+<span class="nocode"><a name="453">453: </a></span>
+<span class="nocode"><a name="454">454: </a></span>		if (containsPatternFormattingBlock()) {
+<span class="nocode"><a name="455">455: </a></span>			_patternFormatting.serialize(out);
+<span class="nocode"><a name="456">456: </a></span>		}
+<span class="nocode"><a name="457">457: </a></span>
+<span class="nocode"><a name="458">458: </a></span>		field_17_formula1.serializeTokens(out);
+<span class="nocode"><a name="459">459: </a></span>		field_18_formula2.serializeTokens(out);
+<span class="nocode"><a name="460">460: </a></span>	}
+<span class="nocode"><a name="461">461: </a></span>
+<span class="nocode"><a name="462">462: </a></span>	protected int getDataSize() {
+<span class="nocode"><a name="463">463: </a></span>		return 12 +
+<span class="nocode"><a name="464">464: </a></span>					(containsFontFormattingBlock()?_fontFormatting.getRawRecord().length:0)+
+<span class="nocode"><a name="465">465: </a></span>					(containsBorderFormattingBlock()?8:0)+
+<span class="nocode"><a name="466">466: </a></span>					(containsPatternFormattingBlock()?4:0)+
+<span class="nocode"><a name="467">467: </a></span>					getFormulaSize(field_17_formula1)+
+<span class="nocode"><a name="468">468: </a></span>					getFormulaSize(field_18_formula2)
+<span class="nocode"><a name="469">469: </a></span>					;
+<span class="nocode"><a name="470">470: </a></span>	}
+<span class="nocode"><a name="471">471: </a></span>
+<span class="nocode"><a name="472">472: </a></span>
+<span class="nocode"><a name="473">473: </a></span>	public String toString() {
+<span class="nocode"><a name="474">474: </a></span>		StringBuffer buffer = new StringBuffer();
+<span class="nocode"><a name="475">475: </a></span>		buffer.append(&quot;[CFRULE]\n&quot;);
+<span class="nocode"><a name="476">476: </a></span>        buffer.append(&quot;    .condition_type   =&quot;+field_1_condition_type);
+<span class="nocode"><a name="477">477: </a></span>		buffer.append(&quot;    OPTION FLAGS=0x&quot;+Integer.toHexString(getOptions()));
+<span class="nocode"><a name="478">478: </a></span>		if (false) {
+<span class="nocode"><a name="479">479: </a></span>			if (containsFontFormattingBlock()) {
+<span class="nocode"><a name="480">480: </a></span>				buffer.append(_fontFormatting.toString());
+<span class="nocode"><a name="481">481: </a></span>			}
+<span class="nocode"><a name="482">482: </a></span>			if (containsBorderFormattingBlock()) {
+<span class="nocode"><a name="483">483: </a></span>				buffer.append(_borderFormatting.toString());
+<span class="nocode"><a name="484">484: </a></span>			}
+<span class="nocode"><a name="485">485: </a></span>			if (containsPatternFormattingBlock()) {
+<span class="nocode"><a name="486">486: </a></span>				buffer.append(_patternFormatting.toString());
+<span class="nocode"><a name="487">487: </a></span>			}
+<span class="nocode"><a name="488">488: </a></span>			buffer.append(&quot;[/CFRULE]\n&quot;);
+<span class="nocode"><a name="489">489: </a></span>		}
+<span class="nocode"><a name="490">490: </a></span>		return buffer.toString();
+<span class="nocode"><a name="491">491: </a></span>	}
+<span class="nocode"><a name="492">492: </a></span>
+<span class="nocode"><a name="493">493: </a></span>	public Object clone() {
+<span class="nocode"><a name="494">494: </a></span>		CFRuleRecord rec = new CFRuleRecord(field_1_condition_type, field_2_comparison_operator);
+<span class="nocode"><a name="495">495: </a></span>		rec.field_5_options = field_5_options;
+<span class="nocode"><a name="496">496: </a></span>		rec.field_6_not_used = field_6_not_used;
+<span class="nocode"><a name="497">497: </a></span>		if (containsFontFormattingBlock()) {
+<span class="nocode"><a name="498">498: </a></span>			rec._fontFormatting = (FontFormatting) _fontFormatting.clone();
+<span class="nocode"><a name="499">499: </a></span>		}
+<span class="nocode"><a name="500">500: </a></span>		if (containsBorderFormattingBlock()) {
+<span class="nocode"><a name="501">501: </a></span>			rec._borderFormatting = (BorderFormatting) _borderFormatting.clone();
+<span class="nocode"><a name="502">502: </a></span>		}
+<span class="nocode"><a name="503">503: </a></span>		if (containsPatternFormattingBlock()) {
+<span class="nocode"><a name="504">504: </a></span>			rec._patternFormatting = (PatternFormatting) _patternFormatting.clone();
+<span class="nocode"><a name="505">505: </a></span>		}
+<span class="nocode"><a name="506">506: </a></span>		rec.field_17_formula1 = field_17_formula1.copy();
+<span class="nocode"><a name="507">507: </a></span>		rec.field_18_formula2 = field_17_formula1.copy();
+<span class="nocode"><a name="508">508: </a></span>
+<span class="nocode"><a name="509">509: </a></span>		return rec;
+<span class="nocode"><a name="510">510: </a></span>	}
+<span class="nocode"><a name="511">511: </a></span>
+<span class="nocode"><a name="512">512: </a></span>	/**
+<span class="nocode"><a name="513">513: </a></span>	 * TODO - parse conditional format formulas properly i.e. produce tRefN and tAreaN instead of tRef and tArea
+<span class="nocode"><a name="514">514: </a></span>	 * this call will produce the wrong results if the formula contains any cell references
+<span class="nocode"><a name="515">515: </a></span>	 * One approach might be to apply the inverse of SharedFormulaRecord.convertSharedFormulas(Stack, int, int)
+<span class="nocode"><a name="516">516: </a></span>	 * Note - two extra parameters (rowIx &amp; colIx) will be required. They probably come from one of the Region objects.
+<span class="nocode"><a name="517">517: </a></span>	 *
+<span class="nocode"><a name="518">518: </a></span>	 * @return &lt;code&gt;null&lt;/code&gt; if &lt;tt&gt;formula&lt;/tt&gt; was null.
+<span class="nocode"><a name="519">519: </a></span>	 */
+<span class="nocode"><a name="520">520: </a></span>    private static Ptg[] parseFormula(String formula, HSSFSheet sheet) {
+<span class="nocode"><a name="521">521: </a></span>        if(formula == null) {
+<span class="nocode"><a name="522">522: </a></span>            return null;
+<span class="nocode"><a name="523">523: </a></span>        }
+<span class="nocode"><a name="524">524: </a></span>        int sheetIndex = sheet.getWorkbook().getSheetIndex(sheet);
+<span class="nocode"><a name="525">525: </a></span>        return HSSFFormulaParser.parse(formula, sheet.getWorkbook(), FormulaType.CELL, sheetIndex);
+<span class="nocode"><a name="526">526: </a></span>    }
+<span class="nocode"><a name="527">527: </a></span>}
+</pre><table class="mutation_table" summary="Mutations">
+<tr><th>ID</th><th>Line</th><th>Type</th><th>Detected</th></tr><tr><td>34510</td><td><a href="#93">93</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>34512</td><td><a href="#114">114</a></td><td>Replace a constant (Replace -1 with -2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>34511</td><td><a href="#114">114</a></td><td>Replace a constant (Replace -1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>34513</td><td><a href="#114">114</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>34515</td><td><a href="#116">116</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>34514</td><td><a href="#116">116</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>34516</td><td><a href="#116">116</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>34517</td><td><a href="#117">117</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>34520</td><td><a href="#119">119</a></td><td>Replace a constant (Replace -32766 with -32765(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>34518</td><td><a href="#119">119</a></td><td>Replace a constant (Replace -32766 with -32767(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>34519</td><td><a href="#119">119</a></td><td>Replace a constant (Replace -32766 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>34521</td><td><a href="#123">123</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>34522</td><td><a href="#124">124</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>34523</td><td><a href="#129">129</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>34524</td><td><a href="#130">130</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>34525</td><td><a href="#137">137</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>34526</td><td><a href="#138">138</a></td><td>Replace a constant (Replace 2 with 3(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>34528</td><td><a href="#138">138</a></td><td>Replace a constant (Replace 2 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>34527</td><td><a href="#138">138</a></td><td>Replace a constant (Replace 2 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>34530</td><td><a href="#138">138(1)</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>34529</td><td><a href="#138">138(1)</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>34531</td><td><a href="#146">146</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>34532</td><td><a href="#147">147</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>34533</td><td><a href="#148">148</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>34534</td><td><a href="#148">148</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>34535</td><td><a href="#152">152</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>34536</td><td><a href="#153">153</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>34537</td><td><a href="#154">154</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>34538</td><td><a href="#155">155</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>34539</td><td><a href="#156">156</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>34540</td><td><a href="#157">157</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>34542</td><td><a href="#159">159</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>34541</td><td><a href="#159">159</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>34544</td><td><a href="#163">163</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>34543</td><td><a href="#163">163</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>34546</td><td><a href="#167">167</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>34545</td><td><a href="#167">167</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>34547</td><td><a href="#172">172</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>34548</td><td><a href="#173">173</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>34549</td><td><a href="#183">183</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>34552</td><td><a href="#188">188</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>34551</td><td><a href="#188">188</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>34553</td><td><a href="#188">188(1)</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>34554</td><td><a href="#188">188(1)</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>34550</td><td><a href="#188">188</a></td><td>Negate jump condition (Replace IFNULL with  IFNONNULL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>34555</td><td><a href="#188">188</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>34557</td><td><a href="#192">192</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>34556</td><td><a href="#192">192</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>34558</td><td><a href="#201">201</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>34559</td><td><a href="#205">205</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>34560</td><td><a href="#205">205</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>34561</td><td><a href="#205">205</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>34562</td><td><a href="#210">210</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>34565</td><td><a href="#215">215</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>34564</td><td><a href="#215">215</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>34566</td><td><a href="#215">215(1)</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>34567</td><td><a href="#215">215(1)</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>34563</td><td><a href="#215">215</a></td><td>Negate jump condition (Replace IFNULL with  IFNONNULL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>34568</td><td><a href="#215">215</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>34570</td><td><a href="#219">219</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>34569</td><td><a href="#219">219</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>34571</td><td><a href="#228">228</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>34573</td><td><a href="#233">233</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>34574</td><td><a href="#233">233</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>34576</td><td><a href="#233">233(1)</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>34575</td><td><a href="#233">233(1)</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>34572</td><td><a href="#233">233</a></td><td>Negate jump condition (Replace IFNULL with  IFNONNULL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>34577</td><td><a href="#233">233</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>34579</td><td><a href="#237">237</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>34578</td><td><a href="#237">237</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>34580</td><td><a href="#246">246</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>34581</td><td><a href="#250">250</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>34582</td><td><a href="#250">250</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>34583</td><td><a href="#250">250</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>34587</td><td><a href="#276">276</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>34586</td><td><a href="#276">276</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>34589</td><td><a href="#276">276(1)</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>34588</td><td><a href="#276">276(1)</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>34585</td><td><a href="#276">276</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>34584</td><td><a href="#276">276</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>34591</td><td><a href="#281">281</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>34592</td><td><a href="#281">281</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>34593</td><td><a href="#281">281(1)</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>34594</td><td><a href="#281">281(1)</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>34590</td><td><a href="#281">281</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>34595</td><td><a href="#281">281</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>34596</td><td><a href="#286">286</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>34597</td><td><a href="#291">291</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>34598</td><td><a href="#296">296</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>34599</td><td><a href="#301">301</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>34600</td><td><a href="#306">306</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>34601</td><td><a href="#311">311</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>34602</td><td><a href="#316">316</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>34603</td><td><a href="#321">321</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>34604</td><td><a href="#326">326</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>34605</td><td><a href="#331">331</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>34606</td><td><a href="#336">336</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>34607</td><td><a href="#341">341</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>34608</td><td><a href="#346">346</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>34609</td><td><a href="#351">351</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>34610</td><td><a href="#356">356</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>34611</td><td><a href="#361">361</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>34612</td><td><a href="#366">366</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>34613</td><td><a href="#371">371</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>34614</td><td><a href="#376">376</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>34615</td><td><a href="#381">381</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>34616</td><td><a href="#395">395</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>34617</td><td><a href="#398">398</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>34618</td><td><a href="#407">407</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>34619</td><td><a href="#410">410</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>34622</td><td><a href="#415">415</a></td><td>Replace a constant (Replace 433 with 432(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>34620</td><td><a href="#415">415</a></td><td>Replace a constant (Replace 433 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>34621</td><td><a href="#415">415</a></td><td>Replace a constant (Replace 433 with 434(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>34623</td><td><a href="#423">423</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>34624</td><td><a href="#435">435</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>34625</td><td><a href="#436">436</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>34626</td><td><a href="#438">438</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>34627</td><td><a href="#439">439</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>34628</td><td><a href="#440">440</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>34629</td><td><a href="#441">441</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>34630</td><td><a href="#442">442</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>34631</td><td><a href="#443">443</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>34633</td><td><a href="#445">445</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>34632</td><td><a href="#445">445</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>34634</td><td><a href="#446">446</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>34635</td><td><a href="#447">447</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>34637</td><td><a href="#450">450</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>34636</td><td><a href="#450">450</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>34638</td><td><a href="#451">451</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>34640</td><td><a href="#454">454</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>34639</td><td><a href="#454">454</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>34641</td><td><a href="#455">455</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>34642</td><td><a href="#458">458</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>34643</td><td><a href="#459">459</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>34646</td><td><a href="#463">463</a></td><td>Replace a constant (Replace 12 with 11(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>34645</td><td><a href="#463">463</a></td><td>Replace a constant (Replace 12 with 13(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>34644</td><td><a href="#463">463</a></td><td>Replace a constant (Replace 12 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>34651</td><td><a href="#463">463(1)</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>34650</td><td><a href="#463">463(1)</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>34655</td><td><a href="#463">463(2)</a></td><td>Replace a constant (Replace 8 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>34657</td><td><a href="#463">463(2)</a></td><td>Replace a constant (Replace 8 with 9(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>34656</td><td><a href="#463">463(2)</a></td><td>Replace a constant (Replace 8 with 7(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>34659</td><td><a href="#463">463(3)</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>34658</td><td><a href="#463">463(3)</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>34664</td><td><a href="#463">463(4)</a></td><td>Replace a constant (Replace 4 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>34663</td><td><a href="#463">463(4)</a></td><td>Replace a constant (Replace 4 with 3(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>34665</td><td><a href="#463">463(4)</a></td><td>Replace a constant (Replace 4 with 5(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>34666</td><td><a href="#463">463(5)</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>34667</td><td><a href="#463">463(5)</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>34648</td><td><a href="#463">463</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>34654</td><td><a href="#463">463(1)</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>34662</td><td><a href="#463">463(2)</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>34652</td><td><a href="#463">463</a></td><td>Replace arithmetic operator (Replace IADD with ISUB)</td><td><img src="detected.png"/></td></tr>
+<tr><td>34660</td><td><a href="#463">463(1)</a></td><td>Replace arithmetic operator (Replace IADD with ISUB)</td><td><img src="detected.png"/></td></tr>
+<tr><td>34668</td><td><a href="#463">463(2)</a></td><td>Replace arithmetic operator (Replace IADD with ISUB)</td><td><img src="detected.png"/></td></tr>
+<tr><td>34670</td><td><a href="#463">463(3)</a></td><td>Replace arithmetic operator (Replace IADD with ISUB)</td><td><img src="detected.png"/></td></tr>
+<tr><td>34672</td><td><a href="#463">463(4)</a></td><td>Replace arithmetic operator (Replace IADD with ISUB)</td><td><img src="detected.png"/></td></tr>
+<tr><td>34647</td><td><a href="#463">463</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>34649</td><td><a href="#463">463(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>34653</td><td><a href="#463">463(2)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>34661</td><td><a href="#463">463(3)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>34669</td><td><a href="#463">463(4)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>34671</td><td><a href="#463">463(5)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>34673</td><td><a href="#475">475</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>34674</td><td><a href="#476">476</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>34675</td><td><a href="#476">476(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>34676</td><td><a href="#476">476(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>34677</td><td><a href="#476">476(3)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>34678</td><td><a href="#477">477</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>34679</td><td><a href="#477">477(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>34680</td><td><a href="#477">477(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>34681</td><td><a href="#477">477(3)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>34682</td><td><a href="#477">477(4)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>34683</td><td><a href="#477">477(5)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>34684</td><td><a href="#490">490</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>34686</td><td><a href="#497">497</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>34685</td><td><a href="#497">497</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>34687</td><td><a href="#498">498</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>34689</td><td><a href="#500">500</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>34688</td><td><a href="#500">500</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>34690</td><td><a href="#501">501</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>34692</td><td><a href="#503">503</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>34691</td><td><a href="#503">503</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>34693</td><td><a href="#504">504</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>34694</td><td><a href="#506">506</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>34695</td><td><a href="#507">507</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>34696</td><td><a href="#521">521</a></td><td>Negate jump condition (Replace IFNONNULL with  IFNULL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>34697</td><td><a href="#524">524</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>34698</td><td><a href="#524">524(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>34701</td><td><a href="#525">525</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>34700</td><td><a href="#525">525</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>34699</td><td><a href="#525">525</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>34702</td><td><a href="#525">525(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+</table>
+</body>
+</html>

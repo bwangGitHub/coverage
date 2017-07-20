@@ -1,0 +1,4 @@
+Testsuite: org.apache.poi.ss.formula.function.TestFunctionMetadataRegistry
+Tests run: 1, Failures: 0, Errors: 0, Time elapsed: 0 sec
+
+Testcase: testWellKnownFunctions took 0 sec

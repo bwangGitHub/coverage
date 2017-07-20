@@ -1,0 +1,9 @@
+Testsuite: org.apache.poi.hssf.record.TestBoundSheetRecord
+Tests run: 6, Failures: 0, Errors: 0, Time elapsed: 0.001 sec
+
+Testcase: testName took 0 sec
+Testcase: testRecordLength took 0 sec
+Testcase: testWideRecordLength took 0 sec
+Testcase: testDeserializeUnicode took 0.001 sec
+Testcase: testOrdering took 0 sec
+Testcase: testValidNames took 0 sec

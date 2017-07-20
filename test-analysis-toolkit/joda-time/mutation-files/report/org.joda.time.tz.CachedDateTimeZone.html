@@ -1,0 +1,313 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN
+"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>
+org.joda.time.tz.CachedDateTimeZone
+</title>
+<link href="prettify.css" type="text/css" rel="stylesheet" />
+<script type="text/javascript" src="prettify.js"></script>
+</head>
+<body onload="prettyPrint()">
+<h2>Javalanche report for class:<br/> org.joda.time.tz.CachedDateTimeZone </h2><pre class="prettyprint" style="border: 1px solid #888;padding: 2px"><span class="nocode"><a name="1">  1: </a></span>/*
+<span class="nocode"><a name="2">  2: </a></span> *  Copyright 2001-2005 Stephen Colebourne
+<span class="nocode"><a name="3">  3: </a></span> *
+<span class="nocode"><a name="4">  4: </a></span> *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+<span class="nocode"><a name="5">  5: </a></span> *  you may not use this file except in compliance with the License.
+<span class="nocode"><a name="6">  6: </a></span> *  You may obtain a copy of the License at
+<span class="nocode"><a name="7">  7: </a></span> *
+<span class="nocode"><a name="8">  8: </a></span> *      http://www.apache.org/licenses/LICENSE-2.0
+<span class="nocode"><a name="9">  9: </a></span> *
+<span class="nocode"><a name="10"> 10: </a></span> *  Unless required by applicable law or agreed to in writing, software
+<span class="nocode"><a name="11"> 11: </a></span> *  distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+<span class="nocode"><a name="12"> 12: </a></span> *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+<span class="nocode"><a name="13"> 13: </a></span> *  See the License for the specific language governing permissions and
+<span class="nocode"><a name="14"> 14: </a></span> *  limitations under the License.
+<span class="nocode"><a name="15"> 15: </a></span> */
+<span class="nocode"><a name="16"> 16: </a></span>package org.joda.time.tz;
+<span class="nocode"><a name="17"> 17: </a></span>
+<span class="nocode"><a name="18"> 18: </a></span>import org.joda.time.DateTimeZone;
+<span class="nocode"><a name="19"> 19: </a></span>
+<span class="nocode"><a name="20"> 20: </a></span>/**
+<span class="nocode"><a name="21"> 21: </a></span> * Improves the performance of requesting time zone offsets and name keys by
+<span class="nocode"><a name="22"> 22: </a></span> * caching the results. Time zones that have simple rules or are fixed should
+<span class="nocode"><a name="23"> 23: </a></span> * not be cached, as it is unlikely to improve performance.
+<span class="nocode"><a name="24"> 24: </a></span> * &lt;p&gt;
+<span class="nocode"><a name="25"> 25: </a></span> * CachedDateTimeZone is thread-safe and immutable.
+<span class="nocode"><a name="26"> 26: </a></span> * 
+<span class="nocode"><a name="27"> 27: </a></span> * @author Brian S O'Neill
+<span class="nocode"><a name="28"> 28: </a></span> * @since 1.0
+<span class="nocode"><a name="29"> 29: </a></span> */
+<span class="nocode"><a name="30"> 30: </a></span>public class CachedDateTimeZone extends DateTimeZone {
+<span class="nocode"><a name="31"> 31: </a></span>
+<span class="nocode"><a name="32"> 32: </a></span>    private static final long serialVersionUID = 5472298452022250685L;
+<span class="nocode"><a name="33"> 33: </a></span>
+<span class="nocode"><a name="34"> 34: </a></span>    private static final int cInfoCacheMask;
+<span class="nocode"><a name="35"> 35: </a></span>
+<span class="nocode"><a name="36"> 36: </a></span>    static {
+<span class="nocode"><a name="37"> 37: </a></span>        Integer i;
+<span class="nocode"><a name="38"> 38: </a></span>        try {
+<span class="nocode"><a name="39"> 39: </a></span>            i = Integer.getInteger(&quot;org.joda.time.tz.CachedDateTimeZone.size&quot;);
+<span class="nocode"><a name="40"> 40: </a></span>        } catch (SecurityException e) {
+<span class="nocode"><a name="41"> 41: </a></span>            i = null;
+<span class="nocode"><a name="42"> 42: </a></span>        }
+<span class="nocode"><a name="43"> 43: </a></span>
+<span class="nocode"><a name="44"> 44: </a></span>        int cacheSize;
+<span class="nocode"><a name="45"> 45: </a></span>        if (i == null) {
+<span class="nocode"><a name="46"> 46: </a></span>            // With a cache size of 512, dates that lie within any 69.7 year
+<span class="nocode"><a name="47"> 47: </a></span>            // period have no cache collisions.
+<span class="nocode"><a name="48"> 48: </a></span>            cacheSize = 512; // (1 &lt;&lt; 9)
+<span class="nocode"><a name="49"> 49: </a></span>        } else {
+<span class="nocode"><a name="50"> 50: </a></span>            cacheSize = i.intValue();
+<span class="nocode"><a name="51"> 51: </a></span>            // Ensure cache size is even power of 2.
+<span class="nocode"><a name="52"> 52: </a></span>            cacheSize--;
+<span class="nocode"><a name="53"> 53: </a></span>            int shift = 0;
+<span class="nocode"><a name="54"> 54: </a></span>            while (cacheSize &gt; 0) {
+<span class="nocode"><a name="55"> 55: </a></span>                shift++;
+<span class="nocode"><a name="56"> 56: </a></span>                cacheSize &gt;&gt;= 1;
+<span class="nocode"><a name="57"> 57: </a></span>            }
+<span class="nocode"><a name="58"> 58: </a></span>            cacheSize = 1 &lt;&lt; shift;
+<span class="nocode"><a name="59"> 59: </a></span>        }
+<span class="nocode"><a name="60"> 60: </a></span>
+<span class="nocode"><a name="61"> 61: </a></span>        cInfoCacheMask = cacheSize - 1;
+<span class="nocode"><a name="62"> 62: </a></span>    }
+<span class="nocode"><a name="63"> 63: </a></span>
+<span class="nocode"><a name="64"> 64: </a></span>    /**
+<span class="nocode"><a name="65"> 65: </a></span>     * Returns a new CachedDateTimeZone unless given zone is already cached.
+<span class="nocode"><a name="66"> 66: </a></span>     */
+<span class="nocode"><a name="67"> 67: </a></span>    public static CachedDateTimeZone forZone(DateTimeZone zone) {
+<span class="nocode"><a name="68"> 68: </a></span>        if (zone instanceof CachedDateTimeZone) {
+<span class="nocode"><a name="69"> 69: </a></span>            return (CachedDateTimeZone)zone;
+<span class="nocode"><a name="70"> 70: </a></span>        }
+<span class="nocode"><a name="71"> 71: </a></span>        return new CachedDateTimeZone(zone);
+<span class="nocode"><a name="72"> 72: </a></span>    }
+<span class="nocode"><a name="73"> 73: </a></span>
+<span class="nocode"><a name="74"> 74: </a></span>    /*
+<span class="nocode"><a name="75"> 75: </a></span>     * Caching is performed by breaking timeline down into periods of 2^32
+<span class="nocode"><a name="76"> 76: </a></span>     * milliseconds, or about 49.7 days. A year has about 7.3 periods, usually
+<span class="nocode"><a name="77"> 77: </a></span>     * with only 2 time zone offset periods. Most of the 49.7 day periods will
+<span class="nocode"><a name="78"> 78: </a></span>     * have no transition, about one quarter have one transition, and very rare
+<span class="nocode"><a name="79"> 79: </a></span>     * cases have multiple transitions.
+<span class="nocode"><a name="80"> 80: </a></span>     */
+<span class="nocode"><a name="81"> 81: </a></span>
+<span class="nocode"><a name="82"> 82: </a></span>    private final DateTimeZone iZone;
+<span class="nocode"><a name="83"> 83: </a></span>
+<span class="nocode"><a name="84"> 84: </a></span>    private transient Info[] iInfoCache;
+<span class="nocode"><a name="85"> 85: </a></span>
+<span class="nocode"><a name="86"> 86: </a></span>    private CachedDateTimeZone(DateTimeZone zone) {
+<span class="nocode"><a name="87"> 87: </a></span>        super(zone.getID());
+<span class="nocode"><a name="88"> 88: </a></span>        iZone = zone;
+<span class="nocode"><a name="89"> 89: </a></span>        iInfoCache = new Info[cInfoCacheMask + 1];
+<span class="nocode"><a name="90"> 90: </a></span>    }
+<span class="nocode"><a name="91"> 91: </a></span>
+<span class="nocode"><a name="92"> 92: </a></span>    private void readObject(java.io.ObjectInputStream in)
+<span class="nocode"><a name="93"> 93: </a></span>        throws java.io.IOException, ClassNotFoundException
+<span class="nocode"><a name="94"> 94: </a></span>    {
+<span class="nocode"><a name="95"> 95: </a></span>        in.defaultReadObject();
+<span class="nocode"><a name="96"> 96: </a></span>        iInfoCache = new Info[cInfoCacheMask + 1];
+<span class="nocode"><a name="97"> 97: </a></span>    }
+<span class="nocode"><a name="98"> 98: </a></span>
+<span class="nocode"><a name="99"> 99: </a></span>    /**
+<span class="nocode"><a name="100">100: </a></span>     * Returns the DateTimeZone being wrapped.
+<span class="nocode"><a name="101">101: </a></span>     */
+<span class="nocode"><a name="102">102: </a></span>    public DateTimeZone getUncachedZone() {
+<span class="nocode"><a name="103">103: </a></span>        return iZone;
+<span class="nocode"><a name="104">104: </a></span>    }
+<span class="nocode"><a name="105">105: </a></span>
+<span class="nocode"><a name="106">106: </a></span>    public String getNameKey(long instant) {
+<span class="nocode"><a name="107">107: </a></span>        return getInfo(instant).getNameKey(instant);
+<span class="nocode"><a name="108">108: </a></span>    }
+<span class="nocode"><a name="109">109: </a></span>
+<span class="nocode"><a name="110">110: </a></span>    public int getOffset(long instant) {
+<span class="nocode"><a name="111">111: </a></span>        return getInfo(instant).getOffset(instant);
+<span class="nocode"><a name="112">112: </a></span>    }
+<span class="nocode"><a name="113">113: </a></span>
+<span class="nocode"><a name="114">114: </a></span>    public int getStandardOffset(long instant) {
+<span class="nocode"><a name="115">115: </a></span>        return getInfo(instant).getStandardOffset(instant);
+<span class="nocode"><a name="116">116: </a></span>    }
+<span class="nocode"><a name="117">117: </a></span>
+<span class="nocode"><a name="118">118: </a></span>    public boolean isFixed() {
+<span class="nocode"><a name="119">119: </a></span>        return iZone.isFixed();
+<span class="nocode"><a name="120">120: </a></span>    }
+<span class="nocode"><a name="121">121: </a></span>
+<span class="nocode"><a name="122">122: </a></span>    public long nextTransition(long instant) {
+<span class="nocode"><a name="123">123: </a></span>        return iZone.nextTransition(instant);
+<span class="nocode"><a name="124">124: </a></span>    }
+<span class="nocode"><a name="125">125: </a></span>
+<span class="nocode"><a name="126">126: </a></span>    public long previousTransition(long instant) {
+<span class="nocode"><a name="127">127: </a></span>        return iZone.previousTransition(instant);
+<span class="nocode"><a name="128">128: </a></span>    }
+<span class="nocode"><a name="129">129: </a></span>
+<span class="nocode"><a name="130">130: </a></span>    public int hashCode() {
+<span class="nocode"><a name="131">131: </a></span>        return iZone.hashCode();
+<span class="nocode"><a name="132">132: </a></span>    }
+<span class="nocode"><a name="133">133: </a></span>
+<span class="nocode"><a name="134">134: </a></span>    public boolean equals(Object obj) {
+<span class="nocode"><a name="135">135: </a></span>        if (this == obj) {
+<span class="nocode"><a name="136">136: </a></span>            return true;
+<span class="nocode"><a name="137">137: </a></span>        }
+<span class="nocode"><a name="138">138: </a></span>        if (obj instanceof CachedDateTimeZone) {
+<span class="nocode"><a name="139">139: </a></span>            return iZone.equals(((CachedDateTimeZone)obj).iZone);
+<span class="nocode"><a name="140">140: </a></span>        }
+<span class="nocode"><a name="141">141: </a></span>        return false;
+<span class="nocode"><a name="142">142: </a></span>    }
+<span class="nocode"><a name="143">143: </a></span>
+<span class="nocode"><a name="144">144: </a></span>    // Although accessed by multiple threads, this method doesn't need to be
+<span class="nocode"><a name="145">145: </a></span>    // synchronized.
+<span class="nocode"><a name="146">146: </a></span>
+<span class="nocode"><a name="147">147: </a></span>    private Info getInfo(long millis) {
+<span class="nocode"><a name="148">148: </a></span>        int period = (int)(millis &gt;&gt; 32);
+<span class="nocode"><a name="149">149: </a></span>        Info[] cache = iInfoCache;
+<span class="nocode"><a name="150">150: </a></span>        int index = period &amp; cInfoCacheMask;
+<span class="nocode"><a name="151">151: </a></span>        Info info = cache[index];
+<span class="nocode"><a name="152">152: </a></span>        if (info == null || (int)((info.iPeriodStart &gt;&gt; 32)) != period) {
+<span class="nocode"><a name="153">153: </a></span>            info = createInfo(millis);
+<span class="nocode"><a name="154">154: </a></span>            cache[index] = info;
+<span class="nocode"><a name="155">155: </a></span>        }
+<span class="nocode"><a name="156">156: </a></span>        return info;
+<span class="nocode"><a name="157">157: </a></span>    }
+<span class="nocode"><a name="158">158: </a></span>
+<span class="nocode"><a name="159">159: </a></span>    private Info createInfo(long millis) {
+<span class="nocode"><a name="160">160: </a></span>        long periodStart = millis &amp; (0xffffffffL &lt;&lt; 32);
+<span class="nocode"><a name="161">161: </a></span>        Info info = new Info(iZone, periodStart);
+<span class="nocode"><a name="162">162: </a></span>        
+<span class="nocode"><a name="163">163: </a></span>        long end = periodStart | 0xffffffffL;
+<span class="nocode"><a name="164">164: </a></span>        Info chain = info;
+<span class="nocode"><a name="165">165: </a></span>        while (true) {
+<span class="nocode"><a name="166">166: </a></span>            long next = iZone.nextTransition(periodStart);
+<span class="nocode"><a name="167">167: </a></span>            if (next == periodStart || next &gt; end) {
+<span class="nocode"><a name="168">168: </a></span>                break;
+<span class="nocode"><a name="169">169: </a></span>            }
+<span class="nocode"><a name="170">170: </a></span>            periodStart = next;
+<span class="nocode"><a name="171">171: </a></span>            chain = (chain.iNextInfo = new Info(iZone, periodStart));
+<span class="nocode"><a name="172">172: </a></span>        }
+<span class="nocode"><a name="173">173: </a></span>
+<span class="nocode"><a name="174">174: </a></span>        return info;
+<span class="nocode"><a name="175">175: </a></span>    }
+<span class="nocode"><a name="176">176: </a></span>
+<span class="nocode"><a name="177">177: </a></span>    private final static class Info {
+<span class="nocode"><a name="178">178: </a></span>        // For first Info in chain, iPeriodStart's lower 32 bits are clear.
+<span class="nocode"><a name="179">179: </a></span>        public final long iPeriodStart;
+<span class="nocode"><a name="180">180: </a></span>        public final DateTimeZone iZoneRef;
+<span class="nocode"><a name="181">181: </a></span>
+<span class="nocode"><a name="182">182: </a></span>        Info iNextInfo;
+<span class="nocode"><a name="183">183: </a></span>
+<span class="nocode"><a name="184">184: </a></span>        private String iNameKey;
+<span class="nocode"><a name="185">185: </a></span>        private int iOffset = Integer.MIN_VALUE;
+<span class="nocode"><a name="186">186: </a></span>        private int iStandardOffset = Integer.MIN_VALUE;
+<span class="nocode"><a name="187">187: </a></span>
+<span class="nocode"><a name="188">188: </a></span>        Info(DateTimeZone zone, long periodStart) {
+<span class="nocode"><a name="189">189: </a></span>            iPeriodStart = periodStart;
+<span class="nocode"><a name="190">190: </a></span>            iZoneRef = zone;
+<span class="nocode"><a name="191">191: </a></span>        }
+<span class="nocode"><a name="192">192: </a></span>
+<span class="nocode"><a name="193">193: </a></span>        public String getNameKey(long millis) {
+<span class="nocode"><a name="194">194: </a></span>            if (iNextInfo == null || millis &lt; iNextInfo.iPeriodStart) {
+<span class="nocode"><a name="195">195: </a></span>                if (iNameKey == null) {
+<span class="nocode"><a name="196">196: </a></span>                    iNameKey = iZoneRef.getNameKey(iPeriodStart);
+<span class="nocode"><a name="197">197: </a></span>                }
+<span class="nocode"><a name="198">198: </a></span>                return iNameKey;
+<span class="nocode"><a name="199">199: </a></span>            }
+<span class="nocode"><a name="200">200: </a></span>            return iNextInfo.getNameKey(millis);
+<span class="nocode"><a name="201">201: </a></span>        }
+<span class="nocode"><a name="202">202: </a></span>
+<span class="nocode"><a name="203">203: </a></span>        public int getOffset(long millis) {
+<span class="nocode"><a name="204">204: </a></span>            if (iNextInfo == null || millis &lt; iNextInfo.iPeriodStart) {
+<span class="nocode"><a name="205">205: </a></span>                if (iOffset == Integer.MIN_VALUE) {
+<span class="nocode"><a name="206">206: </a></span>                    iOffset = iZoneRef.getOffset(iPeriodStart);
+<span class="nocode"><a name="207">207: </a></span>                }
+<span class="nocode"><a name="208">208: </a></span>                return iOffset;
+<span class="nocode"><a name="209">209: </a></span>            }
+<span class="nocode"><a name="210">210: </a></span>            return iNextInfo.getOffset(millis);
+<span class="nocode"><a name="211">211: </a></span>        }
+<span class="nocode"><a name="212">212: </a></span>
+<span class="nocode"><a name="213">213: </a></span>        public int getStandardOffset(long millis) {
+<span class="nocode"><a name="214">214: </a></span>            if (iNextInfo == null || millis &lt; iNextInfo.iPeriodStart) {
+<span class="nocode"><a name="215">215: </a></span>                if (iStandardOffset == Integer.MIN_VALUE) {
+<span class="nocode"><a name="216">216: </a></span>                    iStandardOffset = iZoneRef.getStandardOffset(iPeriodStart);
+<span class="nocode"><a name="217">217: </a></span>                }
+<span class="nocode"><a name="218">218: </a></span>                return iStandardOffset;
+<span class="nocode"><a name="219">219: </a></span>            }
+<span class="nocode"><a name="220">220: </a></span>            return iNextInfo.getStandardOffset(millis);
+<span class="nocode"><a name="221">221: </a></span>        }
+<span class="nocode"><a name="222">222: </a></span>    }
+<span class="nocode"><a name="223">223: </a></span>}
+</pre><table class="mutation_table" summary="Mutations">
+<tr><th>ID</th><th>Line</th><th>Type</th><th>Detected</th></tr><tr><td>2239</td><td><a href="#68">68</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>2240</td><td><a href="#89">89</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>2241</td><td><a href="#89">89</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>2242</td><td><a href="#89">89</a></td><td>Replace arithmetic operator (Replace IADD with ISUB)</td><td><img src="detected.png"/></td></tr>
+<tr><td>2243</td><td><a href="#95">95</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>2244</td><td><a href="#96">96</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>2245</td><td><a href="#96">96</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>2246</td><td><a href="#96">96</a></td><td>Replace arithmetic operator (Replace IADD with ISUB)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>2247</td><td><a href="#107">107</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>2248</td><td><a href="#107">107(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>2249</td><td><a href="#111">111</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>2250</td><td><a href="#111">111(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>2251</td><td><a href="#115">115</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>2252</td><td><a href="#115">115(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>2253</td><td><a href="#119">119</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>2254</td><td><a href="#123">123</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>2255</td><td><a href="#127">127</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>2256</td><td><a href="#131">131</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>2257</td><td><a href="#135">135</a></td><td>Negate jump condition (Replace IF_ACMPNE with  IF_ACMPEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>2259</td><td><a href="#136">136</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>2258</td><td><a href="#136">136</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>2260</td><td><a href="#138">138</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>2261</td><td><a href="#139">139</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>2263</td><td><a href="#141">141</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>2262</td><td><a href="#141">141</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>2266</td><td><a href="#148">148</a></td><td>Replace a constant (Replace 32 with 33(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>2264</td><td><a href="#148">148</a></td><td>Replace a constant (Replace 32 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>2265</td><td><a href="#148">148</a></td><td>Replace a constant (Replace 32 with 31(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>2267</td><td><a href="#148">148</a></td><td>Replace arithmetic operator (Replace LSHR with LSHL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>2268</td><td><a href="#150">150</a></td><td>Replace arithmetic operator (Replace IAND with IOR)</td><td><img src="detected.png"/></td></tr>
+<tr><td>2272</td><td><a href="#152">152</a></td><td>Replace a constant (Replace 32 with 33(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>2271</td><td><a href="#152">152</a></td><td>Replace a constant (Replace 32 with 31(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>2270</td><td><a href="#152">152</a></td><td>Replace a constant (Replace 32 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>2269</td><td><a href="#152">152</a></td><td>Negate jump condition (Replace IFNULL with  IFNONNULL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>2274</td><td><a href="#152">152(1)</a></td><td>Negate jump condition (Replace IF_ICMPEQ with  IF_ICMPNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>2273</td><td><a href="#152">152</a></td><td>Replace arithmetic operator (Replace LSHR with LSHL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>2275</td><td><a href="#153">153</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>2278</td><td><a href="#160">160</a></td><td>Replace a constant (Replace -4294967296 with -4294967295(LONG))</td><td><img src="detected.png"/></td></tr>
+<tr><td>2276</td><td><a href="#160">160</a></td><td>Replace a constant (Replace -4294967296 with -4294967297(LONG))</td><td><img src="detected.png"/></td></tr>
+<tr><td>2277</td><td><a href="#160">160</a></td><td>Replace a constant (Replace -4294967296 with 0(LONG))</td><td><img src="detected.png"/></td></tr>
+<tr><td>2279</td><td><a href="#160">160</a></td><td>Replace arithmetic operator (Replace LAND with LOR)</td><td><img src="detected.png"/></td></tr>
+<tr><td>2281</td><td><a href="#163">163</a></td><td>Replace a constant (Replace 4294967295 with 4294967296(LONG))</td><td><img src="detected.png"/></td></tr>
+<tr><td>2280</td><td><a href="#163">163</a></td><td>Replace a constant (Replace 4294967295 with 0(LONG))</td><td><img src="detected.png"/></td></tr>
+<tr><td>2282</td><td><a href="#163">163</a></td><td>Replace a constant (Replace 4294967295 with 4294967294(LONG))</td><td><img src="detected.png"/></td></tr>
+<tr><td>2283</td><td><a href="#163">163</a></td><td>Replace arithmetic operator (Replace LOR with LAND)</td><td><img src="detected.png"/></td></tr>
+<tr><td>2284</td><td><a href="#166">166</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>2285</td><td><a href="#167">167</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>2286</td><td><a href="#167">167(1)</a></td><td>Negate jump condition (Replace IFLE with  IFGT)</td><td><img src="detected.png"/></td></tr>
+<tr><td>2597</td><td><a href="#185">185</a></td><td>Replace a constant (Replace -2147483648 with -2147483647(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>2596</td><td><a href="#185">185</a></td><td>Replace a constant (Replace -2147483648 with 2147483647(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>2595</td><td><a href="#185">185</a></td><td>Replace a constant (Replace -2147483648 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>2600</td><td><a href="#186">186</a></td><td>Replace a constant (Replace -2147483648 with -2147483647(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>2599</td><td><a href="#186">186</a></td><td>Replace a constant (Replace -2147483648 with 2147483647(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>2598</td><td><a href="#186">186</a></td><td>Replace a constant (Replace -2147483648 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>2601</td><td><a href="#194">194</a></td><td>Negate jump condition (Replace IFNULL with  IFNONNULL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>2602</td><td><a href="#194">194(1)</a></td><td>Negate jump condition (Replace IFGE with  IFLT)</td><td><img src="detected.png"/></td></tr>
+<tr><td>2603</td><td><a href="#195">195</a></td><td>Negate jump condition (Replace IFNONNULL with  IFNULL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>2604</td><td><a href="#196">196</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>2605</td><td><a href="#200">200</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>2606</td><td><a href="#204">204</a></td><td>Negate jump condition (Replace IFNULL with  IFNONNULL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>2607</td><td><a href="#204">204(1)</a></td><td>Negate jump condition (Replace IFGE with  IFLT)</td><td><img src="detected.png"/></td></tr>
+<tr><td>2610</td><td><a href="#205">205</a></td><td>Replace a constant (Replace -2147483648 with -2147483647(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>2608</td><td><a href="#205">205</a></td><td>Replace a constant (Replace -2147483648 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>2609</td><td><a href="#205">205</a></td><td>Replace a constant (Replace -2147483648 with 2147483647(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>2611</td><td><a href="#205">205</a></td><td>Negate jump condition (Replace IF_ICMPNE with  IF_ICMPEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>2612</td><td><a href="#206">206</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>2613</td><td><a href="#210">210</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>2614</td><td><a href="#214">214</a></td><td>Negate jump condition (Replace IFNULL with  IFNONNULL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>2615</td><td><a href="#214">214(1)</a></td><td>Negate jump condition (Replace IFGE with  IFLT)</td><td><img src="detected.png"/></td></tr>
+<tr><td>2616</td><td><a href="#215">215</a></td><td>Replace a constant (Replace -2147483648 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>2618</td><td><a href="#215">215</a></td><td>Replace a constant (Replace -2147483648 with -2147483647(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>2617</td><td><a href="#215">215</a></td><td>Replace a constant (Replace -2147483648 with 2147483647(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>2619</td><td><a href="#215">215</a></td><td>Negate jump condition (Replace IF_ICMPNE with  IF_ICMPEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>2620</td><td><a href="#216">216</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>2621</td><td><a href="#220">220</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+</table>
+</body>
+</html>

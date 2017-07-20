@@ -1,0 +1,7 @@
+Testsuite: org.apache.poi.hdf.model.TestHDFDocument
+Tests run: 4, Failures: 0, Errors: 0, Time elapsed: 0.157 sec
+
+Testcase: testEmpty took 0.065 sec
+Testcase: testSimple took 0.026 sec
+Testcase: testSimpleList took 0.028 sec
+Testcase: testSimpleTable took 0.008 sec

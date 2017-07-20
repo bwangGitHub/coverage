@@ -1,0 +1,77 @@
+PROJECT="closure"
+
+# INVARIANT PROPERTIES
+# Directories
+TEMPLATE_DIR="$BASE_DIR/scripts/templates"
+PROJECT_DIR="$BASE_DIR/test-subjects/$PROJECT"
+RESULT_DIR="$BASE_DIR/test-subjects/$PROJECT-results"
+MASTER_SUITE_RESULT_DIR="$RESULT_DIR/MasterSuite"
+CODECOVER_RESULT_DIR="$RESULT_DIR/CodeCover"
+PIT_RESULT_DIR="$RESULT_DIR/pi-results"
+
+# JARs
+JUNIT_3_JAR="$BASE_DIR/lib/junit-3.8.2.jar"
+JUNIT_4_JAR="$BASE_DIR/lib/junit-4.10.jar"
+PIT_JAR="$BASE_DIR/lib/pitest-0.30-mod.jar"
+
+# Files
+CONTAINER="$CODECOVER_RESULT_DIR/test-session-container.xml"
+RESULT_FILE="$CODECOVER_RESULT_DIR/codecover-results.html"
+
+# Commands
+CODECOVER_COMMAND="$BASE_DIR/codecover/codecover.sh"
+
+######################################################################
+# PROJECT-DEPENDENT PROPERTIES
+# Variables that alter control flow
+MAKE_MASTER_SUITE="n"
+RUN_JAVALANCHE="n"
+RUN_PIT="n"
+INSTRUMENT_SOURCE="y"
+DO_LINEAR_REGRESSION="n"
+RUN_IN_PARALLEL="n"
+EVALUATE_RANDOM_SUITES="n"
+ANALYZE_RESULTS="n"
+
+# Directories
+SRC_ROOT_DIR="$PROJECT_DIR/src"
+SRC_DIR="$PROJECT_DIR/src"
+BUILD_ROOT_DIR="$PROJECT_DIR/build"
+BUILD_DIR="$PROJECT_DIR/build/classes"
+TEST_SRC_DIR="$PROJECT_DIR/test"
+TEST_BUILD_DIR="$PROJECT_DIR/build/test"
+RANDOM_SUITE_SRC_DIR="$TEST_SRC_DIR/com/google/random"
+RANDOM_SUITE_BUILD_DIR="$TEST_BUILD_DIR/com/google/random"
+INST_SRC_ROOT_DIR="$PROJECT_DIR/instSrc"
+INST_SRC_DIR="$PROJECT_DIR/instSrc"
+INST_BUILD_ROOT_DIR="$PROJECT_DIR/instBuild"
+INST_BUILD_DIR="$PROJECT_DIR/instBuild/classes"
+INST_LIB_ROOT_DIR="$PROJECT_DIR/instLib"
+ 
+# JARs
+ARGS4J_JAR="$PROJECT_DIR/lib/args4j.jar"
+GUAVA_JAR="$PROJECT_DIR/lib/guava.jar"
+JSON_JAR="$PROJECT_DIR/lib/json.jar"
+CAJA_JAR="$PROJECT_DIR/lib/caja-r4314.jar"
+JARJAR_JAR="$PROJECT_DIR/lib/jarjar.jar"
+JSR_JAR="$PROJECT_DIR/lib/jsr305.jar"
+PROTOBUF_JAR="$PROJECT_DIR/lib/protobuf-java.jar"
+RHINO_JAR="$BUILD_ROOT_DIR/lib/rhino.jar"
+
+# Master suite properties
+# Other good one: com.google.javascript.jscomp.TypeCheckTest
+MASTER_SUITE_PACKAGE="com.google"
+MASTER_SUITE_NAME="MasterTestSuite"
+MASTER_SUITE_DEST="$TEST_SRC_DIR/com/google"
+OFFSET="71"
+
+# Command line arguments
+# Classpath must point to the instrumented source code!
+CLASSPATH="$BUILD_DIR:$TEST_BUILD_DIR:$JUNIT_4_JAR:$PIT_JAR:$BASE_DIR/scripts/java-bin:$ARGS4J_JAR:$GUAVA_JAR:$JSON_JAR:$CAJA_JAR:$JARJAR_JAR:$JSR_JAR:$PROTOBUF_JAR:$RHINO_JAR"
+PROJECT_JVM_ARGS=""
+
+# Files
+ANT_FILE="$PROJECT_DIR/build.xml"
+
+# Commands
+COMPILE_COMMAND="compile-tests"

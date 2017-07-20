@@ -1,0 +1,125 @@
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/repos/asf/!svn/ver/1306781/poi/trunk/src/java/org/apache/poi/hssf/model
+END
+TextboxShape.java
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/repos/asf/!svn/ver/1138465/poi/trunk/src/java/org/apache/poi/hssf/model/TextboxShape.java
+END
+package.html
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/repos/asf/!svn/ver/826045/poi/trunk/src/java/org/apache/poi/hssf/model/package.html
+END
+CommentShape.java
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/repos/asf/!svn/ver/1138465/poi/trunk/src/java/org/apache/poi/hssf/model/CommentShape.java
+END
+AbstractShape.java
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/repos/asf/!svn/ver/1138465/poi/trunk/src/java/org/apache/poi/hssf/model/AbstractShape.java
+END
+DrawingManager.java
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/repos/asf/!svn/ver/823348/poi/trunk/src/java/org/apache/poi/hssf/model/DrawingManager.java
+END
+RowBlocksReader.java
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/repos/asf/!svn/ver/816417/poi/trunk/src/java/org/apache/poi/hssf/model/RowBlocksReader.java
+END
+WorkbookRecordList.java
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/repos/asf/!svn/ver/948878/poi/trunk/src/java/org/apache/poi/hssf/model/WorkbookRecordList.java
+END
+ComboboxShape.java
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/repos/asf/!svn/ver/1148700/poi/trunk/src/java/org/apache/poi/hssf/model/ComboboxShape.java
+END
+RecordStream.java
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/repos/asf/!svn/ver/1141970/poi/trunk/src/java/org/apache/poi/hssf/model/RecordStream.java
+END
+InternalWorkbook.java
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/repos/asf/!svn/ver/1296979/poi/trunk/src/java/org/apache/poi/hssf/model/InternalWorkbook.java
+END
+SimpleFilledShape.java
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/repos/asf/!svn/ver/1138465/poi/trunk/src/java/org/apache/poi/hssf/model/SimpleFilledShape.java
+END
+PictureShape.java
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/repos/asf/!svn/ver/1138465/poi/trunk/src/java/org/apache/poi/hssf/model/PictureShape.java
+END
+RecordOrderer.java
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/repos/asf/!svn/ver/1044655/poi/trunk/src/java/org/apache/poi/hssf/model/RecordOrderer.java
+END
+LinkTable.java
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/repos/asf/!svn/ver/1242701/poi/trunk/src/java/org/apache/poi/hssf/model/LinkTable.java
+END
+InternalSheet.java
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/repos/asf/!svn/ver/1306781/poi/trunk/src/java/org/apache/poi/hssf/model/InternalSheet.java
+END
+HSSFFormulaParser.java
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/repos/asf/!svn/ver/1038683/poi/trunk/src/java/org/apache/poi/hssf/model/HSSFFormulaParser.java
+END
+PolygonShape.java
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/repos/asf/!svn/ver/1138465/poi/trunk/src/java/org/apache/poi/hssf/model/PolygonShape.java
+END
+LineShape.java
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/repos/asf/!svn/ver/1138465/poi/trunk/src/java/org/apache/poi/hssf/model/LineShape.java
+END
+DrawingManager2.java
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/repos/asf/!svn/ver/712084/poi/trunk/src/java/org/apache/poi/hssf/model/DrawingManager2.java
+END
+ConvertAnchor.java
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/repos/asf/!svn/ver/805492/poi/trunk/src/java/org/apache/poi/hssf/model/ConvertAnchor.java
+END

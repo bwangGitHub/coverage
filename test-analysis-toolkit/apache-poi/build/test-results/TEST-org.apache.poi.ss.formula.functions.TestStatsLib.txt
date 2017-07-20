@@ -1,0 +1,12 @@
+Testsuite: org.apache.poi.ss.formula.functions.TestStatsLib
+Tests run: 9, Failures: 0, Errors: 0, Time elapsed: 0.002 sec
+
+Testcase: testDevsq took 0 sec
+Testcase: testKthLargest took 0 sec
+Testcase: testKthSmallest took 0 sec
+Testcase: testAvedev took 0 sec
+Testcase: testMedian took 0 sec
+Testcase: testMode took 0.001 sec
+Testcase: testStddev took 0 sec
+Testcase: testVar took 0 sec
+Testcase: testVarp took 0 sec

@@ -1,0 +1,8 @@
+Testsuite: org.apache.poi.ss.formula.functions.TestTFunc
+Tests run: 5, Failures: 0, Errors: 0, Time elapsed: 0.001 sec
+
+Testcase: testTextValues took 0 sec
+Testcase: testErrorValues took 0 sec
+Testcase: testOtherValues took 0 sec
+Testcase: testRefValues took 0 sec
+Testcase: testAreaArg took 0 sec

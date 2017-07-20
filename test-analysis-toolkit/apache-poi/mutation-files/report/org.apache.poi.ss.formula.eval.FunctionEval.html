@@ -1,0 +1,799 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN
+"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>
+org.apache.poi.ss.formula.eval.FunctionEval
+</title>
+<link href="prettify.css" type="text/css" rel="stylesheet" />
+<script type="text/javascript" src="prettify.js"></script>
+</head>
+<body onload="prettyPrint()">
+<h2>Javalanche report for class:<br/> org.apache.poi.ss.formula.eval.FunctionEval </h2><pre class="prettyprint" style="border: 1px solid #888;padding: 2px"><span class="nocode"><a name="1">  1: </a></span>/* ====================================================================
+<span class="nocode"><a name="2">  2: </a></span>   Licensed to the Apache Software Foundation (ASF) under one or more
+<span class="nocode"><a name="3">  3: </a></span>   contributor license agreements.  See the NOTICE file distributed with
+<span class="nocode"><a name="4">  4: </a></span>   this work for additional information regarding copyright ownership.
+<span class="nocode"><a name="5">  5: </a></span>   The ASF licenses this file to You under the Apache License, Version 2.0
+<span class="nocode"><a name="6">  6: </a></span>   (the &quot;License&quot;); you may not use this file except in compliance with
+<span class="nocode"><a name="7">  7: </a></span>   the License.  You may obtain a copy of the License at
+<span class="nocode"><a name="8">  8: </a></span>
+<span class="nocode"><a name="9">  9: </a></span>       http://www.apache.org/licenses/LICENSE-2.0
+<span class="nocode"><a name="10"> 10: </a></span>
+<span class="nocode"><a name="11"> 11: </a></span>   Unless required by applicable law or agreed to in writing, software
+<span class="nocode"><a name="12"> 12: </a></span>   distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+<span class="nocode"><a name="13"> 13: </a></span>   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+<span class="nocode"><a name="14"> 14: </a></span>   See the License for the specific language governing permissions and
+<span class="nocode"><a name="15"> 15: </a></span>   limitations under the License.
+<span class="nocode"><a name="16"> 16: </a></span>==================================================================== */
+<span class="nocode"><a name="17"> 17: </a></span>
+<span class="nocode"><a name="18"> 18: </a></span>package org.apache.poi.ss.formula.eval;
+<span class="nocode"><a name="19"> 19: </a></span>
+<span class="nocode"><a name="20"> 20: </a></span>import org.apache.poi.ss.formula.atp.AnalysisToolPak;
+<span class="nocode"><a name="21"> 21: </a></span>import org.apache.poi.ss.formula.function.FunctionMetadata;
+<span class="nocode"><a name="22"> 22: </a></span>import org.apache.poi.ss.formula.function.FunctionMetadataRegistry;
+<span class="nocode"><a name="23"> 23: </a></span>import org.apache.poi.ss.formula.functions.*;
+<span class="nocode"><a name="24"> 24: </a></span>
+<span class="nocode"><a name="25"> 25: </a></span>import java.util.Collection;
+<span class="nocode"><a name="26"> 26: </a></span>import java.util.Collections;
+<span class="nocode"><a name="27"> 27: </a></span>import java.util.TreeSet;
+<span class="nocode"><a name="28"> 28: </a></span>
+<span class="nocode"><a name="29"> 29: </a></span>/**
+<span class="nocode"><a name="30"> 30: </a></span> * @author Amol S. Deshmukh &amp;lt; amolweb at ya hoo dot com &amp;gt;
+<span class="nocode"><a name="31"> 31: </a></span> */
+<span class="nocode"><a name="32"> 32: </a></span>public final class FunctionEval {
+<span class="nocode"><a name="33"> 33: </a></span>	/**
+<span class="nocode"><a name="34"> 34: </a></span>	 * Some function IDs that require special treatment
+<span class="nocode"><a name="35"> 35: </a></span>	 */
+<span class="nocode"><a name="36"> 36: </a></span>	private static final class FunctionID {
+<span class="nocode"><a name="37"> 37: </a></span>		/** 1 */
+<span class="nocode"><a name="38"> 38: </a></span>		public static final int IF = FunctionMetadataRegistry.FUNCTION_INDEX_IF;
+<span class="nocode"><a name="39"> 39: </a></span>		/** 4 */
+<span class="nocode"><a name="40"> 40: </a></span>		public static final int SUM = FunctionMetadataRegistry.FUNCTION_INDEX_SUM;
+<span class="nocode"><a name="41"> 41: </a></span>		/** 78 */
+<span class="nocode"><a name="42"> 42: </a></span>		public static final int OFFSET = 78;
+<span class="nocode"><a name="43"> 43: </a></span>		/** 100 */
+<span class="nocode"><a name="44"> 44: </a></span>		public static final int CHOOSE = FunctionMetadataRegistry.FUNCTION_INDEX_CHOOSE;
+<span class="nocode"><a name="45"> 45: </a></span>		/** 148 */
+<span class="nocode"><a name="46"> 46: </a></span>		public static final int INDIRECT = FunctionMetadataRegistry.FUNCTION_INDEX_INDIRECT;
+<span class="nocode"><a name="47"> 47: </a></span>		/** 255 */
+<span class="nocode"><a name="48"> 48: </a></span>		public static final int EXTERNAL_FUNC = FunctionMetadataRegistry.FUNCTION_INDEX_EXTERNAL;
+<span class="nocode"><a name="49"> 49: </a></span>	}
+<span class="nocode"><a name="50"> 50: </a></span>	// convenient access to namespace
+<span class="nocode"><a name="51"> 51: </a></span>	private static final FunctionID ID = null;
+<span class="nocode"><a name="52"> 52: </a></span>
+<span class="nocode"><a name="53"> 53: </a></span>	/**
+<span class="nocode"><a name="54"> 54: </a></span>	 * Array elements corresponding to unimplemented functions are &lt;code&gt;null&lt;/code&gt;
+<span class="nocode"><a name="55"> 55: </a></span>	 */
+<span class="nocode"><a name="56"> 56: </a></span>	protected static final Function[] functions = produceFunctions();
+<span class="nocode"><a name="57"> 57: </a></span>
+<span class="nocode"><a name="58"> 58: </a></span>	private static Function[] produceFunctions() {
+<span class="nocode"><a name="59"> 59: </a></span>		Function[] retval = new Function[368];
+<span class="nocode"><a name="60"> 60: </a></span>
+<span class="nocode"><a name="61"> 61: </a></span>		retval[0] = new Count();
+<span class="nocode"><a name="62"> 62: </a></span>		retval[ID.IF] = new IfFunc();
+<span class="nocode"><a name="63"> 63: </a></span>		retval[2] = LogicalFunction.ISNA;
+<span class="nocode"><a name="64"> 64: </a></span>		retval[3] = LogicalFunction.ISERROR;
+<span class="nocode"><a name="65"> 65: </a></span>		retval[ID.SUM] = AggregateFunction.SUM;
+<span class="nocode"><a name="66"> 66: </a></span>		retval[5] = AggregateFunction.AVERAGE;
+<span class="nocode"><a name="67"> 67: </a></span>		retval[6] = AggregateFunction.MIN;
+<span class="nocode"><a name="68"> 68: </a></span>		retval[7] = AggregateFunction.MAX;
+<span class="nocode"><a name="69"> 69: </a></span>		retval[8] = new RowFunc(); // ROW
+<span class="nocode"><a name="70"> 70: </a></span>		retval[9] = new Column();
+<span class="nocode"><a name="71"> 71: </a></span>		retval[10] = new Na();
+<span class="nocode"><a name="72"> 72: </a></span>		retval[11] = new Npv();
+<span class="nocode"><a name="73"> 73: </a></span>		retval[12] = AggregateFunction.STDEV;
+<span class="nocode"><a name="74"> 74: </a></span>		retval[13] = NumericFunction.DOLLAR;
+<span class="nocode"><a name="75"> 75: </a></span>
+<span class="nocode"><a name="76"> 76: </a></span>		retval[15] = NumericFunction.SIN;
+<span class="nocode"><a name="77"> 77: </a></span>		retval[16] = NumericFunction.COS;
+<span class="nocode"><a name="78"> 78: </a></span>		retval[17] = NumericFunction.TAN;
+<span class="nocode"><a name="79"> 79: </a></span>		retval[18] = NumericFunction.ATAN;
+<span class="nocode"><a name="80"> 80: </a></span>		retval[19] = NumericFunction.PI;
+<span class="nocode"><a name="81"> 81: </a></span>		retval[20] = NumericFunction.SQRT;
+<span class="nocode"><a name="82"> 82: </a></span>		retval[21] = NumericFunction.EXP;
+<span class="nocode"><a name="83"> 83: </a></span>		retval[22] = NumericFunction.LN;
+<span class="nocode"><a name="84"> 84: </a></span>		retval[23] = NumericFunction.LOG10;
+<span class="nocode"><a name="85"> 85: </a></span>		retval[24] = NumericFunction.ABS;
+<span class="nocode"><a name="86"> 86: </a></span>		retval[25] = NumericFunction.INT;
+<span class="nocode"><a name="87"> 87: </a></span>		retval[26] = NumericFunction.SIGN;
+<span class="nocode"><a name="88"> 88: </a></span>		retval[27] = NumericFunction.ROUND;
+<span class="nocode"><a name="89"> 89: </a></span>		retval[28] = new Lookup();
+<span class="nocode"><a name="90"> 90: </a></span>		retval[29] = new Index();
+<span class="nocode"><a name="91"> 91: </a></span>
+<span class="nocode"><a name="92"> 92: </a></span>		retval[31] = TextFunction.MID;
+<span class="nocode"><a name="93"> 93: </a></span>		retval[32] = TextFunction.LEN;
+<span class="nocode"><a name="94"> 94: </a></span>		retval[33] = new Value();
+<span class="nocode"><a name="95"> 95: </a></span>		retval[34] = BooleanFunction.TRUE;
+<span class="nocode"><a name="96"> 96: </a></span>		retval[35] = BooleanFunction.FALSE;
+<span class="nocode"><a name="97"> 97: </a></span>		retval[36] = BooleanFunction.AND;
+<span class="nocode"><a name="98"> 98: </a></span>		retval[37] = BooleanFunction.OR;
+<span class="nocode"><a name="99"> 99: </a></span>		retval[38] = BooleanFunction.NOT;
+<span class="nocode"><a name="100">100: </a></span>		retval[39] = NumericFunction.MOD;
+<span class="nocode"><a name="101">101: </a></span>
+<span class="nocode"><a name="102">102: </a></span>		retval[46] = AggregateFunction.VAR;
+<span class="nocode"><a name="103">103: </a></span>		retval[48] = TextFunction.TEXT;
+<span class="nocode"><a name="104">104: </a></span>
+<span class="nocode"><a name="105">105: </a></span>		retval[56] = FinanceFunction.PV;
+<span class="nocode"><a name="106">106: </a></span>		retval[57] = FinanceFunction.FV;
+<span class="nocode"><a name="107">107: </a></span>		retval[58] = FinanceFunction.NPER;
+<span class="nocode"><a name="108">108: </a></span>		retval[59] = FinanceFunction.PMT;
+<span class="nocode"><a name="109">109: </a></span>
+<span class="nocode"><a name="110">110: </a></span>      retval[60] = new Rate();
+<span class="nocode"><a name="111">111: </a></span>		retval[62] = new Irr();
+<span class="nocode"><a name="112">112: </a></span>		retval[63] = NumericFunction.RAND;
+<span class="nocode"><a name="113">113: </a></span>		retval[64] = new Match();
+<span class="nocode"><a name="114">114: </a></span>		retval[65] = DateFunc.instance;
+<span class="nocode"><a name="115">115: </a></span>		retval[66] = new TimeFunc();
+<span class="nocode"><a name="116">116: </a></span>		retval[67] = CalendarFieldFunction.DAY;
+<span class="nocode"><a name="117">117: </a></span>		retval[68] = CalendarFieldFunction.MONTH;
+<span class="nocode"><a name="118">118: </a></span>		retval[69] = CalendarFieldFunction.YEAR;
+<span class="nocode"><a name="119">119: </a></span>
+<span class="nocode"><a name="120">120: </a></span>		retval[71] = CalendarFieldFunction.HOUR;
+<span class="nocode"><a name="121">121: </a></span>		retval[72] = CalendarFieldFunction.MINUTE;
+<span class="nocode"><a name="122">122: </a></span>		retval[73] = CalendarFieldFunction.SECOND;
+<span class="nocode"><a name="123">123: </a></span>		retval[74] = new Now();
+<span class="nocode"><a name="124">124: </a></span>
+<span class="nocode"><a name="125">125: </a></span>		retval[76] = new Rows();
+<span class="nocode"><a name="126">126: </a></span>		retval[77] = new Columns();
+<span class="nocode"><a name="127">127: </a></span>		retval[82] = TextFunction.SEARCH;
+<span class="nocode"><a name="128">128: </a></span>		retval[ID.OFFSET] = new Offset();
+<span class="nocode"><a name="129">129: </a></span>		retval[82] = TextFunction.SEARCH;
+<span class="nocode"><a name="130">130: </a></span>
+<span class="nocode"><a name="131">131: </a></span>		retval[97] = NumericFunction.ATAN2;
+<span class="nocode"><a name="132">132: </a></span>		retval[98] = NumericFunction.ASIN;
+<span class="nocode"><a name="133">133: </a></span>		retval[99] = NumericFunction.ACOS;
+<span class="nocode"><a name="134">134: </a></span>		retval[ID.CHOOSE] = new Choose();
+<span class="nocode"><a name="135">135: </a></span>		retval[101] = new Hlookup();
+<span class="nocode"><a name="136">136: </a></span>		retval[102] = new Vlookup();
+<span class="nocode"><a name="137">137: </a></span>
+<span class="nocode"><a name="138">138: </a></span>		retval[105] = LogicalFunction.ISREF;
+<span class="nocode"><a name="139">139: </a></span>
+<span class="nocode"><a name="140">140: </a></span>		retval[109] = NumericFunction.LOG;
+<span class="nocode"><a name="141">141: </a></span>
+<span class="nocode"><a name="142">142: </a></span>        retval[111] = TextFunction.CHAR;
+<span class="nocode"><a name="143">143: </a></span>		retval[112] = TextFunction.LOWER;
+<span class="nocode"><a name="144">144: </a></span>		retval[113] = TextFunction.UPPER;
+<span class="nocode"><a name="145">145: </a></span>
+<span class="nocode"><a name="146">146: </a></span>		retval[115] = TextFunction.LEFT;
+<span class="nocode"><a name="147">147: </a></span>		retval[116] = TextFunction.RIGHT;
+<span class="nocode"><a name="148">148: </a></span>		retval[117] = TextFunction.EXACT;
+<span class="nocode"><a name="149">149: </a></span>		retval[118] = TextFunction.TRIM;
+<span class="nocode"><a name="150">150: </a></span>		retval[119] = new Replace();
+<span class="nocode"><a name="151">151: </a></span>		retval[120] = new Substitute();
+<span class="nocode"><a name="152">152: </a></span>
+<span class="nocode"><a name="153">153: </a></span>		retval[124] = TextFunction.FIND;
+<span class="nocode"><a name="154">154: </a></span>
+<span class="nocode"><a name="155">155: </a></span>		retval[127] = LogicalFunction.ISTEXT;
+<span class="nocode"><a name="156">156: </a></span>		retval[128] = LogicalFunction.ISNUMBER;
+<span class="nocode"><a name="157">157: </a></span>		retval[129] = LogicalFunction.ISBLANK;
+<span class="nocode"><a name="158">158: </a></span>		retval[130] = new T();
+<span class="nocode"><a name="159">159: </a></span>
+<span class="nocode"><a name="160">160: </a></span>		retval[ID.INDIRECT] = null; // Indirect.evaluate has different signature
+<span class="nocode"><a name="161">161: </a></span>        retval[162] = TextFunction.CLEAN;  //Aniket Banerjee    
+<span class="nocode"><a name="162">162: </a></span>		retval[169] = new Counta();
+<span class="nocode"><a name="163">163: </a></span>
+<span class="nocode"><a name="164">164: </a></span>		retval[183] = AggregateFunction.PRODUCT;
+<span class="nocode"><a name="165">165: </a></span>		retval[184] = NumericFunction.FACT;
+<span class="nocode"><a name="166">166: </a></span>
+<span class="nocode"><a name="167">167: </a></span>		retval[190] = LogicalFunction.ISNONTEXT;
+<span class="nocode"><a name="168">168: </a></span>        retval[194] = AggregateFunction.VARP;
+<span class="nocode"><a name="169">169: </a></span>		retval[197] = NumericFunction.TRUNC;
+<span class="nocode"><a name="170">170: </a></span>		retval[198] = LogicalFunction.ISLOGICAL;
+<span class="nocode"><a name="171">171: </a></span>
+<span class="nocode"><a name="172">172: </a></span>		retval[212] = NumericFunction.ROUNDUP;
+<span class="nocode"><a name="173">173: </a></span>		retval[213] = NumericFunction.ROUNDDOWN;
+<span class="nocode"><a name="174">174: </a></span>        retval[216] = new Rank();
+<span class="nocode"><a name="175">175: </a></span>        retval[219] = new Address();  //Aniket Banerjee
+<span class="nocode"><a name="176">176: </a></span>        retval[220] = new Days360();
+<span class="nocode"><a name="177">177: </a></span>		retval[221] = new Today();
+<span class="nocode"><a name="178">178: </a></span>
+<span class="nocode"><a name="179">179: </a></span>		retval[227] = AggregateFunction.MEDIAN;
+<span class="nocode"><a name="180">180: </a></span>		retval[228] = new Sumproduct();
+<span class="nocode"><a name="181">181: </a></span>		retval[229] = NumericFunction.SINH;
+<span class="nocode"><a name="182">182: </a></span>		retval[230] = NumericFunction.COSH;
+<span class="nocode"><a name="183">183: </a></span>		retval[231] = NumericFunction.TANH;
+<span class="nocode"><a name="184">184: </a></span>		retval[232] = NumericFunction.ASINH;
+<span class="nocode"><a name="185">185: </a></span>		retval[233] = NumericFunction.ACOSH;
+<span class="nocode"><a name="186">186: </a></span>		retval[234] = NumericFunction.ATANH;
+<span class="nocode"><a name="187">187: </a></span>
+<span class="nocode"><a name="188">188: </a></span>		retval[ID.EXTERNAL_FUNC] = null; // ExternalFunction is a FreeREfFunction
+<span class="nocode"><a name="189">189: </a></span>
+<span class="nocode"><a name="190">190: </a></span>		retval[261] = new Errortype();
+<span class="nocode"><a name="191">191: </a></span>
+<span class="nocode"><a name="192">192: </a></span>		retval[269] = AggregateFunction.AVEDEV;
+<span class="nocode"><a name="193">193: </a></span>
+<span class="nocode"><a name="194">194: </a></span>		retval[276] = NumericFunction.COMBIN;
+<span class="nocode"><a name="195">195: </a></span>
+<span class="nocode"><a name="196">196: </a></span>		retval[279] = new Even();
+<span class="nocode"><a name="197">197: </a></span>
+<span class="nocode"><a name="198">198: </a></span>		retval[285] = NumericFunction.FLOOR;
+<span class="nocode"><a name="199">199: </a></span>
+<span class="nocode"><a name="200">200: </a></span>		retval[288] = NumericFunction.CEILING;
+<span class="nocode"><a name="201">201: </a></span>
+<span class="nocode"><a name="202">202: </a></span>		retval[298] = new Odd();
+<span class="nocode"><a name="203">203: </a></span>
+<span class="nocode"><a name="204">204: </a></span>        retval[300] = NumericFunction.POISSON;
+<span class="nocode"><a name="205">205: </a></span>
+<span class="nocode"><a name="206">206: </a></span>		retval[303] = new Sumxmy2();
+<span class="nocode"><a name="207">207: </a></span>		retval[304] = new Sumx2my2();
+<span class="nocode"><a name="208">208: </a></span>		retval[305] = new Sumx2py2();
+<span class="nocode"><a name="209">209: </a></span>
+<span class="nocode"><a name="210">210: </a></span>		retval[318] = AggregateFunction.DEVSQ;
+<span class="nocode"><a name="211">211: </a></span>
+<span class="nocode"><a name="212">212: </a></span>		retval[321] = AggregateFunction.SUMSQ;
+<span class="nocode"><a name="213">213: </a></span>
+<span class="nocode"><a name="214">214: </a></span>		retval[325] = AggregateFunction.LARGE;
+<span class="nocode"><a name="215">215: </a></span>		retval[326] = AggregateFunction.SMALL;
+<span class="nocode"><a name="216">216: </a></span>
+<span class="nocode"><a name="217">217: </a></span>		retval[330] = new Mode();
+<span class="nocode"><a name="218">218: </a></span>
+<span class="nocode"><a name="219">219: </a></span>		retval[336] = TextFunction.CONCATENATE;
+<span class="nocode"><a name="220">220: </a></span>		retval[337] = NumericFunction.POWER;
+<span class="nocode"><a name="221">221: </a></span>
+<span class="nocode"><a name="222">222: </a></span>		retval[342] = NumericFunction.RADIANS;
+<span class="nocode"><a name="223">223: </a></span>		retval[343] = NumericFunction.DEGREES;
+<span class="nocode"><a name="224">224: </a></span>
+<span class="nocode"><a name="225">225: </a></span>		retval[344] = new Subtotal();
+<span class="nocode"><a name="226">226: </a></span>		retval[345] = new Sumif();
+<span class="nocode"><a name="227">227: </a></span>		retval[346] = new Countif();
+<span class="nocode"><a name="228">228: </a></span>		retval[347] = new Countblank();
+<span class="nocode"><a name="229">229: </a></span>
+<span class="nocode"><a name="230">230: </a></span>		retval[359] = new Hyperlink();
+<span class="nocode"><a name="231">231: </a></span>
+<span class="nocode"><a name="232">232: </a></span>		retval[362] = MinaMaxa.MAXA;
+<span class="nocode"><a name="233">233: </a></span>		retval[363] = MinaMaxa.MINA;
+<span class="nocode"><a name="234">234: </a></span>
+<span class="nocode"><a name="235">235: </a></span>		for (int i = 0; i &lt; retval.length; i++) {
+<span class="nocode"><a name="236">236: </a></span>			Function f = retval[i];
+<span class="nocode"><a name="237">237: </a></span>			if (f == null) {
+<span class="nocode"><a name="238">238: </a></span>				FunctionMetadata fm = FunctionMetadataRegistry.getFunctionByIndex(i);
+<span class="nocode"><a name="239">239: </a></span>				if (fm == null) {
+<span class="nocode"><a name="240">240: </a></span>					continue;
+<span class="nocode"><a name="241">241: </a></span>				}
+<span class="nocode"><a name="242">242: </a></span>				retval[i] = new NotImplementedFunction(fm.getName());
+<span class="nocode"><a name="243">243: </a></span>			}
+<span class="nocode"><a name="244">244: </a></span>		}
+<span class="nocode"><a name="245">245: </a></span>		return retval;
+<span class="nocode"><a name="246">246: </a></span>	}
+<span class="nocode"><a name="247">247: </a></span>	/**
+<span class="nocode"><a name="248">248: </a></span>	 * @return &lt;code&gt;null&lt;/code&gt; if the specified functionIndex is for INDIRECT() or any external (add-in) function.
+<span class="nocode"><a name="249">249: </a></span>	 */
+<span class="nocode"><a name="250">250: </a></span>	public static Function getBasicFunction(int functionIndex) {
+<span class="nocode"><a name="251">251: </a></span>		// check for 'free ref' functions first
+<span class="nocode"><a name="252">252: </a></span>		switch (functionIndex) {
+<span class="nocode"><a name="253">253: </a></span>			case FunctionID.INDIRECT:
+<span class="nocode"><a name="254">254: </a></span>			case FunctionID.EXTERNAL_FUNC:
+<span class="nocode"><a name="255">255: </a></span>				return null;
+<span class="nocode"><a name="256">256: </a></span>		}
+<span class="nocode"><a name="257">257: </a></span>		// else - must be plain function
+<span class="nocode"><a name="258">258: </a></span>		Function result = functions[functionIndex];
+<span class="nocode"><a name="259">259: </a></span>		if (result == null) {
+<span class="nocode"><a name="260">260: </a></span>			throw new NotImplementedException(&quot;FuncIx=&quot; + functionIndex);
+<span class="nocode"><a name="261">261: </a></span>		}
+<span class="nocode"><a name="262">262: </a></span>		return result;
+<span class="nocode"><a name="263">263: </a></span>	}
+<span class="nocode"><a name="264">264: </a></span>
+<span class="nocode"><a name="265">265: </a></span>    /**
+<span class="nocode"><a name="266">266: </a></span>     * Register a new function in runtime.
+<span class="nocode"><a name="267">267: </a></span>     *
+<span class="nocode"><a name="268">268: </a></span>     * @param name  the function name
+<span class="nocode"><a name="269">269: </a></span>     * @param func  the functoin to register
+<span class="nocode"><a name="270">270: </a></span>     * @throws IllegalArgumentException if the function is unknown or already  registered.
+<span class="nocode"><a name="271">271: </a></span>     * @since 3.8 beta6
+<span class="nocode"><a name="272">272: </a></span>     */
+<span class="nocode"><a name="273">273: </a></span>    public static void registerFunction(String name, Function func){
+<span class="nocode"><a name="274">274: </a></span>        FunctionMetadata metaData = FunctionMetadataRegistry.getFunctionByName(name);
+<span class="nocode"><a name="275">275: </a></span>        if(metaData == null) {
+<span class="nocode"><a name="276">276: </a></span>            if(AnalysisToolPak.isATPFunction(name)) {
+<span class="nocode"><a name="277">277: </a></span>                throw new IllegalArgumentException(name + &quot; is a function from the Excel Analysis Toolpack. &quot; +
+<span class="nocode"><a name="278">278: </a></span>                        &quot;Use AnalysisToolpack.registerFunction(String name, FreeRefFunction func) instead.&quot;);
+<span class="nocode"><a name="279">279: </a></span>            } else {
+<span class="nocode"><a name="280">280: </a></span>                throw new IllegalArgumentException(&quot;Unknown function: &quot; + name);
+<span class="nocode"><a name="281">281: </a></span>            }
+<span class="nocode"><a name="282">282: </a></span>        }
+<span class="nocode"><a name="283">283: </a></span>
+<span class="nocode"><a name="284">284: </a></span>        int idx = metaData.getIndex();
+<span class="nocode"><a name="285">285: </a></span>        if(functions[idx] instanceof NotImplementedFunction) {
+<span class="nocode"><a name="286">286: </a></span>            functions[idx] = func;
+<span class="nocode"><a name="287">287: </a></span>        } else {
+<span class="nocode"><a name="288">288: </a></span>            throw new IllegalArgumentException(&quot;POI already implememts &quot; + name +
+<span class="nocode"><a name="289">289: </a></span>                    &quot;. You cannot override POI's implementations of Excel functions&quot;);
+<span class="nocode"><a name="290">290: </a></span>        }
+<span class="nocode"><a name="291">291: </a></span>    }
+<span class="nocode"><a name="292">292: </a></span>
+<span class="nocode"><a name="293">293: </a></span>    /**
+<span class="nocode"><a name="294">294: </a></span>     * Returns a collection of function names implemented by POI.
+<span class="nocode"><a name="295">295: </a></span>     *
+<span class="nocode"><a name="296">296: </a></span>     * @return an array of supported functions
+<span class="nocode"><a name="297">297: </a></span>     * @since 3.8 beta6
+<span class="nocode"><a name="298">298: </a></span>     */
+<span class="nocode"><a name="299">299: </a></span>    public static Collection&lt;String&gt; getSupportedFunctionNames(){
+<span class="nocode"><a name="300">300: </a></span>        Collection&lt;String&gt; lst = new TreeSet&lt;String&gt;();
+<span class="nocode"><a name="301">301: </a></span>        for(int i = 0; i &lt; functions.length; i++){
+<span class="nocode"><a name="302">302: </a></span>            Function func = functions[i];
+<span class="nocode"><a name="303">303: </a></span>            FunctionMetadata metaData = FunctionMetadataRegistry.getFunctionByIndex(i);
+<span class="nocode"><a name="304">304: </a></span>            if(func != null &amp;&amp; !(func instanceof NotImplementedFunction)){
+<span class="nocode"><a name="305">305: </a></span>                lst.add(metaData.getName());
+<span class="nocode"><a name="306">306: </a></span>            }
+<span class="nocode"><a name="307">307: </a></span>        }
+<span class="nocode"><a name="308">308: </a></span>        lst.add(&quot;INDIRECT&quot;); // INDIRECT is a special case
+<span class="nocode"><a name="309">309: </a></span>        return Collections.unmodifiableCollection(lst);
+<span class="nocode"><a name="310">310: </a></span>    }
+<span class="nocode"><a name="311">311: </a></span>
+<span class="nocode"><a name="312">312: </a></span>    /**
+<span class="nocode"><a name="313">313: </a></span>     * Returns an array of function names NOT implemented by POI.
+<span class="nocode"><a name="314">314: </a></span>     *
+<span class="nocode"><a name="315">315: </a></span>     * @return an array of not supported functions
+<span class="nocode"><a name="316">316: </a></span>     * @since 3.8 beta6
+<span class="nocode"><a name="317">317: </a></span>     */
+<span class="nocode"><a name="318">318: </a></span>    public static Collection&lt;String&gt; getNotSupportedFunctionNames(){
+<span class="nocode"><a name="319">319: </a></span>        Collection&lt;String&gt; lst = new TreeSet&lt;String&gt;();
+<span class="nocode"><a name="320">320: </a></span>        for(int i = 0; i &lt; functions.length; i++){
+<span class="nocode"><a name="321">321: </a></span>            Function func = functions[i];
+<span class="nocode"><a name="322">322: </a></span>            if(func != null &amp;&amp; (func instanceof NotImplementedFunction)){
+<span class="nocode"><a name="323">323: </a></span>                FunctionMetadata metaData = FunctionMetadataRegistry.getFunctionByIndex(i);
+<span class="nocode"><a name="324">324: </a></span>                lst.add(metaData.getName());
+<span class="nocode"><a name="325">325: </a></span>            }
+<span class="nocode"><a name="326">326: </a></span>        }
+<span class="nocode"><a name="327">327: </a></span>        lst.remove(&quot;INDIRECT&quot;); // INDIRECT is a special case
+<span class="nocode"><a name="328">328: </a></span>        return Collections.unmodifiableCollection(lst);
+<span class="nocode"><a name="329">329: </a></span>    }
+<span class="nocode"><a name="330">330: </a></span>}
+</pre><table class="mutation_table" summary="Mutations">
+<tr><th>ID</th><th>Line</th><th>Type</th><th>Detected</th></tr><tr><td>58590</td><td><a href="#59">59</a></td><td>Replace a constant (Replace 368 with 369(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58589</td><td><a href="#59">59</a></td><td>Replace a constant (Replace 368 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58591</td><td><a href="#59">59</a></td><td>Replace a constant (Replace 368 with 367(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58593</td><td><a href="#61">61</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58592</td><td><a href="#61">61</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58595</td><td><a href="#62">62</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58594</td><td><a href="#62">62</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58598</td><td><a href="#63">63</a></td><td>Replace a constant (Replace 2 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58597</td><td><a href="#63">63</a></td><td>Replace a constant (Replace 2 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58596</td><td><a href="#63">63</a></td><td>Replace a constant (Replace 2 with 3(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58601</td><td><a href="#64">64</a></td><td>Replace a constant (Replace 3 with 4(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58600</td><td><a href="#64">64</a></td><td>Replace a constant (Replace 3 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58599</td><td><a href="#64">64</a></td><td>Replace a constant (Replace 3 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58602</td><td><a href="#65">65</a></td><td>Replace a constant (Replace 4 with 3(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58604</td><td><a href="#65">65</a></td><td>Replace a constant (Replace 4 with 5(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58603</td><td><a href="#65">65</a></td><td>Replace a constant (Replace 4 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58607</td><td><a href="#66">66</a></td><td>Replace a constant (Replace 5 with 4(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58605</td><td><a href="#66">66</a></td><td>Replace a constant (Replace 5 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58606</td><td><a href="#66">66</a></td><td>Replace a constant (Replace 5 with 6(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58608</td><td><a href="#67">67</a></td><td>Replace a constant (Replace 6 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58609</td><td><a href="#67">67</a></td><td>Replace a constant (Replace 6 with 7(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58610</td><td><a href="#67">67</a></td><td>Replace a constant (Replace 6 with 5(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58611</td><td><a href="#68">68</a></td><td>Replace a constant (Replace 7 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58613</td><td><a href="#68">68</a></td><td>Replace a constant (Replace 7 with 8(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58612</td><td><a href="#68">68</a></td><td>Replace a constant (Replace 7 with 6(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58615</td><td><a href="#69">69</a></td><td>Replace a constant (Replace 8 with 7(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58614</td><td><a href="#69">69</a></td><td>Replace a constant (Replace 8 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58616</td><td><a href="#69">69</a></td><td>Replace a constant (Replace 8 with 9(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58618</td><td><a href="#70">70</a></td><td>Replace a constant (Replace 9 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58619</td><td><a href="#70">70</a></td><td>Replace a constant (Replace 9 with 8(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58617</td><td><a href="#70">70</a></td><td>Replace a constant (Replace 9 with 10(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58621</td><td><a href="#71">71</a></td><td>Replace a constant (Replace 10 with 9(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58620</td><td><a href="#71">71</a></td><td>Replace a constant (Replace 10 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58622</td><td><a href="#71">71</a></td><td>Replace a constant (Replace 10 with 11(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58625</td><td><a href="#72">72</a></td><td>Replace a constant (Replace 11 with 12(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58624</td><td><a href="#72">72</a></td><td>Replace a constant (Replace 11 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58623</td><td><a href="#72">72</a></td><td>Replace a constant (Replace 11 with 10(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58627</td><td><a href="#73">73</a></td><td>Replace a constant (Replace 12 with 13(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58628</td><td><a href="#73">73</a></td><td>Replace a constant (Replace 12 with 11(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58626</td><td><a href="#73">73</a></td><td>Replace a constant (Replace 12 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58631</td><td><a href="#74">74</a></td><td>Replace a constant (Replace 13 with 12(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58630</td><td><a href="#74">74</a></td><td>Replace a constant (Replace 13 with 14(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58629</td><td><a href="#74">74</a></td><td>Replace a constant (Replace 13 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58634</td><td><a href="#76">76</a></td><td>Replace a constant (Replace 15 with 14(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58632</td><td><a href="#76">76</a></td><td>Replace a constant (Replace 15 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58633</td><td><a href="#76">76</a></td><td>Replace a constant (Replace 15 with 16(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58636</td><td><a href="#77">77</a></td><td>Replace a constant (Replace 16 with 17(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58635</td><td><a href="#77">77</a></td><td>Replace a constant (Replace 16 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58637</td><td><a href="#77">77</a></td><td>Replace a constant (Replace 16 with 15(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58639</td><td><a href="#78">78</a></td><td>Replace a constant (Replace 17 with 18(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58640</td><td><a href="#78">78</a></td><td>Replace a constant (Replace 17 with 16(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58638</td><td><a href="#78">78</a></td><td>Replace a constant (Replace 17 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58642</td><td><a href="#79">79</a></td><td>Replace a constant (Replace 18 with 19(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58641</td><td><a href="#79">79</a></td><td>Replace a constant (Replace 18 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58643</td><td><a href="#79">79</a></td><td>Replace a constant (Replace 18 with 17(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58646</td><td><a href="#80">80</a></td><td>Replace a constant (Replace 19 with 18(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58644</td><td><a href="#80">80</a></td><td>Replace a constant (Replace 19 with 20(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58645</td><td><a href="#80">80</a></td><td>Replace a constant (Replace 19 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58649</td><td><a href="#81">81</a></td><td>Replace a constant (Replace 20 with 19(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58647</td><td><a href="#81">81</a></td><td>Replace a constant (Replace 20 with 21(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58648</td><td><a href="#81">81</a></td><td>Replace a constant (Replace 20 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58652</td><td><a href="#82">82</a></td><td>Replace a constant (Replace 21 with 22(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58651</td><td><a href="#82">82</a></td><td>Replace a constant (Replace 21 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58650</td><td><a href="#82">82</a></td><td>Replace a constant (Replace 21 with 20(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58653</td><td><a href="#83">83</a></td><td>Replace a constant (Replace 22 with 21(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58654</td><td><a href="#83">83</a></td><td>Replace a constant (Replace 22 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58655</td><td><a href="#83">83</a></td><td>Replace a constant (Replace 22 with 23(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58656</td><td><a href="#84">84</a></td><td>Replace a constant (Replace 23 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58658</td><td><a href="#84">84</a></td><td>Replace a constant (Replace 23 with 24(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58657</td><td><a href="#84">84</a></td><td>Replace a constant (Replace 23 with 22(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58660</td><td><a href="#85">85</a></td><td>Replace a constant (Replace 24 with 23(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58659</td><td><a href="#85">85</a></td><td>Replace a constant (Replace 24 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58661</td><td><a href="#85">85</a></td><td>Replace a constant (Replace 24 with 25(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58663</td><td><a href="#86">86</a></td><td>Replace a constant (Replace 25 with 24(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58664</td><td><a href="#86">86</a></td><td>Replace a constant (Replace 25 with 26(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58662</td><td><a href="#86">86</a></td><td>Replace a constant (Replace 25 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58667</td><td><a href="#87">87</a></td><td>Replace a constant (Replace 26 with 27(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58666</td><td><a href="#87">87</a></td><td>Replace a constant (Replace 26 with 25(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58665</td><td><a href="#87">87</a></td><td>Replace a constant (Replace 26 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58669</td><td><a href="#88">88</a></td><td>Replace a constant (Replace 27 with 26(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58670</td><td><a href="#88">88</a></td><td>Replace a constant (Replace 27 with 28(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58668</td><td><a href="#88">88</a></td><td>Replace a constant (Replace 27 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58673</td><td><a href="#89">89</a></td><td>Replace a constant (Replace 28 with 29(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58671</td><td><a href="#89">89</a></td><td>Replace a constant (Replace 28 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58672</td><td><a href="#89">89</a></td><td>Replace a constant (Replace 28 with 27(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58675</td><td><a href="#90">90</a></td><td>Replace a constant (Replace 29 with 30(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58676</td><td><a href="#90">90</a></td><td>Replace a constant (Replace 29 with 28(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58674</td><td><a href="#90">90</a></td><td>Replace a constant (Replace 29 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58679</td><td><a href="#92">92</a></td><td>Replace a constant (Replace 31 with 32(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58678</td><td><a href="#92">92</a></td><td>Replace a constant (Replace 31 with 30(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58677</td><td><a href="#92">92</a></td><td>Replace a constant (Replace 31 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58682</td><td><a href="#93">93</a></td><td>Replace a constant (Replace 32 with 33(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58681</td><td><a href="#93">93</a></td><td>Replace a constant (Replace 32 with 31(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58680</td><td><a href="#93">93</a></td><td>Replace a constant (Replace 32 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58684</td><td><a href="#94">94</a></td><td>Replace a constant (Replace 33 with 32(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58683</td><td><a href="#94">94</a></td><td>Replace a constant (Replace 33 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58685</td><td><a href="#94">94</a></td><td>Replace a constant (Replace 33 with 34(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58686</td><td><a href="#95">95</a></td><td>Replace a constant (Replace 34 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58687</td><td><a href="#95">95</a></td><td>Replace a constant (Replace 34 with 35(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58688</td><td><a href="#95">95</a></td><td>Replace a constant (Replace 34 with 33(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58689</td><td><a href="#96">96</a></td><td>Replace a constant (Replace 35 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58690</td><td><a href="#96">96</a></td><td>Replace a constant (Replace 35 with 36(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58691</td><td><a href="#96">96</a></td><td>Replace a constant (Replace 35 with 34(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58692</td><td><a href="#97">97</a></td><td>Replace a constant (Replace 36 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58693</td><td><a href="#97">97</a></td><td>Replace a constant (Replace 36 with 35(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58694</td><td><a href="#97">97</a></td><td>Replace a constant (Replace 36 with 37(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58697</td><td><a href="#98">98</a></td><td>Replace a constant (Replace 37 with 38(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58696</td><td><a href="#98">98</a></td><td>Replace a constant (Replace 37 with 36(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58695</td><td><a href="#98">98</a></td><td>Replace a constant (Replace 37 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58698</td><td><a href="#99">99</a></td><td>Replace a constant (Replace 38 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58700</td><td><a href="#99">99</a></td><td>Replace a constant (Replace 38 with 37(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58699</td><td><a href="#99">99</a></td><td>Replace a constant (Replace 38 with 39(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58701</td><td><a href="#100">100</a></td><td>Replace a constant (Replace 39 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58703</td><td><a href="#100">100</a></td><td>Replace a constant (Replace 39 with 38(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58702</td><td><a href="#100">100</a></td><td>Replace a constant (Replace 39 with 40(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58704</td><td><a href="#102">102</a></td><td>Replace a constant (Replace 46 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58705</td><td><a href="#102">102</a></td><td>Replace a constant (Replace 46 with 45(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58706</td><td><a href="#102">102</a></td><td>Replace a constant (Replace 46 with 47(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58709</td><td><a href="#103">103</a></td><td>Replace a constant (Replace 48 with 47(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58708</td><td><a href="#103">103</a></td><td>Replace a constant (Replace 48 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58707</td><td><a href="#103">103</a></td><td>Replace a constant (Replace 48 with 49(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58711</td><td><a href="#105">105</a></td><td>Replace a constant (Replace 56 with 57(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58710</td><td><a href="#105">105</a></td><td>Replace a constant (Replace 56 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58712</td><td><a href="#105">105</a></td><td>Replace a constant (Replace 56 with 55(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58715</td><td><a href="#106">106</a></td><td>Replace a constant (Replace 57 with 56(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58714</td><td><a href="#106">106</a></td><td>Replace a constant (Replace 57 with 58(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58713</td><td><a href="#106">106</a></td><td>Replace a constant (Replace 57 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58718</td><td><a href="#107">107</a></td><td>Replace a constant (Replace 58 with 57(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58716</td><td><a href="#107">107</a></td><td>Replace a constant (Replace 58 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58717</td><td><a href="#107">107</a></td><td>Replace a constant (Replace 58 with 59(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58721</td><td><a href="#108">108</a></td><td>Replace a constant (Replace 59 with 60(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58720</td><td><a href="#108">108</a></td><td>Replace a constant (Replace 59 with 58(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58719</td><td><a href="#108">108</a></td><td>Replace a constant (Replace 59 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58724</td><td><a href="#110">110</a></td><td>Replace a constant (Replace 60 with 61(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58723</td><td><a href="#110">110</a></td><td>Replace a constant (Replace 60 with 59(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58722</td><td><a href="#110">110</a></td><td>Replace a constant (Replace 60 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58727</td><td><a href="#111">111</a></td><td>Replace a constant (Replace 62 with 61(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58725</td><td><a href="#111">111</a></td><td>Replace a constant (Replace 62 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58726</td><td><a href="#111">111</a></td><td>Replace a constant (Replace 62 with 63(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58728</td><td><a href="#112">112</a></td><td>Replace a constant (Replace 63 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58729</td><td><a href="#112">112</a></td><td>Replace a constant (Replace 63 with 64(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58730</td><td><a href="#112">112</a></td><td>Replace a constant (Replace 63 with 62(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58733</td><td><a href="#113">113</a></td><td>Replace a constant (Replace 64 with 63(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58732</td><td><a href="#113">113</a></td><td>Replace a constant (Replace 64 with 65(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58731</td><td><a href="#113">113</a></td><td>Replace a constant (Replace 64 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58735</td><td><a href="#114">114</a></td><td>Replace a constant (Replace 65 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58736</td><td><a href="#114">114</a></td><td>Replace a constant (Replace 65 with 64(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58734</td><td><a href="#114">114</a></td><td>Replace a constant (Replace 65 with 66(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58738</td><td><a href="#115">115</a></td><td>Replace a constant (Replace 66 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58737</td><td><a href="#115">115</a></td><td>Replace a constant (Replace 66 with 67(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58739</td><td><a href="#115">115</a></td><td>Replace a constant (Replace 66 with 65(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58741</td><td><a href="#116">116</a></td><td>Replace a constant (Replace 67 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58742</td><td><a href="#116">116</a></td><td>Replace a constant (Replace 67 with 68(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58740</td><td><a href="#116">116</a></td><td>Replace a constant (Replace 67 with 66(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58745</td><td><a href="#117">117</a></td><td>Replace a constant (Replace 68 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58743</td><td><a href="#117">117</a></td><td>Replace a constant (Replace 68 with 67(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58744</td><td><a href="#117">117</a></td><td>Replace a constant (Replace 68 with 69(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58746</td><td><a href="#118">118</a></td><td>Replace a constant (Replace 69 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58748</td><td><a href="#118">118</a></td><td>Replace a constant (Replace 69 with 70(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58747</td><td><a href="#118">118</a></td><td>Replace a constant (Replace 69 with 68(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58750</td><td><a href="#120">120</a></td><td>Replace a constant (Replace 71 with 70(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58749</td><td><a href="#120">120</a></td><td>Replace a constant (Replace 71 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58751</td><td><a href="#120">120</a></td><td>Replace a constant (Replace 71 with 72(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58754</td><td><a href="#121">121</a></td><td>Replace a constant (Replace 72 with 73(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58752</td><td><a href="#121">121</a></td><td>Replace a constant (Replace 72 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58753</td><td><a href="#121">121</a></td><td>Replace a constant (Replace 72 with 71(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58757</td><td><a href="#122">122</a></td><td>Replace a constant (Replace 73 with 74(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58756</td><td><a href="#122">122</a></td><td>Replace a constant (Replace 73 with 72(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58755</td><td><a href="#122">122</a></td><td>Replace a constant (Replace 73 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58759</td><td><a href="#123">123</a></td><td>Replace a constant (Replace 74 with 73(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58758</td><td><a href="#123">123</a></td><td>Replace a constant (Replace 74 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58760</td><td><a href="#123">123</a></td><td>Replace a constant (Replace 74 with 75(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58761</td><td><a href="#125">125</a></td><td>Replace a constant (Replace 76 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58763</td><td><a href="#125">125</a></td><td>Replace a constant (Replace 76 with 75(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58762</td><td><a href="#125">125</a></td><td>Replace a constant (Replace 76 with 77(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58764</td><td><a href="#126">126</a></td><td>Replace a constant (Replace 77 with 78(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58766</td><td><a href="#126">126</a></td><td>Replace a constant (Replace 77 with 76(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58765</td><td><a href="#126">126</a></td><td>Replace a constant (Replace 77 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58769</td><td><a href="#127">127</a></td><td>Replace a constant (Replace 82 with 81(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58768</td><td><a href="#127">127</a></td><td>Replace a constant (Replace 82 with 83(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58767</td><td><a href="#127">127</a></td><td>Replace a constant (Replace 82 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58772</td><td><a href="#128">128</a></td><td>Replace a constant (Replace 78 with 77(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58771</td><td><a href="#128">128</a></td><td>Replace a constant (Replace 78 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58770</td><td><a href="#128">128</a></td><td>Replace a constant (Replace 78 with 79(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58773</td><td><a href="#129">129</a></td><td>Replace a constant (Replace 82 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58774</td><td><a href="#129">129</a></td><td>Replace a constant (Replace 82 with 83(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58775</td><td><a href="#129">129</a></td><td>Replace a constant (Replace 82 with 81(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58778</td><td><a href="#131">131</a></td><td>Replace a constant (Replace 97 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58776</td><td><a href="#131">131</a></td><td>Replace a constant (Replace 97 with 98(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58777</td><td><a href="#131">131</a></td><td>Replace a constant (Replace 97 with 96(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58781</td><td><a href="#132">132</a></td><td>Replace a constant (Replace 98 with 99(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58780</td><td><a href="#132">132</a></td><td>Replace a constant (Replace 98 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58779</td><td><a href="#132">132</a></td><td>Replace a constant (Replace 98 with 97(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58782</td><td><a href="#133">133</a></td><td>Replace a constant (Replace 99 with 98(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58784</td><td><a href="#133">133</a></td><td>Replace a constant (Replace 99 with 100(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58783</td><td><a href="#133">133</a></td><td>Replace a constant (Replace 99 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58787</td><td><a href="#134">134</a></td><td>Replace a constant (Replace 100 with 101(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58785</td><td><a href="#134">134</a></td><td>Replace a constant (Replace 100 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58786</td><td><a href="#134">134</a></td><td>Replace a constant (Replace 100 with 99(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58789</td><td><a href="#135">135</a></td><td>Replace a constant (Replace 101 with 102(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58788</td><td><a href="#135">135</a></td><td>Replace a constant (Replace 101 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58790</td><td><a href="#135">135</a></td><td>Replace a constant (Replace 101 with 100(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58791</td><td><a href="#136">136</a></td><td>Replace a constant (Replace 102 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58793</td><td><a href="#136">136</a></td><td>Replace a constant (Replace 102 with 101(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58792</td><td><a href="#136">136</a></td><td>Replace a constant (Replace 102 with 103(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58795</td><td><a href="#138">138</a></td><td>Replace a constant (Replace 105 with 106(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58794</td><td><a href="#138">138</a></td><td>Replace a constant (Replace 105 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58796</td><td><a href="#138">138</a></td><td>Replace a constant (Replace 105 with 104(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58799</td><td><a href="#140">140</a></td><td>Replace a constant (Replace 109 with 110(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58797</td><td><a href="#140">140</a></td><td>Replace a constant (Replace 109 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58798</td><td><a href="#140">140</a></td><td>Replace a constant (Replace 109 with 108(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58800</td><td><a href="#142">142</a></td><td>Replace a constant (Replace 111 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58801</td><td><a href="#142">142</a></td><td>Replace a constant (Replace 111 with 112(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58802</td><td><a href="#142">142</a></td><td>Replace a constant (Replace 111 with 110(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58805</td><td><a href="#143">143</a></td><td>Replace a constant (Replace 112 with 111(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58803</td><td><a href="#143">143</a></td><td>Replace a constant (Replace 112 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58804</td><td><a href="#143">143</a></td><td>Replace a constant (Replace 112 with 113(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58807</td><td><a href="#144">144</a></td><td>Replace a constant (Replace 113 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58808</td><td><a href="#144">144</a></td><td>Replace a constant (Replace 113 with 112(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58806</td><td><a href="#144">144</a></td><td>Replace a constant (Replace 113 with 114(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58811</td><td><a href="#146">146</a></td><td>Replace a constant (Replace 115 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58809</td><td><a href="#146">146</a></td><td>Replace a constant (Replace 115 with 116(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58810</td><td><a href="#146">146</a></td><td>Replace a constant (Replace 115 with 114(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58812</td><td><a href="#147">147</a></td><td>Replace a constant (Replace 116 with 117(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58813</td><td><a href="#147">147</a></td><td>Replace a constant (Replace 116 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58814</td><td><a href="#147">147</a></td><td>Replace a constant (Replace 116 with 115(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58816</td><td><a href="#148">148</a></td><td>Replace a constant (Replace 117 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58817</td><td><a href="#148">148</a></td><td>Replace a constant (Replace 117 with 118(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58815</td><td><a href="#148">148</a></td><td>Replace a constant (Replace 117 with 116(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58819</td><td><a href="#149">149</a></td><td>Replace a constant (Replace 118 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58820</td><td><a href="#149">149</a></td><td>Replace a constant (Replace 118 with 119(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58818</td><td><a href="#149">149</a></td><td>Replace a constant (Replace 118 with 117(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58823</td><td><a href="#150">150</a></td><td>Replace a constant (Replace 119 with 118(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58821</td><td><a href="#150">150</a></td><td>Replace a constant (Replace 119 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58822</td><td><a href="#150">150</a></td><td>Replace a constant (Replace 119 with 120(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58825</td><td><a href="#151">151</a></td><td>Replace a constant (Replace 120 with 121(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58826</td><td><a href="#151">151</a></td><td>Replace a constant (Replace 120 with 119(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58824</td><td><a href="#151">151</a></td><td>Replace a constant (Replace 120 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58829</td><td><a href="#153">153</a></td><td>Replace a constant (Replace 124 with 123(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58828</td><td><a href="#153">153</a></td><td>Replace a constant (Replace 124 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58827</td><td><a href="#153">153</a></td><td>Replace a constant (Replace 124 with 125(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58832</td><td><a href="#155">155</a></td><td>Replace a constant (Replace 127 with 128(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58830</td><td><a href="#155">155</a></td><td>Replace a constant (Replace 127 with 126(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58831</td><td><a href="#155">155</a></td><td>Replace a constant (Replace 127 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58833</td><td><a href="#156">156</a></td><td>Replace a constant (Replace 128 with 127(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58835</td><td><a href="#156">156</a></td><td>Replace a constant (Replace 128 with 129(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58834</td><td><a href="#156">156</a></td><td>Replace a constant (Replace 128 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58838</td><td><a href="#157">157</a></td><td>Replace a constant (Replace 129 with 130(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58837</td><td><a href="#157">157</a></td><td>Replace a constant (Replace 129 with 128(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58836</td><td><a href="#157">157</a></td><td>Replace a constant (Replace 129 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58839</td><td><a href="#158">158</a></td><td>Replace a constant (Replace 130 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58841</td><td><a href="#158">158</a></td><td>Replace a constant (Replace 130 with 131(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58840</td><td><a href="#158">158</a></td><td>Replace a constant (Replace 130 with 129(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58844</td><td><a href="#160">160</a></td><td>Replace a constant (Replace 148 with 149(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58843</td><td><a href="#160">160</a></td><td>Replace a constant (Replace 148 with 147(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58842</td><td><a href="#160">160</a></td><td>Replace a constant (Replace 148 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58846</td><td><a href="#161">161</a></td><td>Replace a constant (Replace 162 with 163(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58845</td><td><a href="#161">161</a></td><td>Replace a constant (Replace 162 with 161(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58847</td><td><a href="#161">161</a></td><td>Replace a constant (Replace 162 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58849</td><td><a href="#162">162</a></td><td>Replace a constant (Replace 169 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58848</td><td><a href="#162">162</a></td><td>Replace a constant (Replace 169 with 170(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58850</td><td><a href="#162">162</a></td><td>Replace a constant (Replace 169 with 168(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58852</td><td><a href="#164">164</a></td><td>Replace a constant (Replace 183 with 182(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58851</td><td><a href="#164">164</a></td><td>Replace a constant (Replace 183 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58853</td><td><a href="#164">164</a></td><td>Replace a constant (Replace 183 with 184(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58854</td><td><a href="#165">165</a></td><td>Replace a constant (Replace 184 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58855</td><td><a href="#165">165</a></td><td>Replace a constant (Replace 184 with 183(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58856</td><td><a href="#165">165</a></td><td>Replace a constant (Replace 184 with 185(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58857</td><td><a href="#167">167</a></td><td>Replace a constant (Replace 190 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58859</td><td><a href="#167">167</a></td><td>Replace a constant (Replace 190 with 191(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58858</td><td><a href="#167">167</a></td><td>Replace a constant (Replace 190 with 189(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58861</td><td><a href="#168">168</a></td><td>Replace a constant (Replace 194 with 195(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58862</td><td><a href="#168">168</a></td><td>Replace a constant (Replace 194 with 193(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58860</td><td><a href="#168">168</a></td><td>Replace a constant (Replace 194 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58864</td><td><a href="#169">169</a></td><td>Replace a constant (Replace 197 with 198(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58863</td><td><a href="#169">169</a></td><td>Replace a constant (Replace 197 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58865</td><td><a href="#169">169</a></td><td>Replace a constant (Replace 197 with 196(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58866</td><td><a href="#170">170</a></td><td>Replace a constant (Replace 198 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58867</td><td><a href="#170">170</a></td><td>Replace a constant (Replace 198 with 199(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58868</td><td><a href="#170">170</a></td><td>Replace a constant (Replace 198 with 197(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58870</td><td><a href="#172">172</a></td><td>Replace a constant (Replace 212 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58871</td><td><a href="#172">172</a></td><td>Replace a constant (Replace 212 with 213(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58869</td><td><a href="#172">172</a></td><td>Replace a constant (Replace 212 with 211(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58874</td><td><a href="#173">173</a></td><td>Replace a constant (Replace 213 with 214(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58873</td><td><a href="#173">173</a></td><td>Replace a constant (Replace 213 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58872</td><td><a href="#173">173</a></td><td>Replace a constant (Replace 213 with 212(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58875</td><td><a href="#174">174</a></td><td>Replace a constant (Replace 216 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58876</td><td><a href="#174">174</a></td><td>Replace a constant (Replace 216 with 215(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58877</td><td><a href="#174">174</a></td><td>Replace a constant (Replace 216 with 217(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58878</td><td><a href="#175">175</a></td><td>Replace a constant (Replace 219 with 220(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58879</td><td><a href="#175">175</a></td><td>Replace a constant (Replace 219 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58880</td><td><a href="#175">175</a></td><td>Replace a constant (Replace 219 with 218(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58882</td><td><a href="#176">176</a></td><td>Replace a constant (Replace 220 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58881</td><td><a href="#176">176</a></td><td>Replace a constant (Replace 220 with 221(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58883</td><td><a href="#176">176</a></td><td>Replace a constant (Replace 220 with 219(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58885</td><td><a href="#177">177</a></td><td>Replace a constant (Replace 221 with 222(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58886</td><td><a href="#177">177</a></td><td>Replace a constant (Replace 221 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58884</td><td><a href="#177">177</a></td><td>Replace a constant (Replace 221 with 220(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58887</td><td><a href="#179">179</a></td><td>Replace a constant (Replace 227 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58888</td><td><a href="#179">179</a></td><td>Replace a constant (Replace 227 with 226(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58889</td><td><a href="#179">179</a></td><td>Replace a constant (Replace 227 with 228(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58890</td><td><a href="#180">180</a></td><td>Replace a constant (Replace 228 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58892</td><td><a href="#180">180</a></td><td>Replace a constant (Replace 228 with 229(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58891</td><td><a href="#180">180</a></td><td>Replace a constant (Replace 228 with 227(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58894</td><td><a href="#181">181</a></td><td>Replace a constant (Replace 229 with 230(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58893</td><td><a href="#181">181</a></td><td>Replace a constant (Replace 229 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58895</td><td><a href="#181">181</a></td><td>Replace a constant (Replace 229 with 228(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58896</td><td><a href="#182">182</a></td><td>Replace a constant (Replace 230 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58897</td><td><a href="#182">182</a></td><td>Replace a constant (Replace 230 with 229(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58898</td><td><a href="#182">182</a></td><td>Replace a constant (Replace 230 with 231(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58899</td><td><a href="#183">183</a></td><td>Replace a constant (Replace 231 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58901</td><td><a href="#183">183</a></td><td>Replace a constant (Replace 231 with 232(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58900</td><td><a href="#183">183</a></td><td>Replace a constant (Replace 231 with 230(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58903</td><td><a href="#184">184</a></td><td>Replace a constant (Replace 232 with 231(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58902</td><td><a href="#184">184</a></td><td>Replace a constant (Replace 232 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58904</td><td><a href="#184">184</a></td><td>Replace a constant (Replace 232 with 233(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58907</td><td><a href="#185">185</a></td><td>Replace a constant (Replace 233 with 234(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58906</td><td><a href="#185">185</a></td><td>Replace a constant (Replace 233 with 232(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58905</td><td><a href="#185">185</a></td><td>Replace a constant (Replace 233 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58909</td><td><a href="#186">186</a></td><td>Replace a constant (Replace 234 with 233(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58910</td><td><a href="#186">186</a></td><td>Replace a constant (Replace 234 with 235(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58908</td><td><a href="#186">186</a></td><td>Replace a constant (Replace 234 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58912</td><td><a href="#188">188</a></td><td>Replace a constant (Replace 255 with 254(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58911</td><td><a href="#188">188</a></td><td>Replace a constant (Replace 255 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58913</td><td><a href="#188">188</a></td><td>Replace a constant (Replace 255 with 256(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58915</td><td><a href="#190">190</a></td><td>Replace a constant (Replace 261 with 260(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58914</td><td><a href="#190">190</a></td><td>Replace a constant (Replace 261 with 262(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58916</td><td><a href="#190">190</a></td><td>Replace a constant (Replace 261 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58917</td><td><a href="#192">192</a></td><td>Replace a constant (Replace 269 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58919</td><td><a href="#192">192</a></td><td>Replace a constant (Replace 269 with 268(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58918</td><td><a href="#192">192</a></td><td>Replace a constant (Replace 269 with 270(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58920</td><td><a href="#194">194</a></td><td>Replace a constant (Replace 276 with 275(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58922</td><td><a href="#194">194</a></td><td>Replace a constant (Replace 276 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58921</td><td><a href="#194">194</a></td><td>Replace a constant (Replace 276 with 277(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58924</td><td><a href="#196">196</a></td><td>Replace a constant (Replace 279 with 278(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58923</td><td><a href="#196">196</a></td><td>Replace a constant (Replace 279 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58925</td><td><a href="#196">196</a></td><td>Replace a constant (Replace 279 with 280(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58927</td><td><a href="#198">198</a></td><td>Replace a constant (Replace 285 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58926</td><td><a href="#198">198</a></td><td>Replace a constant (Replace 285 with 286(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58928</td><td><a href="#198">198</a></td><td>Replace a constant (Replace 285 with 284(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58930</td><td><a href="#200">200</a></td><td>Replace a constant (Replace 288 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58929</td><td><a href="#200">200</a></td><td>Replace a constant (Replace 288 with 289(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58931</td><td><a href="#200">200</a></td><td>Replace a constant (Replace 288 with 287(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58934</td><td><a href="#202">202</a></td><td>Replace a constant (Replace 298 with 299(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58933</td><td><a href="#202">202</a></td><td>Replace a constant (Replace 298 with 297(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58932</td><td><a href="#202">202</a></td><td>Replace a constant (Replace 298 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58935</td><td><a href="#204">204</a></td><td>Replace a constant (Replace 300 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58937</td><td><a href="#204">204</a></td><td>Replace a constant (Replace 300 with 299(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58936</td><td><a href="#204">204</a></td><td>Replace a constant (Replace 300 with 301(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58939</td><td><a href="#206">206</a></td><td>Replace a constant (Replace 303 with 302(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58938</td><td><a href="#206">206</a></td><td>Replace a constant (Replace 303 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58940</td><td><a href="#206">206</a></td><td>Replace a constant (Replace 303 with 304(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58941</td><td><a href="#207">207</a></td><td>Replace a constant (Replace 304 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58942</td><td><a href="#207">207</a></td><td>Replace a constant (Replace 304 with 303(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58943</td><td><a href="#207">207</a></td><td>Replace a constant (Replace 304 with 305(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58946</td><td><a href="#208">208</a></td><td>Replace a constant (Replace 305 with 306(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58945</td><td><a href="#208">208</a></td><td>Replace a constant (Replace 305 with 304(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58944</td><td><a href="#208">208</a></td><td>Replace a constant (Replace 305 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58947</td><td><a href="#210">210</a></td><td>Replace a constant (Replace 318 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58949</td><td><a href="#210">210</a></td><td>Replace a constant (Replace 318 with 317(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58948</td><td><a href="#210">210</a></td><td>Replace a constant (Replace 318 with 319(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58950</td><td><a href="#212">212</a></td><td>Replace a constant (Replace 321 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58951</td><td><a href="#212">212</a></td><td>Replace a constant (Replace 321 with 320(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58952</td><td><a href="#212">212</a></td><td>Replace a constant (Replace 321 with 322(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58954</td><td><a href="#214">214</a></td><td>Replace a constant (Replace 325 with 324(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58955</td><td><a href="#214">214</a></td><td>Replace a constant (Replace 325 with 326(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58953</td><td><a href="#214">214</a></td><td>Replace a constant (Replace 325 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58958</td><td><a href="#215">215</a></td><td>Replace a constant (Replace 326 with 325(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58957</td><td><a href="#215">215</a></td><td>Replace a constant (Replace 326 with 327(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58956</td><td><a href="#215">215</a></td><td>Replace a constant (Replace 326 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58960</td><td><a href="#217">217</a></td><td>Replace a constant (Replace 330 with 329(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58961</td><td><a href="#217">217</a></td><td>Replace a constant (Replace 330 with 331(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58959</td><td><a href="#217">217</a></td><td>Replace a constant (Replace 330 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58962</td><td><a href="#219">219</a></td><td>Replace a constant (Replace 336 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58963</td><td><a href="#219">219</a></td><td>Replace a constant (Replace 336 with 337(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58964</td><td><a href="#219">219</a></td><td>Replace a constant (Replace 336 with 335(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58966</td><td><a href="#220">220</a></td><td>Replace a constant (Replace 337 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58967</td><td><a href="#220">220</a></td><td>Replace a constant (Replace 337 with 336(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58965</td><td><a href="#220">220</a></td><td>Replace a constant (Replace 337 with 338(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58970</td><td><a href="#222">222</a></td><td>Replace a constant (Replace 342 with 343(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58969</td><td><a href="#222">222</a></td><td>Replace a constant (Replace 342 with 341(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58968</td><td><a href="#222">222</a></td><td>Replace a constant (Replace 342 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58972</td><td><a href="#223">223</a></td><td>Replace a constant (Replace 343 with 342(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58971</td><td><a href="#223">223</a></td><td>Replace a constant (Replace 343 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58973</td><td><a href="#223">223</a></td><td>Replace a constant (Replace 343 with 344(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58975</td><td><a href="#225">225</a></td><td>Replace a constant (Replace 344 with 343(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58974</td><td><a href="#225">225</a></td><td>Replace a constant (Replace 344 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58976</td><td><a href="#225">225</a></td><td>Replace a constant (Replace 344 with 345(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58979</td><td><a href="#226">226</a></td><td>Replace a constant (Replace 345 with 346(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58978</td><td><a href="#226">226</a></td><td>Replace a constant (Replace 345 with 344(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58977</td><td><a href="#226">226</a></td><td>Replace a constant (Replace 345 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58982</td><td><a href="#227">227</a></td><td>Replace a constant (Replace 346 with 347(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58981</td><td><a href="#227">227</a></td><td>Replace a constant (Replace 346 with 345(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58980</td><td><a href="#227">227</a></td><td>Replace a constant (Replace 346 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58983</td><td><a href="#228">228</a></td><td>Replace a constant (Replace 347 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58984</td><td><a href="#228">228</a></td><td>Replace a constant (Replace 347 with 346(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58985</td><td><a href="#228">228</a></td><td>Replace a constant (Replace 347 with 348(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58986</td><td><a href="#230">230</a></td><td>Replace a constant (Replace 359 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58988</td><td><a href="#230">230</a></td><td>Replace a constant (Replace 359 with 360(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58987</td><td><a href="#230">230</a></td><td>Replace a constant (Replace 359 with 358(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58989</td><td><a href="#232">232</a></td><td>Replace a constant (Replace 362 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58991</td><td><a href="#232">232</a></td><td>Replace a constant (Replace 362 with 361(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58990</td><td><a href="#232">232</a></td><td>Replace a constant (Replace 362 with 363(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58994</td><td><a href="#233">233</a></td><td>Replace a constant (Replace 363 with 362(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58993</td><td><a href="#233">233</a></td><td>Replace a constant (Replace 363 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58992</td><td><a href="#233">233</a></td><td>Replace a constant (Replace 363 with 364(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58995</td><td><a href="#235">235</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58996</td><td><a href="#235">235</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58997</td><td><a href="#235">235</a></td><td>Negate jump condition (Replace IF_ICMPGE with  IF_ICMPLT)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58998</td><td><a href="#237">237</a></td><td>Negate jump condition (Replace IFNONNULL with  IFNULL)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>58999</td><td><a href="#238">238</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59000</td><td><a href="#239">239</a></td><td>Negate jump condition (Replace IFNONNULL with  IFNULL)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59001</td><td><a href="#242">242</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59002</td><td><a href="#259">259</a></td><td>Negate jump condition (Replace IFNONNULL with  IFNULL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>59003</td><td><a href="#260">260</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59004</td><td><a href="#260">260(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59005</td><td><a href="#260">260(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59006</td><td><a href="#274">274</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59007</td><td><a href="#275">275</a></td><td>Negate jump condition (Replace IFNONNULL with  IFNULL)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59009</td><td><a href="#276">276</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59008</td><td><a href="#276">276</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59010</td><td><a href="#277">277</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59011</td><td><a href="#277">277(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59012</td><td><a href="#277">277(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59013</td><td><a href="#277">277(3)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59014</td><td><a href="#280">280</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59015</td><td><a href="#280">280(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59016</td><td><a href="#280">280(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59017</td><td><a href="#284">284</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59018</td><td><a href="#285">285</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59019</td><td><a href="#288">288</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59020</td><td><a href="#288">288(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59021</td><td><a href="#288">288(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59022</td><td><a href="#288">288(3)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59023</td><td><a href="#301">301</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59024</td><td><a href="#301">301</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>59025</td><td><a href="#301">301</a></td><td>Negate jump condition (Replace IF_ICMPGE with  IF_ICMPLT)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59026</td><td><a href="#303">303</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>59027</td><td><a href="#304">304</a></td><td>Negate jump condition (Replace IFNULL with  IFNONNULL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>59028</td><td><a href="#304">304(1)</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59029</td><td><a href="#305">305</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>59030</td><td><a href="#305">305(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59031</td><td><a href="#308">308</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59032</td><td><a href="#309">309</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>59033</td><td><a href="#320">320</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59034</td><td><a href="#320">320</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59035</td><td><a href="#320">320</a></td><td>Negate jump condition (Replace IF_ICMPGE with  IF_ICMPLT)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59036</td><td><a href="#322">322</a></td><td>Negate jump condition (Replace IFNULL with  IFNONNULL)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59037</td><td><a href="#322">322(1)</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59038</td><td><a href="#323">323</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59039</td><td><a href="#324">324</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59040</td><td><a href="#324">324(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59041</td><td><a href="#327">327</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>59042</td><td><a href="#328">328</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+</table>
+</body>
+</html>
