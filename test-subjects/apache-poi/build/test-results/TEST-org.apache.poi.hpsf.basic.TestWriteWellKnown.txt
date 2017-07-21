@@ -1,0 +1,8 @@
+Testsuite: org.apache.poi.hpsf.basic.TestWriteWellKnown
+Tests run: 5, Failures: 0, Errors: 0, Time elapsed: 0.02 sec
+
+Testcase: testReadDocumentSummaryInformation took 0.007 sec
+Testcase: testWriteWellKnown took 0.004 sec
+Testcase: testReadCustomPropertiesFromFiles took 0.007 sec
+Testcase: testCustomerProperties took 0 sec
+Testcase: testGetCustomerProperties took 0 sec

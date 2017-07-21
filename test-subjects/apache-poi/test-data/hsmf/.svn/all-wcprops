@@ -1,0 +1,89 @@
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/repos/asf/!svn/ver/1210332/poi/trunk/test-data/hsmf
+END
+example_received_regular.msg
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/repos/asf/!svn/ver/898295/poi/trunk/test-data/hsmf/example_received_regular.msg
+END
+no_recipient_address.msg
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/repos/asf/!svn/ver/954476/poi/trunk/test-data/hsmf/no_recipient_address.msg
+END
+outlook_30_msg.msg
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/repos/asf/!svn/ver/806959/poi/trunk/test-data/hsmf/outlook_30_msg.msg
+END
+example_sent_regular.msg
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/repos/asf/!svn/ver/898295/poi/trunk/test-data/hsmf/example_sent_regular.msg
+END
+chinese-traditional.msg
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/repos/asf/!svn/ver/1087726/poi/trunk/test-data/hsmf/chinese-traditional.msg
+END
+51873.msg
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/repos/asf/!svn/ver/1210332/poi/trunk/test-data/hsmf/51873.msg
+END
+attachment_msg_pdf.msg
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/repos/asf/!svn/ver/982331/poi/trunk/test-data/hsmf/attachment_msg_pdf.msg
+END
+blank.msg
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/repos/asf/!svn/ver/806959/poi/trunk/test-data/hsmf/blank.msg
+END
+example_received_unicode.msg
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/repos/asf/!svn/ver/898295/poi/trunk/test-data/hsmf/example_received_unicode.msg
+END
+example_sent_unicode.msg
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/repos/asf/!svn/ver/898295/poi/trunk/test-data/hsmf/example_sent_unicode.msg
+END
+quick.msg
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/repos/asf/!svn/ver/897167/poi/trunk/test-data/hsmf/quick.msg
+END
+attachment_test_msg.msg
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/repos/asf/!svn/ver/806959/poi/trunk/test-data/hsmf/attachment_test_msg.msg
+END
+cyrillic_message.msg
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/repos/asf/!svn/ver/958971/poi/trunk/test-data/hsmf/cyrillic_message.msg
+END
+simple_test_msg.msg
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/repos/asf/!svn/ver/806959/poi/trunk/test-data/hsmf/simple_test_msg.msg
+END

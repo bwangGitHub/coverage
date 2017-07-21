@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/repos/asf/!svn/ver/1203295/poi/trunk/src/scratchpad/src/org/apache/poi/hslf/extractor
+END
+ImageExtractor.java
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/repos/asf/!svn/ver/777204/poi/trunk/src/scratchpad/src/org/apache/poi/hslf/extractor/ImageExtractor.java
+END
+PowerPointExtractor.java
+K 25
+svn:wc:ra_dav:version-url
+V 111
+/repos/asf/!svn/ver/1203295/poi/trunk/src/scratchpad/src/org/apache/poi/hslf/extractor/PowerPointExtractor.java
+END
+QuickButCruddyTextExtractor.java
+K 25
+svn:wc:ra_dav:version-url
+V 119
+/repos/asf/!svn/ver/1024368/poi/trunk/src/scratchpad/src/org/apache/poi/hslf/extractor/QuickButCruddyTextExtractor.java
+END

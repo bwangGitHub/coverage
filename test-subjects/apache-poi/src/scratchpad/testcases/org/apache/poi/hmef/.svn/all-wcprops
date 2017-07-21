@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/repos/asf/!svn/ver/1081414/poi/trunk/src/scratchpad/testcases/org/apache/poi/hmef
+END
+TestAttachments.java
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/repos/asf/!svn/ver/1078304/poi/trunk/src/scratchpad/testcases/org/apache/poi/hmef/TestAttachments.java
+END
+HMEFTest.java
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/repos/asf/!svn/ver/1078304/poi/trunk/src/scratchpad/testcases/org/apache/poi/hmef/HMEFTest.java
+END
+TestCompressedRTF.java
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/repos/asf/!svn/ver/1081414/poi/trunk/src/scratchpad/testcases/org/apache/poi/hmef/TestCompressedRTF.java
+END
+TestHMEFMessage.java
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/repos/asf/!svn/ver/1081414/poi/trunk/src/scratchpad/testcases/org/apache/poi/hmef/TestHMEFMessage.java
+END

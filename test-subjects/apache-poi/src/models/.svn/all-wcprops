@@ -1,0 +1,149 @@
+K 25
+svn:wc:ra_dav:version-url
+V 47
+/repos/asf/!svn/ver/933961/poi/trunk/src/models
+END
+HSSFSerializerClassDiagram.pgml
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/repos/asf/!svn/ver/933961/poi/trunk/src/models/HSSFSerializerClassDiagram.pgml
+END
+POIFSRootPropertyPreWrite.pgml
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/repos/asf/!svn/ver/933961/poi/trunk/src/models/POIFSRootPropertyPreWrite.pgml
+END
+projectmain.pgml
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/repos/asf/!svn/ver/933961/poi/trunk/src/models/projectmain.pgml
+END
+writeFilesystemSequenceDiagram.pgml
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/repos/asf/!svn/ver/933961/poi/trunk/src/models/writeFilesystemSequenceDiagram.pgml
+END
+POIFSPropertyTablePreWrite.pgml
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/repos/asf/!svn/ver/933961/poi/trunk/src/models/POIFSPropertyTablePreWrite.pgml
+END
+poi.argo
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/repos/asf/!svn/ver/933961/poi/trunk/src/models/poi.argo
+END
+readFileFromFilesystemSequenceDiagram.pgml
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/repos/asf/!svn/ver/933961/poi/trunk/src/models/readFileFromFilesystemSequenceDiagram.pgml
+END
+POIUseCases.pgml
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/repos/asf/!svn/ver/933961/poi/trunk/src/models/POIUseCases.pgml
+END
+readFileSystemDirectorySequenceDiagram.pgml
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/repos/asf/!svn/ver/933961/poi/trunk/src/models/readFileSystemDirectorySequenceDiagram.pgml
+END
+poi.xmi
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/repos/asf/!svn/ver/933961/poi/trunk/src/models/poi.xmi
+END
+analysismain.pgml
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/repos/asf/!svn/ver/933961/poi/trunk/src/models/analysismain.pgml
+END
+POIFSInitialization.pgml
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/repos/asf/!svn/ver/933961/poi/trunk/src/models/POIFSInitialization.pgml
+END
+POIFSAddDocument.pgml
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/repos/asf/!svn/ver/933961/poi/trunk/src/models/POIFSAddDocument.pgml
+END
+HSSFSerializerUseCases.pgml
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/repos/asf/!svn/ver/933961/poi/trunk/src/models/HSSFSerializerUseCases.pgml
+END
+POIFSClassDiagram.pgml
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/repos/asf/!svn/ver/933961/poi/trunk/src/models/POIFSClassDiagram.pgml
+END
+utilClasses.pgml
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/repos/asf/!svn/ver/933961/poi/trunk/src/models/utilClasses.pgml
+END
+HSSFOperationalUseCases.pgml
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/repos/asf/!svn/ver/933961/poi/trunk/src/models/HSSFOperationalUseCases.pgml
+END
+readFilesystemSequenceDiagram.pgml
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/repos/asf/!svn/ver/933961/poi/trunk/src/models/readFilesystemSequenceDiagram.pgml
+END
+HSSFUseCases.pgml
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/repos/asf/!svn/ver/933961/poi/trunk/src/models/HSSFUseCases.pgml
+END
+POIFSWriteFilesystem.pgml
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/repos/asf/!svn/ver/933961/poi/trunk/src/models/POIFSWriteFilesystem.pgml
+END
+POIFSLifeCycle.pgml
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/repos/asf/!svn/ver/933961/poi/trunk/src/models/POIFSLifeCycle.pgml
+END
+poifsAnalysisClasses.pgml
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/repos/asf/!svn/ver/933961/poi/trunk/src/models/poifsAnalysisClasses.pgml
+END
+BlockClassDiagram.pgml
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/repos/asf/!svn/ver/933961/poi/trunk/src/models/BlockClassDiagram.pgml
+END
+PropertyTableClassDiagram.pgml
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/repos/asf/!svn/ver/933961/poi/trunk/src/models/PropertyTableClassDiagram.pgml
+END

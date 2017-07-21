@@ -1,0 +1,71 @@
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/repos/asf/!svn/ver/1296981/poi/trunk/src/excelant/java/org/apache/poi/ss/excelant
+END
+ExcelAntPrecision.java
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/repos/asf/!svn/ver/1212745/poi/trunk/src/excelant/java/org/apache/poi/ss/excelant/ExcelAntPrecision.java
+END
+ExcelAntSet.java
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/repos/asf/!svn/ver/1212745/poi/trunk/src/excelant/java/org/apache/poi/ss/excelant/ExcelAntSet.java
+END
+ExcelAntTest.java
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/repos/asf/!svn/ver/1212745/poi/trunk/src/excelant/java/org/apache/poi/ss/excelant/ExcelAntTest.java
+END
+ExcelAntHandlerTask.java
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/repos/asf/!svn/ver/1212745/poi/trunk/src/excelant/java/org/apache/poi/ss/excelant/ExcelAntHandlerTask.java
+END
+ExcelAntSetFormulaCell.java
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/repos/asf/!svn/ver/1212745/poi/trunk/src/excelant/java/org/apache/poi/ss/excelant/ExcelAntSetFormulaCell.java
+END
+ExcelAntSetStringCell.java
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/repos/asf/!svn/ver/1212745/poi/trunk/src/excelant/java/org/apache/poi/ss/excelant/ExcelAntSetStringCell.java
+END
+ExcelAntTask.java
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/repos/asf/!svn/ver/1296981/poi/trunk/src/excelant/java/org/apache/poi/ss/excelant/ExcelAntTask.java
+END
+ExcelAntUserDefinedFunction.java
+K 25
+svn:wc:ra_dav:version-url
+V 115
+/repos/asf/!svn/ver/1212745/poi/trunk/src/excelant/java/org/apache/poi/ss/excelant/ExcelAntUserDefinedFunction.java
+END
+IExcelAntWorkbookHandler.java
+K 25
+svn:wc:ra_dav:version-url
+V 112
+/repos/asf/!svn/ver/1212745/poi/trunk/src/excelant/java/org/apache/poi/ss/excelant/IExcelAntWorkbookHandler.java
+END
+ExcelAntEvaluateCell.java
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/repos/asf/!svn/ver/1212745/poi/trunk/src/excelant/java/org/apache/poi/ss/excelant/ExcelAntEvaluateCell.java
+END
+ExcelAntSetDoubleCell.java
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/repos/asf/!svn/ver/1212745/poi/trunk/src/excelant/java/org/apache/poi/ss/excelant/ExcelAntSetDoubleCell.java
+END

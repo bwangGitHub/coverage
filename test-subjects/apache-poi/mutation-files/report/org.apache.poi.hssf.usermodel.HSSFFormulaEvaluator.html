@@ -1,0 +1,514 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN
+"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>
+org.apache.poi.hssf.usermodel.HSSFFormulaEvaluator
+</title>
+<link href="prettify.css" type="text/css" rel="stylesheet" />
+<script type="text/javascript" src="prettify.js"></script>
+</head>
+<body onload="prettyPrint()">
+<h2>Javalanche report for class:<br/> org.apache.poi.hssf.usermodel.HSSFFormulaEvaluator </h2><pre class="prettyprint" style="border: 1px solid #888;padding: 2px"><span class="nocode"><a name="1">  1: </a></span>/* ====================================================================
+<span class="nocode"><a name="2">  2: </a></span>   Licensed to the Apache Software Foundation (ASF) under one or more
+<span class="nocode"><a name="3">  3: </a></span>   contributor license agreements.  See the NOTICE file distributed with
+<span class="nocode"><a name="4">  4: </a></span>   this work for additional information regarding copyright ownership.
+<span class="nocode"><a name="5">  5: </a></span>   The ASF licenses this file to You under the Apache License, Version 2.0
+<span class="nocode"><a name="6">  6: </a></span>   (the &quot;License&quot;); you may not use this file except in compliance with
+<span class="nocode"><a name="7">  7: </a></span>   the License.  You may obtain a copy of the License at
+<span class="nocode"><a name="8">  8: </a></span>
+<span class="nocode"><a name="9">  9: </a></span>       http://www.apache.org/licenses/LICENSE-2.0
+<span class="nocode"><a name="10"> 10: </a></span>
+<span class="nocode"><a name="11"> 11: </a></span>   Unless required by applicable law or agreed to in writing, software
+<span class="nocode"><a name="12"> 12: </a></span>   distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+<span class="nocode"><a name="13"> 13: </a></span>   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+<span class="nocode"><a name="14"> 14: </a></span>   See the License for the specific language governing permissions and
+<span class="nocode"><a name="15"> 15: </a></span>   limitations under the License.
+<span class="nocode"><a name="16"> 16: </a></span>==================================================================== */
+<span class="nocode"><a name="17"> 17: </a></span>
+<span class="nocode"><a name="18"> 18: </a></span>package org.apache.poi.hssf.usermodel;
+<span class="nocode"><a name="19"> 19: </a></span>
+<span class="nocode"><a name="20"> 20: </a></span>import org.apache.poi.ss.formula.CollaboratingWorkbooksEnvironment;
+<span class="nocode"><a name="21"> 21: </a></span>import org.apache.poi.ss.formula.IStabilityClassifier;
+<span class="nocode"><a name="22"> 22: </a></span>import org.apache.poi.ss.formula.WorkbookEvaluator;
+<span class="nocode"><a name="23"> 23: </a></span>import org.apache.poi.ss.formula.eval.BoolEval;
+<span class="nocode"><a name="24"> 24: </a></span>import org.apache.poi.ss.formula.eval.ErrorEval;
+<span class="nocode"><a name="25"> 25: </a></span>import org.apache.poi.ss.formula.eval.NumberEval;
+<span class="nocode"><a name="26"> 26: </a></span>import org.apache.poi.ss.formula.eval.StringEval;
+<span class="nocode"><a name="27"> 27: </a></span>import org.apache.poi.ss.formula.eval.ValueEval;
+<span class="nocode"><a name="28"> 28: </a></span>import org.apache.poi.ss.formula.udf.UDFFinder;
+<span class="nocode"><a name="29"> 29: </a></span>import org.apache.poi.ss.usermodel.Cell;
+<span class="nocode"><a name="30"> 30: </a></span>import org.apache.poi.ss.usermodel.CellValue;
+<span class="nocode"><a name="31"> 31: </a></span>import org.apache.poi.ss.usermodel.FormulaEvaluator;
+<span class="nocode"><a name="32"> 32: </a></span>import org.apache.poi.ss.usermodel.Row;
+<span class="nocode"><a name="33"> 33: </a></span>import org.apache.poi.ss.usermodel.Sheet;
+<span class="nocode"><a name="34"> 34: </a></span>import org.apache.poi.ss.usermodel.Workbook;
+<span class="nocode"><a name="35"> 35: </a></span>
+<span class="nocode"><a name="36"> 36: </a></span>/**
+<span class="nocode"><a name="37"> 37: </a></span> * Evaluates formula cells.&lt;p/&gt;
+<span class="nocode"><a name="38"> 38: </a></span> *
+<span class="nocode"><a name="39"> 39: </a></span> * For performance reasons, this class keeps a cache of all previously calculated intermediate
+<span class="nocode"><a name="40"> 40: </a></span> * cell values.  Be sure to call {@link #clearAllCachedResultValues()} if any workbook cells are changed between
+<span class="nocode"><a name="41"> 41: </a></span> * calls to evaluate~ methods on this class.
+<span class="nocode"><a name="42"> 42: </a></span> *
+<span class="nocode"><a name="43"> 43: </a></span> * @author Amol S. Deshmukh &amp;lt; amolweb at ya hoo dot com &amp;gt;
+<span class="nocode"><a name="44"> 44: </a></span> * @author Josh Micich
+<span class="nocode"><a name="45"> 45: </a></span> */
+<span class="nocode"><a name="46"> 46: </a></span>public class HSSFFormulaEvaluator implements FormulaEvaluator  {
+<span class="nocode"><a name="47"> 47: </a></span>
+<span class="nocode"><a name="48"> 48: </a></span>	private WorkbookEvaluator _bookEvaluator;
+<span class="nocode"><a name="49"> 49: </a></span>	private HSSFWorkbook _book;
+<span class="nocode"><a name="50"> 50: </a></span>
+<span class="nocode"><a name="51"> 51: </a></span>	/**
+<span class="nocode"><a name="52"> 52: </a></span>	 * @deprecated (Sep 2008) HSSFSheet parameter is ignored
+<span class="nocode"><a name="53"> 53: </a></span>	 */
+<span class="nocode"><a name="54"> 54: </a></span>	public HSSFFormulaEvaluator(HSSFSheet sheet, HSSFWorkbook workbook) {
+<span class="nocode"><a name="55"> 55: </a></span>		this(workbook);
+<span class="nocode"><a name="56"> 56: </a></span>		if (false) {
+<span class="nocode"><a name="57"> 57: </a></span>			sheet.toString(); // suppress unused parameter compiler warning
+<span class="nocode"><a name="58"> 58: </a></span>		}
+<span class="nocode"><a name="59"> 59: </a></span>		this._book = workbook;
+<span class="nocode"><a name="60"> 60: </a></span>	}
+<span class="nocode"><a name="61"> 61: </a></span>	public HSSFFormulaEvaluator(HSSFWorkbook workbook) {
+<span class="nocode"><a name="62"> 62: </a></span>		this(workbook, null);
+<span class="nocode"><a name="63"> 63: </a></span>      this._book = workbook;
+<span class="nocode"><a name="64"> 64: </a></span>	}
+<span class="nocode"><a name="65"> 65: </a></span>	/**
+<span class="nocode"><a name="66"> 66: </a></span>	 * @param stabilityClassifier used to optimise caching performance. Pass &lt;code&gt;null&lt;/code&gt;
+<span class="nocode"><a name="67"> 67: </a></span>	 * for the (conservative) assumption that any cell may have its definition changed after
+<span class="nocode"><a name="68"> 68: </a></span>	 * evaluation begins.
+<span class="nocode"><a name="69"> 69: </a></span>	 */
+<span class="nocode"><a name="70"> 70: </a></span>	public HSSFFormulaEvaluator(HSSFWorkbook workbook, IStabilityClassifier stabilityClassifier) {
+<span class="nocode"><a name="71"> 71: </a></span>		this(workbook, stabilityClassifier, null);
+<span class="nocode"><a name="72"> 72: </a></span>	}
+<span class="nocode"><a name="73"> 73: </a></span>
+<span class="nocode"><a name="74"> 74: </a></span>	/**
+<span class="nocode"><a name="75"> 75: </a></span>	 * @param udfFinder pass &lt;code&gt;null&lt;/code&gt; for default (AnalysisToolPak only)
+<span class="nocode"><a name="76"> 76: </a></span>	 */
+<span class="nocode"><a name="77"> 77: </a></span>	private HSSFFormulaEvaluator(HSSFWorkbook workbook, IStabilityClassifier stabilityClassifier, UDFFinder udfFinder) {
+<span class="nocode"><a name="78"> 78: </a></span>		_bookEvaluator = new WorkbookEvaluator(HSSFEvaluationWorkbook.create(workbook), stabilityClassifier, udfFinder);
+<span class="nocode"><a name="79"> 79: </a></span>	}
+<span class="nocode"><a name="80"> 80: </a></span>
+<span class="nocode"><a name="81"> 81: </a></span>	/**
+<span class="nocode"><a name="82"> 82: </a></span>	 * @param stabilityClassifier used to optimise caching performance. Pass &lt;code&gt;null&lt;/code&gt;
+<span class="nocode"><a name="83"> 83: </a></span>	 * for the (conservative) assumption that any cell may have its definition changed after
+<span class="nocode"><a name="84"> 84: </a></span>	 * evaluation begins.
+<span class="nocode"><a name="85"> 85: </a></span>	 * @param udfFinder pass &lt;code&gt;null&lt;/code&gt; for default (AnalysisToolPak only)
+<span class="nocode"><a name="86"> 86: </a></span>	 */
+<span class="nocode"><a name="87"> 87: </a></span>	public static HSSFFormulaEvaluator create(HSSFWorkbook workbook, IStabilityClassifier stabilityClassifier, UDFFinder udfFinder) {
+<span class="nocode"><a name="88"> 88: </a></span>		return new HSSFFormulaEvaluator(workbook, stabilityClassifier, udfFinder);
+<span class="nocode"><a name="89"> 89: </a></span>	}
+<span class="nocode"><a name="90"> 90: </a></span>
+<span class="nocode"><a name="91"> 91: </a></span>
+<span class="nocode"><a name="92"> 92: </a></span>	/**
+<span class="nocode"><a name="93"> 93: </a></span>	 * Coordinates several formula evaluators together so that formulas that involve external
+<span class="nocode"><a name="94"> 94: </a></span>	 * references can be evaluated.
+<span class="nocode"><a name="95"> 95: </a></span>	 * @param workbookNames the simple file names used to identify the workbooks in formulas
+<span class="nocode"><a name="96"> 96: </a></span>	 * with external links (for example &quot;MyData.xls&quot; as used in a formula &quot;[MyData.xls]Sheet1!A1&quot;)
+<span class="nocode"><a name="97"> 97: </a></span>	 * @param evaluators all evaluators for the full set of workbooks required by the formulas.
+<span class="nocode"><a name="98"> 98: </a></span>	 */
+<span class="nocode"><a name="99"> 99: </a></span>	public static void setupEnvironment(String[] workbookNames, HSSFFormulaEvaluator[] evaluators) {
+<span class="nocode"><a name="100">100: </a></span>		WorkbookEvaluator[] wbEvals = new WorkbookEvaluator[evaluators.length];
+<span class="nocode"><a name="101">101: </a></span>		for (int i = 0; i &lt; wbEvals.length; i++) {
+<span class="nocode"><a name="102">102: </a></span>			wbEvals[i] = evaluators[i]._bookEvaluator;
+<span class="nocode"><a name="103">103: </a></span>		}
+<span class="nocode"><a name="104">104: </a></span>		CollaboratingWorkbooksEnvironment.setup(workbookNames, wbEvals);
+<span class="nocode"><a name="105">105: </a></span>	}
+<span class="nocode"><a name="106">106: </a></span>
+<span class="nocode"><a name="107">107: </a></span>	/**
+<span class="nocode"><a name="108">108: </a></span>	 * Does nothing
+<span class="nocode"><a name="109">109: </a></span>	 * @deprecated (Aug 2008) - not needed, since the current row can be derived from the cell
+<span class="nocode"><a name="110">110: </a></span>	 */
+<span class="nocode"><a name="111">111: </a></span>	public void setCurrentRow(HSSFRow row) {
+<span class="nocode"><a name="112">112: </a></span>		// do nothing
+<span class="nocode"><a name="113">113: </a></span>		if (false) {
+<span class="nocode"><a name="114">114: </a></span>			row.getClass(); // suppress unused parameter compiler warning
+<span class="nocode"><a name="115">115: </a></span>		}
+<span class="nocode"><a name="116">116: </a></span>	}
+<span class="nocode"><a name="117">117: </a></span>
+<span class="nocode"><a name="118">118: </a></span>	/**
+<span class="nocode"><a name="119">119: </a></span>	 * Should be called whenever there are major changes (e.g. moving sheets) to input cells
+<span class="nocode"><a name="120">120: </a></span>	 * in the evaluated workbook.  If performance is not critical, a single call to this method
+<span class="nocode"><a name="121">121: </a></span>	 * may be used instead of many specific calls to the notify~ methods.
+<span class="nocode"><a name="122">122: </a></span>	 *
+<span class="nocode"><a name="123">123: </a></span>	 * Failure to call this method after changing cell values will cause incorrect behaviour
+<span class="nocode"><a name="124">124: </a></span>	 * of the evaluate~ methods of this class
+<span class="nocode"><a name="125">125: </a></span>	 */
+<span class="nocode"><a name="126">126: </a></span>	public void clearAllCachedResultValues() {
+<span class="nocode"><a name="127">127: </a></span>		_bookEvaluator.clearAllCachedResultValues();
+<span class="nocode"><a name="128">128: </a></span>	}
+<span class="nocode"><a name="129">129: </a></span>	/**
+<span class="nocode"><a name="130">130: </a></span>	 * Should be called to tell the cell value cache that the specified (value or formula) cell
+<span class="nocode"><a name="131">131: </a></span>	 * has changed.
+<span class="nocode"><a name="132">132: </a></span>	 * Failure to call this method after changing cell values will cause incorrect behaviour
+<span class="nocode"><a name="133">133: </a></span>	 * of the evaluate~ methods of this class
+<span class="nocode"><a name="134">134: </a></span>	 */
+<span class="nocode"><a name="135">135: </a></span>	public void notifyUpdateCell(HSSFCell cell) {
+<span class="nocode"><a name="136">136: </a></span>		_bookEvaluator.notifyUpdateCell(new HSSFEvaluationCell(cell));
+<span class="nocode"><a name="137">137: </a></span>	}
+<span class="nocode"><a name="138">138: </a></span>    public void notifyUpdateCell(Cell cell) {
+<span class="nocode"><a name="139">139: </a></span>        _bookEvaluator.notifyUpdateCell(new HSSFEvaluationCell((HSSFCell)cell));
+<span class="nocode"><a name="140">140: </a></span>    }
+<span class="nocode"><a name="141">141: </a></span>	/**
+<span class="nocode"><a name="142">142: </a></span>	 * Should be called to tell the cell value cache that the specified cell has just been
+<span class="nocode"><a name="143">143: </a></span>	 * deleted.
+<span class="nocode"><a name="144">144: </a></span>	 * Failure to call this method after changing cell values will cause incorrect behaviour
+<span class="nocode"><a name="145">145: </a></span>	 * of the evaluate~ methods of this class
+<span class="nocode"><a name="146">146: </a></span>	 */
+<span class="nocode"><a name="147">147: </a></span>	public void notifyDeleteCell(HSSFCell cell) {
+<span class="nocode"><a name="148">148: </a></span>		_bookEvaluator.notifyDeleteCell(new HSSFEvaluationCell(cell));
+<span class="nocode"><a name="149">149: </a></span>	}
+<span class="nocode"><a name="150">150: </a></span>	public void notifyDeleteCell(Cell cell) {
+<span class="nocode"><a name="151">151: </a></span>		_bookEvaluator.notifyDeleteCell(new HSSFEvaluationCell((HSSFCell)cell));
+<span class="nocode"><a name="152">152: </a></span>	}
+<span class="nocode"><a name="153">153: </a></span>
+<span class="nocode"><a name="154">154: </a></span>	/**
+<span class="nocode"><a name="155">155: </a></span>	 * Should be called to tell the cell value cache that the specified (value or formula) cell
+<span class="nocode"><a name="156">156: </a></span>	 * has changed.
+<span class="nocode"><a name="157">157: </a></span>	 * Failure to call this method after changing cell values will cause incorrect behaviour
+<span class="nocode"><a name="158">158: </a></span>	 * of the evaluate~ methods of this class
+<span class="nocode"><a name="159">159: </a></span>	 */
+<span class="nocode"><a name="160">160: </a></span>	public void notifySetFormula(Cell cell) {
+<span class="nocode"><a name="161">161: </a></span>		_bookEvaluator.notifyUpdateCell(new HSSFEvaluationCell((HSSFCell)cell));
+<span class="nocode"><a name="162">162: </a></span>	}
+<span class="nocode"><a name="163">163: </a></span>
+<span class="nocode"><a name="164">164: </a></span>	/**
+<span class="nocode"><a name="165">165: </a></span>	 * If cell contains a formula, the formula is evaluated and returned,
+<span class="nocode"><a name="166">166: </a></span>	 * else the CellValue simply copies the appropriate cell value from
+<span class="nocode"><a name="167">167: </a></span>	 * the cell and also its cell type. This method should be preferred over
+<span class="nocode"><a name="168">168: </a></span>	 * evaluateInCell() when the call should not modify the contents of the
+<span class="nocode"><a name="169">169: </a></span>	 * original cell.
+<span class="nocode"><a name="170">170: </a></span>	 *
+<span class="nocode"><a name="171">171: </a></span>	 * @param cell may be &lt;code&gt;null&lt;/code&gt; signifying that the cell is not present (or blank)
+<span class="nocode"><a name="172">172: </a></span>	 * @return &lt;code&gt;null&lt;/code&gt; if the supplied cell is &lt;code&gt;null&lt;/code&gt; or blank
+<span class="nocode"><a name="173">173: </a></span>	 */
+<span class="nocode"><a name="174">174: </a></span>	public CellValue evaluate(Cell cell) {
+<span class="nocode"><a name="175">175: </a></span>		if (cell == null) {
+<span class="nocode"><a name="176">176: </a></span>			return null;
+<span class="nocode"><a name="177">177: </a></span>		}
+<span class="nocode"><a name="178">178: </a></span>
+<span class="nocode"><a name="179">179: </a></span>		switch (cell.getCellType()) {
+<span class="nocode"><a name="180">180: </a></span>			case HSSFCell.CELL_TYPE_BOOLEAN:
+<span class="nocode"><a name="181">181: </a></span>				return CellValue.valueOf(cell.getBooleanCellValue());
+<span class="nocode"><a name="182">182: </a></span>			case HSSFCell.CELL_TYPE_ERROR:
+<span class="nocode"><a name="183">183: </a></span>				return CellValue.getError(cell.getErrorCellValue());
+<span class="nocode"><a name="184">184: </a></span>			case HSSFCell.CELL_TYPE_FORMULA:
+<span class="nocode"><a name="185">185: </a></span>				return evaluateFormulaCellValue(cell);
+<span class="nocode"><a name="186">186: </a></span>			case HSSFCell.CELL_TYPE_NUMERIC:
+<span class="nocode"><a name="187">187: </a></span>				return new CellValue(cell.getNumericCellValue());
+<span class="nocode"><a name="188">188: </a></span>			case HSSFCell.CELL_TYPE_STRING:
+<span class="nocode"><a name="189">189: </a></span>				return new CellValue(cell.getRichStringCellValue().getString());
+<span class="nocode"><a name="190">190: </a></span>			case HSSFCell.CELL_TYPE_BLANK:
+<span class="nocode"><a name="191">191: </a></span>				return null;
+<span class="nocode"><a name="192">192: </a></span>		}
+<span class="nocode"><a name="193">193: </a></span>		throw new IllegalStateException(&quot;Bad cell type (&quot; + cell.getCellType() + &quot;)&quot;);
+<span class="nocode"><a name="194">194: </a></span>	}
+<span class="nocode"><a name="195">195: </a></span>
+<span class="nocode"><a name="196">196: </a></span>
+<span class="nocode"><a name="197">197: </a></span>	/**
+<span class="nocode"><a name="198">198: </a></span>	 * If cell contains formula, it evaluates the formula, and saves the result of the formula. The
+<span class="nocode"><a name="199">199: </a></span>	 * cell remains as a formula cell. If the cell does not contain formula, this method returns -1
+<span class="nocode"><a name="200">200: </a></span>	 * and leaves the cell unchanged.
+<span class="nocode"><a name="201">201: </a></span>	 *
+<span class="nocode"><a name="202">202: </a></span>	 * Note that the type of the &lt;em&gt;formula result&lt;/em&gt; is returned, so you know what kind of
+<span class="nocode"><a name="203">203: </a></span>	 * cached formula result is also stored with  the formula.
+<span class="nocode"><a name="204">204: </a></span>	 * &lt;pre&gt;
+<span class="nocode"><a name="205">205: </a></span>	 * int evaluatedCellType = evaluator.evaluateFormulaCell(cell);
+<span class="nocode"><a name="206">206: </a></span>	 * &lt;/pre&gt;
+<span class="nocode"><a name="207">207: </a></span>	 * Be aware that your cell will hold both the formula, and the result. If you want the cell
+<span class="nocode"><a name="208">208: </a></span>	 * replaced with the result of the formula, use {@link #evaluateInCell(org.apache.poi.ss.usermodel.Cell)}
+<span class="nocode"><a name="209">209: </a></span>	 * @param cell The cell to evaluate
+<span class="nocode"><a name="210">210: </a></span>	 * @return -1 for non-formula cells, or the type of the &lt;em&gt;formula result&lt;/em&gt;
+<span class="nocode"><a name="211">211: </a></span>	 */
+<span class="nocode"><a name="212">212: </a></span>	public int evaluateFormulaCell(Cell cell) {
+<span class="nocode"><a name="213">213: </a></span>		if (cell == null || cell.getCellType() != HSSFCell.CELL_TYPE_FORMULA) {
+<span class="nocode"><a name="214">214: </a></span>			return -1;
+<span class="nocode"><a name="215">215: </a></span>		}
+<span class="nocode"><a name="216">216: </a></span>		CellValue cv = evaluateFormulaCellValue(cell);
+<span class="nocode"><a name="217">217: </a></span>		// cell remains a formula cell, but the cached value is changed
+<span class="nocode"><a name="218">218: </a></span>		setCellValue(cell, cv);
+<span class="nocode"><a name="219">219: </a></span>		return cv.getCellType();
+<span class="nocode"><a name="220">220: </a></span>	}
+<span class="nocode"><a name="221">221: </a></span>
+<span class="nocode"><a name="222">222: </a></span>	/**
+<span class="nocode"><a name="223">223: </a></span>	 * If cell contains formula, it evaluates the formula, and
+<span class="nocode"><a name="224">224: </a></span>	 *  puts the formula result back into the cell, in place
+<span class="nocode"><a name="225">225: </a></span>	 *  of the old formula.
+<span class="nocode"><a name="226">226: </a></span>	 * Else if cell does not contain formula, this method leaves
+<span class="nocode"><a name="227">227: </a></span>	 *  the cell unchanged.
+<span class="nocode"><a name="228">228: </a></span>	 * Note that the same instance of HSSFCell is returned to
+<span class="nocode"><a name="229">229: </a></span>	 * allow chained calls like:
+<span class="nocode"><a name="230">230: </a></span>	 * &lt;pre&gt;
+<span class="nocode"><a name="231">231: </a></span>	 * int evaluatedCellType = evaluator.evaluateInCell(cell).getCellType();
+<span class="nocode"><a name="232">232: </a></span>	 * &lt;/pre&gt;
+<span class="nocode"><a name="233">233: </a></span>	 * Be aware that your cell value will be changed to hold the
+<span class="nocode"><a name="234">234: </a></span>	 *  result of the formula. If you simply want the formula
+<span class="nocode"><a name="235">235: </a></span>	 *  value computed for you, use {@link #evaluateFormulaCell(Cell)}}
+<span class="nocode"><a name="236">236: </a></span>	 */
+<span class="nocode"><a name="237">237: </a></span>	public HSSFCell evaluateInCell(Cell cell) {
+<span class="nocode"><a name="238">238: </a></span>		if (cell == null) {
+<span class="nocode"><a name="239">239: </a></span>			return null;
+<span class="nocode"><a name="240">240: </a></span>		}
+<span class="nocode"><a name="241">241: </a></span>		HSSFCell result = (HSSFCell) cell;
+<span class="nocode"><a name="242">242: </a></span>		if (cell.getCellType() == HSSFCell.CELL_TYPE_FORMULA) {
+<span class="nocode"><a name="243">243: </a></span>			CellValue cv = evaluateFormulaCellValue(cell);
+<span class="nocode"><a name="244">244: </a></span>			setCellValue(cell, cv);
+<span class="nocode"><a name="245">245: </a></span>			setCellType(cell, cv); // cell will no longer be a formula cell
+<span class="nocode"><a name="246">246: </a></span>		}
+<span class="nocode"><a name="247">247: </a></span>		return result;
+<span class="nocode"><a name="248">248: </a></span>	}
+<span class="nocode"><a name="249">249: </a></span>	private static void setCellType(Cell cell, CellValue cv) {
+<span class="nocode"><a name="250">250: </a></span>		int cellType = cv.getCellType();
+<span class="nocode"><a name="251">251: </a></span>		switch (cellType) {
+<span class="nocode"><a name="252">252: </a></span>			case HSSFCell.CELL_TYPE_BOOLEAN:
+<span class="nocode"><a name="253">253: </a></span>			case HSSFCell.CELL_TYPE_ERROR:
+<span class="nocode"><a name="254">254: </a></span>			case HSSFCell.CELL_TYPE_NUMERIC:
+<span class="nocode"><a name="255">255: </a></span>			case HSSFCell.CELL_TYPE_STRING:
+<span class="nocode"><a name="256">256: </a></span>				cell.setCellType(cellType);
+<span class="nocode"><a name="257">257: </a></span>				return;
+<span class="nocode"><a name="258">258: </a></span>			case HSSFCell.CELL_TYPE_BLANK:
+<span class="nocode"><a name="259">259: </a></span>				// never happens - blanks eventually get translated to zero
+<span class="nocode"><a name="260">260: </a></span>			case HSSFCell.CELL_TYPE_FORMULA:
+<span class="nocode"><a name="261">261: </a></span>				// this will never happen, we have already evaluated the formula
+<span class="nocode"><a name="262">262: </a></span>		}
+<span class="nocode"><a name="263">263: </a></span>		throw new IllegalStateException(&quot;Unexpected cell value type (&quot; + cellType + &quot;)&quot;);
+<span class="nocode"><a name="264">264: </a></span>	}
+<span class="nocode"><a name="265">265: </a></span>
+<span class="nocode"><a name="266">266: </a></span>	private static void setCellValue(Cell cell, CellValue cv) {
+<span class="nocode"><a name="267">267: </a></span>		int cellType = cv.getCellType();
+<span class="nocode"><a name="268">268: </a></span>		switch (cellType) {
+<span class="nocode"><a name="269">269: </a></span>			case HSSFCell.CELL_TYPE_BOOLEAN:
+<span class="nocode"><a name="270">270: </a></span>				cell.setCellValue(cv.getBooleanValue());
+<span class="nocode"><a name="271">271: </a></span>				break;
+<span class="nocode"><a name="272">272: </a></span>			case HSSFCell.CELL_TYPE_ERROR:
+<span class="nocode"><a name="273">273: </a></span>				cell.setCellErrorValue(cv.getErrorValue());
+<span class="nocode"><a name="274">274: </a></span>				break;
+<span class="nocode"><a name="275">275: </a></span>			case HSSFCell.CELL_TYPE_NUMERIC:
+<span class="nocode"><a name="276">276: </a></span>				cell.setCellValue(cv.getNumberValue());
+<span class="nocode"><a name="277">277: </a></span>				break;
+<span class="nocode"><a name="278">278: </a></span>			case HSSFCell.CELL_TYPE_STRING:
+<span class="nocode"><a name="279">279: </a></span>				cell.setCellValue(new HSSFRichTextString(cv.getStringValue()));
+<span class="nocode"><a name="280">280: </a></span>				break;
+<span class="nocode"><a name="281">281: </a></span>			case HSSFCell.CELL_TYPE_BLANK:
+<span class="nocode"><a name="282">282: </a></span>				// never happens - blanks eventually get translated to zero
+<span class="nocode"><a name="283">283: </a></span>			case HSSFCell.CELL_TYPE_FORMULA:
+<span class="nocode"><a name="284">284: </a></span>				// this will never happen, we have already evaluated the formula
+<span class="nocode"><a name="285">285: </a></span>			default:
+<span class="nocode"><a name="286">286: </a></span>				throw new IllegalStateException(&quot;Unexpected cell value type (&quot; + cellType + &quot;)&quot;);
+<span class="nocode"><a name="287">287: </a></span>		}
+<span class="nocode"><a name="288">288: </a></span>	}
+<span class="nocode"><a name="289">289: </a></span>
+<span class="nocode"><a name="290">290: </a></span>	/**
+<span class="nocode"><a name="291">291: </a></span>	 * Loops over all cells in all sheets of the supplied
+<span class="nocode"><a name="292">292: </a></span>	 *  workbook.
+<span class="nocode"><a name="293">293: </a></span>	 * For cells that contain formulas, their formulas are
+<span class="nocode"><a name="294">294: </a></span>	 *  evaluated, and the results are saved. These cells
+<span class="nocode"><a name="295">295: </a></span>	 *  remain as formula cells.
+<span class="nocode"><a name="296">296: </a></span>	 * For cells that do not contain formulas, no changes
+<span class="nocode"><a name="297">297: </a></span>	 *  are made.
+<span class="nocode"><a name="298">298: </a></span>	 * This is a helpful wrapper around looping over all
+<span class="nocode"><a name="299">299: </a></span>	 *  cells, and calling evaluateFormulaCell on each one.
+<span class="nocode"><a name="300">300: </a></span>	 */
+<span class="nocode"><a name="301">301: </a></span>	public static void evaluateAllFormulaCells(HSSFWorkbook wb) {
+<span class="nocode"><a name="302">302: </a></span>	   evaluateAllFormulaCells(wb, new HSSFFormulaEvaluator(wb));
+<span class="nocode"><a name="303">303: </a></span>	}
+<span class="nocode"><a name="304">304: </a></span>	
+<span class="nocode"><a name="305">305: </a></span>   /**
+<span class="nocode"><a name="306">306: </a></span>    * Loops over all cells in all sheets of the supplied
+<span class="nocode"><a name="307">307: </a></span>    *  workbook.
+<span class="nocode"><a name="308">308: </a></span>    * For cells that contain formulas, their formulas are
+<span class="nocode"><a name="309">309: </a></span>    *  evaluated, and the results are saved. These cells
+<span class="nocode"><a name="310">310: </a></span>    *  remain as formula cells.
+<span class="nocode"><a name="311">311: </a></span>    * For cells that do not contain formulas, no changes
+<span class="nocode"><a name="312">312: </a></span>    *  are made.
+<span class="nocode"><a name="313">313: </a></span>    * This is a helpful wrapper around looping over all
+<span class="nocode"><a name="314">314: </a></span>    *  cells, and calling evaluateFormulaCell on each one.
+<span class="nocode"><a name="315">315: </a></span>    */
+<span class="nocode"><a name="316">316: </a></span>	public static void evaluateAllFormulaCells(Workbook wb) {
+<span class="nocode"><a name="317">317: </a></span>      FormulaEvaluator evaluator = wb.getCreationHelper().createFormulaEvaluator();
+<span class="nocode"><a name="318">318: </a></span>      evaluateAllFormulaCells(wb, evaluator);
+<span class="nocode"><a name="319">319: </a></span>	}
+<span class="nocode"><a name="320">320: </a></span>	private static void evaluateAllFormulaCells(Workbook wb, FormulaEvaluator evaluator) {
+<span class="nocode"><a name="321">321: </a></span>      for(int i=0; i&lt;wb.getNumberOfSheets(); i++) {
+<span class="nocode"><a name="322">322: </a></span>         Sheet sheet = wb.getSheetAt(i);
+<span class="nocode"><a name="323">323: </a></span>
+<span class="nocode"><a name="324">324: </a></span>         for(Row r : sheet) {
+<span class="nocode"><a name="325">325: </a></span>            for (Cell c : r) {
+<span class="nocode"><a name="326">326: </a></span>               if (c.getCellType() == HSSFCell.CELL_TYPE_FORMULA) {
+<span class="nocode"><a name="327">327: </a></span>                  evaluator.evaluateFormulaCell(c);
+<span class="nocode"><a name="328">328: </a></span>               }
+<span class="nocode"><a name="329">329: </a></span>            }
+<span class="nocode"><a name="330">330: </a></span>         }
+<span class="nocode"><a name="331">331: </a></span>      }
+<span class="nocode"><a name="332">332: </a></span>	}
+<span class="nocode"><a name="333">333: </a></span>	
+<span class="nocode"><a name="334">334: </a></span>   /**
+<span class="nocode"><a name="335">335: </a></span>    * Loops over all cells in all sheets of the supplied
+<span class="nocode"><a name="336">336: </a></span>    *  workbook.
+<span class="nocode"><a name="337">337: </a></span>    * For cells that contain formulas, their formulas are
+<span class="nocode"><a name="338">338: </a></span>    *  evaluated, and the results are saved. These cells
+<span class="nocode"><a name="339">339: </a></span>    *  remain as formula cells.
+<span class="nocode"><a name="340">340: </a></span>    * For cells that do not contain formulas, no changes
+<span class="nocode"><a name="341">341: </a></span>    *  are made.
+<span class="nocode"><a name="342">342: </a></span>    * This is a helpful wrapper around looping over all
+<span class="nocode"><a name="343">343: </a></span>    *  cells, and calling evaluateFormulaCell on each one.
+<span class="nocode"><a name="344">344: </a></span>    */
+<span class="nocode"><a name="345">345: </a></span>   public void evaluateAll() {
+<span class="nocode"><a name="346">346: </a></span>      evaluateAllFormulaCells(_book, this);
+<span class="nocode"><a name="347">347: </a></span>   }
+<span class="nocode"><a name="348">348: </a></span>
+<span class="nocode"><a name="349">349: </a></span>	/**
+<span class="nocode"><a name="350">350: </a></span>	 * Returns a CellValue wrapper around the supplied ValueEval instance.
+<span class="nocode"><a name="351">351: </a></span>	 * @param eval
+<span class="nocode"><a name="352">352: </a></span>	 */
+<span class="nocode"><a name="353">353: </a></span>	private CellValue evaluateFormulaCellValue(Cell cell) {
+<span class="nocode"><a name="354">354: </a></span>		ValueEval eval = _bookEvaluator.evaluate(new HSSFEvaluationCell((HSSFCell)cell));
+<span class="nocode"><a name="355">355: </a></span>		if (eval instanceof NumberEval) {
+<span class="nocode"><a name="356">356: </a></span>			NumberEval ne = (NumberEval) eval;
+<span class="nocode"><a name="357">357: </a></span>			return new CellValue(ne.getNumberValue());
+<span class="nocode"><a name="358">358: </a></span>		}
+<span class="nocode"><a name="359">359: </a></span>		if (eval instanceof BoolEval) {
+<span class="nocode"><a name="360">360: </a></span>			BoolEval be = (BoolEval) eval;
+<span class="nocode"><a name="361">361: </a></span>			return CellValue.valueOf(be.getBooleanValue());
+<span class="nocode"><a name="362">362: </a></span>		}
+<span class="nocode"><a name="363">363: </a></span>		if (eval instanceof StringEval) {
+<span class="nocode"><a name="364">364: </a></span>			StringEval ne = (StringEval) eval;
+<span class="nocode"><a name="365">365: </a></span>			return new CellValue(ne.getStringValue());
+<span class="nocode"><a name="366">366: </a></span>		}
+<span class="nocode"><a name="367">367: </a></span>		if (eval instanceof ErrorEval) {
+<span class="nocode"><a name="368">368: </a></span>			return CellValue.getError(((ErrorEval)eval).getErrorCode());
+<span class="nocode"><a name="369">369: </a></span>		}
+<span class="nocode"><a name="370">370: </a></span>		throw new RuntimeException(&quot;Unexpected eval class (&quot; + eval.getClass().getName() + &quot;)&quot;);
+<span class="nocode"><a name="371">371: </a></span>	}
+<span class="nocode"><a name="372">372: </a></span>
+<span class="nocode"><a name="373">373: </a></span>    /**
+<span class="nocode"><a name="374">374: </a></span>     * Whether to ignore missing references to external workbooks and
+<span class="nocode"><a name="375">375: </a></span>     * use cached formula results in the main workbook instead.
+<span class="nocode"><a name="376">376: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="377">377: </a></span>     * In some cases exetrnal workbooks referenced by formulas in the main workbook are not avaiable.
+<span class="nocode"><a name="378">378: </a></span>     * With this method you can control how POI handles such missing references:
+<span class="nocode"><a name="379">379: </a></span>     * &lt;ul&gt;
+<span class="nocode"><a name="380">380: </a></span>     *     &lt;li&gt;by default ignoreMissingWorkbooks=false and POI throws {@link org.apache.poi.ss.formula.CollaboratingWorkbooksEnvironment.WorkbookNotFoundException}
+<span class="nocode"><a name="381">381: </a></span>     *     if an external reference cannot be resolved&lt;/li&gt;
+<span class="nocode"><a name="382">382: </a></span>     *     &lt;li&gt;if ignoreMissingWorkbooks=true then POI uses cached formula result
+<span class="nocode"><a name="383">383: </a></span>     *     that already exists in the main workbook&lt;/li&gt;
+<span class="nocode"><a name="384">384: </a></span>     * &lt;/ul&gt;
+<span class="nocode"><a name="385">385: </a></span>     *
+<span class="nocode"><a name="386">386: </a></span>     * @param ignore whether to ignore missing references to external workbooks
+<span class="nocode"><a name="387">387: </a></span>     */
+<span class="nocode"><a name="388">388: </a></span>    public void setIgnoreMissingWorkbooks(boolean ignore){
+<span class="nocode"><a name="389">389: </a></span>        _bookEvaluator.setIgnoreMissingWorkbooks(ignore);
+<span class="nocode"><a name="390">390: </a></span>    }
+<span class="nocode"><a name="391">391: </a></span>
+<span class="nocode"><a name="392">392: </a></span>}
+</pre><table class="mutation_table" summary="Mutations">
+<tr><th>ID</th><th>Line</th><th>Type</th><th>Detected</th></tr><tr><td>7306</td><td><a href="#78">78</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>7308</td><td><a href="#101">101</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>7307</td><td><a href="#101">101</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>7309</td><td><a href="#101">101</a></td><td>Negate jump condition (Replace IF_ICMPGE with  IF_ICMPLT)</td><td><img src="detected.png"/></td></tr>
+<tr><td>7310</td><td><a href="#104">104</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>7311</td><td><a href="#127">127</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>7312</td><td><a href="#136">136</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>7313</td><td><a href="#139">139</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>7314</td><td><a href="#148">148</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>7315</td><td><a href="#151">151</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>7316</td><td><a href="#161">161</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>7317</td><td><a href="#175">175</a></td><td>Negate jump condition (Replace IFNONNULL with  IFNULL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>7318</td><td><a href="#179">179</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>7319</td><td><a href="#181">181</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>7320</td><td><a href="#181">181(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>7321</td><td><a href="#183">183</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>7322</td><td><a href="#183">183(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>7323</td><td><a href="#185">185</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>7324</td><td><a href="#187">187</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>7325</td><td><a href="#189">189</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>7326</td><td><a href="#189">189(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>7327</td><td><a href="#193">193</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>7328</td><td><a href="#193">193(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>7329</td><td><a href="#193">193(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>7330</td><td><a href="#193">193(3)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>7331</td><td><a href="#193">193(4)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>7335</td><td><a href="#213">213</a></td><td>Replace a constant (Replace 2 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>7336</td><td><a href="#213">213</a></td><td>Replace a constant (Replace 2 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>7334</td><td><a href="#213">213</a></td><td>Replace a constant (Replace 2 with 3(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>7332</td><td><a href="#213">213</a></td><td>Negate jump condition (Replace IFNULL with  IFNONNULL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>7337</td><td><a href="#213">213(1)</a></td><td>Negate jump condition (Replace IF_ICMPEQ with  IF_ICMPNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>7333</td><td><a href="#213">213</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>7339</td><td><a href="#214">214</a></td><td>Replace a constant (Replace -1 with -2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>7338</td><td><a href="#214">214</a></td><td>Replace a constant (Replace -1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>7340</td><td><a href="#216">216</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>7341</td><td><a href="#218">218</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>7342</td><td><a href="#219">219</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>7343</td><td><a href="#238">238</a></td><td>Negate jump condition (Replace IFNONNULL with  IFNULL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>7347</td><td><a href="#242">242</a></td><td>Replace a constant (Replace 2 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>7346</td><td><a href="#242">242</a></td><td>Replace a constant (Replace 2 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>7345</td><td><a href="#242">242</a></td><td>Replace a constant (Replace 2 with 3(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>7348</td><td><a href="#242">242</a></td><td>Negate jump condition (Replace IF_ICMPNE with  IF_ICMPEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>7344</td><td><a href="#242">242</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>7349</td><td><a href="#243">243</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>7350</td><td><a href="#244">244</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>7351</td><td><a href="#245">245</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>7352</td><td><a href="#250">250</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>7353</td><td><a href="#256">256</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>7354</td><td><a href="#263">263</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>7355</td><td><a href="#263">263(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>7356</td><td><a href="#263">263(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>7357</td><td><a href="#263">263(3)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>7358</td><td><a href="#267">267</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>7359</td><td><a href="#270">270</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>7360</td><td><a href="#270">270(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>7361</td><td><a href="#273">273</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>7362</td><td><a href="#273">273(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>7363</td><td><a href="#276">276</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>7364</td><td><a href="#276">276(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>7365</td><td><a href="#279">279</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>7366</td><td><a href="#279">279(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>7367</td><td><a href="#286">286</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>7368</td><td><a href="#286">286(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>7369</td><td><a href="#286">286(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>7370</td><td><a href="#286">286(3)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>7371</td><td><a href="#302">302</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>7372</td><td><a href="#317">317</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>7373</td><td><a href="#317">317(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>7374</td><td><a href="#318">318</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>7375</td><td><a href="#321">321</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>7376</td><td><a href="#321">321</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>7378</td><td><a href="#321">321</a></td><td>Negate jump condition (Replace IF_ICMPGE with  IF_ICMPLT)</td><td><img src="detected.png"/></td></tr>
+<tr><td>7377</td><td><a href="#321">321</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>7379</td><td><a href="#322">322</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>7382</td><td><a href="#324">324</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>7380</td><td><a href="#324">324</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>7381</td><td><a href="#324">324(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>7383</td><td><a href="#324">324(2)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>7386</td><td><a href="#325">325</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>7384</td><td><a href="#325">325</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>7385</td><td><a href="#325">325(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>7387</td><td><a href="#325">325(2)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>7389</td><td><a href="#326">326</a></td><td>Replace a constant (Replace 2 with 3(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>7390</td><td><a href="#326">326</a></td><td>Replace a constant (Replace 2 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>7391</td><td><a href="#326">326</a></td><td>Replace a constant (Replace 2 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>7392</td><td><a href="#326">326</a></td><td>Negate jump condition (Replace IF_ICMPNE with  IF_ICMPEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>7388</td><td><a href="#326">326</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>7393</td><td><a href="#327">327</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>7394</td><td><a href="#346">346</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>7395</td><td><a href="#354">354</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>7396</td><td><a href="#355">355</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>7397</td><td><a href="#357">357</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>7398</td><td><a href="#359">359</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>7399</td><td><a href="#361">361</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>7400</td><td><a href="#361">361(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>7401</td><td><a href="#363">363</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>7402</td><td><a href="#365">365</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>7403</td><td><a href="#367">367</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>7404</td><td><a href="#368">368</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>7405</td><td><a href="#368">368(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>7406</td><td><a href="#370">370</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>7407</td><td><a href="#370">370(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>7408</td><td><a href="#370">370(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>7409</td><td><a href="#370">370(3)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>7410</td><td><a href="#370">370(4)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>7411</td><td><a href="#370">370(5)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>7412</td><td><a href="#389">389</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+</table>
+</body>
+</html>

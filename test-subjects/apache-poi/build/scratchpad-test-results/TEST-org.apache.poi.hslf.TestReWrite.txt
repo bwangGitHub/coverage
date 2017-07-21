@@ -1,0 +1,6 @@
+Testsuite: org.apache.poi.hslf.TestReWrite
+Tests run: 3, Failures: 0, Errors: 0, Time elapsed: 0.286 sec
+
+Testcase: testWritesOutTheSame took 0.149 sec
+Testcase: testWithMacroStreams took 0.109 sec
+Testcase: testSlideShowWritesOutTheSame took 0.028 sec

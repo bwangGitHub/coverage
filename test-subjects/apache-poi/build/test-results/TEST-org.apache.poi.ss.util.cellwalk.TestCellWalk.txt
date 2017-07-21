@@ -1,0 +1,4 @@
+Testsuite: org.apache.poi.ss.util.cellwalk.TestCellWalk
+Tests run: 1, Failures: 0, Errors: 0, Time elapsed: 0.001 sec
+
+Testcase: testNotTraverseEmptyCells took 0.001 sec

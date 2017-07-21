@@ -1,0 +1,7 @@
+Testsuite: org.apache.poi.TestPOIDocumentScratchpad
+Tests run: 4, Failures: 0, Errors: 0, Time elapsed: 0.764 sec
+
+Testcase: testReadProperties took 0.632 sec
+Testcase: testReadProperties2 took 0.013 sec
+Testcase: testWriteProperties took 0.014 sec
+Testcase: testWriteReadProperties took 0.064 sec

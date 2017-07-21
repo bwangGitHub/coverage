@@ -1,0 +1,13 @@
+Testsuite: org.apache.poi.ss.formula.functions.TestSubtotal
+Tests run: 10, Failures: 0, Errors: 0, Time elapsed: 0.005 sec
+
+Testcase: testCount took 0.001 sec
+Testcase: testBasics took 0 sec
+Testcase: testFunctionsFromTestSpreadsheet took 0.001 sec
+Testcase: testMax took 0 sec
+Testcase: testMin took 0 sec
+Testcase: testSum took 0 sec
+Testcase: testAvg took 0.001 sec
+Testcase: testCounta took 0 sec
+Testcase: testStdev took 0.001 sec
+Testcase: test50209 took 0 sec

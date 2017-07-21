@@ -1,0 +1,233 @@
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/repos/asf/!svn/ver/1038685/poi/trunk/src/testcases/org/apache/poi/hssf/record/chart
+END
+TestAxisLineFormatRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 113
+/repos/asf/!svn/ver/719053/poi/trunk/src/testcases/org/apache/poi/hssf/record/chart/TestAxisLineFormatRecord.java
+END
+TestAxisUsedRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/repos/asf/!svn/ver/719053/poi/trunk/src/testcases/org/apache/poi/hssf/record/chart/TestAxisUsedRecord.java
+END
+TestFontBasisRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/repos/asf/!svn/ver/719053/poi/trunk/src/testcases/org/apache/poi/hssf/record/chart/TestFontBasisRecord.java
+END
+TestNumberFormatIndexRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 116
+/repos/asf/!svn/ver/719053/poi/trunk/src/testcases/org/apache/poi/hssf/record/chart/TestNumberFormatIndexRecord.java
+END
+TestSeriesToChartGroupRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 117
+/repos/asf/!svn/ver/719053/poi/trunk/src/testcases/org/apache/poi/hssf/record/chart/TestSeriesToChartGroupRecord.java
+END
+TestLineFormatRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/repos/asf/!svn/ver/719053/poi/trunk/src/testcases/org/apache/poi/hssf/record/chart/TestLineFormatRecord.java
+END
+TestAxisRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/repos/asf/!svn/ver/719053/poi/trunk/src/testcases/org/apache/poi/hssf/record/chart/TestAxisRecord.java
+END
+TestBarRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/repos/asf/!svn/ver/719053/poi/trunk/src/testcases/org/apache/poi/hssf/record/chart/TestBarRecord.java
+END
+TestPlotAreaRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/repos/asf/!svn/ver/719053/poi/trunk/src/testcases/org/apache/poi/hssf/record/chart/TestPlotAreaRecord.java
+END
+TestDatRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/repos/asf/!svn/ver/719053/poi/trunk/src/testcases/org/apache/poi/hssf/record/chart/TestDatRecord.java
+END
+TestPlotGrowthRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/repos/asf/!svn/ver/719053/poi/trunk/src/testcases/org/apache/poi/hssf/record/chart/TestPlotGrowthRecord.java
+END
+TestChartFormatRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/repos/asf/!svn/ver/776056/poi/trunk/src/testcases/org/apache/poi/hssf/record/chart/TestChartFormatRecord.java
+END
+TestChartTitleFormatRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 115
+/repos/asf/!svn/ver/719053/poi/trunk/src/testcases/org/apache/poi/hssf/record/chart/TestChartTitleFormatRecord.java
+END
+TestSeriesLabelsRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 111
+/repos/asf/!svn/ver/719053/poi/trunk/src/testcases/org/apache/poi/hssf/record/chart/TestSeriesLabelsRecord.java
+END
+TestCategorySeriesAxisRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 117
+/repos/asf/!svn/ver/719053/poi/trunk/src/testcases/org/apache/poi/hssf/record/chart/TestCategorySeriesAxisRecord.java
+END
+AllChartRecordTests.java
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/repos/asf/!svn/ver/743601/poi/trunk/src/testcases/org/apache/poi/hssf/record/chart/AllChartRecordTests.java
+END
+TestAxisOptionsRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/repos/asf/!svn/ver/784284/poi/trunk/src/testcases/org/apache/poi/hssf/record/chart/TestAxisOptionsRecord.java
+END
+TestAreaFormatRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/repos/asf/!svn/ver/719053/poi/trunk/src/testcases/org/apache/poi/hssf/record/chart/TestAreaFormatRecord.java
+END
+TestSeriesChartGroupIndexRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 120
+/repos/asf/!svn/ver/719053/poi/trunk/src/testcases/org/apache/poi/hssf/record/chart/TestSeriesChartGroupIndexRecord.java
+END
+TestObjectLinkRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/repos/asf/!svn/ver/719053/poi/trunk/src/testcases/org/apache/poi/hssf/record/chart/TestObjectLinkRecord.java
+END
+TestTextRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/repos/asf/!svn/ver/719053/poi/trunk/src/testcases/org/apache/poi/hssf/record/chart/TestTextRecord.java
+END
+TestSheetPropertiesRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 114
+/repos/asf/!svn/ver/743601/poi/trunk/src/testcases/org/apache/poi/hssf/record/chart/TestSheetPropertiesRecord.java
+END
+TestSeriesListRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/repos/asf/!svn/ver/719053/poi/trunk/src/testcases/org/apache/poi/hssf/record/chart/TestSeriesListRecord.java
+END
+TestValueRangeRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/repos/asf/!svn/ver/719053/poi/trunk/src/testcases/org/apache/poi/hssf/record/chart/TestValueRangeRecord.java
+END
+TestFrameRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/repos/asf/!svn/ver/719053/poi/trunk/src/testcases/org/apache/poi/hssf/record/chart/TestFrameRecord.java
+END
+TestSeriesRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/repos/asf/!svn/ver/719053/poi/trunk/src/testcases/org/apache/poi/hssf/record/chart/TestSeriesRecord.java
+END
+TestTickRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/repos/asf/!svn/ver/784284/poi/trunk/src/testcases/org/apache/poi/hssf/record/chart/TestTickRecord.java
+END
+TestFontIndexRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/repos/asf/!svn/ver/719053/poi/trunk/src/testcases/org/apache/poi/hssf/record/chart/TestFontIndexRecord.java
+END
+TestLegendRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/repos/asf/!svn/ver/719053/poi/trunk/src/testcases/org/apache/poi/hssf/record/chart/TestLegendRecord.java
+END
+TestSeriesTextRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/repos/asf/!svn/ver/719053/poi/trunk/src/testcases/org/apache/poi/hssf/record/chart/TestSeriesTextRecord.java
+END
+TestLinkedDataRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/repos/asf/!svn/ver/1038685/poi/trunk/src/testcases/org/apache/poi/hssf/record/chart/TestLinkedDataRecord.java
+END
+TestDefaultDataLabelTextPropertiesRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 129
+/repos/asf/!svn/ver/719053/poi/trunk/src/testcases/org/apache/poi/hssf/record/chart/TestDefaultDataLabelTextPropertiesRecord.java
+END
+TestChartRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/repos/asf/!svn/ver/719053/poi/trunk/src/testcases/org/apache/poi/hssf/record/chart/TestChartRecord.java
+END
+TestUnitsRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/repos/asf/!svn/ver/719053/poi/trunk/src/testcases/org/apache/poi/hssf/record/chart/TestUnitsRecord.java
+END
+TestAreaRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/repos/asf/!svn/ver/719053/poi/trunk/src/testcases/org/apache/poi/hssf/record/chart/TestAreaRecord.java
+END
+TestAxisParentRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/repos/asf/!svn/ver/719053/poi/trunk/src/testcases/org/apache/poi/hssf/record/chart/TestAxisParentRecord.java
+END
+TestSeriesIndexRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/repos/asf/!svn/ver/719053/poi/trunk/src/testcases/org/apache/poi/hssf/record/chart/TestSeriesIndexRecord.java
+END
+TestDataFormatRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/repos/asf/!svn/ver/719053/poi/trunk/src/testcases/org/apache/poi/hssf/record/chart/TestDataFormatRecord.java
+END

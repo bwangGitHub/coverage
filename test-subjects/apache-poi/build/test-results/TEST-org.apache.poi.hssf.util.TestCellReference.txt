@@ -1,0 +1,14 @@
+Testsuite: org.apache.poi.hssf.util.TestCellReference
+Tests run: 11, Failures: 0, Errors: 0, Time elapsed: 0.002 sec
+
+Testcase: testSpecialSheetNames took 0 sec
+Testcase: testAbsRef1 took 0 sec
+Testcase: testAbsRef2 took 0 sec
+Testcase: testAbsRef3 took 0 sec
+Testcase: testAbsRef4 took 0 sec
+Testcase: testAbsRef5 took 0 sec
+Testcase: testAbsRef6 took 0 sec
+Testcase: testAbsRef7 took 0 sec
+Testcase: testAbsRef8 took 0 sec
+Testcase: testClassifyCellReference took 0.001 sec
+Testcase: testClassificationOfRowReferences took 0 sec

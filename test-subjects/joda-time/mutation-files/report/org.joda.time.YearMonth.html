@@ -1,0 +1,1168 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN
+"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>
+org.joda.time.YearMonth
+</title>
+<link href="prettify.css" type="text/css" rel="stylesheet" />
+<script type="text/javascript" src="prettify.js"></script>
+</head>
+<body onload="prettyPrint()">
+<h2>Javalanche report for class:<br/> org.joda.time.YearMonth </h2><pre class="prettyprint" style="border: 1px solid #888;padding: 2px"><span class="nocode"><a name="1">  1: </a></span>/*
+<span class="nocode"><a name="2">  2: </a></span> *  Copyright 2001-2010 Stephen Colebourne
+<span class="nocode"><a name="3">  3: </a></span> *
+<span class="nocode"><a name="4">  4: </a></span> *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+<span class="nocode"><a name="5">  5: </a></span> *  you may not use this file except in compliance with the License.
+<span class="nocode"><a name="6">  6: </a></span> *  You may obtain a copy of the License at
+<span class="nocode"><a name="7">  7: </a></span> *
+<span class="nocode"><a name="8">  8: </a></span> *      http://www.apache.org/licenses/LICENSE-2.0
+<span class="nocode"><a name="9">  9: </a></span> *
+<span class="nocode"><a name="10"> 10: </a></span> *  Unless required by applicable law or agreed to in writing, software
+<span class="nocode"><a name="11"> 11: </a></span> *  distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+<span class="nocode"><a name="12"> 12: </a></span> *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+<span class="nocode"><a name="13"> 13: </a></span> *  See the License for the specific language governing permissions and
+<span class="nocode"><a name="14"> 14: </a></span> *  limitations under the License.
+<span class="nocode"><a name="15"> 15: </a></span> */
+<span class="nocode"><a name="16"> 16: </a></span>package org.joda.time;
+<span class="nocode"><a name="17"> 17: </a></span>
+<span class="nocode"><a name="18"> 18: </a></span>import java.io.Serializable;
+<span class="nocode"><a name="19"> 19: </a></span>import java.util.Calendar;
+<span class="nocode"><a name="20"> 20: </a></span>import java.util.Date;
+<span class="nocode"><a name="21"> 21: </a></span>import java.util.Locale;
+<span class="nocode"><a name="22"> 22: </a></span>
+<span class="nocode"><a name="23"> 23: </a></span>import org.joda.convert.FromString;
+<span class="nocode"><a name="24"> 24: </a></span>import org.joda.convert.ToString;
+<span class="nocode"><a name="25"> 25: </a></span>import org.joda.time.base.BasePartial;
+<span class="nocode"><a name="26"> 26: </a></span>import org.joda.time.chrono.ISOChronology;
+<span class="nocode"><a name="27"> 27: </a></span>import org.joda.time.field.AbstractPartialFieldProperty;
+<span class="nocode"><a name="28"> 28: </a></span>import org.joda.time.field.FieldUtils;
+<span class="nocode"><a name="29"> 29: </a></span>import org.joda.time.format.DateTimeFormat;
+<span class="nocode"><a name="30"> 30: </a></span>import org.joda.time.format.DateTimeFormatter;
+<span class="nocode"><a name="31"> 31: </a></span>import org.joda.time.format.ISODateTimeFormat;
+<span class="nocode"><a name="32"> 32: </a></span>
+<span class="nocode"><a name="33"> 33: </a></span>/**
+<span class="nocode"><a name="34"> 34: </a></span> * YearMonth is an immutable partial supporting the year and monthOfYear fields.
+<span class="nocode"><a name="35"> 35: </a></span> * &lt;p&gt;
+<span class="nocode"><a name="36"> 36: </a></span> * NOTE: This class only supports the two fields listed above.
+<span class="nocode"><a name="37"> 37: </a></span> * It is impossible to query any other fields, such as dayOfWeek or centuryOfEra.
+<span class="nocode"><a name="38"> 38: </a></span> * &lt;p&gt;
+<span class="nocode"><a name="39"> 39: </a></span> * Calculations on YearMonth are performed using a {@link Chronology}.
+<span class="nocode"><a name="40"> 40: </a></span> * This chronology is set to be in the UTC time zone for all calculations.
+<span class="nocode"><a name="41"> 41: </a></span> * &lt;p&gt;
+<span class="nocode"><a name="42"> 42: </a></span> * One use case for this class is to store a credit card expiry date, as that only
+<span class="nocode"><a name="43"> 43: </a></span> * references the year and month.
+<span class="nocode"><a name="44"> 44: </a></span> * This class can be used as the gYearMonth type in XML Schema.
+<span class="nocode"><a name="45"> 45: </a></span> * &lt;p&gt;
+<span class="nocode"><a name="46"> 46: </a></span> * Each individual field can be queried in two ways:
+<span class="nocode"><a name="47"> 47: </a></span> * &lt;ul&gt;
+<span class="nocode"><a name="48"> 48: </a></span> * &lt;li&gt;&lt;code&gt;getMonthOfYear()&lt;/code&gt;
+<span class="nocode"><a name="49"> 49: </a></span> * &lt;li&gt;&lt;code&gt;monthOfYear().get()&lt;/code&gt;
+<span class="nocode"><a name="50"> 50: </a></span> * &lt;/ul&gt;
+<span class="nocode"><a name="51"> 51: </a></span> * The second technique also provides access to other useful methods on the
+<span class="nocode"><a name="52"> 52: </a></span> * field:
+<span class="nocode"><a name="53"> 53: </a></span> * &lt;ul&gt;
+<span class="nocode"><a name="54"> 54: </a></span> * &lt;li&gt;numeric value - &lt;code&gt;monthOfYear().get()&lt;/code&gt;
+<span class="nocode"><a name="55"> 55: </a></span> * &lt;li&gt;text value - &lt;code&gt;monthOfYear().getAsText()&lt;/code&gt;
+<span class="nocode"><a name="56"> 56: </a></span> * &lt;li&gt;short text value - &lt;code&gt;monthOfYear().getAsShortText()&lt;/code&gt;
+<span class="nocode"><a name="57"> 57: </a></span> * &lt;li&gt;maximum/minimum values - &lt;code&gt;monthOfYear().getMaximumValue()&lt;/code&gt;
+<span class="nocode"><a name="58"> 58: </a></span> * &lt;li&gt;add/subtract - &lt;code&gt;monthOfYear().addToCopy()&lt;/code&gt;
+<span class="nocode"><a name="59"> 59: </a></span> * &lt;li&gt;set - &lt;code&gt;monthOfYear().setCopy()&lt;/code&gt;
+<span class="nocode"><a name="60"> 60: </a></span> * &lt;/ul&gt;
+<span class="nocode"><a name="61"> 61: </a></span> * &lt;p&gt;
+<span class="nocode"><a name="62"> 62: </a></span> * YearMonth is thread-safe and immutable, provided that the Chronology is as well.
+<span class="nocode"><a name="63"> 63: </a></span> * All standard Chronology classes supplied are thread-safe and immutable.
+<span class="nocode"><a name="64"> 64: </a></span> *
+<span class="nocode"><a name="65"> 65: </a></span> * @author Stephen Colebourne
+<span class="nocode"><a name="66"> 66: </a></span> * @since 2.0
+<span class="nocode"><a name="67"> 67: </a></span> */
+<span class="nocode"><a name="68"> 68: </a></span>public final class YearMonth
+<span class="nocode"><a name="69"> 69: </a></span>        extends BasePartial
+<span class="nocode"><a name="70"> 70: </a></span>        implements ReadablePartial, Serializable {
+<span class="nocode"><a name="71"> 71: </a></span>
+<span class="nocode"><a name="72"> 72: </a></span>    /** Serialization version */
+<span class="nocode"><a name="73"> 73: </a></span>    private static final long serialVersionUID = 797544782896179L;
+<span class="nocode"><a name="74"> 74: </a></span>    /** The singleton set of field types */
+<span class="nocode"><a name="75"> 75: </a></span>    private static final DateTimeFieldType[] FIELD_TYPES = new DateTimeFieldType[] {
+<span class="nocode"><a name="76"> 76: </a></span>        DateTimeFieldType.year(),
+<span class="nocode"><a name="77"> 77: </a></span>        DateTimeFieldType.monthOfYear(),
+<span class="nocode"><a name="78"> 78: </a></span>    };
+<span class="nocode"><a name="79"> 79: </a></span>
+<span class="nocode"><a name="80"> 80: </a></span>    /** The index of the year field in the field array */
+<span class="nocode"><a name="81"> 81: </a></span>    public static final int YEAR = 0;
+<span class="nocode"><a name="82"> 82: </a></span>    /** The index of the monthOfYear field in the field array */
+<span class="nocode"><a name="83"> 83: </a></span>    public static final int MONTH_OF_YEAR = 1;
+<span class="nocode"><a name="84"> 84: </a></span>
+<span class="nocode"><a name="85"> 85: </a></span>    //-----------------------------------------------------------------------
+<span class="nocode"><a name="86"> 86: </a></span>    /**
+<span class="nocode"><a name="87"> 87: </a></span>     * Obtains a {@code YearMonth} set to the current system millisecond time
+<span class="nocode"><a name="88"> 88: </a></span>     * using &lt;code&gt;ISOChronology&lt;/code&gt; in the default time zone.
+<span class="nocode"><a name="89"> 89: </a></span>     * The resulting object does not use the zone.
+<span class="nocode"><a name="90"> 90: </a></span>     * 
+<span class="nocode"><a name="91"> 91: </a></span>     * @return the current year-month, not null
+<span class="nocode"><a name="92"> 92: </a></span>     * @since 2.0
+<span class="nocode"><a name="93"> 93: </a></span>     */
+<span class="nocode"><a name="94"> 94: </a></span>    public static YearMonth now() {
+<span class="nocode"><a name="95"> 95: </a></span>        return new YearMonth();
+<span class="nocode"><a name="96"> 96: </a></span>    }
+<span class="nocode"><a name="97"> 97: </a></span>
+<span class="nocode"><a name="98"> 98: </a></span>    /**
+<span class="nocode"><a name="99"> 99: </a></span>     * Obtains a {@code YearMonth} set to the current system millisecond time
+<span class="nocode"><a name="100">100: </a></span>     * using &lt;code&gt;ISOChronology&lt;/code&gt; in the specified time zone.
+<span class="nocode"><a name="101">101: </a></span>     * The resulting object does not use the zone.
+<span class="nocode"><a name="102">102: </a></span>     *
+<span class="nocode"><a name="103">103: </a></span>     * @param zone  the time zone, not null
+<span class="nocode"><a name="104">104: </a></span>     * @return the current year-month, not null
+<span class="nocode"><a name="105">105: </a></span>     * @since 2.0
+<span class="nocode"><a name="106">106: </a></span>     */
+<span class="nocode"><a name="107">107: </a></span>    public static YearMonth now(DateTimeZone zone) {
+<span class="nocode"><a name="108">108: </a></span>        if (zone == null) {
+<span class="nocode"><a name="109">109: </a></span>            throw new NullPointerException(&quot;Zone must not be null&quot;);
+<span class="nocode"><a name="110">110: </a></span>        }
+<span class="nocode"><a name="111">111: </a></span>        return new YearMonth(zone);
+<span class="nocode"><a name="112">112: </a></span>    }
+<span class="nocode"><a name="113">113: </a></span>
+<span class="nocode"><a name="114">114: </a></span>    /**
+<span class="nocode"><a name="115">115: </a></span>     * Obtains a {@code YearMonth} set to the current system millisecond time
+<span class="nocode"><a name="116">116: </a></span>     * using the specified chronology.
+<span class="nocode"><a name="117">117: </a></span>     * The resulting object does not use the zone.
+<span class="nocode"><a name="118">118: </a></span>     *
+<span class="nocode"><a name="119">119: </a></span>     * @param chronology  the chronology, not null
+<span class="nocode"><a name="120">120: </a></span>     * @return the current year-month, not null
+<span class="nocode"><a name="121">121: </a></span>     * @since 2.0
+<span class="nocode"><a name="122">122: </a></span>     */
+<span class="nocode"><a name="123">123: </a></span>    public static YearMonth now(Chronology chronology) {
+<span class="nocode"><a name="124">124: </a></span>        if (chronology == null) {
+<span class="nocode"><a name="125">125: </a></span>            throw new NullPointerException(&quot;Chronology must not be null&quot;);
+<span class="nocode"><a name="126">126: </a></span>        }
+<span class="nocode"><a name="127">127: </a></span>        return new YearMonth(chronology);
+<span class="nocode"><a name="128">128: </a></span>    }
+<span class="nocode"><a name="129">129: </a></span>
+<span class="nocode"><a name="130">130: </a></span>    //-----------------------------------------------------------------------
+<span class="nocode"><a name="131">131: </a></span>    /**
+<span class="nocode"><a name="132">132: </a></span>     * Parses a {@code YearMonth} from the specified string.
+<span class="nocode"><a name="133">133: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="134">134: </a></span>     * This uses {@link ISODateTimeFormat#localDateParser()}.
+<span class="nocode"><a name="135">135: </a></span>     * 
+<span class="nocode"><a name="136">136: </a></span>     * @param str  the string to parse, not null
+<span class="nocode"><a name="137">137: </a></span>     * @since 2.0
+<span class="nocode"><a name="138">138: </a></span>     */
+<span class="nocode"><a name="139">139: </a></span>    @FromString
+<span class="nocode"><a name="140">140: </a></span>    public static YearMonth parse(String str) {
+<span class="nocode"><a name="141">141: </a></span>        return parse(str, ISODateTimeFormat.localDateParser());
+<span class="nocode"><a name="142">142: </a></span>    }
+<span class="nocode"><a name="143">143: </a></span>
+<span class="nocode"><a name="144">144: </a></span>    /**
+<span class="nocode"><a name="145">145: </a></span>     * Parses a {@code YearMonth} from the specified string using a formatter.
+<span class="nocode"><a name="146">146: </a></span>     * 
+<span class="nocode"><a name="147">147: </a></span>     * @param str  the string to parse, not null
+<span class="nocode"><a name="148">148: </a></span>     * @param formatter  the formatter to use, not null
+<span class="nocode"><a name="149">149: </a></span>     * @since 2.0
+<span class="nocode"><a name="150">150: </a></span>     */
+<span class="nocode"><a name="151">151: </a></span>    public static YearMonth parse(String str, DateTimeFormatter formatter) {
+<span class="nocode"><a name="152">152: </a></span>        LocalDate date = formatter.parseLocalDate(str);
+<span class="nocode"><a name="153">153: </a></span>        return new YearMonth(date.getYear(), date.getMonthOfYear());
+<span class="nocode"><a name="154">154: </a></span>    }
+<span class="nocode"><a name="155">155: </a></span>
+<span class="nocode"><a name="156">156: </a></span>    //-----------------------------------------------------------------------
+<span class="nocode"><a name="157">157: </a></span>    /**
+<span class="nocode"><a name="158">158: </a></span>     * Constructs a YearMonth from a &lt;code&gt;java.util.Calendar&lt;/code&gt;
+<span class="nocode"><a name="159">159: </a></span>     * using exactly the same field values avoiding any time zone effects.
+<span class="nocode"><a name="160">160: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="161">161: </a></span>     * Each field is queried from the Calendar and assigned to the YearMonth.
+<span class="nocode"><a name="162">162: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="163">163: </a></span>     * This factory method ignores the type of the calendar and always
+<span class="nocode"><a name="164">164: </a></span>     * creates a YearMonth with ISO chronology. It is expected that you
+<span class="nocode"><a name="165">165: </a></span>     * will only pass in instances of &lt;code&gt;GregorianCalendar&lt;/code&gt; however
+<span class="nocode"><a name="166">166: </a></span>     * this is not validated.
+<span class="nocode"><a name="167">167: </a></span>     *
+<span class="nocode"><a name="168">168: </a></span>     * @param calendar  the Calendar to extract fields from
+<span class="nocode"><a name="169">169: </a></span>     * @return the created YearMonth, never null
+<span class="nocode"><a name="170">170: </a></span>     * @throws IllegalArgumentException if the calendar is null
+<span class="nocode"><a name="171">171: </a></span>     * @throws IllegalArgumentException if the year or month is invalid for the ISO chronology
+<span class="nocode"><a name="172">172: </a></span>     */
+<span class="nocode"><a name="173">173: </a></span>    public static YearMonth fromCalendarFields(Calendar calendar) {
+<span class="nocode"><a name="174">174: </a></span>        if (calendar == null) {
+<span class="nocode"><a name="175">175: </a></span>            throw new IllegalArgumentException(&quot;The calendar must not be null&quot;);
+<span class="nocode"><a name="176">176: </a></span>        }
+<span class="nocode"><a name="177">177: </a></span>        return new YearMonth(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1);
+<span class="nocode"><a name="178">178: </a></span>    }
+<span class="nocode"><a name="179">179: </a></span>
+<span class="nocode"><a name="180">180: </a></span>    /**
+<span class="nocode"><a name="181">181: </a></span>     * Constructs a YearMonth from a &lt;code&gt;java.util.Date&lt;/code&gt;
+<span class="nocode"><a name="182">182: </a></span>     * using exactly the same field values avoiding any time zone effects.
+<span class="nocode"><a name="183">183: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="184">184: </a></span>     * Each field is queried from the Date and assigned to the YearMonth.
+<span class="nocode"><a name="185">185: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="186">186: </a></span>     * This factory method always creates a YearMonth with ISO chronology.
+<span class="nocode"><a name="187">187: </a></span>     *
+<span class="nocode"><a name="188">188: </a></span>     * @param date  the Date to extract fields from
+<span class="nocode"><a name="189">189: </a></span>     * @return the created YearMonth, never null
+<span class="nocode"><a name="190">190: </a></span>     * @throws IllegalArgumentException if the calendar is null
+<span class="nocode"><a name="191">191: </a></span>     * @throws IllegalArgumentException if the year or month is invalid for the ISO chronology
+<span class="nocode"><a name="192">192: </a></span>     */
+<span class="nocode"><a name="193">193: </a></span>    @SuppressWarnings(&quot;deprecation&quot;)
+<span class="nocode"><a name="194">194: </a></span>    public static YearMonth fromDateFields(Date date) {
+<span class="nocode"><a name="195">195: </a></span>        if (date == null) {
+<span class="nocode"><a name="196">196: </a></span>            throw new IllegalArgumentException(&quot;The date must not be null&quot;);
+<span class="nocode"><a name="197">197: </a></span>        }
+<span class="nocode"><a name="198">198: </a></span>        return new YearMonth(date.getYear() + 1900, date.getMonth() + 1);
+<span class="nocode"><a name="199">199: </a></span>    }
+<span class="nocode"><a name="200">200: </a></span>
+<span class="nocode"><a name="201">201: </a></span>    //-----------------------------------------------------------------------
+<span class="nocode"><a name="202">202: </a></span>    /**
+<span class="nocode"><a name="203">203: </a></span>     * Constructs a YearMonth with the current year-month, using ISOChronology in
+<span class="nocode"><a name="204">204: </a></span>     * the default zone to extract the fields.
+<span class="nocode"><a name="205">205: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="206">206: </a></span>     * The constructor uses the default time zone, resulting in the local time
+<span class="nocode"><a name="207">207: </a></span>     * being initialised. Once the constructor is complete, all further calculations
+<span class="nocode"><a name="208">208: </a></span>     * are performed without reference to a time-zone (by switching to UTC).
+<span class="nocode"><a name="209">209: </a></span>     * 
+<span class="nocode"><a name="210">210: </a></span>     * @see #now()
+<span class="nocode"><a name="211">211: </a></span>     */
+<span class="nocode"><a name="212">212: </a></span>    public YearMonth() {
+<span class="nocode"><a name="213">213: </a></span>        super();
+<span class="nocode"><a name="214">214: </a></span>    }
+<span class="nocode"><a name="215">215: </a></span>
+<span class="nocode"><a name="216">216: </a></span>    /**
+<span class="nocode"><a name="217">217: </a></span>     * Constructs a YearMonth with the current year-month, using ISOChronology in
+<span class="nocode"><a name="218">218: </a></span>     * the specified zone to extract the fields.
+<span class="nocode"><a name="219">219: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="220">220: </a></span>     * The constructor uses the specified time zone to obtain the current year-month.
+<span class="nocode"><a name="221">221: </a></span>     * Once the constructor is complete, all further calculations
+<span class="nocode"><a name="222">222: </a></span>     * are performed without reference to a time-zone (by switching to UTC).
+<span class="nocode"><a name="223">223: </a></span>     * 
+<span class="nocode"><a name="224">224: </a></span>     * @param zone  the zone to use, null means default zone
+<span class="nocode"><a name="225">225: </a></span>     * @see #now(DateTimeZone)
+<span class="nocode"><a name="226">226: </a></span>     */
+<span class="nocode"><a name="227">227: </a></span>    public YearMonth(DateTimeZone zone) {
+<span class="nocode"><a name="228">228: </a></span>        super(ISOChronology.getInstance(zone));
+<span class="nocode"><a name="229">229: </a></span>    }
+<span class="nocode"><a name="230">230: </a></span>
+<span class="nocode"><a name="231">231: </a></span>    /**
+<span class="nocode"><a name="232">232: </a></span>     * Constructs a YearMonth with the current year-month, using the specified chronology
+<span class="nocode"><a name="233">233: </a></span>     * and zone to extract the fields.
+<span class="nocode"><a name="234">234: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="235">235: </a></span>     * The constructor uses the time zone of the chronology specified.
+<span class="nocode"><a name="236">236: </a></span>     * Once the constructor is complete, all further calculations are performed
+<span class="nocode"><a name="237">237: </a></span>     * without reference to a time-zone (by switching to UTC).
+<span class="nocode"><a name="238">238: </a></span>     *
+<span class="nocode"><a name="239">239: </a></span>     * @param chronology  the chronology, null means ISOChronology in the default zone
+<span class="nocode"><a name="240">240: </a></span>     * @see #now(Chronology)
+<span class="nocode"><a name="241">241: </a></span>     */
+<span class="nocode"><a name="242">242: </a></span>    public YearMonth(Chronology chronology) {
+<span class="nocode"><a name="243">243: </a></span>        super(chronology);
+<span class="nocode"><a name="244">244: </a></span>    }
+<span class="nocode"><a name="245">245: </a></span>
+<span class="nocode"><a name="246">246: </a></span>    /**
+<span class="nocode"><a name="247">247: </a></span>     * Constructs a YearMonth extracting the partial fields from the specified
+<span class="nocode"><a name="248">248: </a></span>     * milliseconds using the ISOChronology in the default zone.
+<span class="nocode"><a name="249">249: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="250">250: </a></span>     * The constructor uses the default time zone, resulting in the local time
+<span class="nocode"><a name="251">251: </a></span>     * being initialised. Once the constructor is complete, all further calculations
+<span class="nocode"><a name="252">252: </a></span>     * are performed without reference to a time-zone (by switching to UTC).
+<span class="nocode"><a name="253">253: </a></span>     *
+<span class="nocode"><a name="254">254: </a></span>     * @param instant  the milliseconds from 1970-01-01T00:00:00Z
+<span class="nocode"><a name="255">255: </a></span>     */
+<span class="nocode"><a name="256">256: </a></span>    public YearMonth(long instant) {
+<span class="nocode"><a name="257">257: </a></span>        super(instant);
+<span class="nocode"><a name="258">258: </a></span>    }
+<span class="nocode"><a name="259">259: </a></span>
+<span class="nocode"><a name="260">260: </a></span>    /**
+<span class="nocode"><a name="261">261: </a></span>     * Constructs a YearMonth extracting the partial fields from the specified
+<span class="nocode"><a name="262">262: </a></span>     * milliseconds using the chronology provided.
+<span class="nocode"><a name="263">263: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="264">264: </a></span>     * The constructor uses the time zone of the chronology specified.
+<span class="nocode"><a name="265">265: </a></span>     * Once the constructor is complete, all further calculations are performed
+<span class="nocode"><a name="266">266: </a></span>     * without reference to a time-zone (by switching to UTC).
+<span class="nocode"><a name="267">267: </a></span>     *
+<span class="nocode"><a name="268">268: </a></span>     * @param instant  the milliseconds from 1970-01-01T00:00:00Z
+<span class="nocode"><a name="269">269: </a></span>     * @param chronology  the chronology, null means ISOChronology in the default zone
+<span class="nocode"><a name="270">270: </a></span>     */
+<span class="nocode"><a name="271">271: </a></span>    public YearMonth(long instant, Chronology chronology) {
+<span class="nocode"><a name="272">272: </a></span>        super(instant, chronology);
+<span class="nocode"><a name="273">273: </a></span>    }
+<span class="nocode"><a name="274">274: </a></span>
+<span class="nocode"><a name="275">275: </a></span>    /**
+<span class="nocode"><a name="276">276: </a></span>     * Constructs a YearMonth from an Object that represents some form of time.
+<span class="nocode"><a name="277">277: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="278">278: </a></span>     * The recognised object types are defined in
+<span class="nocode"><a name="279">279: </a></span>     * {@link org.joda.time.convert.ConverterManager ConverterManager} and
+<span class="nocode"><a name="280">280: </a></span>     * include ReadableInstant, String, Calendar and Date.
+<span class="nocode"><a name="281">281: </a></span>     * The String formats are described by {@link ISODateTimeFormat#localDateParser()}.
+<span class="nocode"><a name="282">282: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="283">283: </a></span>     * The chronology used will be derived from the object, defaulting to ISO.
+<span class="nocode"><a name="284">284: </a></span>     *
+<span class="nocode"><a name="285">285: </a></span>     * @param instant  the date-time object, null means now
+<span class="nocode"><a name="286">286: </a></span>     * @throws IllegalArgumentException if the instant is invalid
+<span class="nocode"><a name="287">287: </a></span>     */
+<span class="nocode"><a name="288">288: </a></span>    public YearMonth(Object instant) {
+<span class="nocode"><a name="289">289: </a></span>        super(instant, null, ISODateTimeFormat.localDateParser());
+<span class="nocode"><a name="290">290: </a></span>    }
+<span class="nocode"><a name="291">291: </a></span>
+<span class="nocode"><a name="292">292: </a></span>    /**
+<span class="nocode"><a name="293">293: </a></span>     * Constructs a YearMonth from an Object that represents some form of time,
+<span class="nocode"><a name="294">294: </a></span>     * using the specified chronology.
+<span class="nocode"><a name="295">295: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="296">296: </a></span>     * The recognised object types are defined in
+<span class="nocode"><a name="297">297: </a></span>     * {@link org.joda.time.convert.ConverterManager ConverterManager} and
+<span class="nocode"><a name="298">298: </a></span>     * include ReadableInstant, String, Calendar and Date.
+<span class="nocode"><a name="299">299: </a></span>     * The String formats are described by {@link ISODateTimeFormat#localDateParser()}.
+<span class="nocode"><a name="300">300: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="301">301: </a></span>     * The constructor uses the time zone of the chronology specified.
+<span class="nocode"><a name="302">302: </a></span>     * Once the constructor is complete, all further calculations are performed
+<span class="nocode"><a name="303">303: </a></span>     * without reference to a time-zone (by switching to UTC).
+<span class="nocode"><a name="304">304: </a></span>     * The specified chronology overrides that of the object.
+<span class="nocode"><a name="305">305: </a></span>     *
+<span class="nocode"><a name="306">306: </a></span>     * @param instant  the date-time object, null means now
+<span class="nocode"><a name="307">307: </a></span>     * @param chronology  the chronology, null means ISO default
+<span class="nocode"><a name="308">308: </a></span>     * @throws IllegalArgumentException if the instant is invalid
+<span class="nocode"><a name="309">309: </a></span>     */
+<span class="nocode"><a name="310">310: </a></span>    public YearMonth(Object instant, Chronology chronology) {
+<span class="nocode"><a name="311">311: </a></span>        super(instant, DateTimeUtils.getChronology(chronology), ISODateTimeFormat.localDateParser());
+<span class="nocode"><a name="312">312: </a></span>    }
+<span class="nocode"><a name="313">313: </a></span>
+<span class="nocode"><a name="314">314: </a></span>    /**
+<span class="nocode"><a name="315">315: </a></span>     * Constructs a YearMonth with specified year and month
+<span class="nocode"><a name="316">316: </a></span>     * using &lt;code&gt;ISOChronology&lt;/code&gt;.
+<span class="nocode"><a name="317">317: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="318">318: </a></span>     * The constructor uses the no time zone initialising the fields as provided.
+<span class="nocode"><a name="319">319: </a></span>     * Once the constructor is complete, all further calculations
+<span class="nocode"><a name="320">320: </a></span>     * are performed without reference to a time-zone (by switching to UTC).
+<span class="nocode"><a name="321">321: </a></span>     *
+<span class="nocode"><a name="322">322: </a></span>     * @param year  the year
+<span class="nocode"><a name="323">323: </a></span>     * @param monthOfYear  the month of the year
+<span class="nocode"><a name="324">324: </a></span>     */
+<span class="nocode"><a name="325">325: </a></span>    public YearMonth(int year, int monthOfYear) {
+<span class="nocode"><a name="326">326: </a></span>        this(year, monthOfYear, null);
+<span class="nocode"><a name="327">327: </a></span>    }
+<span class="nocode"><a name="328">328: </a></span>
+<span class="nocode"><a name="329">329: </a></span>    /**
+<span class="nocode"><a name="330">330: </a></span>     * Constructs an instance set to the specified year and month
+<span class="nocode"><a name="331">331: </a></span>     * using the specified chronology, whose zone is ignored.
+<span class="nocode"><a name="332">332: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="333">333: </a></span>     * If the chronology is null, &lt;code&gt;ISOChronology&lt;/code&gt; is used.
+<span class="nocode"><a name="334">334: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="335">335: </a></span>     * The constructor uses the time zone of the chronology specified.
+<span class="nocode"><a name="336">336: </a></span>     * Once the constructor is complete, all further calculations are performed
+<span class="nocode"><a name="337">337: </a></span>     * without reference to a time-zone (by switching to UTC).
+<span class="nocode"><a name="338">338: </a></span>     *
+<span class="nocode"><a name="339">339: </a></span>     * @param year  the year
+<span class="nocode"><a name="340">340: </a></span>     * @param monthOfYear  the month of the year
+<span class="nocode"><a name="341">341: </a></span>     * @param chronology  the chronology, null means ISOChronology in the default zone
+<span class="nocode"><a name="342">342: </a></span>     */
+<span class="nocode"><a name="343">343: </a></span>    public YearMonth(int year, int monthOfYear, Chronology chronology) {
+<span class="nocode"><a name="344">344: </a></span>        super(new int[] {year, monthOfYear}, chronology);
+<span class="nocode"><a name="345">345: </a></span>    }
+<span class="nocode"><a name="346">346: </a></span>
+<span class="nocode"><a name="347">347: </a></span>    /**
+<span class="nocode"><a name="348">348: </a></span>     * Constructs a YearMonth with chronology from this instance and new values.
+<span class="nocode"><a name="349">349: </a></span>     *
+<span class="nocode"><a name="350">350: </a></span>     * @param partial  the partial to base this new instance on
+<span class="nocode"><a name="351">351: </a></span>     * @param values  the new set of values
+<span class="nocode"><a name="352">352: </a></span>     */
+<span class="nocode"><a name="353">353: </a></span>    YearMonth(YearMonth partial, int[] values) {
+<span class="nocode"><a name="354">354: </a></span>        super(partial, values);
+<span class="nocode"><a name="355">355: </a></span>    }
+<span class="nocode"><a name="356">356: </a></span>
+<span class="nocode"><a name="357">357: </a></span>    /**
+<span class="nocode"><a name="358">358: </a></span>     * Constructs a YearMonth with values from this instance and a new chronology.
+<span class="nocode"><a name="359">359: </a></span>     *
+<span class="nocode"><a name="360">360: </a></span>     * @param partial  the partial to base this new instance on
+<span class="nocode"><a name="361">361: </a></span>     * @param chrono  the new chronology
+<span class="nocode"><a name="362">362: </a></span>     */
+<span class="nocode"><a name="363">363: </a></span>    YearMonth(YearMonth partial, Chronology chrono) {
+<span class="nocode"><a name="364">364: </a></span>        super(partial, chrono);
+<span class="nocode"><a name="365">365: </a></span>    }
+<span class="nocode"><a name="366">366: </a></span>
+<span class="nocode"><a name="367">367: </a></span>    /**
+<span class="nocode"><a name="368">368: </a></span>     * Handle broken serialization from other tools.
+<span class="nocode"><a name="369">369: </a></span>     * @return the resolved object, not null
+<span class="nocode"><a name="370">370: </a></span>     */
+<span class="nocode"><a name="371">371: </a></span>    private Object readResolve() {
+<span class="nocode"><a name="372">372: </a></span>        if (DateTimeZone.UTC.equals(getChronology().getZone()) == false) {
+<span class="nocode"><a name="373">373: </a></span>            return new YearMonth(this, getChronology().withUTC());
+<span class="nocode"><a name="374">374: </a></span>        }
+<span class="nocode"><a name="375">375: </a></span>        return this;
+<span class="nocode"><a name="376">376: </a></span>    }
+<span class="nocode"><a name="377">377: </a></span>
+<span class="nocode"><a name="378">378: </a></span>    //-----------------------------------------------------------------------
+<span class="nocode"><a name="379">379: </a></span>    /**
+<span class="nocode"><a name="380">380: </a></span>     * Gets the number of fields in this partial, which is two.
+<span class="nocode"><a name="381">381: </a></span>     * The supported fields are Year and MonthOfYear.
+<span class="nocode"><a name="382">382: </a></span>     * Note that only these fields may be queried.
+<span class="nocode"><a name="383">383: </a></span>     *
+<span class="nocode"><a name="384">384: </a></span>     * @return the field count, two
+<span class="nocode"><a name="385">385: </a></span>     */
+<span class="nocode"><a name="386">386: </a></span>    public int size() {
+<span class="nocode"><a name="387">387: </a></span>        return 2;
+<span class="nocode"><a name="388">388: </a></span>    }
+<span class="nocode"><a name="389">389: </a></span>
+<span class="nocode"><a name="390">390: </a></span>    /**
+<span class="nocode"><a name="391">391: </a></span>     * Gets the field for a specific index in the chronology specified.
+<span class="nocode"><a name="392">392: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="393">393: </a></span>     * This method must not use any instance variables.
+<span class="nocode"><a name="394">394: </a></span>     * 
+<span class="nocode"><a name="395">395: </a></span>     * @param index  the index to retrieve
+<span class="nocode"><a name="396">396: </a></span>     * @param chrono  the chronology to use
+<span class="nocode"><a name="397">397: </a></span>     * @return the field, never null
+<span class="nocode"><a name="398">398: </a></span>     */
+<span class="nocode"><a name="399">399: </a></span>    protected DateTimeField getField(int index, Chronology chrono) {
+<span class="nocode"><a name="400">400: </a></span>        switch (index) {
+<span class="nocode"><a name="401">401: </a></span>            case YEAR:
+<span class="nocode"><a name="402">402: </a></span>                return chrono.year();
+<span class="nocode"><a name="403">403: </a></span>            case MONTH_OF_YEAR:
+<span class="nocode"><a name="404">404: </a></span>                return chrono.monthOfYear();
+<span class="nocode"><a name="405">405: </a></span>            default:
+<span class="nocode"><a name="406">406: </a></span>                throw new IndexOutOfBoundsException(&quot;Invalid index: &quot; + index);
+<span class="nocode"><a name="407">407: </a></span>        }
+<span class="nocode"><a name="408">408: </a></span>    }
+<span class="nocode"><a name="409">409: </a></span>
+<span class="nocode"><a name="410">410: </a></span>    /**
+<span class="nocode"><a name="411">411: </a></span>     * Gets the field type at the specified index.
+<span class="nocode"><a name="412">412: </a></span>     *
+<span class="nocode"><a name="413">413: </a></span>     * @param index  the index to retrieve
+<span class="nocode"><a name="414">414: </a></span>     * @return the field at the specified index, never null
+<span class="nocode"><a name="415">415: </a></span>     * @throws IndexOutOfBoundsException if the index is invalid
+<span class="nocode"><a name="416">416: </a></span>     */
+<span class="nocode"><a name="417">417: </a></span>    public DateTimeFieldType getFieldType(int index) {
+<span class="nocode"><a name="418">418: </a></span>        return FIELD_TYPES[index];
+<span class="nocode"><a name="419">419: </a></span>    }
+<span class="nocode"><a name="420">420: </a></span>
+<span class="nocode"><a name="421">421: </a></span>    /**
+<span class="nocode"><a name="422">422: </a></span>     * Gets an array of the field type of each of the fields that this partial supports.
+<span class="nocode"><a name="423">423: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="424">424: </a></span>     * The fields are returned largest to smallest, Year, Month.
+<span class="nocode"><a name="425">425: </a></span>     *
+<span class="nocode"><a name="426">426: </a></span>     * @return the array of field types (cloned), largest to smallest, never null
+<span class="nocode"><a name="427">427: </a></span>     */
+<span class="nocode"><a name="428">428: </a></span>    public DateTimeFieldType[] getFieldTypes() {
+<span class="nocode"><a name="429">429: </a></span>        return (DateTimeFieldType[]) FIELD_TYPES.clone();
+<span class="nocode"><a name="430">430: </a></span>    }
+<span class="nocode"><a name="431">431: </a></span>
+<span class="nocode"><a name="432">432: </a></span>    //-----------------------------------------------------------------------
+<span class="nocode"><a name="433">433: </a></span>    /**
+<span class="nocode"><a name="434">434: </a></span>     * Returns a copy of this year-month with the specified chronology.
+<span class="nocode"><a name="435">435: </a></span>     * This instance is immutable and unaffected by this method call.
+<span class="nocode"><a name="436">436: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="437">437: </a></span>     * This method retains the values of the fields, thus the result will
+<span class="nocode"><a name="438">438: </a></span>     * typically refer to a different instant.
+<span class="nocode"><a name="439">439: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="440">440: </a></span>     * The time zone of the specified chronology is ignored, as YearMonth
+<span class="nocode"><a name="441">441: </a></span>     * operates without a time zone.
+<span class="nocode"><a name="442">442: </a></span>     *
+<span class="nocode"><a name="443">443: </a></span>     * @param newChronology  the new chronology, null means ISO
+<span class="nocode"><a name="444">444: </a></span>     * @return a copy of this year-month with a different chronology, never null
+<span class="nocode"><a name="445">445: </a></span>     * @throws IllegalArgumentException if the values are invalid for the new chronology
+<span class="nocode"><a name="446">446: </a></span>     */
+<span class="nocode"><a name="447">447: </a></span>    public YearMonth withChronologyRetainFields(Chronology newChronology) {
+<span class="nocode"><a name="448">448: </a></span>        newChronology = DateTimeUtils.getChronology(newChronology);
+<span class="nocode"><a name="449">449: </a></span>        newChronology = newChronology.withUTC();
+<span class="nocode"><a name="450">450: </a></span>        if (newChronology == getChronology()) {
+<span class="nocode"><a name="451">451: </a></span>            return this;
+<span class="nocode"><a name="452">452: </a></span>        } else {
+<span class="nocode"><a name="453">453: </a></span>            YearMonth newYearMonth = new YearMonth(this, newChronology);
+<span class="nocode"><a name="454">454: </a></span>            newChronology.validate(newYearMonth, getValues());
+<span class="nocode"><a name="455">455: </a></span>            return newYearMonth;
+<span class="nocode"><a name="456">456: </a></span>        }
+<span class="nocode"><a name="457">457: </a></span>    }
+<span class="nocode"><a name="458">458: </a></span>
+<span class="nocode"><a name="459">459: </a></span>    /**
+<span class="nocode"><a name="460">460: </a></span>     * Returns a copy of this year-month with the specified field set to a new value.
+<span class="nocode"><a name="461">461: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="462">462: </a></span>     * For example, if the field type is &lt;code&gt;monthOfYear&lt;/code&gt; then the month
+<span class="nocode"><a name="463">463: </a></span>     * would be changed in the returned instance.
+<span class="nocode"><a name="464">464: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="465">465: </a></span>     * These three lines are equivalent:
+<span class="nocode"><a name="466">466: </a></span>     * &lt;pre&gt;
+<span class="nocode"><a name="467">467: </a></span>     * YearMonth updated = ym.withField(DateTimeFieldType.monthOfYear(), 6);
+<span class="nocode"><a name="468">468: </a></span>     * YearMonth updated = ym.monthOfYear().setCopy(6);
+<span class="nocode"><a name="469">469: </a></span>     * YearMonth updated = ym.property(DateTimeFieldType.monthOfYear()).setCopy(6);
+<span class="nocode"><a name="470">470: </a></span>     * &lt;/pre&gt;
+<span class="nocode"><a name="471">471: </a></span>     *
+<span class="nocode"><a name="472">472: </a></span>     * @param fieldType  the field type to set, not null
+<span class="nocode"><a name="473">473: </a></span>     * @param value  the value to set
+<span class="nocode"><a name="474">474: </a></span>     * @return a copy of this instance with the field set, never null
+<span class="nocode"><a name="475">475: </a></span>     * @throws IllegalArgumentException if the value is null or invalid
+<span class="nocode"><a name="476">476: </a></span>     */
+<span class="nocode"><a name="477">477: </a></span>    public YearMonth withField(DateTimeFieldType fieldType, int value) {
+<span class="nocode"><a name="478">478: </a></span>        int index = indexOfSupported(fieldType);
+<span class="nocode"><a name="479">479: </a></span>        if (value == getValue(index)) {
+<span class="nocode"><a name="480">480: </a></span>            return this;
+<span class="nocode"><a name="481">481: </a></span>        }
+<span class="nocode"><a name="482">482: </a></span>        int[] newValues = getValues();
+<span class="nocode"><a name="483">483: </a></span>        newValues = getField(index).set(this, index, newValues, value);
+<span class="nocode"><a name="484">484: </a></span>        return new YearMonth(this, newValues);
+<span class="nocode"><a name="485">485: </a></span>    }
+<span class="nocode"><a name="486">486: </a></span>
+<span class="nocode"><a name="487">487: </a></span>    /**
+<span class="nocode"><a name="488">488: </a></span>     * Returns a copy of this year-month with the value of the specified field increased.
+<span class="nocode"><a name="489">489: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="490">490: </a></span>     * If the addition is zero, then &lt;code&gt;this&lt;/code&gt; is returned.
+<span class="nocode"><a name="491">491: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="492">492: </a></span>     * These three lines are equivalent:
+<span class="nocode"><a name="493">493: </a></span>     * &lt;pre&gt;
+<span class="nocode"><a name="494">494: </a></span>     * YearMonth added = ym.withFieldAdded(DurationFieldType.months(), 6);
+<span class="nocode"><a name="495">495: </a></span>     * YearMonth added = ym.plusMonths(6);
+<span class="nocode"><a name="496">496: </a></span>     * YearMonth added = ym.monthOfYear().addToCopy(6);
+<span class="nocode"><a name="497">497: </a></span>     * &lt;/pre&gt;
+<span class="nocode"><a name="498">498: </a></span>     * 
+<span class="nocode"><a name="499">499: </a></span>     * @param fieldType  the field type to add to, not null
+<span class="nocode"><a name="500">500: </a></span>     * @param amount  the amount to add
+<span class="nocode"><a name="501">501: </a></span>     * @return a copy of this instance with the field updated, never null
+<span class="nocode"><a name="502">502: </a></span>     * @throws IllegalArgumentException if the value is null or invalid
+<span class="nocode"><a name="503">503: </a></span>     * @throws ArithmeticException if the new date-time exceeds the capacity
+<span class="nocode"><a name="504">504: </a></span>     */
+<span class="nocode"><a name="505">505: </a></span>    public YearMonth withFieldAdded(DurationFieldType fieldType, int amount) {
+<span class="nocode"><a name="506">506: </a></span>        int index = indexOfSupported(fieldType);
+<span class="nocode"><a name="507">507: </a></span>        if (amount == 0) {
+<span class="nocode"><a name="508">508: </a></span>            return this;
+<span class="nocode"><a name="509">509: </a></span>        }
+<span class="nocode"><a name="510">510: </a></span>        int[] newValues = getValues();
+<span class="nocode"><a name="511">511: </a></span>        newValues = getField(index).add(this, index, newValues, amount);
+<span class="nocode"><a name="512">512: </a></span>        return new YearMonth(this, newValues);
+<span class="nocode"><a name="513">513: </a></span>    }
+<span class="nocode"><a name="514">514: </a></span>
+<span class="nocode"><a name="515">515: </a></span>    /**
+<span class="nocode"><a name="516">516: </a></span>     * Returns a copy of this year-month with the specified period added.
+<span class="nocode"><a name="517">517: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="518">518: </a></span>     * If the addition is zero, then &lt;code&gt;this&lt;/code&gt; is returned.
+<span class="nocode"><a name="519">519: </a></span>     * Fields in the period that aren't present in the partial are ignored.
+<span class="nocode"><a name="520">520: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="521">521: </a></span>     * This method is typically used to add multiple copies of complex
+<span class="nocode"><a name="522">522: </a></span>     * period instances. Adding one field is best achieved using methods
+<span class="nocode"><a name="523">523: </a></span>     * like {@link #withFieldAdded(DurationFieldType, int)}
+<span class="nocode"><a name="524">524: </a></span>     * or {@link #plusYears(int)}.
+<span class="nocode"><a name="525">525: </a></span>     * 
+<span class="nocode"><a name="526">526: </a></span>     * @param period  the period to add to this one, null means zero
+<span class="nocode"><a name="527">527: </a></span>     * @param scalar  the amount of times to add, such as -1 to subtract once
+<span class="nocode"><a name="528">528: </a></span>     * @return a copy of this instance with the period added, never null
+<span class="nocode"><a name="529">529: </a></span>     * @throws ArithmeticException if the new date-time exceeds the capacity
+<span class="nocode"><a name="530">530: </a></span>     */
+<span class="nocode"><a name="531">531: </a></span>    public YearMonth withPeriodAdded(ReadablePeriod period, int scalar) {
+<span class="nocode"><a name="532">532: </a></span>        if (period == null || scalar == 0) {
+<span class="nocode"><a name="533">533: </a></span>            return this;
+<span class="nocode"><a name="534">534: </a></span>        }
+<span class="nocode"><a name="535">535: </a></span>        int[] newValues = getValues();
+<span class="nocode"><a name="536">536: </a></span>        for (int i = 0; i &lt; period.size(); i++) {
+<span class="nocode"><a name="537">537: </a></span>            DurationFieldType fieldType = period.getFieldType(i);
+<span class="nocode"><a name="538">538: </a></span>            int index = indexOf(fieldType);
+<span class="nocode"><a name="539">539: </a></span>            if (index &gt;= 0) {
+<span class="nocode"><a name="540">540: </a></span>                newValues = getField(index).add(this, index, newValues,
+<span class="nocode"><a name="541">541: </a></span>                        FieldUtils.safeMultiply(period.getValue(i), scalar));
+<span class="nocode"><a name="542">542: </a></span>            }
+<span class="nocode"><a name="543">543: </a></span>        }
+<span class="nocode"><a name="544">544: </a></span>        return new YearMonth(this, newValues);
+<span class="nocode"><a name="545">545: </a></span>    }
+<span class="nocode"><a name="546">546: </a></span>
+<span class="nocode"><a name="547">547: </a></span>    //-----------------------------------------------------------------------
+<span class="nocode"><a name="548">548: </a></span>    /**
+<span class="nocode"><a name="549">549: </a></span>     * Returns a copy of this year-month with the specified period added.
+<span class="nocode"><a name="550">550: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="551">551: </a></span>     * If the amount is zero or null, then &lt;code&gt;this&lt;/code&gt; is returned.
+<span class="nocode"><a name="552">552: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="553">553: </a></span>     * This method is typically used to add complex period instances.
+<span class="nocode"><a name="554">554: </a></span>     * Adding one field is best achieved using methods
+<span class="nocode"><a name="555">555: </a></span>     * like {@link #plusYears(int)}.
+<span class="nocode"><a name="556">556: </a></span>     * 
+<span class="nocode"><a name="557">557: </a></span>     * @param period  the duration to add to this one, null means zero
+<span class="nocode"><a name="558">558: </a></span>     * @return a copy of this instance with the period added, never null
+<span class="nocode"><a name="559">559: </a></span>     * @throws ArithmeticException if the new year-month exceeds the capacity
+<span class="nocode"><a name="560">560: </a></span>     */
+<span class="nocode"><a name="561">561: </a></span>    public YearMonth plus(ReadablePeriod period) {
+<span class="nocode"><a name="562">562: </a></span>        return withPeriodAdded(period, 1);
+<span class="nocode"><a name="563">563: </a></span>    }
+<span class="nocode"><a name="564">564: </a></span>
+<span class="nocode"><a name="565">565: </a></span>    //-----------------------------------------------------------------------
+<span class="nocode"><a name="566">566: </a></span>    /**
+<span class="nocode"><a name="567">567: </a></span>     * Returns a copy of this year-month plus the specified number of years.
+<span class="nocode"><a name="568">568: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="569">569: </a></span>     * This year-month instance is immutable and unaffected by this method call.
+<span class="nocode"><a name="570">570: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="571">571: </a></span>     * The following three lines are identical in effect:
+<span class="nocode"><a name="572">572: </a></span>     * &lt;pre&gt;
+<span class="nocode"><a name="573">573: </a></span>     * YearMonth added = ym.plusYears(6);
+<span class="nocode"><a name="574">574: </a></span>     * YearMonth added = ym.plus(Period.years(6));
+<span class="nocode"><a name="575">575: </a></span>     * YearMonth added = ym.withFieldAdded(DurationFieldType.years(), 6);
+<span class="nocode"><a name="576">576: </a></span>     * &lt;/pre&gt;
+<span class="nocode"><a name="577">577: </a></span>     *
+<span class="nocode"><a name="578">578: </a></span>     * @param years  the amount of years to add, may be negative
+<span class="nocode"><a name="579">579: </a></span>     * @return the new year-month plus the increased years, never null
+<span class="nocode"><a name="580">580: </a></span>     */
+<span class="nocode"><a name="581">581: </a></span>    public YearMonth plusYears(int years) {
+<span class="nocode"><a name="582">582: </a></span>        return withFieldAdded(DurationFieldType.years(), years);
+<span class="nocode"><a name="583">583: </a></span>    }
+<span class="nocode"><a name="584">584: </a></span>
+<span class="nocode"><a name="585">585: </a></span>    /**
+<span class="nocode"><a name="586">586: </a></span>     * Returns a copy of this year-month plus the specified number of months.
+<span class="nocode"><a name="587">587: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="588">588: </a></span>     * This year-month instance is immutable and unaffected by this method call.
+<span class="nocode"><a name="589">589: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="590">590: </a></span>     * The following three lines are identical in effect:
+<span class="nocode"><a name="591">591: </a></span>     * &lt;pre&gt;
+<span class="nocode"><a name="592">592: </a></span>     * YearMonth added = ym.plusMonths(6);
+<span class="nocode"><a name="593">593: </a></span>     * YearMonth added = ym.plus(Period.months(6));
+<span class="nocode"><a name="594">594: </a></span>     * YearMonth added = ym.withFieldAdded(DurationFieldType.months(), 6);
+<span class="nocode"><a name="595">595: </a></span>     * &lt;/pre&gt;
+<span class="nocode"><a name="596">596: </a></span>     *
+<span class="nocode"><a name="597">597: </a></span>     * @param months  the amount of months to add, may be negative
+<span class="nocode"><a name="598">598: </a></span>     * @return the new year-month plus the increased months, never null
+<span class="nocode"><a name="599">599: </a></span>     */
+<span class="nocode"><a name="600">600: </a></span>    public YearMonth plusMonths(int months) {
+<span class="nocode"><a name="601">601: </a></span>        return withFieldAdded(DurationFieldType.months(), months);
+<span class="nocode"><a name="602">602: </a></span>    }
+<span class="nocode"><a name="603">603: </a></span>
+<span class="nocode"><a name="604">604: </a></span>    //-----------------------------------------------------------------------
+<span class="nocode"><a name="605">605: </a></span>    /**
+<span class="nocode"><a name="606">606: </a></span>     * Returns a copy of this year-month with the specified period taken away.
+<span class="nocode"><a name="607">607: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="608">608: </a></span>     * If the amount is zero or null, then &lt;code&gt;this&lt;/code&gt; is returned.
+<span class="nocode"><a name="609">609: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="610">610: </a></span>     * This method is typically used to subtract complex period instances.
+<span class="nocode"><a name="611">611: </a></span>     * Subtracting one field is best achieved using methods
+<span class="nocode"><a name="612">612: </a></span>     * like {@link #minusYears(int)}.
+<span class="nocode"><a name="613">613: </a></span>     * 
+<span class="nocode"><a name="614">614: </a></span>     * @param period  the period to reduce this instant by
+<span class="nocode"><a name="615">615: </a></span>     * @return a copy of this instance with the period taken away, never null
+<span class="nocode"><a name="616">616: </a></span>     * @throws ArithmeticException if the new year-month exceeds the capacity
+<span class="nocode"><a name="617">617: </a></span>     */
+<span class="nocode"><a name="618">618: </a></span>    public YearMonth minus(ReadablePeriod period) {
+<span class="nocode"><a name="619">619: </a></span>        return withPeriodAdded(period, -1);
+<span class="nocode"><a name="620">620: </a></span>    }
+<span class="nocode"><a name="621">621: </a></span>
+<span class="nocode"><a name="622">622: </a></span>    //-----------------------------------------------------------------------
+<span class="nocode"><a name="623">623: </a></span>    /**
+<span class="nocode"><a name="624">624: </a></span>     * Returns a copy of this year-month minus the specified number of years.
+<span class="nocode"><a name="625">625: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="626">626: </a></span>     * This year-month instance is immutable and unaffected by this method call.
+<span class="nocode"><a name="627">627: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="628">628: </a></span>     * The following three lines are identical in effect:
+<span class="nocode"><a name="629">629: </a></span>     * &lt;pre&gt;
+<span class="nocode"><a name="630">630: </a></span>     * YearMonth subtracted = ym.minusYears(6);
+<span class="nocode"><a name="631">631: </a></span>     * YearMonth subtracted = ym.minus(Period.years(6));
+<span class="nocode"><a name="632">632: </a></span>     * YearMonth subtracted = ym.withFieldAdded(DurationFieldType.years(), -6);
+<span class="nocode"><a name="633">633: </a></span>     * &lt;/pre&gt;
+<span class="nocode"><a name="634">634: </a></span>     *
+<span class="nocode"><a name="635">635: </a></span>     * @param years  the amount of years to subtract, may be negative
+<span class="nocode"><a name="636">636: </a></span>     * @return the new year-month minus the increased years, never null
+<span class="nocode"><a name="637">637: </a></span>     */
+<span class="nocode"><a name="638">638: </a></span>    public YearMonth minusYears(int years) {
+<span class="nocode"><a name="639">639: </a></span>        return withFieldAdded(DurationFieldType.years(), FieldUtils.safeNegate(years));
+<span class="nocode"><a name="640">640: </a></span>    }
+<span class="nocode"><a name="641">641: </a></span>
+<span class="nocode"><a name="642">642: </a></span>    /**
+<span class="nocode"><a name="643">643: </a></span>     * Returns a copy of this year-month minus the specified number of months.
+<span class="nocode"><a name="644">644: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="645">645: </a></span>     * This year-month instance is immutable and unaffected by this method call.
+<span class="nocode"><a name="646">646: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="647">647: </a></span>     * The following three lines are identical in effect:
+<span class="nocode"><a name="648">648: </a></span>     * &lt;pre&gt;
+<span class="nocode"><a name="649">649: </a></span>     * YearMonth subtracted = ym.minusMonths(6);
+<span class="nocode"><a name="650">650: </a></span>     * YearMonth subtracted = ym.minus(Period.months(6));
+<span class="nocode"><a name="651">651: </a></span>     * YearMonth subtracted = ym.withFieldAdded(DurationFieldType.months(), -6);
+<span class="nocode"><a name="652">652: </a></span>     * &lt;/pre&gt;
+<span class="nocode"><a name="653">653: </a></span>     *
+<span class="nocode"><a name="654">654: </a></span>     * @param months  the amount of months to subtract, may be negative
+<span class="nocode"><a name="655">655: </a></span>     * @return the new year-month minus the increased months, never null
+<span class="nocode"><a name="656">656: </a></span>     */
+<span class="nocode"><a name="657">657: </a></span>    public YearMonth minusMonths(int months) {
+<span class="nocode"><a name="658">658: </a></span>        return withFieldAdded(DurationFieldType.months(), FieldUtils.safeNegate(months));
+<span class="nocode"><a name="659">659: </a></span>    }
+<span class="nocode"><a name="660">660: </a></span>
+<span class="nocode"><a name="661">661: </a></span>    //-----------------------------------------------------------------------
+<span class="nocode"><a name="662">662: </a></span>    /**
+<span class="nocode"><a name="663">663: </a></span>     * Converts this object to a LocalDate with the same year-month and chronology.
+<span class="nocode"><a name="664">664: </a></span>     *
+<span class="nocode"><a name="665">665: </a></span>     * @param dayOfMonth the day of month to use, valid for chronology, such as 1-31 for ISO
+<span class="nocode"><a name="666">666: </a></span>     * @return a LocalDate with the same year-month and chronology, never null
+<span class="nocode"><a name="667">667: </a></span>     */
+<span class="nocode"><a name="668">668: </a></span>    public LocalDate toLocalDate(int dayOfMonth) {
+<span class="nocode"><a name="669">669: </a></span>        return new LocalDate(getYear(), getMonthOfYear(), dayOfMonth, getChronology());
+<span class="nocode"><a name="670">670: </a></span>    }
+<span class="nocode"><a name="671">671: </a></span>
+<span class="nocode"><a name="672">672: </a></span>    //-----------------------------------------------------------------------
+<span class="nocode"><a name="673">673: </a></span>    /**
+<span class="nocode"><a name="674">674: </a></span>     * Converts this object to an Interval representing the whole month.
+<span class="nocode"><a name="675">675: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="676">676: </a></span>     * The interval will use the chronology of the year-month in the default zone.
+<span class="nocode"><a name="677">677: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="678">678: </a></span>     * This instance is immutable and unaffected by this method call.
+<span class="nocode"><a name="679">679: </a></span>     *
+<span class="nocode"><a name="680">680: </a></span>     * @return an interval over the month, never null
+<span class="nocode"><a name="681">681: </a></span>     */
+<span class="nocode"><a name="682">682: </a></span>    public Interval toInterval() {
+<span class="nocode"><a name="683">683: </a></span>        return toInterval(null);
+<span class="nocode"><a name="684">684: </a></span>    }
+<span class="nocode"><a name="685">685: </a></span>
+<span class="nocode"><a name="686">686: </a></span>    /**
+<span class="nocode"><a name="687">687: </a></span>     * Converts this object to an Interval representing the whole month.
+<span class="nocode"><a name="688">688: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="689">689: </a></span>     * The interval will use the chronology of the year-month in the specified zone.
+<span class="nocode"><a name="690">690: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="691">691: </a></span>     * This instance is immutable and unaffected by this method call.
+<span class="nocode"><a name="692">692: </a></span>     *
+<span class="nocode"><a name="693">693: </a></span>     * @param zone  the zone to get the Interval in, null means default
+<span class="nocode"><a name="694">694: </a></span>     * @return an interval over the month, never null
+<span class="nocode"><a name="695">695: </a></span>     */
+<span class="nocode"><a name="696">696: </a></span>    public Interval toInterval(DateTimeZone zone) {
+<span class="nocode"><a name="697">697: </a></span>        zone = DateTimeUtils.getZone(zone);
+<span class="nocode"><a name="698">698: </a></span>        DateTime start = toLocalDate(1).toDateTimeAtStartOfDay(zone);
+<span class="nocode"><a name="699">699: </a></span>        DateTime end = plusMonths(1).toLocalDate(1).toDateTimeAtStartOfDay(zone);
+<span class="nocode"><a name="700">700: </a></span>        return new Interval(start, end);
+<span class="nocode"><a name="701">701: </a></span>    }
+<span class="nocode"><a name="702">702: </a></span>
+<span class="nocode"><a name="703">703: </a></span>    //-----------------------------------------------------------------------
+<span class="nocode"><a name="704">704: </a></span>    /**
+<span class="nocode"><a name="705">705: </a></span>     * Get the year field value.
+<span class="nocode"><a name="706">706: </a></span>     *
+<span class="nocode"><a name="707">707: </a></span>     * @return the year
+<span class="nocode"><a name="708">708: </a></span>     */
+<span class="nocode"><a name="709">709: </a></span>    public int getYear() {
+<span class="nocode"><a name="710">710: </a></span>        return getValue(YEAR);
+<span class="nocode"><a name="711">711: </a></span>    }
+<span class="nocode"><a name="712">712: </a></span>
+<span class="nocode"><a name="713">713: </a></span>    /**
+<span class="nocode"><a name="714">714: </a></span>     * Get the month of year field value.
+<span class="nocode"><a name="715">715: </a></span>     *
+<span class="nocode"><a name="716">716: </a></span>     * @return the month of year
+<span class="nocode"><a name="717">717: </a></span>     */
+<span class="nocode"><a name="718">718: </a></span>    public int getMonthOfYear() {
+<span class="nocode"><a name="719">719: </a></span>        return getValue(MONTH_OF_YEAR);
+<span class="nocode"><a name="720">720: </a></span>    }
+<span class="nocode"><a name="721">721: </a></span>
+<span class="nocode"><a name="722">722: </a></span>    //-----------------------------------------------------------------------
+<span class="nocode"><a name="723">723: </a></span>    /**
+<span class="nocode"><a name="724">724: </a></span>     * Returns a copy of this year-month with the year field updated.
+<span class="nocode"><a name="725">725: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="726">726: </a></span>     * YearMonth is immutable, so there are no set methods.
+<span class="nocode"><a name="727">727: </a></span>     * Instead, this method returns a new instance with the value of
+<span class="nocode"><a name="728">728: </a></span>     * year changed.
+<span class="nocode"><a name="729">729: </a></span>     *
+<span class="nocode"><a name="730">730: </a></span>     * @param year  the year to set
+<span class="nocode"><a name="731">731: </a></span>     * @return a copy of this object with the field set, never null
+<span class="nocode"><a name="732">732: </a></span>     * @throws IllegalArgumentException if the value is invalid
+<span class="nocode"><a name="733">733: </a></span>     */
+<span class="nocode"><a name="734">734: </a></span>    public YearMonth withYear(int year) {
+<span class="nocode"><a name="735">735: </a></span>        int[] newValues = getValues();
+<span class="nocode"><a name="736">736: </a></span>        newValues = getChronology().year().set(this, YEAR, newValues, year);
+<span class="nocode"><a name="737">737: </a></span>        return new YearMonth(this, newValues);
+<span class="nocode"><a name="738">738: </a></span>    }
+<span class="nocode"><a name="739">739: </a></span>
+<span class="nocode"><a name="740">740: </a></span>    /**
+<span class="nocode"><a name="741">741: </a></span>     * Returns a copy of this year-month with the month of year field updated.
+<span class="nocode"><a name="742">742: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="743">743: </a></span>     * YearMonth is immutable, so there are no set methods.
+<span class="nocode"><a name="744">744: </a></span>     * Instead, this method returns a new instance with the value of
+<span class="nocode"><a name="745">745: </a></span>     * month of year changed.
+<span class="nocode"><a name="746">746: </a></span>     *
+<span class="nocode"><a name="747">747: </a></span>     * @param monthOfYear  the month of year to set
+<span class="nocode"><a name="748">748: </a></span>     * @return a copy of this object with the field set, never null
+<span class="nocode"><a name="749">749: </a></span>     * @throws IllegalArgumentException if the value is invalid
+<span class="nocode"><a name="750">750: </a></span>     */
+<span class="nocode"><a name="751">751: </a></span>    public YearMonth withMonthOfYear(int monthOfYear) {
+<span class="nocode"><a name="752">752: </a></span>        int[] newValues = getValues();
+<span class="nocode"><a name="753">753: </a></span>        newValues = getChronology().monthOfYear().set(this, MONTH_OF_YEAR, newValues, monthOfYear);
+<span class="nocode"><a name="754">754: </a></span>        return new YearMonth(this, newValues);
+<span class="nocode"><a name="755">755: </a></span>    }
+<span class="nocode"><a name="756">756: </a></span>
+<span class="nocode"><a name="757">757: </a></span>    //-----------------------------------------------------------------------
+<span class="nocode"><a name="758">758: </a></span>    /**
+<span class="nocode"><a name="759">759: </a></span>     * Gets the property object for the specified type, which contains
+<span class="nocode"><a name="760">760: </a></span>     * many useful methods.
+<span class="nocode"><a name="761">761: </a></span>     *
+<span class="nocode"><a name="762">762: </a></span>     * @param type  the field type to get the property for
+<span class="nocode"><a name="763">763: </a></span>     * @return the property object
+<span class="nocode"><a name="764">764: </a></span>     * @throws IllegalArgumentException if the field is null or unsupported
+<span class="nocode"><a name="765">765: </a></span>     */
+<span class="nocode"><a name="766">766: </a></span>    public Property property(DateTimeFieldType type) {
+<span class="nocode"><a name="767">767: </a></span>        return new Property(this, indexOfSupported(type));
+<span class="nocode"><a name="768">768: </a></span>    }
+<span class="nocode"><a name="769">769: </a></span>
+<span class="nocode"><a name="770">770: </a></span>    //-----------------------------------------------------------------------
+<span class="nocode"><a name="771">771: </a></span>    /**
+<span class="nocode"><a name="772">772: </a></span>     * Get the year field property which provides access to advanced functionality.
+<span class="nocode"><a name="773">773: </a></span>     * 
+<span class="nocode"><a name="774">774: </a></span>     * @return the year property
+<span class="nocode"><a name="775">775: </a></span>     */
+<span class="nocode"><a name="776">776: </a></span>    public Property year() {
+<span class="nocode"><a name="777">777: </a></span>        return new Property(this, YEAR);
+<span class="nocode"><a name="778">778: </a></span>    }
+<span class="nocode"><a name="779">779: </a></span>
+<span class="nocode"><a name="780">780: </a></span>    /**
+<span class="nocode"><a name="781">781: </a></span>     * Get the month of year field property which provides access to advanced functionality.
+<span class="nocode"><a name="782">782: </a></span>     * 
+<span class="nocode"><a name="783">783: </a></span>     * @return the month of year property
+<span class="nocode"><a name="784">784: </a></span>     */
+<span class="nocode"><a name="785">785: </a></span>    public Property monthOfYear() {
+<span class="nocode"><a name="786">786: </a></span>        return new Property(this, MONTH_OF_YEAR);
+<span class="nocode"><a name="787">787: </a></span>    }
+<span class="nocode"><a name="788">788: </a></span>
+<span class="nocode"><a name="789">789: </a></span>    //-----------------------------------------------------------------------
+<span class="nocode"><a name="790">790: </a></span>    /**
+<span class="nocode"><a name="791">791: </a></span>     * Output the year-month in ISO8601 format (yyyy-MM).
+<span class="nocode"><a name="792">792: </a></span>     *
+<span class="nocode"><a name="793">793: </a></span>     * @return ISO8601 time formatted string.
+<span class="nocode"><a name="794">794: </a></span>     */
+<span class="nocode"><a name="795">795: </a></span>    @ToString
+<span class="nocode"><a name="796">796: </a></span>    public String toString() {
+<span class="nocode"><a name="797">797: </a></span>        return ISODateTimeFormat.yearMonth().print(this);
+<span class="nocode"><a name="798">798: </a></span>    }
+<span class="nocode"><a name="799">799: </a></span>
+<span class="nocode"><a name="800">800: </a></span>    /**
+<span class="nocode"><a name="801">801: </a></span>     * Output the year-month using the specified format pattern.
+<span class="nocode"><a name="802">802: </a></span>     *
+<span class="nocode"><a name="803">803: </a></span>     * @param pattern  the pattern specification, null means use &lt;code&gt;toString&lt;/code&gt;
+<span class="nocode"><a name="804">804: </a></span>     * @see org.joda.time.format.DateTimeFormat
+<span class="nocode"><a name="805">805: </a></span>     */
+<span class="nocode"><a name="806">806: </a></span>    public String toString(String pattern) {
+<span class="nocode"><a name="807">807: </a></span>        if (pattern == null) {
+<span class="nocode"><a name="808">808: </a></span>            return toString();
+<span class="nocode"><a name="809">809: </a></span>        }
+<span class="nocode"><a name="810">810: </a></span>        return DateTimeFormat.forPattern(pattern).print(this);
+<span class="nocode"><a name="811">811: </a></span>    }
+<span class="nocode"><a name="812">812: </a></span>
+<span class="nocode"><a name="813">813: </a></span>    /**
+<span class="nocode"><a name="814">814: </a></span>     * Output the year-month using the specified format pattern.
+<span class="nocode"><a name="815">815: </a></span>     *
+<span class="nocode"><a name="816">816: </a></span>     * @param pattern  the pattern specification, null means use &lt;code&gt;toString&lt;/code&gt;
+<span class="nocode"><a name="817">817: </a></span>     * @param locale  Locale to use, null means default
+<span class="nocode"><a name="818">818: </a></span>     * @see org.joda.time.format.DateTimeFormat
+<span class="nocode"><a name="819">819: </a></span>     */
+<span class="nocode"><a name="820">820: </a></span>    public String toString(String pattern, Locale locale) throws IllegalArgumentException {
+<span class="nocode"><a name="821">821: </a></span>        if (pattern == null) {
+<span class="nocode"><a name="822">822: </a></span>            return toString();
+<span class="nocode"><a name="823">823: </a></span>        }
+<span class="nocode"><a name="824">824: </a></span>        return DateTimeFormat.forPattern(pattern).withLocale(locale).print(this);
+<span class="nocode"><a name="825">825: </a></span>    }
+<span class="nocode"><a name="826">826: </a></span>
+<span class="nocode"><a name="827">827: </a></span>    //-----------------------------------------------------------------------
+<span class="nocode"><a name="828">828: </a></span>    /**
+<span class="nocode"><a name="829">829: </a></span>     * The property class for &lt;code&gt;YearMonth&lt;/code&gt;.
+<span class="nocode"><a name="830">830: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="831">831: </a></span>     * This class binds a &lt;code&gt;YearMonth&lt;/code&gt; to a &lt;code&gt;DateTimeField&lt;/code&gt;.
+<span class="nocode"><a name="832">832: </a></span>     * 
+<span class="nocode"><a name="833">833: </a></span>     * @author Stephen Colebourne
+<span class="nocode"><a name="834">834: </a></span>     * @since 2.0
+<span class="nocode"><a name="835">835: </a></span>     */
+<span class="nocode"><a name="836">836: </a></span>    public static class Property extends AbstractPartialFieldProperty implements Serializable {
+<span class="nocode"><a name="837">837: </a></span>
+<span class="nocode"><a name="838">838: </a></span>        /** Serialization version */
+<span class="nocode"><a name="839">839: </a></span>        private static final long serialVersionUID = 5727734012190224363L;
+<span class="nocode"><a name="840">840: </a></span>
+<span class="nocode"><a name="841">841: </a></span>        /** The partial */
+<span class="nocode"><a name="842">842: </a></span>        private final YearMonth iBase;
+<span class="nocode"><a name="843">843: </a></span>        /** The field index */
+<span class="nocode"><a name="844">844: </a></span>        private final int iFieldIndex;
+<span class="nocode"><a name="845">845: </a></span>
+<span class="nocode"><a name="846">846: </a></span>        /**
+<span class="nocode"><a name="847">847: </a></span>         * Constructs a property.
+<span class="nocode"><a name="848">848: </a></span>         * 
+<span class="nocode"><a name="849">849: </a></span>         * @param partial  the partial instance
+<span class="nocode"><a name="850">850: </a></span>         * @param fieldIndex  the index in the partial
+<span class="nocode"><a name="851">851: </a></span>         */
+<span class="nocode"><a name="852">852: </a></span>        Property(YearMonth partial, int fieldIndex) {
+<span class="nocode"><a name="853">853: </a></span>            super();
+<span class="nocode"><a name="854">854: </a></span>            iBase = partial;
+<span class="nocode"><a name="855">855: </a></span>            iFieldIndex = fieldIndex;
+<span class="nocode"><a name="856">856: </a></span>        }
+<span class="nocode"><a name="857">857: </a></span>
+<span class="nocode"><a name="858">858: </a></span>        /**
+<span class="nocode"><a name="859">859: </a></span>         * Gets the field that this property uses.
+<span class="nocode"><a name="860">860: </a></span>         * 
+<span class="nocode"><a name="861">861: </a></span>         * @return the field
+<span class="nocode"><a name="862">862: </a></span>         */
+<span class="nocode"><a name="863">863: </a></span>        public DateTimeField getField() {
+<span class="nocode"><a name="864">864: </a></span>            return iBase.getField(iFieldIndex);
+<span class="nocode"><a name="865">865: </a></span>        }
+<span class="nocode"><a name="866">866: </a></span>
+<span class="nocode"><a name="867">867: </a></span>        /**
+<span class="nocode"><a name="868">868: </a></span>         * Gets the partial that this property belongs to.
+<span class="nocode"><a name="869">869: </a></span>         * 
+<span class="nocode"><a name="870">870: </a></span>         * @return the partial
+<span class="nocode"><a name="871">871: </a></span>         */
+<span class="nocode"><a name="872">872: </a></span>        protected ReadablePartial getReadablePartial() {
+<span class="nocode"><a name="873">873: </a></span>            return iBase;
+<span class="nocode"><a name="874">874: </a></span>        }
+<span class="nocode"><a name="875">875: </a></span>
+<span class="nocode"><a name="876">876: </a></span>        /**
+<span class="nocode"><a name="877">877: </a></span>         * Gets the partial that this property belongs to.
+<span class="nocode"><a name="878">878: </a></span>         * 
+<span class="nocode"><a name="879">879: </a></span>         * @return the partial
+<span class="nocode"><a name="880">880: </a></span>         */
+<span class="nocode"><a name="881">881: </a></span>        public YearMonth getYearMonth() {
+<span class="nocode"><a name="882">882: </a></span>            return iBase;
+<span class="nocode"><a name="883">883: </a></span>        }
+<span class="nocode"><a name="884">884: </a></span>
+<span class="nocode"><a name="885">885: </a></span>        /**
+<span class="nocode"><a name="886">886: </a></span>         * Gets the value of this field.
+<span class="nocode"><a name="887">887: </a></span>         * 
+<span class="nocode"><a name="888">888: </a></span>         * @return the field value
+<span class="nocode"><a name="889">889: </a></span>         */
+<span class="nocode"><a name="890">890: </a></span>        public int get() {
+<span class="nocode"><a name="891">891: </a></span>            return iBase.getValue(iFieldIndex);
+<span class="nocode"><a name="892">892: </a></span>        }
+<span class="nocode"><a name="893">893: </a></span>
+<span class="nocode"><a name="894">894: </a></span>        //-----------------------------------------------------------------------
+<span class="nocode"><a name="895">895: </a></span>        /**
+<span class="nocode"><a name="896">896: </a></span>         * Adds to the value of this field in a copy of this YearMonth.
+<span class="nocode"><a name="897">897: </a></span>         * &lt;p&gt;
+<span class="nocode"><a name="898">898: </a></span>         * The value will be added to this field. If the value is too large to be
+<span class="nocode"><a name="899">899: </a></span>         * added solely to this field then it will affect larger fields.
+<span class="nocode"><a name="900">900: </a></span>         * Smaller fields are unaffected.
+<span class="nocode"><a name="901">901: </a></span>         * &lt;p&gt;
+<span class="nocode"><a name="902">902: </a></span>         * If the result would be too large, beyond the maximum year, then an
+<span class="nocode"><a name="903">903: </a></span>         * IllegalArgumentException is thrown.
+<span class="nocode"><a name="904">904: </a></span>         * &lt;p&gt;
+<span class="nocode"><a name="905">905: </a></span>         * The YearMonth attached to this property is unchanged by this call.
+<span class="nocode"><a name="906">906: </a></span>         * Instead, a new instance is returned.
+<span class="nocode"><a name="907">907: </a></span>         * 
+<span class="nocode"><a name="908">908: </a></span>         * @param valueToAdd  the value to add to the field in the copy
+<span class="nocode"><a name="909">909: </a></span>         * @return a copy of the YearMonth with the field value changed
+<span class="nocode"><a name="910">910: </a></span>         * @throws IllegalArgumentException if the value isn't valid
+<span class="nocode"><a name="911">911: </a></span>         */
+<span class="nocode"><a name="912">912: </a></span>        public YearMonth addToCopy(int valueToAdd) {
+<span class="nocode"><a name="913">913: </a></span>            int[] newValues = iBase.getValues();
+<span class="nocode"><a name="914">914: </a></span>            newValues = getField().add(iBase, iFieldIndex, newValues, valueToAdd);
+<span class="nocode"><a name="915">915: </a></span>            return new YearMonth(iBase, newValues);
+<span class="nocode"><a name="916">916: </a></span>        }
+<span class="nocode"><a name="917">917: </a></span>
+<span class="nocode"><a name="918">918: </a></span>        /**
+<span class="nocode"><a name="919">919: </a></span>         * Adds to the value of this field in a copy of this YearMonth wrapping
+<span class="nocode"><a name="920">920: </a></span>         * within this field if the maximum value is reached.
+<span class="nocode"><a name="921">921: </a></span>         * &lt;p&gt;
+<span class="nocode"><a name="922">922: </a></span>         * The value will be added to this field. If the value is too large to be
+<span class="nocode"><a name="923">923: </a></span>         * added solely to this field then it wraps within this field.
+<span class="nocode"><a name="924">924: </a></span>         * Other fields are unaffected.
+<span class="nocode"><a name="925">925: </a></span>         * &lt;p&gt;
+<span class="nocode"><a name="926">926: </a></span>         * For example,
+<span class="nocode"><a name="927">927: </a></span>         * &lt;code&gt;2004-12&lt;/code&gt; addWrapField one month returns &lt;code&gt;2004-01&lt;/code&gt;.
+<span class="nocode"><a name="928">928: </a></span>         * &lt;p&gt;
+<span class="nocode"><a name="929">929: </a></span>         * The YearMonth attached to this property is unchanged by this call.
+<span class="nocode"><a name="930">930: </a></span>         * Instead, a new instance is returned.
+<span class="nocode"><a name="931">931: </a></span>         * 
+<span class="nocode"><a name="932">932: </a></span>         * @param valueToAdd  the value to add to the field in the copy
+<span class="nocode"><a name="933">933: </a></span>         * @return a copy of the YearMonth with the field value changed
+<span class="nocode"><a name="934">934: </a></span>         * @throws IllegalArgumentException if the value isn't valid
+<span class="nocode"><a name="935">935: </a></span>         */
+<span class="nocode"><a name="936">936: </a></span>        public YearMonth addWrapFieldToCopy(int valueToAdd) {
+<span class="nocode"><a name="937">937: </a></span>            int[] newValues = iBase.getValues();
+<span class="nocode"><a name="938">938: </a></span>            newValues = getField().addWrapField(iBase, iFieldIndex, newValues, valueToAdd);
+<span class="nocode"><a name="939">939: </a></span>            return new YearMonth(iBase, newValues);
+<span class="nocode"><a name="940">940: </a></span>        }
+<span class="nocode"><a name="941">941: </a></span>
+<span class="nocode"><a name="942">942: </a></span>        //-----------------------------------------------------------------------
+<span class="nocode"><a name="943">943: </a></span>        /**
+<span class="nocode"><a name="944">944: </a></span>         * Sets this field in a copy of the YearMonth.
+<span class="nocode"><a name="945">945: </a></span>         * &lt;p&gt;
+<span class="nocode"><a name="946">946: </a></span>         * The YearMonth attached to this property is unchanged by this call.
+<span class="nocode"><a name="947">947: </a></span>         * Instead, a new instance is returned.
+<span class="nocode"><a name="948">948: </a></span>         * 
+<span class="nocode"><a name="949">949: </a></span>         * @param value  the value to set the field in the copy to
+<span class="nocode"><a name="950">950: </a></span>         * @return a copy of the YearMonth with the field value changed
+<span class="nocode"><a name="951">951: </a></span>         * @throws IllegalArgumentException if the value isn't valid
+<span class="nocode"><a name="952">952: </a></span>         */
+<span class="nocode"><a name="953">953: </a></span>        public YearMonth setCopy(int value) {
+<span class="nocode"><a name="954">954: </a></span>            int[] newValues = iBase.getValues();
+<span class="nocode"><a name="955">955: </a></span>            newValues = getField().set(iBase, iFieldIndex, newValues, value);
+<span class="nocode"><a name="956">956: </a></span>            return new YearMonth(iBase, newValues);
+<span class="nocode"><a name="957">957: </a></span>        }
+<span class="nocode"><a name="958">958: </a></span>
+<span class="nocode"><a name="959">959: </a></span>        /**
+<span class="nocode"><a name="960">960: </a></span>         * Sets this field in a copy of the YearMonth to a parsed text value.
+<span class="nocode"><a name="961">961: </a></span>         * &lt;p&gt;
+<span class="nocode"><a name="962">962: </a></span>         * The YearMonth attached to this property is unchanged by this call.
+<span class="nocode"><a name="963">963: </a></span>         * Instead, a new instance is returned.
+<span class="nocode"><a name="964">964: </a></span>         * 
+<span class="nocode"><a name="965">965: </a></span>         * @param text  the text value to set
+<span class="nocode"><a name="966">966: </a></span>         * @param locale  optional locale to use for selecting a text symbol
+<span class="nocode"><a name="967">967: </a></span>         * @return a copy of the YearMonth with the field value changed
+<span class="nocode"><a name="968">968: </a></span>         * @throws IllegalArgumentException if the text value isn't valid
+<span class="nocode"><a name="969">969: </a></span>         */
+<span class="nocode"><a name="970">970: </a></span>        public YearMonth setCopy(String text, Locale locale) {
+<span class="nocode"><a name="971">971: </a></span>            int[] newValues = iBase.getValues();
+<span class="nocode"><a name="972">972: </a></span>            newValues = getField().set(iBase, iFieldIndex, newValues, text, locale);
+<span class="nocode"><a name="973">973: </a></span>            return new YearMonth(iBase, newValues);
+<span class="nocode"><a name="974">974: </a></span>        }
+<span class="nocode"><a name="975">975: </a></span>
+<span class="nocode"><a name="976">976: </a></span>        /**
+<span class="nocode"><a name="977">977: </a></span>         * Sets this field in a copy of the YearMonth to a parsed text value.
+<span class="nocode"><a name="978">978: </a></span>         * &lt;p&gt;
+<span class="nocode"><a name="979">979: </a></span>         * The YearMonth attached to this property is unchanged by this call.
+<span class="nocode"><a name="980">980: </a></span>         * Instead, a new instance is returned.
+<span class="nocode"><a name="981">981: </a></span>         * 
+<span class="nocode"><a name="982">982: </a></span>         * @param text  the text value to set
+<span class="nocode"><a name="983">983: </a></span>         * @return a copy of the YearMonth with the field value changed
+<span class="nocode"><a name="984">984: </a></span>         * @throws IllegalArgumentException if the text value isn't valid
+<span class="nocode"><a name="985">985: </a></span>         */
+<span class="nocode"><a name="986">986: </a></span>        public YearMonth setCopy(String text) {
+<span class="nocode"><a name="987">987: </a></span>            return setCopy(text, null);
+<span class="nocode"><a name="988">988: </a></span>        }
+<span class="nocode"><a name="989">989: </a></span>    }
+<span class="nocode"><a name="990">990: </a></span>
+<span class="nocode"><a name="991">991: </a></span>}
+</pre><table class="mutation_table" summary="Mutations">
+<tr><th>ID</th><th>Line</th><th>Type</th><th>Detected</th></tr><tr><td>9956</td><td><a href="#108">108</a></td><td>Negate jump condition (Replace IFNONNULL with  IFNULL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>9957</td><td><a href="#124">124</a></td><td>Negate jump condition (Replace IFNONNULL with  IFNULL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>9958</td><td><a href="#141">141</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>9959</td><td><a href="#141">141(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>9960</td><td><a href="#152">152</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>9961</td><td><a href="#153">153</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>9962</td><td><a href="#153">153(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>9963</td><td><a href="#174">174</a></td><td>Negate jump condition (Replace IFNONNULL with  IFNULL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>9964</td><td><a href="#177">177</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>9965</td><td><a href="#177">177</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>9968</td><td><a href="#177">177(1)</a></td><td>Replace a constant (Replace 2 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>9967</td><td><a href="#177">177(1)</a></td><td>Replace a constant (Replace 2 with 3(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>9969</td><td><a href="#177">177(1)</a></td><td>Replace a constant (Replace 2 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>9972</td><td><a href="#177">177(2)</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>9971</td><td><a href="#177">177(2)</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>9973</td><td><a href="#177">177</a></td><td>Replace arithmetic operator (Replace IADD with ISUB)</td><td><img src="detected.png"/></td></tr>
+<tr><td>9966</td><td><a href="#177">177</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>9970</td><td><a href="#177">177(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>9974</td><td><a href="#195">195</a></td><td>Negate jump condition (Replace IFNONNULL with  IFNULL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>9977</td><td><a href="#198">198</a></td><td>Replace a constant (Replace 1900 with 1899(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>9976</td><td><a href="#198">198</a></td><td>Replace a constant (Replace 1900 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>9978</td><td><a href="#198">198</a></td><td>Replace a constant (Replace 1900 with 1901(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>9982</td><td><a href="#198">198(1)</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>9981</td><td><a href="#198">198(1)</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>9979</td><td><a href="#198">198</a></td><td>Replace arithmetic operator (Replace IADD with ISUB)</td><td><img src="detected.png"/></td></tr>
+<tr><td>9983</td><td><a href="#198">198(1)</a></td><td>Replace arithmetic operator (Replace IADD with ISUB)</td><td><img src="detected.png"/></td></tr>
+<tr><td>9975</td><td><a href="#198">198</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>9980</td><td><a href="#198">198(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>9986</td><td><a href="#344">344</a></td><td>Replace a constant (Replace 2 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>9984</td><td><a href="#344">344</a></td><td>Replace a constant (Replace 2 with 3(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>9985</td><td><a href="#344">344</a></td><td>Replace a constant (Replace 2 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>9988</td><td><a href="#344">344(1)</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>9987</td><td><a href="#344">344(1)</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>9990</td><td><a href="#344">344(2)</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>9989</td><td><a href="#344">344(2)</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>9994</td><td><a href="#372">372</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>9991</td><td><a href="#372">372</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>9992</td><td><a href="#372">372(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>9993</td><td><a href="#372">372(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>9995</td><td><a href="#373">373</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>9996</td><td><a href="#373">373(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>9999</td><td><a href="#387">387</a></td><td>Replace a constant (Replace 2 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>9998</td><td><a href="#387">387</a></td><td>Replace a constant (Replace 2 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>9997</td><td><a href="#387">387</a></td><td>Replace a constant (Replace 2 with 3(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>10000</td><td><a href="#402">402</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>10001</td><td><a href="#404">404</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>10002</td><td><a href="#406">406</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>10003</td><td><a href="#406">406(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>10004</td><td><a href="#406">406(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>10005</td><td><a href="#429">429</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>10006</td><td><a href="#448">448</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>10007</td><td><a href="#449">449</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>10009</td><td><a href="#450">450</a></td><td>Negate jump condition (Replace IF_ACMPNE with  IF_ACMPEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>10008</td><td><a href="#450">450</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>10010</td><td><a href="#454">454</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>10011</td><td><a href="#454">454(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>10012</td><td><a href="#478">478</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>10014</td><td><a href="#479">479</a></td><td>Negate jump condition (Replace IF_ICMPNE with  IF_ICMPEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>10013</td><td><a href="#479">479</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>10015</td><td><a href="#482">482</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>10016</td><td><a href="#483">483</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>10017</td><td><a href="#483">483(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>10018</td><td><a href="#506">506</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>10019</td><td><a href="#507">507</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>10020</td><td><a href="#510">510</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>10021</td><td><a href="#511">511</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>10022</td><td><a href="#511">511(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>10023</td><td><a href="#532">532</a></td><td>Negate jump condition (Replace IFNULL with  IFNONNULL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>10024</td><td><a href="#532">532(1)</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>10025</td><td><a href="#535">535</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>10026</td><td><a href="#536">536</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>10027</td><td><a href="#536">536</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>10029</td><td><a href="#536">536</a></td><td>Negate jump condition (Replace IF_ICMPGE with  IF_ICMPLT)</td><td><img src="detected.png"/></td></tr>
+<tr><td>10028</td><td><a href="#536">536</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>10030</td><td><a href="#537">537</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>10031</td><td><a href="#538">538</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>10032</td><td><a href="#539">539</a></td><td>Negate jump condition (Replace IFLT with  IFGE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>10033</td><td><a href="#540">540</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>10034</td><td><a href="#540">540(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>10035</td><td><a href="#540">540(2)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>10036</td><td><a href="#540">540(3)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>10037</td><td><a href="#562">562</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>10038</td><td><a href="#562">562</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>10039</td><td><a href="#562">562</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>10040</td><td><a href="#582">582</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>10041</td><td><a href="#582">582(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>10042</td><td><a href="#601">601</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>10043</td><td><a href="#601">601(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>10044</td><td><a href="#619">619</a></td><td>Replace a constant (Replace -1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>10045</td><td><a href="#619">619</a></td><td>Replace a constant (Replace -1 with -2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>10046</td><td><a href="#619">619</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>10047</td><td><a href="#639">639</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>10048</td><td><a href="#639">639(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>10049</td><td><a href="#639">639(2)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>10050</td><td><a href="#658">658</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>10051</td><td><a href="#658">658(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>10052</td><td><a href="#658">658(2)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>10053</td><td><a href="#669">669</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>10054</td><td><a href="#669">669(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>10055</td><td><a href="#669">669(2)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>10056</td><td><a href="#683">683</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>10057</td><td><a href="#697">697</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>10058</td><td><a href="#698">698</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>10059</td><td><a href="#698">698</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>10060</td><td><a href="#698">698</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>10061</td><td><a href="#698">698(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>10062</td><td><a href="#699">699</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>10063</td><td><a href="#699">699</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>10065</td><td><a href="#699">699(1)</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>10066</td><td><a href="#699">699(1)</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>10064</td><td><a href="#699">699</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>10067</td><td><a href="#699">699(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>10068</td><td><a href="#699">699(2)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>10069</td><td><a href="#710">710</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>10070</td><td><a href="#710">710</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>10071</td><td><a href="#710">710</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>10073</td><td><a href="#719">719</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>10072</td><td><a href="#719">719</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>10074</td><td><a href="#719">719</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>10075</td><td><a href="#735">735</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>10078</td><td><a href="#736">736</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>10079</td><td><a href="#736">736</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>10076</td><td><a href="#736">736</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>10077</td><td><a href="#736">736(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>10080</td><td><a href="#736">736(2)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>10081</td><td><a href="#752">752</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>10084</td><td><a href="#753">753</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>10085</td><td><a href="#753">753</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>10082</td><td><a href="#753">753</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>10083</td><td><a href="#753">753(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>10086</td><td><a href="#753">753(2)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>10087</td><td><a href="#767">767</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>10089</td><td><a href="#777">777</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>10088</td><td><a href="#777">777</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>10091</td><td><a href="#786">786</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>10090</td><td><a href="#786">786</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>10092</td><td><a href="#797">797</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>10093</td><td><a href="#797">797(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>10094</td><td><a href="#807">807</a></td><td>Negate jump condition (Replace IFNONNULL with  IFNULL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>10095</td><td><a href="#808">808</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>10096</td><td><a href="#810">810</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>10097</td><td><a href="#810">810(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>10098</td><td><a href="#821">821</a></td><td>Negate jump condition (Replace IFNONNULL with  IFNULL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>10099</td><td><a href="#822">822</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>10100</td><td><a href="#824">824</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>10101</td><td><a href="#824">824(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>10102</td><td><a href="#824">824(2)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>21984</td><td><a href="#864">864</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>21985</td><td><a href="#891">891</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>21986</td><td><a href="#913">913</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>21987</td><td><a href="#914">914</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>21988</td><td><a href="#914">914(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>21989</td><td><a href="#937">937</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>21990</td><td><a href="#938">938</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>21991</td><td><a href="#938">938(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>21992</td><td><a href="#954">954</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>21993</td><td><a href="#955">955</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>21994</td><td><a href="#955">955(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>21995</td><td><a href="#971">971</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>21996</td><td><a href="#972">972</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>21997</td><td><a href="#972">972(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>21998</td><td><a href="#987">987</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+</table>
+</body>
+</html>

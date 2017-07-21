@@ -1,0 +1,176 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN
+"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>
+org.apache.poi.hssf.record.crypto.RC4
+</title>
+<link href="prettify.css" type="text/css" rel="stylesheet" />
+<script type="text/javascript" src="prettify.js"></script>
+</head>
+<body onload="prettyPrint()">
+<h2>Javalanche report for class:<br/> org.apache.poi.hssf.record.crypto.RC4 </h2><pre class="prettyprint" style="border: 1px solid #888;padding: 2px"><span class="nocode"><a name="1">  1: </a></span>/* ====================================================================
+<span class="nocode"><a name="2">  2: </a></span>   Licensed to the Apache Software Foundation (ASF) under one or more
+<span class="nocode"><a name="3">  3: </a></span>   contributor license agreements.  See the NOTICE file distributed with
+<span class="nocode"><a name="4">  4: </a></span>   this work for additional information regarding copyright ownership.
+<span class="nocode"><a name="5">  5: </a></span>   The ASF licenses this file to You under the Apache License, Version 2.0
+<span class="nocode"><a name="6">  6: </a></span>   (the &quot;License&quot;); you may not use this file except in compliance with
+<span class="nocode"><a name="7">  7: </a></span>   the License.  You may obtain a copy of the License at
+<span class="nocode"><a name="8">  8: </a></span>
+<span class="nocode"><a name="9">  9: </a></span>       http://www.apache.org/licenses/LICENSE-2.0
+<span class="nocode"><a name="10"> 10: </a></span>
+<span class="nocode"><a name="11"> 11: </a></span>   Unless required by applicable law or agreed to in writing, software
+<span class="nocode"><a name="12"> 12: </a></span>   distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+<span class="nocode"><a name="13"> 13: </a></span>   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+<span class="nocode"><a name="14"> 14: </a></span>   See the License for the specific language governing permissions and
+<span class="nocode"><a name="15"> 15: </a></span>   limitations under the License.
+<span class="nocode"><a name="16"> 16: </a></span>==================================================================== */
+<span class="nocode"><a name="17"> 17: </a></span>
+<span class="nocode"><a name="18"> 18: </a></span>package org.apache.poi.hssf.record.crypto;
+<span class="nocode"><a name="19"> 19: </a></span>
+<span class="nocode"><a name="20"> 20: </a></span>import org.apache.poi.util.HexDump;
+<span class="nocode"><a name="21"> 21: </a></span>
+<span class="nocode"><a name="22"> 22: </a></span>/**
+<span class="nocode"><a name="23"> 23: </a></span> * Simple implementation of the alleged RC4 algorithm.
+<span class="nocode"><a name="24"> 24: </a></span> *
+<span class="nocode"><a name="25"> 25: </a></span> * Inspired by &lt;A HREF=&quot;http://en.wikipedia.org/wiki/RC4&quot;&gt;wikipedia's RC4 article&lt;/A&gt;
+<span class="nocode"><a name="26"> 26: </a></span> *
+<span class="nocode"><a name="27"> 27: </a></span> * @author Josh Micich
+<span class="nocode"><a name="28"> 28: </a></span> */
+<span class="nocode"><a name="29"> 29: </a></span>final class RC4 {
+<span class="nocode"><a name="30"> 30: </a></span>
+<span class="nocode"><a name="31"> 31: </a></span>    private int _i, _j;
+<span class="nocode"><a name="32"> 32: </a></span>	private final byte[] _s = new byte[256];
+<span class="nocode"><a name="33"> 33: </a></span>
+<span class="nocode"><a name="34"> 34: </a></span>	public RC4(byte[] key) {
+<span class="nocode"><a name="35"> 35: </a></span>		int key_length = key.length;
+<span class="nocode"><a name="36"> 36: </a></span>
+<span class="nocode"><a name="37"> 37: </a></span>	    for (int i = 0; i &lt; 256; i++)
+<span class="nocode"><a name="38"> 38: </a></span>	        _s[i] = (byte)i;
+<span class="nocode"><a name="39"> 39: </a></span>
+<span class="nocode"><a name="40"> 40: </a></span>	    for (int i=0, j=0; i &lt; 256; i++) {
+<span class="nocode"><a name="41"> 41: </a></span>	        byte temp;
+<span class="nocode"><a name="42"> 42: </a></span>
+<span class="nocode"><a name="43"> 43: </a></span>	        j = (j + key[i % key_length] + _s[i]) &amp; 255;
+<span class="nocode"><a name="44"> 44: </a></span>	        temp = _s[i];
+<span class="nocode"><a name="45"> 45: </a></span>	        _s[i] = _s[j];
+<span class="nocode"><a name="46"> 46: </a></span>	        _s[j] = temp;
+<span class="nocode"><a name="47"> 47: </a></span>	    }
+<span class="nocode"><a name="48"> 48: </a></span>
+<span class="nocode"><a name="49"> 49: </a></span>	    _i = 0;
+<span class="nocode"><a name="50"> 50: </a></span>	    _j = 0;
+<span class="nocode"><a name="51"> 51: </a></span>	}
+<span class="nocode"><a name="52"> 52: </a></span>
+<span class="nocode"><a name="53"> 53: </a></span>	public byte output() {
+<span class="nocode"><a name="54"> 54: </a></span>	    byte temp;
+<span class="nocode"><a name="55"> 55: </a></span>	    _i = (_i + 1) &amp; 255;
+<span class="nocode"><a name="56"> 56: </a></span>	    _j = (_j + _s[_i]) &amp; 255;
+<span class="nocode"><a name="57"> 57: </a></span>
+<span class="nocode"><a name="58"> 58: </a></span>	    temp = _s[_i];
+<span class="nocode"><a name="59"> 59: </a></span>	    _s[_i] = _s[_j];
+<span class="nocode"><a name="60"> 60: </a></span>	    _s[_j] = temp;
+<span class="nocode"><a name="61"> 61: </a></span>
+<span class="nocode"><a name="62"> 62: </a></span>	    return _s[(_s[_i] + _s[_j]) &amp; 255];
+<span class="nocode"><a name="63"> 63: </a></span>	}
+<span class="nocode"><a name="64"> 64: </a></span>
+<span class="nocode"><a name="65"> 65: </a></span>	public void encrypt(byte[] in) {
+<span class="nocode"><a name="66"> 66: </a></span>		for (int i = 0; i &lt; in.length; i++) {
+<span class="nocode"><a name="67"> 67: </a></span>			in[i] = (byte) (in[i] ^ output());
+<span class="nocode"><a name="68"> 68: </a></span>		}
+<span class="nocode"><a name="69"> 69: </a></span>	}
+<span class="nocode"><a name="70"> 70: </a></span>	public void encrypt(byte[] in, int offset, int len) {
+<span class="nocode"><a name="71"> 71: </a></span>		int end = offset+len;
+<span class="nocode"><a name="72"> 72: </a></span>		for (int i = offset; i &lt; end; i++) {
+<span class="nocode"><a name="73"> 73: </a></span>			in[i] = (byte) (in[i] ^ output());
+<span class="nocode"><a name="74"> 74: </a></span>		}
+<span class="nocode"><a name="75"> 75: </a></span>
+<span class="nocode"><a name="76"> 76: </a></span>	}
+<span class="nocode"><a name="77"> 77: </a></span>	@Override
+<span class="nocode"><a name="78"> 78: </a></span>	public String toString() {
+<span class="nocode"><a name="79"> 79: </a></span>		StringBuffer sb = new StringBuffer();
+<span class="nocode"><a name="80"> 80: </a></span>
+<span class="nocode"><a name="81"> 81: </a></span>		sb.append(getClass().getName()).append(&quot; [&quot;);
+<span class="nocode"><a name="82"> 82: </a></span>		sb.append(&quot;i=&quot;).append(_i);
+<span class="nocode"><a name="83"> 83: </a></span>		sb.append(&quot; j=&quot;).append(_j);
+<span class="nocode"><a name="84"> 84: </a></span>		sb.append(&quot;]&quot;);
+<span class="nocode"><a name="85"> 85: </a></span>		sb.append(&quot;\n&quot;);
+<span class="nocode"><a name="86"> 86: </a></span>		sb.append(HexDump.dump(_s, 0, 0));
+<span class="nocode"><a name="87"> 87: </a></span>
+<span class="nocode"><a name="88"> 88: </a></span>		return sb.toString();
+<span class="nocode"><a name="89"> 89: </a></span>	}
+<span class="nocode"><a name="90"> 90: </a></span>}
+</pre><table class="mutation_table" summary="Mutations">
+<tr><th>ID</th><th>Line</th><th>Type</th><th>Detected</th></tr><tr><td>64193</td><td><a href="#32">32</a></td><td>Replace a constant (Replace 256 with 257(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>64194</td><td><a href="#32">32</a></td><td>Replace a constant (Replace 256 with 255(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>64192</td><td><a href="#32">32</a></td><td>Replace a constant (Replace 256 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>64195</td><td><a href="#37">37</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>64196</td><td><a href="#37">37</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>64198</td><td><a href="#37">37(1)</a></td><td>Replace a constant (Replace 256 with 257(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>64197</td><td><a href="#37">37(1)</a></td><td>Replace a constant (Replace 256 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>64199</td><td><a href="#37">37(1)</a></td><td>Replace a constant (Replace 256 with 255(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>64200</td><td><a href="#37">37</a></td><td>Negate jump condition (Replace IF_ICMPGE with  IF_ICMPLT)</td><td><img src="detected.png"/></td></tr>
+<tr><td>64202</td><td><a href="#40">40</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>64201</td><td><a href="#40">40</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>64204</td><td><a href="#40">40(1)</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>64203</td><td><a href="#40">40(1)</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>64205</td><td><a href="#40">40(2)</a></td><td>Replace a constant (Replace 256 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>64207</td><td><a href="#40">40(2)</a></td><td>Replace a constant (Replace 256 with 255(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>64206</td><td><a href="#40">40(2)</a></td><td>Replace a constant (Replace 256 with 257(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>64208</td><td><a href="#40">40</a></td><td>Negate jump condition (Replace IF_ICMPGE with  IF_ICMPLT)</td><td><img src="detected.png"/></td></tr>
+<tr><td>64213</td><td><a href="#43">43</a></td><td>Replace a constant (Replace 255 with 254(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>64212</td><td><a href="#43">43</a></td><td>Replace a constant (Replace 255 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>64214</td><td><a href="#43">43</a></td><td>Replace a constant (Replace 255 with 256(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>64209</td><td><a href="#43">43</a></td><td>Replace arithmetic operator (Replace IREM with IDIV)</td><td><img src="detected.png"/></td></tr>
+<tr><td>64210</td><td><a href="#43">43(1)</a></td><td>Replace arithmetic operator (Replace IADD with ISUB)</td><td><img src="detected.png"/></td></tr>
+<tr><td>64211</td><td><a href="#43">43(2)</a></td><td>Replace arithmetic operator (Replace IADD with ISUB)</td><td><img src="detected.png"/></td></tr>
+<tr><td>64215</td><td><a href="#43">43(3)</a></td><td>Replace arithmetic operator (Replace IAND with IOR)</td><td><img src="detected.png"/></td></tr>
+<tr><td>64216</td><td><a href="#49">49</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>64217</td><td><a href="#49">49</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>64219</td><td><a href="#50">50</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>64218</td><td><a href="#50">50</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>64220</td><td><a href="#55">55</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>64221</td><td><a href="#55">55</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>64225</td><td><a href="#55">55(1)</a></td><td>Replace a constant (Replace 255 with 256(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>64223</td><td><a href="#55">55(1)</a></td><td>Replace a constant (Replace 255 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>64224</td><td><a href="#55">55(1)</a></td><td>Replace a constant (Replace 255 with 254(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>64222</td><td><a href="#55">55</a></td><td>Replace arithmetic operator (Replace IADD with ISUB)</td><td><img src="detected.png"/></td></tr>
+<tr><td>64226</td><td><a href="#55">55(1)</a></td><td>Replace arithmetic operator (Replace IAND with IOR)</td><td><img src="detected.png"/></td></tr>
+<tr><td>64228</td><td><a href="#56">56</a></td><td>Replace a constant (Replace 255 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>64229</td><td><a href="#56">56</a></td><td>Replace a constant (Replace 255 with 254(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>64230</td><td><a href="#56">56</a></td><td>Replace a constant (Replace 255 with 256(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>64227</td><td><a href="#56">56</a></td><td>Replace arithmetic operator (Replace IADD with ISUB)</td><td><img src="detected.png"/></td></tr>
+<tr><td>64231</td><td><a href="#56">56(1)</a></td><td>Replace arithmetic operator (Replace IAND with IOR)</td><td><img src="detected.png"/></td></tr>
+<tr><td>64235</td><td><a href="#62">62</a></td><td>Replace a constant (Replace 255 with 256(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>64234</td><td><a href="#62">62</a></td><td>Replace a constant (Replace 255 with 254(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>64233</td><td><a href="#62">62</a></td><td>Replace a constant (Replace 255 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>64232</td><td><a href="#62">62</a></td><td>Replace arithmetic operator (Replace IADD with ISUB)</td><td><img src="detected.png"/></td></tr>
+<tr><td>64236</td><td><a href="#62">62(1)</a></td><td>Replace arithmetic operator (Replace IAND with IOR)</td><td><img src="detected.png"/></td></tr>
+<tr><td>64238</td><td><a href="#66">66</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>64237</td><td><a href="#66">66</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>64239</td><td><a href="#66">66</a></td><td>Negate jump condition (Replace IF_ICMPGE with  IF_ICMPLT)</td><td><img src="detected.png"/></td></tr>
+<tr><td>64241</td><td><a href="#67">67</a></td><td>Replace arithmetic operator (Replace IXOR with IOR)</td><td><img src="detected.png"/></td></tr>
+<tr><td>64240</td><td><a href="#67">67</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>64242</td><td><a href="#71">71</a></td><td>Replace arithmetic operator (Replace IADD with ISUB)</td><td><img src="detected.png"/></td></tr>
+<tr><td>64243</td><td><a href="#72">72</a></td><td>Negate jump condition (Replace IF_ICMPGE with  IF_ICMPLT)</td><td><img src="detected.png"/></td></tr>
+<tr><td>64245</td><td><a href="#73">73</a></td><td>Replace arithmetic operator (Replace IXOR with IOR)</td><td><img src="detected.png"/></td></tr>
+<tr><td>64244</td><td><a href="#73">73</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>64246</td><td><a href="#81">81</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>64247</td><td><a href="#81">81(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>64248</td><td><a href="#81">81(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>64249</td><td><a href="#81">81(3)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>64250</td><td><a href="#82">82</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>64251</td><td><a href="#82">82(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>64252</td><td><a href="#83">83</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>64253</td><td><a href="#83">83(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>64254</td><td><a href="#84">84</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>64255</td><td><a href="#85">85</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>64257</td><td><a href="#86">86</a></td><td>Replace a constant (Replace 0 with -1(LONG))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>64256</td><td><a href="#86">86</a></td><td>Replace a constant (Replace 0 with 1(LONG))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>64259</td><td><a href="#86">86(1)</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>64258</td><td><a href="#86">86(1)</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>64260</td><td><a href="#86">86</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>64261</td><td><a href="#86">86(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>64262</td><td><a href="#88">88</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+</table>
+</body>
+</html>

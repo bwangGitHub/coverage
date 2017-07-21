@@ -1,0 +1,17 @@
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/repos/asf/!svn/ver/893041/poi/trunk/src/java/org/apache/poi/hssf/eventmodel
+END
+EventRecordFactory.java
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/repos/asf/!svn/ver/805284/poi/trunk/src/java/org/apache/poi/hssf/eventmodel/EventRecordFactory.java
+END
+ERFListener.java
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/repos/asf/!svn/ver/712084/poi/trunk/src/java/org/apache/poi/hssf/eventmodel/ERFListener.java
+END

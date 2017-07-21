@@ -1,0 +1,9 @@
+Testsuite: org.apache.poi.hssf.eventusermodel.TestMissingRecordAwareHSSFListener
+Tests run: 6, Failures: 0, Errors: 0, Time elapsed: 0.011 sec
+
+Testcase: testMissingRowRecords took 0.002 sec
+Testcase: testEndOfRowRecords took 0.002 sec
+Testcase: testMissingCellRecords took 0.001 sec
+Testcase: testNoExtraNewLines took 0.003 sec
+Testcase: testEndOfRow_bug45672 took 0.002 sec
+Testcase: testMulBlankHandling took 0.001 sec

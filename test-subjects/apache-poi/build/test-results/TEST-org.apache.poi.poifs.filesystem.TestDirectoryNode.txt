@@ -1,0 +1,7 @@
+Testsuite: org.apache.poi.poifs.filesystem.TestDirectoryNode
+Tests run: 4, Failures: 0, Errors: 0, Time elapsed: 0 sec
+
+Testcase: testEmptyConstructor took 0 sec
+Testcase: testNonEmptyConstructor took 0 sec
+Testcase: testDeletion took 0 sec
+Testcase: testRename took 0 sec

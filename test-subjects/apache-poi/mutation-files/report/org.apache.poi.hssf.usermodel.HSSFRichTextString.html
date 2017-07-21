@@ -1,0 +1,422 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN
+"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>
+org.apache.poi.hssf.usermodel.HSSFRichTextString
+</title>
+<link href="prettify.css" type="text/css" rel="stylesheet" />
+<script type="text/javascript" src="prettify.js"></script>
+</head>
+<body onload="prettyPrint()">
+<h2>Javalanche report for class:<br/> org.apache.poi.hssf.usermodel.HSSFRichTextString </h2><pre class="prettyprint" style="border: 1px solid #888;padding: 2px"><span class="nocode"><a name="1">  1: </a></span>/* ====================================================================
+<span class="nocode"><a name="2">  2: </a></span>   Licensed to the Apache Software Foundation (ASF) under one or more
+<span class="nocode"><a name="3">  3: </a></span>   contributor license agreements.  See the NOTICE file distributed with
+<span class="nocode"><a name="4">  4: </a></span>   this work for additional information regarding copyright ownership.
+<span class="nocode"><a name="5">  5: </a></span>   The ASF licenses this file to You under the Apache License, Version 2.0
+<span class="nocode"><a name="6">  6: </a></span>   (the &quot;License&quot;); you may not use this file except in compliance with
+<span class="nocode"><a name="7">  7: </a></span>   the License.  You may obtain a copy of the License at
+<span class="nocode"><a name="8">  8: </a></span>
+<span class="nocode"><a name="9">  9: </a></span>       http://www.apache.org/licenses/LICENSE-2.0
+<span class="nocode"><a name="10"> 10: </a></span>
+<span class="nocode"><a name="11"> 11: </a></span>   Unless required by applicable law or agreed to in writing, software
+<span class="nocode"><a name="12"> 12: </a></span>   distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+<span class="nocode"><a name="13"> 13: </a></span>   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+<span class="nocode"><a name="14"> 14: </a></span>   See the License for the specific language governing permissions and
+<span class="nocode"><a name="15"> 15: </a></span>   limitations under the License.
+<span class="nocode"><a name="16"> 16: </a></span>==================================================================== */
+<span class="nocode"><a name="17"> 17: </a></span>
+<span class="nocode"><a name="18"> 18: </a></span>package org.apache.poi.hssf.usermodel;
+<span class="nocode"><a name="19"> 19: </a></span>
+<span class="nocode"><a name="20"> 20: </a></span>import java.util.Iterator;
+<span class="nocode"><a name="21"> 21: </a></span>
+<span class="nocode"><a name="22"> 22: </a></span>import org.apache.poi.hssf.model.InternalWorkbook;
+<span class="nocode"><a name="23"> 23: </a></span>import org.apache.poi.hssf.record.LabelSSTRecord;
+<span class="nocode"><a name="24"> 24: </a></span>import org.apache.poi.hssf.record.common.UnicodeString;
+<span class="nocode"><a name="25"> 25: </a></span>import org.apache.poi.ss.usermodel.Font;
+<span class="nocode"><a name="26"> 26: </a></span>import org.apache.poi.ss.usermodel.RichTextString;
+<span class="nocode"><a name="27"> 27: </a></span>/**
+<span class="nocode"><a name="28"> 28: </a></span> * Rich text unicode string.  These strings can have fonts applied to
+<span class="nocode"><a name="29"> 29: </a></span> * arbitary parts of the string.
+<span class="nocode"><a name="30"> 30: </a></span> *
+<span class="nocode"><a name="31"> 31: </a></span> * &lt;p&gt;
+<span class="nocode"><a name="32"> 32: </a></span> * Note, that in certain cases creating too many HSSFRichTextString cells may cause Excel 2003 and lower to crash
+<span class="nocode"><a name="33"> 33: </a></span> * when changing the color of the cells and then saving the Excel file. Compare two snippets that produce equivalent output:
+<span class="nocode"><a name="34"> 34: </a></span> *
+<span class="nocode"><a name="35"> 35: </a></span> * &lt;p&gt;&lt;blockquote&gt;&lt;pre&gt;
+<span class="nocode"><a name="36"> 36: </a></span> *  HSSFCell hssfCell = row.createCell(idx);
+<span class="nocode"><a name="37"> 37: </a></span> *  //rich text consists of two runs
+<span class="nocode"><a name="38"> 38: </a></span> *  HSSFRichTextString richString = new HSSFRichTextString( &quot;Hello, World!&quot; );
+<span class="nocode"><a name="39"> 39: </a></span> *  richString.applyFont( 0, 6, font1 );
+<span class="nocode"><a name="40"> 40: </a></span> *  richString.applyFont( 6, 13, font2 );
+<span class="nocode"><a name="41"> 41: </a></span> *  hssfCell.setCellValue( richString );
+<span class="nocode"><a name="42"> 42: </a></span> * &lt;/pre&gt;&lt;/blockquote&gt;
+<span class="nocode"><a name="43"> 43: </a></span> *
+<span class="nocode"><a name="44"> 44: </a></span> * and
+<span class="nocode"><a name="45"> 45: </a></span> *
+<span class="nocode"><a name="46"> 46: </a></span> * &lt;p&gt;&lt;blockquote&gt;&lt;pre&gt;
+<span class="nocode"><a name="47"> 47: </a></span> *  //create a cell style and assign the first font to it
+<span class="nocode"><a name="48"> 48: </a></span> *  HSSFCellStyle style = workbook.createCellStyle();
+<span class="nocode"><a name="49"> 49: </a></span> *  style.setFont(font1);
+<span class="nocode"><a name="50"> 50: </a></span> *
+<span class="nocode"><a name="51"> 51: </a></span> *  HSSFCell hssfCell = row.createCell(idx);
+<span class="nocode"><a name="52"> 52: </a></span> *  hssfCell.setCellStyle(style);
+<span class="nocode"><a name="53"> 53: </a></span> *
+<span class="nocode"><a name="54"> 54: </a></span> *  //rich text consists of one run overriding the cell style
+<span class="nocode"><a name="55"> 55: </a></span> *  HSSFRichTextString richString = new HSSFRichTextString( &quot;Hello, World!&quot; );
+<span class="nocode"><a name="56"> 56: </a></span> *  richString.applyFont( 6, 13, font2 );
+<span class="nocode"><a name="57"> 57: </a></span> *  hssfCell.setCellValue( richString );
+<span class="nocode"><a name="58"> 58: </a></span> * &lt;/pre&gt;&lt;/blockquote&gt;&lt;p&gt;
+<span class="nocode"><a name="59"> 59: </a></span> *
+<span class="nocode"><a name="60"> 60: </a></span> * Excel always uses the latter approach: for a reach text containing N runs Excel saves the font of the first run in the cell's
+<span class="nocode"><a name="61"> 61: </a></span> * style and subsequent N-1 runs override this font.
+<span class="nocode"><a name="62"> 62: </a></span> *
+<span class="nocode"><a name="63"> 63: </a></span> * &lt;p&gt; For more information regarding this behavior please consult Bugzilla 47543:
+<span class="nocode"><a name="64"> 64: </a></span> *
+<span class="nocode"><a name="65"> 65: </a></span> * &lt;a href=&quot;https://issues.apache.org/bugzilla/show_bug.cgi?id=47543&quot;&gt;
+<span class="nocode"><a name="66"> 66: </a></span> * https://issues.apache.org/bugzilla/show_bug.cgi?id=47543&lt;/a&gt;
+<span class="nocode"><a name="67"> 67: </a></span> * &lt;p&gt;
+<span class="nocode"><a name="68"> 68: </a></span> *
+<span class="nocode"><a name="69"> 69: </a></span> * @author Glen Stampoultzis (glens at apache.org)
+<span class="nocode"><a name="70"> 70: </a></span> * @author Jason Height (jheight at apache.org)
+<span class="nocode"><a name="71"> 71: </a></span> */
+<span class="nocode"><a name="72"> 72: </a></span>public final class HSSFRichTextString implements Comparable&lt;HSSFRichTextString&gt;, RichTextString {
+<span class="nocode"><a name="73"> 73: </a></span>    /** Place holder for indicating that NO_FONT has been applied here */
+<span class="nocode"><a name="74"> 74: </a></span>    public static final short NO_FONT = 0;
+<span class="nocode"><a name="75"> 75: </a></span>
+<span class="nocode"><a name="76"> 76: </a></span>    private UnicodeString _string;
+<span class="nocode"><a name="77"> 77: </a></span>    private InternalWorkbook _book;
+<span class="nocode"><a name="78"> 78: </a></span>    private LabelSSTRecord _record;
+<span class="nocode"><a name="79"> 79: </a></span>
+<span class="nocode"><a name="80"> 80: </a></span>    public HSSFRichTextString()
+<span class="nocode"><a name="81"> 81: </a></span>    {
+<span class="nocode"><a name="82"> 82: </a></span>        this(&quot;&quot;);
+<span class="nocode"><a name="83"> 83: </a></span>    }
+<span class="nocode"><a name="84"> 84: </a></span>
+<span class="nocode"><a name="85"> 85: </a></span>    public HSSFRichTextString(String string) {
+<span class="nocode"><a name="86"> 86: </a></span>        if (string == null) {
+<span class="nocode"><a name="87"> 87: </a></span>            _string = new UnicodeString(&quot;&quot;);
+<span class="nocode"><a name="88"> 88: </a></span>        } else {
+<span class="nocode"><a name="89"> 89: </a></span>            _string = new UnicodeString(string);
+<span class="nocode"><a name="90"> 90: </a></span>        }
+<span class="nocode"><a name="91"> 91: </a></span>    }
+<span class="nocode"><a name="92"> 92: </a></span>
+<span class="nocode"><a name="93"> 93: </a></span>    HSSFRichTextString(InternalWorkbook book, LabelSSTRecord record) {
+<span class="nocode"><a name="94"> 94: </a></span>      setWorkbookReferences(book, record);
+<span class="nocode"><a name="95"> 95: </a></span>
+<span class="nocode"><a name="96"> 96: </a></span>      _string = book.getSSTString(record.getSSTIndex());
+<span class="nocode"><a name="97"> 97: </a></span>    }
+<span class="nocode"><a name="98"> 98: </a></span>
+<span class="nocode"><a name="99"> 99: </a></span>    /** This must be called to setup the internal work book references whenever
+<span class="nocode"><a name="100">100: </a></span>     * a RichTextString is added to a cell
+<span class="nocode"><a name="101">101: </a></span>     */
+<span class="nocode"><a name="102">102: </a></span>    void setWorkbookReferences(InternalWorkbook book, LabelSSTRecord record) {
+<span class="nocode"><a name="103">103: </a></span>      _book = book;
+<span class="nocode"><a name="104">104: </a></span>      _record = record;
+<span class="nocode"><a name="105">105: </a></span>    }
+<span class="nocode"><a name="106">106: </a></span>
+<span class="nocode"><a name="107">107: </a></span>    /** Called whenever the unicode string is modified. When it is modified
+<span class="nocode"><a name="108">108: </a></span>     *  we need to create a new SST index, so that other LabelSSTRecords will not
+<span class="nocode"><a name="109">109: </a></span>     *  be affected by changes that we make to this string.
+<span class="nocode"><a name="110">110: </a></span>     */
+<span class="nocode"><a name="111">111: </a></span>    private UnicodeString cloneStringIfRequired() {
+<span class="nocode"><a name="112">112: </a></span>      if (_book == null)
+<span class="nocode"><a name="113">113: </a></span>        return _string;
+<span class="nocode"><a name="114">114: </a></span>      UnicodeString s = (UnicodeString)_string.clone();
+<span class="nocode"><a name="115">115: </a></span>      return s;
+<span class="nocode"><a name="116">116: </a></span>    }
+<span class="nocode"><a name="117">117: </a></span>
+<span class="nocode"><a name="118">118: </a></span>    private void addToSSTIfRequired() {
+<span class="nocode"><a name="119">119: </a></span>      if (_book != null) {
+<span class="nocode"><a name="120">120: </a></span>        int index = _book.addSSTString(_string);
+<span class="nocode"><a name="121">121: </a></span>        _record.setSSTIndex(index);
+<span class="nocode"><a name="122">122: </a></span>        //The act of adding the string to the SST record may have meant that
+<span class="nocode"><a name="123">123: </a></span>        //an existing string was returned for the index, so update our local version
+<span class="nocode"><a name="124">124: </a></span>        _string = _book.getSSTString(index);
+<span class="nocode"><a name="125">125: </a></span>      }
+<span class="nocode"><a name="126">126: </a></span>    }
+<span class="nocode"><a name="127">127: </a></span>
+<span class="nocode"><a name="128">128: </a></span>
+<span class="nocode"><a name="129">129: </a></span>    /**
+<span class="nocode"><a name="130">130: </a></span>     * Applies a font to the specified characters of a string.
+<span class="nocode"><a name="131">131: </a></span>     *
+<span class="nocode"><a name="132">132: </a></span>     * @param startIndex    The start index to apply the font to (inclusive)
+<span class="nocode"><a name="133">133: </a></span>     * @param endIndex      The end index to apply the font to (exclusive)
+<span class="nocode"><a name="134">134: </a></span>     * @param fontIndex     The font to use.
+<span class="nocode"><a name="135">135: </a></span>     */
+<span class="nocode"><a name="136">136: </a></span>    public void applyFont(int startIndex, int endIndex, short fontIndex)
+<span class="nocode"><a name="137">137: </a></span>    {
+<span class="nocode"><a name="138">138: </a></span>        if (startIndex &gt; endIndex)
+<span class="nocode"><a name="139">139: </a></span>            throw new IllegalArgumentException(&quot;Start index must be less than end index.&quot;);
+<span class="nocode"><a name="140">140: </a></span>        if (startIndex &lt; 0 || endIndex &gt; length())
+<span class="nocode"><a name="141">141: </a></span>            throw new IllegalArgumentException(&quot;Start and end index not in range.&quot;);
+<span class="nocode"><a name="142">142: </a></span>        if (startIndex == endIndex)
+<span class="nocode"><a name="143">143: </a></span>            return;
+<span class="nocode"><a name="144">144: </a></span>
+<span class="nocode"><a name="145">145: </a></span>        //Need to check what the font is currently, so we can reapply it after
+<span class="nocode"><a name="146">146: </a></span>        //the range is completed
+<span class="nocode"><a name="147">147: </a></span>        short currentFont = NO_FONT;
+<span class="nocode"><a name="148">148: </a></span>        if (endIndex != length()) {
+<span class="nocode"><a name="149">149: </a></span>          currentFont = this.getFontAtIndex(endIndex);
+<span class="nocode"><a name="150">150: </a></span>        }
+<span class="nocode"><a name="151">151: </a></span>
+<span class="nocode"><a name="152">152: </a></span>        //Need to clear the current formatting between the startIndex and endIndex
+<span class="nocode"><a name="153">153: </a></span>        _string = cloneStringIfRequired();
+<span class="nocode"><a name="154">154: </a></span>        Iterator formatting = _string.formatIterator();
+<span class="nocode"><a name="155">155: </a></span>        if (formatting != null) {
+<span class="nocode"><a name="156">156: </a></span>          while (formatting.hasNext()) {
+<span class="nocode"><a name="157">157: </a></span>            UnicodeString.FormatRun r = (UnicodeString.FormatRun)formatting.next();
+<span class="nocode"><a name="158">158: </a></span>            if ((r.getCharacterPos() &gt;= startIndex) &amp;&amp; (r.getCharacterPos() &lt; endIndex))
+<span class="nocode"><a name="159">159: </a></span>              formatting.remove();
+<span class="nocode"><a name="160">160: </a></span>          }
+<span class="nocode"><a name="161">161: </a></span>        }
+<span class="nocode"><a name="162">162: </a></span>
+<span class="nocode"><a name="163">163: </a></span>
+<span class="nocode"><a name="164">164: </a></span>        _string.addFormatRun(new UnicodeString.FormatRun((short)startIndex, fontIndex));
+<span class="nocode"><a name="165">165: </a></span>        if (endIndex != length())
+<span class="nocode"><a name="166">166: </a></span>          _string.addFormatRun(new UnicodeString.FormatRun((short)endIndex, currentFont));
+<span class="nocode"><a name="167">167: </a></span>
+<span class="nocode"><a name="168">168: </a></span>        addToSSTIfRequired();
+<span class="nocode"><a name="169">169: </a></span>    }
+<span class="nocode"><a name="170">170: </a></span>
+<span class="nocode"><a name="171">171: </a></span>    /**
+<span class="nocode"><a name="172">172: </a></span>     * Applies a font to the specified characters of a string.
+<span class="nocode"><a name="173">173: </a></span>     *
+<span class="nocode"><a name="174">174: </a></span>     * @param startIndex    The start index to apply the font to (inclusive)
+<span class="nocode"><a name="175">175: </a></span>     * @param endIndex      The end index to apply to font to (exclusive)
+<span class="nocode"><a name="176">176: </a></span>     * @param font          The index of the font to use.
+<span class="nocode"><a name="177">177: </a></span>     */
+<span class="nocode"><a name="178">178: </a></span>    public void applyFont(int startIndex, int endIndex, Font font)
+<span class="nocode"><a name="179">179: </a></span>    {
+<span class="nocode"><a name="180">180: </a></span>        applyFont(startIndex, endIndex, ((HSSFFont) font).getIndex());
+<span class="nocode"><a name="181">181: </a></span>    }
+<span class="nocode"><a name="182">182: </a></span>
+<span class="nocode"><a name="183">183: </a></span>    /**
+<span class="nocode"><a name="184">184: </a></span>     * Sets the font of the entire string.
+<span class="nocode"><a name="185">185: </a></span>     * @param font          The font to use.
+<span class="nocode"><a name="186">186: </a></span>     */
+<span class="nocode"><a name="187">187: </a></span>    public void applyFont(Font font)
+<span class="nocode"><a name="188">188: </a></span>    {
+<span class="nocode"><a name="189">189: </a></span>        applyFont(0, _string.getCharCount(), font);
+<span class="nocode"><a name="190">190: </a></span>    }
+<span class="nocode"><a name="191">191: </a></span>
+<span class="nocode"><a name="192">192: </a></span>    /**
+<span class="nocode"><a name="193">193: </a></span>     * Removes any formatting that may have been applied to the string.
+<span class="nocode"><a name="194">194: </a></span>     */
+<span class="nocode"><a name="195">195: </a></span>    public void clearFormatting() {
+<span class="nocode"><a name="196">196: </a></span>      _string = cloneStringIfRequired();
+<span class="nocode"><a name="197">197: </a></span>      _string.clearFormatting();
+<span class="nocode"><a name="198">198: </a></span>      addToSSTIfRequired();
+<span class="nocode"><a name="199">199: </a></span>    }
+<span class="nocode"><a name="200">200: </a></span>
+<span class="nocode"><a name="201">201: </a></span>    /**
+<span class="nocode"><a name="202">202: </a></span>     * Returns the plain string representation.
+<span class="nocode"><a name="203">203: </a></span>     */
+<span class="nocode"><a name="204">204: </a></span>    public String getString()
+<span class="nocode"><a name="205">205: </a></span>    {
+<span class="nocode"><a name="206">206: </a></span>        return _string.getString();
+<span class="nocode"><a name="207">207: </a></span>    }
+<span class="nocode"><a name="208">208: </a></span>
+<span class="nocode"><a name="209">209: </a></span>    /**
+<span class="nocode"><a name="210">210: </a></span>     * Used internally by the HSSFCell to get the internal
+<span class="nocode"><a name="211">211: </a></span>     * string value.
+<span class="nocode"><a name="212">212: </a></span>     * Will ensure the string is not shared
+<span class="nocode"><a name="213">213: </a></span>     */
+<span class="nocode"><a name="214">214: </a></span>    UnicodeString getUnicodeString() {
+<span class="nocode"><a name="215">215: </a></span>      return cloneStringIfRequired();
+<span class="nocode"><a name="216">216: </a></span>    }
+<span class="nocode"><a name="217">217: </a></span>
+<span class="nocode"><a name="218">218: </a></span>    /**
+<span class="nocode"><a name="219">219: </a></span>     * Returns the raw, probably shared Unicode String.
+<span class="nocode"><a name="220">220: </a></span>     * Used when tweaking the styles, eg updating font
+<span class="nocode"><a name="221">221: </a></span>     *  positions.
+<span class="nocode"><a name="222">222: </a></span>     * Changes to this string may well effect
+<span class="nocode"><a name="223">223: </a></span>     *  other RichTextStrings too!
+<span class="nocode"><a name="224">224: </a></span>     */
+<span class="nocode"><a name="225">225: </a></span>    UnicodeString getRawUnicodeString() {
+<span class="nocode"><a name="226">226: </a></span>    	return _string;
+<span class="nocode"><a name="227">227: </a></span>    }
+<span class="nocode"><a name="228">228: </a></span>
+<span class="nocode"><a name="229">229: </a></span>    /** Used internally by the HSSFCell to set the internal string value*/
+<span class="nocode"><a name="230">230: </a></span>    void setUnicodeString(UnicodeString str) {
+<span class="nocode"><a name="231">231: </a></span>      this._string = str;
+<span class="nocode"><a name="232">232: </a></span>    }
+<span class="nocode"><a name="233">233: </a></span>
+<span class="nocode"><a name="234">234: </a></span>
+<span class="nocode"><a name="235">235: </a></span>    /**
+<span class="nocode"><a name="236">236: </a></span>     * @return  the number of characters in the text.
+<span class="nocode"><a name="237">237: </a></span>     */
+<span class="nocode"><a name="238">238: </a></span>    public int length() {
+<span class="nocode"><a name="239">239: </a></span>        return _string.getCharCount();
+<span class="nocode"><a name="240">240: </a></span>    }
+<span class="nocode"><a name="241">241: </a></span>
+<span class="nocode"><a name="242">242: </a></span>    /**
+<span class="nocode"><a name="243">243: </a></span>     * Returns the font in use at a particular index.
+<span class="nocode"><a name="244">244: </a></span>     *
+<span class="nocode"><a name="245">245: </a></span>     * @param index         The index.
+<span class="nocode"><a name="246">246: </a></span>     * @return              The font that's currently being applied at that
+<span class="nocode"><a name="247">247: </a></span>     *                      index or null if no font is being applied or the
+<span class="nocode"><a name="248">248: </a></span>     *                      index is out of range.
+<span class="nocode"><a name="249">249: </a></span>     */
+<span class="nocode"><a name="250">250: </a></span>    public short getFontAtIndex( int index )
+<span class="nocode"><a name="251">251: </a></span>    {
+<span class="nocode"><a name="252">252: </a></span>      int size = _string.getFormatRunCount();
+<span class="nocode"><a name="253">253: </a></span>      UnicodeString.FormatRun currentRun = null;
+<span class="nocode"><a name="254">254: </a></span>      for (int i=0;i&lt;size;i++) {
+<span class="nocode"><a name="255">255: </a></span>        UnicodeString.FormatRun r = _string.getFormatRun(i);
+<span class="nocode"><a name="256">256: </a></span>        if (r.getCharacterPos() &gt; index) {
+<span class="nocode"><a name="257">257: </a></span>            break;
+<span class="nocode"><a name="258">258: </a></span>        }
+<span class="nocode"><a name="259">259: </a></span>        currentRun = r;
+<span class="nocode"><a name="260">260: </a></span>      }
+<span class="nocode"><a name="261">261: </a></span>      if (currentRun == null) {
+<span class="nocode"><a name="262">262: </a></span>          return NO_FONT;
+<span class="nocode"><a name="263">263: </a></span>      }
+<span class="nocode"><a name="264">264: </a></span>      return currentRun.getFontIndex();
+<span class="nocode"><a name="265">265: </a></span>    }
+<span class="nocode"><a name="266">266: </a></span>
+<span class="nocode"><a name="267">267: </a></span>    /**
+<span class="nocode"><a name="268">268: </a></span>     * @return  The number of formatting runs used. There will always be at
+<span class="nocode"><a name="269">269: </a></span>     *          least one of font NO_FONT.
+<span class="nocode"><a name="270">270: </a></span>     *
+<span class="nocode"><a name="271">271: </a></span>     * @see #NO_FONT
+<span class="nocode"><a name="272">272: </a></span>     */
+<span class="nocode"><a name="273">273: </a></span>    public int numFormattingRuns()
+<span class="nocode"><a name="274">274: </a></span>    {
+<span class="nocode"><a name="275">275: </a></span>        return _string.getFormatRunCount();
+<span class="nocode"><a name="276">276: </a></span>    }
+<span class="nocode"><a name="277">277: </a></span>
+<span class="nocode"><a name="278">278: </a></span>    /**
+<span class="nocode"><a name="279">279: </a></span>     * The index within the string to which the specified formatting run applies.
+<span class="nocode"><a name="280">280: </a></span>     * @param index     the index of the formatting run
+<span class="nocode"><a name="281">281: </a></span>     * @return  the index within the string.
+<span class="nocode"><a name="282">282: </a></span>     */
+<span class="nocode"><a name="283">283: </a></span>    public int getIndexOfFormattingRun(int index)
+<span class="nocode"><a name="284">284: </a></span>    {
+<span class="nocode"><a name="285">285: </a></span>        UnicodeString.FormatRun r = _string.getFormatRun(index);
+<span class="nocode"><a name="286">286: </a></span>        return r.getCharacterPos();
+<span class="nocode"><a name="287">287: </a></span>    }
+<span class="nocode"><a name="288">288: </a></span>
+<span class="nocode"><a name="289">289: </a></span>    /**
+<span class="nocode"><a name="290">290: </a></span>     * Gets the font used in a particular formatting run.
+<span class="nocode"><a name="291">291: </a></span>     *
+<span class="nocode"><a name="292">292: </a></span>     * @param index     the index of the formatting run
+<span class="nocode"><a name="293">293: </a></span>     * @return  the font number used.
+<span class="nocode"><a name="294">294: </a></span>     */
+<span class="nocode"><a name="295">295: </a></span>    public short getFontOfFormattingRun(int index)
+<span class="nocode"><a name="296">296: </a></span>    {
+<span class="nocode"><a name="297">297: </a></span>      UnicodeString.FormatRun r = _string.getFormatRun(index);
+<span class="nocode"><a name="298">298: </a></span>      return r.getFontIndex();
+<span class="nocode"><a name="299">299: </a></span>    }
+<span class="nocode"><a name="300">300: </a></span>
+<span class="nocode"><a name="301">301: </a></span>    /**
+<span class="nocode"><a name="302">302: </a></span>     * Compares one rich text string to another.
+<span class="nocode"><a name="303">303: </a></span>     */
+<span class="nocode"><a name="304">304: </a></span>    public int compareTo(HSSFRichTextString r) {
+<span class="nocode"><a name="305">305: </a></span>       return _string.compareTo(r._string);
+<span class="nocode"><a name="306">306: </a></span>    }
+<span class="nocode"><a name="307">307: </a></span>
+<span class="nocode"><a name="308">308: </a></span>    public boolean equals(Object o) {
+<span class="nocode"><a name="309">309: </a></span>      if (o instanceof HSSFRichTextString) {
+<span class="nocode"><a name="310">310: </a></span>        return _string.equals(((HSSFRichTextString)o)._string);
+<span class="nocode"><a name="311">311: </a></span>      }
+<span class="nocode"><a name="312">312: </a></span>      return false;
+<span class="nocode"><a name="313">313: </a></span>
+<span class="nocode"><a name="314">314: </a></span>    }
+<span class="nocode"><a name="315">315: </a></span>
+<span class="nocode"><a name="316">316: </a></span>    /**
+<span class="nocode"><a name="317">317: </a></span>     * @return  the plain text representation of this string.
+<span class="nocode"><a name="318">318: </a></span>     */
+<span class="nocode"><a name="319">319: </a></span>    public String toString()
+<span class="nocode"><a name="320">320: </a></span>    {
+<span class="nocode"><a name="321">321: </a></span>        return _string.toString();
+<span class="nocode"><a name="322">322: </a></span>    }
+<span class="nocode"><a name="323">323: </a></span>
+<span class="nocode"><a name="324">324: </a></span>    /**
+<span class="nocode"><a name="325">325: </a></span>     * Applies the specified font to the entire string.
+<span class="nocode"><a name="326">326: </a></span>     *
+<span class="nocode"><a name="327">327: </a></span>     * @param fontIndex  the font to apply.
+<span class="nocode"><a name="328">328: </a></span>     */
+<span class="nocode"><a name="329">329: </a></span>    public void applyFont( short fontIndex )
+<span class="nocode"><a name="330">330: </a></span>    {
+<span class="nocode"><a name="331">331: </a></span>        applyFont(0, _string.getCharCount(), fontIndex);
+<span class="nocode"><a name="332">332: </a></span>    }
+<span class="nocode"><a name="333">333: </a></span>}
+</pre><table class="mutation_table" summary="Mutations">
+<tr><th>ID</th><th>Line</th><th>Type</th><th>Detected</th></tr><tr><td>47346</td><td><a href="#86">86</a></td><td>Negate jump condition (Replace IFNONNULL with  IFNULL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>47347</td><td><a href="#94">94</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>47348</td><td><a href="#96">96</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>47349</td><td><a href="#96">96(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>47350</td><td><a href="#112">112</a></td><td>Negate jump condition (Replace IFNONNULL with  IFNULL)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>47351</td><td><a href="#114">114</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>47352</td><td><a href="#119">119</a></td><td>Negate jump condition (Replace IFNULL with  IFNONNULL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>47353</td><td><a href="#120">120</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>47354</td><td><a href="#121">121</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>47355</td><td><a href="#124">124</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>47356</td><td><a href="#138">138</a></td><td>Negate jump condition (Replace IF_ICMPLE with  IF_ICMPGT)</td><td><img src="detected.png"/></td></tr>
+<tr><td>47357</td><td><a href="#140">140</a></td><td>Negate jump condition (Replace IFLT with  IFGE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>47359</td><td><a href="#140">140(1)</a></td><td>Negate jump condition (Replace IF_ICMPLE with  IF_ICMPGT)</td><td><img src="detected.png"/></td></tr>
+<tr><td>47358</td><td><a href="#140">140</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>47360</td><td><a href="#142">142</a></td><td>Negate jump condition (Replace IF_ICMPNE with  IF_ICMPEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>47361</td><td><a href="#147">147</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>47362</td><td><a href="#147">147</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>47364</td><td><a href="#148">148</a></td><td>Negate jump condition (Replace IF_ICMPEQ with  IF_ICMPNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>47363</td><td><a href="#148">148</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>47365</td><td><a href="#149">149</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>47366</td><td><a href="#153">153</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>47367</td><td><a href="#154">154</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>47368</td><td><a href="#155">155</a></td><td>Negate jump condition (Replace IFNULL with  IFNONNULL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>47370</td><td><a href="#156">156</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>47369</td><td><a href="#156">156</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>47371</td><td><a href="#157">157</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>47373</td><td><a href="#158">158</a></td><td>Negate jump condition (Replace IF_ICMPLT with  IF_ICMPGE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>47375</td><td><a href="#158">158(1)</a></td><td>Negate jump condition (Replace IF_ICMPGE with  IF_ICMPLT)</td><td><img src="detected.png"/></td></tr>
+<tr><td>47372</td><td><a href="#158">158</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>47374</td><td><a href="#158">158(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>47376</td><td><a href="#159">159</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>47377</td><td><a href="#164">164</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>47379</td><td><a href="#165">165</a></td><td>Negate jump condition (Replace IF_ICMPEQ with  IF_ICMPNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>47378</td><td><a href="#165">165</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>47380</td><td><a href="#166">166</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>47381</td><td><a href="#168">168</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>47382</td><td><a href="#180">180</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>47383</td><td><a href="#180">180(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>47385</td><td><a href="#189">189</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>47384</td><td><a href="#189">189</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>47386</td><td><a href="#189">189</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>47387</td><td><a href="#189">189(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>47388</td><td><a href="#196">196</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>47389</td><td><a href="#197">197</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>47390</td><td><a href="#198">198</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>47391</td><td><a href="#206">206</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>47392</td><td><a href="#215">215</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>47393</td><td><a href="#239">239</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>47394</td><td><a href="#252">252</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>47396</td><td><a href="#254">254</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>47395</td><td><a href="#254">254</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>47397</td><td><a href="#254">254</a></td><td>Negate jump condition (Replace IF_ICMPGE with  IF_ICMPLT)</td><td><img src="detected.png"/></td></tr>
+<tr><td>47398</td><td><a href="#255">255</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>47400</td><td><a href="#256">256</a></td><td>Negate jump condition (Replace IF_ICMPLE with  IF_ICMPGT)</td><td><img src="detected.png"/></td></tr>
+<tr><td>47399</td><td><a href="#256">256</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>47401</td><td><a href="#261">261</a></td><td>Negate jump condition (Replace IFNONNULL with  IFNULL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>47403</td><td><a href="#262">262</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>47402</td><td><a href="#262">262</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>47404</td><td><a href="#264">264</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>47405</td><td><a href="#275">275</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>47406</td><td><a href="#285">285</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>47407</td><td><a href="#286">286</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>47408</td><td><a href="#297">297</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>47409</td><td><a href="#298">298</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>47410</td><td><a href="#305">305</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>47411</td><td><a href="#309">309</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>47412</td><td><a href="#310">310</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>47413</td><td><a href="#312">312</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>47414</td><td><a href="#312">312</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>47415</td><td><a href="#321">321</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>47416</td><td><a href="#331">331</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>47417</td><td><a href="#331">331</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>47418</td><td><a href="#331">331</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>47419</td><td><a href="#331">331(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+</table>
+</body>
+</html>

@@ -1,0 +1,1275 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN
+"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>
+org.joda.time.field.BaseDateTimeField
+</title>
+<link href="prettify.css" type="text/css" rel="stylesheet" />
+<script type="text/javascript" src="prettify.js"></script>
+</head>
+<body onload="prettyPrint()">
+<h2>Javalanche report for class:<br/> org.joda.time.field.BaseDateTimeField </h2><pre class="prettyprint" style="border: 1px solid #888;padding: 2px"><span class="nocode"><a name="1">  1: </a></span>/*
+<span class="nocode"><a name="2">  2: </a></span> *  Copyright 2001-2005 Stephen Colebourne
+<span class="nocode"><a name="3">  3: </a></span> *
+<span class="nocode"><a name="4">  4: </a></span> *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+<span class="nocode"><a name="5">  5: </a></span> *  you may not use this file except in compliance with the License.
+<span class="nocode"><a name="6">  6: </a></span> *  You may obtain a copy of the License at
+<span class="nocode"><a name="7">  7: </a></span> *
+<span class="nocode"><a name="8">  8: </a></span> *      http://www.apache.org/licenses/LICENSE-2.0
+<span class="nocode"><a name="9">  9: </a></span> *
+<span class="nocode"><a name="10"> 10: </a></span> *  Unless required by applicable law or agreed to in writing, software
+<span class="nocode"><a name="11"> 11: </a></span> *  distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+<span class="nocode"><a name="12"> 12: </a></span> *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+<span class="nocode"><a name="13"> 13: </a></span> *  See the License for the specific language governing permissions and
+<span class="nocode"><a name="14"> 14: </a></span> *  limitations under the License.
+<span class="nocode"><a name="15"> 15: </a></span> */
+<span class="nocode"><a name="16"> 16: </a></span>package org.joda.time.field;
+<span class="nocode"><a name="17"> 17: </a></span>
+<span class="nocode"><a name="18"> 18: </a></span>import java.util.Locale;
+<span class="nocode"><a name="19"> 19: </a></span>
+<span class="nocode"><a name="20"> 20: </a></span>import org.joda.time.DateTimeField;
+<span class="nocode"><a name="21"> 21: </a></span>import org.joda.time.DateTimeFieldType;
+<span class="nocode"><a name="22"> 22: </a></span>import org.joda.time.DurationField;
+<span class="nocode"><a name="23"> 23: </a></span>import org.joda.time.IllegalFieldValueException;
+<span class="nocode"><a name="24"> 24: </a></span>import org.joda.time.ReadablePartial;
+<span class="nocode"><a name="25"> 25: </a></span>
+<span class="nocode"><a name="26"> 26: </a></span>/**
+<span class="nocode"><a name="27"> 27: </a></span> * BaseDateTimeField provides the common behaviour for DateTimeField
+<span class="nocode"><a name="28"> 28: </a></span> * implementations. 
+<span class="nocode"><a name="29"> 29: </a></span> * &lt;p&gt;
+<span class="nocode"><a name="30"> 30: </a></span> * This class should generally not be used directly by API users. The
+<span class="nocode"><a name="31"> 31: </a></span> * DateTimeField class should be used when different kinds of DateTimeField
+<span class="nocode"><a name="32"> 32: </a></span> * objects are to be referenced.
+<span class="nocode"><a name="33"> 33: </a></span> * &lt;p&gt;
+<span class="nocode"><a name="34"> 34: </a></span> * BaseDateTimeField is thread-safe and immutable, and its subclasses must
+<span class="nocode"><a name="35"> 35: </a></span> * be as well.
+<span class="nocode"><a name="36"> 36: </a></span> *
+<span class="nocode"><a name="37"> 37: </a></span> * @author Brian S O'Neill
+<span class="nocode"><a name="38"> 38: </a></span> * @since 1.0
+<span class="nocode"><a name="39"> 39: </a></span> * @see DecoratedDateTimeField
+<span class="nocode"><a name="40"> 40: </a></span> */
+<span class="nocode"><a name="41"> 41: </a></span>public abstract class BaseDateTimeField extends DateTimeField {
+<span class="nocode"><a name="42"> 42: </a></span>
+<span class="nocode"><a name="43"> 43: </a></span>    /** The field type. */
+<span class="nocode"><a name="44"> 44: </a></span>    private final DateTimeFieldType iType;
+<span class="nocode"><a name="45"> 45: </a></span>
+<span class="nocode"><a name="46"> 46: </a></span>    /**
+<span class="nocode"><a name="47"> 47: </a></span>     * Constructor.
+<span class="nocode"><a name="48"> 48: </a></span>     */
+<span class="nocode"><a name="49"> 49: </a></span>    protected BaseDateTimeField(DateTimeFieldType type) {
+<span class="nocode"><a name="50"> 50: </a></span>        super();
+<span class="nocode"><a name="51"> 51: </a></span>        if (type == null) {
+<span class="nocode"><a name="52"> 52: </a></span>            throw new IllegalArgumentException(&quot;The type must not be null&quot;);
+<span class="nocode"><a name="53"> 53: </a></span>        }
+<span class="nocode"><a name="54"> 54: </a></span>        iType = type;
+<span class="nocode"><a name="55"> 55: </a></span>    }
+<span class="nocode"><a name="56"> 56: </a></span>    
+<span class="nocode"><a name="57"> 57: </a></span>    public final DateTimeFieldType getType() {
+<span class="nocode"><a name="58"> 58: </a></span>        return iType;
+<span class="nocode"><a name="59"> 59: </a></span>    }
+<span class="nocode"><a name="60"> 60: </a></span>
+<span class="nocode"><a name="61"> 61: </a></span>    public final String getName() {
+<span class="nocode"><a name="62"> 62: </a></span>        return iType.getName();
+<span class="nocode"><a name="63"> 63: </a></span>    }
+<span class="nocode"><a name="64"> 64: </a></span>
+<span class="nocode"><a name="65"> 65: </a></span>    /**
+<span class="nocode"><a name="66"> 66: </a></span>     * @return true always
+<span class="nocode"><a name="67"> 67: </a></span>     */
+<span class="nocode"><a name="68"> 68: </a></span>    public final boolean isSupported() {
+<span class="nocode"><a name="69"> 69: </a></span>        return true;
+<span class="nocode"><a name="70"> 70: </a></span>    }
+<span class="nocode"><a name="71"> 71: </a></span>
+<span class="nocode"><a name="72"> 72: </a></span>    // Main access API
+<span class="nocode"><a name="73"> 73: </a></span>    //------------------------------------------------------------------------
+<span class="nocode"><a name="74"> 74: </a></span>    /**
+<span class="nocode"><a name="75"> 75: </a></span>     * Get the value of this field from the milliseconds.
+<span class="nocode"><a name="76"> 76: </a></span>     * 
+<span class="nocode"><a name="77"> 77: </a></span>     * @param instant  the milliseconds from 1970-01-01T00:00:00Z to query
+<span class="nocode"><a name="78"> 78: </a></span>     * @return the value of the field, in the units of the field
+<span class="nocode"><a name="79"> 79: </a></span>     */
+<span class="nocode"><a name="80"> 80: </a></span>    public abstract int get(long instant);
+<span class="nocode"><a name="81"> 81: </a></span>
+<span class="nocode"><a name="82"> 82: </a></span>    //-----------------------------------------------------------------------
+<span class="nocode"><a name="83"> 83: </a></span>    /**
+<span class="nocode"><a name="84"> 84: </a></span>     * Get the human-readable, text value of this field from the milliseconds.
+<span class="nocode"><a name="85"> 85: </a></span>     * If the specified locale is null, the default locale is used.
+<span class="nocode"><a name="86"> 86: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="87"> 87: </a></span>     * The default implementation returns getAsText(get(instant), locale).
+<span class="nocode"><a name="88"> 88: </a></span>     *
+<span class="nocode"><a name="89"> 89: </a></span>     * @param instant  the milliseconds from 1970-01-01T00:00:00Z to query
+<span class="nocode"><a name="90"> 90: </a></span>     * @param locale the locale to use for selecting a text symbol, null means default
+<span class="nocode"><a name="91"> 91: </a></span>     * @return the text value of the field
+<span class="nocode"><a name="92"> 92: </a></span>     */
+<span class="nocode"><a name="93"> 93: </a></span>    public String getAsText(long instant, Locale locale) {
+<span class="nocode"><a name="94"> 94: </a></span>        return getAsText(get(instant), locale);
+<span class="nocode"><a name="95"> 95: </a></span>    }
+<span class="nocode"><a name="96"> 96: </a></span>
+<span class="nocode"><a name="97"> 97: </a></span>    /**
+<span class="nocode"><a name="98"> 98: </a></span>     * Get the human-readable, text value of this field from the milliseconds.
+<span class="nocode"><a name="99"> 99: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="100">100: </a></span>     * The default implementation calls {@link #getAsText(long, Locale)}.
+<span class="nocode"><a name="101">101: </a></span>     *
+<span class="nocode"><a name="102">102: </a></span>     * @param instant  the milliseconds from 1970-01-01T00:00:00Z to query
+<span class="nocode"><a name="103">103: </a></span>     * @return the text value of the field
+<span class="nocode"><a name="104">104: </a></span>     */
+<span class="nocode"><a name="105">105: </a></span>    public final String getAsText(long instant) {
+<span class="nocode"><a name="106">106: </a></span>        return getAsText(instant, null);
+<span class="nocode"><a name="107">107: </a></span>    }
+<span class="nocode"><a name="108">108: </a></span>
+<span class="nocode"><a name="109">109: </a></span>    /**
+<span class="nocode"><a name="110">110: </a></span>     * Get the human-readable, text value of this field from a partial instant.
+<span class="nocode"><a name="111">111: </a></span>     * If the specified locale is null, the default locale is used.
+<span class="nocode"><a name="112">112: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="113">113: </a></span>     * The default implementation returns getAsText(fieldValue, locale).
+<span class="nocode"><a name="114">114: </a></span>     *
+<span class="nocode"><a name="115">115: </a></span>     * @param partial  the partial instant to query
+<span class="nocode"><a name="116">116: </a></span>     * @param fieldValue  the field value of this field, provided for performance
+<span class="nocode"><a name="117">117: </a></span>     * @param locale  the locale to use for selecting a text symbol, null for default
+<span class="nocode"><a name="118">118: </a></span>     * @return the text value of the field
+<span class="nocode"><a name="119">119: </a></span>     */
+<span class="nocode"><a name="120">120: </a></span>    public String getAsText(ReadablePartial partial, int fieldValue, Locale locale) {
+<span class="nocode"><a name="121">121: </a></span>        return getAsText(fieldValue, locale);
+<span class="nocode"><a name="122">122: </a></span>    }
+<span class="nocode"><a name="123">123: </a></span>
+<span class="nocode"><a name="124">124: </a></span>    /**
+<span class="nocode"><a name="125">125: </a></span>     * Get the human-readable, text value of this field from a partial instant.
+<span class="nocode"><a name="126">126: </a></span>     * If the specified locale is null, the default locale is used.
+<span class="nocode"><a name="127">127: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="128">128: </a></span>     * The default implementation calls {@link ReadablePartial#get(DateTimeFieldType)}
+<span class="nocode"><a name="129">129: </a></span>     * and {@link #getAsText(ReadablePartial, int, Locale)}.
+<span class="nocode"><a name="130">130: </a></span>     *
+<span class="nocode"><a name="131">131: </a></span>     * @param partial  the partial instant to query
+<span class="nocode"><a name="132">132: </a></span>     * @param locale  the locale to use for selecting a text symbol, null for default
+<span class="nocode"><a name="133">133: </a></span>     * @return the text value of the field
+<span class="nocode"><a name="134">134: </a></span>     */
+<span class="nocode"><a name="135">135: </a></span>    public final String getAsText(ReadablePartial partial, Locale locale) {
+<span class="nocode"><a name="136">136: </a></span>        return getAsText(partial, partial.get(getType()), locale);
+<span class="nocode"><a name="137">137: </a></span>    }
+<span class="nocode"><a name="138">138: </a></span>
+<span class="nocode"><a name="139">139: </a></span>    /**
+<span class="nocode"><a name="140">140: </a></span>     * Get the human-readable, text value of this field from the field value.
+<span class="nocode"><a name="141">141: </a></span>     * If the specified locale is null, the default locale is used.
+<span class="nocode"><a name="142">142: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="143">143: </a></span>     * The default implementation returns Integer.toString(get(instant)).
+<span class="nocode"><a name="144">144: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="145">145: </a></span>     * Note: subclasses that override this method should also override
+<span class="nocode"><a name="146">146: </a></span>     * getMaximumTextLength.
+<span class="nocode"><a name="147">147: </a></span>     *
+<span class="nocode"><a name="148">148: </a></span>     * @param fieldValue  the numeric value to convert to text
+<span class="nocode"><a name="149">149: </a></span>     * @param locale the locale to use for selecting a text symbol, null for default
+<span class="nocode"><a name="150">150: </a></span>     * @return the text value of the field
+<span class="nocode"><a name="151">151: </a></span>     */
+<span class="nocode"><a name="152">152: </a></span>    public String getAsText(int fieldValue, Locale locale) {
+<span class="nocode"><a name="153">153: </a></span>        return Integer.toString(fieldValue);
+<span class="nocode"><a name="154">154: </a></span>    }
+<span class="nocode"><a name="155">155: </a></span>
+<span class="nocode"><a name="156">156: </a></span>    //-----------------------------------------------------------------------
+<span class="nocode"><a name="157">157: </a></span>    /**
+<span class="nocode"><a name="158">158: </a></span>     * Get the human-readable, short text value of this field from the milliseconds.
+<span class="nocode"><a name="159">159: </a></span>     * If the specified locale is null, the default locale is used.
+<span class="nocode"><a name="160">160: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="161">161: </a></span>     * The default implementation returns getAsShortText(get(instant), locale).
+<span class="nocode"><a name="162">162: </a></span>     *
+<span class="nocode"><a name="163">163: </a></span>     * @param instant  the milliseconds from 1970-01-01T00:00:00Z to query
+<span class="nocode"><a name="164">164: </a></span>     * @param locale the locale to use for selecting a text symbol, null means default
+<span class="nocode"><a name="165">165: </a></span>     * @return the text value of the field
+<span class="nocode"><a name="166">166: </a></span>     */
+<span class="nocode"><a name="167">167: </a></span>    public String getAsShortText(long instant, Locale locale) {
+<span class="nocode"><a name="168">168: </a></span>        return getAsShortText(get(instant), locale);
+<span class="nocode"><a name="169">169: </a></span>    }
+<span class="nocode"><a name="170">170: </a></span>
+<span class="nocode"><a name="171">171: </a></span>    /**
+<span class="nocode"><a name="172">172: </a></span>     * Get the human-readable, short text value of this field from the milliseconds.
+<span class="nocode"><a name="173">173: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="174">174: </a></span>     * The default implementation calls {@link #getAsShortText(long, Locale)}.
+<span class="nocode"><a name="175">175: </a></span>     *
+<span class="nocode"><a name="176">176: </a></span>     * @param instant  the milliseconds from 1970-01-01T00:00:00Z to query
+<span class="nocode"><a name="177">177: </a></span>     * @return the text value of the field
+<span class="nocode"><a name="178">178: </a></span>     */
+<span class="nocode"><a name="179">179: </a></span>    public final String getAsShortText(long instant) {
+<span class="nocode"><a name="180">180: </a></span>        return getAsShortText(instant, null);
+<span class="nocode"><a name="181">181: </a></span>    }
+<span class="nocode"><a name="182">182: </a></span>
+<span class="nocode"><a name="183">183: </a></span>    /**
+<span class="nocode"><a name="184">184: </a></span>     * Get the human-readable, short text value of this field from a partial instant.
+<span class="nocode"><a name="185">185: </a></span>     * If the specified locale is null, the default locale is used.
+<span class="nocode"><a name="186">186: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="187">187: </a></span>     * The default implementation returns getAsShortText(fieldValue, locale).
+<span class="nocode"><a name="188">188: </a></span>     *
+<span class="nocode"><a name="189">189: </a></span>     * @param partial  the partial instant to query
+<span class="nocode"><a name="190">190: </a></span>     * @param fieldValue  the field value of this field, provided for performance
+<span class="nocode"><a name="191">191: </a></span>     * @param locale  the locale to use for selecting a text symbol, null for default
+<span class="nocode"><a name="192">192: </a></span>     * @return the text value of the field
+<span class="nocode"><a name="193">193: </a></span>     */
+<span class="nocode"><a name="194">194: </a></span>    public String getAsShortText(ReadablePartial partial, int fieldValue, Locale locale) {
+<span class="nocode"><a name="195">195: </a></span>        return getAsShortText(fieldValue, locale);
+<span class="nocode"><a name="196">196: </a></span>    }
+<span class="nocode"><a name="197">197: </a></span>
+<span class="nocode"><a name="198">198: </a></span>    /**
+<span class="nocode"><a name="199">199: </a></span>     * Get the human-readable, short text value of this field from a partial instant.
+<span class="nocode"><a name="200">200: </a></span>     * If the specified locale is null, the default locale is used.
+<span class="nocode"><a name="201">201: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="202">202: </a></span>     * The default implementation calls {@link ReadablePartial#get(DateTimeFieldType)}
+<span class="nocode"><a name="203">203: </a></span>     * and {@link #getAsText(ReadablePartial, int, Locale)}.
+<span class="nocode"><a name="204">204: </a></span>     *
+<span class="nocode"><a name="205">205: </a></span>     * @param partial  the partial instant to query
+<span class="nocode"><a name="206">206: </a></span>     * @param locale  the locale to use for selecting a text symbol, null for default
+<span class="nocode"><a name="207">207: </a></span>     * @return the text value of the field
+<span class="nocode"><a name="208">208: </a></span>     */
+<span class="nocode"><a name="209">209: </a></span>    public final String getAsShortText(ReadablePartial partial, Locale locale) {
+<span class="nocode"><a name="210">210: </a></span>        return getAsShortText(partial, partial.get(getType()), locale);
+<span class="nocode"><a name="211">211: </a></span>    }
+<span class="nocode"><a name="212">212: </a></span>
+<span class="nocode"><a name="213">213: </a></span>    /**
+<span class="nocode"><a name="214">214: </a></span>     * Get the human-readable, short text value of this field from the field value.
+<span class="nocode"><a name="215">215: </a></span>     * If the specified locale is null, the default locale is used.
+<span class="nocode"><a name="216">216: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="217">217: </a></span>     * The default implementation returns getAsText(fieldValue, locale).
+<span class="nocode"><a name="218">218: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="219">219: </a></span>     * Note: subclasses that override this method should also override
+<span class="nocode"><a name="220">220: </a></span>     * getMaximumShortTextLength.
+<span class="nocode"><a name="221">221: </a></span>     *
+<span class="nocode"><a name="222">222: </a></span>     * @param fieldValue  the numeric value to convert to text
+<span class="nocode"><a name="223">223: </a></span>     * @param locale the locale to use for selecting a text symbol, null for default
+<span class="nocode"><a name="224">224: </a></span>     * @return the text value of the field
+<span class="nocode"><a name="225">225: </a></span>     */
+<span class="nocode"><a name="226">226: </a></span>    public String getAsShortText(int fieldValue, Locale locale) {
+<span class="nocode"><a name="227">227: </a></span>        return getAsText(fieldValue, locale);
+<span class="nocode"><a name="228">228: </a></span>    }
+<span class="nocode"><a name="229">229: </a></span>
+<span class="nocode"><a name="230">230: </a></span>    //-----------------------------------------------------------------------
+<span class="nocode"><a name="231">231: </a></span>    /**
+<span class="nocode"><a name="232">232: </a></span>     * Adds a value (which may be negative) to the instant value,
+<span class="nocode"><a name="233">233: </a></span>     * overflowing into larger fields if necessary.
+<span class="nocode"><a name="234">234: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="235">235: </a></span>     * The value will be added to this field. If the value is too large to be
+<span class="nocode"><a name="236">236: </a></span>     * added solely to this field, larger fields will increase as required.
+<span class="nocode"><a name="237">237: </a></span>     * Smaller fields should be unaffected, except where the result would be
+<span class="nocode"><a name="238">238: </a></span>     * an invalid value for a smaller field. In this case the smaller field is
+<span class="nocode"><a name="239">239: </a></span>     * adjusted to be in range.
+<span class="nocode"><a name="240">240: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="241">241: </a></span>     * For example, in the ISO chronology:&lt;br&gt;
+<span class="nocode"><a name="242">242: </a></span>     * 2000-08-20 add six months is 2001-02-20&lt;br&gt;
+<span class="nocode"><a name="243">243: </a></span>     * 2000-08-20 add twenty months is 2002-04-20&lt;br&gt;
+<span class="nocode"><a name="244">244: </a></span>     * 2000-08-20 add minus nine months is 1999-11-20&lt;br&gt;
+<span class="nocode"><a name="245">245: </a></span>     * 2001-01-31 add one month  is 2001-02-28&lt;br&gt;
+<span class="nocode"><a name="246">246: </a></span>     * 2001-01-31 add two months is 2001-03-31&lt;br&gt;
+<span class="nocode"><a name="247">247: </a></span>     * 
+<span class="nocode"><a name="248">248: </a></span>     * @param instant  the milliseconds from 1970-01-01T00:00:00Z to add to
+<span class="nocode"><a name="249">249: </a></span>     * @param value  the value to add, in the units of the field
+<span class="nocode"><a name="250">250: </a></span>     * @return the updated milliseconds
+<span class="nocode"><a name="251">251: </a></span>     */
+<span class="nocode"><a name="252">252: </a></span>    public long add(long instant, int value) {
+<span class="nocode"><a name="253">253: </a></span>        return getDurationField().add(instant, value);
+<span class="nocode"><a name="254">254: </a></span>    }
+<span class="nocode"><a name="255">255: </a></span>
+<span class="nocode"><a name="256">256: </a></span>    /**
+<span class="nocode"><a name="257">257: </a></span>     * Adds a value (which may be negative) to the instant value,
+<span class="nocode"><a name="258">258: </a></span>     * overflowing into larger fields if necessary.
+<span class="nocode"><a name="259">259: </a></span>     * 
+<span class="nocode"><a name="260">260: </a></span>     * @param instant  the milliseconds from 1970-01-01T00:00:00Z to add to
+<span class="nocode"><a name="261">261: </a></span>     * @param value  the long value to add, in the units of the field
+<span class="nocode"><a name="262">262: </a></span>     * @return the updated milliseconds
+<span class="nocode"><a name="263">263: </a></span>     * @throws IllegalArgumentException if value is too large
+<span class="nocode"><a name="264">264: </a></span>     * @see #add(long,int)
+<span class="nocode"><a name="265">265: </a></span>     */
+<span class="nocode"><a name="266">266: </a></span>    public long add(long instant, long value) {
+<span class="nocode"><a name="267">267: </a></span>        return getDurationField().add(instant, value);
+<span class="nocode"><a name="268">268: </a></span>    }
+<span class="nocode"><a name="269">269: </a></span>
+<span class="nocode"><a name="270">270: </a></span>    /**
+<span class="nocode"><a name="271">271: </a></span>     * Adds a value (which may be negative) to the partial instant,
+<span class="nocode"><a name="272">272: </a></span>     * throwing an exception if the maximum size of the instant is reached.
+<span class="nocode"><a name="273">273: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="274">274: </a></span>     * The value will be added to this field, overflowing into larger fields
+<span class="nocode"><a name="275">275: </a></span>     * if necessary. Smaller fields should be unaffected, except where the
+<span class="nocode"><a name="276">276: </a></span>     * result would be an invalid value for a smaller field. In this case the
+<span class="nocode"><a name="277">277: </a></span>     * smaller field is adjusted to be in range.
+<span class="nocode"><a name="278">278: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="279">279: </a></span>     * Partial instants only contain some fields. This may result in a maximum
+<span class="nocode"><a name="280">280: </a></span>     * possible value, such as TimeOfDay being limited to 23:59:59:999. If this
+<span class="nocode"><a name="281">281: </a></span>     * limit is breached by the add an exception is thrown.
+<span class="nocode"><a name="282">282: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="283">283: </a></span>     * For example, in the ISO chronology:&lt;br&gt;
+<span class="nocode"><a name="284">284: </a></span>     * 2000-08-20 add six months is 2000-02-20&lt;br&gt;
+<span class="nocode"><a name="285">285: </a></span>     * 2000-08-20 add twenty months is 2000-04-20&lt;br&gt;
+<span class="nocode"><a name="286">286: </a></span>     * 2000-08-20 add minus nine months is 2000-11-20&lt;br&gt;
+<span class="nocode"><a name="287">287: </a></span>     * 2001-01-31 add one month  is 2001-02-28&lt;br&gt;
+<span class="nocode"><a name="288">288: </a></span>     * 2001-01-31 add two months is 2001-03-31&lt;br&gt;
+<span class="nocode"><a name="289">289: </a></span>     * 
+<span class="nocode"><a name="290">290: </a></span>     * @param instant  the partial instant
+<span class="nocode"><a name="291">291: </a></span>     * @param fieldIndex  the index of this field in the partial
+<span class="nocode"><a name="292">292: </a></span>     * @param values  the values of the partial instant which should be updated
+<span class="nocode"><a name="293">293: </a></span>     * @param valueToAdd  the value to add, in the units of the field
+<span class="nocode"><a name="294">294: </a></span>     * @return the passed in values
+<span class="nocode"><a name="295">295: </a></span>     * @throws IllegalArgumentException if the value is invalid or the maximum instant is reached
+<span class="nocode"><a name="296">296: </a></span>     */
+<span class="nocode"><a name="297">297: </a></span>    public int[] add(ReadablePartial instant, int fieldIndex, int[] values, int valueToAdd) {
+<span class="nocode"><a name="298">298: </a></span>        if (valueToAdd == 0) {
+<span class="nocode"><a name="299">299: </a></span>            return values;
+<span class="nocode"><a name="300">300: </a></span>        }
+<span class="nocode"><a name="301">301: </a></span>        // there are more efficient algorithms than this (especially for time only fields)
+<span class="nocode"><a name="302">302: </a></span>        // trouble is when dealing with days and months, so we use this technique of
+<span class="nocode"><a name="303">303: </a></span>        // adding/removing one from the larger field at a time
+<span class="nocode"><a name="304">304: </a></span>        DateTimeField nextField = null;
+<span class="nocode"><a name="305">305: </a></span>        
+<span class="nocode"><a name="306">306: </a></span>        while (valueToAdd &gt; 0) {
+<span class="nocode"><a name="307">307: </a></span>            int max = getMaximumValue(instant, values);
+<span class="nocode"><a name="308">308: </a></span>            long proposed = values[fieldIndex] + valueToAdd;
+<span class="nocode"><a name="309">309: </a></span>            if (proposed &lt;= max) {
+<span class="nocode"><a name="310">310: </a></span>                values[fieldIndex] = (int) proposed;
+<span class="nocode"><a name="311">311: </a></span>                break;
+<span class="nocode"><a name="312">312: </a></span>            }
+<span class="nocode"><a name="313">313: </a></span>            if (nextField == null) {
+<span class="nocode"><a name="314">314: </a></span>                if (fieldIndex == 0) {
+<span class="nocode"><a name="315">315: </a></span>                    throw new IllegalArgumentException(&quot;Maximum value exceeded for add&quot;);
+<span class="nocode"><a name="316">316: </a></span>                }
+<span class="nocode"><a name="317">317: </a></span>                nextField = instant.getField(fieldIndex - 1);
+<span class="nocode"><a name="318">318: </a></span>                // test only works if this field is UTC (ie. local)
+<span class="nocode"><a name="319">319: </a></span>                if (getRangeDurationField().getType() != nextField.getDurationField().getType()) {
+<span class="nocode"><a name="320">320: </a></span>                    throw new IllegalArgumentException(&quot;Fields invalid for add&quot;);
+<span class="nocode"><a name="321">321: </a></span>                }
+<span class="nocode"><a name="322">322: </a></span>            }
+<span class="nocode"><a name="323">323: </a></span>            valueToAdd -= (max + 1) - values[fieldIndex];  // reduce the amount to add
+<span class="nocode"><a name="324">324: </a></span>            values = nextField.add(instant, fieldIndex - 1, values, 1);  // add 1 to next bigger field
+<span class="nocode"><a name="325">325: </a></span>            values[fieldIndex] = getMinimumValue(instant, values);  // reset this field to zero
+<span class="nocode"><a name="326">326: </a></span>        }
+<span class="nocode"><a name="327">327: </a></span>        while (valueToAdd &lt; 0) {
+<span class="nocode"><a name="328">328: </a></span>            int min = getMinimumValue(instant, values);
+<span class="nocode"><a name="329">329: </a></span>            long proposed = values[fieldIndex] + valueToAdd;
+<span class="nocode"><a name="330">330: </a></span>            if (proposed &gt;= min) {
+<span class="nocode"><a name="331">331: </a></span>                values[fieldIndex] = (int) proposed;
+<span class="nocode"><a name="332">332: </a></span>                break;
+<span class="nocode"><a name="333">333: </a></span>            }
+<span class="nocode"><a name="334">334: </a></span>            if (nextField == null) {
+<span class="nocode"><a name="335">335: </a></span>                if (fieldIndex == 0) {
+<span class="nocode"><a name="336">336: </a></span>                    throw new IllegalArgumentException(&quot;Maximum value exceeded for add&quot;);
+<span class="nocode"><a name="337">337: </a></span>                }
+<span class="nocode"><a name="338">338: </a></span>                nextField = instant.getField(fieldIndex - 1);
+<span class="nocode"><a name="339">339: </a></span>                if (getRangeDurationField().getType() != nextField.getDurationField().getType()) {
+<span class="nocode"><a name="340">340: </a></span>                    throw new IllegalArgumentException(&quot;Fields invalid for add&quot;);
+<span class="nocode"><a name="341">341: </a></span>                }
+<span class="nocode"><a name="342">342: </a></span>            }
+<span class="nocode"><a name="343">343: </a></span>            valueToAdd -= (min - 1) - values[fieldIndex];  // reduce the amount to add
+<span class="nocode"><a name="344">344: </a></span>            values = nextField.add(instant, fieldIndex - 1, values, -1);  // subtract 1 from next bigger field
+<span class="nocode"><a name="345">345: </a></span>            values[fieldIndex] = getMaximumValue(instant, values);  // reset this field to max value
+<span class="nocode"><a name="346">346: </a></span>        }
+<span class="nocode"><a name="347">347: </a></span>        
+<span class="nocode"><a name="348">348: </a></span>        return set(instant, fieldIndex, values, values[fieldIndex]);  // adjusts smaller fields
+<span class="nocode"><a name="349">349: </a></span>    }
+<span class="nocode"><a name="350">350: </a></span>
+<span class="nocode"><a name="351">351: </a></span>    /**
+<span class="nocode"><a name="352">352: </a></span>     * Adds a value (which may be negative) to the partial instant,
+<span class="nocode"><a name="353">353: </a></span>     * wrapping the whole partial if the maximum size of the partial is reached.
+<span class="nocode"><a name="354">354: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="355">355: </a></span>     * The value will be added to this field, overflowing into larger fields
+<span class="nocode"><a name="356">356: </a></span>     * if necessary. Smaller fields should be unaffected, except where the
+<span class="nocode"><a name="357">357: </a></span>     * result would be an invalid value for a smaller field. In this case the
+<span class="nocode"><a name="358">358: </a></span>     * smaller field is adjusted to be in range.
+<span class="nocode"><a name="359">359: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="360">360: </a></span>     * Partial instants only contain some fields. This may result in a maximum
+<span class="nocode"><a name="361">361: </a></span>     * possible value, such as TimeOfDay normally being limited to 23:59:59:999.
+<span class="nocode"><a name="362">362: </a></span>     * If ths limit is reached by the addition, this method will wrap back to
+<span class="nocode"><a name="363">363: </a></span>     * 00:00:00.000. In fact, you would generally only use this method for
+<span class="nocode"><a name="364">364: </a></span>     * classes that have a limitation such as this.
+<span class="nocode"><a name="365">365: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="366">366: </a></span>     * For example, in the ISO chronology:&lt;br&gt;
+<span class="nocode"><a name="367">367: </a></span>     * 10:20:30 add 20 minutes is 10:40:30&lt;br&gt;
+<span class="nocode"><a name="368">368: </a></span>     * 10:20:30 add 45 minutes is 11:05:30&lt;br&gt;
+<span class="nocode"><a name="369">369: </a></span>     * 10:20:30 add 16 hours is 02:20:30&lt;br&gt;
+<span class="nocode"><a name="370">370: </a></span>     * 
+<span class="nocode"><a name="371">371: </a></span>     * @param instant  the partial instant
+<span class="nocode"><a name="372">372: </a></span>     * @param fieldIndex  the index of this field in the partial
+<span class="nocode"><a name="373">373: </a></span>     * @param values  the values of the partial instant which should be updated
+<span class="nocode"><a name="374">374: </a></span>     * @param valueToAdd  the value to add, in the units of the field
+<span class="nocode"><a name="375">375: </a></span>     * @return the passed in values
+<span class="nocode"><a name="376">376: </a></span>     * @throws IllegalArgumentException if the value is invalid or the maximum instant is reached
+<span class="nocode"><a name="377">377: </a></span>     */
+<span class="nocode"><a name="378">378: </a></span>    public int[] addWrapPartial(ReadablePartial instant, int fieldIndex, int[] values, int valueToAdd) {
+<span class="nocode"><a name="379">379: </a></span>        if (valueToAdd == 0) {
+<span class="nocode"><a name="380">380: </a></span>            return values;
+<span class="nocode"><a name="381">381: </a></span>        }
+<span class="nocode"><a name="382">382: </a></span>        // there are more efficient algorithms than this (especially for time only fields)
+<span class="nocode"><a name="383">383: </a></span>        // trouble is when dealing with days and months, so we use this technique of
+<span class="nocode"><a name="384">384: </a></span>        // adding/removing one from the larger field at a time
+<span class="nocode"><a name="385">385: </a></span>        DateTimeField nextField = null;
+<span class="nocode"><a name="386">386: </a></span>        
+<span class="nocode"><a name="387">387: </a></span>        while (valueToAdd &gt; 0) {
+<span class="nocode"><a name="388">388: </a></span>            int max = getMaximumValue(instant, values);
+<span class="nocode"><a name="389">389: </a></span>            long proposed = values[fieldIndex] + valueToAdd;
+<span class="nocode"><a name="390">390: </a></span>            if (proposed &lt;= max) {
+<span class="nocode"><a name="391">391: </a></span>                values[fieldIndex] = (int) proposed;
+<span class="nocode"><a name="392">392: </a></span>                break;
+<span class="nocode"><a name="393">393: </a></span>            }
+<span class="nocode"><a name="394">394: </a></span>            if (nextField == null) {
+<span class="nocode"><a name="395">395: </a></span>                if (fieldIndex == 0) {
+<span class="nocode"><a name="396">396: </a></span>                    valueToAdd -= (max + 1) - values[fieldIndex];
+<span class="nocode"><a name="397">397: </a></span>                    values[fieldIndex] = getMinimumValue(instant, values);
+<span class="nocode"><a name="398">398: </a></span>                    continue;
+<span class="nocode"><a name="399">399: </a></span>                }
+<span class="nocode"><a name="400">400: </a></span>                nextField = instant.getField(fieldIndex - 1);
+<span class="nocode"><a name="401">401: </a></span>                // test only works if this field is UTC (ie. local)
+<span class="nocode"><a name="402">402: </a></span>                if (getRangeDurationField().getType() != nextField.getDurationField().getType()) {
+<span class="nocode"><a name="403">403: </a></span>                    throw new IllegalArgumentException(&quot;Fields invalid for add&quot;);
+<span class="nocode"><a name="404">404: </a></span>                }
+<span class="nocode"><a name="405">405: </a></span>            }
+<span class="nocode"><a name="406">406: </a></span>            valueToAdd -= (max + 1) - values[fieldIndex];  // reduce the amount to add
+<span class="nocode"><a name="407">407: </a></span>            values = nextField.addWrapPartial(instant, fieldIndex - 1, values, 1);  // add 1 to next bigger field
+<span class="nocode"><a name="408">408: </a></span>            values[fieldIndex] = getMinimumValue(instant, values);  // reset this field to zero
+<span class="nocode"><a name="409">409: </a></span>        }
+<span class="nocode"><a name="410">410: </a></span>        while (valueToAdd &lt; 0) {
+<span class="nocode"><a name="411">411: </a></span>            int min = getMinimumValue(instant, values);
+<span class="nocode"><a name="412">412: </a></span>            long proposed = values[fieldIndex] + valueToAdd;
+<span class="nocode"><a name="413">413: </a></span>            if (proposed &gt;= min) {
+<span class="nocode"><a name="414">414: </a></span>                values[fieldIndex] = (int) proposed;
+<span class="nocode"><a name="415">415: </a></span>                break;
+<span class="nocode"><a name="416">416: </a></span>            }
+<span class="nocode"><a name="417">417: </a></span>            if (nextField == null) {
+<span class="nocode"><a name="418">418: </a></span>                if (fieldIndex == 0) {
+<span class="nocode"><a name="419">419: </a></span>                    valueToAdd -= (min - 1) - values[fieldIndex];
+<span class="nocode"><a name="420">420: </a></span>                    values[fieldIndex] = getMaximumValue(instant, values);
+<span class="nocode"><a name="421">421: </a></span>                    continue;
+<span class="nocode"><a name="422">422: </a></span>                }
+<span class="nocode"><a name="423">423: </a></span>                nextField = instant.getField(fieldIndex - 1);
+<span class="nocode"><a name="424">424: </a></span>                if (getRangeDurationField().getType() != nextField.getDurationField().getType()) {
+<span class="nocode"><a name="425">425: </a></span>                    throw new IllegalArgumentException(&quot;Fields invalid for add&quot;);
+<span class="nocode"><a name="426">426: </a></span>                }
+<span class="nocode"><a name="427">427: </a></span>            }
+<span class="nocode"><a name="428">428: </a></span>            valueToAdd -= (min - 1) - values[fieldIndex];  // reduce the amount to add
+<span class="nocode"><a name="429">429: </a></span>            values = nextField.addWrapPartial(instant, fieldIndex - 1, values, -1);  // subtract 1 from next bigger field
+<span class="nocode"><a name="430">430: </a></span>            values[fieldIndex] = getMaximumValue(instant, values);  // reset this field to max value
+<span class="nocode"><a name="431">431: </a></span>        }
+<span class="nocode"><a name="432">432: </a></span>        
+<span class="nocode"><a name="433">433: </a></span>        return set(instant, fieldIndex, values, values[fieldIndex]);  // adjusts smaller fields
+<span class="nocode"><a name="434">434: </a></span>    }
+<span class="nocode"><a name="435">435: </a></span>
+<span class="nocode"><a name="436">436: </a></span>    /**
+<span class="nocode"><a name="437">437: </a></span>     * Adds a value (which may be negative) to the instant value,
+<span class="nocode"><a name="438">438: </a></span>     * wrapping within this field.
+<span class="nocode"><a name="439">439: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="440">440: </a></span>     * The value will be added to this field. If the value is too large to be
+<span class="nocode"><a name="441">441: </a></span>     * added solely to this field then it wraps. Larger fields are always
+<span class="nocode"><a name="442">442: </a></span>     * unaffected. Smaller fields should be unaffected, except where the
+<span class="nocode"><a name="443">443: </a></span>     * result would be an invalid value for a smaller field. In this case the
+<span class="nocode"><a name="444">444: </a></span>     * smaller field is adjusted to be in range.
+<span class="nocode"><a name="445">445: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="446">446: </a></span>     * For example, in the ISO chronology:&lt;br&gt;
+<span class="nocode"><a name="447">447: </a></span>     * 2000-08-20 addWrapField six months is 2000-02-20&lt;br&gt;
+<span class="nocode"><a name="448">448: </a></span>     * 2000-08-20 addWrapField twenty months is 2000-04-20&lt;br&gt;
+<span class="nocode"><a name="449">449: </a></span>     * 2000-08-20 addWrapField minus nine months is 2000-11-20&lt;br&gt;
+<span class="nocode"><a name="450">450: </a></span>     * 2001-01-31 addWrapField one month  is 2001-02-28&lt;br&gt;
+<span class="nocode"><a name="451">451: </a></span>     * 2001-01-31 addWrapField two months is 2001-03-31&lt;br&gt;
+<span class="nocode"><a name="452">452: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="453">453: </a></span>     * The default implementation internally calls set. Subclasses are
+<span class="nocode"><a name="454">454: </a></span>     * encouraged to provide a more efficient implementation.
+<span class="nocode"><a name="455">455: </a></span>     * 
+<span class="nocode"><a name="456">456: </a></span>     * @param instant  the milliseconds from 1970-01-01T00:00:00Z to add to
+<span class="nocode"><a name="457">457: </a></span>     * @param value  the value to add, in the units of the field
+<span class="nocode"><a name="458">458: </a></span>     * @return the updated milliseconds
+<span class="nocode"><a name="459">459: </a></span>     */
+<span class="nocode"><a name="460">460: </a></span>    public long addWrapField(long instant, int value) {
+<span class="nocode"><a name="461">461: </a></span>        int current = get(instant);
+<span class="nocode"><a name="462">462: </a></span>        int wrapped = FieldUtils.getWrappedValue
+<span class="nocode"><a name="463">463: </a></span>            (current, value, getMinimumValue(instant), getMaximumValue(instant));
+<span class="nocode"><a name="464">464: </a></span>        return set(instant, wrapped);
+<span class="nocode"><a name="465">465: </a></span>    }
+<span class="nocode"><a name="466">466: </a></span>
+<span class="nocode"><a name="467">467: </a></span>    /**
+<span class="nocode"><a name="468">468: </a></span>     * Adds a value (which may be negative) to the partial instant,
+<span class="nocode"><a name="469">469: </a></span>     * wrapping within this field.
+<span class="nocode"><a name="470">470: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="471">471: </a></span>     * The value will be added to this field. If the value is too large to be
+<span class="nocode"><a name="472">472: </a></span>     * added solely to this field then it wraps. Larger fields are always
+<span class="nocode"><a name="473">473: </a></span>     * unaffected. Smaller fields should be unaffected, except where the
+<span class="nocode"><a name="474">474: </a></span>     * result would be an invalid value for a smaller field. In this case the
+<span class="nocode"><a name="475">475: </a></span>     * smaller field is adjusted to be in range.
+<span class="nocode"><a name="476">476: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="477">477: </a></span>     * For example, in the ISO chronology:&lt;br&gt;
+<span class="nocode"><a name="478">478: </a></span>     * 2000-08-20 addWrapField six months is 2000-02-20&lt;br&gt;
+<span class="nocode"><a name="479">479: </a></span>     * 2000-08-20 addWrapField twenty months is 2000-04-20&lt;br&gt;
+<span class="nocode"><a name="480">480: </a></span>     * 2000-08-20 addWrapField minus nine months is 2000-11-20&lt;br&gt;
+<span class="nocode"><a name="481">481: </a></span>     * 2001-01-31 addWrapField one month  is 2001-02-28&lt;br&gt;
+<span class="nocode"><a name="482">482: </a></span>     * 2001-01-31 addWrapField two months is 2001-03-31&lt;br&gt;
+<span class="nocode"><a name="483">483: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="484">484: </a></span>     * The default implementation internally calls set. Subclasses are
+<span class="nocode"><a name="485">485: </a></span>     * encouraged to provide a more efficient implementation.
+<span class="nocode"><a name="486">486: </a></span>     * 
+<span class="nocode"><a name="487">487: </a></span>     * @param instant  the partial instant
+<span class="nocode"><a name="488">488: </a></span>     * @param fieldIndex  the index of this field in the instant
+<span class="nocode"><a name="489">489: </a></span>     * @param values  the values of the partial instant which should be updated
+<span class="nocode"><a name="490">490: </a></span>     * @param valueToAdd  the value to add, in the units of the field
+<span class="nocode"><a name="491">491: </a></span>     * @return the passed in values
+<span class="nocode"><a name="492">492: </a></span>     * @throws IllegalArgumentException if the value is invalid
+<span class="nocode"><a name="493">493: </a></span>     */
+<span class="nocode"><a name="494">494: </a></span>    public int[] addWrapField(ReadablePartial instant, int fieldIndex, int[] values, int valueToAdd) {
+<span class="nocode"><a name="495">495: </a></span>        int current = values[fieldIndex];
+<span class="nocode"><a name="496">496: </a></span>        int wrapped = FieldUtils.getWrappedValue
+<span class="nocode"><a name="497">497: </a></span>            (current, valueToAdd, getMinimumValue(instant), getMaximumValue(instant));
+<span class="nocode"><a name="498">498: </a></span>        return set(instant, fieldIndex, values, wrapped);  // adjusts smaller fields
+<span class="nocode"><a name="499">499: </a></span>    }
+<span class="nocode"><a name="500">500: </a></span>
+<span class="nocode"><a name="501">501: </a></span>    //-----------------------------------------------------------------------
+<span class="nocode"><a name="502">502: </a></span>    /**
+<span class="nocode"><a name="503">503: </a></span>     * Computes the difference between two instants, as measured in the units
+<span class="nocode"><a name="504">504: </a></span>     * of this field. Any fractional units are dropped from the result. Calling
+<span class="nocode"><a name="505">505: </a></span>     * getDifference reverses the effect of calling add. In the following code:
+<span class="nocode"><a name="506">506: </a></span>     *
+<span class="nocode"><a name="507">507: </a></span>     * &lt;pre&gt;
+<span class="nocode"><a name="508">508: </a></span>     * long instant = ...
+<span class="nocode"><a name="509">509: </a></span>     * int v = ...
+<span class="nocode"><a name="510">510: </a></span>     * int age = getDifference(add(instant, v), instant);
+<span class="nocode"><a name="511">511: </a></span>     * &lt;/pre&gt;
+<span class="nocode"><a name="512">512: </a></span>     *
+<span class="nocode"><a name="513">513: </a></span>     * The value 'age' is the same as the value 'v'.
+<span class="nocode"><a name="514">514: </a></span>     *
+<span class="nocode"><a name="515">515: </a></span>     * @param minuendInstant the milliseconds from 1970-01-01T00:00:00Z to
+<span class="nocode"><a name="516">516: </a></span>     * subtract from
+<span class="nocode"><a name="517">517: </a></span>     * @param subtrahendInstant the milliseconds from 1970-01-01T00:00:00Z to
+<span class="nocode"><a name="518">518: </a></span>     * subtract off the minuend
+<span class="nocode"><a name="519">519: </a></span>     * @return the difference in the units of this field
+<span class="nocode"><a name="520">520: </a></span>     */
+<span class="nocode"><a name="521">521: </a></span>    public int getDifference(long minuendInstant, long subtrahendInstant) {
+<span class="nocode"><a name="522">522: </a></span>        return getDurationField().getDifference(minuendInstant, subtrahendInstant);
+<span class="nocode"><a name="523">523: </a></span>    }
+<span class="nocode"><a name="524">524: </a></span>
+<span class="nocode"><a name="525">525: </a></span>    /**
+<span class="nocode"><a name="526">526: </a></span>     * Computes the difference between two instants, as measured in the units
+<span class="nocode"><a name="527">527: </a></span>     * of this field. Any fractional units are dropped from the result. Calling
+<span class="nocode"><a name="528">528: </a></span>     * getDifference reverses the effect of calling add. In the following code:
+<span class="nocode"><a name="529">529: </a></span>     *
+<span class="nocode"><a name="530">530: </a></span>     * &lt;pre&gt;
+<span class="nocode"><a name="531">531: </a></span>     * long instant = ...
+<span class="nocode"><a name="532">532: </a></span>     * long v = ...
+<span class="nocode"><a name="533">533: </a></span>     * long age = getDifferenceAsLong(add(instant, v), instant);
+<span class="nocode"><a name="534">534: </a></span>     * &lt;/pre&gt;
+<span class="nocode"><a name="535">535: </a></span>     *
+<span class="nocode"><a name="536">536: </a></span>     * The value 'age' is the same as the value 'v'.
+<span class="nocode"><a name="537">537: </a></span>     *
+<span class="nocode"><a name="538">538: </a></span>     * @param minuendInstant the milliseconds from 1970-01-01T00:00:00Z to
+<span class="nocode"><a name="539">539: </a></span>     * subtract from
+<span class="nocode"><a name="540">540: </a></span>     * @param subtrahendInstant the milliseconds from 1970-01-01T00:00:00Z to
+<span class="nocode"><a name="541">541: </a></span>     * subtract off the minuend
+<span class="nocode"><a name="542">542: </a></span>     * @return the difference in the units of this field
+<span class="nocode"><a name="543">543: </a></span>     */
+<span class="nocode"><a name="544">544: </a></span>    public long getDifferenceAsLong(long minuendInstant, long subtrahendInstant) {
+<span class="nocode"><a name="545">545: </a></span>        return getDurationField().getDifferenceAsLong(minuendInstant, subtrahendInstant);
+<span class="nocode"><a name="546">546: </a></span>    }
+<span class="nocode"><a name="547">547: </a></span>
+<span class="nocode"><a name="548">548: </a></span>    /**
+<span class="nocode"><a name="549">549: </a></span>     * Sets a value in the milliseconds supplied.
+<span class="nocode"><a name="550">550: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="551">551: </a></span>     * The value of this field will be set.
+<span class="nocode"><a name="552">552: </a></span>     * If the value is invalid, an exception if thrown.
+<span class="nocode"><a name="553">553: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="554">554: </a></span>     * If setting this field would make other fields invalid, then those fields
+<span class="nocode"><a name="555">555: </a></span>     * may be changed. For example if the current date is the 31st January, and
+<span class="nocode"><a name="556">556: </a></span>     * the month is set to February, the day would be invalid. Instead, the day
+<span class="nocode"><a name="557">557: </a></span>     * would be changed to the closest value - the 28th/29th February as appropriate.
+<span class="nocode"><a name="558">558: </a></span>     * 
+<span class="nocode"><a name="559">559: </a></span>     * @param instant  the milliseconds from 1970-01-01T00:00:00Z to set in
+<span class="nocode"><a name="560">560: </a></span>     * @param value  the value to set, in the units of the field
+<span class="nocode"><a name="561">561: </a></span>     * @return the updated milliseconds
+<span class="nocode"><a name="562">562: </a></span>     * @throws IllegalArgumentException if the value is invalid
+<span class="nocode"><a name="563">563: </a></span>     */
+<span class="nocode"><a name="564">564: </a></span>    public abstract long set(long instant, int value);
+<span class="nocode"><a name="565">565: </a></span>
+<span class="nocode"><a name="566">566: </a></span>    /**
+<span class="nocode"><a name="567">567: </a></span>     * Sets a value using the specified partial instant.
+<span class="nocode"><a name="568">568: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="569">569: </a></span>     * The value of this field (specified by the index) will be set.
+<span class="nocode"><a name="570">570: </a></span>     * If the value is invalid, an exception if thrown.
+<span class="nocode"><a name="571">571: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="572">572: </a></span>     * If setting this field would make other fields invalid, then those fields
+<span class="nocode"><a name="573">573: </a></span>     * may be changed. For example if the current date is the 31st January, and
+<span class="nocode"><a name="574">574: </a></span>     * the month is set to February, the day would be invalid. Instead, the day
+<span class="nocode"><a name="575">575: </a></span>     * would be changed to the closest value - the 28th/29th February as appropriate.
+<span class="nocode"><a name="576">576: </a></span>     * 
+<span class="nocode"><a name="577">577: </a></span>     * @param partial  the partial instant
+<span class="nocode"><a name="578">578: </a></span>     * @param fieldIndex  the index of this field in the instant
+<span class="nocode"><a name="579">579: </a></span>     * @param values  the values to update
+<span class="nocode"><a name="580">580: </a></span>     * @param newValue  the value to set, in the units of the field
+<span class="nocode"><a name="581">581: </a></span>     * @return the updated values
+<span class="nocode"><a name="582">582: </a></span>     * @throws IllegalArgumentException if the value is invalid
+<span class="nocode"><a name="583">583: </a></span>     */
+<span class="nocode"><a name="584">584: </a></span>    public int[] set(ReadablePartial partial, int fieldIndex, int[] values, int newValue) {
+<span class="nocode"><a name="585">585: </a></span>        FieldUtils.verifyValueBounds(this, newValue, getMinimumValue(partial, values), getMaximumValue(partial, values));
+<span class="nocode"><a name="586">586: </a></span>        values[fieldIndex] = newValue;
+<span class="nocode"><a name="587">587: </a></span>        
+<span class="nocode"><a name="588">588: </a></span>        // may need to adjust smaller fields
+<span class="nocode"><a name="589">589: </a></span>        for (int i = fieldIndex + 1; i &lt; partial.size(); i++) {
+<span class="nocode"><a name="590">590: </a></span>            DateTimeField field = partial.getField(i);
+<span class="nocode"><a name="591">591: </a></span>            if (values[i] &gt; field.getMaximumValue(partial, values)) {
+<span class="nocode"><a name="592">592: </a></span>                values[i] = field.getMaximumValue(partial, values);
+<span class="nocode"><a name="593">593: </a></span>            }
+<span class="nocode"><a name="594">594: </a></span>            if (values[i] &lt; field.getMinimumValue(partial, values)) {
+<span class="nocode"><a name="595">595: </a></span>                values[i] = field.getMinimumValue(partial, values);
+<span class="nocode"><a name="596">596: </a></span>            }
+<span class="nocode"><a name="597">597: </a></span>        }
+<span class="nocode"><a name="598">598: </a></span>        return values;
+<span class="nocode"><a name="599">599: </a></span>    }
+<span class="nocode"><a name="600">600: </a></span>
+<span class="nocode"><a name="601">601: </a></span>    /**
+<span class="nocode"><a name="602">602: </a></span>     * Sets a value in the milliseconds supplied from a human-readable, text value.
+<span class="nocode"><a name="603">603: </a></span>     * If the specified locale is null, the default locale is used.
+<span class="nocode"><a name="604">604: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="605">605: </a></span>     * This implementation uses &lt;code&gt;convertText(String, Locale)&lt;/code&gt; and
+<span class="nocode"><a name="606">606: </a></span>     * {@link #set(long, int)}.
+<span class="nocode"><a name="607">607: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="608">608: </a></span>     * Note: subclasses that override this method should also override
+<span class="nocode"><a name="609">609: </a></span>     * getAsText.
+<span class="nocode"><a name="610">610: </a></span>     *
+<span class="nocode"><a name="611">611: </a></span>     * @param instant  the milliseconds from 1970-01-01T00:00:00Z to set in
+<span class="nocode"><a name="612">612: </a></span>     * @param text  the text value to set
+<span class="nocode"><a name="613">613: </a></span>     * @param locale the locale to use for selecting a text symbol, null for default
+<span class="nocode"><a name="614">614: </a></span>     * @return the updated milliseconds
+<span class="nocode"><a name="615">615: </a></span>     * @throws IllegalArgumentException if the text value is invalid
+<span class="nocode"><a name="616">616: </a></span>     */
+<span class="nocode"><a name="617">617: </a></span>    public long set(long instant, String text, Locale locale) {
+<span class="nocode"><a name="618">618: </a></span>        int value = convertText(text, locale);
+<span class="nocode"><a name="619">619: </a></span>        return set(instant, value);
+<span class="nocode"><a name="620">620: </a></span>    }
+<span class="nocode"><a name="621">621: </a></span>
+<span class="nocode"><a name="622">622: </a></span>    /**
+<span class="nocode"><a name="623">623: </a></span>     * Sets a value in the milliseconds supplied from a human-readable, text value.
+<span class="nocode"><a name="624">624: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="625">625: </a></span>     * This implementation uses {@link #set(long, String, Locale)}.
+<span class="nocode"><a name="626">626: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="627">627: </a></span>     * Note: subclasses that override this method should also override getAsText.
+<span class="nocode"><a name="628">628: </a></span>     *
+<span class="nocode"><a name="629">629: </a></span>     * @param instant  the milliseconds from 1970-01-01T00:00:00Z to set in
+<span class="nocode"><a name="630">630: </a></span>     * @param text  the text value to set
+<span class="nocode"><a name="631">631: </a></span>     * @return the updated milliseconds
+<span class="nocode"><a name="632">632: </a></span>     * @throws IllegalArgumentException if the text value is invalid
+<span class="nocode"><a name="633">633: </a></span>     */
+<span class="nocode"><a name="634">634: </a></span>    public final long set(long instant, String text) {
+<span class="nocode"><a name="635">635: </a></span>        return set(instant, text, null);
+<span class="nocode"><a name="636">636: </a></span>    }
+<span class="nocode"><a name="637">637: </a></span>
+<span class="nocode"><a name="638">638: </a></span>    /**
+<span class="nocode"><a name="639">639: </a></span>     * Sets a value in the milliseconds supplied from a human-readable, text value.
+<span class="nocode"><a name="640">640: </a></span>     * If the specified locale is null, the default locale is used.
+<span class="nocode"><a name="641">641: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="642">642: </a></span>     * This implementation uses &lt;code&gt;convertText(String, Locale)&lt;/code&gt; and
+<span class="nocode"><a name="643">643: </a></span>     * {@link #set(ReadablePartial, int, int[], int)}.
+<span class="nocode"><a name="644">644: </a></span>     *
+<span class="nocode"><a name="645">645: </a></span>     * @param instant  the partial instant
+<span class="nocode"><a name="646">646: </a></span>     * @param fieldIndex  the index of this field in the instant
+<span class="nocode"><a name="647">647: </a></span>     * @param values  the values of the partial instant which should be updated
+<span class="nocode"><a name="648">648: </a></span>     * @param text  the text value to set
+<span class="nocode"><a name="649">649: </a></span>     * @param locale the locale to use for selecting a text symbol, null for default
+<span class="nocode"><a name="650">650: </a></span>     * @return the passed in values
+<span class="nocode"><a name="651">651: </a></span>     * @throws IllegalArgumentException if the text value is invalid
+<span class="nocode"><a name="652">652: </a></span>     */
+<span class="nocode"><a name="653">653: </a></span>    public int[] set(ReadablePartial instant, int fieldIndex, int[] values, String text, Locale locale) {
+<span class="nocode"><a name="654">654: </a></span>        int value = convertText(text, locale);
+<span class="nocode"><a name="655">655: </a></span>        return set(instant, fieldIndex, values, value);
+<span class="nocode"><a name="656">656: </a></span>    }
+<span class="nocode"><a name="657">657: </a></span>
+<span class="nocode"><a name="658">658: </a></span>    /**
+<span class="nocode"><a name="659">659: </a></span>     * Convert the specified text and locale into a value.
+<span class="nocode"><a name="660">660: </a></span>     * 
+<span class="nocode"><a name="661">661: </a></span>     * @param text  the text to convert
+<span class="nocode"><a name="662">662: </a></span>     * @param locale  the locale to convert using
+<span class="nocode"><a name="663">663: </a></span>     * @return the value extracted from the text
+<span class="nocode"><a name="664">664: </a></span>     * @throws IllegalArgumentException if the text is invalid
+<span class="nocode"><a name="665">665: </a></span>     */
+<span class="nocode"><a name="666">666: </a></span>    protected int convertText(String text, Locale locale) {
+<span class="nocode"><a name="667">667: </a></span>        try {
+<span class="nocode"><a name="668">668: </a></span>            return Integer.parseInt(text);
+<span class="nocode"><a name="669">669: </a></span>        } catch (NumberFormatException ex) {
+<span class="nocode"><a name="670">670: </a></span>            throw new IllegalFieldValueException(getType(), text);
+<span class="nocode"><a name="671">671: </a></span>        }
+<span class="nocode"><a name="672">672: </a></span>    }
+<span class="nocode"><a name="673">673: </a></span>
+<span class="nocode"><a name="674">674: </a></span>    // Extra information API
+<span class="nocode"><a name="675">675: </a></span>    //------------------------------------------------------------------------
+<span class="nocode"><a name="676">676: </a></span>    /**
+<span class="nocode"><a name="677">677: </a></span>     * Returns the duration per unit value of this field. For example, if this
+<span class="nocode"><a name="678">678: </a></span>     * field represents &quot;hour of day&quot;, then the unit duration is an hour.
+<span class="nocode"><a name="679">679: </a></span>     *
+<span class="nocode"><a name="680">680: </a></span>     * @return the duration of this field, or UnsupportedDurationField if field
+<span class="nocode"><a name="681">681: </a></span>     * has no duration
+<span class="nocode"><a name="682">682: </a></span>     */
+<span class="nocode"><a name="683">683: </a></span>    public abstract DurationField getDurationField();
+<span class="nocode"><a name="684">684: </a></span>
+<span class="nocode"><a name="685">685: </a></span>    /**
+<span class="nocode"><a name="686">686: </a></span>     * Returns the range duration of this field. For example, if this field
+<span class="nocode"><a name="687">687: </a></span>     * represents &quot;hour of day&quot;, then the range duration is a day.
+<span class="nocode"><a name="688">688: </a></span>     *
+<span class="nocode"><a name="689">689: </a></span>     * @return the range duration of this field, or null if field has no range
+<span class="nocode"><a name="690">690: </a></span>     */
+<span class="nocode"><a name="691">691: </a></span>    public abstract DurationField getRangeDurationField();
+<span class="nocode"><a name="692">692: </a></span>
+<span class="nocode"><a name="693">693: </a></span>    /**
+<span class="nocode"><a name="694">694: </a></span>     * Returns whether this field is 'leap' for the specified instant.
+<span class="nocode"><a name="695">695: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="696">696: </a></span>     * For example, a leap year would return true, a non leap year would return
+<span class="nocode"><a name="697">697: </a></span>     * false.
+<span class="nocode"><a name="698">698: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="699">699: </a></span>     * This implementation returns false.
+<span class="nocode"><a name="700">700: </a></span>     * 
+<span class="nocode"><a name="701">701: </a></span>     * @return true if the field is 'leap'
+<span class="nocode"><a name="702">702: </a></span>     */
+<span class="nocode"><a name="703">703: </a></span>    public boolean isLeap(long instant) {
+<span class="nocode"><a name="704">704: </a></span>        return false;
+<span class="nocode"><a name="705">705: </a></span>    }
+<span class="nocode"><a name="706">706: </a></span>
+<span class="nocode"><a name="707">707: </a></span>    /**
+<span class="nocode"><a name="708">708: </a></span>     * Gets the amount by which this field is 'leap' for the specified instant.
+<span class="nocode"><a name="709">709: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="710">710: </a></span>     * For example, a leap year would return one, a non leap year would return
+<span class="nocode"><a name="711">711: </a></span>     * zero.
+<span class="nocode"><a name="712">712: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="713">713: </a></span>     * This implementation returns zero.
+<span class="nocode"><a name="714">714: </a></span>     */
+<span class="nocode"><a name="715">715: </a></span>    public int getLeapAmount(long instant) {
+<span class="nocode"><a name="716">716: </a></span>        return 0;
+<span class="nocode"><a name="717">717: </a></span>    }
+<span class="nocode"><a name="718">718: </a></span>
+<span class="nocode"><a name="719">719: </a></span>    /**
+<span class="nocode"><a name="720">720: </a></span>     * If this field were to leap, then it would be in units described by the
+<span class="nocode"><a name="721">721: </a></span>     * returned duration. If this field doesn't ever leap, null is returned.
+<span class="nocode"><a name="722">722: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="723">723: </a></span>     * This implementation returns null.
+<span class="nocode"><a name="724">724: </a></span>     */
+<span class="nocode"><a name="725">725: </a></span>    public DurationField getLeapDurationField() {
+<span class="nocode"><a name="726">726: </a></span>        return null;
+<span class="nocode"><a name="727">727: </a></span>    }
+<span class="nocode"><a name="728">728: </a></span>
+<span class="nocode"><a name="729">729: </a></span>    /**
+<span class="nocode"><a name="730">730: </a></span>     * Get the minimum allowable value for this field.
+<span class="nocode"><a name="731">731: </a></span>     * 
+<span class="nocode"><a name="732">732: </a></span>     * @return the minimum valid value for this field, in the units of the
+<span class="nocode"><a name="733">733: </a></span>     * field
+<span class="nocode"><a name="734">734: </a></span>     */
+<span class="nocode"><a name="735">735: </a></span>    public abstract int getMinimumValue();
+<span class="nocode"><a name="736">736: </a></span>
+<span class="nocode"><a name="737">737: </a></span>    /**
+<span class="nocode"><a name="738">738: </a></span>     * Get the minimum value for this field evaluated at the specified time.
+<span class="nocode"><a name="739">739: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="740">740: </a></span>     * This implementation returns the same as {@link #getMinimumValue()}.
+<span class="nocode"><a name="741">741: </a></span>     * 
+<span class="nocode"><a name="742">742: </a></span>     * @param instant  the milliseconds from 1970-01-01T00:00:00Z to query
+<span class="nocode"><a name="743">743: </a></span>     * @return the minimum value for this field, in the units of the field
+<span class="nocode"><a name="744">744: </a></span>     */
+<span class="nocode"><a name="745">745: </a></span>    public int getMinimumValue(long instant) {
+<span class="nocode"><a name="746">746: </a></span>        return getMinimumValue();
+<span class="nocode"><a name="747">747: </a></span>    }
+<span class="nocode"><a name="748">748: </a></span>
+<span class="nocode"><a name="749">749: </a></span>    /**
+<span class="nocode"><a name="750">750: </a></span>     * Get the minimum value for this field evaluated at the specified instant.
+<span class="nocode"><a name="751">751: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="752">752: </a></span>     * This implementation returns the same as {@link #getMinimumValue()}.
+<span class="nocode"><a name="753">753: </a></span>     * 
+<span class="nocode"><a name="754">754: </a></span>     * @param instant  the partial instant to query
+<span class="nocode"><a name="755">755: </a></span>     * @return the minimum value for this field, in the units of the field
+<span class="nocode"><a name="756">756: </a></span>     */
+<span class="nocode"><a name="757">757: </a></span>    public int getMinimumValue(ReadablePartial instant) {
+<span class="nocode"><a name="758">758: </a></span>        return getMinimumValue();
+<span class="nocode"><a name="759">759: </a></span>    }
+<span class="nocode"><a name="760">760: </a></span>
+<span class="nocode"><a name="761">761: </a></span>    /**
+<span class="nocode"><a name="762">762: </a></span>     * Get the minimum value for this field using the partial instant and
+<span class="nocode"><a name="763">763: </a></span>     * the specified values.
+<span class="nocode"><a name="764">764: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="765">765: </a></span>     * This implementation returns the same as {@link #getMinimumValue(ReadablePartial)}.
+<span class="nocode"><a name="766">766: </a></span>     * 
+<span class="nocode"><a name="767">767: </a></span>     * @param instant  the partial instant to query
+<span class="nocode"><a name="768">768: </a></span>     * @param values  the values to use
+<span class="nocode"><a name="769">769: </a></span>     * @return the minimum value for this field, in the units of the field
+<span class="nocode"><a name="770">770: </a></span>     */
+<span class="nocode"><a name="771">771: </a></span>    public int getMinimumValue(ReadablePartial instant, int[] values) {
+<span class="nocode"><a name="772">772: </a></span>        return getMinimumValue(instant);
+<span class="nocode"><a name="773">773: </a></span>    }
+<span class="nocode"><a name="774">774: </a></span>
+<span class="nocode"><a name="775">775: </a></span>    /**
+<span class="nocode"><a name="776">776: </a></span>     * Get the maximum allowable value for this field.
+<span class="nocode"><a name="777">777: </a></span>     * 
+<span class="nocode"><a name="778">778: </a></span>     * @return the maximum valid value for this field, in the units of the
+<span class="nocode"><a name="779">779: </a></span>     * field
+<span class="nocode"><a name="780">780: </a></span>     */
+<span class="nocode"><a name="781">781: </a></span>    public abstract int getMaximumValue();
+<span class="nocode"><a name="782">782: </a></span>
+<span class="nocode"><a name="783">783: </a></span>    /**
+<span class="nocode"><a name="784">784: </a></span>     * Get the maximum value for this field evaluated at the specified time.
+<span class="nocode"><a name="785">785: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="786">786: </a></span>     * This implementation returns the same as {@link #getMaximumValue()}.
+<span class="nocode"><a name="787">787: </a></span>     * 
+<span class="nocode"><a name="788">788: </a></span>     * @param instant  the milliseconds from 1970-01-01T00:00:00Z to query
+<span class="nocode"><a name="789">789: </a></span>     * @return the maximum value for this field, in the units of the field
+<span class="nocode"><a name="790">790: </a></span>     */
+<span class="nocode"><a name="791">791: </a></span>    public int getMaximumValue(long instant) {
+<span class="nocode"><a name="792">792: </a></span>        return getMaximumValue();
+<span class="nocode"><a name="793">793: </a></span>    }
+<span class="nocode"><a name="794">794: </a></span>
+<span class="nocode"><a name="795">795: </a></span>    /**
+<span class="nocode"><a name="796">796: </a></span>     * Get the maximum value for this field evaluated at the specified instant.
+<span class="nocode"><a name="797">797: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="798">798: </a></span>     * This implementation returns the same as {@link #getMaximumValue()}.
+<span class="nocode"><a name="799">799: </a></span>     * 
+<span class="nocode"><a name="800">800: </a></span>     * @param instant  the partial instant to query
+<span class="nocode"><a name="801">801: </a></span>     * @return the maximum value for this field, in the units of the field
+<span class="nocode"><a name="802">802: </a></span>     */
+<span class="nocode"><a name="803">803: </a></span>    public int getMaximumValue(ReadablePartial instant) {
+<span class="nocode"><a name="804">804: </a></span>        return getMaximumValue();
+<span class="nocode"><a name="805">805: </a></span>    }
+<span class="nocode"><a name="806">806: </a></span>
+<span class="nocode"><a name="807">807: </a></span>    /**
+<span class="nocode"><a name="808">808: </a></span>     * Get the maximum value for this field using the partial instant and
+<span class="nocode"><a name="809">809: </a></span>     * the specified values.
+<span class="nocode"><a name="810">810: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="811">811: </a></span>     * This implementation returns the same as {@link #getMaximumValue(ReadablePartial)}.
+<span class="nocode"><a name="812">812: </a></span>     * 
+<span class="nocode"><a name="813">813: </a></span>     * @param instant  the partial instant to query
+<span class="nocode"><a name="814">814: </a></span>     * @param values  the values to use
+<span class="nocode"><a name="815">815: </a></span>     * @return the maximum value for this field, in the units of the field
+<span class="nocode"><a name="816">816: </a></span>     */
+<span class="nocode"><a name="817">817: </a></span>    public int getMaximumValue(ReadablePartial instant, int[] values) {
+<span class="nocode"><a name="818">818: </a></span>        return getMaximumValue(instant);
+<span class="nocode"><a name="819">819: </a></span>    }
+<span class="nocode"><a name="820">820: </a></span>
+<span class="nocode"><a name="821">821: </a></span>    /**
+<span class="nocode"><a name="822">822: </a></span>     * Get the maximum text value for this field. The default implementation
+<span class="nocode"><a name="823">823: </a></span>     * returns the equivalent of Integer.toString(getMaximumValue()).length().
+<span class="nocode"><a name="824">824: </a></span>     * 
+<span class="nocode"><a name="825">825: </a></span>     * @param locale  the locale to use for selecting a text symbol
+<span class="nocode"><a name="826">826: </a></span>     * @return the maximum text length
+<span class="nocode"><a name="827">827: </a></span>     */
+<span class="nocode"><a name="828">828: </a></span>    public int getMaximumTextLength(Locale locale) {
+<span class="nocode"><a name="829">829: </a></span>        int max = getMaximumValue();
+<span class="nocode"><a name="830">830: </a></span>        if (max &gt;= 0) {
+<span class="nocode"><a name="831">831: </a></span>            if (max &lt; 10) {
+<span class="nocode"><a name="832">832: </a></span>                return 1;
+<span class="nocode"><a name="833">833: </a></span>            } else if (max &lt; 100) {
+<span class="nocode"><a name="834">834: </a></span>                return 2;
+<span class="nocode"><a name="835">835: </a></span>            } else if (max &lt; 1000) {
+<span class="nocode"><a name="836">836: </a></span>                return 3;
+<span class="nocode"><a name="837">837: </a></span>            }
+<span class="nocode"><a name="838">838: </a></span>        }
+<span class="nocode"><a name="839">839: </a></span>        return Integer.toString(max).length();
+<span class="nocode"><a name="840">840: </a></span>    }
+<span class="nocode"><a name="841">841: </a></span>
+<span class="nocode"><a name="842">842: </a></span>    /**
+<span class="nocode"><a name="843">843: </a></span>     * Get the maximum short text value for this field. The default
+<span class="nocode"><a name="844">844: </a></span>     * implementation returns getMaximumTextLength().
+<span class="nocode"><a name="845">845: </a></span>     * 
+<span class="nocode"><a name="846">846: </a></span>     * @param locale  the locale to use for selecting a text symbol
+<span class="nocode"><a name="847">847: </a></span>     * @return the maximum short text length
+<span class="nocode"><a name="848">848: </a></span>     */
+<span class="nocode"><a name="849">849: </a></span>    public int getMaximumShortTextLength(Locale locale) {
+<span class="nocode"><a name="850">850: </a></span>        return getMaximumTextLength(locale);
+<span class="nocode"><a name="851">851: </a></span>    }
+<span class="nocode"><a name="852">852: </a></span>
+<span class="nocode"><a name="853">853: </a></span>    // Calculation API
+<span class="nocode"><a name="854">854: </a></span>    //------------------------------------------------------------------------
+<span class="nocode"><a name="855">855: </a></span>    /**
+<span class="nocode"><a name="856">856: </a></span>     * Round to the lowest whole unit of this field. After rounding, the value
+<span class="nocode"><a name="857">857: </a></span>     * of this field and all fields of a higher magnitude are retained. The
+<span class="nocode"><a name="858">858: </a></span>     * fractional millis that cannot be expressed in whole increments of this
+<span class="nocode"><a name="859">859: </a></span>     * field are set to minimum.
+<span class="nocode"><a name="860">860: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="861">861: </a></span>     * For example, a datetime of 2002-11-02T23:34:56.789, rounded to the
+<span class="nocode"><a name="862">862: </a></span>     * lowest whole hour is 2002-11-02T23:00:00.000.
+<span class="nocode"><a name="863">863: </a></span>     *
+<span class="nocode"><a name="864">864: </a></span>     * @param instant  the milliseconds from 1970-01-01T00:00:00Z to round
+<span class="nocode"><a name="865">865: </a></span>     * @return rounded milliseconds
+<span class="nocode"><a name="866">866: </a></span>     */
+<span class="nocode"><a name="867">867: </a></span>    public abstract long roundFloor(long instant);
+<span class="nocode"><a name="868">868: </a></span>
+<span class="nocode"><a name="869">869: </a></span>    /**
+<span class="nocode"><a name="870">870: </a></span>     * Round to the highest whole unit of this field. The value of this field
+<span class="nocode"><a name="871">871: </a></span>     * and all fields of a higher magnitude may be incremented in order to
+<span class="nocode"><a name="872">872: </a></span>     * achieve this result. The fractional millis that cannot be expressed in
+<span class="nocode"><a name="873">873: </a></span>     * whole increments of this field are set to minimum.
+<span class="nocode"><a name="874">874: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="875">875: </a></span>     * For example, a datetime of 2002-11-02T23:34:56.789, rounded to the
+<span class="nocode"><a name="876">876: </a></span>     * highest whole hour is 2002-11-03T00:00:00.000.
+<span class="nocode"><a name="877">877: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="878">878: </a></span>     * The default implementation calls roundFloor, and if the instant is
+<span class="nocode"><a name="879">879: </a></span>     * modified as a result, adds one field unit. Subclasses are encouraged to
+<span class="nocode"><a name="880">880: </a></span>     * provide a more efficient implementation.
+<span class="nocode"><a name="881">881: </a></span>     *
+<span class="nocode"><a name="882">882: </a></span>     * @param instant  the milliseconds from 1970-01-01T00:00:00Z to round
+<span class="nocode"><a name="883">883: </a></span>     * @return rounded milliseconds
+<span class="nocode"><a name="884">884: </a></span>     */
+<span class="nocode"><a name="885">885: </a></span>    public long roundCeiling(long instant) {
+<span class="nocode"><a name="886">886: </a></span>        long newInstant = roundFloor(instant);
+<span class="nocode"><a name="887">887: </a></span>        if (newInstant != instant) {
+<span class="nocode"><a name="888">888: </a></span>            instant = add(newInstant, 1);
+<span class="nocode"><a name="889">889: </a></span>        }
+<span class="nocode"><a name="890">890: </a></span>        return instant;
+<span class="nocode"><a name="891">891: </a></span>    }
+<span class="nocode"><a name="892">892: </a></span>
+<span class="nocode"><a name="893">893: </a></span>    /**
+<span class="nocode"><a name="894">894: </a></span>     * Round to the nearest whole unit of this field. If the given millisecond
+<span class="nocode"><a name="895">895: </a></span>     * value is closer to the floor or is exactly halfway, this function
+<span class="nocode"><a name="896">896: </a></span>     * behaves like roundFloor. If the millisecond value is closer to the
+<span class="nocode"><a name="897">897: </a></span>     * ceiling, this function behaves like roundCeiling.
+<span class="nocode"><a name="898">898: </a></span>     *
+<span class="nocode"><a name="899">899: </a></span>     * @param instant  the milliseconds from 1970-01-01T00:00:00Z to round
+<span class="nocode"><a name="900">900: </a></span>     * @return rounded milliseconds
+<span class="nocode"><a name="901">901: </a></span>     */
+<span class="nocode"><a name="902">902: </a></span>    public long roundHalfFloor(long instant) {
+<span class="nocode"><a name="903">903: </a></span>        long floor = roundFloor(instant);
+<span class="nocode"><a name="904">904: </a></span>        long ceiling = roundCeiling(instant);
+<span class="nocode"><a name="905">905: </a></span>
+<span class="nocode"><a name="906">906: </a></span>        long diffFromFloor = instant - floor;
+<span class="nocode"><a name="907">907: </a></span>        long diffToCeiling = ceiling - instant;
+<span class="nocode"><a name="908">908: </a></span>
+<span class="nocode"><a name="909">909: </a></span>        if (diffFromFloor &lt;= diffToCeiling) {
+<span class="nocode"><a name="910">910: </a></span>            // Closer to the floor, or halfway - round floor
+<span class="nocode"><a name="911">911: </a></span>            return floor;
+<span class="nocode"><a name="912">912: </a></span>        } else {
+<span class="nocode"><a name="913">913: </a></span>            return ceiling;
+<span class="nocode"><a name="914">914: </a></span>        }
+<span class="nocode"><a name="915">915: </a></span>    }
+<span class="nocode"><a name="916">916: </a></span>
+<span class="nocode"><a name="917">917: </a></span>    /**
+<span class="nocode"><a name="918">918: </a></span>     * Round to the nearest whole unit of this field. If the given millisecond
+<span class="nocode"><a name="919">919: </a></span>     * value is closer to the floor, this function behaves like roundFloor. If
+<span class="nocode"><a name="920">920: </a></span>     * the millisecond value is closer to the ceiling or is exactly halfway,
+<span class="nocode"><a name="921">921: </a></span>     * this function behaves like roundCeiling.
+<span class="nocode"><a name="922">922: </a></span>     *
+<span class="nocode"><a name="923">923: </a></span>     * @param instant  the milliseconds from 1970-01-01T00:00:00Z to round
+<span class="nocode"><a name="924">924: </a></span>     * @return rounded milliseconds
+<span class="nocode"><a name="925">925: </a></span>     */
+<span class="nocode"><a name="926">926: </a></span>    public long roundHalfCeiling(long instant) {
+<span class="nocode"><a name="927">927: </a></span>        long floor = roundFloor(instant);
+<span class="nocode"><a name="928">928: </a></span>        long ceiling = roundCeiling(instant);
+<span class="nocode"><a name="929">929: </a></span>
+<span class="nocode"><a name="930">930: </a></span>        long diffFromFloor = instant - floor;
+<span class="nocode"><a name="931">931: </a></span>        long diffToCeiling = ceiling - instant;
+<span class="nocode"><a name="932">932: </a></span>
+<span class="nocode"><a name="933">933: </a></span>        if (diffToCeiling &lt;= diffFromFloor) {
+<span class="nocode"><a name="934">934: </a></span>            // Closer to the ceiling, or halfway - round ceiling
+<span class="nocode"><a name="935">935: </a></span>            return ceiling;
+<span class="nocode"><a name="936">936: </a></span>        } else {
+<span class="nocode"><a name="937">937: </a></span>            return floor;
+<span class="nocode"><a name="938">938: </a></span>        }
+<span class="nocode"><a name="939">939: </a></span>    }
+<span class="nocode"><a name="940">940: </a></span>
+<span class="nocode"><a name="941">941: </a></span>    /**
+<span class="nocode"><a name="942">942: </a></span>     * Round to the nearest whole unit of this field. If the given millisecond
+<span class="nocode"><a name="943">943: </a></span>     * value is closer to the floor, this function behaves like roundFloor. If
+<span class="nocode"><a name="944">944: </a></span>     * the millisecond value is closer to the ceiling, this function behaves
+<span class="nocode"><a name="945">945: </a></span>     * like roundCeiling.
+<span class="nocode"><a name="946">946: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="947">947: </a></span>     * If the millisecond value is exactly halfway between the floor and
+<span class="nocode"><a name="948">948: </a></span>     * ceiling, the ceiling is chosen over the floor only if it makes this
+<span class="nocode"><a name="949">949: </a></span>     * field's value even.
+<span class="nocode"><a name="950">950: </a></span>     *
+<span class="nocode"><a name="951">951: </a></span>     * @param instant  the milliseconds from 1970-01-01T00:00:00Z to round
+<span class="nocode"><a name="952">952: </a></span>     * @return rounded milliseconds
+<span class="nocode"><a name="953">953: </a></span>     */
+<span class="nocode"><a name="954">954: </a></span>    public long roundHalfEven(long instant) {
+<span class="nocode"><a name="955">955: </a></span>        long floor = roundFloor(instant);
+<span class="nocode"><a name="956">956: </a></span>        long ceiling = roundCeiling(instant);
+<span class="nocode"><a name="957">957: </a></span>
+<span class="nocode"><a name="958">958: </a></span>        long diffFromFloor = instant - floor;
+<span class="nocode"><a name="959">959: </a></span>        long diffToCeiling = ceiling - instant;
+<span class="nocode"><a name="960">960: </a></span>
+<span class="nocode"><a name="961">961: </a></span>        if (diffFromFloor &lt; diffToCeiling) {
+<span class="nocode"><a name="962">962: </a></span>            // Closer to the floor - round floor
+<span class="nocode"><a name="963">963: </a></span>            return floor;
+<span class="nocode"><a name="964">964: </a></span>        } else if (diffToCeiling &lt; diffFromFloor) {
+<span class="nocode"><a name="965">965: </a></span>            // Closer to the ceiling - round ceiling
+<span class="nocode"><a name="966">966: </a></span>            return ceiling;
+<span class="nocode"><a name="967">967: </a></span>        } else {
+<span class="nocode"><a name="968">968: </a></span>            // Round to the instant that makes this field even. If both values
+<span class="nocode"><a name="969">969: </a></span>            // make this field even (unlikely), favor the ceiling.
+<span class="nocode"><a name="970">970: </a></span>            if ((get(ceiling) &amp; 1) == 0) {
+<span class="nocode"><a name="971">971: </a></span>                return ceiling;
+<span class="nocode"><a name="972">972: </a></span>            }
+<span class="nocode"><a name="973">973: </a></span>            return floor;
+<span class="nocode"><a name="974">974: </a></span>        }
+<span class="nocode"><a name="975">975: </a></span>    }
+<span class="nocode"><a name="976">976: </a></span>
+<span class="nocode"><a name="977">977: </a></span>    /**
+<span class="nocode"><a name="978">978: </a></span>     * Returns the fractional duration milliseconds of this field. In other
+<span class="nocode"><a name="979">979: </a></span>     * words, calling remainder returns the duration that roundFloor would
+<span class="nocode"><a name="980">980: </a></span>     * subtract.
+<span class="nocode"><a name="981">981: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="982">982: </a></span>     * For example, on a datetime of 2002-11-02T23:34:56.789, the remainder by
+<span class="nocode"><a name="983">983: </a></span>     * hour is 34 minutes and 56.789 seconds.
+<span class="nocode"><a name="984">984: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="985">985: </a></span>     * The default implementation computes
+<span class="nocode"><a name="986">986: </a></span>     * &lt;code&gt;instant - roundFloor(instant)&lt;/code&gt;. Subclasses are encouraged to
+<span class="nocode"><a name="987">987: </a></span>     * provide a more efficient implementation.
+<span class="nocode"><a name="988">988: </a></span>     *
+<span class="nocode"><a name="989">989: </a></span>     * @param instant the milliseconds from 1970-01-01T00:00:00Z to get the
+<span class="nocode"><a name="990">990: </a></span>     * remainder
+<span class="nocode"><a name="991">991: </a></span>     * @return remainder duration, in milliseconds
+<span class="nocode"><a name="992">992: </a></span>     */
+<span class="nocode"><a name="993">993: </a></span>    public long remainder(long instant) {
+<span class="nocode"><a name="994">994: </a></span>        return instant - roundFloor(instant);
+<span class="nocode"><a name="995">995: </a></span>    }
+<span class="nocode"><a name="996">996: </a></span>
+<span class="nocode"><a name="997">997: </a></span>    /**
+<span class="nocode"><a name="998">998: </a></span>     * Get a suitable debug string.
+<span class="nocode"><a name="999">999: </a></span>     * 
+<span class="nocode"><a name="1000">1000: </a></span>     * @return debug string
+<span class="nocode"><a name="1001">1001: </a></span>     */
+<span class="nocode"><a name="1002">1002: </a></span>    public String toString() {
+<span class="nocode"><a name="1003">1003: </a></span>        return &quot;DateTimeField[&quot; + getName() + ']';
+<span class="nocode"><a name="1004">1004: </a></span>    }
+<span class="nocode"><a name="1005">1005: </a></span>
+<span class="nocode"><a name="1006">1006: </a></span>}
+</pre><table class="mutation_table" summary="Mutations">
+<tr><th>ID</th><th>Line</th><th>Type</th><th>Detected</th></tr><tr><td>4260</td><td><a href="#51">51</a></td><td>Negate jump condition (Replace IFNONNULL with  IFNULL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>4261</td><td><a href="#62">62</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>4263</td><td><a href="#69">69</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>4262</td><td><a href="#69">69</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>4264</td><td><a href="#94">94</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>4265</td><td><a href="#94">94(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>4266</td><td><a href="#106">106</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>4267</td><td><a href="#121">121</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>4268</td><td><a href="#136">136</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>4269</td><td><a href="#136">136(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>4270</td><td><a href="#136">136(2)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>4271</td><td><a href="#153">153</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>4272</td><td><a href="#168">168</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>4273</td><td><a href="#168">168(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>4274</td><td><a href="#180">180</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>4275</td><td><a href="#195">195</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>4276</td><td><a href="#210">210</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>4277</td><td><a href="#210">210(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>4278</td><td><a href="#210">210(2)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>4279</td><td><a href="#227">227</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>4280</td><td><a href="#253">253</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>4281</td><td><a href="#253">253(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>4282</td><td><a href="#267">267</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>4283</td><td><a href="#267">267(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>4284</td><td><a href="#298">298</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>4285</td><td><a href="#306">306</a></td><td>Negate jump condition (Replace IFLE with  IFGT)</td><td><img src="detected.png"/></td></tr>
+<tr><td>4286</td><td><a href="#307">307</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>4287</td><td><a href="#308">308</a></td><td>Replace arithmetic operator (Replace IADD with ISUB)</td><td><img src="detected.png"/></td></tr>
+<tr><td>4288</td><td><a href="#309">309</a></td><td>Negate jump condition (Replace IFGT with  IFLE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>4289</td><td><a href="#313">313</a></td><td>Negate jump condition (Replace IFNONNULL with  IFNULL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>4290</td><td><a href="#314">314</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>4291</td><td><a href="#317">317</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>4292</td><td><a href="#317">317</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>4293</td><td><a href="#317">317</a></td><td>Replace arithmetic operator (Replace ISUB with IADD)</td><td><img src="detected.png"/></td></tr>
+<tr><td>4294</td><td><a href="#317">317</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>4299</td><td><a href="#319">319</a></td><td>Negate jump condition (Replace IF_ACMPEQ with  IF_ACMPNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>4295</td><td><a href="#319">319</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>4296</td><td><a href="#319">319(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>4297</td><td><a href="#319">319(2)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>4298</td><td><a href="#319">319(3)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>4301</td><td><a href="#323">323</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>4300</td><td><a href="#323">323</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>4302</td><td><a href="#323">323</a></td><td>Replace arithmetic operator (Replace IADD with ISUB)</td><td><img src="detected.png"/></td></tr>
+<tr><td>4303</td><td><a href="#323">323(1)</a></td><td>Replace arithmetic operator (Replace ISUB with IADD)</td><td><img src="detected.png"/></td></tr>
+<tr><td>4304</td><td><a href="#323">323(2)</a></td><td>Replace arithmetic operator (Replace ISUB with IADD)</td><td><img src="detected.png"/></td></tr>
+<tr><td>4305</td><td><a href="#324">324</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>4306</td><td><a href="#324">324</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>4309</td><td><a href="#324">324(1)</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>4308</td><td><a href="#324">324(1)</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>4307</td><td><a href="#324">324</a></td><td>Replace arithmetic operator (Replace ISUB with IADD)</td><td><img src="detected.png"/></td></tr>
+<tr><td>4310</td><td><a href="#324">324</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>4311</td><td><a href="#325">325</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>4312</td><td><a href="#327">327</a></td><td>Negate jump condition (Replace IFGE with  IFLT)</td><td><img src="detected.png"/></td></tr>
+<tr><td>4313</td><td><a href="#328">328</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>4314</td><td><a href="#329">329</a></td><td>Replace arithmetic operator (Replace IADD with ISUB)</td><td><img src="detected.png"/></td></tr>
+<tr><td>4315</td><td><a href="#330">330</a></td><td>Negate jump condition (Replace IFLT with  IFGE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>4316</td><td><a href="#334">334</a></td><td>Negate jump condition (Replace IFNONNULL with  IFNULL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>4317</td><td><a href="#335">335</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>4319</td><td><a href="#338">338</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>4318</td><td><a href="#338">338</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>4320</td><td><a href="#338">338</a></td><td>Replace arithmetic operator (Replace ISUB with IADD)</td><td><img src="detected.png"/></td></tr>
+<tr><td>4321</td><td><a href="#338">338</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>4326</td><td><a href="#339">339</a></td><td>Negate jump condition (Replace IF_ACMPEQ with  IF_ACMPNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>4322</td><td><a href="#339">339</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>4323</td><td><a href="#339">339(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>4324</td><td><a href="#339">339(2)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>4325</td><td><a href="#339">339(3)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>4327</td><td><a href="#343">343</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>4328</td><td><a href="#343">343</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>4329</td><td><a href="#343">343</a></td><td>Replace arithmetic operator (Replace ISUB with IADD)</td><td><img src="detected.png"/></td></tr>
+<tr><td>4330</td><td><a href="#343">343(1)</a></td><td>Replace arithmetic operator (Replace ISUB with IADD)</td><td><img src="detected.png"/></td></tr>
+<tr><td>4331</td><td><a href="#343">343(2)</a></td><td>Replace arithmetic operator (Replace ISUB with IADD)</td><td><img src="detected.png"/></td></tr>
+<tr><td>4333</td><td><a href="#344">344</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>4332</td><td><a href="#344">344</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>4336</td><td><a href="#344">344(1)</a></td><td>Replace a constant (Replace -1 with -2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>4335</td><td><a href="#344">344(1)</a></td><td>Replace a constant (Replace -1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>4334</td><td><a href="#344">344</a></td><td>Replace arithmetic operator (Replace ISUB with IADD)</td><td><img src="detected.png"/></td></tr>
+<tr><td>4337</td><td><a href="#344">344</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>4338</td><td><a href="#345">345</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>4339</td><td><a href="#348">348</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>4340</td><td><a href="#379">379</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>4341</td><td><a href="#387">387</a></td><td>Negate jump condition (Replace IFLE with  IFGT)</td><td><img src="detected.png"/></td></tr>
+<tr><td>4342</td><td><a href="#388">388</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>4343</td><td><a href="#389">389</a></td><td>Replace arithmetic operator (Replace IADD with ISUB)</td><td><img src="detected.png"/></td></tr>
+<tr><td>4344</td><td><a href="#390">390</a></td><td>Negate jump condition (Replace IFGT with  IFLE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>4345</td><td><a href="#394">394</a></td><td>Negate jump condition (Replace IFNONNULL with  IFNULL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>4346</td><td><a href="#395">395</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>4347</td><td><a href="#396">396</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>4348</td><td><a href="#396">396</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>4349</td><td><a href="#396">396</a></td><td>Replace arithmetic operator (Replace IADD with ISUB)</td><td><img src="detected.png"/></td></tr>
+<tr><td>4350</td><td><a href="#396">396(1)</a></td><td>Replace arithmetic operator (Replace ISUB with IADD)</td><td><img src="detected.png"/></td></tr>
+<tr><td>4351</td><td><a href="#396">396(2)</a></td><td>Replace arithmetic operator (Replace ISUB with IADD)</td><td><img src="detected.png"/></td></tr>
+<tr><td>4352</td><td><a href="#397">397</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>4353</td><td><a href="#400">400</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>4354</td><td><a href="#400">400</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>4355</td><td><a href="#400">400</a></td><td>Replace arithmetic operator (Replace ISUB with IADD)</td><td><img src="detected.png"/></td></tr>
+<tr><td>4356</td><td><a href="#400">400</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>4361</td><td><a href="#402">402</a></td><td>Negate jump condition (Replace IF_ACMPEQ with  IF_ACMPNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>4357</td><td><a href="#402">402</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>4358</td><td><a href="#402">402(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>4359</td><td><a href="#402">402(2)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>4360</td><td><a href="#402">402(3)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>4362</td><td><a href="#406">406</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>4363</td><td><a href="#406">406</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>4364</td><td><a href="#406">406</a></td><td>Replace arithmetic operator (Replace IADD with ISUB)</td><td><img src="detected.png"/></td></tr>
+<tr><td>4365</td><td><a href="#406">406(1)</a></td><td>Replace arithmetic operator (Replace ISUB with IADD)</td><td><img src="detected.png"/></td></tr>
+<tr><td>4366</td><td><a href="#406">406(2)</a></td><td>Replace arithmetic operator (Replace ISUB with IADD)</td><td><img src="detected.png"/></td></tr>
+<tr><td>4367</td><td><a href="#407">407</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>4368</td><td><a href="#407">407</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>4370</td><td><a href="#407">407(1)</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>4371</td><td><a href="#407">407(1)</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>4369</td><td><a href="#407">407</a></td><td>Replace arithmetic operator (Replace ISUB with IADD)</td><td><img src="detected.png"/></td></tr>
+<tr><td>4372</td><td><a href="#407">407</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>4373</td><td><a href="#408">408</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>4374</td><td><a href="#410">410</a></td><td>Negate jump condition (Replace IFGE with  IFLT)</td><td><img src="detected.png"/></td></tr>
+<tr><td>4375</td><td><a href="#411">411</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>4376</td><td><a href="#412">412</a></td><td>Replace arithmetic operator (Replace IADD with ISUB)</td><td><img src="detected.png"/></td></tr>
+<tr><td>4377</td><td><a href="#413">413</a></td><td>Negate jump condition (Replace IFLT with  IFGE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>4378</td><td><a href="#417">417</a></td><td>Negate jump condition (Replace IFNONNULL with  IFNULL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>4379</td><td><a href="#418">418</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>4380</td><td><a href="#419">419</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>4381</td><td><a href="#419">419</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>4382</td><td><a href="#419">419</a></td><td>Replace arithmetic operator (Replace ISUB with IADD)</td><td><img src="detected.png"/></td></tr>
+<tr><td>4383</td><td><a href="#419">419(1)</a></td><td>Replace arithmetic operator (Replace ISUB with IADD)</td><td><img src="detected.png"/></td></tr>
+<tr><td>4384</td><td><a href="#419">419(2)</a></td><td>Replace arithmetic operator (Replace ISUB with IADD)</td><td><img src="detected.png"/></td></tr>
+<tr><td>4385</td><td><a href="#420">420</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>4386</td><td><a href="#423">423</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>4387</td><td><a href="#423">423</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>4388</td><td><a href="#423">423</a></td><td>Replace arithmetic operator (Replace ISUB with IADD)</td><td><img src="detected.png"/></td></tr>
+<tr><td>4389</td><td><a href="#423">423</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>4394</td><td><a href="#424">424</a></td><td>Negate jump condition (Replace IF_ACMPEQ with  IF_ACMPNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>4390</td><td><a href="#424">424</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>4391</td><td><a href="#424">424(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>4392</td><td><a href="#424">424(2)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>4393</td><td><a href="#424">424(3)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>4395</td><td><a href="#428">428</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>4396</td><td><a href="#428">428</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>4397</td><td><a href="#428">428</a></td><td>Replace arithmetic operator (Replace ISUB with IADD)</td><td><img src="detected.png"/></td></tr>
+<tr><td>4398</td><td><a href="#428">428(1)</a></td><td>Replace arithmetic operator (Replace ISUB with IADD)</td><td><img src="detected.png"/></td></tr>
+<tr><td>4399</td><td><a href="#428">428(2)</a></td><td>Replace arithmetic operator (Replace ISUB with IADD)</td><td><img src="detected.png"/></td></tr>
+<tr><td>4400</td><td><a href="#429">429</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>4401</td><td><a href="#429">429</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>4404</td><td><a href="#429">429(1)</a></td><td>Replace a constant (Replace -1 with -2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>4403</td><td><a href="#429">429(1)</a></td><td>Replace a constant (Replace -1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>4402</td><td><a href="#429">429</a></td><td>Replace arithmetic operator (Replace ISUB with IADD)</td><td><img src="detected.png"/></td></tr>
+<tr><td>4405</td><td><a href="#429">429</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>4406</td><td><a href="#430">430</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>4407</td><td><a href="#433">433</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>4408</td><td><a href="#461">461</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>4409</td><td><a href="#462">462</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>4410</td><td><a href="#462">462(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>4411</td><td><a href="#462">462(2)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>4412</td><td><a href="#464">464</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>4413</td><td><a href="#496">496</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>4414</td><td><a href="#496">496(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>4415</td><td><a href="#496">496(2)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>4416</td><td><a href="#498">498</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>4417</td><td><a href="#522">522</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>4418</td><td><a href="#522">522(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>4419</td><td><a href="#545">545</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>4420</td><td><a href="#545">545(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>4421</td><td><a href="#585">585</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>4422</td><td><a href="#585">585(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>4423</td><td><a href="#585">585(2)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>4424</td><td><a href="#589">589</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>4425</td><td><a href="#589">589</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>4428</td><td><a href="#589">589</a></td><td>Negate jump condition (Replace IF_ICMPGE with  IF_ICMPLT)</td><td><img src="detected.png"/></td></tr>
+<tr><td>4426</td><td><a href="#589">589</a></td><td>Replace arithmetic operator (Replace IADD with ISUB)</td><td><img src="detected.png"/></td></tr>
+<tr><td>4427</td><td><a href="#589">589</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>4429</td><td><a href="#590">590</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>4431</td><td><a href="#591">591</a></td><td>Negate jump condition (Replace IF_ICMPLE with  IF_ICMPGT)</td><td><img src="detected.png"/></td></tr>
+<tr><td>4430</td><td><a href="#591">591</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>4432</td><td><a href="#592">592</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>4434</td><td><a href="#594">594</a></td><td>Negate jump condition (Replace IF_ICMPGE with  IF_ICMPLT)</td><td><img src="detected.png"/></td></tr>
+<tr><td>4433</td><td><a href="#594">594</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>4435</td><td><a href="#595">595</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>4436</td><td><a href="#618">618</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>4437</td><td><a href="#619">619</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>4438</td><td><a href="#635">635</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>4439</td><td><a href="#654">654</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>4440</td><td><a href="#655">655</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>4441</td><td><a href="#668">668</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>4442</td><td><a href="#670">670</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>4443</td><td><a href="#704">704</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>4444</td><td><a href="#704">704</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>4445</td><td><a href="#716">716</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>4446</td><td><a href="#716">716</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>4447</td><td><a href="#746">746</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>4448</td><td><a href="#758">758</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>4449</td><td><a href="#772">772</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>4450</td><td><a href="#792">792</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>4451</td><td><a href="#804">804</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>4452</td><td><a href="#818">818</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>4453</td><td><a href="#829">829</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>4454</td><td><a href="#830">830</a></td><td>Negate jump condition (Replace IFLT with  IFGE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>4457</td><td><a href="#831">831</a></td><td>Replace a constant (Replace 10 with 11(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>4455</td><td><a href="#831">831</a></td><td>Replace a constant (Replace 10 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>4456</td><td><a href="#831">831</a></td><td>Replace a constant (Replace 10 with 9(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>4458</td><td><a href="#831">831</a></td><td>Negate jump condition (Replace IF_ICMPGE with  IF_ICMPLT)</td><td><img src="detected.png"/></td></tr>
+<tr><td>4460</td><td><a href="#832">832</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>4459</td><td><a href="#832">832</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>4461</td><td><a href="#833">833</a></td><td>Replace a constant (Replace 100 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>4463</td><td><a href="#833">833</a></td><td>Replace a constant (Replace 100 with 101(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>4462</td><td><a href="#833">833</a></td><td>Replace a constant (Replace 100 with 99(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>4464</td><td><a href="#833">833</a></td><td>Negate jump condition (Replace IF_ICMPGE with  IF_ICMPLT)</td><td><img src="detected.png"/></td></tr>
+<tr><td>4465</td><td><a href="#834">834</a></td><td>Replace a constant (Replace 2 with 3(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>4466</td><td><a href="#834">834</a></td><td>Replace a constant (Replace 2 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>4467</td><td><a href="#834">834</a></td><td>Replace a constant (Replace 2 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>4470</td><td><a href="#835">835</a></td><td>Replace a constant (Replace 1000 with 999(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>4468</td><td><a href="#835">835</a></td><td>Replace a constant (Replace 1000 with 1001(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>4469</td><td><a href="#835">835</a></td><td>Replace a constant (Replace 1000 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>4471</td><td><a href="#835">835</a></td><td>Negate jump condition (Replace IF_ICMPGE with  IF_ICMPLT)</td><td><img src="detected.png"/></td></tr>
+<tr><td>4472</td><td><a href="#836">836</a></td><td>Replace a constant (Replace 3 with 2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>4473</td><td><a href="#836">836</a></td><td>Replace a constant (Replace 3 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>4474</td><td><a href="#836">836</a></td><td>Replace a constant (Replace 3 with 4(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>4475</td><td><a href="#839">839</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>4476</td><td><a href="#839">839(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>4477</td><td><a href="#850">850</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>4478</td><td><a href="#886">886</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>4479</td><td><a href="#887">887</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>4481</td><td><a href="#888">888</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>4480</td><td><a href="#888">888</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>4482</td><td><a href="#888">888</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>4483</td><td><a href="#903">903</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>4484</td><td><a href="#904">904</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>4485</td><td><a href="#906">906</a></td><td>Replace arithmetic operator (Replace LSUB with LADD)</td><td><img src="detected.png"/></td></tr>
+<tr><td>4486</td><td><a href="#907">907</a></td><td>Replace arithmetic operator (Replace LSUB with LADD)</td><td><img src="detected.png"/></td></tr>
+<tr><td>4487</td><td><a href="#909">909</a></td><td>Negate jump condition (Replace IFGT with  IFLE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>4488</td><td><a href="#927">927</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>4489</td><td><a href="#928">928</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>4490</td><td><a href="#930">930</a></td><td>Replace arithmetic operator (Replace LSUB with LADD)</td><td><img src="detected.png"/></td></tr>
+<tr><td>4491</td><td><a href="#931">931</a></td><td>Replace arithmetic operator (Replace LSUB with LADD)</td><td><img src="detected.png"/></td></tr>
+<tr><td>4492</td><td><a href="#933">933</a></td><td>Negate jump condition (Replace IFGT with  IFLE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>4493</td><td><a href="#955">955</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>4494</td><td><a href="#956">956</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>4495</td><td><a href="#958">958</a></td><td>Replace arithmetic operator (Replace LSUB with LADD)</td><td><img src="detected.png"/></td></tr>
+<tr><td>4496</td><td><a href="#959">959</a></td><td>Replace arithmetic operator (Replace LSUB with LADD)</td><td><img src="detected.png"/></td></tr>
+<tr><td>4497</td><td><a href="#961">961</a></td><td>Negate jump condition (Replace IFGE with  IFLT)</td><td><img src="detected.png"/></td></tr>
+<tr><td>4498</td><td><a href="#964">964</a></td><td>Negate jump condition (Replace IFGE with  IFLT)</td><td><img src="detected.png"/></td></tr>
+<tr><td>4500</td><td><a href="#970">970</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>4501</td><td><a href="#970">970</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>4503</td><td><a href="#970">970</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>4502</td><td><a href="#970">970</a></td><td>Replace arithmetic operator (Replace IAND with IOR)</td><td><img src="detected.png"/></td></tr>
+<tr><td>4499</td><td><a href="#970">970</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>4505</td><td><a href="#994">994</a></td><td>Replace arithmetic operator (Replace LSUB with LADD)</td><td><img src="detected.png"/></td></tr>
+<tr><td>4504</td><td><a href="#994">994</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>4510</td><td><a href="#1003">1003</a></td><td>Replace a constant (Replace 93 with 94(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>4511</td><td><a href="#1003">1003</a></td><td>Replace a constant (Replace 93 with 92(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>4509</td><td><a href="#1003">1003</a></td><td>Replace a constant (Replace 93 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>4506</td><td><a href="#1003">1003</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>4507</td><td><a href="#1003">1003(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>4508</td><td><a href="#1003">1003(2)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>4512</td><td><a href="#1003">1003(3)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>4513</td><td><a href="#1003">1003(4)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+</table>
+</body>
+</html>

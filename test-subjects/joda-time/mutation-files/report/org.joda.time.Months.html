@@ -1,0 +1,499 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN
+"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>
+org.joda.time.Months
+</title>
+<link href="prettify.css" type="text/css" rel="stylesheet" />
+<script type="text/javascript" src="prettify.js"></script>
+</head>
+<body onload="prettyPrint()">
+<h2>Javalanche report for class:<br/> org.joda.time.Months </h2><pre class="prettyprint" style="border: 1px solid #888;padding: 2px"><span class="nocode"><a name="1">  1: </a></span>/*
+<span class="nocode"><a name="2">  2: </a></span> *  Copyright 2001-2010 Stephen Colebourne
+<span class="nocode"><a name="3">  3: </a></span> *
+<span class="nocode"><a name="4">  4: </a></span> *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+<span class="nocode"><a name="5">  5: </a></span> *  you may not use this file except in compliance with the License.
+<span class="nocode"><a name="6">  6: </a></span> *  You may obtain a copy of the License at
+<span class="nocode"><a name="7">  7: </a></span> *
+<span class="nocode"><a name="8">  8: </a></span> *      http://www.apache.org/licenses/LICENSE-2.0
+<span class="nocode"><a name="9">  9: </a></span> *
+<span class="nocode"><a name="10"> 10: </a></span> *  Unless required by applicable law or agreed to in writing, software
+<span class="nocode"><a name="11"> 11: </a></span> *  distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+<span class="nocode"><a name="12"> 12: </a></span> *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+<span class="nocode"><a name="13"> 13: </a></span> *  See the License for the specific language governing permissions and
+<span class="nocode"><a name="14"> 14: </a></span> *  limitations under the License.
+<span class="nocode"><a name="15"> 15: </a></span> */
+<span class="nocode"><a name="16"> 16: </a></span>package org.joda.time;
+<span class="nocode"><a name="17"> 17: </a></span>
+<span class="nocode"><a name="18"> 18: </a></span>import org.joda.convert.FromString;
+<span class="nocode"><a name="19"> 19: </a></span>import org.joda.convert.ToString;
+<span class="nocode"><a name="20"> 20: </a></span>import org.joda.time.base.BaseSingleFieldPeriod;
+<span class="nocode"><a name="21"> 21: </a></span>import org.joda.time.field.FieldUtils;
+<span class="nocode"><a name="22"> 22: </a></span>import org.joda.time.format.ISOPeriodFormat;
+<span class="nocode"><a name="23"> 23: </a></span>import org.joda.time.format.PeriodFormatter;
+<span class="nocode"><a name="24"> 24: </a></span>
+<span class="nocode"><a name="25"> 25: </a></span>/**
+<span class="nocode"><a name="26"> 26: </a></span> * An immutable time period representing a number of months.
+<span class="nocode"><a name="27"> 27: </a></span> * &lt;p&gt;
+<span class="nocode"><a name="28"> 28: </a></span> * &lt;code&gt;Months&lt;/code&gt; is an immutable period that can only store months.
+<span class="nocode"><a name="29"> 29: </a></span> * It does not store years, days or hours for example. As such it is a
+<span class="nocode"><a name="30"> 30: </a></span> * type-safe way of representing a number of months in an application.
+<span class="nocode"><a name="31"> 31: </a></span> * &lt;p&gt;
+<span class="nocode"><a name="32"> 32: </a></span> * The number of months is set in the constructor, and may be queried using
+<span class="nocode"><a name="33"> 33: </a></span> * &lt;code&gt;getMonths()&lt;/code&gt;. Basic mathematical operations are provided -
+<span class="nocode"><a name="34"> 34: </a></span> * &lt;code&gt;plus()&lt;/code&gt;, &lt;code&gt;minus()&lt;/code&gt;, &lt;code&gt;multipliedBy()&lt;/code&gt; and
+<span class="nocode"><a name="35"> 35: </a></span> * &lt;code&gt;dividedBy()&lt;/code&gt;.
+<span class="nocode"><a name="36"> 36: </a></span> * &lt;p&gt;
+<span class="nocode"><a name="37"> 37: </a></span> * &lt;code&gt;Months&lt;/code&gt; is thread-safe and immutable.
+<span class="nocode"><a name="38"> 38: </a></span> *
+<span class="nocode"><a name="39"> 39: </a></span> * @author Stephen Colebourne
+<span class="nocode"><a name="40"> 40: </a></span> * @since 1.4
+<span class="nocode"><a name="41"> 41: </a></span> */
+<span class="nocode"><a name="42"> 42: </a></span>public final class Months extends BaseSingleFieldPeriod {
+<span class="nocode"><a name="43"> 43: </a></span>
+<span class="nocode"><a name="44"> 44: </a></span>    /** Constant representing zero months. */
+<span class="nocode"><a name="45"> 45: </a></span>    public static final Months ZERO = new Months(0);
+<span class="nocode"><a name="46"> 46: </a></span>    /** Constant representing one month. */
+<span class="nocode"><a name="47"> 47: </a></span>    public static final Months ONE = new Months(1);
+<span class="nocode"><a name="48"> 48: </a></span>    /** Constant representing two months. */
+<span class="nocode"><a name="49"> 49: </a></span>    public static final Months TWO = new Months(2);
+<span class="nocode"><a name="50"> 50: </a></span>    /** Constant representing three months. */
+<span class="nocode"><a name="51"> 51: </a></span>    public static final Months THREE = new Months(3);
+<span class="nocode"><a name="52"> 52: </a></span>    /** Constant representing four months. */
+<span class="nocode"><a name="53"> 53: </a></span>    public static final Months FOUR = new Months(4);
+<span class="nocode"><a name="54"> 54: </a></span>    /** Constant representing five months. */
+<span class="nocode"><a name="55"> 55: </a></span>    public static final Months FIVE = new Months(5);
+<span class="nocode"><a name="56"> 56: </a></span>    /** Constant representing six months. */
+<span class="nocode"><a name="57"> 57: </a></span>    public static final Months SIX = new Months(6);
+<span class="nocode"><a name="58"> 58: </a></span>    /** Constant representing seven months. */
+<span class="nocode"><a name="59"> 59: </a></span>    public static final Months SEVEN = new Months(7);
+<span class="nocode"><a name="60"> 60: </a></span>    /** Constant representing eight months. */
+<span class="nocode"><a name="61"> 61: </a></span>    public static final Months EIGHT = new Months(8);
+<span class="nocode"><a name="62"> 62: </a></span>    /** Constant representing nine months. */
+<span class="nocode"><a name="63"> 63: </a></span>    public static final Months NINE = new Months(9);
+<span class="nocode"><a name="64"> 64: </a></span>    /** Constant representing ten months. */
+<span class="nocode"><a name="65"> 65: </a></span>    public static final Months TEN = new Months(10);
+<span class="nocode"><a name="66"> 66: </a></span>    /** Constant representing eleven months. */
+<span class="nocode"><a name="67"> 67: </a></span>    public static final Months ELEVEN = new Months(11);
+<span class="nocode"><a name="68"> 68: </a></span>    /** Constant representing twelve months. */
+<span class="nocode"><a name="69"> 69: </a></span>    public static final Months TWELVE = new Months(12);
+<span class="nocode"><a name="70"> 70: </a></span>    /** Constant representing the maximum number of months that can be stored in this object. */
+<span class="nocode"><a name="71"> 71: </a></span>    public static final Months MAX_VALUE = new Months(Integer.MAX_VALUE);
+<span class="nocode"><a name="72"> 72: </a></span>    /** Constant representing the minimum number of months that can be stored in this object. */
+<span class="nocode"><a name="73"> 73: </a></span>    public static final Months MIN_VALUE = new Months(Integer.MIN_VALUE);
+<span class="nocode"><a name="74"> 74: </a></span>
+<span class="nocode"><a name="75"> 75: </a></span>    /** The parser to use for this class. */
+<span class="nocode"><a name="76"> 76: </a></span>    private static final PeriodFormatter PARSER = ISOPeriodFormat.standard().withParseType(PeriodType.months());
+<span class="nocode"><a name="77"> 77: </a></span>    /** Serialization version. */
+<span class="nocode"><a name="78"> 78: </a></span>    private static final long serialVersionUID = 87525275727380867L;
+<span class="nocode"><a name="79"> 79: </a></span>
+<span class="nocode"><a name="80"> 80: </a></span>    //-----------------------------------------------------------------------
+<span class="nocode"><a name="81"> 81: </a></span>    /**
+<span class="nocode"><a name="82"> 82: </a></span>     * Obtains an instance of &lt;code&gt;Months&lt;/code&gt; that may be cached.
+<span class="nocode"><a name="83"> 83: </a></span>     * &lt;code&gt;Months&lt;/code&gt; is immutable, so instances can be cached and shared.
+<span class="nocode"><a name="84"> 84: </a></span>     * This factory method provides access to shared instances.
+<span class="nocode"><a name="85"> 85: </a></span>     *
+<span class="nocode"><a name="86"> 86: </a></span>     * @param months  the number of months to obtain an instance for
+<span class="nocode"><a name="87"> 87: </a></span>     * @return the instance of Months
+<span class="nocode"><a name="88"> 88: </a></span>     */
+<span class="nocode"><a name="89"> 89: </a></span>    public static Months months(int months) {
+<span class="nocode"><a name="90"> 90: </a></span>        switch (months) {
+<span class="nocode"><a name="91"> 91: </a></span>            case 0:
+<span class="nocode"><a name="92"> 92: </a></span>                return ZERO;
+<span class="nocode"><a name="93"> 93: </a></span>            case 1:
+<span class="nocode"><a name="94"> 94: </a></span>                return ONE;
+<span class="nocode"><a name="95"> 95: </a></span>            case 2:
+<span class="nocode"><a name="96"> 96: </a></span>                return TWO;
+<span class="nocode"><a name="97"> 97: </a></span>            case 3:
+<span class="nocode"><a name="98"> 98: </a></span>                return THREE;
+<span class="nocode"><a name="99"> 99: </a></span>            case 4:
+<span class="nocode"><a name="100">100: </a></span>                return FOUR;
+<span class="nocode"><a name="101">101: </a></span>            case 5:
+<span class="nocode"><a name="102">102: </a></span>                return FIVE;
+<span class="nocode"><a name="103">103: </a></span>            case 6:
+<span class="nocode"><a name="104">104: </a></span>                return SIX;
+<span class="nocode"><a name="105">105: </a></span>            case 7:
+<span class="nocode"><a name="106">106: </a></span>                return SEVEN;
+<span class="nocode"><a name="107">107: </a></span>            case 8:
+<span class="nocode"><a name="108">108: </a></span>                return EIGHT;
+<span class="nocode"><a name="109">109: </a></span>            case 9:
+<span class="nocode"><a name="110">110: </a></span>                return NINE;
+<span class="nocode"><a name="111">111: </a></span>            case 10:
+<span class="nocode"><a name="112">112: </a></span>                return TEN;
+<span class="nocode"><a name="113">113: </a></span>            case 11:
+<span class="nocode"><a name="114">114: </a></span>                return ELEVEN;
+<span class="nocode"><a name="115">115: </a></span>            case 12:
+<span class="nocode"><a name="116">116: </a></span>                return TWELVE;
+<span class="nocode"><a name="117">117: </a></span>            case Integer.MAX_VALUE:
+<span class="nocode"><a name="118">118: </a></span>                return MAX_VALUE;
+<span class="nocode"><a name="119">119: </a></span>            case Integer.MIN_VALUE:
+<span class="nocode"><a name="120">120: </a></span>                return MIN_VALUE;
+<span class="nocode"><a name="121">121: </a></span>            default:
+<span class="nocode"><a name="122">122: </a></span>                return new Months(months);
+<span class="nocode"><a name="123">123: </a></span>        }
+<span class="nocode"><a name="124">124: </a></span>    }
+<span class="nocode"><a name="125">125: </a></span>
+<span class="nocode"><a name="126">126: </a></span>    //-----------------------------------------------------------------------
+<span class="nocode"><a name="127">127: </a></span>    /**
+<span class="nocode"><a name="128">128: </a></span>     * Creates a &lt;code&gt;Months&lt;/code&gt; representing the number of whole months
+<span class="nocode"><a name="129">129: </a></span>     * between the two specified datetimes. This method corectly handles
+<span class="nocode"><a name="130">130: </a></span>     * any daylight savings time changes that may occur during the interval.
+<span class="nocode"><a name="131">131: </a></span>     *
+<span class="nocode"><a name="132">132: </a></span>     * @param start  the start instant, must not be null
+<span class="nocode"><a name="133">133: </a></span>     * @param end  the end instant, must not be null
+<span class="nocode"><a name="134">134: </a></span>     * @return the period in months
+<span class="nocode"><a name="135">135: </a></span>     * @throws IllegalArgumentException if the instants are null or invalid
+<span class="nocode"><a name="136">136: </a></span>     */
+<span class="nocode"><a name="137">137: </a></span>    public static Months monthsBetween(ReadableInstant start, ReadableInstant end) {
+<span class="nocode"><a name="138">138: </a></span>        int amount = BaseSingleFieldPeriod.between(start, end, DurationFieldType.months());
+<span class="nocode"><a name="139">139: </a></span>        return Months.months(amount);
+<span class="nocode"><a name="140">140: </a></span>    }
+<span class="nocode"><a name="141">141: </a></span>
+<span class="nocode"><a name="142">142: </a></span>    /**
+<span class="nocode"><a name="143">143: </a></span>     * Creates a &lt;code&gt;Months&lt;/code&gt; representing the number of whole months
+<span class="nocode"><a name="144">144: </a></span>     * between the two specified partial datetimes.
+<span class="nocode"><a name="145">145: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="146">146: </a></span>     * The two partials must contain the same fields, for example you can specify
+<span class="nocode"><a name="147">147: </a></span>     * two &lt;code&gt;LocalDate&lt;/code&gt; objects.
+<span class="nocode"><a name="148">148: </a></span>     *
+<span class="nocode"><a name="149">149: </a></span>     * @param start  the start partial date, must not be null
+<span class="nocode"><a name="150">150: </a></span>     * @param end  the end partial date, must not be null
+<span class="nocode"><a name="151">151: </a></span>     * @return the period in months
+<span class="nocode"><a name="152">152: </a></span>     * @throws IllegalArgumentException if the partials are null or invalid
+<span class="nocode"><a name="153">153: </a></span>     */
+<span class="nocode"><a name="154">154: </a></span>    public static Months monthsBetween(ReadablePartial start, ReadablePartial end) {
+<span class="nocode"><a name="155">155: </a></span>        if (start instanceof LocalDate &amp;&amp; end instanceof LocalDate)   {
+<span class="nocode"><a name="156">156: </a></span>            Chronology chrono = DateTimeUtils.getChronology(start.getChronology());
+<span class="nocode"><a name="157">157: </a></span>            int months = chrono.months().getDifference(
+<span class="nocode"><a name="158">158: </a></span>                    ((LocalDate) end).getLocalMillis(), ((LocalDate) start).getLocalMillis());
+<span class="nocode"><a name="159">159: </a></span>            return Months.months(months);
+<span class="nocode"><a name="160">160: </a></span>        }
+<span class="nocode"><a name="161">161: </a></span>        int amount = BaseSingleFieldPeriod.between(start, end, ZERO);
+<span class="nocode"><a name="162">162: </a></span>        return Months.months(amount);
+<span class="nocode"><a name="163">163: </a></span>    }
+<span class="nocode"><a name="164">164: </a></span>
+<span class="nocode"><a name="165">165: </a></span>    /**
+<span class="nocode"><a name="166">166: </a></span>     * Creates a &lt;code&gt;Months&lt;/code&gt; representing the number of whole months
+<span class="nocode"><a name="167">167: </a></span>     * in the specified interval. This method corectly handles any daylight
+<span class="nocode"><a name="168">168: </a></span>     * savings time changes that may occur during the interval.
+<span class="nocode"><a name="169">169: </a></span>     *
+<span class="nocode"><a name="170">170: </a></span>     * @param interval  the interval to extract months from, null returns zero
+<span class="nocode"><a name="171">171: </a></span>     * @return the period in months
+<span class="nocode"><a name="172">172: </a></span>     * @throws IllegalArgumentException if the partials are null or invalid
+<span class="nocode"><a name="173">173: </a></span>     */
+<span class="nocode"><a name="174">174: </a></span>    public static Months monthsIn(ReadableInterval interval) {
+<span class="nocode"><a name="175">175: </a></span>        if (interval == null)   {
+<span class="nocode"><a name="176">176: </a></span>            return Months.ZERO;
+<span class="nocode"><a name="177">177: </a></span>        }
+<span class="nocode"><a name="178">178: </a></span>        int amount = BaseSingleFieldPeriod.between(interval.getStart(), interval.getEnd(), DurationFieldType.months());
+<span class="nocode"><a name="179">179: </a></span>        return Months.months(amount);
+<span class="nocode"><a name="180">180: </a></span>    }
+<span class="nocode"><a name="181">181: </a></span>
+<span class="nocode"><a name="182">182: </a></span>    /**
+<span class="nocode"><a name="183">183: </a></span>     * Creates a new &lt;code&gt;Months&lt;/code&gt; by parsing a string in the ISO8601 format 'PnM'.
+<span class="nocode"><a name="184">184: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="185">185: </a></span>     * The parse will accept the full ISO syntax of PnYnMnWnDTnHnMnS however only the
+<span class="nocode"><a name="186">186: </a></span>     * months component may be non-zero. If any other component is non-zero, an exception
+<span class="nocode"><a name="187">187: </a></span>     * will be thrown.
+<span class="nocode"><a name="188">188: </a></span>     *
+<span class="nocode"><a name="189">189: </a></span>     * @param periodStr  the period string, null returns zero
+<span class="nocode"><a name="190">190: </a></span>     * @return the period in months
+<span class="nocode"><a name="191">191: </a></span>     * @throws IllegalArgumentException if the string format is invalid
+<span class="nocode"><a name="192">192: </a></span>     */
+<span class="nocode"><a name="193">193: </a></span>    @FromString
+<span class="nocode"><a name="194">194: </a></span>    public static Months parseMonths(String periodStr) {
+<span class="nocode"><a name="195">195: </a></span>        if (periodStr == null) {
+<span class="nocode"><a name="196">196: </a></span>            return Months.ZERO;
+<span class="nocode"><a name="197">197: </a></span>        }
+<span class="nocode"><a name="198">198: </a></span>        Period p = PARSER.parsePeriod(periodStr);
+<span class="nocode"><a name="199">199: </a></span>        return Months.months(p.getMonths());
+<span class="nocode"><a name="200">200: </a></span>    }
+<span class="nocode"><a name="201">201: </a></span>
+<span class="nocode"><a name="202">202: </a></span>    //-----------------------------------------------------------------------
+<span class="nocode"><a name="203">203: </a></span>    /**
+<span class="nocode"><a name="204">204: </a></span>     * Creates a new instance representing a number of months.
+<span class="nocode"><a name="205">205: </a></span>     * You should consider using the factory method {@link #months(int)}
+<span class="nocode"><a name="206">206: </a></span>     * instead of the constructor.
+<span class="nocode"><a name="207">207: </a></span>     *
+<span class="nocode"><a name="208">208: </a></span>     * @param months  the number of months to represent
+<span class="nocode"><a name="209">209: </a></span>     */
+<span class="nocode"><a name="210">210: </a></span>    private Months(int months) {
+<span class="nocode"><a name="211">211: </a></span>        super(months);
+<span class="nocode"><a name="212">212: </a></span>    }
+<span class="nocode"><a name="213">213: </a></span>
+<span class="nocode"><a name="214">214: </a></span>    /**
+<span class="nocode"><a name="215">215: </a></span>     * Resolves singletons.
+<span class="nocode"><a name="216">216: </a></span>     * 
+<span class="nocode"><a name="217">217: </a></span>     * @return the singleton instance
+<span class="nocode"><a name="218">218: </a></span>     */
+<span class="nocode"><a name="219">219: </a></span>    private Object readResolve() {
+<span class="nocode"><a name="220">220: </a></span>        return Months.months(getValue());
+<span class="nocode"><a name="221">221: </a></span>    }
+<span class="nocode"><a name="222">222: </a></span>
+<span class="nocode"><a name="223">223: </a></span>    //-----------------------------------------------------------------------
+<span class="nocode"><a name="224">224: </a></span>    /**
+<span class="nocode"><a name="225">225: </a></span>     * Gets the duration field type, which is &lt;code&gt;months&lt;/code&gt;.
+<span class="nocode"><a name="226">226: </a></span>     *
+<span class="nocode"><a name="227">227: </a></span>     * @return the period type
+<span class="nocode"><a name="228">228: </a></span>     */
+<span class="nocode"><a name="229">229: </a></span>    public DurationFieldType getFieldType() {
+<span class="nocode"><a name="230">230: </a></span>        return DurationFieldType.months();
+<span class="nocode"><a name="231">231: </a></span>    }
+<span class="nocode"><a name="232">232: </a></span>
+<span class="nocode"><a name="233">233: </a></span>    /**
+<span class="nocode"><a name="234">234: </a></span>     * Gets the period type, which is &lt;code&gt;months&lt;/code&gt;.
+<span class="nocode"><a name="235">235: </a></span>     *
+<span class="nocode"><a name="236">236: </a></span>     * @return the period type
+<span class="nocode"><a name="237">237: </a></span>     */
+<span class="nocode"><a name="238">238: </a></span>    public PeriodType getPeriodType() {
+<span class="nocode"><a name="239">239: </a></span>        return PeriodType.months();
+<span class="nocode"><a name="240">240: </a></span>    }
+<span class="nocode"><a name="241">241: </a></span>
+<span class="nocode"><a name="242">242: </a></span>    //-----------------------------------------------------------------------
+<span class="nocode"><a name="243">243: </a></span>    /**
+<span class="nocode"><a name="244">244: </a></span>     * Gets the number of months that this period represents.
+<span class="nocode"><a name="245">245: </a></span>     *
+<span class="nocode"><a name="246">246: </a></span>     * @return the number of months in the period
+<span class="nocode"><a name="247">247: </a></span>     */
+<span class="nocode"><a name="248">248: </a></span>    public int getMonths() {
+<span class="nocode"><a name="249">249: </a></span>        return getValue();
+<span class="nocode"><a name="250">250: </a></span>    }
+<span class="nocode"><a name="251">251: </a></span>
+<span class="nocode"><a name="252">252: </a></span>    //-----------------------------------------------------------------------
+<span class="nocode"><a name="253">253: </a></span>    /**
+<span class="nocode"><a name="254">254: </a></span>     * Returns a new instance with the specified number of months added.
+<span class="nocode"><a name="255">255: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="256">256: </a></span>     * This instance is immutable and unaffected by this method call.
+<span class="nocode"><a name="257">257: </a></span>     *
+<span class="nocode"><a name="258">258: </a></span>     * @param months  the amount of months to add, may be negative
+<span class="nocode"><a name="259">259: </a></span>     * @return the new period plus the specified number of months
+<span class="nocode"><a name="260">260: </a></span>     * @throws ArithmeticException if the result overflows an int
+<span class="nocode"><a name="261">261: </a></span>     */
+<span class="nocode"><a name="262">262: </a></span>    public Months plus(int months) {
+<span class="nocode"><a name="263">263: </a></span>        if (months == 0) {
+<span class="nocode"><a name="264">264: </a></span>            return this;
+<span class="nocode"><a name="265">265: </a></span>        }
+<span class="nocode"><a name="266">266: </a></span>        return Months.months(FieldUtils.safeAdd(getValue(), months));
+<span class="nocode"><a name="267">267: </a></span>    }
+<span class="nocode"><a name="268">268: </a></span>
+<span class="nocode"><a name="269">269: </a></span>    /**
+<span class="nocode"><a name="270">270: </a></span>     * Returns a new instance with the specified number of months added.
+<span class="nocode"><a name="271">271: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="272">272: </a></span>     * This instance is immutable and unaffected by this method call.
+<span class="nocode"><a name="273">273: </a></span>     *
+<span class="nocode"><a name="274">274: </a></span>     * @param months  the amount of months to add, may be negative, null means zero
+<span class="nocode"><a name="275">275: </a></span>     * @return the new period plus the specified number of months
+<span class="nocode"><a name="276">276: </a></span>     * @throws ArithmeticException if the result overflows an int
+<span class="nocode"><a name="277">277: </a></span>     */
+<span class="nocode"><a name="278">278: </a></span>    public Months plus(Months months) {
+<span class="nocode"><a name="279">279: </a></span>        if (months == null) {
+<span class="nocode"><a name="280">280: </a></span>            return this;
+<span class="nocode"><a name="281">281: </a></span>        }
+<span class="nocode"><a name="282">282: </a></span>        return plus(months.getValue());
+<span class="nocode"><a name="283">283: </a></span>    }
+<span class="nocode"><a name="284">284: </a></span>
+<span class="nocode"><a name="285">285: </a></span>    //-----------------------------------------------------------------------
+<span class="nocode"><a name="286">286: </a></span>    /**
+<span class="nocode"><a name="287">287: </a></span>     * Returns a new instance with the specified number of months taken away.
+<span class="nocode"><a name="288">288: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="289">289: </a></span>     * This instance is immutable and unaffected by this method call.
+<span class="nocode"><a name="290">290: </a></span>     *
+<span class="nocode"><a name="291">291: </a></span>     * @param months  the amount of months to take away, may be negative
+<span class="nocode"><a name="292">292: </a></span>     * @return the new period minus the specified number of months
+<span class="nocode"><a name="293">293: </a></span>     * @throws ArithmeticException if the result overflows an int
+<span class="nocode"><a name="294">294: </a></span>     */
+<span class="nocode"><a name="295">295: </a></span>    public Months minus(int months) {
+<span class="nocode"><a name="296">296: </a></span>        return plus(FieldUtils.safeNegate(months));
+<span class="nocode"><a name="297">297: </a></span>    }
+<span class="nocode"><a name="298">298: </a></span>
+<span class="nocode"><a name="299">299: </a></span>    /**
+<span class="nocode"><a name="300">300: </a></span>     * Returns a new instance with the specified number of months taken away.
+<span class="nocode"><a name="301">301: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="302">302: </a></span>     * This instance is immutable and unaffected by this method call.
+<span class="nocode"><a name="303">303: </a></span>     *
+<span class="nocode"><a name="304">304: </a></span>     * @param months  the amount of months to take away, may be negative, null means zero
+<span class="nocode"><a name="305">305: </a></span>     * @return the new period minus the specified number of months
+<span class="nocode"><a name="306">306: </a></span>     * @throws ArithmeticException if the result overflows an int
+<span class="nocode"><a name="307">307: </a></span>     */
+<span class="nocode"><a name="308">308: </a></span>    public Months minus(Months months) {
+<span class="nocode"><a name="309">309: </a></span>        if (months == null) {
+<span class="nocode"><a name="310">310: </a></span>            return this;
+<span class="nocode"><a name="311">311: </a></span>        }
+<span class="nocode"><a name="312">312: </a></span>        return minus(months.getValue());
+<span class="nocode"><a name="313">313: </a></span>    }
+<span class="nocode"><a name="314">314: </a></span>
+<span class="nocode"><a name="315">315: </a></span>    //-----------------------------------------------------------------------
+<span class="nocode"><a name="316">316: </a></span>    /**
+<span class="nocode"><a name="317">317: </a></span>     * Returns a new instance with the months multiplied by the specified scalar.
+<span class="nocode"><a name="318">318: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="319">319: </a></span>     * This instance is immutable and unaffected by this method call.
+<span class="nocode"><a name="320">320: </a></span>     *
+<span class="nocode"><a name="321">321: </a></span>     * @param scalar  the amount to multiply by, may be negative
+<span class="nocode"><a name="322">322: </a></span>     * @return the new period multiplied by the specified scalar
+<span class="nocode"><a name="323">323: </a></span>     * @throws ArithmeticException if the result overflows an int
+<span class="nocode"><a name="324">324: </a></span>     */
+<span class="nocode"><a name="325">325: </a></span>    public Months multipliedBy(int scalar) {
+<span class="nocode"><a name="326">326: </a></span>        return Months.months(FieldUtils.safeMultiply(getValue(), scalar));
+<span class="nocode"><a name="327">327: </a></span>    }
+<span class="nocode"><a name="328">328: </a></span>
+<span class="nocode"><a name="329">329: </a></span>    /**
+<span class="nocode"><a name="330">330: </a></span>     * Returns a new instance with the months divided by the specified divisor.
+<span class="nocode"><a name="331">331: </a></span>     * The calculation uses integer division, thus 3 divided by 2 is 1.
+<span class="nocode"><a name="332">332: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="333">333: </a></span>     * This instance is immutable and unaffected by this method call.
+<span class="nocode"><a name="334">334: </a></span>     *
+<span class="nocode"><a name="335">335: </a></span>     * @param divisor  the amount to divide by, may be negative
+<span class="nocode"><a name="336">336: </a></span>     * @return the new period divided by the specified divisor
+<span class="nocode"><a name="337">337: </a></span>     * @throws ArithmeticException if the divisor is zero
+<span class="nocode"><a name="338">338: </a></span>     */
+<span class="nocode"><a name="339">339: </a></span>    public Months dividedBy(int divisor) {
+<span class="nocode"><a name="340">340: </a></span>        if (divisor == 1) {
+<span class="nocode"><a name="341">341: </a></span>            return this;
+<span class="nocode"><a name="342">342: </a></span>        }
+<span class="nocode"><a name="343">343: </a></span>        return Months.months(getValue() / divisor);
+<span class="nocode"><a name="344">344: </a></span>    }
+<span class="nocode"><a name="345">345: </a></span>
+<span class="nocode"><a name="346">346: </a></span>    //-----------------------------------------------------------------------
+<span class="nocode"><a name="347">347: </a></span>    /**
+<span class="nocode"><a name="348">348: </a></span>     * Returns a new instance with the months value negated.
+<span class="nocode"><a name="349">349: </a></span>     *
+<span class="nocode"><a name="350">350: </a></span>     * @return the new period with a negated value
+<span class="nocode"><a name="351">351: </a></span>     * @throws ArithmeticException if the result overflows an int
+<span class="nocode"><a name="352">352: </a></span>     */
+<span class="nocode"><a name="353">353: </a></span>    public Months negated() {
+<span class="nocode"><a name="354">354: </a></span>        return Months.months(FieldUtils.safeNegate(getValue()));
+<span class="nocode"><a name="355">355: </a></span>    }
+<span class="nocode"><a name="356">356: </a></span>
+<span class="nocode"><a name="357">357: </a></span>    //-----------------------------------------------------------------------
+<span class="nocode"><a name="358">358: </a></span>    /**
+<span class="nocode"><a name="359">359: </a></span>     * Is this months instance greater than the specified number of months.
+<span class="nocode"><a name="360">360: </a></span>     *
+<span class="nocode"><a name="361">361: </a></span>     * @param other  the other period, null means zero
+<span class="nocode"><a name="362">362: </a></span>     * @return true if this months instance is greater than the specified one
+<span class="nocode"><a name="363">363: </a></span>     */
+<span class="nocode"><a name="364">364: </a></span>    public boolean isGreaterThan(Months other) {
+<span class="nocode"><a name="365">365: </a></span>        if (other == null) {
+<span class="nocode"><a name="366">366: </a></span>            return getValue() &gt; 0;
+<span class="nocode"><a name="367">367: </a></span>        }
+<span class="nocode"><a name="368">368: </a></span>        return getValue() &gt; other.getValue();
+<span class="nocode"><a name="369">369: </a></span>    }
+<span class="nocode"><a name="370">370: </a></span>
+<span class="nocode"><a name="371">371: </a></span>    /**
+<span class="nocode"><a name="372">372: </a></span>     * Is this months instance less than the specified number of months.
+<span class="nocode"><a name="373">373: </a></span>     *
+<span class="nocode"><a name="374">374: </a></span>     * @param other  the other period, null means zero
+<span class="nocode"><a name="375">375: </a></span>     * @return true if this months instance is less than the specified one
+<span class="nocode"><a name="376">376: </a></span>     */
+<span class="nocode"><a name="377">377: </a></span>    public boolean isLessThan(Months other) {
+<span class="nocode"><a name="378">378: </a></span>        if (other == null) {
+<span class="nocode"><a name="379">379: </a></span>            return getValue() &lt; 0;
+<span class="nocode"><a name="380">380: </a></span>        }
+<span class="nocode"><a name="381">381: </a></span>        return getValue() &lt; other.getValue();
+<span class="nocode"><a name="382">382: </a></span>    }
+<span class="nocode"><a name="383">383: </a></span>
+<span class="nocode"><a name="384">384: </a></span>    //-----------------------------------------------------------------------
+<span class="nocode"><a name="385">385: </a></span>    /**
+<span class="nocode"><a name="386">386: </a></span>     * Gets this instance as a String in the ISO8601 duration format.
+<span class="nocode"><a name="387">387: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="388">388: </a></span>     * For example, &quot;P4M&quot; represents 4 months.
+<span class="nocode"><a name="389">389: </a></span>     *
+<span class="nocode"><a name="390">390: </a></span>     * @return the value as an ISO8601 string
+<span class="nocode"><a name="391">391: </a></span>     */
+<span class="nocode"><a name="392">392: </a></span>    @ToString
+<span class="nocode"><a name="393">393: </a></span>    public String toString() {
+<span class="nocode"><a name="394">394: </a></span>        return &quot;P&quot; + String.valueOf(getValue()) + &quot;M&quot;;
+<span class="nocode"><a name="395">395: </a></span>    }
+<span class="nocode"><a name="396">396: </a></span>
+<span class="nocode"><a name="397">397: </a></span>}
+</pre><table class="mutation_table" summary="Mutations">
+<tr><th>ID</th><th>Line</th><th>Type</th><th>Detected</th></tr><tr><td>21538</td><td><a href="#138">138</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>21539</td><td><a href="#138">138(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>21540</td><td><a href="#139">139</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>21541</td><td><a href="#155">155</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>21542</td><td><a href="#155">155(1)</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>21543</td><td><a href="#156">156</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>21544</td><td><a href="#156">156(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>21545</td><td><a href="#157">157</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>21546</td><td><a href="#157">157(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>21547</td><td><a href="#157">157(2)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>21548</td><td><a href="#157">157(3)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>21549</td><td><a href="#159">159</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>21550</td><td><a href="#161">161</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>21551</td><td><a href="#162">162</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>21552</td><td><a href="#175">175</a></td><td>Negate jump condition (Replace IFNONNULL with  IFNULL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>21553</td><td><a href="#178">178</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>21554</td><td><a href="#178">178(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>21555</td><td><a href="#178">178(2)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>21556</td><td><a href="#178">178(3)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>21557</td><td><a href="#179">179</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>21558</td><td><a href="#195">195</a></td><td>Negate jump condition (Replace IFNONNULL with  IFNULL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>21559</td><td><a href="#198">198</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>21560</td><td><a href="#199">199</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>21561</td><td><a href="#199">199(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>21562</td><td><a href="#220">220</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>21563</td><td><a href="#220">220(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>21564</td><td><a href="#230">230</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>21565</td><td><a href="#239">239</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>21566</td><td><a href="#249">249</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>21567</td><td><a href="#263">263</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>21568</td><td><a href="#266">266</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>21569</td><td><a href="#266">266(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>21570</td><td><a href="#266">266(2)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>21571</td><td><a href="#279">279</a></td><td>Negate jump condition (Replace IFNONNULL with  IFNULL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>21572</td><td><a href="#282">282</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>21573</td><td><a href="#282">282(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>21574</td><td><a href="#296">296</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>21575</td><td><a href="#296">296(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>21576</td><td><a href="#309">309</a></td><td>Negate jump condition (Replace IFNONNULL with  IFNULL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>21577</td><td><a href="#312">312</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>21578</td><td><a href="#312">312(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>21579</td><td><a href="#326">326</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>21580</td><td><a href="#326">326(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>21581</td><td><a href="#326">326(2)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>21582</td><td><a href="#340">340</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>21583</td><td><a href="#340">340</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>21584</td><td><a href="#340">340</a></td><td>Negate jump condition (Replace IF_ICMPNE with  IF_ICMPEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>21586</td><td><a href="#343">343</a></td><td>Replace arithmetic operator (Replace IDIV with IMUL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>21585</td><td><a href="#343">343</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>21587</td><td><a href="#343">343(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>21588</td><td><a href="#354">354</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>21589</td><td><a href="#354">354(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>21590</td><td><a href="#354">354(2)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>21591</td><td><a href="#365">365</a></td><td>Negate jump condition (Replace IFNONNULL with  IFNULL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>21595</td><td><a href="#366">366</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>21594</td><td><a href="#366">366</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>21596</td><td><a href="#366">366(1)</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>21597</td><td><a href="#366">366(1)</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>21593</td><td><a href="#366">366</a></td><td>Negate jump condition (Replace IFLE with  IFGT)</td><td><img src="detected.png"/></td></tr>
+<tr><td>21592</td><td><a href="#366">366</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>21602</td><td><a href="#368">368</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>21601</td><td><a href="#368">368</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>21603</td><td><a href="#368">368(1)</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>21604</td><td><a href="#368">368(1)</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>21600</td><td><a href="#368">368</a></td><td>Negate jump condition (Replace IF_ICMPLE with  IF_ICMPGT)</td><td><img src="detected.png"/></td></tr>
+<tr><td>21598</td><td><a href="#368">368</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>21599</td><td><a href="#368">368(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>21605</td><td><a href="#378">378</a></td><td>Negate jump condition (Replace IFNONNULL with  IFNULL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>21609</td><td><a href="#379">379</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>21608</td><td><a href="#379">379</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>21610</td><td><a href="#379">379(1)</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>21611</td><td><a href="#379">379(1)</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>21607</td><td><a href="#379">379</a></td><td>Negate jump condition (Replace IFGE with  IFLT)</td><td><img src="detected.png"/></td></tr>
+<tr><td>21606</td><td><a href="#379">379</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>21616</td><td><a href="#381">381</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>21615</td><td><a href="#381">381</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>21618</td><td><a href="#381">381(1)</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>21617</td><td><a href="#381">381(1)</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>21614</td><td><a href="#381">381</a></td><td>Negate jump condition (Replace IF_ICMPGE with  IF_ICMPLT)</td><td><img src="detected.png"/></td></tr>
+<tr><td>21612</td><td><a href="#381">381</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>21613</td><td><a href="#381">381(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>21619</td><td><a href="#394">394</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>21620</td><td><a href="#394">394(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>21621</td><td><a href="#394">394(2)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>21622</td><td><a href="#394">394(3)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>21623</td><td><a href="#394">394(4)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>21624</td><td><a href="#394">394(5)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+</table>
+</body>
+</html>

@@ -1,0 +1,27 @@
+Testsuite: org.apache.poi.hssf.model.TestSheet
+Tests run: 20, Failures: 0, Errors: 0, Time elapsed: 0.161 sec
+------------- Standard Output ---------------
+WARNING: 108 bytes remaining but no space left
+WARNING: 108 bytes remaining but no space left
+------------- ---------------- ---------------
+
+Testcase: testCreateSheet took 0 sec
+Testcase: testAddMergedRegion took 0.008 sec
+Testcase: testRemoveMergedRegion took 0.003 sec
+Testcase: testMovingMergedRegion took 0 sec
+Testcase: testGetMergedRegionAt took 0 sec
+Testcase: testGetNumMergedRegions took 0 sec
+Testcase: testRowAggregation took 0 sec
+Testcase: testRowPageBreaks took 0.001 sec
+Testcase: testColPageBreaks took 0.001 sec
+Testcase: testXFIndexForColumn took 0 sec
+Testcase: testUncalcSize_bug45066 took 0.001 sec
+Testcase: testRowValueAggregatesOrder_bug45145 took 0.001 sec
+Testcase: testGutsRecord_bug45640 took 0 sec
+Testcase: testMisplacedMergedCellsRecords_bug45699 took 0.138 sec
+Testcase: testSetMargins_bug45717 took 0 sec
+Testcase: testMissingDims took 0 sec
+Testcase: testShiftFormulasAddCondFormat_bug46547 took 0.001 sec
+Testcase: testAddCondFormatAfterDataValidation_bug46547 took 0 sec
+Testcase: testCloneMulBlank_bug46776 took 0.002 sec
+Testcase: testCreateAggregate took 0.002 sec

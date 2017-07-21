@@ -1,0 +1,173 @@
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/repos/asf/!svn/ver/1296980/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/model/types
+END
+FibRgLw97AbstractType.java
+K 25
+svn:wc:ra_dav:version-url
+V 115
+/repos/asf/!svn/ver/1178063/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/model/types/FibRgLw97AbstractType.java
+END
+SHDAbstractType.java
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/repos/asf/!svn/ver/1173157/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/model/types/SHDAbstractType.java
+END
+LFOAbstractType.java
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/repos/asf/!svn/ver/1195068/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/model/types/LFOAbstractType.java
+END
+PAPAbstractType.java
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/repos/asf/!svn/ver/1173157/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/model/types/PAPAbstractType.java
+END
+PICFAbstractType.java
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/repos/asf/!svn/ver/1296980/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/model/types/PICFAbstractType.java
+END
+DOPAbstractType.java
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/repos/asf/!svn/ver/1296980/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/model/types/DOPAbstractType.java
+END
+TAPAbstractType.java
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/repos/asf/!svn/ver/1173157/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/model/types/TAPAbstractType.java
+END
+SHD80AbstractType.java
+K 25
+svn:wc:ra_dav:version-url
+V 111
+/repos/asf/!svn/ver/1173157/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/model/types/SHD80AbstractType.java
+END
+SEPAbstractType.java
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/repos/asf/!svn/ver/1155217/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/model/types/SEPAbstractType.java
+END
+LFOLVLBaseAbstractType.java
+K 25
+svn:wc:ra_dav:version-url
+V 116
+/repos/asf/!svn/ver/1178083/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/model/types/LFOLVLBaseAbstractType.java
+END
+FSPAAbstractType.java
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/repos/asf/!svn/ver/1151845/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/model/types/FSPAAbstractType.java
+END
+FibBaseAbstractType.java
+K 25
+svn:wc:ra_dav:version-url
+V 113
+/repos/asf/!svn/ver/1178019/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/model/types/FibBaseAbstractType.java
+END
+StdfBaseAbstractType.java
+K 25
+svn:wc:ra_dav:version-url
+V 114
+/repos/asf/!svn/ver/1173548/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/model/types/StdfBaseAbstractType.java
+END
+TLPAbstractType.java
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/repos/asf/!svn/ver/1155217/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/model/types/TLPAbstractType.java
+END
+FibRgW97AbstractType.java
+K 25
+svn:wc:ra_dav:version-url
+V 114
+/repos/asf/!svn/ver/1178030/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/model/types/FibRgW97AbstractType.java
+END
+StshifAbstractType.java
+K 25
+svn:wc:ra_dav:version-url
+V 112
+/repos/asf/!svn/ver/1173622/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/model/types/StshifAbstractType.java
+END
+GrfhicAbstractType.java
+K 25
+svn:wc:ra_dav:version-url
+V 112
+/repos/asf/!svn/ver/1195068/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/model/types/GrfhicAbstractType.java
+END
+BKFAbstractType.java
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/repos/asf/!svn/ver/1156541/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/model/types/BKFAbstractType.java
+END
+LVLFAbstractType.java
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/repos/asf/!svn/ver/1195068/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/model/types/LVLFAbstractType.java
+END
+FLDAbstractType.java
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/repos/asf/!svn/ver/1155217/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/model/types/FLDAbstractType.java
+END
+TCAbstractType.java
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/repos/asf/!svn/ver/1173035/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/model/types/TCAbstractType.java
+END
+LSTFAbstractType.java
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/repos/asf/!svn/ver/1195068/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/model/types/LSTFAbstractType.java
+END
+StdfPost2000AbstractType.java
+K 25
+svn:wc:ra_dav:version-url
+V 118
+/repos/asf/!svn/ver/1173622/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/model/types/StdfPost2000AbstractType.java
+END
+TBDAbstractType.java
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/repos/asf/!svn/ver/1173159/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/model/types/TBDAbstractType.java
+END
+HRESIAbstractType.java
+K 25
+svn:wc:ra_dav:version-url
+V 111
+/repos/asf/!svn/ver/1155217/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/model/types/HRESIAbstractType.java
+END
+FibRgLw95AbstractType.java
+K 25
+svn:wc:ra_dav:version-url
+V 115
+/repos/asf/!svn/ver/1178063/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/model/types/FibRgLw95AbstractType.java
+END
+CHPAbstractType.java
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/repos/asf/!svn/ver/1150606/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/model/types/CHPAbstractType.java
+END
+FRDAbstractType.java
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/repos/asf/!svn/ver/1155217/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/model/types/FRDAbstractType.java
+END

@@ -1,0 +1,173 @@
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/repos/asf/!svn/ver/1195068/poi/trunk/src/types/definitions
+END
+dop_type.xml
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/repos/asf/!svn/ver/712084/poi/trunk/src/types/definitions/dop_type.xml
+END
+tap_type.xml
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/repos/asf/!svn/ver/1142827/poi/trunk/src/types/definitions/tap_type.xml
+END
+shd80_type.xml
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/repos/asf/!svn/ver/1173157/poi/trunk/src/types/definitions/shd80_type.xml
+END
+sep_type.xml
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/repos/asf/!svn/ver/1147385/poi/trunk/src/types/definitions/sep_type.xml
+END
+fspa_type.xml
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/repos/asf/!svn/ver/1151845/poi/trunk/src/types/definitions/fspa_type.xml
+END
+LFOLVLBase_type.xml
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/repos/asf/!svn/ver/1178083/poi/trunk/src/types/definitions/LFOLVLBase_type.xml
+END
+StdfBase_type.xml
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/repos/asf/!svn/ver/1173548/poi/trunk/src/types/definitions/StdfBase_type.xml
+END
+FibBase_type.xml
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/repos/asf/!svn/ver/1178019/poi/trunk/src/types/definitions/FibBase_type.xml
+END
+tlp_type.xml
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/repos/asf/!svn/ver/1142827/poi/trunk/src/types/definitions/tlp_type.xml
+END
+Stshif_type.xml
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/repos/asf/!svn/ver/1173622/poi/trunk/src/types/definitions/Stshif_type.xml
+END
+FibRgW97_type.xml
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/repos/asf/!svn/ver/1178049/poi/trunk/src/types/definitions/FibRgW97_type.xml
+END
+grfhic_type.xml
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/repos/asf/!svn/ver/1195068/poi/trunk/src/types/definitions/grfhic_type.xml
+END
+bkf_type.xml
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/repos/asf/!svn/ver/1148428/poi/trunk/src/types/definitions/bkf_type.xml
+END
+lvlf_type.xml
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/repos/asf/!svn/ver/1195068/poi/trunk/src/types/definitions/lvlf_type.xml
+END
+fld_type.xml
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/repos/asf/!svn/ver/1144249/poi/trunk/src/types/definitions/fld_type.xml
+END
+tc_type.xml
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/repos/asf/!svn/ver/1173044/poi/trunk/src/types/definitions/tc_type.xml
+END
+StdfPost2000_type.xml
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/repos/asf/!svn/ver/1173622/poi/trunk/src/types/definitions/StdfPost2000_type.xml
+END
+lstf_type.xml
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/repos/asf/!svn/ver/1195068/poi/trunk/src/types/definitions/lstf_type.xml
+END
+tbd_type.xml
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/repos/asf/!svn/ver/1173157/poi/trunk/src/types/definitions/tbd_type.xml
+END
+hresi_type.xml
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/repos/asf/!svn/ver/1147411/poi/trunk/src/types/definitions/hresi_type.xml
+END
+chp_type.xml
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/repos/asf/!svn/ver/1150606/poi/trunk/src/types/definitions/chp_type.xml
+END
+FibRgLw95_type.xml
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/repos/asf/!svn/ver/1178063/poi/trunk/src/types/definitions/FibRgLw95_type.xml
+END
+frd_type.xml
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/repos/asf/!svn/ver/1148959/poi/trunk/src/types/definitions/frd_type.xml
+END
+FibRgLw97_type.xml
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/repos/asf/!svn/ver/1178038/poi/trunk/src/types/definitions/FibRgLw97_type.xml
+END
+shd_type.xml
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/repos/asf/!svn/ver/1173157/poi/trunk/src/types/definitions/shd_type.xml
+END
+lfo_type.xml
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/repos/asf/!svn/ver/1195068/poi/trunk/src/types/definitions/lfo_type.xml
+END
+pap_type.xml
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/repos/asf/!svn/ver/1173157/poi/trunk/src/types/definitions/pap_type.xml
+END
+picf_type.xml
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/repos/asf/!svn/ver/1177709/poi/trunk/src/types/definitions/picf_type.xml
+END

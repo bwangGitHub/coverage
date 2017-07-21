@@ -1,0 +1,6 @@
+Testsuite: org.apache.poi.ss.formula.eval.TestFormulaBugs
+Tests run: 3, Failures: 0, Errors: 0, Time elapsed: 0.002 sec
+
+Testcase: test42448 took 0.001 sec
+Testcase: test27349 took 0 sec
+Testcase: test27405 took 0.001 sec

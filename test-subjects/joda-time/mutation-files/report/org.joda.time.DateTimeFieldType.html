@@ -1,0 +1,674 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN
+"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>
+org.joda.time.DateTimeFieldType
+</title>
+<link href="prettify.css" type="text/css" rel="stylesheet" />
+<script type="text/javascript" src="prettify.js"></script>
+</head>
+<body onload="prettyPrint()">
+<h2>Javalanche report for class:<br/> org.joda.time.DateTimeFieldType </h2><pre class="prettyprint" style="border: 1px solid #888;padding: 2px"><span class="nocode"><a name="1">  1: </a></span>/*
+<span class="nocode"><a name="2">  2: </a></span> *  Copyright 2001-2005 Stephen Colebourne
+<span class="nocode"><a name="3">  3: </a></span> *
+<span class="nocode"><a name="4">  4: </a></span> *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+<span class="nocode"><a name="5">  5: </a></span> *  you may not use this file except in compliance with the License.
+<span class="nocode"><a name="6">  6: </a></span> *  You may obtain a copy of the License at
+<span class="nocode"><a name="7">  7: </a></span> *
+<span class="nocode"><a name="8">  8: </a></span> *      http://www.apache.org/licenses/LICENSE-2.0
+<span class="nocode"><a name="9">  9: </a></span> *
+<span class="nocode"><a name="10"> 10: </a></span> *  Unless required by applicable law or agreed to in writing, software
+<span class="nocode"><a name="11"> 11: </a></span> *  distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+<span class="nocode"><a name="12"> 12: </a></span> *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+<span class="nocode"><a name="13"> 13: </a></span> *  See the License for the specific language governing permissions and
+<span class="nocode"><a name="14"> 14: </a></span> *  limitations under the License.
+<span class="nocode"><a name="15"> 15: </a></span> */
+<span class="nocode"><a name="16"> 16: </a></span>package org.joda.time;
+<span class="nocode"><a name="17"> 17: </a></span>
+<span class="nocode"><a name="18"> 18: </a></span>import java.io.Serializable;
+<span class="nocode"><a name="19"> 19: </a></span>
+<span class="nocode"><a name="20"> 20: </a></span>/**
+<span class="nocode"><a name="21"> 21: </a></span> * Identifies a field, such as year or minuteOfHour, in a chronology-neutral way.
+<span class="nocode"><a name="22"> 22: </a></span> * &lt;p&gt;
+<span class="nocode"><a name="23"> 23: </a></span> * A field type defines the type of the field, such as hourOfDay.
+<span class="nocode"><a name="24"> 24: </a></span> * If does not directly enable any calculations, however it does provide a
+<span class="nocode"><a name="25"> 25: </a></span> * {@link #getField(Chronology)} method that returns the actual calculation engine
+<span class="nocode"><a name="26"> 26: </a></span> * for a particular chronology.
+<span class="nocode"><a name="27"> 27: </a></span> * It also provides access to the related {@link DurationFieldType}s.
+<span class="nocode"><a name="28"> 28: </a></span> * &lt;p&gt;
+<span class="nocode"><a name="29"> 29: </a></span> * Instances of &lt;code&gt;DateTimeFieldType&lt;/code&gt; are singletons.
+<span class="nocode"><a name="30"> 30: </a></span> * They can be compared using &lt;code&gt;==&lt;/code&gt;.
+<span class="nocode"><a name="31"> 31: </a></span> * &lt;p&gt;
+<span class="nocode"><a name="32"> 32: </a></span> * If required, you can create your own field, for example a quarterOfYear.
+<span class="nocode"><a name="33"> 33: </a></span> * You must create a subclass of &lt;code&gt;DateTimeFieldType&lt;/code&gt; that defines the field type.
+<span class="nocode"><a name="34"> 34: </a></span> * This class returns the actual calculation engine from {@link #getField(Chronology)}.
+<span class="nocode"><a name="35"> 35: </a></span> * The subclass should implement equals and hashCode.
+<span class="nocode"><a name="36"> 36: </a></span> *
+<span class="nocode"><a name="37"> 37: </a></span> * @author Stephen Colebourne
+<span class="nocode"><a name="38"> 38: </a></span> * @author Brian S O'Neill
+<span class="nocode"><a name="39"> 39: </a></span> * @since 1.0
+<span class="nocode"><a name="40"> 40: </a></span> */
+<span class="nocode"><a name="41"> 41: </a></span>public abstract class DateTimeFieldType implements Serializable {
+<span class="nocode"><a name="42"> 42: </a></span>
+<span class="nocode"><a name="43"> 43: </a></span>    /** Serialization version */
+<span class="nocode"><a name="44"> 44: </a></span>    private static final long serialVersionUID = -42615285973990L;
+<span class="nocode"><a name="45"> 45: </a></span>
+<span class="nocode"><a name="46"> 46: </a></span>    /** Ordinal values for standard field types. */
+<span class="nocode"><a name="47"> 47: </a></span>    static final byte
+<span class="nocode"><a name="48"> 48: </a></span>        ERA = 1,
+<span class="nocode"><a name="49"> 49: </a></span>        YEAR_OF_ERA = 2,
+<span class="nocode"><a name="50"> 50: </a></span>        CENTURY_OF_ERA = 3,
+<span class="nocode"><a name="51"> 51: </a></span>        YEAR_OF_CENTURY = 4,
+<span class="nocode"><a name="52"> 52: </a></span>        YEAR = 5,
+<span class="nocode"><a name="53"> 53: </a></span>        DAY_OF_YEAR = 6,
+<span class="nocode"><a name="54"> 54: </a></span>        MONTH_OF_YEAR = 7,
+<span class="nocode"><a name="55"> 55: </a></span>        DAY_OF_MONTH = 8,
+<span class="nocode"><a name="56"> 56: </a></span>        WEEKYEAR_OF_CENTURY = 9,
+<span class="nocode"><a name="57"> 57: </a></span>        WEEKYEAR = 10,
+<span class="nocode"><a name="58"> 58: </a></span>        WEEK_OF_WEEKYEAR = 11,
+<span class="nocode"><a name="59"> 59: </a></span>        DAY_OF_WEEK = 12,
+<span class="nocode"><a name="60"> 60: </a></span>        HALFDAY_OF_DAY = 13,
+<span class="nocode"><a name="61"> 61: </a></span>        HOUR_OF_HALFDAY = 14,
+<span class="nocode"><a name="62"> 62: </a></span>        CLOCKHOUR_OF_HALFDAY = 15,
+<span class="nocode"><a name="63"> 63: </a></span>        CLOCKHOUR_OF_DAY = 16,
+<span class="nocode"><a name="64"> 64: </a></span>        HOUR_OF_DAY = 17,
+<span class="nocode"><a name="65"> 65: </a></span>        MINUTE_OF_DAY = 18,
+<span class="nocode"><a name="66"> 66: </a></span>        MINUTE_OF_HOUR = 19,
+<span class="nocode"><a name="67"> 67: </a></span>        SECOND_OF_DAY = 20,
+<span class="nocode"><a name="68"> 68: </a></span>        SECOND_OF_MINUTE = 21,
+<span class="nocode"><a name="69"> 69: </a></span>        MILLIS_OF_DAY = 22,
+<span class="nocode"><a name="70"> 70: </a></span>        MILLIS_OF_SECOND = 23;
+<span class="nocode"><a name="71"> 71: </a></span>
+<span class="nocode"><a name="72"> 72: </a></span>    /** The era field type. */
+<span class="nocode"><a name="73"> 73: </a></span>    private static final DateTimeFieldType ERA_TYPE = new StandardDateTimeFieldType(
+<span class="nocode"><a name="74"> 74: </a></span>        &quot;era&quot;, ERA, DurationFieldType.eras(), null);
+<span class="nocode"><a name="75"> 75: </a></span>    /** The yearOfEra field type. */
+<span class="nocode"><a name="76"> 76: </a></span>    private static final DateTimeFieldType YEAR_OF_ERA_TYPE = new StandardDateTimeFieldType(
+<span class="nocode"><a name="77"> 77: </a></span>        &quot;yearOfEra&quot;, YEAR_OF_ERA, DurationFieldType.years(), DurationFieldType.eras());
+<span class="nocode"><a name="78"> 78: </a></span>    /** The centuryOfEra field type. */
+<span class="nocode"><a name="79"> 79: </a></span>    private static final DateTimeFieldType CENTURY_OF_ERA_TYPE = new StandardDateTimeFieldType(
+<span class="nocode"><a name="80"> 80: </a></span>        &quot;centuryOfEra&quot;, CENTURY_OF_ERA, DurationFieldType.centuries(), DurationFieldType.eras());
+<span class="nocode"><a name="81"> 81: </a></span>    /** The yearOfCentury field type. */
+<span class="nocode"><a name="82"> 82: </a></span>    private static final DateTimeFieldType YEAR_OF_CENTURY_TYPE = new StandardDateTimeFieldType(
+<span class="nocode"><a name="83"> 83: </a></span>        &quot;yearOfCentury&quot;, YEAR_OF_CENTURY, DurationFieldType.years(), DurationFieldType.centuries());
+<span class="nocode"><a name="84"> 84: </a></span>    /** The year field type. */
+<span class="nocode"><a name="85"> 85: </a></span>    private static final DateTimeFieldType YEAR_TYPE = new StandardDateTimeFieldType(
+<span class="nocode"><a name="86"> 86: </a></span>        &quot;year&quot;, YEAR, DurationFieldType.years(), null);
+<span class="nocode"><a name="87"> 87: </a></span>    /** The dayOfYear field type. */
+<span class="nocode"><a name="88"> 88: </a></span>    private static final DateTimeFieldType DAY_OF_YEAR_TYPE = new StandardDateTimeFieldType(
+<span class="nocode"><a name="89"> 89: </a></span>        &quot;dayOfYear&quot;, DAY_OF_YEAR, DurationFieldType.days(), DurationFieldType.years());
+<span class="nocode"><a name="90"> 90: </a></span>    /** The monthOfYear field type. */
+<span class="nocode"><a name="91"> 91: </a></span>    private static final DateTimeFieldType MONTH_OF_YEAR_TYPE = new StandardDateTimeFieldType(
+<span class="nocode"><a name="92"> 92: </a></span>        &quot;monthOfYear&quot;, MONTH_OF_YEAR, DurationFieldType.months(), DurationFieldType.years());
+<span class="nocode"><a name="93"> 93: </a></span>    /** The dayOfMonth field type. */
+<span class="nocode"><a name="94"> 94: </a></span>    private static final DateTimeFieldType DAY_OF_MONTH_TYPE = new StandardDateTimeFieldType(
+<span class="nocode"><a name="95"> 95: </a></span>        &quot;dayOfMonth&quot;, DAY_OF_MONTH, DurationFieldType.days(), DurationFieldType.months());
+<span class="nocode"><a name="96"> 96: </a></span>    /** The weekyearOfCentury field type. */
+<span class="nocode"><a name="97"> 97: </a></span>    private static final DateTimeFieldType WEEKYEAR_OF_CENTURY_TYPE = new StandardDateTimeFieldType(
+<span class="nocode"><a name="98"> 98: </a></span>        &quot;weekyearOfCentury&quot;, WEEKYEAR_OF_CENTURY, DurationFieldType.weekyears(), DurationFieldType.centuries());
+<span class="nocode"><a name="99"> 99: </a></span>    /** The weekyear field type. */
+<span class="nocode"><a name="100">100: </a></span>    private static final DateTimeFieldType WEEKYEAR_TYPE = new StandardDateTimeFieldType(
+<span class="nocode"><a name="101">101: </a></span>        &quot;weekyear&quot;, WEEKYEAR, DurationFieldType.weekyears(), null);
+<span class="nocode"><a name="102">102: </a></span>    /** The weekOfWeekyear field type. */
+<span class="nocode"><a name="103">103: </a></span>    private static final DateTimeFieldType WEEK_OF_WEEKYEAR_TYPE = new StandardDateTimeFieldType(
+<span class="nocode"><a name="104">104: </a></span>        &quot;weekOfWeekyear&quot;, WEEK_OF_WEEKYEAR, DurationFieldType.weeks(), DurationFieldType.weekyears());
+<span class="nocode"><a name="105">105: </a></span>    /** The dayOfWeek field type. */
+<span class="nocode"><a name="106">106: </a></span>    private static final DateTimeFieldType DAY_OF_WEEK_TYPE = new StandardDateTimeFieldType(
+<span class="nocode"><a name="107">107: </a></span>        &quot;dayOfWeek&quot;, DAY_OF_WEEK, DurationFieldType.days(), DurationFieldType.weeks());
+<span class="nocode"><a name="108">108: </a></span>
+<span class="nocode"><a name="109">109: </a></span>    /** The halfday field type. */
+<span class="nocode"><a name="110">110: </a></span>    private static final DateTimeFieldType HALFDAY_OF_DAY_TYPE = new StandardDateTimeFieldType(
+<span class="nocode"><a name="111">111: </a></span>        &quot;halfdayOfDay&quot;, HALFDAY_OF_DAY, DurationFieldType.halfdays(), DurationFieldType.days());
+<span class="nocode"><a name="112">112: </a></span>    /** The hourOfHalfday field type. */
+<span class="nocode"><a name="113">113: </a></span>    private static final DateTimeFieldType HOUR_OF_HALFDAY_TYPE = new StandardDateTimeFieldType(
+<span class="nocode"><a name="114">114: </a></span>        &quot;hourOfHalfday&quot;, HOUR_OF_HALFDAY, DurationFieldType.hours(), DurationFieldType.halfdays());
+<span class="nocode"><a name="115">115: </a></span>    /** The clockhourOfHalfday field type. */
+<span class="nocode"><a name="116">116: </a></span>    private static final DateTimeFieldType CLOCKHOUR_OF_HALFDAY_TYPE = new StandardDateTimeFieldType(
+<span class="nocode"><a name="117">117: </a></span>        &quot;clockhourOfHalfday&quot;, CLOCKHOUR_OF_HALFDAY, DurationFieldType.hours(), DurationFieldType.halfdays());
+<span class="nocode"><a name="118">118: </a></span>    /** The clockhourOfDay field type. */
+<span class="nocode"><a name="119">119: </a></span>    private static final DateTimeFieldType CLOCKHOUR_OF_DAY_TYPE = new StandardDateTimeFieldType(
+<span class="nocode"><a name="120">120: </a></span>        &quot;clockhourOfDay&quot;, CLOCKHOUR_OF_DAY, DurationFieldType.hours(), DurationFieldType.days());
+<span class="nocode"><a name="121">121: </a></span>    /** The hourOfDay field type. */
+<span class="nocode"><a name="122">122: </a></span>    private static final DateTimeFieldType HOUR_OF_DAY_TYPE = new StandardDateTimeFieldType(
+<span class="nocode"><a name="123">123: </a></span>        &quot;hourOfDay&quot;, HOUR_OF_DAY, DurationFieldType.hours(), DurationFieldType.days());
+<span class="nocode"><a name="124">124: </a></span>    /** The minuteOfDay field type. */
+<span class="nocode"><a name="125">125: </a></span>    private static final DateTimeFieldType MINUTE_OF_DAY_TYPE = new StandardDateTimeFieldType(
+<span class="nocode"><a name="126">126: </a></span>        &quot;minuteOfDay&quot;, MINUTE_OF_DAY, DurationFieldType.minutes(), DurationFieldType.days());
+<span class="nocode"><a name="127">127: </a></span>    /** The minuteOfHour field type. */
+<span class="nocode"><a name="128">128: </a></span>    private static final DateTimeFieldType MINUTE_OF_HOUR_TYPE = new StandardDateTimeFieldType(
+<span class="nocode"><a name="129">129: </a></span>        &quot;minuteOfHour&quot;, MINUTE_OF_HOUR, DurationFieldType.minutes(), DurationFieldType.hours());
+<span class="nocode"><a name="130">130: </a></span>    /** The secondOfDay field type. */
+<span class="nocode"><a name="131">131: </a></span>    private static final DateTimeFieldType SECOND_OF_DAY_TYPE = new StandardDateTimeFieldType(
+<span class="nocode"><a name="132">132: </a></span>        &quot;secondOfDay&quot;, SECOND_OF_DAY, DurationFieldType.seconds(), DurationFieldType.days());
+<span class="nocode"><a name="133">133: </a></span>    /** The secondOfMinute field type. */
+<span class="nocode"><a name="134">134: </a></span>    private static final DateTimeFieldType SECOND_OF_MINUTE_TYPE = new StandardDateTimeFieldType(
+<span class="nocode"><a name="135">135: </a></span>        &quot;secondOfMinute&quot;, SECOND_OF_MINUTE, DurationFieldType.seconds(), DurationFieldType.minutes());
+<span class="nocode"><a name="136">136: </a></span>    /** The millisOfDay field type. */
+<span class="nocode"><a name="137">137: </a></span>    private static final DateTimeFieldType MILLIS_OF_DAY_TYPE = new StandardDateTimeFieldType(
+<span class="nocode"><a name="138">138: </a></span>        &quot;millisOfDay&quot;, MILLIS_OF_DAY, DurationFieldType.millis(), DurationFieldType.days());
+<span class="nocode"><a name="139">139: </a></span>    /** The millisOfSecond field type. */
+<span class="nocode"><a name="140">140: </a></span>    private static final DateTimeFieldType MILLIS_OF_SECOND_TYPE = new StandardDateTimeFieldType(
+<span class="nocode"><a name="141">141: </a></span>        &quot;millisOfSecond&quot;, MILLIS_OF_SECOND, DurationFieldType.millis(), DurationFieldType.seconds());
+<span class="nocode"><a name="142">142: </a></span>
+<span class="nocode"><a name="143">143: </a></span>    /** The name of the field. */
+<span class="nocode"><a name="144">144: </a></span>    private final String iName;
+<span class="nocode"><a name="145">145: </a></span>
+<span class="nocode"><a name="146">146: </a></span>    //-----------------------------------------------------------------------
+<span class="nocode"><a name="147">147: </a></span>    /**
+<span class="nocode"><a name="148">148: </a></span>     * Constructor.
+<span class="nocode"><a name="149">149: </a></span>     * 
+<span class="nocode"><a name="150">150: </a></span>     * @param name  the name to use
+<span class="nocode"><a name="151">151: </a></span>     */
+<span class="nocode"><a name="152">152: </a></span>    protected DateTimeFieldType(String name) {
+<span class="nocode"><a name="153">153: </a></span>        super();
+<span class="nocode"><a name="154">154: </a></span>        iName = name;
+<span class="nocode"><a name="155">155: </a></span>    }
+<span class="nocode"><a name="156">156: </a></span>
+<span class="nocode"><a name="157">157: </a></span>    //-----------------------------------------------------------------------
+<span class="nocode"><a name="158">158: </a></span>    /**
+<span class="nocode"><a name="159">159: </a></span>     * Get the millis of second field type.
+<span class="nocode"><a name="160">160: </a></span>     * 
+<span class="nocode"><a name="161">161: </a></span>     * @return the DateTimeFieldType constant
+<span class="nocode"><a name="162">162: </a></span>     */
+<span class="nocode"><a name="163">163: </a></span>    public static DateTimeFieldType millisOfSecond() {
+<span class="nocode"><a name="164">164: </a></span>        return MILLIS_OF_SECOND_TYPE;
+<span class="nocode"><a name="165">165: </a></span>    }
+<span class="nocode"><a name="166">166: </a></span>
+<span class="nocode"><a name="167">167: </a></span>    /**
+<span class="nocode"><a name="168">168: </a></span>     * Get the millis of day field type.
+<span class="nocode"><a name="169">169: </a></span>     * 
+<span class="nocode"><a name="170">170: </a></span>     * @return the DateTimeFieldType constant
+<span class="nocode"><a name="171">171: </a></span>     */
+<span class="nocode"><a name="172">172: </a></span>    public static DateTimeFieldType millisOfDay() {
+<span class="nocode"><a name="173">173: </a></span>        return MILLIS_OF_DAY_TYPE;
+<span class="nocode"><a name="174">174: </a></span>    }
+<span class="nocode"><a name="175">175: </a></span>
+<span class="nocode"><a name="176">176: </a></span>    /**
+<span class="nocode"><a name="177">177: </a></span>     * Get the second of minute field type.
+<span class="nocode"><a name="178">178: </a></span>     * 
+<span class="nocode"><a name="179">179: </a></span>     * @return the DateTimeFieldType constant
+<span class="nocode"><a name="180">180: </a></span>     */
+<span class="nocode"><a name="181">181: </a></span>    public static DateTimeFieldType secondOfMinute() {
+<span class="nocode"><a name="182">182: </a></span>        return SECOND_OF_MINUTE_TYPE;
+<span class="nocode"><a name="183">183: </a></span>    }
+<span class="nocode"><a name="184">184: </a></span>
+<span class="nocode"><a name="185">185: </a></span>    /**
+<span class="nocode"><a name="186">186: </a></span>     * Get the second of day field type.
+<span class="nocode"><a name="187">187: </a></span>     * 
+<span class="nocode"><a name="188">188: </a></span>     * @return the DateTimeFieldType constant
+<span class="nocode"><a name="189">189: </a></span>     */
+<span class="nocode"><a name="190">190: </a></span>    public static DateTimeFieldType secondOfDay() {
+<span class="nocode"><a name="191">191: </a></span>        return SECOND_OF_DAY_TYPE;
+<span class="nocode"><a name="192">192: </a></span>    }
+<span class="nocode"><a name="193">193: </a></span>
+<span class="nocode"><a name="194">194: </a></span>    /**
+<span class="nocode"><a name="195">195: </a></span>     * Get the minute of hour field type.
+<span class="nocode"><a name="196">196: </a></span>     * 
+<span class="nocode"><a name="197">197: </a></span>     * @return the DateTimeFieldType constant
+<span class="nocode"><a name="198">198: </a></span>     */
+<span class="nocode"><a name="199">199: </a></span>    public static DateTimeFieldType minuteOfHour() {
+<span class="nocode"><a name="200">200: </a></span>        return MINUTE_OF_HOUR_TYPE;
+<span class="nocode"><a name="201">201: </a></span>    }
+<span class="nocode"><a name="202">202: </a></span>
+<span class="nocode"><a name="203">203: </a></span>    /**
+<span class="nocode"><a name="204">204: </a></span>     * Get the minute of day field type.
+<span class="nocode"><a name="205">205: </a></span>     * 
+<span class="nocode"><a name="206">206: </a></span>     * @return the DateTimeFieldType constant
+<span class="nocode"><a name="207">207: </a></span>     */
+<span class="nocode"><a name="208">208: </a></span>    public static DateTimeFieldType minuteOfDay() {
+<span class="nocode"><a name="209">209: </a></span>        return MINUTE_OF_DAY_TYPE;
+<span class="nocode"><a name="210">210: </a></span>    }
+<span class="nocode"><a name="211">211: </a></span>
+<span class="nocode"><a name="212">212: </a></span>    /**
+<span class="nocode"><a name="213">213: </a></span>     * Get the hour of day (0-23) field type.
+<span class="nocode"><a name="214">214: </a></span>     * 
+<span class="nocode"><a name="215">215: </a></span>     * @return the DateTimeFieldType constant
+<span class="nocode"><a name="216">216: </a></span>     */
+<span class="nocode"><a name="217">217: </a></span>    public static DateTimeFieldType hourOfDay() {
+<span class="nocode"><a name="218">218: </a></span>        return HOUR_OF_DAY_TYPE;
+<span class="nocode"><a name="219">219: </a></span>    }
+<span class="nocode"><a name="220">220: </a></span>
+<span class="nocode"><a name="221">221: </a></span>    /**
+<span class="nocode"><a name="222">222: </a></span>     * Get the hour of day (offset to 1-24) field type.
+<span class="nocode"><a name="223">223: </a></span>     * 
+<span class="nocode"><a name="224">224: </a></span>     * @return the DateTimeFieldType constant
+<span class="nocode"><a name="225">225: </a></span>     */
+<span class="nocode"><a name="226">226: </a></span>    public static DateTimeFieldType clockhourOfDay() {
+<span class="nocode"><a name="227">227: </a></span>        return CLOCKHOUR_OF_DAY_TYPE;
+<span class="nocode"><a name="228">228: </a></span>    }
+<span class="nocode"><a name="229">229: </a></span>
+<span class="nocode"><a name="230">230: </a></span>    /**
+<span class="nocode"><a name="231">231: </a></span>     * Get the hour of am/pm (0-11) field type.
+<span class="nocode"><a name="232">232: </a></span>     * 
+<span class="nocode"><a name="233">233: </a></span>     * @return the DateTimeFieldType constant
+<span class="nocode"><a name="234">234: </a></span>     */
+<span class="nocode"><a name="235">235: </a></span>    public static DateTimeFieldType hourOfHalfday() {
+<span class="nocode"><a name="236">236: </a></span>        return HOUR_OF_HALFDAY_TYPE;
+<span class="nocode"><a name="237">237: </a></span>    }
+<span class="nocode"><a name="238">238: </a></span>
+<span class="nocode"><a name="239">239: </a></span>    /**
+<span class="nocode"><a name="240">240: </a></span>     * Get the hour of am/pm (offset to 1-12) field type.
+<span class="nocode"><a name="241">241: </a></span>     * 
+<span class="nocode"><a name="242">242: </a></span>     * @return the DateTimeFieldType constant
+<span class="nocode"><a name="243">243: </a></span>     */
+<span class="nocode"><a name="244">244: </a></span>    public static DateTimeFieldType clockhourOfHalfday() {
+<span class="nocode"><a name="245">245: </a></span>        return CLOCKHOUR_OF_HALFDAY_TYPE;
+<span class="nocode"><a name="246">246: </a></span>    }
+<span class="nocode"><a name="247">247: </a></span>
+<span class="nocode"><a name="248">248: </a></span>    /**
+<span class="nocode"><a name="249">249: </a></span>     * Get the AM(0) PM(1) field type.
+<span class="nocode"><a name="250">250: </a></span>     * 
+<span class="nocode"><a name="251">251: </a></span>     * @return the DateTimeFieldType constant
+<span class="nocode"><a name="252">252: </a></span>     */
+<span class="nocode"><a name="253">253: </a></span>    public static DateTimeFieldType halfdayOfDay() {
+<span class="nocode"><a name="254">254: </a></span>        return HALFDAY_OF_DAY_TYPE;
+<span class="nocode"><a name="255">255: </a></span>    }
+<span class="nocode"><a name="256">256: </a></span>
+<span class="nocode"><a name="257">257: </a></span>    //-----------------------------------------------------------------------
+<span class="nocode"><a name="258">258: </a></span>    /**
+<span class="nocode"><a name="259">259: </a></span>     * Get the day of week field type.
+<span class="nocode"><a name="260">260: </a></span>     * 
+<span class="nocode"><a name="261">261: </a></span>     * @return the DateTimeFieldType constant
+<span class="nocode"><a name="262">262: </a></span>     */
+<span class="nocode"><a name="263">263: </a></span>    public static DateTimeFieldType dayOfWeek() {
+<span class="nocode"><a name="264">264: </a></span>        return DAY_OF_WEEK_TYPE;
+<span class="nocode"><a name="265">265: </a></span>    }
+<span class="nocode"><a name="266">266: </a></span>
+<span class="nocode"><a name="267">267: </a></span>    /**
+<span class="nocode"><a name="268">268: </a></span>     * Get the day of month field type.
+<span class="nocode"><a name="269">269: </a></span>     * 
+<span class="nocode"><a name="270">270: </a></span>     * @return the DateTimeFieldType constant
+<span class="nocode"><a name="271">271: </a></span>     */
+<span class="nocode"><a name="272">272: </a></span>    public static DateTimeFieldType dayOfMonth() {
+<span class="nocode"><a name="273">273: </a></span>        return DAY_OF_MONTH_TYPE;
+<span class="nocode"><a name="274">274: </a></span>    }
+<span class="nocode"><a name="275">275: </a></span>
+<span class="nocode"><a name="276">276: </a></span>    /**
+<span class="nocode"><a name="277">277: </a></span>     * Get the day of year field type.
+<span class="nocode"><a name="278">278: </a></span>     * 
+<span class="nocode"><a name="279">279: </a></span>     * @return the DateTimeFieldType constant
+<span class="nocode"><a name="280">280: </a></span>     */
+<span class="nocode"><a name="281">281: </a></span>    public static DateTimeFieldType dayOfYear() {
+<span class="nocode"><a name="282">282: </a></span>        return DAY_OF_YEAR_TYPE;
+<span class="nocode"><a name="283">283: </a></span>    }
+<span class="nocode"><a name="284">284: </a></span>
+<span class="nocode"><a name="285">285: </a></span>    /**
+<span class="nocode"><a name="286">286: </a></span>     * Get the week of a week based year field type.
+<span class="nocode"><a name="287">287: </a></span>     * 
+<span class="nocode"><a name="288">288: </a></span>     * @return the DateTimeFieldType constant
+<span class="nocode"><a name="289">289: </a></span>     */
+<span class="nocode"><a name="290">290: </a></span>    public static DateTimeFieldType weekOfWeekyear() {
+<span class="nocode"><a name="291">291: </a></span>        return WEEK_OF_WEEKYEAR_TYPE;
+<span class="nocode"><a name="292">292: </a></span>    }
+<span class="nocode"><a name="293">293: </a></span>
+<span class="nocode"><a name="294">294: </a></span>    /**
+<span class="nocode"><a name="295">295: </a></span>     * Get the year of a week based year field type.
+<span class="nocode"><a name="296">296: </a></span>     * 
+<span class="nocode"><a name="297">297: </a></span>     * @return the DateTimeFieldType constant
+<span class="nocode"><a name="298">298: </a></span>     */
+<span class="nocode"><a name="299">299: </a></span>    public static DateTimeFieldType weekyear() {
+<span class="nocode"><a name="300">300: </a></span>        return WEEKYEAR_TYPE;
+<span class="nocode"><a name="301">301: </a></span>    }
+<span class="nocode"><a name="302">302: </a></span>
+<span class="nocode"><a name="303">303: </a></span>    /**
+<span class="nocode"><a name="304">304: </a></span>     * Get the year of a week based year within a century field type.
+<span class="nocode"><a name="305">305: </a></span>     * 
+<span class="nocode"><a name="306">306: </a></span>     * @return the DateTimeFieldType constant
+<span class="nocode"><a name="307">307: </a></span>     */
+<span class="nocode"><a name="308">308: </a></span>    public static DateTimeFieldType weekyearOfCentury() {
+<span class="nocode"><a name="309">309: </a></span>        return WEEKYEAR_OF_CENTURY_TYPE;
+<span class="nocode"><a name="310">310: </a></span>    }
+<span class="nocode"><a name="311">311: </a></span>
+<span class="nocode"><a name="312">312: </a></span>    /**
+<span class="nocode"><a name="313">313: </a></span>     * Get the month of year field type.
+<span class="nocode"><a name="314">314: </a></span>     * 
+<span class="nocode"><a name="315">315: </a></span>     * @return the DateTimeFieldType constant
+<span class="nocode"><a name="316">316: </a></span>     */
+<span class="nocode"><a name="317">317: </a></span>    public static DateTimeFieldType monthOfYear() {
+<span class="nocode"><a name="318">318: </a></span>        return MONTH_OF_YEAR_TYPE;
+<span class="nocode"><a name="319">319: </a></span>    }
+<span class="nocode"><a name="320">320: </a></span>
+<span class="nocode"><a name="321">321: </a></span>    /**
+<span class="nocode"><a name="322">322: </a></span>     * Get the year field type.
+<span class="nocode"><a name="323">323: </a></span>     * 
+<span class="nocode"><a name="324">324: </a></span>     * @return the DateTimeFieldType constant
+<span class="nocode"><a name="325">325: </a></span>     */
+<span class="nocode"><a name="326">326: </a></span>    public static DateTimeFieldType year() {
+<span class="nocode"><a name="327">327: </a></span>        return YEAR_TYPE;
+<span class="nocode"><a name="328">328: </a></span>    }
+<span class="nocode"><a name="329">329: </a></span>
+<span class="nocode"><a name="330">330: </a></span>    /**
+<span class="nocode"><a name="331">331: </a></span>     * Get the year of era field type.
+<span class="nocode"><a name="332">332: </a></span>     * 
+<span class="nocode"><a name="333">333: </a></span>     * @return the DateTimeFieldType constant
+<span class="nocode"><a name="334">334: </a></span>     */
+<span class="nocode"><a name="335">335: </a></span>    public static DateTimeFieldType yearOfEra() {
+<span class="nocode"><a name="336">336: </a></span>        return YEAR_OF_ERA_TYPE;
+<span class="nocode"><a name="337">337: </a></span>    }
+<span class="nocode"><a name="338">338: </a></span>
+<span class="nocode"><a name="339">339: </a></span>    /**
+<span class="nocode"><a name="340">340: </a></span>     * Get the year of century field type.
+<span class="nocode"><a name="341">341: </a></span>     * 
+<span class="nocode"><a name="342">342: </a></span>     * @return the DateTimeFieldType constant
+<span class="nocode"><a name="343">343: </a></span>     */
+<span class="nocode"><a name="344">344: </a></span>    public static DateTimeFieldType yearOfCentury() {
+<span class="nocode"><a name="345">345: </a></span>        return YEAR_OF_CENTURY_TYPE;
+<span class="nocode"><a name="346">346: </a></span>    }
+<span class="nocode"><a name="347">347: </a></span>
+<span class="nocode"><a name="348">348: </a></span>    /**
+<span class="nocode"><a name="349">349: </a></span>     * Get the century of era field type.
+<span class="nocode"><a name="350">350: </a></span>     * 
+<span class="nocode"><a name="351">351: </a></span>     * @return the DateTimeFieldType constant
+<span class="nocode"><a name="352">352: </a></span>     */
+<span class="nocode"><a name="353">353: </a></span>    public static DateTimeFieldType centuryOfEra() {
+<span class="nocode"><a name="354">354: </a></span>        return CENTURY_OF_ERA_TYPE;
+<span class="nocode"><a name="355">355: </a></span>    }
+<span class="nocode"><a name="356">356: </a></span>
+<span class="nocode"><a name="357">357: </a></span>    /**
+<span class="nocode"><a name="358">358: </a></span>     * Get the era field type.
+<span class="nocode"><a name="359">359: </a></span>     * 
+<span class="nocode"><a name="360">360: </a></span>     * @return the DateTimeFieldType constant
+<span class="nocode"><a name="361">361: </a></span>     */
+<span class="nocode"><a name="362">362: </a></span>    public static DateTimeFieldType era() {
+<span class="nocode"><a name="363">363: </a></span>        return ERA_TYPE;
+<span class="nocode"><a name="364">364: </a></span>    }
+<span class="nocode"><a name="365">365: </a></span>
+<span class="nocode"><a name="366">366: </a></span>    //-----------------------------------------------------------------------
+<span class="nocode"><a name="367">367: </a></span>    /**
+<span class="nocode"><a name="368">368: </a></span>     * Get the name of the field.
+<span class="nocode"><a name="369">369: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="370">370: </a></span>     * By convention, names follow a pattern of &quot;dddOfRrr&quot;, where &quot;ddd&quot; represents
+<span class="nocode"><a name="371">371: </a></span>     * the (singular) duration unit field name and &quot;Rrr&quot; represents the (singular)
+<span class="nocode"><a name="372">372: </a></span>     * duration range field name. If the range field is not applicable, then
+<span class="nocode"><a name="373">373: </a></span>     * the name of the field is simply the (singular) duration field name.
+<span class="nocode"><a name="374">374: </a></span>     * 
+<span class="nocode"><a name="375">375: </a></span>     * @return field name
+<span class="nocode"><a name="376">376: </a></span>     */
+<span class="nocode"><a name="377">377: </a></span>    public String getName() {
+<span class="nocode"><a name="378">378: </a></span>        return iName;
+<span class="nocode"><a name="379">379: </a></span>    }
+<span class="nocode"><a name="380">380: </a></span>
+<span class="nocode"><a name="381">381: </a></span>    /**
+<span class="nocode"><a name="382">382: </a></span>     * Get the duration unit of the field.
+<span class="nocode"><a name="383">383: </a></span>     * 
+<span class="nocode"><a name="384">384: </a></span>     * @return duration unit of the field, never null
+<span class="nocode"><a name="385">385: </a></span>     */
+<span class="nocode"><a name="386">386: </a></span>    public abstract DurationFieldType getDurationType();
+<span class="nocode"><a name="387">387: </a></span>
+<span class="nocode"><a name="388">388: </a></span>    /**
+<span class="nocode"><a name="389">389: </a></span>     * Get the duration range of the field.
+<span class="nocode"><a name="390">390: </a></span>     * 
+<span class="nocode"><a name="391">391: </a></span>     * @return duration range of the field, null if unbounded
+<span class="nocode"><a name="392">392: </a></span>     */
+<span class="nocode"><a name="393">393: </a></span>    public abstract DurationFieldType getRangeDurationType();
+<span class="nocode"><a name="394">394: </a></span>
+<span class="nocode"><a name="395">395: </a></span>    /**
+<span class="nocode"><a name="396">396: </a></span>     * Gets a suitable field for this type from the given Chronology.
+<span class="nocode"><a name="397">397: </a></span>     *
+<span class="nocode"><a name="398">398: </a></span>     * @param chronology  the chronology to use, null means ISOChronology in default zone
+<span class="nocode"><a name="399">399: </a></span>     * @return a suitable field
+<span class="nocode"><a name="400">400: </a></span>     */
+<span class="nocode"><a name="401">401: </a></span>    public abstract DateTimeField getField(Chronology chronology);
+<span class="nocode"><a name="402">402: </a></span>
+<span class="nocode"><a name="403">403: </a></span>    /**
+<span class="nocode"><a name="404">404: </a></span>     * Checks whether this field supported in the given Chronology.
+<span class="nocode"><a name="405">405: </a></span>     *
+<span class="nocode"><a name="406">406: </a></span>     * @param chronology  the chronology to use, null means ISOChronology in default zone
+<span class="nocode"><a name="407">407: </a></span>     * @return true if supported
+<span class="nocode"><a name="408">408: </a></span>     */
+<span class="nocode"><a name="409">409: </a></span>    public boolean isSupported(Chronology chronology) {
+<span class="nocode"><a name="410">410: </a></span>        return getField(chronology).isSupported();
+<span class="nocode"><a name="411">411: </a></span>    }
+<span class="nocode"><a name="412">412: </a></span>
+<span class="nocode"><a name="413">413: </a></span>    /**
+<span class="nocode"><a name="414">414: </a></span>     * Get a suitable debug string.
+<span class="nocode"><a name="415">415: </a></span>     * 
+<span class="nocode"><a name="416">416: </a></span>     * @return debug string
+<span class="nocode"><a name="417">417: </a></span>     */
+<span class="nocode"><a name="418">418: </a></span>    public String toString() {
+<span class="nocode"><a name="419">419: </a></span>        return getName();
+<span class="nocode"><a name="420">420: </a></span>    }
+<span class="nocode"><a name="421">421: </a></span>
+<span class="nocode"><a name="422">422: </a></span>    private static class StandardDateTimeFieldType extends DateTimeFieldType {
+<span class="nocode"><a name="423">423: </a></span>        /** Serialization version */
+<span class="nocode"><a name="424">424: </a></span>        private static final long serialVersionUID = -9937958251642L;
+<span class="nocode"><a name="425">425: </a></span>
+<span class="nocode"><a name="426">426: </a></span>        /** The ordinal of the standard field type, for switch statements */
+<span class="nocode"><a name="427">427: </a></span>        private final byte iOrdinal;
+<span class="nocode"><a name="428">428: </a></span>
+<span class="nocode"><a name="429">429: </a></span>        /** The unit duration of the field. */
+<span class="nocode"><a name="430">430: </a></span>        private final transient DurationFieldType iUnitType;
+<span class="nocode"><a name="431">431: </a></span>        /** The range duration of the field. */
+<span class="nocode"><a name="432">432: </a></span>        private final transient DurationFieldType iRangeType;
+<span class="nocode"><a name="433">433: </a></span>
+<span class="nocode"><a name="434">434: </a></span>        /**
+<span class="nocode"><a name="435">435: </a></span>         * Constructor.
+<span class="nocode"><a name="436">436: </a></span>         * 
+<span class="nocode"><a name="437">437: </a></span>         * @param name  the name to use
+<span class="nocode"><a name="438">438: </a></span>         * @param ordinal  the byte value for the oridinal index
+<span class="nocode"><a name="439">439: </a></span>         * @param unitType  the unit duration type
+<span class="nocode"><a name="440">440: </a></span>         * @param rangeType  the range duration type
+<span class="nocode"><a name="441">441: </a></span>         */
+<span class="nocode"><a name="442">442: </a></span>        StandardDateTimeFieldType(String name, byte ordinal,
+<span class="nocode"><a name="443">443: </a></span>                                  DurationFieldType unitType, DurationFieldType rangeType) {
+<span class="nocode"><a name="444">444: </a></span>            super(name);
+<span class="nocode"><a name="445">445: </a></span>            iOrdinal = ordinal;
+<span class="nocode"><a name="446">446: </a></span>            iUnitType = unitType;
+<span class="nocode"><a name="447">447: </a></span>            iRangeType = rangeType;
+<span class="nocode"><a name="448">448: </a></span>        }
+<span class="nocode"><a name="449">449: </a></span>
+<span class="nocode"><a name="450">450: </a></span>        /** @inheritdoc */
+<span class="nocode"><a name="451">451: </a></span>        public DurationFieldType getDurationType() {
+<span class="nocode"><a name="452">452: </a></span>            return iUnitType;
+<span class="nocode"><a name="453">453: </a></span>        }
+<span class="nocode"><a name="454">454: </a></span>
+<span class="nocode"><a name="455">455: </a></span>        /** @inheritdoc */
+<span class="nocode"><a name="456">456: </a></span>        public DurationFieldType getRangeDurationType() {
+<span class="nocode"><a name="457">457: </a></span>            return iRangeType;
+<span class="nocode"><a name="458">458: </a></span>        }
+<span class="nocode"><a name="459">459: </a></span>
+<span class="nocode"><a name="460">460: </a></span>        /** @inheritdoc */
+<span class="nocode"><a name="461">461: </a></span>        @Override
+<span class="nocode"><a name="462">462: </a></span>        public boolean equals(Object obj) {
+<span class="nocode"><a name="463">463: </a></span>            if (this == obj) {
+<span class="nocode"><a name="464">464: </a></span>                return true;
+<span class="nocode"><a name="465">465: </a></span>            }
+<span class="nocode"><a name="466">466: </a></span>            if (obj instanceof StandardDateTimeFieldType) {
+<span class="nocode"><a name="467">467: </a></span>                return iOrdinal == ((StandardDateTimeFieldType) obj).iOrdinal;
+<span class="nocode"><a name="468">468: </a></span>            }
+<span class="nocode"><a name="469">469: </a></span>            return false;
+<span class="nocode"><a name="470">470: </a></span>        }
+<span class="nocode"><a name="471">471: </a></span>
+<span class="nocode"><a name="472">472: </a></span>        /** @inheritdoc */
+<span class="nocode"><a name="473">473: </a></span>        @Override
+<span class="nocode"><a name="474">474: </a></span>        public int hashCode() {
+<span class="nocode"><a name="475">475: </a></span>            return (1 &lt;&lt; iOrdinal);
+<span class="nocode"><a name="476">476: </a></span>        }
+<span class="nocode"><a name="477">477: </a></span>
+<span class="nocode"><a name="478">478: </a></span>        /** @inheritdoc */
+<span class="nocode"><a name="479">479: </a></span>        public DateTimeField getField(Chronology chronology) {
+<span class="nocode"><a name="480">480: </a></span>            chronology = DateTimeUtils.getChronology(chronology);
+<span class="nocode"><a name="481">481: </a></span>
+<span class="nocode"><a name="482">482: </a></span>            switch (iOrdinal) {
+<span class="nocode"><a name="483">483: </a></span>                case ERA:
+<span class="nocode"><a name="484">484: </a></span>                    return chronology.era();
+<span class="nocode"><a name="485">485: </a></span>                case YEAR_OF_ERA:
+<span class="nocode"><a name="486">486: </a></span>                    return chronology.yearOfEra();
+<span class="nocode"><a name="487">487: </a></span>                case CENTURY_OF_ERA:
+<span class="nocode"><a name="488">488: </a></span>                    return chronology.centuryOfEra();
+<span class="nocode"><a name="489">489: </a></span>                case YEAR_OF_CENTURY:
+<span class="nocode"><a name="490">490: </a></span>                    return chronology.yearOfCentury();
+<span class="nocode"><a name="491">491: </a></span>                case YEAR:
+<span class="nocode"><a name="492">492: </a></span>                    return chronology.year();
+<span class="nocode"><a name="493">493: </a></span>                case DAY_OF_YEAR:
+<span class="nocode"><a name="494">494: </a></span>                    return chronology.dayOfYear();
+<span class="nocode"><a name="495">495: </a></span>                case MONTH_OF_YEAR:
+<span class="nocode"><a name="496">496: </a></span>                    return chronology.monthOfYear();
+<span class="nocode"><a name="497">497: </a></span>                case DAY_OF_MONTH:
+<span class="nocode"><a name="498">498: </a></span>                    return chronology.dayOfMonth();
+<span class="nocode"><a name="499">499: </a></span>                case WEEKYEAR_OF_CENTURY:
+<span class="nocode"><a name="500">500: </a></span>                    return chronology.weekyearOfCentury();
+<span class="nocode"><a name="501">501: </a></span>                case WEEKYEAR:
+<span class="nocode"><a name="502">502: </a></span>                    return chronology.weekyear();
+<span class="nocode"><a name="503">503: </a></span>                case WEEK_OF_WEEKYEAR:
+<span class="nocode"><a name="504">504: </a></span>                    return chronology.weekOfWeekyear();
+<span class="nocode"><a name="505">505: </a></span>                case DAY_OF_WEEK:
+<span class="nocode"><a name="506">506: </a></span>                    return chronology.dayOfWeek();
+<span class="nocode"><a name="507">507: </a></span>                case HALFDAY_OF_DAY:
+<span class="nocode"><a name="508">508: </a></span>                    return chronology.halfdayOfDay();
+<span class="nocode"><a name="509">509: </a></span>                case HOUR_OF_HALFDAY:
+<span class="nocode"><a name="510">510: </a></span>                    return chronology.hourOfHalfday();
+<span class="nocode"><a name="511">511: </a></span>                case CLOCKHOUR_OF_HALFDAY:
+<span class="nocode"><a name="512">512: </a></span>                    return chronology.clockhourOfHalfday();
+<span class="nocode"><a name="513">513: </a></span>                case CLOCKHOUR_OF_DAY:
+<span class="nocode"><a name="514">514: </a></span>                    return chronology.clockhourOfDay();
+<span class="nocode"><a name="515">515: </a></span>                case HOUR_OF_DAY:
+<span class="nocode"><a name="516">516: </a></span>                    return chronology.hourOfDay();
+<span class="nocode"><a name="517">517: </a></span>                case MINUTE_OF_DAY:
+<span class="nocode"><a name="518">518: </a></span>                    return chronology.minuteOfDay();
+<span class="nocode"><a name="519">519: </a></span>                case MINUTE_OF_HOUR:
+<span class="nocode"><a name="520">520: </a></span>                    return chronology.minuteOfHour();
+<span class="nocode"><a name="521">521: </a></span>                case SECOND_OF_DAY:
+<span class="nocode"><a name="522">522: </a></span>                    return chronology.secondOfDay();
+<span class="nocode"><a name="523">523: </a></span>                case SECOND_OF_MINUTE:
+<span class="nocode"><a name="524">524: </a></span>                    return chronology.secondOfMinute();
+<span class="nocode"><a name="525">525: </a></span>                case MILLIS_OF_DAY:
+<span class="nocode"><a name="526">526: </a></span>                    return chronology.millisOfDay();
+<span class="nocode"><a name="527">527: </a></span>                case MILLIS_OF_SECOND:
+<span class="nocode"><a name="528">528: </a></span>                    return chronology.millisOfSecond();
+<span class="nocode"><a name="529">529: </a></span>                default:
+<span class="nocode"><a name="530">530: </a></span>                    // Shouldn't happen.
+<span class="nocode"><a name="531">531: </a></span>                    throw new InternalError();
+<span class="nocode"><a name="532">532: </a></span>            }
+<span class="nocode"><a name="533">533: </a></span>        }
+<span class="nocode"><a name="534">534: </a></span>
+<span class="nocode"><a name="535">535: </a></span>        /**
+<span class="nocode"><a name="536">536: </a></span>         * Ensure a singleton is returned.
+<span class="nocode"><a name="537">537: </a></span>         * 
+<span class="nocode"><a name="538">538: </a></span>         * @return the singleton type
+<span class="nocode"><a name="539">539: </a></span>         */
+<span class="nocode"><a name="540">540: </a></span>        private Object readResolve() {
+<span class="nocode"><a name="541">541: </a></span>            switch (iOrdinal) {
+<span class="nocode"><a name="542">542: </a></span>                case ERA:
+<span class="nocode"><a name="543">543: </a></span>                    return ERA_TYPE;
+<span class="nocode"><a name="544">544: </a></span>                case YEAR_OF_ERA:
+<span class="nocode"><a name="545">545: </a></span>                    return YEAR_OF_ERA_TYPE;
+<span class="nocode"><a name="546">546: </a></span>                case CENTURY_OF_ERA:
+<span class="nocode"><a name="547">547: </a></span>                    return CENTURY_OF_ERA_TYPE;
+<span class="nocode"><a name="548">548: </a></span>                case YEAR_OF_CENTURY:
+<span class="nocode"><a name="549">549: </a></span>                    return YEAR_OF_CENTURY_TYPE;
+<span class="nocode"><a name="550">550: </a></span>                case YEAR:
+<span class="nocode"><a name="551">551: </a></span>                    return YEAR_TYPE;
+<span class="nocode"><a name="552">552: </a></span>                case DAY_OF_YEAR:
+<span class="nocode"><a name="553">553: </a></span>                    return DAY_OF_YEAR_TYPE;
+<span class="nocode"><a name="554">554: </a></span>                case MONTH_OF_YEAR:
+<span class="nocode"><a name="555">555: </a></span>                    return MONTH_OF_YEAR_TYPE;
+<span class="nocode"><a name="556">556: </a></span>                case DAY_OF_MONTH:
+<span class="nocode"><a name="557">557: </a></span>                    return DAY_OF_MONTH_TYPE;
+<span class="nocode"><a name="558">558: </a></span>                case WEEKYEAR_OF_CENTURY:
+<span class="nocode"><a name="559">559: </a></span>                    return WEEKYEAR_OF_CENTURY_TYPE;
+<span class="nocode"><a name="560">560: </a></span>                case WEEKYEAR:
+<span class="nocode"><a name="561">561: </a></span>                    return WEEKYEAR_TYPE;
+<span class="nocode"><a name="562">562: </a></span>                case WEEK_OF_WEEKYEAR:
+<span class="nocode"><a name="563">563: </a></span>                    return WEEK_OF_WEEKYEAR_TYPE;
+<span class="nocode"><a name="564">564: </a></span>                case DAY_OF_WEEK:
+<span class="nocode"><a name="565">565: </a></span>                    return DAY_OF_WEEK_TYPE;
+<span class="nocode"><a name="566">566: </a></span>                case HALFDAY_OF_DAY:
+<span class="nocode"><a name="567">567: </a></span>                    return HALFDAY_OF_DAY_TYPE;
+<span class="nocode"><a name="568">568: </a></span>                case HOUR_OF_HALFDAY:
+<span class="nocode"><a name="569">569: </a></span>                    return HOUR_OF_HALFDAY_TYPE;
+<span class="nocode"><a name="570">570: </a></span>                case CLOCKHOUR_OF_HALFDAY:
+<span class="nocode"><a name="571">571: </a></span>                    return CLOCKHOUR_OF_HALFDAY_TYPE;
+<span class="nocode"><a name="572">572: </a></span>                case CLOCKHOUR_OF_DAY:
+<span class="nocode"><a name="573">573: </a></span>                    return CLOCKHOUR_OF_DAY_TYPE;
+<span class="nocode"><a name="574">574: </a></span>                case HOUR_OF_DAY:
+<span class="nocode"><a name="575">575: </a></span>                    return HOUR_OF_DAY_TYPE;
+<span class="nocode"><a name="576">576: </a></span>                case MINUTE_OF_DAY:
+<span class="nocode"><a name="577">577: </a></span>                    return MINUTE_OF_DAY_TYPE;
+<span class="nocode"><a name="578">578: </a></span>                case MINUTE_OF_HOUR:
+<span class="nocode"><a name="579">579: </a></span>                    return MINUTE_OF_HOUR_TYPE;
+<span class="nocode"><a name="580">580: </a></span>                case SECOND_OF_DAY:
+<span class="nocode"><a name="581">581: </a></span>                    return SECOND_OF_DAY_TYPE;
+<span class="nocode"><a name="582">582: </a></span>                case SECOND_OF_MINUTE:
+<span class="nocode"><a name="583">583: </a></span>                    return SECOND_OF_MINUTE_TYPE;
+<span class="nocode"><a name="584">584: </a></span>                case MILLIS_OF_DAY:
+<span class="nocode"><a name="585">585: </a></span>                    return MILLIS_OF_DAY_TYPE;
+<span class="nocode"><a name="586">586: </a></span>                case MILLIS_OF_SECOND:
+<span class="nocode"><a name="587">587: </a></span>                    return MILLIS_OF_SECOND_TYPE;
+<span class="nocode"><a name="588">588: </a></span>                default:
+<span class="nocode"><a name="589">589: </a></span>                    // Shouldn't happen.
+<span class="nocode"><a name="590">590: </a></span>                    return this;
+<span class="nocode"><a name="591">591: </a></span>            }
+<span class="nocode"><a name="592">592: </a></span>        }
+<span class="nocode"><a name="593">593: </a></span>    }
+<span class="nocode"><a name="594">594: </a></span>
+<span class="nocode"><a name="595">595: </a></span>}
+</pre><table class="mutation_table" summary="Mutations">
+<tr><th>ID</th><th>Line</th><th>Type</th><th>Detected</th></tr><tr><td>3248</td><td><a href="#410">410</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>3249</td><td><a href="#410">410(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>3250</td><td><a href="#419">419</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>5530</td><td><a href="#463">463</a></td><td>Negate jump condition (Replace IF_ACMPNE with  IF_ACMPEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>5532</td><td><a href="#464">464</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>5531</td><td><a href="#464">464</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>5533</td><td><a href="#466">466</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>5536</td><td><a href="#467">467</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>5535</td><td><a href="#467">467</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>5538</td><td><a href="#467">467(1)</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>5537</td><td><a href="#467">467(1)</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>5534</td><td><a href="#467">467</a></td><td>Negate jump condition (Replace IF_ICMPNE with  IF_ICMPEQ)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>5540</td><td><a href="#469">469</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>5539</td><td><a href="#469">469</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>5542</td><td><a href="#475">475</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>5541</td><td><a href="#475">475</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>5543</td><td><a href="#475">475</a></td><td>Replace arithmetic operator (Replace ISHL with ISHR)</td><td><img src="detected.png"/></td></tr>
+<tr><td>5544</td><td><a href="#480">480</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>5545</td><td><a href="#484">484</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>5546</td><td><a href="#486">486</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>5547</td><td><a href="#488">488</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>5548</td><td><a href="#490">490</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>5549</td><td><a href="#492">492</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>5550</td><td><a href="#494">494</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>5551</td><td><a href="#496">496</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>5552</td><td><a href="#498">498</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>5553</td><td><a href="#500">500</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>5554</td><td><a href="#502">502</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>5555</td><td><a href="#504">504</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>5556</td><td><a href="#506">506</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>5557</td><td><a href="#508">508</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>5558</td><td><a href="#510">510</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>5559</td><td><a href="#512">512</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>5560</td><td><a href="#514">514</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>5561</td><td><a href="#516">516</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>5562</td><td><a href="#518">518</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>5563</td><td><a href="#520">520</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>5564</td><td><a href="#522">522</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>5565</td><td><a href="#524">524</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>5566</td><td><a href="#526">526</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>5567</td><td><a href="#528">528</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>5568</td><td><a href="#543">543</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>5569</td><td><a href="#545">545</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>5570</td><td><a href="#547">547</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>5571</td><td><a href="#549">549</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>5572</td><td><a href="#551">551</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>5573</td><td><a href="#553">553</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>5574</td><td><a href="#555">555</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>5575</td><td><a href="#557">557</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>5576</td><td><a href="#559">559</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>5577</td><td><a href="#561">561</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>5578</td><td><a href="#563">563</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>5579</td><td><a href="#565">565</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>5580</td><td><a href="#567">567</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>5581</td><td><a href="#569">569</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>5582</td><td><a href="#571">571</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>5583</td><td><a href="#573">573</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>5584</td><td><a href="#575">575</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>5585</td><td><a href="#577">577</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>5586</td><td><a href="#579">579</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>5587</td><td><a href="#581">581</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>5588</td><td><a href="#583">583</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>5589</td><td><a href="#585">585</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>5590</td><td><a href="#587">587</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+</table>
+</body>
+</html>

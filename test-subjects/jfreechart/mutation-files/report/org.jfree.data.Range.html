@@ -1,0 +1,504 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN
+"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>
+org.jfree.data.Range
+</title>
+<link href="prettify.css" type="text/css" rel="stylesheet" />
+<script type="text/javascript" src="prettify.js"></script>
+</head>
+<body onload="prettyPrint()">
+<h2>Javalanche report for class:<br/> org.jfree.data.Range </h2><pre class="prettyprint" style="border: 1px solid #888;padding: 2px"><span class="nocode"><a name="1">  1: </a></span>/* ===========================================================
+<span class="nocode"><a name="2">  2: </a></span> * JFreeChart : a free chart library for the Java(tm) platform
+<span class="nocode"><a name="3">  3: </a></span> * ===========================================================
+<span class="nocode"><a name="4">  4: </a></span> *
+<span class="nocode"><a name="5">  5: </a></span> * (C) Copyright 2000-2007, by Object Refinery Limited and Contributors.
+<span class="nocode"><a name="6">  6: </a></span> *
+<span class="nocode"><a name="7">  7: </a></span> * Project Info:  http://www.jfree.org/jfreechart/index.html
+<span class="nocode"><a name="8">  8: </a></span> *
+<span class="nocode"><a name="9">  9: </a></span> * This library is free software; you can redistribute it and/or modify it 
+<span class="nocode"><a name="10"> 10: </a></span> * under the terms of the GNU Lesser General Public License as published by 
+<span class="nocode"><a name="11"> 11: </a></span> * the Free Software Foundation; either version 2.1 of the License, or 
+<span class="nocode"><a name="12"> 12: </a></span> * (at your option) any later version.
+<span class="nocode"><a name="13"> 13: </a></span> *
+<span class="nocode"><a name="14"> 14: </a></span> * This library is distributed in the hope that it will be useful, but 
+<span class="nocode"><a name="15"> 15: </a></span> * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY 
+<span class="nocode"><a name="16"> 16: </a></span> * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public 
+<span class="nocode"><a name="17"> 17: </a></span> * License for more details.
+<span class="nocode"><a name="18"> 18: </a></span> *
+<span class="nocode"><a name="19"> 19: </a></span> * You should have received a copy of the GNU Lesser General Public
+<span class="nocode"><a name="20"> 20: </a></span> * License along with this library; if not, write to the Free Software
+<span class="nocode"><a name="21"> 21: </a></span> * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, 
+<span class="nocode"><a name="22"> 22: </a></span> * USA.  
+<span class="nocode"><a name="23"> 23: </a></span> *
+<span class="nocode"><a name="24"> 24: </a></span> * [Java is a trademark or registered trademark of Sun Microsystems, Inc. 
+<span class="nocode"><a name="25"> 25: </a></span> * in the United States and other countries.]
+<span class="nocode"><a name="26"> 26: </a></span> *
+<span class="nocode"><a name="27"> 27: </a></span> * ----------
+<span class="nocode"><a name="28"> 28: </a></span> * Range.java
+<span class="nocode"><a name="29"> 29: </a></span> * ----------
+<span class="nocode"><a name="30"> 30: </a></span> * (C) Copyright 2002-2007, by Object Refinery Limited and Contributors.
+<span class="nocode"><a name="31"> 31: </a></span> *
+<span class="nocode"><a name="32"> 32: </a></span> * Original Author:  David Gilbert (for Object Refinery Limited);
+<span class="nocode"><a name="33"> 33: </a></span> * Contributor(s):   Chuanhao Chiu;
+<span class="nocode"><a name="34"> 34: </a></span> *                   Bill Kelemen; 
+<span class="nocode"><a name="35"> 35: </a></span> *                   Nicolas Brodu;
+<span class="nocode"><a name="36"> 36: </a></span> *
+<span class="nocode"><a name="37"> 37: </a></span> * Changes (from 23-Jun-2001)
+<span class="nocode"><a name="38"> 38: </a></span> * --------------------------
+<span class="nocode"><a name="39"> 39: </a></span> * 22-Apr-2002 : Version 1, loosely based by code by Bill Kelemen (DG);
+<span class="nocode"><a name="40"> 40: </a></span> * 30-Apr-2002 : Added getLength() and getCentralValue() methods.  Changed
+<span class="nocode"><a name="41"> 41: </a></span> *               argument check in constructor (DG);
+<span class="nocode"><a name="42"> 42: </a></span> * 13-Jun-2002 : Added contains(double) method (DG);
+<span class="nocode"><a name="43"> 43: </a></span> * 22-Aug-2002 : Added fix to combine method where both ranges are null, thanks
+<span class="nocode"><a name="44"> 44: </a></span> *               to Chuanhao Chiu for reporting and fixing this (DG);
+<span class="nocode"><a name="45"> 45: </a></span> * 07-Oct-2002 : Fixed errors reported by Checkstyle (DG);
+<span class="nocode"><a name="46"> 46: </a></span> * 26-Mar-2003 : Implemented Serializable (DG);
+<span class="nocode"><a name="47"> 47: </a></span> * 14-Aug-2003 : Added equals() method (DG);
+<span class="nocode"><a name="48"> 48: </a></span> * 27-Aug-2003 : Added toString() method (BK);
+<span class="nocode"><a name="49"> 49: </a></span> * 11-Sep-2003 : Added Clone Support (NB);
+<span class="nocode"><a name="50"> 50: </a></span> * 23-Sep-2003 : Fixed Checkstyle issues (DG);
+<span class="nocode"><a name="51"> 51: </a></span> * 25-Sep-2003 : Oops, Range immutable, clone not necessary (NB);
+<span class="nocode"><a name="52"> 52: </a></span> * 05-May-2004 : Added constrain() and intersects() methods (DG);
+<span class="nocode"><a name="53"> 53: </a></span> * 18-May-2004 : Added expand() method (DG);
+<span class="nocode"><a name="54"> 54: </a></span> * ------------- JFreeChart 1.0.x ---------------------------------------------
+<span class="nocode"><a name="55"> 55: </a></span> * 11-Jan-2006 : Added new method expandToInclude(Range, double) (DG);
+<span class="nocode"><a name="56"> 56: </a></span> * 
+<span class="nocode"><a name="57"> 57: </a></span> */
+<span class="nocode"><a name="58"> 58: </a></span>
+<span class="nocode"><a name="59"> 59: </a></span>package org.jfree.data;
+<span class="nocode"><a name="60"> 60: </a></span>
+<span class="nocode"><a name="61"> 61: </a></span>import java.io.Serializable;
+<span class="nocode"><a name="62"> 62: </a></span>
+<span class="nocode"><a name="63"> 63: </a></span>/**
+<span class="nocode"><a name="64"> 64: </a></span> * Represents an immutable range of values.
+<span class="nocode"><a name="65"> 65: </a></span> */
+<span class="nocode"><a name="66"> 66: </a></span>public strictfp class Range implements Serializable {
+<span class="nocode"><a name="67"> 67: </a></span>
+<span class="nocode"><a name="68"> 68: </a></span>    /** For serialization. */
+<span class="nocode"><a name="69"> 69: </a></span>    private static final long serialVersionUID = -906333695431863380L;
+<span class="nocode"><a name="70"> 70: </a></span>    
+<span class="nocode"><a name="71"> 71: </a></span>    /** The lower bound of the range. */
+<span class="nocode"><a name="72"> 72: </a></span>    private double lower;
+<span class="nocode"><a name="73"> 73: </a></span>
+<span class="nocode"><a name="74"> 74: </a></span>    /** The upper bound of the range. */
+<span class="nocode"><a name="75"> 75: </a></span>    private double upper;
+<span class="nocode"><a name="76"> 76: </a></span>
+<span class="nocode"><a name="77"> 77: </a></span>    /**
+<span class="nocode"><a name="78"> 78: </a></span>     * Creates a new range.
+<span class="nocode"><a name="79"> 79: </a></span>     *
+<span class="nocode"><a name="80"> 80: </a></span>     * @param lower  the lower bound (must be &lt;= upper bound).
+<span class="nocode"><a name="81"> 81: </a></span>     * @param upper  the upper bound (must be &gt;= lower bound).
+<span class="nocode"><a name="82"> 82: </a></span>     */
+<span class="nocode"><a name="83"> 83: </a></span>    public Range(double lower, double upper) {
+<span class="nocode"><a name="84"> 84: </a></span>        if (lower &gt; upper) {
+<span class="nocode"><a name="85"> 85: </a></span>            String msg = &quot;Range(double, double): require lower (&quot; + lower 
+<span class="nocode"><a name="86"> 86: </a></span>                + &quot;) &lt;= upper (&quot; + upper + &quot;).&quot;;
+<span class="nocode"><a name="87"> 87: </a></span>            throw new IllegalArgumentException(msg);
+<span class="nocode"><a name="88"> 88: </a></span>        }
+<span class="nocode"><a name="89"> 89: </a></span>        this.lower = lower;
+<span class="nocode"><a name="90"> 90: </a></span>        this.upper = upper;
+<span class="nocode"><a name="91"> 91: </a></span>    }
+<span class="nocode"><a name="92"> 92: </a></span>
+<span class="nocode"><a name="93"> 93: </a></span>    /**
+<span class="nocode"><a name="94"> 94: </a></span>     * Returns the lower bound for the range.
+<span class="nocode"><a name="95"> 95: </a></span>     *
+<span class="nocode"><a name="96"> 96: </a></span>     * @return The lower bound.
+<span class="nocode"><a name="97"> 97: </a></span>     */
+<span class="nocode"><a name="98"> 98: </a></span>    public double getLowerBound() {
+<span class="nocode"><a name="99"> 99: </a></span>        return this.lower;
+<span class="nocode"><a name="100">100: </a></span>    }
+<span class="nocode"><a name="101">101: </a></span>
+<span class="nocode"><a name="102">102: </a></span>    /**
+<span class="nocode"><a name="103">103: </a></span>     * Returns the upper bound for the range.
+<span class="nocode"><a name="104">104: </a></span>     *
+<span class="nocode"><a name="105">105: </a></span>     * @return The upper bound.
+<span class="nocode"><a name="106">106: </a></span>     */
+<span class="nocode"><a name="107">107: </a></span>    public double getUpperBound() {
+<span class="nocode"><a name="108">108: </a></span>        return this.upper;
+<span class="nocode"><a name="109">109: </a></span>    }
+<span class="nocode"><a name="110">110: </a></span>
+<span class="nocode"><a name="111">111: </a></span>    /**
+<span class="nocode"><a name="112">112: </a></span>     * Returns the length of the range.
+<span class="nocode"><a name="113">113: </a></span>     *
+<span class="nocode"><a name="114">114: </a></span>     * @return The length.
+<span class="nocode"><a name="115">115: </a></span>     */
+<span class="nocode"><a name="116">116: </a></span>    public double getLength() {
+<span class="nocode"><a name="117">117: </a></span>        return this.upper - this.lower;
+<span class="nocode"><a name="118">118: </a></span>    }
+<span class="nocode"><a name="119">119: </a></span>
+<span class="nocode"><a name="120">120: </a></span>    /**
+<span class="nocode"><a name="121">121: </a></span>     * Returns the central value for the range.
+<span class="nocode"><a name="122">122: </a></span>     *
+<span class="nocode"><a name="123">123: </a></span>     * @return The central value.
+<span class="nocode"><a name="124">124: </a></span>     */
+<span class="nocode"><a name="125">125: </a></span>    public double getCentralValue() {
+<span class="nocode"><a name="126">126: </a></span>        return this.lower / 2.0 + this.upper / 2.0;
+<span class="nocode"><a name="127">127: </a></span>    }
+<span class="nocode"><a name="128">128: </a></span>
+<span class="nocode"><a name="129">129: </a></span>    /**
+<span class="nocode"><a name="130">130: </a></span>     * Returns &lt;code&gt;true&lt;/code&gt; if the range contains the specified value and 
+<span class="nocode"><a name="131">131: </a></span>     * &lt;code&gt;false&lt;/code&gt; otherwise.
+<span class="nocode"><a name="132">132: </a></span>     *
+<span class="nocode"><a name="133">133: </a></span>     * @param value  the value to lookup.
+<span class="nocode"><a name="134">134: </a></span>     *
+<span class="nocode"><a name="135">135: </a></span>     * @return &lt;code&gt;true&lt;/code&gt; if the range contains the specified value.
+<span class="nocode"><a name="136">136: </a></span>     */
+<span class="nocode"><a name="137">137: </a></span>    public boolean contains(double value) {
+<span class="nocode"><a name="138">138: </a></span>        return (value &gt;= this.lower &amp;&amp; value &lt;= this.upper);
+<span class="nocode"><a name="139">139: </a></span>    }
+<span class="nocode"><a name="140">140: </a></span>    
+<span class="nocode"><a name="141">141: </a></span>    /**
+<span class="nocode"><a name="142">142: </a></span>     * Returns &lt;code&gt;true&lt;/code&gt; if the range intersects with the specified 
+<span class="nocode"><a name="143">143: </a></span>     * range, and &lt;code&gt;false&lt;/code&gt; otherwise.
+<span class="nocode"><a name="144">144: </a></span>     * 
+<span class="nocode"><a name="145">145: </a></span>     * @param b0  the lower bound (should be &lt;= b1).
+<span class="nocode"><a name="146">146: </a></span>     * @param b1  the upper bound (should be &gt;= b0).
+<span class="nocode"><a name="147">147: </a></span>     * 
+<span class="nocode"><a name="148">148: </a></span>     * @return A boolean.
+<span class="nocode"><a name="149">149: </a></span>     */
+<span class="nocode"><a name="150">150: </a></span>    public boolean intersects(double b0, double b1) {
+<span class="nocode"><a name="151">151: </a></span>        if (b0 &lt;= this.lower) {
+<span class="nocode"><a name="152">152: </a></span>            return (b1 &gt; this.lower);
+<span class="nocode"><a name="153">153: </a></span>        }
+<span class="nocode"><a name="154">154: </a></span>        else {
+<span class="nocode"><a name="155">155: </a></span>            return (b0 &lt; this.upper &amp;&amp; b1 &gt;= b0);
+<span class="nocode"><a name="156">156: </a></span>        }
+<span class="nocode"><a name="157">157: </a></span>    }
+<span class="nocode"><a name="158">158: </a></span>
+<span class="nocode"><a name="159">159: </a></span>    /**
+<span class="nocode"><a name="160">160: </a></span>     * Returns the value within the range that is closest to the specified 
+<span class="nocode"><a name="161">161: </a></span>     * value.
+<span class="nocode"><a name="162">162: </a></span>     * 
+<span class="nocode"><a name="163">163: </a></span>     * @param value  the value.
+<span class="nocode"><a name="164">164: </a></span>     * 
+<span class="nocode"><a name="165">165: </a></span>     * @return The constrained value.
+<span class="nocode"><a name="166">166: </a></span>     */
+<span class="nocode"><a name="167">167: </a></span>    public double constrain(double value) {
+<span class="nocode"><a name="168">168: </a></span>        double result = value;
+<span class="nocode"><a name="169">169: </a></span>        if (!contains(value)) {
+<span class="nocode"><a name="170">170: </a></span>            if (value &gt; this.upper) {
+<span class="nocode"><a name="171">171: </a></span>                result = this.upper;   
+<span class="nocode"><a name="172">172: </a></span>            }
+<span class="nocode"><a name="173">173: </a></span>            else if (value &lt; this.lower) {
+<span class="nocode"><a name="174">174: </a></span>                result = this.lower;   
+<span class="nocode"><a name="175">175: </a></span>            }
+<span class="nocode"><a name="176">176: </a></span>        }
+<span class="nocode"><a name="177">177: </a></span>        return result;
+<span class="nocode"><a name="178">178: </a></span>    }
+<span class="nocode"><a name="179">179: </a></span>    
+<span class="nocode"><a name="180">180: </a></span>    /**
+<span class="nocode"><a name="181">181: </a></span>     * Creates a new range by combining two existing ranges.
+<span class="nocode"><a name="182">182: </a></span>     * &lt;P&gt;
+<span class="nocode"><a name="183">183: </a></span>     * Note that:
+<span class="nocode"><a name="184">184: </a></span>     * &lt;ul&gt;
+<span class="nocode"><a name="185">185: </a></span>     *   &lt;li&gt;either range can be &lt;code&gt;null&lt;/code&gt;, in which case the other 
+<span class="nocode"><a name="186">186: </a></span>     *       range is returned;&lt;/li&gt;
+<span class="nocode"><a name="187">187: </a></span>     *   &lt;li&gt;if both ranges are &lt;code&gt;null&lt;/code&gt; the return value is 
+<span class="nocode"><a name="188">188: </a></span>     *       &lt;code&gt;null&lt;/code&gt;.&lt;/li&gt;
+<span class="nocode"><a name="189">189: </a></span>     * &lt;/ul&gt;
+<span class="nocode"><a name="190">190: </a></span>     *
+<span class="nocode"><a name="191">191: </a></span>     * @param range1  the first range (&lt;code&gt;null&lt;/code&gt; permitted).
+<span class="nocode"><a name="192">192: </a></span>     * @param range2  the second range (&lt;code&gt;null&lt;/code&gt; permitted).
+<span class="nocode"><a name="193">193: </a></span>     *
+<span class="nocode"><a name="194">194: </a></span>     * @return A new range (possibly &lt;code&gt;null&lt;/code&gt;).
+<span class="nocode"><a name="195">195: </a></span>     */
+<span class="nocode"><a name="196">196: </a></span>    public static Range combine(Range range1, Range range2) {
+<span class="nocode"><a name="197">197: </a></span>        if (range1 == null) {
+<span class="nocode"><a name="198">198: </a></span>            return range2;
+<span class="nocode"><a name="199">199: </a></span>        }
+<span class="nocode"><a name="200">200: </a></span>        else {
+<span class="nocode"><a name="201">201: </a></span>            if (range2 == null) {
+<span class="nocode"><a name="202">202: </a></span>                return range1;
+<span class="nocode"><a name="203">203: </a></span>            }
+<span class="nocode"><a name="204">204: </a></span>            else {
+<span class="nocode"><a name="205">205: </a></span>                double l = Math.min(range1.getLowerBound(), 
+<span class="nocode"><a name="206">206: </a></span>                        range2.getLowerBound());
+<span class="nocode"><a name="207">207: </a></span>                double u = Math.max(range1.getUpperBound(), 
+<span class="nocode"><a name="208">208: </a></span>                        range2.getUpperBound());
+<span class="nocode"><a name="209">209: </a></span>                return new Range(l, u);
+<span class="nocode"><a name="210">210: </a></span>            }
+<span class="nocode"><a name="211">211: </a></span>        }
+<span class="nocode"><a name="212">212: </a></span>    }
+<span class="nocode"><a name="213">213: </a></span>    
+<span class="nocode"><a name="214">214: </a></span>    /**
+<span class="nocode"><a name="215">215: </a></span>     * Returns a range that includes all the values in the specified 
+<span class="nocode"><a name="216">216: </a></span>     * &lt;code&gt;range&lt;/code&gt; AND the specified &lt;code&gt;value&lt;/code&gt;.
+<span class="nocode"><a name="217">217: </a></span>     * 
+<span class="nocode"><a name="218">218: </a></span>     * @param range  the range (&lt;code&gt;null&lt;/code&gt; permitted).
+<span class="nocode"><a name="219">219: </a></span>     * @param value  the value that must be included.
+<span class="nocode"><a name="220">220: </a></span>     * 
+<span class="nocode"><a name="221">221: </a></span>     * @return A range.
+<span class="nocode"><a name="222">222: </a></span>     * 
+<span class="nocode"><a name="223">223: </a></span>     * @since 1.0.1
+<span class="nocode"><a name="224">224: </a></span>     */
+<span class="nocode"><a name="225">225: </a></span>    public static Range expandToInclude(Range range, double value) {
+<span class="nocode"><a name="226">226: </a></span>        if (range == null) {
+<span class="nocode"><a name="227">227: </a></span>            return new Range(value, value);
+<span class="nocode"><a name="228">228: </a></span>        }
+<span class="nocode"><a name="229">229: </a></span>        if (value &lt; range.getLowerBound()) {
+<span class="nocode"><a name="230">230: </a></span>            return new Range(value, range.getUpperBound());
+<span class="nocode"><a name="231">231: </a></span>        }
+<span class="nocode"><a name="232">232: </a></span>        else if (value &gt; range.getUpperBound()) {
+<span class="nocode"><a name="233">233: </a></span>            return new Range(range.getLowerBound(), value);
+<span class="nocode"><a name="234">234: </a></span>        }
+<span class="nocode"><a name="235">235: </a></span>        else {
+<span class="nocode"><a name="236">236: </a></span>            return range;
+<span class="nocode"><a name="237">237: </a></span>        }
+<span class="nocode"><a name="238">238: </a></span>    }
+<span class="nocode"><a name="239">239: </a></span>    
+<span class="nocode"><a name="240">240: </a></span>    /**
+<span class="nocode"><a name="241">241: </a></span>     * Creates a new range by adding margins to an existing range.
+<span class="nocode"><a name="242">242: </a></span>     * 
+<span class="nocode"><a name="243">243: </a></span>     * @param range  the range (&lt;code&gt;null&lt;/code&gt; not permitted).
+<span class="nocode"><a name="244">244: </a></span>     * @param lowerMargin  the lower margin (expressed as a percentage of the 
+<span class="nocode"><a name="245">245: </a></span>     *                     range length).
+<span class="nocode"><a name="246">246: </a></span>     * @param upperMargin  the upper margin (expressed as a percentage of the 
+<span class="nocode"><a name="247">247: </a></span>     *                     range length).
+<span class="nocode"><a name="248">248: </a></span>     * 
+<span class="nocode"><a name="249">249: </a></span>     * @return The expanded range.
+<span class="nocode"><a name="250">250: </a></span>     */
+<span class="nocode"><a name="251">251: </a></span>    public static Range expand(Range range, 
+<span class="nocode"><a name="252">252: </a></span>                               double lowerMargin, double upperMargin) {
+<span class="nocode"><a name="253">253: </a></span>        if (range == null) {
+<span class="nocode"><a name="254">254: </a></span>            throw new IllegalArgumentException(&quot;Null 'range' argument.&quot;);   
+<span class="nocode"><a name="255">255: </a></span>        }
+<span class="nocode"><a name="256">256: </a></span>        double length = range.getLength();
+<span class="nocode"><a name="257">257: </a></span>        double lower = length * lowerMargin;
+<span class="nocode"><a name="258">258: </a></span>        double upper = length * upperMargin;
+<span class="nocode"><a name="259">259: </a></span>        return new Range(range.getLowerBound() - lower, 
+<span class="nocode"><a name="260">260: </a></span>                range.getUpperBound() + upper);
+<span class="nocode"><a name="261">261: </a></span>    }
+<span class="nocode"><a name="262">262: </a></span>
+<span class="nocode"><a name="263">263: </a></span>    /**
+<span class="nocode"><a name="264">264: </a></span>     * Shifts the range by the specified amount.
+<span class="nocode"><a name="265">265: </a></span>     * 
+<span class="nocode"><a name="266">266: </a></span>     * @param base  the base range.
+<span class="nocode"><a name="267">267: </a></span>     * @param delta  the shift amount.
+<span class="nocode"><a name="268">268: </a></span>     * 
+<span class="nocode"><a name="269">269: </a></span>     * @return A new range.
+<span class="nocode"><a name="270">270: </a></span>     */
+<span class="nocode"><a name="271">271: </a></span>    public static Range shift(Range base, double delta) {
+<span class="nocode"><a name="272">272: </a></span>        return shift(base, delta, false);
+<span class="nocode"><a name="273">273: </a></span>    }
+<span class="nocode"><a name="274">274: </a></span>    
+<span class="nocode"><a name="275">275: </a></span>    /**
+<span class="nocode"><a name="276">276: </a></span>     * Shifts the range by the specified amount.
+<span class="nocode"><a name="277">277: </a></span>     * 
+<span class="nocode"><a name="278">278: </a></span>     * @param base  the base range.
+<span class="nocode"><a name="279">279: </a></span>     * @param delta  the shift amount.
+<span class="nocode"><a name="280">280: </a></span>     * @param allowZeroCrossing  a flag that determines whether or not the 
+<span class="nocode"><a name="281">281: </a></span>     *                           bounds of the range are allowed to cross
+<span class="nocode"><a name="282">282: </a></span>     *                           zero after adjustment.
+<span class="nocode"><a name="283">283: </a></span>     * 
+<span class="nocode"><a name="284">284: </a></span>     * @return A new range.
+<span class="nocode"><a name="285">285: </a></span>     */
+<span class="nocode"><a name="286">286: </a></span>    public static Range shift(Range base, double delta, 
+<span class="nocode"><a name="287">287: </a></span>                              boolean allowZeroCrossing) {
+<span class="nocode"><a name="288">288: </a></span>        if (allowZeroCrossing) {
+<span class="nocode"><a name="289">289: </a></span>            return new Range(base.getLowerBound() + delta, 
+<span class="nocode"><a name="290">290: </a></span>                    base.getUpperBound() + delta);
+<span class="nocode"><a name="291">291: </a></span>        }
+<span class="nocode"><a name="292">292: </a></span>        else {
+<span class="nocode"><a name="293">293: </a></span>            return new Range(shiftWithNoZeroCrossing(base.getLowerBound(), 
+<span class="nocode"><a name="294">294: </a></span>                    delta), shiftWithNoZeroCrossing(base.getUpperBound(), 
+<span class="nocode"><a name="295">295: </a></span>                    delta));
+<span class="nocode"><a name="296">296: </a></span>        }
+<span class="nocode"><a name="297">297: </a></span>    }
+<span class="nocode"><a name="298">298: </a></span>
+<span class="nocode"><a name="299">299: </a></span>    /**
+<span class="nocode"><a name="300">300: </a></span>     * Returns the given &lt;code&gt;value&lt;/code&gt; adjusted by &lt;code&gt;delta&lt;/code&gt; but
+<span class="nocode"><a name="301">301: </a></span>     * with a check to prevent the result from crossing &lt;code&gt;0.0&lt;/code&gt;.
+<span class="nocode"><a name="302">302: </a></span>     * 
+<span class="nocode"><a name="303">303: </a></span>     * @param value  the value.
+<span class="nocode"><a name="304">304: </a></span>     * @param delta  the adjustment.
+<span class="nocode"><a name="305">305: </a></span>     * 
+<span class="nocode"><a name="306">306: </a></span>     * @return The adjusted value.
+<span class="nocode"><a name="307">307: </a></span>     */
+<span class="nocode"><a name="308">308: </a></span>    private static double shiftWithNoZeroCrossing(double value, double delta) {
+<span class="nocode"><a name="309">309: </a></span>        if (value &gt; 0.0) {
+<span class="nocode"><a name="310">310: </a></span>            return Math.max(value + delta, 0.0);  
+<span class="nocode"><a name="311">311: </a></span>        }
+<span class="nocode"><a name="312">312: </a></span>        else if (value &lt; 0.0) {
+<span class="nocode"><a name="313">313: </a></span>            return Math.min(value + delta, 0.0);
+<span class="nocode"><a name="314">314: </a></span>        }
+<span class="nocode"><a name="315">315: </a></span>        else {
+<span class="nocode"><a name="316">316: </a></span>            return value + delta;   
+<span class="nocode"><a name="317">317: </a></span>        }
+<span class="nocode"><a name="318">318: </a></span>    }
+<span class="nocode"><a name="319">319: </a></span>    
+<span class="nocode"><a name="320">320: </a></span>    /**
+<span class="nocode"><a name="321">321: </a></span>     * Tests this object for equality with an arbitrary object.
+<span class="nocode"><a name="322">322: </a></span>     *
+<span class="nocode"><a name="323">323: </a></span>     * @param obj  the object to test against (&lt;code&gt;null&lt;/code&gt; permitted).
+<span class="nocode"><a name="324">324: </a></span>     *
+<span class="nocode"><a name="325">325: </a></span>     * @return A boolean.
+<span class="nocode"><a name="326">326: </a></span>     */
+<span class="nocode"><a name="327">327: </a></span>    public boolean equals(Object obj) {
+<span class="nocode"><a name="328">328: </a></span>        if (!(obj instanceof Range)) {
+<span class="nocode"><a name="329">329: </a></span>            return false;
+<span class="nocode"><a name="330">330: </a></span>        }
+<span class="nocode"><a name="331">331: </a></span>        Range range = (Range) obj;
+<span class="nocode"><a name="332">332: </a></span>        if (!(this.lower == range.lower)) {
+<span class="nocode"><a name="333">333: </a></span>            return false;
+<span class="nocode"><a name="334">334: </a></span>        }
+<span class="nocode"><a name="335">335: </a></span>        if (!(this.upper == range.upper)) {
+<span class="nocode"><a name="336">336: </a></span>            return false;
+<span class="nocode"><a name="337">337: </a></span>        }
+<span class="nocode"><a name="338">338: </a></span>        return true;
+<span class="nocode"><a name="339">339: </a></span>    }
+<span class="nocode"><a name="340">340: </a></span>
+<span class="nocode"><a name="341">341: </a></span>    /**
+<span class="nocode"><a name="342">342: </a></span>     * Returns a hash code.
+<span class="nocode"><a name="343">343: </a></span>     * 
+<span class="nocode"><a name="344">344: </a></span>     * @return A hash code.
+<span class="nocode"><a name="345">345: </a></span>     */
+<span class="nocode"><a name="346">346: </a></span>    public int hashCode() {
+<span class="nocode"><a name="347">347: </a></span>        int result;
+<span class="nocode"><a name="348">348: </a></span>        long temp;
+<span class="nocode"><a name="349">349: </a></span>        temp = Double.doubleToLongBits(this.lower);
+<span class="nocode"><a name="350">350: </a></span>        result = (int) (temp ^ (temp &gt;&gt;&gt; 32));
+<span class="nocode"><a name="351">351: </a></span>        temp = Double.doubleToLongBits(this.upper);
+<span class="nocode"><a name="352">352: </a></span>        result = 29 * result + (int) (temp ^ (temp &gt;&gt;&gt; 32));
+<span class="nocode"><a name="353">353: </a></span>        return result;
+<span class="nocode"><a name="354">354: </a></span>    }
+<span class="nocode"><a name="355">355: </a></span>
+<span class="nocode"><a name="356">356: </a></span>    /**
+<span class="nocode"><a name="357">357: </a></span>     * Returns a string representation of this Range.
+<span class="nocode"><a name="358">358: </a></span>     *
+<span class="nocode"><a name="359">359: </a></span>     * @return A String &quot;Range[lower,upper]&quot; where lower=lower range and 
+<span class="nocode"><a name="360">360: </a></span>     *         upper=upper range.
+<span class="nocode"><a name="361">361: </a></span>     */
+<span class="nocode"><a name="362">362: </a></span>    public String toString() {
+<span class="nocode"><a name="363">363: </a></span>        return (&quot;Range[&quot; + this.lower + &quot;,&quot; + this.upper + &quot;]&quot;);
+<span class="nocode"><a name="364">364: </a></span>    }
+<span class="nocode"><a name="365">365: </a></span>
+<span class="nocode"><a name="366">366: </a></span>}
+</pre><table class="mutation_table" summary="Mutations">
+<tr><th>ID</th><th>Line</th><th>Type</th><th>Detected</th></tr><tr><td>20670</td><td><a href="#84">84</a></td><td>Negate jump condition (Replace IFLE with  IFGT)</td><td><img src="detected.png"/></td></tr>
+<tr><td>20671</td><td><a href="#85">85</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20672</td><td><a href="#85">85(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20673</td><td><a href="#85">85(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20674</td><td><a href="#85">85(3)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20675</td><td><a href="#85">85(4)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20676</td><td><a href="#85">85(5)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20677</td><td><a href="#117">117</a></td><td>Replace arithmetic operator (Replace DSUB with DADD)</td><td><img src="detected.png"/></td></tr>
+<tr><td>20680</td><td><a href="#126">126</a></td><td>Replace a constant (Replace 2.0 with 1.0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20678</td><td><a href="#126">126</a></td><td>Replace a constant (Replace 2.0 with 3.0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20679</td><td><a href="#126">126</a></td><td>Replace a constant (Replace 2.0 with 0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20683</td><td><a href="#126">126(1)</a></td><td>Replace a constant (Replace 2.0 with 0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20684</td><td><a href="#126">126(1)</a></td><td>Replace a constant (Replace 2.0 with 1.0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20682</td><td><a href="#126">126(1)</a></td><td>Replace a constant (Replace 2.0 with 3.0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20681</td><td><a href="#126">126</a></td><td>Replace arithmetic operator (Replace DDIV with DMUL)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20685</td><td><a href="#126">126(1)</a></td><td>Replace arithmetic operator (Replace DDIV with DMUL)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20686</td><td><a href="#126">126(2)</a></td><td>Replace arithmetic operator (Replace DADD with DSUB)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20689</td><td><a href="#138">138</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20690</td><td><a href="#138">138</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>20692</td><td><a href="#138">138(1)</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>20691</td><td><a href="#138">138(1)</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20687</td><td><a href="#138">138</a></td><td>Negate jump condition (Replace IFLT with  IFGE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>20688</td><td><a href="#138">138(1)</a></td><td>Negate jump condition (Replace IFGT with  IFLE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>20693</td><td><a href="#151">151</a></td><td>Negate jump condition (Replace IFGT with  IFLE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>20695</td><td><a href="#152">152</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20696</td><td><a href="#152">152</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>20697</td><td><a href="#152">152(1)</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>20698</td><td><a href="#152">152(1)</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>20694</td><td><a href="#152">152</a></td><td>Negate jump condition (Replace IFLE with  IFGT)</td><td><img src="detected.png"/></td></tr>
+<tr><td>20702</td><td><a href="#155">155</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>20701</td><td><a href="#155">155</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20703</td><td><a href="#155">155(1)</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>20704</td><td><a href="#155">155(1)</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>20699</td><td><a href="#155">155</a></td><td>Negate jump condition (Replace IFGE with  IFLT)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20700</td><td><a href="#155">155(1)</a></td><td>Negate jump condition (Replace IFLT with  IFGE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20706</td><td><a href="#169">169</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>20705</td><td><a href="#169">169</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20707</td><td><a href="#170">170</a></td><td>Negate jump condition (Replace IFLE with  IFGT)</td><td><img src="detected.png"/></td></tr>
+<tr><td>20708</td><td><a href="#173">173</a></td><td>Negate jump condition (Replace IFGE with  IFLT)</td><td><img src="detected.png"/></td></tr>
+<tr><td>20709</td><td><a href="#197">197</a></td><td>Negate jump condition (Replace IFNONNULL with  IFNULL)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20710</td><td><a href="#201">201</a></td><td>Negate jump condition (Replace IFNONNULL with  IFNULL)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20711</td><td><a href="#205">205</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20712</td><td><a href="#205">205(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20713</td><td><a href="#205">205(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20714</td><td><a href="#207">207</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>20715</td><td><a href="#207">207(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20716</td><td><a href="#207">207(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20717</td><td><a href="#226">226</a></td><td>Negate jump condition (Replace IFNONNULL with  IFNULL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>20719</td><td><a href="#229">229</a></td><td>Negate jump condition (Replace IFGE with  IFLT)</td><td><img src="detected.png"/></td></tr>
+<tr><td>20718</td><td><a href="#229">229</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20720</td><td><a href="#230">230</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>20722</td><td><a href="#232">232</a></td><td>Negate jump condition (Replace IFLE with  IFGT)</td><td><img src="detected.png"/></td></tr>
+<tr><td>20721</td><td><a href="#232">232</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20723</td><td><a href="#233">233</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20724</td><td><a href="#253">253</a></td><td>Negate jump condition (Replace IFNONNULL with  IFNULL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>20725</td><td><a href="#256">256</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>20726</td><td><a href="#257">257</a></td><td>Replace arithmetic operator (Replace DMUL with DADD)</td><td><img src="detected.png"/></td></tr>
+<tr><td>20727</td><td><a href="#258">258</a></td><td>Replace arithmetic operator (Replace DMUL with DADD)</td><td><img src="detected.png"/></td></tr>
+<tr><td>20729</td><td><a href="#259">259</a></td><td>Replace arithmetic operator (Replace DSUB with DADD)</td><td><img src="detected.png"/></td></tr>
+<tr><td>20731</td><td><a href="#259">259(1)</a></td><td>Replace arithmetic operator (Replace DADD with DSUB)</td><td><img src="detected.png"/></td></tr>
+<tr><td>20728</td><td><a href="#259">259</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20730</td><td><a href="#259">259(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20733</td><td><a href="#272">272</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20732</td><td><a href="#272">272</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20734</td><td><a href="#272">272</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20735</td><td><a href="#288">288</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20737</td><td><a href="#289">289</a></td><td>Replace arithmetic operator (Replace DADD with DSUB)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20739</td><td><a href="#289">289(1)</a></td><td>Replace arithmetic operator (Replace DADD with DSUB)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20736</td><td><a href="#289">289</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20738</td><td><a href="#289">289(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20740</td><td><a href="#293">293</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20741</td><td><a href="#293">293(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20742</td><td><a href="#293">293(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20743</td><td><a href="#293">293(3)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20745</td><td><a href="#309">309</a></td><td>Replace a constant (Replace 0 with -1(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20744</td><td><a href="#309">309</a></td><td>Replace a constant (Replace 0 with 1(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20746</td><td><a href="#309">309</a></td><td>Negate jump condition (Replace IFLE with  IFGT)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20749</td><td><a href="#310">310</a></td><td>Replace a constant (Replace 0 with -1(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20748</td><td><a href="#310">310</a></td><td>Replace a constant (Replace 0 with 1(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20747</td><td><a href="#310">310</a></td><td>Replace arithmetic operator (Replace DADD with DSUB)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20750</td><td><a href="#310">310</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20751</td><td><a href="#312">312</a></td><td>Replace a constant (Replace 0 with 1(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20752</td><td><a href="#312">312</a></td><td>Replace a constant (Replace 0 with -1(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20753</td><td><a href="#312">312</a></td><td>Negate jump condition (Replace IFGE with  IFLT)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20756</td><td><a href="#313">313</a></td><td>Replace a constant (Replace 0 with -1(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20755</td><td><a href="#313">313</a></td><td>Replace a constant (Replace 0 with 1(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20754</td><td><a href="#313">313</a></td><td>Replace arithmetic operator (Replace DADD with DSUB)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20757</td><td><a href="#313">313</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20758</td><td><a href="#316">316</a></td><td>Replace arithmetic operator (Replace DADD with DSUB)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20759</td><td><a href="#328">328</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>20761</td><td><a href="#329">329</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20760</td><td><a href="#329">329</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20762</td><td><a href="#332">332</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>20763</td><td><a href="#333">333</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>20764</td><td><a href="#333">333</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20765</td><td><a href="#335">335</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>20766</td><td><a href="#336">336</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>20767</td><td><a href="#336">336</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>20768</td><td><a href="#338">338</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20769</td><td><a href="#338">338</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>20770</td><td><a href="#349">349</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20772</td><td><a href="#350">350</a></td><td>Replace a constant (Replace 32 with 31(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20771</td><td><a href="#350">350</a></td><td>Replace a constant (Replace 32 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20773</td><td><a href="#350">350</a></td><td>Replace a constant (Replace 32 with 33(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20774</td><td><a href="#350">350</a></td><td>Replace arithmetic operator (Replace LUSHR with LSHR)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20775</td><td><a href="#350">350(1)</a></td><td>Replace arithmetic operator (Replace LXOR with LOR)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20776</td><td><a href="#351">351</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20777</td><td><a href="#352">352</a></td><td>Replace a constant (Replace 29 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20779</td><td><a href="#352">352</a></td><td>Replace a constant (Replace 29 with 28(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20778</td><td><a href="#352">352</a></td><td>Replace a constant (Replace 29 with 30(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20783</td><td><a href="#352">352(1)</a></td><td>Replace a constant (Replace 32 with 33(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20782</td><td><a href="#352">352(1)</a></td><td>Replace a constant (Replace 32 with 31(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20781</td><td><a href="#352">352(1)</a></td><td>Replace a constant (Replace 32 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20780</td><td><a href="#352">352</a></td><td>Replace arithmetic operator (Replace IMUL with IADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20784</td><td><a href="#352">352(1)</a></td><td>Replace arithmetic operator (Replace LUSHR with LSHR)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20785</td><td><a href="#352">352(2)</a></td><td>Replace arithmetic operator (Replace LXOR with LOR)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20786</td><td><a href="#352">352(3)</a></td><td>Replace arithmetic operator (Replace IADD with ISUB)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20787</td><td><a href="#363">363</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20788</td><td><a href="#363">363(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20789</td><td><a href="#363">363(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20790</td><td><a href="#363">363(3)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20791</td><td><a href="#363">363(4)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20792</td><td><a href="#363">363(5)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+</table>
+</body>
+</html>

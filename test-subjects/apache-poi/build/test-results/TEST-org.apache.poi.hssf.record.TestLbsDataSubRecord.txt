@@ -1,0 +1,7 @@
+Testsuite: org.apache.poi.hssf.record.TestLbsDataSubRecord
+Tests run: 4, Failures: 0, Errors: 0, Time elapsed: 0.001 sec
+
+Testcase: test_47701 took 0 sec
+Testcase: test_45778 took 0 sec
+Testcase: test_remove_padding took 0 sec
+Testcase: test_LbsDropData took 0 sec

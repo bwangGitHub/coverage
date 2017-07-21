@@ -1,0 +1,6 @@
+Testsuite: org.apache.poi.ss.formula.functions.TestTrim
+Tests run: 3, Failures: 0, Errors: 0, Time elapsed: 0.001 sec
+
+Testcase: testBasic took 0 sec
+Testcase: testUnusualArgs took 0 sec
+Testcase: testErrors took 0 sec

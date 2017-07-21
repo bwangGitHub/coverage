@@ -1,0 +1,125 @@
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/repos/asf/!svn/ver/1207422/poi/trunk/src/testcases/org/apache/poi/poifs/filesystem
+END
+TestNPOIFSStream.java
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/repos/asf/!svn/ver/1102482/poi/trunk/src/testcases/org/apache/poi/poifs/filesystem/TestNPOIFSStream.java
+END
+TestDocumentInputStream.java
+K 25
+svn:wc:ra_dav:version-url
+V 112
+/repos/asf/!svn/ver/1134981/poi/trunk/src/testcases/org/apache/poi/poifs/filesystem/TestDocumentInputStream.java
+END
+TestDirectoryNode.java
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/repos/asf/!svn/ver/911878/poi/trunk/src/testcases/org/apache/poi/poifs/filesystem/TestDirectoryNode.java
+END
+TestDocumentOutputStream.java
+K 25
+svn:wc:ra_dav:version-url
+V 112
+/repos/asf/!svn/ver/784284/poi/trunk/src/testcases/org/apache/poi/poifs/filesystem/TestDocumentOutputStream.java
+END
+TestDocumentDescriptor.java
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/repos/asf/!svn/ver/784284/poi/trunk/src/testcases/org/apache/poi/poifs/filesystem/TestDocumentDescriptor.java
+END
+TestFilteringDirectoryNode.java
+K 25
+svn:wc:ra_dav:version-url
+V 115
+/repos/asf/!svn/ver/1207412/poi/trunk/src/testcases/org/apache/poi/poifs/filesystem/TestFilteringDirectoryNode.java
+END
+TestDocument.java
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/repos/asf/!svn/ver/784284/poi/trunk/src/testcases/org/apache/poi/poifs/filesystem/TestDocument.java
+END
+SlowInputStream.java
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/repos/asf/!svn/ver/712084/poi/trunk/src/testcases/org/apache/poi/poifs/filesystem/SlowInputStream.java
+END
+TestEntryUtils.java
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/repos/asf/!svn/ver/1207422/poi/trunk/src/testcases/org/apache/poi/poifs/filesystem/TestEntryUtils.java
+END
+TestPropertySorter.java
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/repos/asf/!svn/ver/805262/poi/trunk/src/testcases/org/apache/poi/poifs/filesystem/TestPropertySorter.java
+END
+TestDocumentNode.java
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/repos/asf/!svn/ver/1053269/poi/trunk/src/testcases/org/apache/poi/poifs/filesystem/TestDocumentNode.java
+END
+TestPOIFSFileSystem.java
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/repos/asf/!svn/ver/1053511/poi/trunk/src/testcases/org/apache/poi/poifs/filesystem/TestPOIFSFileSystem.java
+END
+TestOle10Native.java
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/repos/asf/!svn/ver/995427/poi/trunk/src/testcases/org/apache/poi/poifs/filesystem/TestOle10Native.java
+END
+TestNPOIFSMiniStore.java
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/repos/asf/!svn/ver/1102458/poi/trunk/src/testcases/org/apache/poi/poifs/filesystem/TestNPOIFSMiniStore.java
+END
+TestPOIFSDocumentPath.java
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/repos/asf/!svn/ver/1026412/poi/trunk/src/testcases/org/apache/poi/poifs/filesystem/TestPOIFSDocumentPath.java
+END
+TestEmptyDocument.java
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/repos/asf/!svn/ver/1139518/poi/trunk/src/testcases/org/apache/poi/poifs/filesystem/TestEmptyDocument.java
+END
+ReaderWriter.java
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/repos/asf/!svn/ver/712084/poi/trunk/src/testcases/org/apache/poi/poifs/filesystem/ReaderWriter.java
+END
+AllPOIFSFileSystemTests.java
+K 25
+svn:wc:ra_dav:version-url
+V 112
+/repos/asf/!svn/ver/1050773/poi/trunk/src/testcases/org/apache/poi/poifs/filesystem/AllPOIFSFileSystemTests.java
+END
+TestNPOIFSFileSystem.java
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/repos/asf/!svn/ver/1124693/poi/trunk/src/testcases/org/apache/poi/poifs/filesystem/TestNPOIFSFileSystem.java
+END
+TestOffice2007XMLException.java
+K 25
+svn:wc:ra_dav:version-url
+V 114
+/repos/asf/!svn/ver/712084/poi/trunk/src/testcases/org/apache/poi/poifs/filesystem/TestOffice2007XMLException.java
+END

@@ -1,0 +1,119 @@
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/repos/asf/!svn/ver/1296979/poi/trunk/src/testcases/org/apache/poi/ss/usermodel
+END
+BaseTestSheetHiding.java
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/repos/asf/!svn/ver/992772/poi/trunk/src/testcases/org/apache/poi/ss/usermodel/BaseTestSheetHiding.java
+END
+BaseTestWorkbook.java
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/repos/asf/!svn/ver/1296979/poi/trunk/src/testcases/org/apache/poi/ss/usermodel/BaseTestWorkbook.java
+END
+BaseTestConditionalFormatting.java
+K 25
+svn:wc:ra_dav:version-url
+V 114
+/repos/asf/!svn/ver/1296979/poi/trunk/src/testcases/org/apache/poi/ss/usermodel/BaseTestConditionalFormatting.java
+END
+BaseTestNamedRange.java
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/repos/asf/!svn/ver/1037426/poi/trunk/src/testcases/org/apache/poi/ss/usermodel/BaseTestNamedRange.java
+END
+BaseTestCellComment.java
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/repos/asf/!svn/ver/893929/poi/trunk/src/testcases/org/apache/poi/ss/usermodel/BaseTestCellComment.java
+END
+TestDataFormatter.java
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/repos/asf/!svn/ver/1225098/poi/trunk/src/testcases/org/apache/poi/ss/usermodel/TestDataFormatter.java
+END
+BaseTestHyperlink.java
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/repos/asf/!svn/ver/1037426/poi/trunk/src/testcases/org/apache/poi/ss/usermodel/BaseTestHyperlink.java
+END
+BaseTestBugzillaIssues.java
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/repos/asf/!svn/ver/1139533/poi/trunk/src/testcases/org/apache/poi/ss/usermodel/BaseTestBugzillaIssues.java
+END
+BaseTestFont.java
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/repos/asf/!svn/ver/893929/poi/trunk/src/testcases/org/apache/poi/ss/usermodel/BaseTestFont.java
+END
+BaseTestRow.java
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/repos/asf/!svn/ver/1243240/poi/trunk/src/testcases/org/apache/poi/ss/usermodel/BaseTestRow.java
+END
+BaseTestSheet.java
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/repos/asf/!svn/ver/1294181/poi/trunk/src/testcases/org/apache/poi/ss/usermodel/BaseTestSheet.java
+END
+BaseTestSheetAutosizeColumn.java
+K 25
+svn:wc:ra_dav:version-url
+V 112
+/repos/asf/!svn/ver/1072093/poi/trunk/src/testcases/org/apache/poi/ss/usermodel/BaseTestSheetAutosizeColumn.java
+END
+BaseTestPicture.java
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/repos/asf/!svn/ver/893929/poi/trunk/src/testcases/org/apache/poi/ss/usermodel/BaseTestPicture.java
+END
+BaseTestCell.java
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/repos/asf/!svn/ver/1139288/poi/trunk/src/testcases/org/apache/poi/ss/usermodel/BaseTestCell.java
+END
+BaseTestSheetShiftRows.java
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/repos/asf/!svn/ver/893909/poi/trunk/src/testcases/org/apache/poi/ss/usermodel/BaseTestSheetShiftRows.java
+END
+BaseTestDataFormat.java
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/repos/asf/!svn/ver/1061723/poi/trunk/src/testcases/org/apache/poi/ss/usermodel/BaseTestDataFormat.java
+END
+BaseTestSheetUpdateArrayFormulas.java
+K 25
+svn:wc:ra_dav:version-url
+V 117
+/repos/asf/!svn/ver/1034358/poi/trunk/src/testcases/org/apache/poi/ss/usermodel/BaseTestSheetUpdateArrayFormulas.java
+END
+BaseTestDataValidation.java
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/repos/asf/!svn/ver/944869/poi/trunk/src/testcases/org/apache/poi/ss/usermodel/BaseTestDataValidation.java
+END
+BaseTestFormulaEvaluator.java
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/repos/asf/!svn/ver/1135079/poi/trunk/src/testcases/org/apache/poi/ss/usermodel/BaseTestFormulaEvaluator.java
+END

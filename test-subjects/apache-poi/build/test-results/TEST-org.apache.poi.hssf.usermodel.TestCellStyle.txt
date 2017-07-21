@@ -1,0 +1,10 @@
+Testsuite: org.apache.poi.hssf.usermodel.TestCellStyle
+Tests run: 7, Failures: 0, Errors: 0, Time elapsed: 0.027 sec
+
+Testcase: testWriteSheetFont took 0.014 sec
+Testcase: testDataStyle took 0.001 sec
+Testcase: testHashEquals took 0 sec
+Testcase: testWriteSheetStyle took 0.011 sec
+Testcase: testCloneStyleSameWB took 0 sec
+Testcase: testCloneStyleDiffWB took 0.001 sec
+Testcase: testStyleNames took 0 sec

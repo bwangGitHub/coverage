@@ -1,0 +1,8 @@
+Testsuite: org.apache.poi.util.TestShortField
+Tests run: 5, Failures: 0, Errors: 0, Time elapsed: 0.001 sec
+
+Testcase: testConstructors took 0 sec
+Testcase: testSet took 0 sec
+Testcase: testReadFromBytes took 0 sec
+Testcase: testReadFromStream took 0 sec
+Testcase: testWriteToBytes took 0 sec

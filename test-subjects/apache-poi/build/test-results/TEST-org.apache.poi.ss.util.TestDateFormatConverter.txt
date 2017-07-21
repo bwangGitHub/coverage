@@ -1,0 +1,21 @@
+Testsuite: org.apache.poi.ss.util.TestDateFormatConverter
+Tests run: 1, Failures: 0, Errors: 0, Time elapsed: 0.461 sec
+------------- Standard Output ---------------
+Open /tmp/poifiles/LocaleDatesDefault1286691855.xlsx in Excel
+Open /tmp/poifiles/LocaleDatesShort-1965362950.xlsx in Excel
+Open /tmp/poifiles/LocaleDatesMedium1240098383.xlsx in Excel
+Open /tmp/poifiles/LocaleDatesLong-1236115117.xlsx in Excel
+Open /tmp/poifiles/LocaleDatesFull393972828.xlsx in Excel
+Open /tmp/poifiles/LocaleDateTimesDefault-299237004.xlsx in Excel
+Open /tmp/poifiles/LocaleDateTimesShort-1462174323.xlsx in Excel
+Open /tmp/poifiles/LocaleDateTimesMedium-1031603799.xlsx in Excel
+Open /tmp/poifiles/LocaleDateTimesLong-886244069.xlsx in Excel
+Open /tmp/poifiles/LocaleDateTimesFull-1488027779.xlsx in Excel
+Open /tmp/poifiles/LocaleTimesDefault-682865149.xlsx in Excel
+Open /tmp/poifiles/LocaleTimesShort-1340140520.xlsx in Excel
+Open /tmp/poifiles/LocaleTimesMedium-1612105625.xlsx in Excel
+Open /tmp/poifiles/LocaleTimesLong-1854471018.xlsx in Excel
+Open /tmp/poifiles/LocaleTimesFull-875393321.xlsx in Excel
+------------- ---------------- ---------------
+
+Testcase: testJavaDateFormatsInExcel took 0.461 sec

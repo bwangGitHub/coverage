@@ -1,0 +1,102 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN
+"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>
+org.apache.poi.hssf.usermodel.HSSFSimpleShape
+</title>
+<link href="prettify.css" type="text/css" rel="stylesheet" />
+<script type="text/javascript" src="prettify.js"></script>
+</head>
+<body onload="prettyPrint()">
+<h2>Javalanche report for class:<br/> org.apache.poi.hssf.usermodel.HSSFSimpleShape </h2><pre class="prettyprint" style="border: 1px solid #888;padding: 2px"><span class="nocode"><a name="1">  1: </a></span>/* ====================================================================
+<span class="nocode"><a name="2">  2: </a></span>   Licensed to the Apache Software Foundation (ASF) under one or more
+<span class="nocode"><a name="3">  3: </a></span>   contributor license agreements.  See the NOTICE file distributed with
+<span class="nocode"><a name="4">  4: </a></span>   this work for additional information regarding copyright ownership.
+<span class="nocode"><a name="5">  5: </a></span>   The ASF licenses this file to You under the Apache License, Version 2.0
+<span class="nocode"><a name="6">  6: </a></span>   (the &quot;License&quot;); you may not use this file except in compliance with
+<span class="nocode"><a name="7">  7: </a></span>   the License.  You may obtain a copy of the License at
+<span class="nocode"><a name="8">  8: </a></span>
+<span class="nocode"><a name="9">  9: </a></span>       http://www.apache.org/licenses/LICENSE-2.0
+<span class="nocode"><a name="10"> 10: </a></span>
+<span class="nocode"><a name="11"> 11: </a></span>   Unless required by applicable law or agreed to in writing, software
+<span class="nocode"><a name="12"> 12: </a></span>   distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+<span class="nocode"><a name="13"> 13: </a></span>   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+<span class="nocode"><a name="14"> 14: </a></span>   See the License for the specific language governing permissions and
+<span class="nocode"><a name="15"> 15: </a></span>   limitations under the License.
+<span class="nocode"><a name="16"> 16: </a></span>==================================================================== */
+<span class="nocode"><a name="17"> 17: </a></span>
+<span class="nocode"><a name="18"> 18: </a></span>package org.apache.poi.hssf.usermodel;
+<span class="nocode"><a name="19"> 19: </a></span>
+<span class="nocode"><a name="20"> 20: </a></span>/**
+<span class="nocode"><a name="21"> 21: </a></span> * Represents a simple shape such as a line, rectangle or oval.
+<span class="nocode"><a name="22"> 22: </a></span> *
+<span class="nocode"><a name="23"> 23: </a></span> * @author Glen Stampoultzis (glens at apache.org)
+<span class="nocode"><a name="24"> 24: </a></span> */
+<span class="nocode"><a name="25"> 25: </a></span>public class HSSFSimpleShape
+<span class="nocode"><a name="26"> 26: </a></span>    extends HSSFShape
+<span class="nocode"><a name="27"> 27: </a></span>{
+<span class="nocode"><a name="28"> 28: </a></span>    // The commented out ones haven't been tested yet or aren't supported
+<span class="nocode"><a name="29"> 29: </a></span>    // by HSSFSimpleShape.
+<span class="nocode"><a name="30"> 30: </a></span>
+<span class="nocode"><a name="31"> 31: </a></span>    public final static short       OBJECT_TYPE_LINE               = 1;
+<span class="nocode"><a name="32"> 32: </a></span>    public final static short       OBJECT_TYPE_RECTANGLE          = 2;
+<span class="nocode"><a name="33"> 33: </a></span>    public final static short       OBJECT_TYPE_OVAL               = 3;
+<span class="nocode"><a name="34"> 34: </a></span>//    public final static short       OBJECT_TYPE_ARC                = 4;
+<span class="nocode"><a name="35"> 35: </a></span>//    public final static short       OBJECT_TYPE_CHART              = 5;
+<span class="nocode"><a name="36"> 36: </a></span>//    public final static short       OBJECT_TYPE_TEXT               = 6;
+<span class="nocode"><a name="37"> 37: </a></span>//    public final static short       OBJECT_TYPE_BUTTON             = 7;
+<span class="nocode"><a name="38"> 38: </a></span>    public final static short       OBJECT_TYPE_PICTURE            = 8;
+<span class="nocode"><a name="39"> 39: </a></span>//    public final static short       OBJECT_TYPE_POLYGON            = 9;
+<span class="nocode"><a name="40"> 40: </a></span>//    public final static short       OBJECT_TYPE_CHECKBOX           = 11;
+<span class="nocode"><a name="41"> 41: </a></span>//    public final static short       OBJECT_TYPE_OPTION_BUTTON      = 12;
+<span class="nocode"><a name="42"> 42: </a></span>//    public final static short       OBJECT_TYPE_EDIT_BOX           = 13;
+<span class="nocode"><a name="43"> 43: </a></span>//    public final static short       OBJECT_TYPE_LABEL              = 14;
+<span class="nocode"><a name="44"> 44: </a></span>//    public final static short       OBJECT_TYPE_DIALOG_BOX         = 15;
+<span class="nocode"><a name="45"> 45: </a></span>//    public final static short       OBJECT_TYPE_SPINNER            = 16;
+<span class="nocode"><a name="46"> 46: </a></span>//    public final static short       OBJECT_TYPE_SCROLL_BAR         = 17;
+<span class="nocode"><a name="47"> 47: </a></span>//    public final static short       OBJECT_TYPE_LIST_BOX           = 18;
+<span class="nocode"><a name="48"> 48: </a></span>//    public final static short       OBJECT_TYPE_GROUP_BOX          = 19;
+<span class="nocode"><a name="49"> 49: </a></span>    public final static short       OBJECT_TYPE_COMBO_BOX          = 20;
+<span class="nocode"><a name="50"> 50: </a></span>    public final static short       OBJECT_TYPE_COMMENT            = 25;
+<span class="nocode"><a name="51"> 51: </a></span>//    public final static short       OBJECT_TYPE_MICROSOFT_OFFICE_DRAWING = 30;
+<span class="nocode"><a name="52"> 52: </a></span>
+<span class="nocode"><a name="53"> 53: </a></span>    int shapeType = OBJECT_TYPE_LINE;
+<span class="nocode"><a name="54"> 54: </a></span>
+<span class="nocode"><a name="55"> 55: </a></span>    public HSSFSimpleShape( HSSFShape parent, HSSFAnchor anchor )
+<span class="nocode"><a name="56"> 56: </a></span>    {
+<span class="nocode"><a name="57"> 57: </a></span>        super( parent, anchor );
+<span class="nocode"><a name="58"> 58: </a></span>    }
+<span class="nocode"><a name="59"> 59: </a></span>
+<span class="nocode"><a name="60"> 60: </a></span>    /**
+<span class="nocode"><a name="61"> 61: </a></span>     * Gets the shape type.
+<span class="nocode"><a name="62"> 62: </a></span>     * @return  One of the OBJECT_TYPE_* constants.
+<span class="nocode"><a name="63"> 63: </a></span>     *
+<span class="nocode"><a name="64"> 64: </a></span>     * @see #OBJECT_TYPE_LINE
+<span class="nocode"><a name="65"> 65: </a></span>     * @see #OBJECT_TYPE_OVAL
+<span class="nocode"><a name="66"> 66: </a></span>     * @see #OBJECT_TYPE_RECTANGLE
+<span class="nocode"><a name="67"> 67: </a></span>     * @see #OBJECT_TYPE_PICTURE
+<span class="nocode"><a name="68"> 68: </a></span>     * @see #OBJECT_TYPE_COMMENT
+<span class="nocode"><a name="69"> 69: </a></span>     */
+<span class="nocode"><a name="70"> 70: </a></span>    public int getShapeType() { return shapeType; }
+<span class="nocode"><a name="71"> 71: </a></span>
+<span class="nocode"><a name="72"> 72: </a></span>    /**
+<span class="nocode"><a name="73"> 73: </a></span>     * Sets the shape types.
+<span class="nocode"><a name="74"> 74: </a></span>     *
+<span class="nocode"><a name="75"> 75: </a></span>     * @param shapeType One of the OBJECT_TYPE_* constants.
+<span class="nocode"><a name="76"> 76: </a></span>     *
+<span class="nocode"><a name="77"> 77: </a></span>     * @see #OBJECT_TYPE_LINE
+<span class="nocode"><a name="78"> 78: </a></span>     * @see #OBJECT_TYPE_OVAL
+<span class="nocode"><a name="79"> 79: </a></span>     * @see #OBJECT_TYPE_RECTANGLE
+<span class="nocode"><a name="80"> 80: </a></span>     * @see #OBJECT_TYPE_PICTURE
+<span class="nocode"><a name="81"> 81: </a></span>     * @see #OBJECT_TYPE_COMMENT
+<span class="nocode"><a name="82"> 82: </a></span>     */
+<span class="nocode"><a name="83"> 83: </a></span>    public void setShapeType( int shapeType ){ this.shapeType = shapeType; }
+<span class="nocode"><a name="84"> 84: </a></span>
+<span class="nocode"><a name="85"> 85: </a></span>}
+</pre><table class="mutation_table" summary="Mutations">
+<tr><th>ID</th><th>Line</th><th>Type</th><th>Detected</th></tr><tr><td>47519</td><td><a href="#53">53</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>47520</td><td><a href="#53">53</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+</table>
+</body>
+</html>

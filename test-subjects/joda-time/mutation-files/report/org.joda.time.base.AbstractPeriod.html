@@ -1,0 +1,336 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN
+"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>
+org.joda.time.base.AbstractPeriod
+</title>
+<link href="prettify.css" type="text/css" rel="stylesheet" />
+<script type="text/javascript" src="prettify.js"></script>
+</head>
+<body onload="prettyPrint()">
+<h2>Javalanche report for class:<br/> org.joda.time.base.AbstractPeriod </h2><pre class="prettyprint" style="border: 1px solid #888;padding: 2px"><span class="nocode"><a name="1">  1: </a></span>/*
+<span class="nocode"><a name="2">  2: </a></span> *  Copyright 2001-2010 Stephen Colebourne
+<span class="nocode"><a name="3">  3: </a></span> *
+<span class="nocode"><a name="4">  4: </a></span> *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+<span class="nocode"><a name="5">  5: </a></span> *  you may not use this file except in compliance with the License.
+<span class="nocode"><a name="6">  6: </a></span> *  You may obtain a copy of the License at
+<span class="nocode"><a name="7">  7: </a></span> *
+<span class="nocode"><a name="8">  8: </a></span> *      http://www.apache.org/licenses/LICENSE-2.0
+<span class="nocode"><a name="9">  9: </a></span> *
+<span class="nocode"><a name="10"> 10: </a></span> *  Unless required by applicable law or agreed to in writing, software
+<span class="nocode"><a name="11"> 11: </a></span> *  distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+<span class="nocode"><a name="12"> 12: </a></span> *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+<span class="nocode"><a name="13"> 13: </a></span> *  See the License for the specific language governing permissions and
+<span class="nocode"><a name="14"> 14: </a></span> *  limitations under the License.
+<span class="nocode"><a name="15"> 15: </a></span> */
+<span class="nocode"><a name="16"> 16: </a></span>package org.joda.time.base;
+<span class="nocode"><a name="17"> 17: </a></span>
+<span class="nocode"><a name="18"> 18: </a></span>import org.joda.convert.ToString;
+<span class="nocode"><a name="19"> 19: </a></span>import org.joda.time.DurationFieldType;
+<span class="nocode"><a name="20"> 20: </a></span>import org.joda.time.MutablePeriod;
+<span class="nocode"><a name="21"> 21: </a></span>import org.joda.time.Period;
+<span class="nocode"><a name="22"> 22: </a></span>import org.joda.time.ReadablePeriod;
+<span class="nocode"><a name="23"> 23: </a></span>import org.joda.time.format.ISOPeriodFormat;
+<span class="nocode"><a name="24"> 24: </a></span>import org.joda.time.format.PeriodFormatter;
+<span class="nocode"><a name="25"> 25: </a></span>
+<span class="nocode"><a name="26"> 26: </a></span>/**
+<span class="nocode"><a name="27"> 27: </a></span> * AbstractPeriod provides the common behaviour for period classes.
+<span class="nocode"><a name="28"> 28: </a></span> * &lt;p&gt;
+<span class="nocode"><a name="29"> 29: </a></span> * This class should generally not be used directly by API users. The 
+<span class="nocode"><a name="30"> 30: </a></span> * {@link ReadablePeriod} interface should be used when different 
+<span class="nocode"><a name="31"> 31: </a></span> * kinds of periods are to be referenced.
+<span class="nocode"><a name="32"> 32: </a></span> * &lt;p&gt;
+<span class="nocode"><a name="33"> 33: </a></span> * AbstractPeriod subclasses may be mutable and not thread-safe.
+<span class="nocode"><a name="34"> 34: </a></span> *
+<span class="nocode"><a name="35"> 35: </a></span> * @author Brian S O'Neill
+<span class="nocode"><a name="36"> 36: </a></span> * @author Stephen Colebourne
+<span class="nocode"><a name="37"> 37: </a></span> * @since 1.0
+<span class="nocode"><a name="38"> 38: </a></span> */
+<span class="nocode"><a name="39"> 39: </a></span>public abstract class AbstractPeriod implements ReadablePeriod {
+<span class="nocode"><a name="40"> 40: </a></span>
+<span class="nocode"><a name="41"> 41: </a></span>    /**
+<span class="nocode"><a name="42"> 42: </a></span>     * Constructor.
+<span class="nocode"><a name="43"> 43: </a></span>     */
+<span class="nocode"><a name="44"> 44: </a></span>    protected AbstractPeriod() {
+<span class="nocode"><a name="45"> 45: </a></span>        super();
+<span class="nocode"><a name="46"> 46: </a></span>    }
+<span class="nocode"><a name="47"> 47: </a></span>
+<span class="nocode"><a name="48"> 48: </a></span>    //-----------------------------------------------------------------------
+<span class="nocode"><a name="49"> 49: </a></span>    /**
+<span class="nocode"><a name="50"> 50: </a></span>     * Gets the number of fields that this period supports.
+<span class="nocode"><a name="51"> 51: </a></span>     *
+<span class="nocode"><a name="52"> 52: </a></span>     * @return the number of fields supported
+<span class="nocode"><a name="53"> 53: </a></span>     * @since 2.0 (previously on BasePeriod)
+<span class="nocode"><a name="54"> 54: </a></span>     */
+<span class="nocode"><a name="55"> 55: </a></span>    public int size() {
+<span class="nocode"><a name="56"> 56: </a></span>        return getPeriodType().size();
+<span class="nocode"><a name="57"> 57: </a></span>    }
+<span class="nocode"><a name="58"> 58: </a></span>
+<span class="nocode"><a name="59"> 59: </a></span>    /**
+<span class="nocode"><a name="60"> 60: </a></span>     * Gets the field type at the specified index.
+<span class="nocode"><a name="61"> 61: </a></span>     *
+<span class="nocode"><a name="62"> 62: </a></span>     * @param index  the index to retrieve
+<span class="nocode"><a name="63"> 63: </a></span>     * @return the field at the specified index
+<span class="nocode"><a name="64"> 64: </a></span>     * @throws IndexOutOfBoundsException if the index is invalid
+<span class="nocode"><a name="65"> 65: </a></span>     * @since 2.0 (previously on BasePeriod)
+<span class="nocode"><a name="66"> 66: </a></span>     */
+<span class="nocode"><a name="67"> 67: </a></span>    public DurationFieldType getFieldType(int index) {
+<span class="nocode"><a name="68"> 68: </a></span>        return getPeriodType().getFieldType(index);
+<span class="nocode"><a name="69"> 69: </a></span>    }
+<span class="nocode"><a name="70"> 70: </a></span>
+<span class="nocode"><a name="71"> 71: </a></span>    /**
+<span class="nocode"><a name="72"> 72: </a></span>     * Gets an array of the field types that this period supports.
+<span class="nocode"><a name="73"> 73: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="74"> 74: </a></span>     * The fields are returned largest to smallest, for example Hours, Minutes, Seconds.
+<span class="nocode"><a name="75"> 75: </a></span>     *
+<span class="nocode"><a name="76"> 76: </a></span>     * @return the fields supported in an array that may be altered, largest to smallest
+<span class="nocode"><a name="77"> 77: </a></span>     */
+<span class="nocode"><a name="78"> 78: </a></span>    public DurationFieldType[] getFieldTypes() {
+<span class="nocode"><a name="79"> 79: </a></span>        DurationFieldType[] result = new DurationFieldType[size()];
+<span class="nocode"><a name="80"> 80: </a></span>        for (int i = 0; i &lt; result.length; i++) {
+<span class="nocode"><a name="81"> 81: </a></span>            result[i] = getFieldType(i);
+<span class="nocode"><a name="82"> 82: </a></span>        }
+<span class="nocode"><a name="83"> 83: </a></span>        return result;
+<span class="nocode"><a name="84"> 84: </a></span>    }
+<span class="nocode"><a name="85"> 85: </a></span>
+<span class="nocode"><a name="86"> 86: </a></span>    /**
+<span class="nocode"><a name="87"> 87: </a></span>     * Gets an array of the value of each of the fields that this period supports.
+<span class="nocode"><a name="88"> 88: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="89"> 89: </a></span>     * The fields are returned largest to smallest, for example Hours, Minutes, Seconds.
+<span class="nocode"><a name="90"> 90: </a></span>     * Each value corresponds to the same array index as &lt;code&gt;getFields()&lt;/code&gt;
+<span class="nocode"><a name="91"> 91: </a></span>     *
+<span class="nocode"><a name="92"> 92: </a></span>     * @return the current values of each field in an array that may be altered, largest to smallest
+<span class="nocode"><a name="93"> 93: </a></span>     */
+<span class="nocode"><a name="94"> 94: </a></span>    public int[] getValues() {
+<span class="nocode"><a name="95"> 95: </a></span>        int[] result = new int[size()];
+<span class="nocode"><a name="96"> 96: </a></span>        for (int i = 0; i &lt; result.length; i++) {
+<span class="nocode"><a name="97"> 97: </a></span>            result[i] = getValue(i);
+<span class="nocode"><a name="98"> 98: </a></span>        }
+<span class="nocode"><a name="99"> 99: </a></span>        return result;
+<span class="nocode"><a name="100">100: </a></span>    }
+<span class="nocode"><a name="101">101: </a></span>
+<span class="nocode"><a name="102">102: </a></span>    //-----------------------------------------------------------------------
+<span class="nocode"><a name="103">103: </a></span>    /**
+<span class="nocode"><a name="104">104: </a></span>     * Gets the value of one of the fields.
+<span class="nocode"><a name="105">105: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="106">106: </a></span>     * If the field type specified is not supported by the period then zero
+<span class="nocode"><a name="107">107: </a></span>     * is returned.
+<span class="nocode"><a name="108">108: </a></span>     *
+<span class="nocode"><a name="109">109: </a></span>     * @param type  the field type to query, null returns zero
+<span class="nocode"><a name="110">110: </a></span>     * @return the value of that field, zero if field not supported
+<span class="nocode"><a name="111">111: </a></span>     */
+<span class="nocode"><a name="112">112: </a></span>    public int get(DurationFieldType type) {
+<span class="nocode"><a name="113">113: </a></span>        int index = indexOf(type);
+<span class="nocode"><a name="114">114: </a></span>        if (index == -1) {
+<span class="nocode"><a name="115">115: </a></span>            return 0;
+<span class="nocode"><a name="116">116: </a></span>        }
+<span class="nocode"><a name="117">117: </a></span>        return getValue(index);
+<span class="nocode"><a name="118">118: </a></span>    }
+<span class="nocode"><a name="119">119: </a></span>
+<span class="nocode"><a name="120">120: </a></span>    /**
+<span class="nocode"><a name="121">121: </a></span>     * Checks whether the field specified is supported by this period.
+<span class="nocode"><a name="122">122: </a></span>     *
+<span class="nocode"><a name="123">123: </a></span>     * @param type  the type to check, may be null which returns false
+<span class="nocode"><a name="124">124: </a></span>     * @return true if the field is supported
+<span class="nocode"><a name="125">125: </a></span>     */
+<span class="nocode"><a name="126">126: </a></span>    public boolean isSupported(DurationFieldType type) {
+<span class="nocode"><a name="127">127: </a></span>        return getPeriodType().isSupported(type);
+<span class="nocode"><a name="128">128: </a></span>    }
+<span class="nocode"><a name="129">129: </a></span>
+<span class="nocode"><a name="130">130: </a></span>    /**
+<span class="nocode"><a name="131">131: </a></span>     * Gets the index of the field in this period.
+<span class="nocode"><a name="132">132: </a></span>     *
+<span class="nocode"><a name="133">133: </a></span>     * @param type  the type to check, may be null which returns -1
+<span class="nocode"><a name="134">134: </a></span>     * @return the index of -1 if not supported
+<span class="nocode"><a name="135">135: </a></span>     */
+<span class="nocode"><a name="136">136: </a></span>    public int indexOf(DurationFieldType type) {
+<span class="nocode"><a name="137">137: </a></span>        return getPeriodType().indexOf(type);
+<span class="nocode"><a name="138">138: </a></span>    }
+<span class="nocode"><a name="139">139: </a></span>
+<span class="nocode"><a name="140">140: </a></span>    //-----------------------------------------------------------------------
+<span class="nocode"><a name="141">141: </a></span>    /**
+<span class="nocode"><a name="142">142: </a></span>     * Get this period as an immutable &lt;code&gt;Period&lt;/code&gt; object.
+<span class="nocode"><a name="143">143: </a></span>     * 
+<span class="nocode"><a name="144">144: </a></span>     * @return a Period using the same field set and values
+<span class="nocode"><a name="145">145: </a></span>     */
+<span class="nocode"><a name="146">146: </a></span>    public Period toPeriod() {
+<span class="nocode"><a name="147">147: </a></span>        return new Period(this);
+<span class="nocode"><a name="148">148: </a></span>    }
+<span class="nocode"><a name="149">149: </a></span>
+<span class="nocode"><a name="150">150: </a></span>    /**
+<span class="nocode"><a name="151">151: </a></span>     * Get this object as a &lt;code&gt;MutablePeriod&lt;/code&gt;.
+<span class="nocode"><a name="152">152: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="153">153: </a></span>     * This will always return a new &lt;code&gt;MutablePeriod&lt;/code&gt; with the same fields.
+<span class="nocode"><a name="154">154: </a></span>     * 
+<span class="nocode"><a name="155">155: </a></span>     * @return a MutablePeriod using the same field set and values
+<span class="nocode"><a name="156">156: </a></span>     */
+<span class="nocode"><a name="157">157: </a></span>    public MutablePeriod toMutablePeriod() {
+<span class="nocode"><a name="158">158: </a></span>        return new MutablePeriod(this);
+<span class="nocode"><a name="159">159: </a></span>    }
+<span class="nocode"><a name="160">160: </a></span>
+<span class="nocode"><a name="161">161: </a></span>    //-----------------------------------------------------------------------
+<span class="nocode"><a name="162">162: </a></span>    /**
+<span class="nocode"><a name="163">163: </a></span>     * Compares this object with the specified object for equality based
+<span class="nocode"><a name="164">164: </a></span>     * on the value of each field. All ReadablePeriod instances are accepted.
+<span class="nocode"><a name="165">165: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="166">166: </a></span>     * Note that a period of 1 day is not equal to a period of 24 hours,
+<span class="nocode"><a name="167">167: </a></span>     * nor is 1 hour equal to 60 minutes. Only periods with the same amount
+<span class="nocode"><a name="168">168: </a></span>     * in each field are equal.
+<span class="nocode"><a name="169">169: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="170">170: </a></span>     * This is because periods represent an abstracted definition of a time
+<span class="nocode"><a name="171">171: </a></span>     * period (eg. a day may not actually be 24 hours, it might be 23 or 25
+<span class="nocode"><a name="172">172: </a></span>     * at daylight savings boundary).
+<span class="nocode"><a name="173">173: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="174">174: </a></span>     * To compare the actual duration of two periods, convert both to
+<span class="nocode"><a name="175">175: </a></span>     * {@link org.joda.time.Duration Duration}s, an operation that emphasises
+<span class="nocode"><a name="176">176: </a></span>     * that the result may differ according to the date you choose.
+<span class="nocode"><a name="177">177: </a></span>     *
+<span class="nocode"><a name="178">178: </a></span>     * @param period  a readable period to check against
+<span class="nocode"><a name="179">179: </a></span>     * @return true if all the field values are equal, false if
+<span class="nocode"><a name="180">180: </a></span>     *  not or the period is null or of an incorrect type
+<span class="nocode"><a name="181">181: </a></span>     */
+<span class="nocode"><a name="182">182: </a></span>    public boolean equals(Object period) {
+<span class="nocode"><a name="183">183: </a></span>        if (this == period) {
+<span class="nocode"><a name="184">184: </a></span>            return true;
+<span class="nocode"><a name="185">185: </a></span>        }
+<span class="nocode"><a name="186">186: </a></span>        if (period instanceof ReadablePeriod == false) {
+<span class="nocode"><a name="187">187: </a></span>            return false;
+<span class="nocode"><a name="188">188: </a></span>        }
+<span class="nocode"><a name="189">189: </a></span>        ReadablePeriod other = (ReadablePeriod) period;
+<span class="nocode"><a name="190">190: </a></span>        if (size() != other.size()) {
+<span class="nocode"><a name="191">191: </a></span>            return false;
+<span class="nocode"><a name="192">192: </a></span>        }
+<span class="nocode"><a name="193">193: </a></span>        for (int i = 0, isize = size(); i &lt; isize; i++) {
+<span class="nocode"><a name="194">194: </a></span>            if (getValue(i) != other.getValue(i) || getFieldType(i) != other.getFieldType(i)) {
+<span class="nocode"><a name="195">195: </a></span>                return false;
+<span class="nocode"><a name="196">196: </a></span>            }
+<span class="nocode"><a name="197">197: </a></span>        }
+<span class="nocode"><a name="198">198: </a></span>        return true;
+<span class="nocode"><a name="199">199: </a></span>    }
+<span class="nocode"><a name="200">200: </a></span>
+<span class="nocode"><a name="201">201: </a></span>    /**
+<span class="nocode"><a name="202">202: </a></span>     * Gets a hash code for the period as defined by ReadablePeriod.
+<span class="nocode"><a name="203">203: </a></span>     *
+<span class="nocode"><a name="204">204: </a></span>     * @return a hash code
+<span class="nocode"><a name="205">205: </a></span>     */
+<span class="nocode"><a name="206">206: </a></span>    public int hashCode() {
+<span class="nocode"><a name="207">207: </a></span>        int total = 17;
+<span class="nocode"><a name="208">208: </a></span>        for (int i = 0, isize = size(); i &lt; isize; i++) {
+<span class="nocode"><a name="209">209: </a></span>            total = 27 * total + getValue(i);
+<span class="nocode"><a name="210">210: </a></span>            total = 27 * total + getFieldType(i).hashCode();
+<span class="nocode"><a name="211">211: </a></span>        }
+<span class="nocode"><a name="212">212: </a></span>        return total;
+<span class="nocode"><a name="213">213: </a></span>    }
+<span class="nocode"><a name="214">214: </a></span>
+<span class="nocode"><a name="215">215: </a></span>    //-----------------------------------------------------------------------
+<span class="nocode"><a name="216">216: </a></span>    /**
+<span class="nocode"><a name="217">217: </a></span>     * Gets the value as a String in the ISO8601 duration format.
+<span class="nocode"><a name="218">218: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="219">219: </a></span>     * For example, &quot;P6H3M7S&quot; represents 6 hours, 3 minutes, 7 seconds.
+<span class="nocode"><a name="220">220: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="221">221: </a></span>     * For more control over the output, see
+<span class="nocode"><a name="222">222: </a></span>     * {@link org.joda.time.format.PeriodFormatterBuilder PeriodFormatterBuilder}.
+<span class="nocode"><a name="223">223: </a></span>     *
+<span class="nocode"><a name="224">224: </a></span>     * @return the value as an ISO8601 string
+<span class="nocode"><a name="225">225: </a></span>     */
+<span class="nocode"><a name="226">226: </a></span>    @ToString
+<span class="nocode"><a name="227">227: </a></span>    public String toString() {
+<span class="nocode"><a name="228">228: </a></span>        return ISOPeriodFormat.standard().print(this);
+<span class="nocode"><a name="229">229: </a></span>    }
+<span class="nocode"><a name="230">230: </a></span>
+<span class="nocode"><a name="231">231: </a></span>    //-----------------------------------------------------------------------
+<span class="nocode"><a name="232">232: </a></span>    /**
+<span class="nocode"><a name="233">233: </a></span>     * Uses the specified formatter to convert this period to a String.
+<span class="nocode"><a name="234">234: </a></span>     *
+<span class="nocode"><a name="235">235: </a></span>     * @param formatter  the formatter to use, null means use &lt;code&gt;toString()&lt;/code&gt;.
+<span class="nocode"><a name="236">236: </a></span>     * @return the formatted string
+<span class="nocode"><a name="237">237: </a></span>     * @since 1.5
+<span class="nocode"><a name="238">238: </a></span>     */
+<span class="nocode"><a name="239">239: </a></span>    public String toString(PeriodFormatter formatter) {
+<span class="nocode"><a name="240">240: </a></span>        if (formatter == null) {
+<span class="nocode"><a name="241">241: </a></span>            return toString();
+<span class="nocode"><a name="242">242: </a></span>        }
+<span class="nocode"><a name="243">243: </a></span>        return formatter.print(this);
+<span class="nocode"><a name="244">244: </a></span>    }
+<span class="nocode"><a name="245">245: </a></span>
+<span class="nocode"><a name="246">246: </a></span>}
+</pre><table class="mutation_table" summary="Mutations">
+<tr><th>ID</th><th>Line</th><th>Type</th><th>Detected</th></tr><tr><td>15021</td><td><a href="#56">56</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>15022</td><td><a href="#56">56(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>15023</td><td><a href="#68">68</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>15024</td><td><a href="#68">68(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>15025</td><td><a href="#79">79</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>15026</td><td><a href="#80">80</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>15027</td><td><a href="#80">80</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>15028</td><td><a href="#80">80</a></td><td>Negate jump condition (Replace IF_ICMPGE with  IF_ICMPLT)</td><td><img src="detected.png"/></td></tr>
+<tr><td>15029</td><td><a href="#81">81</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>15030</td><td><a href="#95">95</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>15031</td><td><a href="#96">96</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>15032</td><td><a href="#96">96</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>15033</td><td><a href="#96">96</a></td><td>Negate jump condition (Replace IF_ICMPGE with  IF_ICMPLT)</td><td><img src="detected.png"/></td></tr>
+<tr><td>15034</td><td><a href="#97">97</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>15035</td><td><a href="#113">113</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>15037</td><td><a href="#114">114</a></td><td>Replace a constant (Replace -1 with -2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>15036</td><td><a href="#114">114</a></td><td>Replace a constant (Replace -1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>15038</td><td><a href="#114">114</a></td><td>Negate jump condition (Replace IF_ICMPNE with  IF_ICMPEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>15039</td><td><a href="#115">115</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>15040</td><td><a href="#115">115</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>15041</td><td><a href="#117">117</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>15042</td><td><a href="#127">127</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>15043</td><td><a href="#127">127(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>15044</td><td><a href="#137">137</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>15045</td><td><a href="#137">137(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>15046</td><td><a href="#183">183</a></td><td>Negate jump condition (Replace IF_ACMPNE with  IF_ACMPEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>15048</td><td><a href="#184">184</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>15047</td><td><a href="#184">184</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>15049</td><td><a href="#186">186</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>15050</td><td><a href="#187">187</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>15051</td><td><a href="#187">187</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>15054</td><td><a href="#190">190</a></td><td>Negate jump condition (Replace IF_ICMPEQ with  IF_ICMPNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>15052</td><td><a href="#190">190</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>15053</td><td><a href="#190">190(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>15055</td><td><a href="#191">191</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>15056</td><td><a href="#191">191</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>15057</td><td><a href="#193">193</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>15058</td><td><a href="#193">193</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>15060</td><td><a href="#193">193</a></td><td>Negate jump condition (Replace IF_ICMPGE with  IF_ICMPLT)</td><td><img src="detected.png"/></td></tr>
+<tr><td>15059</td><td><a href="#193">193</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>15063</td><td><a href="#194">194</a></td><td>Negate jump condition (Replace IF_ICMPNE with  IF_ICMPEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>15066</td><td><a href="#194">194(1)</a></td><td>Negate jump condition (Replace IF_ACMPEQ with  IF_ACMPNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>15061</td><td><a href="#194">194</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>15062</td><td><a href="#194">194(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>15064</td><td><a href="#194">194(2)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>15065</td><td><a href="#194">194(3)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>15068</td><td><a href="#195">195</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>15067</td><td><a href="#195">195</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>15070</td><td><a href="#198">198</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>15069</td><td><a href="#198">198</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>15072</td><td><a href="#207">207</a></td><td>Replace a constant (Replace 17 with 18(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>15071</td><td><a href="#207">207</a></td><td>Replace a constant (Replace 17 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>15073</td><td><a href="#207">207</a></td><td>Replace a constant (Replace 17 with 16(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>15075</td><td><a href="#208">208</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>15074</td><td><a href="#208">208</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>15077</td><td><a href="#208">208</a></td><td>Negate jump condition (Replace IF_ICMPGE with  IF_ICMPLT)</td><td><img src="detected.png"/></td></tr>
+<tr><td>15076</td><td><a href="#208">208</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>15079</td><td><a href="#209">209</a></td><td>Replace a constant (Replace 27 with 26(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>15078</td><td><a href="#209">209</a></td><td>Replace a constant (Replace 27 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>15080</td><td><a href="#209">209</a></td><td>Replace a constant (Replace 27 with 28(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>15081</td><td><a href="#209">209</a></td><td>Replace arithmetic operator (Replace IMUL with IADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>15083</td><td><a href="#209">209(1)</a></td><td>Replace arithmetic operator (Replace IADD with ISUB)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>15082</td><td><a href="#209">209</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>15085</td><td><a href="#210">210</a></td><td>Replace a constant (Replace 27 with 26(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>15084</td><td><a href="#210">210</a></td><td>Replace a constant (Replace 27 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>15086</td><td><a href="#210">210</a></td><td>Replace a constant (Replace 27 with 28(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>15087</td><td><a href="#210">210</a></td><td>Replace arithmetic operator (Replace IMUL with IADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>15090</td><td><a href="#210">210(1)</a></td><td>Replace arithmetic operator (Replace IADD with ISUB)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>15088</td><td><a href="#210">210</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>15089</td><td><a href="#210">210(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>15091</td><td><a href="#228">228</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>15092</td><td><a href="#228">228(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>15093</td><td><a href="#240">240</a></td><td>Negate jump condition (Replace IFNONNULL with  IFNULL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>15094</td><td><a href="#241">241</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>15095</td><td><a href="#243">243</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+</table>
+</body>
+</html>

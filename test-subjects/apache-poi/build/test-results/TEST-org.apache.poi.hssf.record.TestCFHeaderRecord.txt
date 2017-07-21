@@ -1,0 +1,6 @@
+Testsuite: org.apache.poi.hssf.record.TestCFHeaderRecord
+Tests run: 3, Failures: 0, Errors: 0, Time elapsed: 0.001 sec
+
+Testcase: testCreateCFHeaderRecord took 0 sec
+Testcase: testSerialization took 0.001 sec
+Testcase: testExtremeRows took 0 sec

@@ -1,0 +1,17 @@
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/repos/asf/!svn/ver/960117/poi/trunk/src/ooxml/testcases/org/apache/poi/xssf/usermodel/helpers
+END
+TestColumnHelper.java
+K 25
+svn:wc:ra_dav:version-url
+V 116
+/repos/asf/!svn/ver/960117/poi/trunk/src/ooxml/testcases/org/apache/poi/xssf/usermodel/helpers/TestColumnHelper.java
+END
+TestHeaderFooterHelper.java
+K 25
+svn:wc:ra_dav:version-url
+V 122
+/repos/asf/!svn/ver/712084/poi/trunk/src/ooxml/testcases/org/apache/poi/xssf/usermodel/helpers/TestHeaderFooterHelper.java
+END

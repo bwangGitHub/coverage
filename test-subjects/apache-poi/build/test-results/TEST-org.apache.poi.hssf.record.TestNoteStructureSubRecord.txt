@@ -1,0 +1,6 @@
+Testsuite: org.apache.poi.hssf.record.TestNoteStructureSubRecord
+Tests run: 3, Failures: 0, Errors: 0, Time elapsed: 0.001 sec
+
+Testcase: testRead took 0 sec
+Testcase: testWrite took 0 sec
+Testcase: testClone took 0.001 sec

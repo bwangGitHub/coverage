@@ -1,0 +1,484 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN
+"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>
+org.joda.time.field.AbstractPartialFieldProperty
+</title>
+<link href="prettify.css" type="text/css" rel="stylesheet" />
+<script type="text/javascript" src="prettify.js"></script>
+</head>
+<body onload="prettyPrint()">
+<h2>Javalanche report for class:<br/> org.joda.time.field.AbstractPartialFieldProperty </h2><pre class="prettyprint" style="border: 1px solid #888;padding: 2px"><span class="nocode"><a name="1">  1: </a></span>/*
+<span class="nocode"><a name="2">  2: </a></span> *  Copyright 2001-2006 Stephen Colebourne
+<span class="nocode"><a name="3">  3: </a></span> *
+<span class="nocode"><a name="4">  4: </a></span> *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+<span class="nocode"><a name="5">  5: </a></span> *  you may not use this file except in compliance with the License.
+<span class="nocode"><a name="6">  6: </a></span> *  You may obtain a copy of the License at
+<span class="nocode"><a name="7">  7: </a></span> *
+<span class="nocode"><a name="8">  8: </a></span> *      http://www.apache.org/licenses/LICENSE-2.0
+<span class="nocode"><a name="9">  9: </a></span> *
+<span class="nocode"><a name="10"> 10: </a></span> *  Unless required by applicable law or agreed to in writing, software
+<span class="nocode"><a name="11"> 11: </a></span> *  distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+<span class="nocode"><a name="12"> 12: </a></span> *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+<span class="nocode"><a name="13"> 13: </a></span> *  See the License for the specific language governing permissions and
+<span class="nocode"><a name="14"> 14: </a></span> *  limitations under the License.
+<span class="nocode"><a name="15"> 15: </a></span> */
+<span class="nocode"><a name="16"> 16: </a></span>package org.joda.time.field;
+<span class="nocode"><a name="17"> 17: </a></span>
+<span class="nocode"><a name="18"> 18: </a></span>import java.util.Locale;
+<span class="nocode"><a name="19"> 19: </a></span>
+<span class="nocode"><a name="20"> 20: </a></span>import org.joda.time.DateTimeField;
+<span class="nocode"><a name="21"> 21: </a></span>import org.joda.time.DateTimeFieldType;
+<span class="nocode"><a name="22"> 22: </a></span>import org.joda.time.DurationField;
+<span class="nocode"><a name="23"> 23: </a></span>import org.joda.time.ReadableInstant;
+<span class="nocode"><a name="24"> 24: </a></span>import org.joda.time.ReadablePartial;
+<span class="nocode"><a name="25"> 25: </a></span>
+<span class="nocode"><a name="26"> 26: </a></span>/**
+<span class="nocode"><a name="27"> 27: </a></span> * AbstractPartialFieldProperty is a base class for binding a
+<span class="nocode"><a name="28"> 28: </a></span> * ReadablePartial to a DateTimeField.
+<span class="nocode"><a name="29"> 29: </a></span> * &lt;p&gt;
+<span class="nocode"><a name="30"> 30: </a></span> * It allows the date and time manipulation code to be field based yet
+<span class="nocode"><a name="31"> 31: </a></span> * still easy to use.
+<span class="nocode"><a name="32"> 32: </a></span> *
+<span class="nocode"><a name="33"> 33: </a></span> * @author Stephen Colebourne
+<span class="nocode"><a name="34"> 34: </a></span> * @author Brian S O'Neill
+<span class="nocode"><a name="35"> 35: </a></span> * @since 1.0
+<span class="nocode"><a name="36"> 36: </a></span> */
+<span class="nocode"><a name="37"> 37: </a></span>public abstract class AbstractPartialFieldProperty {
+<span class="nocode"><a name="38"> 38: </a></span>
+<span class="nocode"><a name="39"> 39: </a></span>    /**
+<span class="nocode"><a name="40"> 40: </a></span>     * Constructor.
+<span class="nocode"><a name="41"> 41: </a></span>     */
+<span class="nocode"><a name="42"> 42: </a></span>    protected AbstractPartialFieldProperty() {
+<span class="nocode"><a name="43"> 43: </a></span>        super();
+<span class="nocode"><a name="44"> 44: </a></span>    }
+<span class="nocode"><a name="45"> 45: </a></span>
+<span class="nocode"><a name="46"> 46: </a></span>    //-----------------------------------------------------------------------
+<span class="nocode"><a name="47"> 47: </a></span>    /**
+<span class="nocode"><a name="48"> 48: </a></span>     * Gets the field being used.
+<span class="nocode"><a name="49"> 49: </a></span>     * 
+<span class="nocode"><a name="50"> 50: </a></span>     * @return the field
+<span class="nocode"><a name="51"> 51: </a></span>     */
+<span class="nocode"><a name="52"> 52: </a></span>    public abstract DateTimeField getField();
+<span class="nocode"><a name="53"> 53: </a></span>
+<span class="nocode"><a name="54"> 54: </a></span>    /**
+<span class="nocode"><a name="55"> 55: </a></span>     * Gets the field type being used.
+<span class="nocode"><a name="56"> 56: </a></span>     * 
+<span class="nocode"><a name="57"> 57: </a></span>     * @return the field type
+<span class="nocode"><a name="58"> 58: </a></span>     */
+<span class="nocode"><a name="59"> 59: </a></span>    public DateTimeFieldType getFieldType() {
+<span class="nocode"><a name="60"> 60: </a></span>        return getField().getType();
+<span class="nocode"><a name="61"> 61: </a></span>    }
+<span class="nocode"><a name="62"> 62: </a></span>
+<span class="nocode"><a name="63"> 63: </a></span>    /**
+<span class="nocode"><a name="64"> 64: </a></span>     * Gets the name of the field.
+<span class="nocode"><a name="65"> 65: </a></span>     * 
+<span class="nocode"><a name="66"> 66: </a></span>     * @return the field name
+<span class="nocode"><a name="67"> 67: </a></span>     */
+<span class="nocode"><a name="68"> 68: </a></span>    public String getName() {
+<span class="nocode"><a name="69"> 69: </a></span>        return getField().getName();
+<span class="nocode"><a name="70"> 70: </a></span>    }
+<span class="nocode"><a name="71"> 71: </a></span>
+<span class="nocode"><a name="72"> 72: </a></span>    /**
+<span class="nocode"><a name="73"> 73: </a></span>     * Gets the partial instant being used.
+<span class="nocode"><a name="74"> 74: </a></span>     * 
+<span class="nocode"><a name="75"> 75: </a></span>     * @return the partial instant
+<span class="nocode"><a name="76"> 76: </a></span>     */
+<span class="nocode"><a name="77"> 77: </a></span>    protected abstract ReadablePartial getReadablePartial();
+<span class="nocode"><a name="78"> 78: </a></span>
+<span class="nocode"><a name="79"> 79: </a></span>    //-----------------------------------------------------------------------
+<span class="nocode"><a name="80"> 80: </a></span>    /**
+<span class="nocode"><a name="81"> 81: </a></span>     * Gets the value of this property from the instant.
+<span class="nocode"><a name="82"> 82: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="83"> 83: </a></span>     * For example, the following two lines of code are equivalent:
+<span class="nocode"><a name="84"> 84: </a></span>     * &lt;pre&gt;
+<span class="nocode"><a name="85"> 85: </a></span>     * partial.getDayOfMonth();
+<span class="nocode"><a name="86"> 86: </a></span>     * partial.dayOfMonth().get();
+<span class="nocode"><a name="87"> 87: </a></span>     * &lt;/pre&gt;
+<span class="nocode"><a name="88"> 88: </a></span>     * 
+<span class="nocode"><a name="89"> 89: </a></span>     * @return the current value
+<span class="nocode"><a name="90"> 90: </a></span>     */
+<span class="nocode"><a name="91"> 91: </a></span>    public abstract int get();
+<span class="nocode"><a name="92"> 92: </a></span>
+<span class="nocode"><a name="93"> 93: </a></span>    /**
+<span class="nocode"><a name="94"> 94: </a></span>     * Gets the value of this property from the instant as a string.
+<span class="nocode"><a name="95"> 95: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="96"> 96: </a></span>     * This method returns the value converted to a &lt;code&gt;String&lt;/code&gt;
+<span class="nocode"><a name="97"> 97: </a></span>     * using &lt;code&gt;Integer.toString&lt;/code&gt;. This method does NOT return
+<span class="nocode"><a name="98"> 98: </a></span>     * textual descriptions such as 'Monday' or 'January'.
+<span class="nocode"><a name="99"> 99: </a></span>     * See {@link #getAsText()} and {@link #getAsShortText()} for those.
+<span class="nocode"><a name="100">100: </a></span>     * 
+<span class="nocode"><a name="101">101: </a></span>     * @return the current value
+<span class="nocode"><a name="102">102: </a></span>     * @see DateTimeField#get
+<span class="nocode"><a name="103">103: </a></span>     * @since 1.1
+<span class="nocode"><a name="104">104: </a></span>     */
+<span class="nocode"><a name="105">105: </a></span>    public String getAsString() {
+<span class="nocode"><a name="106">106: </a></span>        return Integer.toString(get());
+<span class="nocode"><a name="107">107: </a></span>    }
+<span class="nocode"><a name="108">108: </a></span>
+<span class="nocode"><a name="109">109: </a></span>    /**
+<span class="nocode"><a name="110">110: </a></span>     * Gets the textual value of this property from the instant as a
+<span class="nocode"><a name="111">111: </a></span>     * string in the default locale.
+<span class="nocode"><a name="112">112: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="113">113: </a></span>     * This method returns the value converted to a &lt;code&gt;String&lt;/code&gt;
+<span class="nocode"><a name="114">114: </a></span>     * returning the appropriate textual description wherever possible.
+<span class="nocode"><a name="115">115: </a></span>     * Thus, a day of week of 1 would return 'Monday' in English.
+<span class="nocode"><a name="116">116: </a></span>     * 
+<span class="nocode"><a name="117">117: </a></span>     * @return the current text value
+<span class="nocode"><a name="118">118: </a></span>     * @see DateTimeField#getAsText
+<span class="nocode"><a name="119">119: </a></span>     */
+<span class="nocode"><a name="120">120: </a></span>    public String getAsText() {
+<span class="nocode"><a name="121">121: </a></span>        return getAsText(null);
+<span class="nocode"><a name="122">122: </a></span>    }
+<span class="nocode"><a name="123">123: </a></span>
+<span class="nocode"><a name="124">124: </a></span>    /**
+<span class="nocode"><a name="125">125: </a></span>     * Gets the textual value of this property from the instant as a
+<span class="nocode"><a name="126">126: </a></span>     * string in the specified locale.
+<span class="nocode"><a name="127">127: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="128">128: </a></span>     * This method returns the value converted to a &lt;code&gt;String&lt;/code&gt;
+<span class="nocode"><a name="129">129: </a></span>     * returning the appropriate textual description wherever possible.
+<span class="nocode"><a name="130">130: </a></span>     * Thus, a day of week of 1 would return 'Monday' in English.
+<span class="nocode"><a name="131">131: </a></span>     * 
+<span class="nocode"><a name="132">132: </a></span>     * @param locale  locale to use for selecting a text symbol, null means default
+<span class="nocode"><a name="133">133: </a></span>     * @return the current text value
+<span class="nocode"><a name="134">134: </a></span>     * @see DateTimeField#getAsText
+<span class="nocode"><a name="135">135: </a></span>     */
+<span class="nocode"><a name="136">136: </a></span>    public String getAsText(Locale locale) {
+<span class="nocode"><a name="137">137: </a></span>        return getField().getAsText(getReadablePartial(), get(), locale);
+<span class="nocode"><a name="138">138: </a></span>    }
+<span class="nocode"><a name="139">139: </a></span>
+<span class="nocode"><a name="140">140: </a></span>    /**
+<span class="nocode"><a name="141">141: </a></span>     * Gets the short textual value of this property from the instant as a
+<span class="nocode"><a name="142">142: </a></span>     * string in the default locale.
+<span class="nocode"><a name="143">143: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="144">144: </a></span>     * This method returns the value converted to a &lt;code&gt;String&lt;/code&gt;
+<span class="nocode"><a name="145">145: </a></span>     * returning the appropriate textual description wherever possible.
+<span class="nocode"><a name="146">146: </a></span>     * Thus, a day of week of 1 would return 'Mon' in English.
+<span class="nocode"><a name="147">147: </a></span>     * 
+<span class="nocode"><a name="148">148: </a></span>     * @return the current text value
+<span class="nocode"><a name="149">149: </a></span>     * @see DateTimeField#getAsShortText
+<span class="nocode"><a name="150">150: </a></span>     */
+<span class="nocode"><a name="151">151: </a></span>    public String getAsShortText() {
+<span class="nocode"><a name="152">152: </a></span>        return getAsShortText(null);
+<span class="nocode"><a name="153">153: </a></span>    }
+<span class="nocode"><a name="154">154: </a></span>
+<span class="nocode"><a name="155">155: </a></span>    /**
+<span class="nocode"><a name="156">156: </a></span>     * Gets the short textual value of this property from the instant as a
+<span class="nocode"><a name="157">157: </a></span>     * string in the specified locale.
+<span class="nocode"><a name="158">158: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="159">159: </a></span>     * This method returns the value converted to a &lt;code&gt;String&lt;/code&gt;
+<span class="nocode"><a name="160">160: </a></span>     * returning the appropriate textual description wherever possible.
+<span class="nocode"><a name="161">161: </a></span>     * Thus, a day of week of 1 would return 'Mon' in English.
+<span class="nocode"><a name="162">162: </a></span>     * 
+<span class="nocode"><a name="163">163: </a></span>     * @param locale  locale to use for selecting a text symbol, null means default
+<span class="nocode"><a name="164">164: </a></span>     * @return the current text value
+<span class="nocode"><a name="165">165: </a></span>     * @see DateTimeField#getAsShortText
+<span class="nocode"><a name="166">166: </a></span>     */
+<span class="nocode"><a name="167">167: </a></span>    public String getAsShortText(Locale locale) {
+<span class="nocode"><a name="168">168: </a></span>        return getField().getAsShortText(getReadablePartial(), get(), locale);
+<span class="nocode"><a name="169">169: </a></span>    }
+<span class="nocode"><a name="170">170: </a></span>
+<span class="nocode"><a name="171">171: </a></span>    //-----------------------------------------------------------------------
+<span class="nocode"><a name="172">172: </a></span>    /**
+<span class="nocode"><a name="173">173: </a></span>     * Returns the duration per unit value of this field. For example, if this
+<span class="nocode"><a name="174">174: </a></span>     * field represents &quot;hour of day&quot;, then the duration is an hour.
+<span class="nocode"><a name="175">175: </a></span>     *
+<span class="nocode"><a name="176">176: </a></span>     * @return the duration of this field, or UnsupportedDurationField
+<span class="nocode"><a name="177">177: </a></span>     */
+<span class="nocode"><a name="178">178: </a></span>    public DurationField getDurationField() {
+<span class="nocode"><a name="179">179: </a></span>        return getField().getDurationField();
+<span class="nocode"><a name="180">180: </a></span>    }
+<span class="nocode"><a name="181">181: </a></span>
+<span class="nocode"><a name="182">182: </a></span>    /**
+<span class="nocode"><a name="183">183: </a></span>     * Returns the range duration of this field. For example, if this field
+<span class="nocode"><a name="184">184: </a></span>     * represents &quot;hour of day&quot;, then the range duration is a day.
+<span class="nocode"><a name="185">185: </a></span>     *
+<span class="nocode"><a name="186">186: </a></span>     * @return the range duration of this field, or null if field has no range
+<span class="nocode"><a name="187">187: </a></span>     */
+<span class="nocode"><a name="188">188: </a></span>    public DurationField getRangeDurationField() {
+<span class="nocode"><a name="189">189: </a></span>        return getField().getRangeDurationField();
+<span class="nocode"><a name="190">190: </a></span>    }
+<span class="nocode"><a name="191">191: </a></span>
+<span class="nocode"><a name="192">192: </a></span>    //-----------------------------------------------------------------------
+<span class="nocode"><a name="193">193: </a></span>    /**
+<span class="nocode"><a name="194">194: </a></span>     * Gets the minimum value for the field ignoring the current time.
+<span class="nocode"><a name="195">195: </a></span>     * 
+<span class="nocode"><a name="196">196: </a></span>     * @return the minimum value
+<span class="nocode"><a name="197">197: </a></span>     * @see DateTimeField#getMinimumValue
+<span class="nocode"><a name="198">198: </a></span>     */
+<span class="nocode"><a name="199">199: </a></span>    public int getMinimumValueOverall() {
+<span class="nocode"><a name="200">200: </a></span>        return getField().getMinimumValue();
+<span class="nocode"><a name="201">201: </a></span>    }
+<span class="nocode"><a name="202">202: </a></span>
+<span class="nocode"><a name="203">203: </a></span>    /**
+<span class="nocode"><a name="204">204: </a></span>     * Gets the minimum value for this field given the current field values.
+<span class="nocode"><a name="205">205: </a></span>     * 
+<span class="nocode"><a name="206">206: </a></span>     * @return the minimum value
+<span class="nocode"><a name="207">207: </a></span>     * @see DateTimeField#getMinimumValue
+<span class="nocode"><a name="208">208: </a></span>     */
+<span class="nocode"><a name="209">209: </a></span>    public int getMinimumValue() {
+<span class="nocode"><a name="210">210: </a></span>        return getField().getMinimumValue(getReadablePartial());
+<span class="nocode"><a name="211">211: </a></span>    }
+<span class="nocode"><a name="212">212: </a></span>
+<span class="nocode"><a name="213">213: </a></span>    /**
+<span class="nocode"><a name="214">214: </a></span>     * Gets the maximum value for the field ignoring the current time.
+<span class="nocode"><a name="215">215: </a></span>     * 
+<span class="nocode"><a name="216">216: </a></span>     * @return the maximum value
+<span class="nocode"><a name="217">217: </a></span>     * @see DateTimeField#getMaximumValue
+<span class="nocode"><a name="218">218: </a></span>     */
+<span class="nocode"><a name="219">219: </a></span>    public int getMaximumValueOverall() {
+<span class="nocode"><a name="220">220: </a></span>        return getField().getMaximumValue();
+<span class="nocode"><a name="221">221: </a></span>    }
+<span class="nocode"><a name="222">222: </a></span>
+<span class="nocode"><a name="223">223: </a></span>    /**
+<span class="nocode"><a name="224">224: </a></span>     * Gets the maximum value for this field given the current field values.
+<span class="nocode"><a name="225">225: </a></span>     * 
+<span class="nocode"><a name="226">226: </a></span>     * @return the maximum value
+<span class="nocode"><a name="227">227: </a></span>     * @see DateTimeField#getMaximumValue
+<span class="nocode"><a name="228">228: </a></span>     */
+<span class="nocode"><a name="229">229: </a></span>    public int getMaximumValue() {
+<span class="nocode"><a name="230">230: </a></span>        return getField().getMaximumValue(getReadablePartial());
+<span class="nocode"><a name="231">231: </a></span>    }
+<span class="nocode"><a name="232">232: </a></span>
+<span class="nocode"><a name="233">233: </a></span>    //-----------------------------------------------------------------------
+<span class="nocode"><a name="234">234: </a></span>    /**
+<span class="nocode"><a name="235">235: </a></span>     * Gets the maximum text length for the field.
+<span class="nocode"><a name="236">236: </a></span>     * 
+<span class="nocode"><a name="237">237: </a></span>     * @param locale  optional locale to use for selecting a text symbol
+<span class="nocode"><a name="238">238: </a></span>     * @return the maximum length
+<span class="nocode"><a name="239">239: </a></span>     * @see DateTimeField#getMaximumTextLength
+<span class="nocode"><a name="240">240: </a></span>     */
+<span class="nocode"><a name="241">241: </a></span>    public int getMaximumTextLength(Locale locale) {
+<span class="nocode"><a name="242">242: </a></span>        return getField().getMaximumTextLength(locale);
+<span class="nocode"><a name="243">243: </a></span>    }
+<span class="nocode"><a name="244">244: </a></span>
+<span class="nocode"><a name="245">245: </a></span>    /**
+<span class="nocode"><a name="246">246: </a></span>     * Gets the maximum short text length for the field.
+<span class="nocode"><a name="247">247: </a></span>     * 
+<span class="nocode"><a name="248">248: </a></span>     * @param locale  optional locale to use for selecting a text symbol
+<span class="nocode"><a name="249">249: </a></span>     * @return the maximum length
+<span class="nocode"><a name="250">250: </a></span>     * @see DateTimeField#getMaximumShortTextLength
+<span class="nocode"><a name="251">251: </a></span>     */
+<span class="nocode"><a name="252">252: </a></span>    public int getMaximumShortTextLength(Locale locale) {
+<span class="nocode"><a name="253">253: </a></span>        return getField().getMaximumShortTextLength(locale);
+<span class="nocode"><a name="254">254: </a></span>    }
+<span class="nocode"><a name="255">255: </a></span>
+<span class="nocode"><a name="256">256: </a></span>    //-----------------------------------------------------------------------
+<span class="nocode"><a name="257">257: </a></span>    /**
+<span class="nocode"><a name="258">258: </a></span>     * Compare this field to the same field on another instant.
+<span class="nocode"><a name="259">259: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="260">260: </a></span>     * The comparison is based on the value of the same field type, irrespective
+<span class="nocode"><a name="261">261: </a></span>     * of any difference in chronology. Thus, if this property represents the
+<span class="nocode"><a name="262">262: </a></span>     * hourOfDay field, then the hourOfDay field of the other instant will be queried
+<span class="nocode"><a name="263">263: </a></span>     * whether in the same chronology or not.
+<span class="nocode"><a name="264">264: </a></span>     * 
+<span class="nocode"><a name="265">265: </a></span>     * @param instant  the instant to compare to
+<span class="nocode"><a name="266">266: </a></span>     * @return negative value if this is less, 0 if equal, or positive value if greater
+<span class="nocode"><a name="267">267: </a></span>     * @throws IllegalArgumentException if the instant is null or the instant
+<span class="nocode"><a name="268">268: </a></span>     *  doesn't support the field of this property
+<span class="nocode"><a name="269">269: </a></span>     */
+<span class="nocode"><a name="270">270: </a></span>    public int compareTo(ReadableInstant instant) {
+<span class="nocode"><a name="271">271: </a></span>        if (instant == null) {
+<span class="nocode"><a name="272">272: </a></span>            throw new IllegalArgumentException(&quot;The instant must not be null&quot;);
+<span class="nocode"><a name="273">273: </a></span>        }
+<span class="nocode"><a name="274">274: </a></span>        int thisValue = get();
+<span class="nocode"><a name="275">275: </a></span>        int otherValue = instant.get(getFieldType());
+<span class="nocode"><a name="276">276: </a></span>        if (thisValue &lt; otherValue) {
+<span class="nocode"><a name="277">277: </a></span>            return -1;
+<span class="nocode"><a name="278">278: </a></span>        } else if (thisValue &gt; otherValue) {
+<span class="nocode"><a name="279">279: </a></span>            return 1;
+<span class="nocode"><a name="280">280: </a></span>        } else {
+<span class="nocode"><a name="281">281: </a></span>            return 0;
+<span class="nocode"><a name="282">282: </a></span>        }
+<span class="nocode"><a name="283">283: </a></span>    }
+<span class="nocode"><a name="284">284: </a></span>
+<span class="nocode"><a name="285">285: </a></span>    /**
+<span class="nocode"><a name="286">286: </a></span>     * Compare this field to the same field on another partial instant.
+<span class="nocode"><a name="287">287: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="288">288: </a></span>     * The comparison is based on the value of the same field type, irrespective
+<span class="nocode"><a name="289">289: </a></span>     * of any difference in chronology. Thus, if this property represents the
+<span class="nocode"><a name="290">290: </a></span>     * hourOfDay field, then the hourOfDay field of the other partial will be queried
+<span class="nocode"><a name="291">291: </a></span>     * whether in the same chronology or not.
+<span class="nocode"><a name="292">292: </a></span>     * 
+<span class="nocode"><a name="293">293: </a></span>     * @param partial  the partial to compare to
+<span class="nocode"><a name="294">294: </a></span>     * @return negative value if this is less, 0 if equal, or positive value if greater
+<span class="nocode"><a name="295">295: </a></span>     * @throws IllegalArgumentException if the instant is null
+<span class="nocode"><a name="296">296: </a></span>     * @throws IllegalArgumentException if the field of this property cannot be queried
+<span class="nocode"><a name="297">297: </a></span>     *  on the specified instant
+<span class="nocode"><a name="298">298: </a></span>     */
+<span class="nocode"><a name="299">299: </a></span>    public int compareTo(ReadablePartial partial) {
+<span class="nocode"><a name="300">300: </a></span>        if (partial == null) {
+<span class="nocode"><a name="301">301: </a></span>            throw new IllegalArgumentException(&quot;The instant must not be null&quot;);
+<span class="nocode"><a name="302">302: </a></span>        }
+<span class="nocode"><a name="303">303: </a></span>        int thisValue = get();
+<span class="nocode"><a name="304">304: </a></span>        int otherValue = partial.get(getFieldType());
+<span class="nocode"><a name="305">305: </a></span>        if (thisValue &lt; otherValue) {
+<span class="nocode"><a name="306">306: </a></span>            return -1;
+<span class="nocode"><a name="307">307: </a></span>        } else if (thisValue &gt; otherValue) {
+<span class="nocode"><a name="308">308: </a></span>            return 1;
+<span class="nocode"><a name="309">309: </a></span>        } else {
+<span class="nocode"><a name="310">310: </a></span>            return 0;
+<span class="nocode"><a name="311">311: </a></span>        }
+<span class="nocode"><a name="312">312: </a></span>    }
+<span class="nocode"><a name="313">313: </a></span>
+<span class="nocode"><a name="314">314: </a></span>    //-----------------------------------------------------------------------
+<span class="nocode"><a name="315">315: </a></span>    /**
+<span class="nocode"><a name="316">316: </a></span>     * Compares this property to another.
+<span class="nocode"><a name="317">317: </a></span>     * 
+<span class="nocode"><a name="318">318: </a></span>     * @param object  the object to compare to
+<span class="nocode"><a name="319">319: </a></span>     * @return true if equal
+<span class="nocode"><a name="320">320: </a></span>     */
+<span class="nocode"><a name="321">321: </a></span>    public boolean equals(Object object) {
+<span class="nocode"><a name="322">322: </a></span>        if (this == object) {
+<span class="nocode"><a name="323">323: </a></span>            return true;
+<span class="nocode"><a name="324">324: </a></span>        }
+<span class="nocode"><a name="325">325: </a></span>        if (object instanceof AbstractPartialFieldProperty == false) {
+<span class="nocode"><a name="326">326: </a></span>            return false;
+<span class="nocode"><a name="327">327: </a></span>        }
+<span class="nocode"><a name="328">328: </a></span>        AbstractPartialFieldProperty other = (AbstractPartialFieldProperty) object;
+<span class="nocode"><a name="329">329: </a></span>        return
+<span class="nocode"><a name="330">330: </a></span>            get() == other.get() &amp;&amp;
+<span class="nocode"><a name="331">331: </a></span>            getFieldType() == other.getFieldType() &amp;&amp;
+<span class="nocode"><a name="332">332: </a></span>            FieldUtils.equals(getReadablePartial().getChronology(), other.getReadablePartial().getChronology());
+<span class="nocode"><a name="333">333: </a></span>    }
+<span class="nocode"><a name="334">334: </a></span>
+<span class="nocode"><a name="335">335: </a></span>    //-----------------------------------------------------------------------
+<span class="nocode"><a name="336">336: </a></span>    /**
+<span class="nocode"><a name="337">337: </a></span>     * Gets a suitable hashcode for the object.
+<span class="nocode"><a name="338">338: </a></span>     * 
+<span class="nocode"><a name="339">339: </a></span>     * @return the hashcode
+<span class="nocode"><a name="340">340: </a></span>     * @since 1.3
+<span class="nocode"><a name="341">341: </a></span>     */
+<span class="nocode"><a name="342">342: </a></span>    public int hashCode() {
+<span class="nocode"><a name="343">343: </a></span>        int hash = 19;
+<span class="nocode"><a name="344">344: </a></span>        hash = 13 * hash + get();
+<span class="nocode"><a name="345">345: </a></span>        hash = 13 * hash + getFieldType().hashCode();
+<span class="nocode"><a name="346">346: </a></span>        hash = 13 * hash + getReadablePartial().getChronology().hashCode();
+<span class="nocode"><a name="347">347: </a></span>        return hash;
+<span class="nocode"><a name="348">348: </a></span>    }
+<span class="nocode"><a name="349">349: </a></span>
+<span class="nocode"><a name="350">350: </a></span>    //-----------------------------------------------------------------------
+<span class="nocode"><a name="351">351: </a></span>    /**
+<span class="nocode"><a name="352">352: </a></span>     * Output a debugging string.
+<span class="nocode"><a name="353">353: </a></span>     * 
+<span class="nocode"><a name="354">354: </a></span>     * @return debugging string
+<span class="nocode"><a name="355">355: </a></span>     */
+<span class="nocode"><a name="356">356: </a></span>    public String toString() {
+<span class="nocode"><a name="357">357: </a></span>        return &quot;Property[&quot; + getName() + &quot;]&quot;;
+<span class="nocode"><a name="358">358: </a></span>    }
+<span class="nocode"><a name="359">359: </a></span>
+<span class="nocode"><a name="360">360: </a></span>}
+</pre><table class="mutation_table" summary="Mutations">
+<tr><th>ID</th><th>Line</th><th>Type</th><th>Detected</th></tr><tr><td>20222</td><td><a href="#60">60</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>20223</td><td><a href="#60">60(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>20224</td><td><a href="#69">69</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>20225</td><td><a href="#69">69(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>20226</td><td><a href="#106">106</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>20227</td><td><a href="#106">106(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>20228</td><td><a href="#121">121</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>20229</td><td><a href="#137">137</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>20230</td><td><a href="#137">137(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20231</td><td><a href="#137">137(2)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>20232</td><td><a href="#137">137(3)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>20233</td><td><a href="#152">152</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>20234</td><td><a href="#168">168</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>20235</td><td><a href="#168">168(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>20236</td><td><a href="#168">168(2)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>20237</td><td><a href="#168">168(3)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>20238</td><td><a href="#179">179</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>20239</td><td><a href="#179">179(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>20240</td><td><a href="#189">189</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>20241</td><td><a href="#189">189(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>20242</td><td><a href="#200">200</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>20243</td><td><a href="#200">200(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>20244</td><td><a href="#210">210</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>20245</td><td><a href="#210">210(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20246</td><td><a href="#210">210(2)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>20247</td><td><a href="#220">220</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>20248</td><td><a href="#220">220(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>20249</td><td><a href="#230">230</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>20250</td><td><a href="#230">230(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>20251</td><td><a href="#230">230(2)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>20252</td><td><a href="#242">242</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>20253</td><td><a href="#242">242(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>20254</td><td><a href="#253">253</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>20255</td><td><a href="#253">253(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>20256</td><td><a href="#271">271</a></td><td>Negate jump condition (Replace IFNONNULL with  IFNULL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>20257</td><td><a href="#274">274</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>20258</td><td><a href="#275">275</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>20259</td><td><a href="#275">275(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>20260</td><td><a href="#276">276</a></td><td>Negate jump condition (Replace IF_ICMPGE with  IF_ICMPLT)</td><td><img src="detected.png"/></td></tr>
+<tr><td>20261</td><td><a href="#277">277</a></td><td>Replace a constant (Replace -1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>20262</td><td><a href="#277">277</a></td><td>Replace a constant (Replace -1 with -2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20263</td><td><a href="#278">278</a></td><td>Negate jump condition (Replace IF_ICMPLE with  IF_ICMPGT)</td><td><img src="detected.png"/></td></tr>
+<tr><td>20264</td><td><a href="#279">279</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20265</td><td><a href="#279">279</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>20267</td><td><a href="#281">281</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>20266</td><td><a href="#281">281</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>20268</td><td><a href="#300">300</a></td><td>Negate jump condition (Replace IFNONNULL with  IFNULL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>20269</td><td><a href="#303">303</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>20270</td><td><a href="#304">304</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>20271</td><td><a href="#304">304(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>20272</td><td><a href="#305">305</a></td><td>Negate jump condition (Replace IF_ICMPGE with  IF_ICMPLT)</td><td><img src="detected.png"/></td></tr>
+<tr><td>20274</td><td><a href="#306">306</a></td><td>Replace a constant (Replace -1 with -2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20273</td><td><a href="#306">306</a></td><td>Replace a constant (Replace -1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>20275</td><td><a href="#307">307</a></td><td>Negate jump condition (Replace IF_ICMPLE with  IF_ICMPGT)</td><td><img src="detected.png"/></td></tr>
+<tr><td>20276</td><td><a href="#308">308</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20277</td><td><a href="#308">308</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>20278</td><td><a href="#310">310</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>20279</td><td><a href="#310">310</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>20280</td><td><a href="#322">322</a></td><td>Negate jump condition (Replace IF_ACMPNE with  IF_ACMPEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>20281</td><td><a href="#323">323</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20282</td><td><a href="#323">323</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>20283</td><td><a href="#325">325</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>20285</td><td><a href="#326">326</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>20284</td><td><a href="#326">326</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>20298</td><td><a href="#329">329</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20299</td><td><a href="#329">329</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>20300</td><td><a href="#329">329(1)</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>20301</td><td><a href="#329">329(1)</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>20288</td><td><a href="#329">329</a></td><td>Negate jump condition (Replace IF_ICMPNE with  IF_ICMPEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>20291</td><td><a href="#329">329(1)</a></td><td>Negate jump condition (Replace IF_ACMPNE with  IF_ACMPEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>20297</td><td><a href="#329">329(2)</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>20286</td><td><a href="#329">329</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>20287</td><td><a href="#329">329(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>20289</td><td><a href="#329">329(2)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>20290</td><td><a href="#329">329(3)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>20292</td><td><a href="#329">329(4)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>20293</td><td><a href="#329">329(5)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>20294</td><td><a href="#329">329(6)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>20295</td><td><a href="#329">329(7)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>20296</td><td><a href="#329">329(8)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>20302</td><td><a href="#343">343</a></td><td>Replace a constant (Replace 19 with 20(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20304</td><td><a href="#343">343</a></td><td>Replace a constant (Replace 19 with 18(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20303</td><td><a href="#343">343</a></td><td>Replace a constant (Replace 19 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20306</td><td><a href="#344">344</a></td><td>Replace a constant (Replace 13 with 14(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20307</td><td><a href="#344">344</a></td><td>Replace a constant (Replace 13 with 12(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20305</td><td><a href="#344">344</a></td><td>Replace a constant (Replace 13 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20308</td><td><a href="#344">344</a></td><td>Replace arithmetic operator (Replace IMUL with IADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20310</td><td><a href="#344">344(1)</a></td><td>Replace arithmetic operator (Replace IADD with ISUB)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20309</td><td><a href="#344">344</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>20313</td><td><a href="#345">345</a></td><td>Replace a constant (Replace 13 with 12(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20311</td><td><a href="#345">345</a></td><td>Replace a constant (Replace 13 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>20312</td><td><a href="#345">345</a></td><td>Replace a constant (Replace 13 with 14(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20314</td><td><a href="#345">345</a></td><td>Replace arithmetic operator (Replace IMUL with IADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20317</td><td><a href="#345">345(1)</a></td><td>Replace arithmetic operator (Replace IADD with ISUB)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20315</td><td><a href="#345">345</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>20316</td><td><a href="#345">345(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20319</td><td><a href="#346">346</a></td><td>Replace a constant (Replace 13 with 14(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20318</td><td><a href="#346">346</a></td><td>Replace a constant (Replace 13 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>20320</td><td><a href="#346">346</a></td><td>Replace a constant (Replace 13 with 12(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20321</td><td><a href="#346">346</a></td><td>Replace arithmetic operator (Replace IMUL with IADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20325</td><td><a href="#346">346(1)</a></td><td>Replace arithmetic operator (Replace IADD with ISUB)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20322</td><td><a href="#346">346</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>20323</td><td><a href="#346">346(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>20324</td><td><a href="#346">346(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20326</td><td><a href="#357">357</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>20327</td><td><a href="#357">357(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>20328</td><td><a href="#357">357(2)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>20329</td><td><a href="#357">357(3)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>20330</td><td><a href="#357">357(4)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+</table>
+</body>
+</html>

@@ -1,0 +1,29 @@
+Testsuite: org.apache.poi.hssf.usermodel.TestHSSFCell
+Tests run: 26, Failures: 0, Errors: 0, Time elapsed: 0.014 sec
+
+Testcase: testDateWindowingRead took 0 sec
+Testcase: testDateWindowingWrite took 0.002 sec
+Testcase: testActiveCell took 0 sec
+Testcase: testWithHyperlink took 0.001 sec
+Testcase: testWithTwoHyperlinks took 0 sec
+Testcase: testCellStyleWorkbookMatch took 0.001 sec
+Testcase: testCachedTypeChange took 0 sec
+Testcase: testMaxTextLength took 0.002 sec
+Testcase: testReadNaN took 0 sec
+Testcase: testToString took 0.001 sec
+Testcase: testSetValues took 0.001 sec
+Testcase: testBoolErr took 0 sec
+Testcase: testFormulaStyle took 0.001 sec
+Testcase: testSetFormulaValue took 0 sec
+Testcase: testChangeTypeStringToBool took 0 sec
+Testcase: testChangeTypeBoolToString took 0 sec
+Testcase: testChangeTypeErrorToNumber took 0 sec
+Testcase: testChangeTypeErrorToBoolean took 0.001 sec
+Testcase: testConvertStringFormulaCell took 0 sec
+Testcase: testSetTypeStringOnFormulaCell took 0 sec
+Testcase: testChangeTypeFormulaToBoolean took 0.001 sec
+Testcase: test40296 took 0 sec
+Testcase: testSetStringInFormulaCell_bug44606 took 0 sec
+Testcase: testSetBlank_bug47028 took 0 sec
+Testcase: testNanAndInfinity took 0.001 sec
+Testcase: testDefaultStyleProperties took 0 sec

@@ -1,0 +1,571 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN
+"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>
+org.apache.poi.hssf.record.chart.LegendRecord
+</title>
+<link href="prettify.css" type="text/css" rel="stylesheet" />
+<script type="text/javascript" src="prettify.js"></script>
+</head>
+<body onload="prettyPrint()">
+<h2>Javalanche report for class:<br/> org.apache.poi.hssf.record.chart.LegendRecord </h2><pre class="prettyprint" style="border: 1px solid #888;padding: 2px"><span class="nocode"><a name="1">  1: </a></span>/* ====================================================================
+<span class="nocode"><a name="2">  2: </a></span>   Licensed to the Apache Software Foundation (ASF) under one or more
+<span class="nocode"><a name="3">  3: </a></span>   contributor license agreements.  See the NOTICE file distributed with
+<span class="nocode"><a name="4">  4: </a></span>   this work for additional information regarding copyright ownership.
+<span class="nocode"><a name="5">  5: </a></span>   The ASF licenses this file to You under the Apache License, Version 2.0
+<span class="nocode"><a name="6">  6: </a></span>   (the &quot;License&quot;); you may not use this file except in compliance with
+<span class="nocode"><a name="7">  7: </a></span>   the License.  You may obtain a copy of the License at
+<span class="nocode"><a name="8">  8: </a></span>
+<span class="nocode"><a name="9">  9: </a></span>       http://www.apache.org/licenses/LICENSE-2.0
+<span class="nocode"><a name="10"> 10: </a></span>
+<span class="nocode"><a name="11"> 11: </a></span>   Unless required by applicable law or agreed to in writing, software
+<span class="nocode"><a name="12"> 12: </a></span>   distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+<span class="nocode"><a name="13"> 13: </a></span>   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+<span class="nocode"><a name="14"> 14: </a></span>   See the License for the specific language governing permissions and
+<span class="nocode"><a name="15"> 15: </a></span>   limitations under the License.
+<span class="nocode"><a name="16"> 16: </a></span>==================================================================== */
+<span class="nocode"><a name="17"> 17: </a></span>
+<span class="nocode"><a name="18"> 18: </a></span>package org.apache.poi.hssf.record.chart;
+<span class="nocode"><a name="19"> 19: </a></span>
+<span class="nocode"><a name="20"> 20: </a></span>import org.apache.poi.hssf.record.RecordInputStream;
+<span class="nocode"><a name="21"> 21: </a></span>import org.apache.poi.hssf.record.StandardRecord;
+<span class="nocode"><a name="22"> 22: </a></span>import org.apache.poi.util.BitField;
+<span class="nocode"><a name="23"> 23: </a></span>import org.apache.poi.util.BitFieldFactory;
+<span class="nocode"><a name="24"> 24: </a></span>import org.apache.poi.util.HexDump;
+<span class="nocode"><a name="25"> 25: </a></span>import org.apache.poi.util.LittleEndianOutput;
+<span class="nocode"><a name="26"> 26: </a></span>
+<span class="nocode"><a name="27"> 27: </a></span>/**
+<span class="nocode"><a name="28"> 28: </a></span> * Defines a legend for a chart.&lt;p/&gt;
+<span class="nocode"><a name="29"> 29: </a></span> * 
+<span class="nocode"><a name="30"> 30: </a></span> * @author Andrew C. Oliver (acoliver at apache.org)
+<span class="nocode"><a name="31"> 31: </a></span> */
+<span class="nocode"><a name="32"> 32: </a></span>public final class LegendRecord extends StandardRecord {
+<span class="nocode"><a name="33"> 33: </a></span>    public final static short sid = 0x1015;
+<span class="nocode"><a name="34"> 34: </a></span>
+<span class="nocode"><a name="35"> 35: </a></span>    private static final BitField autoPosition     = BitFieldFactory.getInstance(0x01);
+<span class="nocode"><a name="36"> 36: </a></span>    private static final BitField autoSeries       = BitFieldFactory.getInstance(0x02);
+<span class="nocode"><a name="37"> 37: </a></span>    private static final BitField autoXPositioning = BitFieldFactory.getInstance(0x04);
+<span class="nocode"><a name="38"> 38: </a></span>    private static final BitField autoYPositioning = BitFieldFactory.getInstance(0x08);
+<span class="nocode"><a name="39"> 39: </a></span>    private static final BitField vertical         = BitFieldFactory.getInstance(0x10);
+<span class="nocode"><a name="40"> 40: </a></span>    private static final BitField dataTable        = BitFieldFactory.getInstance(0x20);
+<span class="nocode"><a name="41"> 41: </a></span>
+<span class="nocode"><a name="42"> 42: </a></span>    private  int        field_1_xAxisUpperLeft;
+<span class="nocode"><a name="43"> 43: </a></span>    private  int        field_2_yAxisUpperLeft;
+<span class="nocode"><a name="44"> 44: </a></span>    private  int        field_3_xSize;
+<span class="nocode"><a name="45"> 45: </a></span>    private  int        field_4_ySize;
+<span class="nocode"><a name="46"> 46: </a></span>    private  byte       field_5_type;
+<span class="nocode"><a name="47"> 47: </a></span>    public final static byte        TYPE_BOTTOM                    = 0;
+<span class="nocode"><a name="48"> 48: </a></span>    public final static byte        TYPE_CORNER                    = 1;
+<span class="nocode"><a name="49"> 49: </a></span>    public final static byte        TYPE_TOP                       = 2;
+<span class="nocode"><a name="50"> 50: </a></span>    public final static byte        TYPE_RIGHT                     = 3;
+<span class="nocode"><a name="51"> 51: </a></span>    public final static byte        TYPE_LEFT                      = 4;
+<span class="nocode"><a name="52"> 52: </a></span>    public final static byte        TYPE_UNDOCKED                  = 7;
+<span class="nocode"><a name="53"> 53: </a></span>    private  byte       field_6_spacing;
+<span class="nocode"><a name="54"> 54: </a></span>    public final static byte        SPACING_CLOSE                  = 0;
+<span class="nocode"><a name="55"> 55: </a></span>    public final static byte        SPACING_MEDIUM                 = 1;
+<span class="nocode"><a name="56"> 56: </a></span>    public final static byte        SPACING_OPEN                   = 2;
+<span class="nocode"><a name="57"> 57: </a></span>    private  short      field_7_options;
+<span class="nocode"><a name="58"> 58: </a></span>
+<span class="nocode"><a name="59"> 59: </a></span>
+<span class="nocode"><a name="60"> 60: </a></span>    public LegendRecord()
+<span class="nocode"><a name="61"> 61: </a></span>    {
+<span class="nocode"><a name="62"> 62: </a></span>
+<span class="nocode"><a name="63"> 63: </a></span>    }
+<span class="nocode"><a name="64"> 64: </a></span>
+<span class="nocode"><a name="65"> 65: </a></span>    public LegendRecord(RecordInputStream in)
+<span class="nocode"><a name="66"> 66: </a></span>    {
+<span class="nocode"><a name="67"> 67: </a></span>        field_1_xAxisUpperLeft         = in.readInt();
+<span class="nocode"><a name="68"> 68: </a></span>        field_2_yAxisUpperLeft         = in.readInt();
+<span class="nocode"><a name="69"> 69: </a></span>        field_3_xSize                  = in.readInt();
+<span class="nocode"><a name="70"> 70: </a></span>        field_4_ySize                  = in.readInt();
+<span class="nocode"><a name="71"> 71: </a></span>        field_5_type                   = in.readByte();
+<span class="nocode"><a name="72"> 72: </a></span>        field_6_spacing                = in.readByte();
+<span class="nocode"><a name="73"> 73: </a></span>        field_7_options                = in.readShort();
+<span class="nocode"><a name="74"> 74: </a></span>    }
+<span class="nocode"><a name="75"> 75: </a></span>
+<span class="nocode"><a name="76"> 76: </a></span>    public String toString()
+<span class="nocode"><a name="77"> 77: </a></span>    {
+<span class="nocode"><a name="78"> 78: </a></span>        StringBuffer buffer = new StringBuffer();
+<span class="nocode"><a name="79"> 79: </a></span>
+<span class="nocode"><a name="80"> 80: </a></span>        buffer.append(&quot;[LEGEND]\n&quot;);
+<span class="nocode"><a name="81"> 81: </a></span>        buffer.append(&quot;    .xAxisUpperLeft       = &quot;)
+<span class="nocode"><a name="82"> 82: </a></span>            .append(&quot;0x&quot;).append(HexDump.toHex(  getXAxisUpperLeft ()))
+<span class="nocode"><a name="83"> 83: </a></span>            .append(&quot; (&quot;).append( getXAxisUpperLeft() ).append(&quot; )&quot;);
+<span class="nocode"><a name="84"> 84: </a></span>        buffer.append(System.getProperty(&quot;line.separator&quot;)); 
+<span class="nocode"><a name="85"> 85: </a></span>        buffer.append(&quot;    .yAxisUpperLeft       = &quot;)
+<span class="nocode"><a name="86"> 86: </a></span>            .append(&quot;0x&quot;).append(HexDump.toHex(  getYAxisUpperLeft ()))
+<span class="nocode"><a name="87"> 87: </a></span>            .append(&quot; (&quot;).append( getYAxisUpperLeft() ).append(&quot; )&quot;);
+<span class="nocode"><a name="88"> 88: </a></span>        buffer.append(System.getProperty(&quot;line.separator&quot;)); 
+<span class="nocode"><a name="89"> 89: </a></span>        buffer.append(&quot;    .xSize                = &quot;)
+<span class="nocode"><a name="90"> 90: </a></span>            .append(&quot;0x&quot;).append(HexDump.toHex(  getXSize ()))
+<span class="nocode"><a name="91"> 91: </a></span>            .append(&quot; (&quot;).append( getXSize() ).append(&quot; )&quot;);
+<span class="nocode"><a name="92"> 92: </a></span>        buffer.append(System.getProperty(&quot;line.separator&quot;)); 
+<span class="nocode"><a name="93"> 93: </a></span>        buffer.append(&quot;    .ySize                = &quot;)
+<span class="nocode"><a name="94"> 94: </a></span>            .append(&quot;0x&quot;).append(HexDump.toHex(  getYSize ()))
+<span class="nocode"><a name="95"> 95: </a></span>            .append(&quot; (&quot;).append( getYSize() ).append(&quot; )&quot;);
+<span class="nocode"><a name="96"> 96: </a></span>        buffer.append(System.getProperty(&quot;line.separator&quot;)); 
+<span class="nocode"><a name="97"> 97: </a></span>        buffer.append(&quot;    .type                 = &quot;)
+<span class="nocode"><a name="98"> 98: </a></span>            .append(&quot;0x&quot;).append(HexDump.toHex(  getType ()))
+<span class="nocode"><a name="99"> 99: </a></span>            .append(&quot; (&quot;).append( getType() ).append(&quot; )&quot;);
+<span class="nocode"><a name="100">100: </a></span>        buffer.append(System.getProperty(&quot;line.separator&quot;)); 
+<span class="nocode"><a name="101">101: </a></span>        buffer.append(&quot;    .spacing              = &quot;)
+<span class="nocode"><a name="102">102: </a></span>            .append(&quot;0x&quot;).append(HexDump.toHex(  getSpacing ()))
+<span class="nocode"><a name="103">103: </a></span>            .append(&quot; (&quot;).append( getSpacing() ).append(&quot; )&quot;);
+<span class="nocode"><a name="104">104: </a></span>        buffer.append(System.getProperty(&quot;line.separator&quot;)); 
+<span class="nocode"><a name="105">105: </a></span>        buffer.append(&quot;    .options              = &quot;)
+<span class="nocode"><a name="106">106: </a></span>            .append(&quot;0x&quot;).append(HexDump.toHex(  getOptions ()))
+<span class="nocode"><a name="107">107: </a></span>            .append(&quot; (&quot;).append( getOptions() ).append(&quot; )&quot;);
+<span class="nocode"><a name="108">108: </a></span>        buffer.append(System.getProperty(&quot;line.separator&quot;)); 
+<span class="nocode"><a name="109">109: </a></span>        buffer.append(&quot;         .autoPosition             = &quot;).append(isAutoPosition()).append('\n'); 
+<span class="nocode"><a name="110">110: </a></span>        buffer.append(&quot;         .autoSeries               = &quot;).append(isAutoSeries()).append('\n'); 
+<span class="nocode"><a name="111">111: </a></span>        buffer.append(&quot;         .autoXPositioning         = &quot;).append(isAutoXPositioning()).append('\n'); 
+<span class="nocode"><a name="112">112: </a></span>        buffer.append(&quot;         .autoYPositioning         = &quot;).append(isAutoYPositioning()).append('\n'); 
+<span class="nocode"><a name="113">113: </a></span>        buffer.append(&quot;         .vertical                 = &quot;).append(isVertical()).append('\n'); 
+<span class="nocode"><a name="114">114: </a></span>        buffer.append(&quot;         .dataTable                = &quot;).append(isDataTable()).append('\n'); 
+<span class="nocode"><a name="115">115: </a></span>
+<span class="nocode"><a name="116">116: </a></span>        buffer.append(&quot;[/LEGEND]\n&quot;);
+<span class="nocode"><a name="117">117: </a></span>        return buffer.toString();
+<span class="nocode"><a name="118">118: </a></span>    }
+<span class="nocode"><a name="119">119: </a></span>
+<span class="nocode"><a name="120">120: </a></span>    public void serialize(LittleEndianOutput out) {
+<span class="nocode"><a name="121">121: </a></span>        out.writeInt(field_1_xAxisUpperLeft);
+<span class="nocode"><a name="122">122: </a></span>        out.writeInt(field_2_yAxisUpperLeft);
+<span class="nocode"><a name="123">123: </a></span>        out.writeInt(field_3_xSize);
+<span class="nocode"><a name="124">124: </a></span>        out.writeInt(field_4_ySize);
+<span class="nocode"><a name="125">125: </a></span>        out.writeByte(field_5_type);
+<span class="nocode"><a name="126">126: </a></span>        out.writeByte(field_6_spacing);
+<span class="nocode"><a name="127">127: </a></span>        out.writeShort(field_7_options);
+<span class="nocode"><a name="128">128: </a></span>    }
+<span class="nocode"><a name="129">129: </a></span>
+<span class="nocode"><a name="130">130: </a></span>    protected int getDataSize() {
+<span class="nocode"><a name="131">131: </a></span>        return 4 + 4 + 4 + 4 + 1 + 1 + 2;
+<span class="nocode"><a name="132">132: </a></span>    }
+<span class="nocode"><a name="133">133: </a></span>
+<span class="nocode"><a name="134">134: </a></span>    public short getSid()
+<span class="nocode"><a name="135">135: </a></span>    {
+<span class="nocode"><a name="136">136: </a></span>        return sid;
+<span class="nocode"><a name="137">137: </a></span>    }
+<span class="nocode"><a name="138">138: </a></span>
+<span class="nocode"><a name="139">139: </a></span>    public Object clone() {
+<span class="nocode"><a name="140">140: </a></span>        LegendRecord rec = new LegendRecord();
+<span class="nocode"><a name="141">141: </a></span>    
+<span class="nocode"><a name="142">142: </a></span>        rec.field_1_xAxisUpperLeft = field_1_xAxisUpperLeft;
+<span class="nocode"><a name="143">143: </a></span>        rec.field_2_yAxisUpperLeft = field_2_yAxisUpperLeft;
+<span class="nocode"><a name="144">144: </a></span>        rec.field_3_xSize = field_3_xSize;
+<span class="nocode"><a name="145">145: </a></span>        rec.field_4_ySize = field_4_ySize;
+<span class="nocode"><a name="146">146: </a></span>        rec.field_5_type = field_5_type;
+<span class="nocode"><a name="147">147: </a></span>        rec.field_6_spacing = field_6_spacing;
+<span class="nocode"><a name="148">148: </a></span>        rec.field_7_options = field_7_options;
+<span class="nocode"><a name="149">149: </a></span>        return rec;
+<span class="nocode"><a name="150">150: </a></span>    }
+<span class="nocode"><a name="151">151: </a></span>
+<span class="nocode"><a name="152">152: </a></span>
+<span class="nocode"><a name="153">153: </a></span>
+<span class="nocode"><a name="154">154: </a></span>
+<span class="nocode"><a name="155">155: </a></span>    /**
+<span class="nocode"><a name="156">156: </a></span>     * Get the x axis upper left field for the Legend record.
+<span class="nocode"><a name="157">157: </a></span>     */
+<span class="nocode"><a name="158">158: </a></span>    public int getXAxisUpperLeft()
+<span class="nocode"><a name="159">159: </a></span>    {
+<span class="nocode"><a name="160">160: </a></span>        return field_1_xAxisUpperLeft;
+<span class="nocode"><a name="161">161: </a></span>    }
+<span class="nocode"><a name="162">162: </a></span>
+<span class="nocode"><a name="163">163: </a></span>    /**
+<span class="nocode"><a name="164">164: </a></span>     * Set the x axis upper left field for the Legend record.
+<span class="nocode"><a name="165">165: </a></span>     */
+<span class="nocode"><a name="166">166: </a></span>    public void setXAxisUpperLeft(int field_1_xAxisUpperLeft)
+<span class="nocode"><a name="167">167: </a></span>    {
+<span class="nocode"><a name="168">168: </a></span>        this.field_1_xAxisUpperLeft = field_1_xAxisUpperLeft;
+<span class="nocode"><a name="169">169: </a></span>    }
+<span class="nocode"><a name="170">170: </a></span>
+<span class="nocode"><a name="171">171: </a></span>    /**
+<span class="nocode"><a name="172">172: </a></span>     * Get the y axis upper left field for the Legend record.
+<span class="nocode"><a name="173">173: </a></span>     */
+<span class="nocode"><a name="174">174: </a></span>    public int getYAxisUpperLeft()
+<span class="nocode"><a name="175">175: </a></span>    {
+<span class="nocode"><a name="176">176: </a></span>        return field_2_yAxisUpperLeft;
+<span class="nocode"><a name="177">177: </a></span>    }
+<span class="nocode"><a name="178">178: </a></span>
+<span class="nocode"><a name="179">179: </a></span>    /**
+<span class="nocode"><a name="180">180: </a></span>     * Set the y axis upper left field for the Legend record.
+<span class="nocode"><a name="181">181: </a></span>     */
+<span class="nocode"><a name="182">182: </a></span>    public void setYAxisUpperLeft(int field_2_yAxisUpperLeft)
+<span class="nocode"><a name="183">183: </a></span>    {
+<span class="nocode"><a name="184">184: </a></span>        this.field_2_yAxisUpperLeft = field_2_yAxisUpperLeft;
+<span class="nocode"><a name="185">185: </a></span>    }
+<span class="nocode"><a name="186">186: </a></span>
+<span class="nocode"><a name="187">187: </a></span>    /**
+<span class="nocode"><a name="188">188: </a></span>     * Get the x size field for the Legend record.
+<span class="nocode"><a name="189">189: </a></span>     */
+<span class="nocode"><a name="190">190: </a></span>    public int getXSize()
+<span class="nocode"><a name="191">191: </a></span>    {
+<span class="nocode"><a name="192">192: </a></span>        return field_3_xSize;
+<span class="nocode"><a name="193">193: </a></span>    }
+<span class="nocode"><a name="194">194: </a></span>
+<span class="nocode"><a name="195">195: </a></span>    /**
+<span class="nocode"><a name="196">196: </a></span>     * Set the x size field for the Legend record.
+<span class="nocode"><a name="197">197: </a></span>     */
+<span class="nocode"><a name="198">198: </a></span>    public void setXSize(int field_3_xSize)
+<span class="nocode"><a name="199">199: </a></span>    {
+<span class="nocode"><a name="200">200: </a></span>        this.field_3_xSize = field_3_xSize;
+<span class="nocode"><a name="201">201: </a></span>    }
+<span class="nocode"><a name="202">202: </a></span>
+<span class="nocode"><a name="203">203: </a></span>    /**
+<span class="nocode"><a name="204">204: </a></span>     * Get the y size field for the Legend record.
+<span class="nocode"><a name="205">205: </a></span>     */
+<span class="nocode"><a name="206">206: </a></span>    public int getYSize()
+<span class="nocode"><a name="207">207: </a></span>    {
+<span class="nocode"><a name="208">208: </a></span>        return field_4_ySize;
+<span class="nocode"><a name="209">209: </a></span>    }
+<span class="nocode"><a name="210">210: </a></span>
+<span class="nocode"><a name="211">211: </a></span>    /**
+<span class="nocode"><a name="212">212: </a></span>     * Set the y size field for the Legend record.
+<span class="nocode"><a name="213">213: </a></span>     */
+<span class="nocode"><a name="214">214: </a></span>    public void setYSize(int field_4_ySize)
+<span class="nocode"><a name="215">215: </a></span>    {
+<span class="nocode"><a name="216">216: </a></span>        this.field_4_ySize = field_4_ySize;
+<span class="nocode"><a name="217">217: </a></span>    }
+<span class="nocode"><a name="218">218: </a></span>
+<span class="nocode"><a name="219">219: </a></span>    /**
+<span class="nocode"><a name="220">220: </a></span>     * Get the type field for the Legend record.
+<span class="nocode"><a name="221">221: </a></span>     *
+<span class="nocode"><a name="222">222: </a></span>     * @return  One of 
+<span class="nocode"><a name="223">223: </a></span>     *        TYPE_BOTTOM
+<span class="nocode"><a name="224">224: </a></span>     *        TYPE_CORNER
+<span class="nocode"><a name="225">225: </a></span>     *        TYPE_TOP
+<span class="nocode"><a name="226">226: </a></span>     *        TYPE_RIGHT
+<span class="nocode"><a name="227">227: </a></span>     *        TYPE_LEFT
+<span class="nocode"><a name="228">228: </a></span>     *        TYPE_UNDOCKED
+<span class="nocode"><a name="229">229: </a></span>     */
+<span class="nocode"><a name="230">230: </a></span>    public byte getType()
+<span class="nocode"><a name="231">231: </a></span>    {
+<span class="nocode"><a name="232">232: </a></span>        return field_5_type;
+<span class="nocode"><a name="233">233: </a></span>    }
+<span class="nocode"><a name="234">234: </a></span>
+<span class="nocode"><a name="235">235: </a></span>    /**
+<span class="nocode"><a name="236">236: </a></span>     * Set the type field for the Legend record.
+<span class="nocode"><a name="237">237: </a></span>     *
+<span class="nocode"><a name="238">238: </a></span>     * @param field_5_type
+<span class="nocode"><a name="239">239: </a></span>     *        One of 
+<span class="nocode"><a name="240">240: </a></span>     *        TYPE_BOTTOM
+<span class="nocode"><a name="241">241: </a></span>     *        TYPE_CORNER
+<span class="nocode"><a name="242">242: </a></span>     *        TYPE_TOP
+<span class="nocode"><a name="243">243: </a></span>     *        TYPE_RIGHT
+<span class="nocode"><a name="244">244: </a></span>     *        TYPE_LEFT
+<span class="nocode"><a name="245">245: </a></span>     *        TYPE_UNDOCKED
+<span class="nocode"><a name="246">246: </a></span>     */
+<span class="nocode"><a name="247">247: </a></span>    public void setType(byte field_5_type)
+<span class="nocode"><a name="248">248: </a></span>    {
+<span class="nocode"><a name="249">249: </a></span>        this.field_5_type = field_5_type;
+<span class="nocode"><a name="250">250: </a></span>    }
+<span class="nocode"><a name="251">251: </a></span>
+<span class="nocode"><a name="252">252: </a></span>    /**
+<span class="nocode"><a name="253">253: </a></span>     * Get the spacing field for the Legend record.
+<span class="nocode"><a name="254">254: </a></span>     *
+<span class="nocode"><a name="255">255: </a></span>     * @return  One of 
+<span class="nocode"><a name="256">256: </a></span>     *        SPACING_CLOSE
+<span class="nocode"><a name="257">257: </a></span>     *        SPACING_MEDIUM
+<span class="nocode"><a name="258">258: </a></span>     *        SPACING_OPEN
+<span class="nocode"><a name="259">259: </a></span>     */
+<span class="nocode"><a name="260">260: </a></span>    public byte getSpacing()
+<span class="nocode"><a name="261">261: </a></span>    {
+<span class="nocode"><a name="262">262: </a></span>        return field_6_spacing;
+<span class="nocode"><a name="263">263: </a></span>    }
+<span class="nocode"><a name="264">264: </a></span>
+<span class="nocode"><a name="265">265: </a></span>    /**
+<span class="nocode"><a name="266">266: </a></span>     * Set the spacing field for the Legend record.
+<span class="nocode"><a name="267">267: </a></span>     *
+<span class="nocode"><a name="268">268: </a></span>     * @param field_6_spacing
+<span class="nocode"><a name="269">269: </a></span>     *        One of 
+<span class="nocode"><a name="270">270: </a></span>     *        SPACING_CLOSE
+<span class="nocode"><a name="271">271: </a></span>     *        SPACING_MEDIUM
+<span class="nocode"><a name="272">272: </a></span>     *        SPACING_OPEN
+<span class="nocode"><a name="273">273: </a></span>     */
+<span class="nocode"><a name="274">274: </a></span>    public void setSpacing(byte field_6_spacing)
+<span class="nocode"><a name="275">275: </a></span>    {
+<span class="nocode"><a name="276">276: </a></span>        this.field_6_spacing = field_6_spacing;
+<span class="nocode"><a name="277">277: </a></span>    }
+<span class="nocode"><a name="278">278: </a></span>
+<span class="nocode"><a name="279">279: </a></span>    /**
+<span class="nocode"><a name="280">280: </a></span>     * Get the options field for the Legend record.
+<span class="nocode"><a name="281">281: </a></span>     */
+<span class="nocode"><a name="282">282: </a></span>    public short getOptions()
+<span class="nocode"><a name="283">283: </a></span>    {
+<span class="nocode"><a name="284">284: </a></span>        return field_7_options;
+<span class="nocode"><a name="285">285: </a></span>    }
+<span class="nocode"><a name="286">286: </a></span>
+<span class="nocode"><a name="287">287: </a></span>    /**
+<span class="nocode"><a name="288">288: </a></span>     * Set the options field for the Legend record.
+<span class="nocode"><a name="289">289: </a></span>     */
+<span class="nocode"><a name="290">290: </a></span>    public void setOptions(short field_7_options)
+<span class="nocode"><a name="291">291: </a></span>    {
+<span class="nocode"><a name="292">292: </a></span>        this.field_7_options = field_7_options;
+<span class="nocode"><a name="293">293: </a></span>    }
+<span class="nocode"><a name="294">294: </a></span>
+<span class="nocode"><a name="295">295: </a></span>    /**
+<span class="nocode"><a name="296">296: </a></span>     * Sets the auto position field value.
+<span class="nocode"><a name="297">297: </a></span>     * automatic positioning (1=docked)
+<span class="nocode"><a name="298">298: </a></span>     */
+<span class="nocode"><a name="299">299: </a></span>    public void setAutoPosition(boolean value)
+<span class="nocode"><a name="300">300: </a></span>    {
+<span class="nocode"><a name="301">301: </a></span>        field_7_options = autoPosition.setShortBoolean(field_7_options, value);
+<span class="nocode"><a name="302">302: </a></span>    }
+<span class="nocode"><a name="303">303: </a></span>
+<span class="nocode"><a name="304">304: </a></span>    /**
+<span class="nocode"><a name="305">305: </a></span>     * automatic positioning (1=docked)
+<span class="nocode"><a name="306">306: </a></span>     * @return  the auto position field value.
+<span class="nocode"><a name="307">307: </a></span>     */
+<span class="nocode"><a name="308">308: </a></span>    public boolean isAutoPosition()
+<span class="nocode"><a name="309">309: </a></span>    {
+<span class="nocode"><a name="310">310: </a></span>        return autoPosition.isSet(field_7_options);
+<span class="nocode"><a name="311">311: </a></span>    }
+<span class="nocode"><a name="312">312: </a></span>
+<span class="nocode"><a name="313">313: </a></span>    /**
+<span class="nocode"><a name="314">314: </a></span>     * Sets the auto series field value.
+<span class="nocode"><a name="315">315: </a></span>     * excel 5 only (true)
+<span class="nocode"><a name="316">316: </a></span>     */
+<span class="nocode"><a name="317">317: </a></span>    public void setAutoSeries(boolean value)
+<span class="nocode"><a name="318">318: </a></span>    {
+<span class="nocode"><a name="319">319: </a></span>        field_7_options = autoSeries.setShortBoolean(field_7_options, value);
+<span class="nocode"><a name="320">320: </a></span>    }
+<span class="nocode"><a name="321">321: </a></span>
+<span class="nocode"><a name="322">322: </a></span>    /**
+<span class="nocode"><a name="323">323: </a></span>     * excel 5 only (true)
+<span class="nocode"><a name="324">324: </a></span>     * @return  the auto series field value.
+<span class="nocode"><a name="325">325: </a></span>     */
+<span class="nocode"><a name="326">326: </a></span>    public boolean isAutoSeries()
+<span class="nocode"><a name="327">327: </a></span>    {
+<span class="nocode"><a name="328">328: </a></span>        return autoSeries.isSet(field_7_options);
+<span class="nocode"><a name="329">329: </a></span>    }
+<span class="nocode"><a name="330">330: </a></span>
+<span class="nocode"><a name="331">331: </a></span>    /**
+<span class="nocode"><a name="332">332: </a></span>     * Sets the auto x positioning field value.
+<span class="nocode"><a name="333">333: </a></span>     * position of legend on the x axis is automatic
+<span class="nocode"><a name="334">334: </a></span>     */
+<span class="nocode"><a name="335">335: </a></span>    public void setAutoXPositioning(boolean value)
+<span class="nocode"><a name="336">336: </a></span>    {
+<span class="nocode"><a name="337">337: </a></span>        field_7_options = autoXPositioning.setShortBoolean(field_7_options, value);
+<span class="nocode"><a name="338">338: </a></span>    }
+<span class="nocode"><a name="339">339: </a></span>
+<span class="nocode"><a name="340">340: </a></span>    /**
+<span class="nocode"><a name="341">341: </a></span>     * position of legend on the x axis is automatic
+<span class="nocode"><a name="342">342: </a></span>     * @return  the auto x positioning field value.
+<span class="nocode"><a name="343">343: </a></span>     */
+<span class="nocode"><a name="344">344: </a></span>    public boolean isAutoXPositioning()
+<span class="nocode"><a name="345">345: </a></span>    {
+<span class="nocode"><a name="346">346: </a></span>        return autoXPositioning.isSet(field_7_options);
+<span class="nocode"><a name="347">347: </a></span>    }
+<span class="nocode"><a name="348">348: </a></span>
+<span class="nocode"><a name="349">349: </a></span>    /**
+<span class="nocode"><a name="350">350: </a></span>     * Sets the auto y positioning field value.
+<span class="nocode"><a name="351">351: </a></span>     * position of legend on the y axis is automatic
+<span class="nocode"><a name="352">352: </a></span>     */
+<span class="nocode"><a name="353">353: </a></span>    public void setAutoYPositioning(boolean value)
+<span class="nocode"><a name="354">354: </a></span>    {
+<span class="nocode"><a name="355">355: </a></span>        field_7_options = autoYPositioning.setShortBoolean(field_7_options, value);
+<span class="nocode"><a name="356">356: </a></span>    }
+<span class="nocode"><a name="357">357: </a></span>
+<span class="nocode"><a name="358">358: </a></span>    /**
+<span class="nocode"><a name="359">359: </a></span>     * position of legend on the y axis is automatic
+<span class="nocode"><a name="360">360: </a></span>     * @return  the auto y positioning field value.
+<span class="nocode"><a name="361">361: </a></span>     */
+<span class="nocode"><a name="362">362: </a></span>    public boolean isAutoYPositioning()
+<span class="nocode"><a name="363">363: </a></span>    {
+<span class="nocode"><a name="364">364: </a></span>        return autoYPositioning.isSet(field_7_options);
+<span class="nocode"><a name="365">365: </a></span>    }
+<span class="nocode"><a name="366">366: </a></span>
+<span class="nocode"><a name="367">367: </a></span>    /**
+<span class="nocode"><a name="368">368: </a></span>     * Sets the vertical field value.
+<span class="nocode"><a name="369">369: </a></span>     * vertical or horizontal legend (1 or 0 respectively).  Always 0 if not automatic.
+<span class="nocode"><a name="370">370: </a></span>     */
+<span class="nocode"><a name="371">371: </a></span>    public void setVertical(boolean value)
+<span class="nocode"><a name="372">372: </a></span>    {
+<span class="nocode"><a name="373">373: </a></span>        field_7_options = vertical.setShortBoolean(field_7_options, value);
+<span class="nocode"><a name="374">374: </a></span>    }
+<span class="nocode"><a name="375">375: </a></span>
+<span class="nocode"><a name="376">376: </a></span>    /**
+<span class="nocode"><a name="377">377: </a></span>     * vertical or horizontal legend (1 or 0 respectively).  Always 0 if not automatic.
+<span class="nocode"><a name="378">378: </a></span>     * @return  the vertical field value.
+<span class="nocode"><a name="379">379: </a></span>     */
+<span class="nocode"><a name="380">380: </a></span>    public boolean isVertical()
+<span class="nocode"><a name="381">381: </a></span>    {
+<span class="nocode"><a name="382">382: </a></span>        return vertical.isSet(field_7_options);
+<span class="nocode"><a name="383">383: </a></span>    }
+<span class="nocode"><a name="384">384: </a></span>
+<span class="nocode"><a name="385">385: </a></span>    /**
+<span class="nocode"><a name="386">386: </a></span>     * Sets the data table field value.
+<span class="nocode"><a name="387">387: </a></span>     * 1 if chart contains data table
+<span class="nocode"><a name="388">388: </a></span>     */
+<span class="nocode"><a name="389">389: </a></span>    public void setDataTable(boolean value)
+<span class="nocode"><a name="390">390: </a></span>    {
+<span class="nocode"><a name="391">391: </a></span>        field_7_options = dataTable.setShortBoolean(field_7_options, value);
+<span class="nocode"><a name="392">392: </a></span>    }
+<span class="nocode"><a name="393">393: </a></span>
+<span class="nocode"><a name="394">394: </a></span>    /**
+<span class="nocode"><a name="395">395: </a></span>     * 1 if chart contains data table
+<span class="nocode"><a name="396">396: </a></span>     * @return  the data table field value.
+<span class="nocode"><a name="397">397: </a></span>     */
+<span class="nocode"><a name="398">398: </a></span>    public boolean isDataTable()
+<span class="nocode"><a name="399">399: </a></span>    {
+<span class="nocode"><a name="400">400: </a></span>        return dataTable.isSet(field_7_options);
+<span class="nocode"><a name="401">401: </a></span>    }
+<span class="nocode"><a name="402">402: </a></span>}
+</pre><table class="mutation_table" summary="Mutations">
+<tr><th>ID</th><th>Line</th><th>Type</th><th>Detected</th></tr><tr><td>43769</td><td><a href="#67">67</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>43770</td><td><a href="#68">68</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>43771</td><td><a href="#69">69</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>43772</td><td><a href="#70">70</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>43773</td><td><a href="#71">71</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>43774</td><td><a href="#72">72</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>43775</td><td><a href="#73">73</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>43776</td><td><a href="#80">80</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43777</td><td><a href="#81">81</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43778</td><td><a href="#81">81(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43779</td><td><a href="#81">81(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43780</td><td><a href="#81">81(3)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43781</td><td><a href="#81">81(4)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43782</td><td><a href="#81">81(5)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43783</td><td><a href="#81">81(6)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43784</td><td><a href="#81">81(7)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43785</td><td><a href="#81">81(8)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43786</td><td><a href="#84">84</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43787</td><td><a href="#84">84(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43788</td><td><a href="#85">85</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43789</td><td><a href="#85">85(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43790</td><td><a href="#85">85(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43791</td><td><a href="#85">85(3)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43792</td><td><a href="#85">85(4)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43793</td><td><a href="#85">85(5)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43794</td><td><a href="#85">85(6)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43795</td><td><a href="#85">85(7)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43796</td><td><a href="#85">85(8)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43797</td><td><a href="#88">88</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43798</td><td><a href="#88">88(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43799</td><td><a href="#89">89</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43800</td><td><a href="#89">89(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43801</td><td><a href="#89">89(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43802</td><td><a href="#89">89(3)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43803</td><td><a href="#89">89(4)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43804</td><td><a href="#89">89(5)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43805</td><td><a href="#89">89(6)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43806</td><td><a href="#89">89(7)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43807</td><td><a href="#89">89(8)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43808</td><td><a href="#92">92</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43809</td><td><a href="#92">92(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43810</td><td><a href="#93">93</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43811</td><td><a href="#93">93(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43812</td><td><a href="#93">93(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43813</td><td><a href="#93">93(3)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43814</td><td><a href="#93">93(4)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43815</td><td><a href="#93">93(5)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43816</td><td><a href="#93">93(6)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43817</td><td><a href="#93">93(7)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43818</td><td><a href="#93">93(8)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43819</td><td><a href="#96">96</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43820</td><td><a href="#96">96(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43821</td><td><a href="#97">97</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43822</td><td><a href="#97">97(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43823</td><td><a href="#97">97(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43824</td><td><a href="#97">97(3)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43825</td><td><a href="#97">97(4)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43826</td><td><a href="#97">97(5)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43827</td><td><a href="#97">97(6)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43828</td><td><a href="#97">97(7)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43829</td><td><a href="#97">97(8)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43830</td><td><a href="#100">100</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43831</td><td><a href="#100">100(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43832</td><td><a href="#101">101</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43833</td><td><a href="#101">101(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43834</td><td><a href="#101">101(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43835</td><td><a href="#101">101(3)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43836</td><td><a href="#101">101(4)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43837</td><td><a href="#101">101(5)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43838</td><td><a href="#101">101(6)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43839</td><td><a href="#101">101(7)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43840</td><td><a href="#101">101(8)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43841</td><td><a href="#104">104</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43842</td><td><a href="#104">104(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43843</td><td><a href="#105">105</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43844</td><td><a href="#105">105(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43845</td><td><a href="#105">105(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43846</td><td><a href="#105">105(3)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43847</td><td><a href="#105">105(4)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43848</td><td><a href="#105">105(5)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43849</td><td><a href="#105">105(6)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43850</td><td><a href="#105">105(7)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43851</td><td><a href="#105">105(8)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43852</td><td><a href="#108">108</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43853</td><td><a href="#108">108(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43858</td><td><a href="#109">109</a></td><td>Replace a constant (Replace 10 with 9(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43857</td><td><a href="#109">109</a></td><td>Replace a constant (Replace 10 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43859</td><td><a href="#109">109</a></td><td>Replace a constant (Replace 10 with 11(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43854</td><td><a href="#109">109</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43855</td><td><a href="#109">109(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43856</td><td><a href="#109">109(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43860</td><td><a href="#109">109(3)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43866</td><td><a href="#110">110</a></td><td>Replace a constant (Replace 10 with 11(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43865</td><td><a href="#110">110</a></td><td>Replace a constant (Replace 10 with 9(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43864</td><td><a href="#110">110</a></td><td>Replace a constant (Replace 10 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43861</td><td><a href="#110">110</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43862</td><td><a href="#110">110(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43863</td><td><a href="#110">110(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43867</td><td><a href="#110">110(3)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43871</td><td><a href="#111">111</a></td><td>Replace a constant (Replace 10 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43872</td><td><a href="#111">111</a></td><td>Replace a constant (Replace 10 with 9(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43873</td><td><a href="#111">111</a></td><td>Replace a constant (Replace 10 with 11(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43868</td><td><a href="#111">111</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43869</td><td><a href="#111">111(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43870</td><td><a href="#111">111(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43874</td><td><a href="#111">111(3)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43880</td><td><a href="#112">112</a></td><td>Replace a constant (Replace 10 with 11(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43878</td><td><a href="#112">112</a></td><td>Replace a constant (Replace 10 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43879</td><td><a href="#112">112</a></td><td>Replace a constant (Replace 10 with 9(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43875</td><td><a href="#112">112</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43876</td><td><a href="#112">112(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43877</td><td><a href="#112">112(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43881</td><td><a href="#112">112(3)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43887</td><td><a href="#113">113</a></td><td>Replace a constant (Replace 10 with 11(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43886</td><td><a href="#113">113</a></td><td>Replace a constant (Replace 10 with 9(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43885</td><td><a href="#113">113</a></td><td>Replace a constant (Replace 10 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43882</td><td><a href="#113">113</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43883</td><td><a href="#113">113(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43884</td><td><a href="#113">113(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43888</td><td><a href="#113">113(3)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43892</td><td><a href="#114">114</a></td><td>Replace a constant (Replace 10 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43894</td><td><a href="#114">114</a></td><td>Replace a constant (Replace 10 with 11(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43893</td><td><a href="#114">114</a></td><td>Replace a constant (Replace 10 with 9(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43889</td><td><a href="#114">114</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43890</td><td><a href="#114">114(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43891</td><td><a href="#114">114(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43895</td><td><a href="#114">114(3)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43896</td><td><a href="#116">116</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43897</td><td><a href="#117">117</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43898</td><td><a href="#121">121</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>43899</td><td><a href="#122">122</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>43900</td><td><a href="#123">123</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>43901</td><td><a href="#124">124</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>43902</td><td><a href="#125">125</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>43903</td><td><a href="#126">126</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>43904</td><td><a href="#127">127</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>43906</td><td><a href="#131">131</a></td><td>Replace a constant (Replace 20 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>43907</td><td><a href="#131">131</a></td><td>Replace a constant (Replace 20 with 19(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>43905</td><td><a href="#131">131</a></td><td>Replace a constant (Replace 20 with 21(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>43908</td><td><a href="#136">136</a></td><td>Replace a constant (Replace 4117 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43910</td><td><a href="#136">136</a></td><td>Replace a constant (Replace 4117 with 4118(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43909</td><td><a href="#136">136</a></td><td>Replace a constant (Replace 4117 with 4116(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43911</td><td><a href="#301">301</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>43912</td><td><a href="#310">310</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>43913</td><td><a href="#319">319</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>43914</td><td><a href="#328">328</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>43915</td><td><a href="#337">337</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>43916</td><td><a href="#346">346</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>43917</td><td><a href="#355">355</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>43918</td><td><a href="#364">364</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>43919</td><td><a href="#373">373</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>43920</td><td><a href="#382">382</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>43921</td><td><a href="#391">391</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>43922</td><td><a href="#400">400</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+</table>
+</body>
+</html>

@@ -1,0 +1,221 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN
+"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>
+org.apache.poi.hssf.model.SimpleFilledShape
+</title>
+<link href="prettify.css" type="text/css" rel="stylesheet" />
+<script type="text/javascript" src="prettify.js"></script>
+</head>
+<body onload="prettyPrint()">
+<h2>Javalanche report for class:<br/> org.apache.poi.hssf.model.SimpleFilledShape </h2><pre class="prettyprint" style="border: 1px solid #888;padding: 2px"><span class="nocode"><a name="1">  1: </a></span>/* ====================================================================
+<span class="nocode"><a name="2">  2: </a></span>   Licensed to the Apache Software Foundation (ASF) under one or more
+<span class="nocode"><a name="3">  3: </a></span>   contributor license agreements.  See the NOTICE file distributed with
+<span class="nocode"><a name="4">  4: </a></span>   this work for additional information regarding copyright ownership.
+<span class="nocode"><a name="5">  5: </a></span>   The ASF licenses this file to You under the Apache License, Version 2.0
+<span class="nocode"><a name="6">  6: </a></span>   (the &quot;License&quot;); you may not use this file except in compliance with
+<span class="nocode"><a name="7">  7: </a></span>   the License.  You may obtain a copy of the License at
+<span class="nocode"><a name="8">  8: </a></span>
+<span class="nocode"><a name="9">  9: </a></span>       http://www.apache.org/licenses/LICENSE-2.0
+<span class="nocode"><a name="10"> 10: </a></span>
+<span class="nocode"><a name="11"> 11: </a></span>   Unless required by applicable law or agreed to in writing, software
+<span class="nocode"><a name="12"> 12: </a></span>   distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+<span class="nocode"><a name="13"> 13: </a></span>   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+<span class="nocode"><a name="14"> 14: </a></span>   See the License for the specific language governing permissions and
+<span class="nocode"><a name="15"> 15: </a></span>   limitations under the License.
+<span class="nocode"><a name="16"> 16: </a></span>==================================================================== */
+<span class="nocode"><a name="17"> 17: </a></span>
+<span class="nocode"><a name="18"> 18: </a></span>package org.apache.poi.hssf.model;
+<span class="nocode"><a name="19"> 19: </a></span>
+<span class="nocode"><a name="20"> 20: </a></span>import org.apache.poi.ddf.*;
+<span class="nocode"><a name="21"> 21: </a></span>import org.apache.poi.hssf.record.ObjRecord;
+<span class="nocode"><a name="22"> 22: </a></span>import org.apache.poi.hssf.record.EscherAggregate;
+<span class="nocode"><a name="23"> 23: </a></span>import org.apache.poi.hssf.record.CommonObjectDataSubRecord;
+<span class="nocode"><a name="24"> 24: </a></span>import org.apache.poi.hssf.record.EndSubRecord;
+<span class="nocode"><a name="25"> 25: </a></span>import org.apache.poi.hssf.usermodel.HSSFSimpleShape;
+<span class="nocode"><a name="26"> 26: </a></span>import org.apache.poi.hssf.usermodel.HSSFShape;
+<span class="nocode"><a name="27"> 27: </a></span>
+<span class="nocode"><a name="28"> 28: </a></span>public class SimpleFilledShape
+<span class="nocode"><a name="29"> 29: </a></span>        extends AbstractShape
+<span class="nocode"><a name="30"> 30: </a></span>{
+<span class="nocode"><a name="31"> 31: </a></span>    private EscherContainerRecord spContainer;
+<span class="nocode"><a name="32"> 32: </a></span>    private ObjRecord objRecord;
+<span class="nocode"><a name="33"> 33: </a></span>
+<span class="nocode"><a name="34"> 34: </a></span>    /**
+<span class="nocode"><a name="35"> 35: </a></span>     * Creates the low evel records for an oval.
+<span class="nocode"><a name="36"> 36: </a></span>     *
+<span class="nocode"><a name="37"> 37: </a></span>     * @param hssfShape  The highlevel shape.
+<span class="nocode"><a name="38"> 38: </a></span>     * @param shapeId    The shape id to use for this shape.
+<span class="nocode"><a name="39"> 39: </a></span>     */
+<span class="nocode"><a name="40"> 40: </a></span>    SimpleFilledShape( HSSFSimpleShape hssfShape, int shapeId )
+<span class="nocode"><a name="41"> 41: </a></span>    {
+<span class="nocode"><a name="42"> 42: </a></span>        spContainer = createSpContainer( hssfShape, shapeId );
+<span class="nocode"><a name="43"> 43: </a></span>        objRecord = createObjRecord( hssfShape, shapeId );
+<span class="nocode"><a name="44"> 44: </a></span>    }
+<span class="nocode"><a name="45"> 45: </a></span>
+<span class="nocode"><a name="46"> 46: </a></span>    /**
+<span class="nocode"><a name="47"> 47: </a></span>     * Generates the shape records for this shape.
+<span class="nocode"><a name="48"> 48: </a></span>     *
+<span class="nocode"><a name="49"> 49: </a></span>     * @param hssfShape
+<span class="nocode"><a name="50"> 50: </a></span>     * @param shapeId
+<span class="nocode"><a name="51"> 51: </a></span>     */
+<span class="nocode"><a name="52"> 52: </a></span>    private EscherContainerRecord createSpContainer( HSSFSimpleShape hssfShape, int shapeId )
+<span class="nocode"><a name="53"> 53: </a></span>    {
+<span class="nocode"><a name="54"> 54: </a></span>        HSSFShape shape = hssfShape;
+<span class="nocode"><a name="55"> 55: </a></span>
+<span class="nocode"><a name="56"> 56: </a></span>        EscherContainerRecord spContainer = new EscherContainerRecord();
+<span class="nocode"><a name="57"> 57: </a></span>        EscherSpRecord sp = new EscherSpRecord();
+<span class="nocode"><a name="58"> 58: </a></span>        EscherOptRecord opt = new EscherOptRecord();
+<span class="nocode"><a name="59"> 59: </a></span>        EscherClientDataRecord clientData = new EscherClientDataRecord();
+<span class="nocode"><a name="60"> 60: </a></span>
+<span class="nocode"><a name="61"> 61: </a></span>        spContainer.setRecordId( EscherContainerRecord.SP_CONTAINER );
+<span class="nocode"><a name="62"> 62: </a></span>        spContainer.setOptions( (short) 0x000F );
+<span class="nocode"><a name="63"> 63: </a></span>        sp.setRecordId( EscherSpRecord.RECORD_ID );
+<span class="nocode"><a name="64"> 64: </a></span>        short shapeType = objTypeToShapeType( hssfShape.getShapeType() );
+<span class="nocode"><a name="65"> 65: </a></span>        sp.setOptions( (short) ( ( shapeType &lt;&lt; 4 ) | 0x2 ) );
+<span class="nocode"><a name="66"> 66: </a></span>        sp.setShapeId( shapeId );
+<span class="nocode"><a name="67"> 67: </a></span>        sp.setFlags( EscherSpRecord.FLAG_HAVEANCHOR | EscherSpRecord.FLAG_HASSHAPETYPE );
+<span class="nocode"><a name="68"> 68: </a></span>        opt.setRecordId( EscherOptRecord.RECORD_ID );
+<span class="nocode"><a name="69"> 69: </a></span>        addStandardOptions(shape, opt);
+<span class="nocode"><a name="70"> 70: </a></span>        EscherRecord anchor = createAnchor( shape.getAnchor() );
+<span class="nocode"><a name="71"> 71: </a></span>        clientData.setRecordId( EscherClientDataRecord.RECORD_ID );
+<span class="nocode"><a name="72"> 72: </a></span>        clientData.setOptions( (short) 0x0000 );
+<span class="nocode"><a name="73"> 73: </a></span>
+<span class="nocode"><a name="74"> 74: </a></span>        spContainer.addChildRecord( sp );
+<span class="nocode"><a name="75"> 75: </a></span>        spContainer.addChildRecord( opt );
+<span class="nocode"><a name="76"> 76: </a></span>        spContainer.addChildRecord( anchor );
+<span class="nocode"><a name="77"> 77: </a></span>        spContainer.addChildRecord( clientData );
+<span class="nocode"><a name="78"> 78: </a></span>
+<span class="nocode"><a name="79"> 79: </a></span>        return spContainer;
+<span class="nocode"><a name="80"> 80: </a></span>    }
+<span class="nocode"><a name="81"> 81: </a></span>
+<span class="nocode"><a name="82"> 82: </a></span>    private short objTypeToShapeType( int objType )
+<span class="nocode"><a name="83"> 83: </a></span>    {
+<span class="nocode"><a name="84"> 84: </a></span>        short shapeType;
+<span class="nocode"><a name="85"> 85: </a></span>        if (objType == HSSFSimpleShape.OBJECT_TYPE_OVAL)
+<span class="nocode"><a name="86"> 86: </a></span>            shapeType = EscherAggregate.ST_ELLIPSE;
+<span class="nocode"><a name="87"> 87: </a></span>        else if (objType == HSSFSimpleShape.OBJECT_TYPE_RECTANGLE)
+<span class="nocode"><a name="88"> 88: </a></span>            shapeType = EscherAggregate.ST_RECTANGLE;
+<span class="nocode"><a name="89"> 89: </a></span>        else
+<span class="nocode"><a name="90"> 90: </a></span>            throw new IllegalArgumentException(&quot;Unable to handle an object of this type&quot;);
+<span class="nocode"><a name="91"> 91: </a></span>        return shapeType;
+<span class="nocode"><a name="92"> 92: </a></span>    }
+<span class="nocode"><a name="93"> 93: </a></span>
+<span class="nocode"><a name="94"> 94: </a></span>    /**
+<span class="nocode"><a name="95"> 95: </a></span>     * Creates the low level OBJ record for this shape.
+<span class="nocode"><a name="96"> 96: </a></span>     */
+<span class="nocode"><a name="97"> 97: </a></span>    private ObjRecord createObjRecord( HSSFShape hssfShape, int shapeId )
+<span class="nocode"><a name="98"> 98: </a></span>    {
+<span class="nocode"><a name="99"> 99: </a></span>        HSSFShape shape = hssfShape;
+<span class="nocode"><a name="100">100: </a></span>
+<span class="nocode"><a name="101">101: </a></span>        ObjRecord obj = new ObjRecord();
+<span class="nocode"><a name="102">102: </a></span>        CommonObjectDataSubRecord c = new CommonObjectDataSubRecord();
+<span class="nocode"><a name="103">103: </a></span>        c.setObjectType( (short) ( (HSSFSimpleShape) shape ).getShapeType() );
+<span class="nocode"><a name="104">104: </a></span>        c.setObjectId(  getCmoObjectId(shapeId) );
+<span class="nocode"><a name="105">105: </a></span>        c.setLocked( true );
+<span class="nocode"><a name="106">106: </a></span>        c.setPrintable( true );
+<span class="nocode"><a name="107">107: </a></span>        c.setAutofill( true );
+<span class="nocode"><a name="108">108: </a></span>        c.setAutoline( true );
+<span class="nocode"><a name="109">109: </a></span>        EndSubRecord e = new EndSubRecord();
+<span class="nocode"><a name="110">110: </a></span>
+<span class="nocode"><a name="111">111: </a></span>        obj.addSubRecord( c );
+<span class="nocode"><a name="112">112: </a></span>        obj.addSubRecord( e );
+<span class="nocode"><a name="113">113: </a></span>
+<span class="nocode"><a name="114">114: </a></span>        return obj;
+<span class="nocode"><a name="115">115: </a></span>    }
+<span class="nocode"><a name="116">116: </a></span>
+<span class="nocode"><a name="117">117: </a></span>    public EscherContainerRecord getSpContainer()
+<span class="nocode"><a name="118">118: </a></span>    {
+<span class="nocode"><a name="119">119: </a></span>        return spContainer;
+<span class="nocode"><a name="120">120: </a></span>    }
+<span class="nocode"><a name="121">121: </a></span>
+<span class="nocode"><a name="122">122: </a></span>    public ObjRecord getObjRecord()
+<span class="nocode"><a name="123">123: </a></span>    {
+<span class="nocode"><a name="124">124: </a></span>        return objRecord;
+<span class="nocode"><a name="125">125: </a></span>    }
+<span class="nocode"><a name="126">126: </a></span>
+<span class="nocode"><a name="127">127: </a></span>}
+</pre><table class="mutation_table" summary="Mutations">
+<tr><th>ID</th><th>Line</th><th>Type</th><th>Detected</th></tr><tr><td>53433</td><td><a href="#42">42</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>53434</td><td><a href="#43">43</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>53437</td><td><a href="#61">61</a></td><td>Replace a constant (Replace -4092 with -4091(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>53436</td><td><a href="#61">61</a></td><td>Replace a constant (Replace -4092 with -4093(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>53435</td><td><a href="#61">61</a></td><td>Replace a constant (Replace -4092 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>53438</td><td><a href="#61">61</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>53441</td><td><a href="#62">62</a></td><td>Replace a constant (Replace 15 with 14(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>53439</td><td><a href="#62">62</a></td><td>Replace a constant (Replace 15 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>53440</td><td><a href="#62">62</a></td><td>Replace a constant (Replace 15 with 16(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>53442</td><td><a href="#62">62</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>53443</td><td><a href="#63">63</a></td><td>Replace a constant (Replace -4086 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>53444</td><td><a href="#63">63</a></td><td>Replace a constant (Replace -4086 with -4085(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>53445</td><td><a href="#63">63</a></td><td>Replace a constant (Replace -4086 with -4087(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>53446</td><td><a href="#63">63</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>53447</td><td><a href="#64">64</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>53448</td><td><a href="#64">64(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>53450</td><td><a href="#65">65</a></td><td>Replace a constant (Replace 4 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>53449</td><td><a href="#65">65</a></td><td>Replace a constant (Replace 4 with 3(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>53451</td><td><a href="#65">65</a></td><td>Replace a constant (Replace 4 with 5(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>53454</td><td><a href="#65">65(1)</a></td><td>Replace a constant (Replace 2 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>53453</td><td><a href="#65">65(1)</a></td><td>Replace a constant (Replace 2 with 3(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>53455</td><td><a href="#65">65(1)</a></td><td>Replace a constant (Replace 2 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>53452</td><td><a href="#65">65</a></td><td>Replace arithmetic operator (Replace ISHL with ISHR)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>53456</td><td><a href="#65">65(1)</a></td><td>Replace arithmetic operator (Replace IOR with IAND)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>53457</td><td><a href="#65">65</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>53458</td><td><a href="#66">66</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>53461</td><td><a href="#67">67</a></td><td>Replace a constant (Replace 2560 with 2559(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>53459</td><td><a href="#67">67</a></td><td>Replace a constant (Replace 2560 with 2561(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>53460</td><td><a href="#67">67</a></td><td>Replace a constant (Replace 2560 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>53462</td><td><a href="#67">67</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>53463</td><td><a href="#68">68</a></td><td>Replace a constant (Replace -4085 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>53464</td><td><a href="#68">68</a></td><td>Replace a constant (Replace -4085 with -4084(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>53465</td><td><a href="#68">68</a></td><td>Replace a constant (Replace -4085 with -4086(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>53466</td><td><a href="#68">68</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>53467</td><td><a href="#69">69</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>53468</td><td><a href="#70">70</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>53469</td><td><a href="#70">70(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>53470</td><td><a href="#71">71</a></td><td>Replace a constant (Replace -4079 with -4080(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>53471</td><td><a href="#71">71</a></td><td>Replace a constant (Replace -4079 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>53472</td><td><a href="#71">71</a></td><td>Replace a constant (Replace -4079 with -4078(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>53473</td><td><a href="#71">71</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>53475</td><td><a href="#72">72</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>53474</td><td><a href="#72">72</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>53476</td><td><a href="#72">72</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>53477</td><td><a href="#74">74</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>53478</td><td><a href="#75">75</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>53479</td><td><a href="#76">76</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>53480</td><td><a href="#77">77</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>53483</td><td><a href="#85">85</a></td><td>Replace a constant (Replace 3 with 4(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>53482</td><td><a href="#85">85</a></td><td>Replace a constant (Replace 3 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>53481</td><td><a href="#85">85</a></td><td>Replace a constant (Replace 3 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>53484</td><td><a href="#85">85</a></td><td>Negate jump condition (Replace IF_ICMPNE with  IF_ICMPEQ)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>53486</td><td><a href="#86">86</a></td><td>Replace a constant (Replace 3 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>53485</td><td><a href="#86">86</a></td><td>Replace a constant (Replace 3 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>53487</td><td><a href="#86">86</a></td><td>Replace a constant (Replace 3 with 4(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>53490</td><td><a href="#87">87</a></td><td>Replace a constant (Replace 2 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>53488</td><td><a href="#87">87</a></td><td>Replace a constant (Replace 2 with 3(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>53489</td><td><a href="#87">87</a></td><td>Replace a constant (Replace 2 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>53491</td><td><a href="#87">87</a></td><td>Negate jump condition (Replace IF_ICMPNE with  IF_ICMPEQ)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>53493</td><td><a href="#88">88</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>53492</td><td><a href="#88">88</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>53494</td><td><a href="#103">103</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>53495</td><td><a href="#103">103(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>53496</td><td><a href="#104">104</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>53497</td><td><a href="#104">104(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>53499</td><td><a href="#105">105</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>53498</td><td><a href="#105">105</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>53500</td><td><a href="#105">105</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>53502</td><td><a href="#106">106</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>53501</td><td><a href="#106">106</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>53503</td><td><a href="#106">106</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>53504</td><td><a href="#107">107</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>53505</td><td><a href="#107">107</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>53506</td><td><a href="#107">107</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>53508</td><td><a href="#108">108</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>53507</td><td><a href="#108">108</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>53509</td><td><a href="#108">108</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>53510</td><td><a href="#111">111</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>53511</td><td><a href="#112">112</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+</table>
+</body>
+</html>

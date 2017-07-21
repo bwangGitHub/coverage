@@ -1,0 +1,65 @@
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/repos/asf/!svn/ver/1296980/poi/trunk/src/scratchpad/src/org/apache/poi/hslf/blip
+END
+WMF.java
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/repos/asf/!svn/ver/805262/poi/trunk/src/scratchpad/src/org/apache/poi/hslf/blip/WMF.java
+END
+Bitmap.java
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/repos/asf/!svn/ver/777204/poi/trunk/src/scratchpad/src/org/apache/poi/hslf/blip/Bitmap.java
+END
+DIB.java
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/repos/asf/!svn/ver/949483/poi/trunk/src/scratchpad/src/org/apache/poi/hslf/blip/DIB.java
+END
+BitmapPainter.java
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/repos/asf/!svn/ver/1296980/poi/trunk/src/scratchpad/src/org/apache/poi/hslf/blip/BitmapPainter.java
+END
+PICT.java
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/repos/asf/!svn/ver/805262/poi/trunk/src/scratchpad/src/org/apache/poi/hslf/blip/PICT.java
+END
+PNG.java
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/repos/asf/!svn/ver/777204/poi/trunk/src/scratchpad/src/org/apache/poi/hslf/blip/PNG.java
+END
+ImagePainter.java
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/repos/asf/!svn/ver/814335/poi/trunk/src/scratchpad/src/org/apache/poi/hslf/blip/ImagePainter.java
+END
+JPEG.java
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/repos/asf/!svn/ver/777204/poi/trunk/src/scratchpad/src/org/apache/poi/hslf/blip/JPEG.java
+END
+Metafile.java
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/repos/asf/!svn/ver/805262/poi/trunk/src/scratchpad/src/org/apache/poi/hslf/blip/Metafile.java
+END
+EMF.java
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/repos/asf/!svn/ver/805262/poi/trunk/src/scratchpad/src/org/apache/poi/hslf/blip/EMF.java
+END

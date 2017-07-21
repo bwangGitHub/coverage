@@ -1,0 +1,6 @@
+Testsuite: org.apache.poi.ss.formula.functions.TestIndex
+Tests run: 3, Failures: 0, Errors: 0, Time elapsed: 0 sec
+
+Testcase: testMissingArg took 0 sec
+Testcase: testEvaluateAreaReference took 0 sec
+Testcase: testReferenceResult took 0 sec

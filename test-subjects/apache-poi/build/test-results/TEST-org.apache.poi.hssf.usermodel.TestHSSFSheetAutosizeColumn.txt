@@ -1,0 +1,10 @@
+Testsuite: org.apache.poi.hssf.usermodel.TestHSSFSheetAutosizeColumn
+Tests run: 7, Failures: 0, Errors: 0, Time elapsed: 0.026 sec
+
+Testcase: testNumericCells took 0.004 sec
+Testcase: testBooleanCells took 0.002 sec
+Testcase: testDateCells took 0.007 sec
+Testcase: testStringCells took 0.003 sec
+Testcase: testRotatedText took 0.002 sec
+Testcase: testMergedCells took 0.001 sec
+Testcase: testLargeRowNumbers took 0.005 sec

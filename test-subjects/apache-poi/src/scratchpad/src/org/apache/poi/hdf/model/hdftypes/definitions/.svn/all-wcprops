@@ -1,0 +1,47 @@
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/repos/asf/!svn/ver/1155233/poi/trunk/src/scratchpad/src/org/apache/poi/hdf/model/hdftypes/definitions
+END
+DOPAbstractType.java
+K 25
+svn:wc:ra_dav:version-url
+V 123
+/repos/asf/!svn/ver/1155233/poi/trunk/src/scratchpad/src/org/apache/poi/hdf/model/hdftypes/definitions/DOPAbstractType.java
+END
+TAPAbstractType.java
+K 25
+svn:wc:ra_dav:version-url
+V 123
+/repos/asf/!svn/ver/1155233/poi/trunk/src/scratchpad/src/org/apache/poi/hdf/model/hdftypes/definitions/TAPAbstractType.java
+END
+TCAbstractType.java
+K 25
+svn:wc:ra_dav:version-url
+V 122
+/repos/asf/!svn/ver/1155233/poi/trunk/src/scratchpad/src/org/apache/poi/hdf/model/hdftypes/definitions/TCAbstractType.java
+END
+SEPAbstractType.java
+K 25
+svn:wc:ra_dav:version-url
+V 123
+/repos/asf/!svn/ver/1155233/poi/trunk/src/scratchpad/src/org/apache/poi/hdf/model/hdftypes/definitions/SEPAbstractType.java
+END
+CHPAbstractType.java
+K 25
+svn:wc:ra_dav:version-url
+V 123
+/repos/asf/!svn/ver/1155233/poi/trunk/src/scratchpad/src/org/apache/poi/hdf/model/hdftypes/definitions/CHPAbstractType.java
+END
+FIBAbstractType.java
+K 25
+svn:wc:ra_dav:version-url
+V 123
+/repos/asf/!svn/ver/1155233/poi/trunk/src/scratchpad/src/org/apache/poi/hdf/model/hdftypes/definitions/FIBAbstractType.java
+END
+PAPAbstractType.java
+K 25
+svn:wc:ra_dav:version-url
+V 123
+/repos/asf/!svn/ver/1155233/poi/trunk/src/scratchpad/src/org/apache/poi/hdf/model/hdftypes/definitions/PAPAbstractType.java
+END

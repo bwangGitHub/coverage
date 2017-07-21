@@ -1,0 +1,5 @@
+Testsuite: org.apache.poi.poifs.eventfilesystem.TestPOIFSReaderRegistry
+Tests run: 2, Failures: 0, Errors: 0, Time elapsed: 0.001 sec
+
+Testcase: testEmptyRegistry took 0 sec
+Testcase: testMixedRegistrationOperations took 0 sec

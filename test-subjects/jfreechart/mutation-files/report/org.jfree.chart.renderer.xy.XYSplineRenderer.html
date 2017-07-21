@@ -1,0 +1,606 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN
+"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>
+org.jfree.chart.renderer.xy.XYSplineRenderer
+</title>
+<link href="prettify.css" type="text/css" rel="stylesheet" />
+<script type="text/javascript" src="prettify.js"></script>
+</head>
+<body onload="prettyPrint()">
+<h2>Javalanche report for class:<br/> org.jfree.chart.renderer.xy.XYSplineRenderer </h2><pre class="prettyprint" style="border: 1px solid #888;padding: 2px"><span class="nocode"><a name="1">  1: </a></span>/* ===========================================================
+<span class="nocode"><a name="2">  2: </a></span> * JFreeChart : a free chart library for the Java(tm) platform
+<span class="nocode"><a name="3">  3: </a></span> * ===========================================================
+<span class="nocode"><a name="4">  4: </a></span> *
+<span class="nocode"><a name="5">  5: </a></span> * (C) Copyright 2000-2007, by Object Refinery Limited and Contributors.
+<span class="nocode"><a name="6">  6: </a></span> *
+<span class="nocode"><a name="7">  7: </a></span> * Project Info:  http://www.jfree.org/jfreechart/index.html
+<span class="nocode"><a name="8">  8: </a></span> *
+<span class="nocode"><a name="9">  9: </a></span> * This library is free software; you can redistribute it and/or modify it 
+<span class="nocode"><a name="10"> 10: </a></span> * under the terms of the GNU Lesser General Public License as published by 
+<span class="nocode"><a name="11"> 11: </a></span> * the Free Software Foundation; either version 2.1 of the License, or 
+<span class="nocode"><a name="12"> 12: </a></span> * (at your option) any later version.
+<span class="nocode"><a name="13"> 13: </a></span> *
+<span class="nocode"><a name="14"> 14: </a></span> * This library is distributed in the hope that it will be useful, but 
+<span class="nocode"><a name="15"> 15: </a></span> * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY 
+<span class="nocode"><a name="16"> 16: </a></span> * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public 
+<span class="nocode"><a name="17"> 17: </a></span> * License for more details.
+<span class="nocode"><a name="18"> 18: </a></span> *
+<span class="nocode"><a name="19"> 19: </a></span> * You should have received a copy of the GNU Lesser General Public
+<span class="nocode"><a name="20"> 20: </a></span> * License along with this library; if not, write to the Free Software
+<span class="nocode"><a name="21"> 21: </a></span> * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, 
+<span class="nocode"><a name="22"> 22: </a></span> * USA.  
+<span class="nocode"><a name="23"> 23: </a></span> *
+<span class="nocode"><a name="24"> 24: </a></span> * [Java is a trademark or registered trademark of Sun Microsystems, Inc. 
+<span class="nocode"><a name="25"> 25: </a></span> * in the United States and other countries.]
+<span class="nocode"><a name="26"> 26: </a></span> *
+<span class="nocode"><a name="27"> 27: </a></span> * ---------------------
+<span class="nocode"><a name="28"> 28: </a></span> * XYSplineRenderer.java
+<span class="nocode"><a name="29"> 29: </a></span> * ---------------------
+<span class="nocode"><a name="30"> 30: </a></span> * (C) Copyright 2007, by Klaus Rheinwald and Contributors.
+<span class="nocode"><a name="31"> 31: </a></span> *
+<span class="nocode"><a name="32"> 32: </a></span> * Original Author:  Klaus Rheinwald;
+<span class="nocode"><a name="33"> 33: </a></span> * Contributor(s):   Tobias von Petersdorff (tvp@math.umd.edu, 
+<span class="nocode"><a name="34"> 34: </a></span> *                       http://www.wam.umd.edu/~petersd/);
+<span class="nocode"><a name="35"> 35: </a></span> *                   David Gilbert (for Object Refinery Limited);
+<span class="nocode"><a name="36"> 36: </a></span> *
+<span class="nocode"><a name="37"> 37: </a></span> * Changes:
+<span class="nocode"><a name="38"> 38: </a></span> * --------
+<span class="nocode"><a name="39"> 39: </a></span> * 25-Jul-2007 : Version 1, contributed by Klaus Rheinwald (DG);
+<span class="nocode"><a name="40"> 40: </a></span> * 03-Aug-2007 : Added new constructor (KR);
+<span class="nocode"><a name="41"> 41: </a></span> * 25-Oct-2007 : Prevent duplicate control points (KR);
+<span class="nocode"><a name="42"> 42: </a></span> *
+<span class="nocode"><a name="43"> 43: </a></span> */
+<span class="nocode"><a name="44"> 44: </a></span>
+<span class="nocode"><a name="45"> 45: </a></span>
+<span class="nocode"><a name="46"> 46: </a></span>package org.jfree.chart.renderer.xy;
+<span class="nocode"><a name="47"> 47: </a></span>
+<span class="nocode"><a name="48"> 48: </a></span>import java.awt.Graphics2D;
+<span class="nocode"><a name="49"> 49: </a></span>import java.awt.geom.Rectangle2D;
+<span class="nocode"><a name="50"> 50: </a></span>import java.util.Vector;
+<span class="nocode"><a name="51"> 51: </a></span>
+<span class="nocode"><a name="52"> 52: </a></span>import org.jfree.chart.axis.ValueAxis;
+<span class="nocode"><a name="53"> 53: </a></span>import org.jfree.chart.event.RendererChangeEvent;
+<span class="nocode"><a name="54"> 54: </a></span>import org.jfree.chart.plot.PlotOrientation;
+<span class="nocode"><a name="55"> 55: </a></span>import org.jfree.chart.plot.PlotRenderingInfo;
+<span class="nocode"><a name="56"> 56: </a></span>import org.jfree.chart.plot.XYPlot;
+<span class="nocode"><a name="57"> 57: </a></span>import org.jfree.data.xy.XYDataset;
+<span class="nocode"><a name="58"> 58: </a></span>import org.jfree.ui.RectangleEdge;
+<span class="nocode"><a name="59"> 59: </a></span>
+<span class="nocode"><a name="60"> 60: </a></span>
+<span class="nocode"><a name="61"> 61: </a></span>/**
+<span class="nocode"><a name="62"> 62: </a></span> * A renderer that connects data points with natural cubic splines and/or 
+<span class="nocode"><a name="63"> 63: </a></span> * draws shapes at each data point.  This renderer is designed for use with 
+<span class="nocode"><a name="64"> 64: </a></span> * the {@link XYPlot} class.
+<span class="nocode"><a name="65"> 65: </a></span> * 
+<span class="nocode"><a name="66"> 66: </a></span> * @since 1.0.7
+<span class="nocode"><a name="67"> 67: </a></span> */
+<span class="nocode"><a name="68"> 68: </a></span>public class XYSplineRenderer extends XYLineAndShapeRenderer {
+<span class="nocode"><a name="69"> 69: </a></span>
+<span class="nocode"><a name="70"> 70: </a></span>    /**
+<span class="nocode"><a name="71"> 71: </a></span>     * To collect data points for later splining.
+<span class="nocode"><a name="72"> 72: </a></span>     */
+<span class="nocode"><a name="73"> 73: </a></span>    private Vector points;
+<span class="nocode"><a name="74"> 74: </a></span>
+<span class="nocode"><a name="75"> 75: </a></span>    /**
+<span class="nocode"><a name="76"> 76: </a></span>     * Resolution of splines (number of line segments between points)
+<span class="nocode"><a name="77"> 77: </a></span>     */
+<span class="nocode"><a name="78"> 78: </a></span>    private int precision;
+<span class="nocode"><a name="79"> 79: </a></span>
+<span class="nocode"><a name="80"> 80: </a></span>    /**
+<span class="nocode"><a name="81"> 81: </a></span>     * Creates a new instance with the 'precision' attribute defaulting to 
+<span class="nocode"><a name="82"> 82: </a></span>     * 5.
+<span class="nocode"><a name="83"> 83: </a></span>     */
+<span class="nocode"><a name="84"> 84: </a></span>    public XYSplineRenderer() {
+<span class="nocode"><a name="85"> 85: </a></span>        this(5);
+<span class="nocode"><a name="86"> 86: </a></span>    }
+<span class="nocode"><a name="87"> 87: </a></span>    
+<span class="nocode"><a name="88"> 88: </a></span>    /**
+<span class="nocode"><a name="89"> 89: </a></span>     * Creates a new renderer with the specified precision.
+<span class="nocode"><a name="90"> 90: </a></span>     * 
+<span class="nocode"><a name="91"> 91: </a></span>     * @param precision  the number of points between data items.
+<span class="nocode"><a name="92"> 92: </a></span>     */
+<span class="nocode"><a name="93"> 93: </a></span>    public XYSplineRenderer(int precision) {
+<span class="nocode"><a name="94"> 94: </a></span>        super();
+<span class="nocode"><a name="95"> 95: </a></span>        if (precision &lt;= 0) {
+<span class="nocode"><a name="96"> 96: </a></span>            throw new IllegalArgumentException(&quot;Requires precision &gt; 0.&quot;);
+<span class="nocode"><a name="97"> 97: </a></span>        }
+<span class="nocode"><a name="98"> 98: </a></span>        this.precision = precision;
+<span class="nocode"><a name="99"> 99: </a></span>    }    
+<span class="nocode"><a name="100">100: </a></span>    
+<span class="nocode"><a name="101">101: </a></span>    /**
+<span class="nocode"><a name="102">102: </a></span>     * Get the resolution of splines.
+<span class="nocode"><a name="103">103: </a></span>     *
+<span class="nocode"><a name="104">104: </a></span>     * @return Number of line segments between points.
+<span class="nocode"><a name="105">105: </a></span>     * 
+<span class="nocode"><a name="106">106: </a></span>     * @see #setPrecision(int)
+<span class="nocode"><a name="107">107: </a></span>     */
+<span class="nocode"><a name="108">108: </a></span>    public int getPrecision() {
+<span class="nocode"><a name="109">109: </a></span>        return this.precision;
+<span class="nocode"><a name="110">110: </a></span>    }
+<span class="nocode"><a name="111">111: </a></span>
+<span class="nocode"><a name="112">112: </a></span>    /**
+<span class="nocode"><a name="113">113: </a></span>     * Set the resolution of splines and sends a {@link RendererChangeEvent}
+<span class="nocode"><a name="114">114: </a></span>     * to all registered listeners.
+<span class="nocode"><a name="115">115: </a></span>     *
+<span class="nocode"><a name="116">116: </a></span>     * @param p  number of line segments between points (must be &gt; 0).
+<span class="nocode"><a name="117">117: </a></span>     * 
+<span class="nocode"><a name="118">118: </a></span>     * @see #getPrecision()
+<span class="nocode"><a name="119">119: </a></span>     */
+<span class="nocode"><a name="120">120: </a></span>    public void setPrecision(int p) {
+<span class="nocode"><a name="121">121: </a></span>        if (p &lt;= 0) {
+<span class="nocode"><a name="122">122: </a></span>            throw new IllegalArgumentException(&quot;Requires p &gt; 0.&quot;);
+<span class="nocode"><a name="123">123: </a></span>        }
+<span class="nocode"><a name="124">124: </a></span>        this.precision = p;
+<span class="nocode"><a name="125">125: </a></span>        fireChangeEvent();
+<span class="nocode"><a name="126">126: </a></span>    }
+<span class="nocode"><a name="127">127: </a></span>
+<span class="nocode"><a name="128">128: </a></span>    /**
+<span class="nocode"><a name="129">129: </a></span>     * Initialises the renderer.
+<span class="nocode"><a name="130">130: </a></span>     * &lt;P&gt;
+<span class="nocode"><a name="131">131: </a></span>     * This method will be called before the first item is rendered, giving the
+<span class="nocode"><a name="132">132: </a></span>     * renderer an opportunity to initialise any state information it wants to
+<span class="nocode"><a name="133">133: </a></span>     * maintain.  The renderer can do nothing if it chooses.
+<span class="nocode"><a name="134">134: </a></span>     *
+<span class="nocode"><a name="135">135: </a></span>     * @param g2  the graphics device.
+<span class="nocode"><a name="136">136: </a></span>     * @param dataArea  the area inside the axes.
+<span class="nocode"><a name="137">137: </a></span>     * @param plot  the plot.
+<span class="nocode"><a name="138">138: </a></span>     * @param data  the data.
+<span class="nocode"><a name="139">139: </a></span>     * @param info  an optional info collection object to return data back to
+<span class="nocode"><a name="140">140: </a></span>     *              the caller.
+<span class="nocode"><a name="141">141: </a></span>     *
+<span class="nocode"><a name="142">142: </a></span>     * @return The renderer state.
+<span class="nocode"><a name="143">143: </a></span>     */
+<span class="nocode"><a name="144">144: </a></span>    public XYItemRendererState initialise(Graphics2D g2, Rectangle2D dataArea, 
+<span class="nocode"><a name="145">145: </a></span>            XYPlot plot, XYDataset data, PlotRenderingInfo info) {
+<span class="nocode"><a name="146">146: </a></span>
+<span class="nocode"><a name="147">147: </a></span>        State state = (State) super.initialise(g2, dataArea, plot, data, info);
+<span class="nocode"><a name="148">148: </a></span>        state.setProcessVisibleItemsOnly(false);
+<span class="nocode"><a name="149">149: </a></span>        this.points = new Vector();
+<span class="nocode"><a name="150">150: </a></span>        setDrawSeriesLineAsPath(true);
+<span class="nocode"><a name="151">151: </a></span>        return state;
+<span class="nocode"><a name="152">152: </a></span>    }
+<span class="nocode"><a name="153">153: </a></span>
+<span class="nocode"><a name="154">154: </a></span>    /**
+<span class="nocode"><a name="155">155: </a></span>     * Draws the item (first pass). This method draws the lines
+<span class="nocode"><a name="156">156: </a></span>     * connecting the items. Instead of drawing separate lines,
+<span class="nocode"><a name="157">157: </a></span>     * a GeneralPath is constructed and drawn at the end of
+<span class="nocode"><a name="158">158: </a></span>     * the series painting.
+<span class="nocode"><a name="159">159: </a></span>     *
+<span class="nocode"><a name="160">160: </a></span>     * @param g2  the graphics device.
+<span class="nocode"><a name="161">161: </a></span>     * @param state  the renderer state.
+<span class="nocode"><a name="162">162: </a></span>     * @param plot  the plot (can be used to obtain standard color information
+<span class="nocode"><a name="163">163: </a></span>     *              etc).
+<span class="nocode"><a name="164">164: </a></span>     * @param dataset  the dataset.
+<span class="nocode"><a name="165">165: </a></span>     * @param pass  the pass.
+<span class="nocode"><a name="166">166: </a></span>     * @param series  the series index (zero-based).
+<span class="nocode"><a name="167">167: </a></span>     * @param item  the item index (zero-based).
+<span class="nocode"><a name="168">168: </a></span>     * @param domainAxis  the domain axis.
+<span class="nocode"><a name="169">169: </a></span>     * @param rangeAxis  the range axis.
+<span class="nocode"><a name="170">170: </a></span>     * @param dataArea  the area within which the data is being drawn.
+<span class="nocode"><a name="171">171: </a></span>     */
+<span class="nocode"><a name="172">172: </a></span>    protected void drawPrimaryLineAsPath(XYItemRendererState state, 
+<span class="nocode"><a name="173">173: </a></span>            Graphics2D g2, XYPlot plot, XYDataset dataset, int pass, 
+<span class="nocode"><a name="174">174: </a></span>            int series, int item, ValueAxis domainAxis, ValueAxis rangeAxis, 
+<span class="nocode"><a name="175">175: </a></span>            Rectangle2D dataArea) {
+<span class="nocode"><a name="176">176: </a></span>
+<span class="nocode"><a name="177">177: </a></span>        RectangleEdge xAxisLocation = plot.getDomainAxisEdge();
+<span class="nocode"><a name="178">178: </a></span>        RectangleEdge yAxisLocation = plot.getRangeAxisEdge();
+<span class="nocode"><a name="179">179: </a></span>
+<span class="nocode"><a name="180">180: </a></span>        // get the data points
+<span class="nocode"><a name="181">181: </a></span>        double x1 = dataset.getXValue(series, item);
+<span class="nocode"><a name="182">182: </a></span>        double y1 = dataset.getYValue(series, item);
+<span class="nocode"><a name="183">183: </a></span>        double transX1 = domainAxis.valueToJava2D(x1, dataArea, xAxisLocation);
+<span class="nocode"><a name="184">184: </a></span>        double transY1 = rangeAxis.valueToJava2D(y1, dataArea, yAxisLocation);
+<span class="nocode"><a name="185">185: </a></span>
+<span class="nocode"><a name="186">186: </a></span>        // collect points
+<span class="nocode"><a name="187">187: </a></span>        if (!Double.isNaN(transX1) &amp;&amp; !Double.isNaN(transY1)) {
+<span class="nocode"><a name="188">188: </a></span>            ControlPoint p = new ControlPoint(plot.getOrientation() 
+<span class="nocode"><a name="189">189: </a></span>                                == PlotOrientation.HORIZONTAL ? (float) transY1 
+<span class="nocode"><a name="190">190: </a></span>                                : (float) transX1, plot.getOrientation() 
+<span class="nocode"><a name="191">191: </a></span>                                == PlotOrientation.HORIZONTAL ? (float) transX1 
+<span class="nocode"><a name="192">192: </a></span>                                        : (float) transY1);
+<span class="nocode"><a name="193">193: </a></span>            if (!this.points.contains(p)) {
+<span class="nocode"><a name="194">194: </a></span>                this.points.add(p);
+<span class="nocode"><a name="195">195: </a></span>            }
+<span class="nocode"><a name="196">196: </a></span>        }
+<span class="nocode"><a name="197">197: </a></span>        if (item == dataset.getItemCount(series) - 1) {
+<span class="nocode"><a name="198">198: </a></span>            State s = (State) state;
+<span class="nocode"><a name="199">199: </a></span>            // construct path
+<span class="nocode"><a name="200">200: </a></span>            if (this.points.size() &gt; 1) {
+<span class="nocode"><a name="201">201: </a></span>                // we need at least two points to draw something
+<span class="nocode"><a name="202">202: </a></span>                ControlPoint cp0 = (ControlPoint) this.points.get(0);
+<span class="nocode"><a name="203">203: </a></span>                s.seriesPath.moveTo(cp0.x, cp0.y);
+<span class="nocode"><a name="204">204: </a></span>                if (this.points.size() == 2) {
+<span class="nocode"><a name="205">205: </a></span>                    // we need at least 3 points to spline. Draw simple line 
+<span class="nocode"><a name="206">206: </a></span>                    // for two points
+<span class="nocode"><a name="207">207: </a></span>                    ControlPoint cp1 = (ControlPoint) this.points.get(1);
+<span class="nocode"><a name="208">208: </a></span>                    s.seriesPath.lineTo(cp1.x, cp1.y);
+<span class="nocode"><a name="209">209: </a></span>                } 
+<span class="nocode"><a name="210">210: </a></span>                else {
+<span class="nocode"><a name="211">211: </a></span>                    // construct spline
+<span class="nocode"><a name="212">212: </a></span>                    int np = this.points.size(); // number of points
+<span class="nocode"><a name="213">213: </a></span>                    float[] d = new float[np]; // Newton form coefficients
+<span class="nocode"><a name="214">214: </a></span>                    float[] x = new float[np]; // x-coordinates of nodes
+<span class="nocode"><a name="215">215: </a></span>                    float y;
+<span class="nocode"><a name="216">216: </a></span>                    float t;
+<span class="nocode"><a name="217">217: </a></span>                    float oldy = 0;
+<span class="nocode"><a name="218">218: </a></span>                    float oldt = 0;
+<span class="nocode"><a name="219">219: </a></span>
+<span class="nocode"><a name="220">220: </a></span>                    float[] a = new float[np];
+<span class="nocode"><a name="221">221: </a></span>                    float t1;
+<span class="nocode"><a name="222">222: </a></span>                    float t2;
+<span class="nocode"><a name="223">223: </a></span>                    float[] h = new float[np];
+<span class="nocode"><a name="224">224: </a></span>
+<span class="nocode"><a name="225">225: </a></span>                    for (int i = 0; i &lt; np; i++) {
+<span class="nocode"><a name="226">226: </a></span>                        ControlPoint cpi = (ControlPoint) this.points.get(i);
+<span class="nocode"><a name="227">227: </a></span>                        x[i] = cpi.x;
+<span class="nocode"><a name="228">228: </a></span>                        d[i] = cpi.y;
+<span class="nocode"><a name="229">229: </a></span>                    }
+<span class="nocode"><a name="230">230: </a></span>
+<span class="nocode"><a name="231">231: </a></span>                    for (int i = 1; i &lt;= np - 1; i++) {
+<span class="nocode"><a name="232">232: </a></span>                        h[i] = x[i] - x[i - 1];
+<span class="nocode"><a name="233">233: </a></span>                    }
+<span class="nocode"><a name="234">234: </a></span>                    float[] sub = new float[np - 1];
+<span class="nocode"><a name="235">235: </a></span>                    float[] diag = new float[np - 1];
+<span class="nocode"><a name="236">236: </a></span>                    float[] sup = new float[np - 1];
+<span class="nocode"><a name="237">237: </a></span>
+<span class="nocode"><a name="238">238: </a></span>                    for (int i = 1; i &lt;= np - 2; i++) {
+<span class="nocode"><a name="239">239: </a></span>                        diag[i] = (h[i] + h[i + 1]) / 3;
+<span class="nocode"><a name="240">240: </a></span>                        sup[i] = h[i + 1] / 6;
+<span class="nocode"><a name="241">241: </a></span>                        sub[i] = h[i] / 6;
+<span class="nocode"><a name="242">242: </a></span>                        a[i] = (d[i + 1] - d[i]) / h[i + 1] 
+<span class="nocode"><a name="243">243: </a></span>                                   - (d[i] - d[i - 1]) / h[i];
+<span class="nocode"><a name="244">244: </a></span>                    }
+<span class="nocode"><a name="245">245: </a></span>                    solveTridiag(sub, diag, sup, a, np - 2);
+<span class="nocode"><a name="246">246: </a></span>
+<span class="nocode"><a name="247">247: </a></span>                    // note that a[0]=a[np-1]=0
+<span class="nocode"><a name="248">248: </a></span>                    // draw
+<span class="nocode"><a name="249">249: </a></span>                    oldt = x[0];
+<span class="nocode"><a name="250">250: </a></span>                    oldy = d[0];
+<span class="nocode"><a name="251">251: </a></span>                    s.seriesPath.moveTo(oldt, oldy);
+<span class="nocode"><a name="252">252: </a></span>                    for (int i = 1; i &lt;= np - 1; i++) {
+<span class="nocode"><a name="253">253: </a></span>                        // loop over intervals between nodes
+<span class="nocode"><a name="254">254: </a></span>                        for (int j = 1; j &lt;= this.precision; j++) {
+<span class="nocode"><a name="255">255: </a></span>                            t1 = (h[i] * j) / this.precision;
+<span class="nocode"><a name="256">256: </a></span>                            t2 = h[i] - t1;
+<span class="nocode"><a name="257">257: </a></span>                            y = ((-a[i - 1] / 6 * (t2 + h[i]) * t1 + d[i - 1]) 
+<span class="nocode"><a name="258">258: </a></span>                                    * t2 + (-a[i] / 6 * (t1 + h[i]) * t2 
+<span class="nocode"><a name="259">259: </a></span>                                    + d[i]) * t1) / h[i];
+<span class="nocode"><a name="260">260: </a></span>                            t = x[i - 1] + t1;
+<span class="nocode"><a name="261">261: </a></span>                            s.seriesPath.lineTo(t, y);
+<span class="nocode"><a name="262">262: </a></span>                            oldt = t;
+<span class="nocode"><a name="263">263: </a></span>                            oldy = y;
+<span class="nocode"><a name="264">264: </a></span>                        }
+<span class="nocode"><a name="265">265: </a></span>                    }
+<span class="nocode"><a name="266">266: </a></span>                }
+<span class="nocode"><a name="267">267: </a></span>                // draw path
+<span class="nocode"><a name="268">268: </a></span>                drawFirstPassShape(g2, pass, series, item, s.seriesPath);
+<span class="nocode"><a name="269">269: </a></span>            }
+<span class="nocode"><a name="270">270: </a></span>
+<span class="nocode"><a name="271">271: </a></span>            // reset points vector
+<span class="nocode"><a name="272">272: </a></span>            this.points = new Vector();
+<span class="nocode"><a name="273">273: </a></span>        }
+<span class="nocode"><a name="274">274: </a></span>    }
+<span class="nocode"><a name="275">275: </a></span>
+<span class="nocode"><a name="276">276: </a></span>    /**
+<span class="nocode"><a name="277">277: </a></span>     * Document me!
+<span class="nocode"><a name="278">278: </a></span>     * 
+<span class="nocode"><a name="279">279: </a></span>     * @param sub
+<span class="nocode"><a name="280">280: </a></span>     * @param diag
+<span class="nocode"><a name="281">281: </a></span>     * @param sup
+<span class="nocode"><a name="282">282: </a></span>     * @param b
+<span class="nocode"><a name="283">283: </a></span>     * @param n
+<span class="nocode"><a name="284">284: </a></span>     */
+<span class="nocode"><a name="285">285: </a></span>    private void solveTridiag(float[] sub, float[] diag, float[] sup, 
+<span class="nocode"><a name="286">286: </a></span>            float[] b, int n) {
+<span class="nocode"><a name="287">287: </a></span>/*      solve linear system with tridiagonal n by n matrix a
+<span class="nocode"><a name="288">288: </a></span>        using Gaussian elimination *without* pivoting
+<span class="nocode"><a name="289">289: </a></span>        where   a(i,i-1) = sub[i]  for 2&lt;=i&lt;=n
+<span class="nocode"><a name="290">290: </a></span>        a(i,i)   = diag[i] for 1&lt;=i&lt;=n
+<span class="nocode"><a name="291">291: </a></span>        a(i,i+1) = sup[i]  for 1&lt;=i&lt;=n-1
+<span class="nocode"><a name="292">292: </a></span>        (the values sub[1], sup[n] are ignored)
+<span class="nocode"><a name="293">293: </a></span>        right hand side vector b[1:n] is overwritten with solution
+<span class="nocode"><a name="294">294: </a></span>        NOTE: 1...n is used in all arrays, 0 is unused */
+<span class="nocode"><a name="295">295: </a></span>        int i;
+<span class="nocode"><a name="296">296: </a></span>/*                  factorization and forward substitution */
+<span class="nocode"><a name="297">297: </a></span>        for (i = 2; i &lt;= n; i++) {
+<span class="nocode"><a name="298">298: </a></span>            sub[i] = sub[i] / diag[i - 1];
+<span class="nocode"><a name="299">299: </a></span>            diag[i] = diag[i] - sub[i] * sup[i - 1];
+<span class="nocode"><a name="300">300: </a></span>            b[i] = b[i] - sub[i] * b[i - 1];
+<span class="nocode"><a name="301">301: </a></span>        }
+<span class="nocode"><a name="302">302: </a></span>        b[n] = b[n] / diag[n];
+<span class="nocode"><a name="303">303: </a></span>        for (i = n - 1; i &gt;= 1; i--) {
+<span class="nocode"><a name="304">304: </a></span>            b[i] = (b[i] - sup[i] * b[i + 1]) / diag[i];
+<span class="nocode"><a name="305">305: </a></span>        }
+<span class="nocode"><a name="306">306: </a></span>    }
+<span class="nocode"><a name="307">307: </a></span>    
+<span class="nocode"><a name="308">308: </a></span>    /**
+<span class="nocode"><a name="309">309: </a></span>     * Tests this renderer for equality with an arbitrary object.
+<span class="nocode"><a name="310">310: </a></span>     * 
+<span class="nocode"><a name="311">311: </a></span>     * @param obj  the object (&lt;code&gt;null&lt;/code&gt; permitted).
+<span class="nocode"><a name="312">312: </a></span>     * 
+<span class="nocode"><a name="313">313: </a></span>     * @return A boolean.
+<span class="nocode"><a name="314">314: </a></span>     */
+<span class="nocode"><a name="315">315: </a></span>    public boolean equals(Object obj) {
+<span class="nocode"><a name="316">316: </a></span>        if (obj == this) {
+<span class="nocode"><a name="317">317: </a></span>            return true;
+<span class="nocode"><a name="318">318: </a></span>        }
+<span class="nocode"><a name="319">319: </a></span>        if (!(obj instanceof XYSplineRenderer)) {
+<span class="nocode"><a name="320">320: </a></span>            return false;
+<span class="nocode"><a name="321">321: </a></span>        }
+<span class="nocode"><a name="322">322: </a></span>        XYSplineRenderer that = (XYSplineRenderer) obj;
+<span class="nocode"><a name="323">323: </a></span>        if (this.precision != that.precision) {
+<span class="nocode"><a name="324">324: </a></span>            return false;
+<span class="nocode"><a name="325">325: </a></span>        }
+<span class="nocode"><a name="326">326: </a></span>        return super.equals(obj);
+<span class="nocode"><a name="327">327: </a></span>    }
+<span class="nocode"><a name="328">328: </a></span>
+<span class="nocode"><a name="329">329: </a></span>    /**
+<span class="nocode"><a name="330">330: </a></span>     * Represents a control point.
+<span class="nocode"><a name="331">331: </a></span>     */
+<span class="nocode"><a name="332">332: </a></span>    class ControlPoint {
+<span class="nocode"><a name="333">333: </a></span>        
+<span class="nocode"><a name="334">334: </a></span>        /** The x-coordinate. */
+<span class="nocode"><a name="335">335: </a></span>        public float x;
+<span class="nocode"><a name="336">336: </a></span>        
+<span class="nocode"><a name="337">337: </a></span>        /** The y-coordinate. */
+<span class="nocode"><a name="338">338: </a></span>        public float y;
+<span class="nocode"><a name="339">339: </a></span>
+<span class="nocode"><a name="340">340: </a></span>        /**
+<span class="nocode"><a name="341">341: </a></span>         * Creates a new control point.
+<span class="nocode"><a name="342">342: </a></span>         * 
+<span class="nocode"><a name="343">343: </a></span>         * @param x  the x-coordinate.
+<span class="nocode"><a name="344">344: </a></span>         * @param y  the y-coordinate.
+<span class="nocode"><a name="345">345: </a></span>         */
+<span class="nocode"><a name="346">346: </a></span>        public ControlPoint(float x, float y) {
+<span class="nocode"><a name="347">347: </a></span>            this.x = x;
+<span class="nocode"><a name="348">348: </a></span>            this.y = y;
+<span class="nocode"><a name="349">349: </a></span>        }
+<span class="nocode"><a name="350">350: </a></span>
+<span class="nocode"><a name="351">351: </a></span>        /**
+<span class="nocode"><a name="352">352: </a></span>         * Tests this point for equality with an arbitrary object.
+<span class="nocode"><a name="353">353: </a></span>         * 
+<span class="nocode"><a name="354">354: </a></span>         * @param obj  the object (&lt;code&gt;null&lt;/code&gt; permitted.
+<span class="nocode"><a name="355">355: </a></span>         * 
+<span class="nocode"><a name="356">356: </a></span>         * @return A boolean.
+<span class="nocode"><a name="357">357: </a></span>         */
+<span class="nocode"><a name="358">358: </a></span>        public boolean equals(Object obj) {
+<span class="nocode"><a name="359">359: </a></span>            if (obj == this) {
+<span class="nocode"><a name="360">360: </a></span>                return true;
+<span class="nocode"><a name="361">361: </a></span>            }
+<span class="nocode"><a name="362">362: </a></span>            if (!(obj instanceof ControlPoint)) {
+<span class="nocode"><a name="363">363: </a></span>                return false;
+<span class="nocode"><a name="364">364: </a></span>            }
+<span class="nocode"><a name="365">365: </a></span>            ControlPoint that = (ControlPoint) obj;
+<span class="nocode"><a name="366">366: </a></span>            if (this.x != that.x) {
+<span class="nocode"><a name="367">367: </a></span>                return false;
+<span class="nocode"><a name="368">368: </a></span>            }
+<span class="nocode"><a name="369">369: </a></span>            /*&amp;&amp; y == ((ControlPoint) obj).y*/;
+<span class="nocode"><a name="370">370: </a></span>            return true;
+<span class="nocode"><a name="371">371: </a></span>        }
+<span class="nocode"><a name="372">372: </a></span>
+<span class="nocode"><a name="373">373: </a></span>    }
+<span class="nocode"><a name="374">374: </a></span>}
+</pre><table class="mutation_table" summary="Mutations">
+<tr><th>ID</th><th>Line</th><th>Type</th><th>Detected</th></tr><tr><td>18431</td><td><a href="#85">85</a></td><td>Replace a constant (Replace 5 with 4(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18430</td><td><a href="#85">85</a></td><td>Replace a constant (Replace 5 with 6(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18429</td><td><a href="#85">85</a></td><td>Replace a constant (Replace 5 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>18432</td><td><a href="#95">95</a></td><td>Negate jump condition (Replace IFGT with  IFLE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>18433</td><td><a href="#121">121</a></td><td>Negate jump condition (Replace IFGT with  IFLE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>18434</td><td><a href="#125">125</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18435</td><td><a href="#147">147</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18437</td><td><a href="#148">148</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18436</td><td><a href="#148">148</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18438</td><td><a href="#148">148</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18439</td><td><a href="#150">150</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18440</td><td><a href="#150">150</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18441</td><td><a href="#150">150</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18442</td><td><a href="#177">177</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18443</td><td><a href="#178">178</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18444</td><td><a href="#181">181</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18445</td><td><a href="#182">182</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18446</td><td><a href="#183">183</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18447</td><td><a href="#184">184</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18449</td><td><a href="#187">187</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18451</td><td><a href="#187">187(1)</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18448</td><td><a href="#187">187</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18450</td><td><a href="#187">187(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18453</td><td><a href="#188">188</a></td><td>Negate jump condition (Replace IF_ACMPNE with  IF_ACMPEQ)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18455</td><td><a href="#188">188(1)</a></td><td>Negate jump condition (Replace IF_ACMPNE with  IF_ACMPEQ)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18452</td><td><a href="#188">188</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18454</td><td><a href="#188">188(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18457</td><td><a href="#193">193</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18456</td><td><a href="#193">193</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18458</td><td><a href="#194">194</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18461</td><td><a href="#197">197</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18460</td><td><a href="#197">197</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18463</td><td><a href="#197">197</a></td><td>Negate jump condition (Replace IF_ICMPNE with  IF_ICMPEQ)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18462</td><td><a href="#197">197</a></td><td>Replace arithmetic operator (Replace ISUB with IADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18459</td><td><a href="#197">197</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18465</td><td><a href="#200">200</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18466</td><td><a href="#200">200</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18467</td><td><a href="#200">200</a></td><td>Negate jump condition (Replace IF_ICMPLE with  IF_ICMPGT)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18464</td><td><a href="#200">200</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18469</td><td><a href="#202">202</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18468</td><td><a href="#202">202</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18470</td><td><a href="#202">202</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18471</td><td><a href="#203">203</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18475</td><td><a href="#204">204</a></td><td>Replace a constant (Replace 2 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18473</td><td><a href="#204">204</a></td><td>Replace a constant (Replace 2 with 3(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18474</td><td><a href="#204">204</a></td><td>Replace a constant (Replace 2 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18476</td><td><a href="#204">204</a></td><td>Negate jump condition (Replace IF_ICMPNE with  IF_ICMPEQ)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18472</td><td><a href="#204">204</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18477</td><td><a href="#207">207</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18478</td><td><a href="#207">207</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18479</td><td><a href="#207">207</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18480</td><td><a href="#208">208</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18481</td><td><a href="#212">212</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18482</td><td><a href="#217">217</a></td><td>Replace a constant (Replace 0 with 1(FLOAT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18483</td><td><a href="#217">217</a></td><td>Replace a constant (Replace 0 with -1(FLOAT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18485</td><td><a href="#218">218</a></td><td>Replace a constant (Replace 0 with -1(FLOAT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18484</td><td><a href="#218">218</a></td><td>Replace a constant (Replace 0 with 1(FLOAT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18487</td><td><a href="#225">225</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18486</td><td><a href="#225">225</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18488</td><td><a href="#225">225</a></td><td>Negate jump condition (Replace IF_ICMPGE with  IF_ICMPLT)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18489</td><td><a href="#226">226</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18490</td><td><a href="#231">231</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18491</td><td><a href="#231">231</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18493</td><td><a href="#231">231(1)</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18492</td><td><a href="#231">231(1)</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18495</td><td><a href="#231">231</a></td><td>Negate jump condition (Replace IF_ICMPGT with  IF_ICMPLE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18494</td><td><a href="#231">231</a></td><td>Replace arithmetic operator (Replace ISUB with IADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18497</td><td><a href="#232">232</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18496</td><td><a href="#232">232</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18498</td><td><a href="#232">232</a></td><td>Replace arithmetic operator (Replace ISUB with IADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18499</td><td><a href="#232">232(1)</a></td><td>Replace arithmetic operator (Replace FSUB with FADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18500</td><td><a href="#234">234</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18501</td><td><a href="#234">234</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18502</td><td><a href="#234">234</a></td><td>Replace arithmetic operator (Replace ISUB with IADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18503</td><td><a href="#235">235</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18504</td><td><a href="#235">235</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18505</td><td><a href="#235">235</a></td><td>Replace arithmetic operator (Replace ISUB with IADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18506</td><td><a href="#236">236</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18507</td><td><a href="#236">236</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18508</td><td><a href="#236">236</a></td><td>Replace arithmetic operator (Replace ISUB with IADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18510</td><td><a href="#238">238</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18509</td><td><a href="#238">238</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18511</td><td><a href="#238">238(1)</a></td><td>Replace a constant (Replace 2 with 3(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18512</td><td><a href="#238">238(1)</a></td><td>Replace a constant (Replace 2 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18513</td><td><a href="#238">238(1)</a></td><td>Replace a constant (Replace 2 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18515</td><td><a href="#238">238</a></td><td>Negate jump condition (Replace IF_ICMPGT with  IF_ICMPLE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18514</td><td><a href="#238">238</a></td><td>Replace arithmetic operator (Replace ISUB with IADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18517</td><td><a href="#239">239</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18516</td><td><a href="#239">239</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18521</td><td><a href="#239">239(1)</a></td><td>Replace a constant (Replace 3.0 with 4.0(FLOAT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18520</td><td><a href="#239">239(1)</a></td><td>Replace a constant (Replace 3.0 with 0(FLOAT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18522</td><td><a href="#239">239(1)</a></td><td>Replace a constant (Replace 3.0 with 2.0(FLOAT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18518</td><td><a href="#239">239</a></td><td>Replace arithmetic operator (Replace IADD with ISUB)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18519</td><td><a href="#239">239(1)</a></td><td>Replace arithmetic operator (Replace FADD with FSUB)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18523</td><td><a href="#239">239(2)</a></td><td>Replace arithmetic operator (Replace FDIV with FMUL)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18524</td><td><a href="#240">240</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18525</td><td><a href="#240">240</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18528</td><td><a href="#240">240(1)</a></td><td>Replace a constant (Replace 6.0 with 5.0(FLOAT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18527</td><td><a href="#240">240(1)</a></td><td>Replace a constant (Replace 6.0 with 0(FLOAT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18529</td><td><a href="#240">240(1)</a></td><td>Replace a constant (Replace 6.0 with 7.0(FLOAT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18526</td><td><a href="#240">240</a></td><td>Replace arithmetic operator (Replace IADD with ISUB)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18530</td><td><a href="#240">240(1)</a></td><td>Replace arithmetic operator (Replace FDIV with FMUL)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18531</td><td><a href="#241">241</a></td><td>Replace a constant (Replace 6.0 with 0(FLOAT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18533</td><td><a href="#241">241</a></td><td>Replace a constant (Replace 6.0 with 7.0(FLOAT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18532</td><td><a href="#241">241</a></td><td>Replace a constant (Replace 6.0 with 5.0(FLOAT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18534</td><td><a href="#241">241</a></td><td>Replace arithmetic operator (Replace FDIV with FMUL)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18535</td><td><a href="#242">242</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18536</td><td><a href="#242">242</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18539</td><td><a href="#242">242(1)</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18540</td><td><a href="#242">242(1)</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18544</td><td><a href="#242">242(2)</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18543</td><td><a href="#242">242(2)</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18537</td><td><a href="#242">242</a></td><td>Replace arithmetic operator (Replace IADD with ISUB)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18538</td><td><a href="#242">242(1)</a></td><td>Replace arithmetic operator (Replace FSUB with FADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18541</td><td><a href="#242">242(2)</a></td><td>Replace arithmetic operator (Replace IADD with ISUB)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18542</td><td><a href="#242">242(3)</a></td><td>Replace arithmetic operator (Replace FDIV with FMUL)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18545</td><td><a href="#242">242(4)</a></td><td>Replace arithmetic operator (Replace ISUB with IADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18546</td><td><a href="#242">242(5)</a></td><td>Replace arithmetic operator (Replace FSUB with FADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18547</td><td><a href="#242">242(6)</a></td><td>Replace arithmetic operator (Replace FDIV with FMUL)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18548</td><td><a href="#242">242(7)</a></td><td>Replace arithmetic operator (Replace FSUB with FADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18550</td><td><a href="#245">245</a></td><td>Replace a constant (Replace 2 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18551</td><td><a href="#245">245</a></td><td>Replace a constant (Replace 2 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18549</td><td><a href="#245">245</a></td><td>Replace a constant (Replace 2 with 3(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18552</td><td><a href="#245">245</a></td><td>Replace arithmetic operator (Replace ISUB with IADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18553</td><td><a href="#245">245</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18554</td><td><a href="#249">249</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18555</td><td><a href="#249">249</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18557</td><td><a href="#250">250</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18556</td><td><a href="#250">250</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18558</td><td><a href="#251">251</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18559</td><td><a href="#252">252</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18560</td><td><a href="#252">252</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18562</td><td><a href="#252">252(1)</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18561</td><td><a href="#252">252(1)</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18564</td><td><a href="#252">252</a></td><td>Negate jump condition (Replace IF_ICMPGT with  IF_ICMPLE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18563</td><td><a href="#252">252</a></td><td>Replace arithmetic operator (Replace ISUB with IADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18566</td><td><a href="#254">254</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18565</td><td><a href="#254">254</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18567</td><td><a href="#254">254</a></td><td>Negate jump condition (Replace IF_ICMPGT with  IF_ICMPLE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18568</td><td><a href="#255">255</a></td><td>Replace arithmetic operator (Replace FMUL with FADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18569</td><td><a href="#255">255(1)</a></td><td>Replace arithmetic operator (Replace FDIV with FMUL)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18570</td><td><a href="#256">256</a></td><td>Replace arithmetic operator (Replace FSUB with FADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18572</td><td><a href="#257">257</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18571</td><td><a href="#257">257</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18575</td><td><a href="#257">257(1)</a></td><td>Replace a constant (Replace 6.0 with 0(FLOAT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18576</td><td><a href="#257">257(1)</a></td><td>Replace a constant (Replace 6.0 with 5.0(FLOAT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18577</td><td><a href="#257">257(1)</a></td><td>Replace a constant (Replace 6.0 with 7.0(FLOAT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18582</td><td><a href="#257">257(2)</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18583</td><td><a href="#257">257(2)</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18590</td><td><a href="#257">257(3)</a></td><td>Replace a constant (Replace 6.0 with 7.0(FLOAT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18589</td><td><a href="#257">257(3)</a></td><td>Replace a constant (Replace 6.0 with 5.0(FLOAT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18588</td><td><a href="#257">257(3)</a></td><td>Replace a constant (Replace 6.0 with 0(FLOAT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18573</td><td><a href="#257">257</a></td><td>Replace arithmetic operator (Replace ISUB with IADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18574</td><td><a href="#257">257(1)</a></td><td>Replace arithmetic operator (Replace FNEG with remove right opereand)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18578</td><td><a href="#257">257(2)</a></td><td>Replace arithmetic operator (Replace FDIV with FMUL)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18579</td><td><a href="#257">257(3)</a></td><td>Replace arithmetic operator (Replace FADD with FSUB)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18580</td><td><a href="#257">257(4)</a></td><td>Replace arithmetic operator (Replace FMUL with FADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18581</td><td><a href="#257">257(5)</a></td><td>Replace arithmetic operator (Replace FMUL with FADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18584</td><td><a href="#257">257(6)</a></td><td>Replace arithmetic operator (Replace ISUB with IADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18585</td><td><a href="#257">257(7)</a></td><td>Replace arithmetic operator (Replace FADD with FSUB)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18586</td><td><a href="#257">257(8)</a></td><td>Replace arithmetic operator (Replace FMUL with FADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18587</td><td><a href="#257">257(9)</a></td><td>Replace arithmetic operator (Replace FNEG with remove right opereand)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18591</td><td><a href="#257">257(10)</a></td><td>Replace arithmetic operator (Replace FDIV with FMUL)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18592</td><td><a href="#257">257(11)</a></td><td>Replace arithmetic operator (Replace FADD with FSUB)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18593</td><td><a href="#257">257(12)</a></td><td>Replace arithmetic operator (Replace FMUL with FADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18594</td><td><a href="#257">257(13)</a></td><td>Replace arithmetic operator (Replace FMUL with FADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18595</td><td><a href="#257">257(14)</a></td><td>Replace arithmetic operator (Replace FADD with FSUB)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18596</td><td><a href="#257">257(15)</a></td><td>Replace arithmetic operator (Replace FMUL with FADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18597</td><td><a href="#257">257(16)</a></td><td>Replace arithmetic operator (Replace FADD with FSUB)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18598</td><td><a href="#257">257(17)</a></td><td>Replace arithmetic operator (Replace FDIV with FMUL)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18599</td><td><a href="#260">260</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18600</td><td><a href="#260">260</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18601</td><td><a href="#260">260</a></td><td>Replace arithmetic operator (Replace ISUB with IADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18602</td><td><a href="#260">260(1)</a></td><td>Replace arithmetic operator (Replace FADD with FSUB)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18603</td><td><a href="#261">261</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18604</td><td><a href="#268">268</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18606</td><td><a href="#297">297</a></td><td>Replace a constant (Replace 2 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18605</td><td><a href="#297">297</a></td><td>Replace a constant (Replace 2 with 3(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18607</td><td><a href="#297">297</a></td><td>Replace a constant (Replace 2 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18608</td><td><a href="#297">297</a></td><td>Negate jump condition (Replace IF_ICMPGT with  IF_ICMPLE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18609</td><td><a href="#298">298</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18610</td><td><a href="#298">298</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18611</td><td><a href="#298">298</a></td><td>Replace arithmetic operator (Replace ISUB with IADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18612</td><td><a href="#298">298(1)</a></td><td>Replace arithmetic operator (Replace FDIV with FMUL)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18614</td><td><a href="#299">299</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18613</td><td><a href="#299">299</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18615</td><td><a href="#299">299</a></td><td>Replace arithmetic operator (Replace ISUB with IADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18616</td><td><a href="#299">299(1)</a></td><td>Replace arithmetic operator (Replace FMUL with FADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18617</td><td><a href="#299">299(2)</a></td><td>Replace arithmetic operator (Replace FSUB with FADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18619</td><td><a href="#300">300</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18618</td><td><a href="#300">300</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18620</td><td><a href="#300">300</a></td><td>Replace arithmetic operator (Replace ISUB with IADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18621</td><td><a href="#300">300(1)</a></td><td>Replace arithmetic operator (Replace FMUL with FADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18622</td><td><a href="#300">300(2)</a></td><td>Replace arithmetic operator (Replace FSUB with FADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18623</td><td><a href="#302">302</a></td><td>Replace arithmetic operator (Replace FDIV with FMUL)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18625</td><td><a href="#303">303</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18624</td><td><a href="#303">303</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18627</td><td><a href="#303">303(1)</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18628</td><td><a href="#303">303(1)</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18629</td><td><a href="#303">303</a></td><td>Negate jump condition (Replace IF_ICMPLT with  IF_ICMPGE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18626</td><td><a href="#303">303</a></td><td>Replace arithmetic operator (Replace ISUB with IADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18631</td><td><a href="#304">304</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18630</td><td><a href="#304">304</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18632</td><td><a href="#304">304</a></td><td>Replace arithmetic operator (Replace IADD with ISUB)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18633</td><td><a href="#304">304(1)</a></td><td>Replace arithmetic operator (Replace FMUL with FADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18634</td><td><a href="#304">304(2)</a></td><td>Replace arithmetic operator (Replace FSUB with FADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18635</td><td><a href="#304">304(3)</a></td><td>Replace arithmetic operator (Replace FDIV with FMUL)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18636</td><td><a href="#316">316</a></td><td>Negate jump condition (Replace IF_ACMPNE with  IF_ACMPEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>18638</td><td><a href="#317">317</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18637</td><td><a href="#317">317</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18639</td><td><a href="#319">319</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>18641</td><td><a href="#320">320</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18640</td><td><a href="#320">320</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18642</td><td><a href="#323">323</a></td><td>Negate jump condition (Replace IF_ICMPEQ with  IF_ICMPNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>18644</td><td><a href="#324">324</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>18643</td><td><a href="#324">324</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>18645</td><td><a href="#326">326</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+</table>
+</body>
+</html>

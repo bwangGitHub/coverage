@@ -1,0 +1,17 @@
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/repos/asf/!svn/ver/1299338/poi/trunk/src/ooxml/testcases/org/apache/poi/xssf/eventusermodel
+END
+TestReadOnlySharedStringsTable.java
+K 25
+svn:wc:ra_dav:version-url
+V 128
+/repos/asf/!svn/ver/1299338/poi/trunk/src/ooxml/testcases/org/apache/poi/xssf/eventusermodel/TestReadOnlySharedStringsTable.java
+END
+TestXSSFReader.java
+K 25
+svn:wc:ra_dav:version-url
+V 112
+/repos/asf/!svn/ver/1179440/poi/trunk/src/ooxml/testcases/org/apache/poi/xssf/eventusermodel/TestXSSFReader.java
+END

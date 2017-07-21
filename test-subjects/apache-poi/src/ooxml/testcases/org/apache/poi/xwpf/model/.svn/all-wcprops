@@ -1,0 +1,17 @@
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/repos/asf/!svn/ver/1296977/poi/trunk/src/ooxml/testcases/org/apache/poi/xwpf/model
+END
+TestXWPFDecorators.java
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/repos/asf/!svn/ver/1296977/poi/trunk/src/ooxml/testcases/org/apache/poi/xwpf/model/TestXWPFDecorators.java
+END
+TestXWPFHeaderFooterPolicy.java
+K 25
+svn:wc:ra_dav:version-url
+V 115
+/repos/asf/!svn/ver/1130120/poi/trunk/src/ooxml/testcases/org/apache/poi/xwpf/model/TestXWPFHeaderFooterPolicy.java
+END

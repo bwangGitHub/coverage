@@ -1,0 +1,335 @@
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/repos/asf/!svn/ver/1296979/poi/trunk/src/testcases/org/apache/poi/hssf/record
+END
+TestSharedFormulaRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/repos/asf/!svn/ver/1038685/poi/trunk/src/testcases/org/apache/poi/hssf/record/TestSharedFormulaRecord.java
+END
+TestBoundSheetRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/repos/asf/!svn/ver/806395/poi/trunk/src/testcases/org/apache/poi/hssf/record/TestBoundSheetRecord.java
+END
+TestNoteStructureSubRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/repos/asf/!svn/ver/712084/poi/trunk/src/testcases/org/apache/poi/hssf/record/TestNoteStructureSubRecord.java
+END
+TestNameCommentRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/repos/asf/!svn/ver/964845/poi/trunk/src/testcases/org/apache/poi/hssf/record/TestNameCommentRecord.java
+END
+TestRecordFactoryInputStream.java
+K 25
+svn:wc:ra_dav:version-url
+V 111
+/repos/asf/!svn/ver/804381/poi/trunk/src/testcases/org/apache/poi/hssf/record/TestRecordFactoryInputStream.java
+END
+TestNoteRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/repos/asf/!svn/ver/964800/poi/trunk/src/testcases/org/apache/poi/hssf/record/TestNoteRecord.java
+END
+TestFormulaRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/repos/asf/!svn/ver/1038685/poi/trunk/src/testcases/org/apache/poi/hssf/record/TestFormulaRecord.java
+END
+TestBOFRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/repos/asf/!svn/ver/712084/poi/trunk/src/testcases/org/apache/poi/hssf/record/TestBOFRecord.java
+END
+TestRecalcIdRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/repos/asf/!svn/ver/832536/poi/trunk/src/testcases/org/apache/poi/hssf/record/TestRecalcIdRecord.java
+END
+TestRecordFactory.java
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/repos/asf/!svn/ver/805284/poi/trunk/src/testcases/org/apache/poi/hssf/record/TestRecordFactory.java
+END
+TestcaseRecordInputStream.java
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/repos/asf/!svn/ver/814335/poi/trunk/src/testcases/org/apache/poi/hssf/record/TestcaseRecordInputStream.java
+END
+TestColumnInfoRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/repos/asf/!svn/ver/886311/poi/trunk/src/testcases/org/apache/poi/hssf/record/TestColumnInfoRecord.java
+END
+TestSSTRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/repos/asf/!svn/ver/1080496/poi/trunk/src/testcases/org/apache/poi/hssf/record/TestSSTRecord.java
+END
+TestWriteAccessRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/repos/asf/!svn/ver/776056/poi/trunk/src/testcases/org/apache/poi/hssf/record/TestWriteAccessRecord.java
+END
+TestLabelRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/repos/asf/!svn/ver/712084/poi/trunk/src/testcases/org/apache/poi/hssf/record/TestLabelRecord.java
+END
+TestFeatRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/repos/asf/!svn/ver/980102/poi/trunk/src/testcases/org/apache/poi/hssf/record/TestFeatRecord.java
+END
+TestCFRuleRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/repos/asf/!svn/ver/1038685/poi/trunk/src/testcases/org/apache/poi/hssf/record/TestCFRuleRecord.java
+END
+TestDConRefRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/repos/asf/!svn/ver/1296979/poi/trunk/src/testcases/org/apache/poi/hssf/record/TestDConRefRecord.java
+END
+TestEndSubRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/repos/asf/!svn/ver/712084/poi/trunk/src/testcases/org/apache/poi/hssf/record/TestEndSubRecord.java
+END
+TestMergeCellsRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/repos/asf/!svn/ver/712084/poi/trunk/src/testcases/org/apache/poi/hssf/record/TestMergeCellsRecord.java
+END
+TestSupBookRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/repos/asf/!svn/ver/1242701/poi/trunk/src/testcases/org/apache/poi/hssf/record/TestSupBookRecord.java
+END
+TestExternalNameRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/repos/asf/!svn/ver/890871/poi/trunk/src/testcases/org/apache/poi/hssf/record/TestExternalNameRecord.java
+END
+TestCommonObjectDataSubRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 112
+/repos/asf/!svn/ver/782398/poi/trunk/src/testcases/org/apache/poi/hssf/record/TestCommonObjectDataSubRecord.java
+END
+TestLbsDataSubRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/repos/asf/!svn/ver/1038685/poi/trunk/src/testcases/org/apache/poi/hssf/record/TestLbsDataSubRecord.java
+END
+TestDVALRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/repos/asf/!svn/ver/814335/poi/trunk/src/testcases/org/apache/poi/hssf/record/TestDVALRecord.java
+END
+TestFtCblsSubRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/repos/asf/!svn/ver/983630/poi/trunk/src/testcases/org/apache/poi/hssf/record/TestFtCblsSubRecord.java
+END
+TestDrawingRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/repos/asf/!svn/ver/814335/poi/trunk/src/testcases/org/apache/poi/hssf/record/TestDrawingRecord.java
+END
+TestPaletteRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/repos/asf/!svn/ver/784284/poi/trunk/src/testcases/org/apache/poi/hssf/record/TestPaletteRecord.java
+END
+TestStyleRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/repos/asf/!svn/ver/776056/poi/trunk/src/testcases/org/apache/poi/hssf/record/TestStyleRecord.java
+END
+TestCFHeaderRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/repos/asf/!svn/ver/712084/poi/trunk/src/testcases/org/apache/poi/hssf/record/TestCFHeaderRecord.java
+END
+TestBoolErrRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/repos/asf/!svn/ver/791595/poi/trunk/src/testcases/org/apache/poi/hssf/record/TestBoolErrRecord.java
+END
+TestHyperlinkRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/repos/asf/!svn/ver/793281/poi/trunk/src/testcases/org/apache/poi/hssf/record/TestHyperlinkRecord.java
+END
+TestFontRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/repos/asf/!svn/ver/777717/poi/trunk/src/testcases/org/apache/poi/hssf/record/TestFontRecord.java
+END
+TestStringRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/repos/asf/!svn/ver/712084/poi/trunk/src/testcases/org/apache/poi/hssf/record/TestStringRecord.java
+END
+TestTextObjectBaseRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/repos/asf/!svn/ver/805262/poi/trunk/src/testcases/org/apache/poi/hssf/record/TestTextObjectBaseRecord.java
+END
+TestDrawingGroupRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/repos/asf/!svn/ver/712084/poi/trunk/src/testcases/org/apache/poi/hssf/record/TestDrawingGroupRecord.java
+END
+TestExtendedFormatRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/repos/asf/!svn/ver/805552/poi/trunk/src/testcases/org/apache/poi/hssf/record/TestExtendedFormatRecord.java
+END
+TestObjRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/repos/asf/!svn/ver/782398/poi/trunk/src/testcases/org/apache/poi/hssf/record/TestObjRecord.java
+END
+TestRecordInputStream.java
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/repos/asf/!svn/ver/712084/poi/trunk/src/testcases/org/apache/poi/hssf/record/TestRecordInputStream.java
+END
+TestTextObjectRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/repos/asf/!svn/ver/1038685/poi/trunk/src/testcases/org/apache/poi/hssf/record/TestTextObjectRecord.java
+END
+TestSSTDeserializer.java
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/repos/asf/!svn/ver/712084/poi/trunk/src/testcases/org/apache/poi/hssf/record/TestSSTDeserializer.java
+END
+TestArrayRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/repos/asf/!svn/ver/1038685/poi/trunk/src/testcases/org/apache/poi/hssf/record/TestArrayRecord.java
+END
+TestSSTRecordSizeCalculator.java
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/repos/asf/!svn/ver/900746/poi/trunk/src/testcases/org/apache/poi/hssf/record/TestSSTRecordSizeCalculator.java
+END
+TestNameRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/repos/asf/!svn/ver/1296979/poi/trunk/src/testcases/org/apache/poi/hssf/record/TestNameRecord.java
+END
+TestEscherAggregate.java
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/repos/asf/!svn/ver/746085/poi/trunk/src/testcases/org/apache/poi/hssf/record/TestEscherAggregate.java
+END
+TestSCLRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/repos/asf/!svn/ver/712084/poi/trunk/src/testcases/org/apache/poi/hssf/record/TestSCLRecord.java
+END
+TestPaneRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/repos/asf/!svn/ver/712084/poi/trunk/src/testcases/org/apache/poi/hssf/record/TestPaneRecord.java
+END
+TestInterfaceEndRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/repos/asf/!svn/ver/893402/poi/trunk/src/testcases/org/apache/poi/hssf/record/TestInterfaceEndRecord.java
+END
+TestEmbeddedObjectRefSubRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 113
+/repos/asf/!svn/ver/776056/poi/trunk/src/testcases/org/apache/poi/hssf/record/TestEmbeddedObjectRefSubRecord.java
+END
+TestTableRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/repos/asf/!svn/ver/712084/poi/trunk/src/testcases/org/apache/poi/hssf/record/TestTableRecord.java
+END
+TestUnicodeNameRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/repos/asf/!svn/ver/712084/poi/trunk/src/testcases/org/apache/poi/hssf/record/TestUnicodeNameRecord.java
+END
+TestSubRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/repos/asf/!svn/ver/738709/poi/trunk/src/testcases/org/apache/poi/hssf/record/TestSubRecord.java
+END
+TestExtSSTRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/repos/asf/!svn/ver/1085900/poi/trunk/src/testcases/org/apache/poi/hssf/record/TestExtSSTRecord.java
+END
+TestAutoFilterInfoRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/repos/asf/!svn/ver/1296979/poi/trunk/src/testcases/org/apache/poi/hssf/record/TestAutoFilterInfoRecord.java
+END
+AllRecordTests.java
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/repos/asf/!svn/ver/1241380/poi/trunk/src/testcases/org/apache/poi/hssf/record/AllRecordTests.java
+END

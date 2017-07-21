@@ -1,0 +1,18 @@
+Testsuite: org.apache.poi.hssf.record.TestHyperlinkRecord
+Tests run: 15, Failures: 0, Errors: 0, Time elapsed: 0.003 sec
+
+Testcase: testSerialize took 0.001 sec
+Testcase: testClone took 0 sec
+Testcase: testReadURLLink took 0 sec
+Testcase: testReadFileLink took 0 sec
+Testcase: testReadEmailLink took 0 sec
+Testcase: testReadDocumentLink took 0 sec
+Testcase: testCreateURLRecord took 0 sec
+Testcase: testCreateFileRecord took 0 sec
+Testcase: testCreateDocumentRecord took 0 sec
+Testcase: testCreateEmailtRecord took 0 sec
+Testcase: testReserializeTargetFrame took 0 sec
+Testcase: testReserializeLinkToWorkbook took 0 sec
+Testcase: testReserializeUNC took 0 sec
+Testcase: testGUID took 0 sec
+Testcase: test47498 took 0 sec

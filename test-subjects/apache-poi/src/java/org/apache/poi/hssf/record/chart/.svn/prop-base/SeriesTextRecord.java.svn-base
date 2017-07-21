@@ -1,0 +1,13 @@
+K 13
+svn:eol-style
+V 6
+native
+K 12
+svn:keywords
+V 23
+Author Date Id Revision
+K 13
+svn:mergeinfo
+V 117
+/poi/trunk/src/java/org/apache/poi/hssf/record/SeriesTextRecord.java:693591-694881,695264-695420,695621,695649-711764
+END

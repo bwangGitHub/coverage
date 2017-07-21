@@ -1,0 +1,283 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN
+"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>
+org.jfree.data.xy.XYDataItem
+</title>
+<link href="prettify.css" type="text/css" rel="stylesheet" />
+<script type="text/javascript" src="prettify.js"></script>
+</head>
+<body onload="prettyPrint()">
+<h2>Javalanche report for class:<br/> org.jfree.data.xy.XYDataItem </h2><pre class="prettyprint" style="border: 1px solid #888;padding: 2px"><span class="nocode"><a name="1">  1: </a></span>/* ===========================================================
+<span class="nocode"><a name="2">  2: </a></span> * JFreeChart : a free chart library for the Java(tm) platform
+<span class="nocode"><a name="3">  3: </a></span> * ===========================================================
+<span class="nocode"><a name="4">  4: </a></span> *
+<span class="nocode"><a name="5">  5: </a></span> * (C) Copyright 2000-2007, by Object Refinery Limited and Contributors.
+<span class="nocode"><a name="6">  6: </a></span> *
+<span class="nocode"><a name="7">  7: </a></span> * Project Info:  http://www.jfree.org/jfreechart/index.html
+<span class="nocode"><a name="8">  8: </a></span> *
+<span class="nocode"><a name="9">  9: </a></span> * This library is free software; you can redistribute it and/or modify it 
+<span class="nocode"><a name="10"> 10: </a></span> * under the terms of the GNU Lesser General Public License as published by 
+<span class="nocode"><a name="11"> 11: </a></span> * the Free Software Foundation; either version 2.1 of the License, or 
+<span class="nocode"><a name="12"> 12: </a></span> * (at your option) any later version.
+<span class="nocode"><a name="13"> 13: </a></span> *
+<span class="nocode"><a name="14"> 14: </a></span> * This library is distributed in the hope that it will be useful, but 
+<span class="nocode"><a name="15"> 15: </a></span> * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY 
+<span class="nocode"><a name="16"> 16: </a></span> * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public 
+<span class="nocode"><a name="17"> 17: </a></span> * License for more details.
+<span class="nocode"><a name="18"> 18: </a></span> *
+<span class="nocode"><a name="19"> 19: </a></span> * You should have received a copy of the GNU Lesser General Public
+<span class="nocode"><a name="20"> 20: </a></span> * License along with this library; if not, write to the Free Software
+<span class="nocode"><a name="21"> 21: </a></span> * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, 
+<span class="nocode"><a name="22"> 22: </a></span> * USA.  
+<span class="nocode"><a name="23"> 23: </a></span> *
+<span class="nocode"><a name="24"> 24: </a></span> * [Java is a trademark or registered trademark of Sun Microsystems, Inc. 
+<span class="nocode"><a name="25"> 25: </a></span> * in the United States and other countries.]
+<span class="nocode"><a name="26"> 26: </a></span> *
+<span class="nocode"><a name="27"> 27: </a></span> * ---------------
+<span class="nocode"><a name="28"> 28: </a></span> * XYDataItem.java
+<span class="nocode"><a name="29"> 29: </a></span> * ---------------
+<span class="nocode"><a name="30"> 30: </a></span> * (C) Copyright 2003-2007, by Object Refinery Limited.
+<span class="nocode"><a name="31"> 31: </a></span> *
+<span class="nocode"><a name="32"> 32: </a></span> * Original Author:  David Gilbert (for Object Refinery Limited);
+<span class="nocode"><a name="33"> 33: </a></span> * Contributor(s):   -;
+<span class="nocode"><a name="34"> 34: </a></span> *
+<span class="nocode"><a name="35"> 35: </a></span> * Changes
+<span class="nocode"><a name="36"> 36: </a></span> * -------
+<span class="nocode"><a name="37"> 37: </a></span> * 05-Aug-2003 : Renamed XYDataPair --&gt; XYDataItem (DG);
+<span class="nocode"><a name="38"> 38: </a></span> * 03-Feb-2004 : Fixed bug in equals() method (DG);
+<span class="nocode"><a name="39"> 39: </a></span> * 21-Feb-2005 : Added setY(double) method (DG);
+<span class="nocode"><a name="40"> 40: </a></span> *
+<span class="nocode"><a name="41"> 41: </a></span> */
+<span class="nocode"><a name="42"> 42: </a></span>
+<span class="nocode"><a name="43"> 43: </a></span>package org.jfree.data.xy;
+<span class="nocode"><a name="44"> 44: </a></span>
+<span class="nocode"><a name="45"> 45: </a></span>import java.io.Serializable;
+<span class="nocode"><a name="46"> 46: </a></span>
+<span class="nocode"><a name="47"> 47: </a></span>import org.jfree.util.ObjectUtilities;
+<span class="nocode"><a name="48"> 48: </a></span>
+<span class="nocode"><a name="49"> 49: </a></span>/**
+<span class="nocode"><a name="50"> 50: </a></span> * Represents one (x, y) data item for an {@link XYSeries}.
+<span class="nocode"><a name="51"> 51: </a></span> */
+<span class="nocode"><a name="52"> 52: </a></span>public class XYDataItem implements Cloneable, Comparable, Serializable {
+<span class="nocode"><a name="53"> 53: </a></span>
+<span class="nocode"><a name="54"> 54: </a></span>    /** For serialization. */
+<span class="nocode"><a name="55"> 55: </a></span>    private static final long serialVersionUID = 2751513470325494890L;
+<span class="nocode"><a name="56"> 56: </a></span>    
+<span class="nocode"><a name="57"> 57: </a></span>    /** The x-value. */
+<span class="nocode"><a name="58"> 58: </a></span>    private Number x;
+<span class="nocode"><a name="59"> 59: </a></span>
+<span class="nocode"><a name="60"> 60: </a></span>    /** The y-value. */
+<span class="nocode"><a name="61"> 61: </a></span>    private Number y;
+<span class="nocode"><a name="62"> 62: </a></span>
+<span class="nocode"><a name="63"> 63: </a></span>    /**
+<span class="nocode"><a name="64"> 64: </a></span>     * Constructs a new data item.
+<span class="nocode"><a name="65"> 65: </a></span>     *
+<span class="nocode"><a name="66"> 66: </a></span>     * @param x  the x-value (&lt;code&gt;null&lt;/code&gt; NOT permitted).
+<span class="nocode"><a name="67"> 67: </a></span>     * @param y  the y-value (&lt;code&gt;null&lt;/code&gt; permitted).
+<span class="nocode"><a name="68"> 68: </a></span>     */
+<span class="nocode"><a name="69"> 69: </a></span>    public XYDataItem(Number x, Number y) {
+<span class="nocode"><a name="70"> 70: </a></span>        if (x == null) {
+<span class="nocode"><a name="71"> 71: </a></span>            throw new IllegalArgumentException(&quot;Null 'x' argument.&quot;);
+<span class="nocode"><a name="72"> 72: </a></span>        }
+<span class="nocode"><a name="73"> 73: </a></span>        this.x = x;
+<span class="nocode"><a name="74"> 74: </a></span>        this.y = y;
+<span class="nocode"><a name="75"> 75: </a></span>    }
+<span class="nocode"><a name="76"> 76: </a></span>
+<span class="nocode"><a name="77"> 77: </a></span>    /**
+<span class="nocode"><a name="78"> 78: </a></span>     * Constructs a new data item.
+<span class="nocode"><a name="79"> 79: </a></span>     *
+<span class="nocode"><a name="80"> 80: </a></span>     * @param x  the x-value.
+<span class="nocode"><a name="81"> 81: </a></span>     * @param y  the y-value.
+<span class="nocode"><a name="82"> 82: </a></span>     */
+<span class="nocode"><a name="83"> 83: </a></span>    public XYDataItem(double x, double y) {
+<span class="nocode"><a name="84"> 84: </a></span>        this(new Double(x), new Double(y));
+<span class="nocode"><a name="85"> 85: </a></span>    }
+<span class="nocode"><a name="86"> 86: </a></span>
+<span class="nocode"><a name="87"> 87: </a></span>    /**
+<span class="nocode"><a name="88"> 88: </a></span>     * Returns the x-value.
+<span class="nocode"><a name="89"> 89: </a></span>     *
+<span class="nocode"><a name="90"> 90: </a></span>     * @return The x-value (never &lt;code&gt;null&lt;/code&gt;).
+<span class="nocode"><a name="91"> 91: </a></span>     */
+<span class="nocode"><a name="92"> 92: </a></span>    public Number getX() {
+<span class="nocode"><a name="93"> 93: </a></span>        return this.x;
+<span class="nocode"><a name="94"> 94: </a></span>    }
+<span class="nocode"><a name="95"> 95: </a></span>
+<span class="nocode"><a name="96"> 96: </a></span>    /**
+<span class="nocode"><a name="97"> 97: </a></span>     * Returns the y-value.
+<span class="nocode"><a name="98"> 98: </a></span>     *
+<span class="nocode"><a name="99"> 99: </a></span>     * @return The y-value (possibly &lt;code&gt;null&lt;/code&gt;).
+<span class="nocode"><a name="100">100: </a></span>     */
+<span class="nocode"><a name="101">101: </a></span>    public Number getY() {
+<span class="nocode"><a name="102">102: </a></span>        return this.y;
+<span class="nocode"><a name="103">103: </a></span>    }
+<span class="nocode"><a name="104">104: </a></span>
+<span class="nocode"><a name="105">105: </a></span>    /**
+<span class="nocode"><a name="106">106: </a></span>     * Sets the y-value for this data item.  Note that there is no 
+<span class="nocode"><a name="107">107: </a></span>     * corresponding method to change the x-value.
+<span class="nocode"><a name="108">108: </a></span>     *
+<span class="nocode"><a name="109">109: </a></span>     * @param y  the new y-value.
+<span class="nocode"><a name="110">110: </a></span>     */
+<span class="nocode"><a name="111">111: </a></span>    public void setY(double y) {
+<span class="nocode"><a name="112">112: </a></span>        setY(new Double(y));   
+<span class="nocode"><a name="113">113: </a></span>    }
+<span class="nocode"><a name="114">114: </a></span>    
+<span class="nocode"><a name="115">115: </a></span>    /**
+<span class="nocode"><a name="116">116: </a></span>     * Sets the y-value for this data item.  Note that there is no 
+<span class="nocode"><a name="117">117: </a></span>     * corresponding method to change the x-value.
+<span class="nocode"><a name="118">118: </a></span>     *
+<span class="nocode"><a name="119">119: </a></span>     * @param y  the new y-value (&lt;code&gt;null&lt;/code&gt; permitted).
+<span class="nocode"><a name="120">120: </a></span>     */
+<span class="nocode"><a name="121">121: </a></span>    public void setY(Number y) {
+<span class="nocode"><a name="122">122: </a></span>        this.y = y;
+<span class="nocode"><a name="123">123: </a></span>    }
+<span class="nocode"><a name="124">124: </a></span>
+<span class="nocode"><a name="125">125: </a></span>    /**
+<span class="nocode"><a name="126">126: </a></span>     * Returns an integer indicating the order of this object relative to 
+<span class="nocode"><a name="127">127: </a></span>     * another object.
+<span class="nocode"><a name="128">128: </a></span>     * &lt;P&gt;
+<span class="nocode"><a name="129">129: </a></span>     * For the order we consider only the x-value:
+<span class="nocode"><a name="130">130: </a></span>     * negative == &quot;less-than&quot;, zero == &quot;equal&quot;, positive == &quot;greater-than&quot;.
+<span class="nocode"><a name="131">131: </a></span>     *
+<span class="nocode"><a name="132">132: </a></span>     * @param o1  the object being compared to.
+<span class="nocode"><a name="133">133: </a></span>     *
+<span class="nocode"><a name="134">134: </a></span>     * @return An integer indicating the order of this data pair object
+<span class="nocode"><a name="135">135: </a></span>     *      relative to another object.
+<span class="nocode"><a name="136">136: </a></span>     */
+<span class="nocode"><a name="137">137: </a></span>    public int compareTo(Object o1) {
+<span class="nocode"><a name="138">138: </a></span>
+<span class="nocode"><a name="139">139: </a></span>        int result;
+<span class="nocode"><a name="140">140: </a></span>
+<span class="nocode"><a name="141">141: </a></span>        // CASE 1 : Comparing to another TimeSeriesDataPair object
+<span class="nocode"><a name="142">142: </a></span>        // -------------------------------------------------------
+<span class="nocode"><a name="143">143: </a></span>        if (o1 instanceof XYDataItem) {
+<span class="nocode"><a name="144">144: </a></span>            XYDataItem dataItem = (XYDataItem) o1;
+<span class="nocode"><a name="145">145: </a></span>            double compare = this.x.doubleValue() 
+<span class="nocode"><a name="146">146: </a></span>                             - dataItem.getX().doubleValue();
+<span class="nocode"><a name="147">147: </a></span>            if (compare &gt; 0.0) {
+<span class="nocode"><a name="148">148: </a></span>                result = 1;
+<span class="nocode"><a name="149">149: </a></span>            }
+<span class="nocode"><a name="150">150: </a></span>            else {
+<span class="nocode"><a name="151">151: </a></span>                if (compare &lt; 0.0) {
+<span class="nocode"><a name="152">152: </a></span>                    result = -1;
+<span class="nocode"><a name="153">153: </a></span>                }
+<span class="nocode"><a name="154">154: </a></span>                else {
+<span class="nocode"><a name="155">155: </a></span>                    result = 0;
+<span class="nocode"><a name="156">156: </a></span>                }
+<span class="nocode"><a name="157">157: </a></span>            }
+<span class="nocode"><a name="158">158: </a></span>        }
+<span class="nocode"><a name="159">159: </a></span>
+<span class="nocode"><a name="160">160: </a></span>        // CASE 2 : Comparing to a general object
+<span class="nocode"><a name="161">161: </a></span>        // ---------------------------------------------
+<span class="nocode"><a name="162">162: </a></span>        else {
+<span class="nocode"><a name="163">163: </a></span>            // consider time periods to be ordered after general objects
+<span class="nocode"><a name="164">164: </a></span>            result = 1;
+<span class="nocode"><a name="165">165: </a></span>        }
+<span class="nocode"><a name="166">166: </a></span>
+<span class="nocode"><a name="167">167: </a></span>        return result;
+<span class="nocode"><a name="168">168: </a></span>
+<span class="nocode"><a name="169">169: </a></span>    }
+<span class="nocode"><a name="170">170: </a></span>
+<span class="nocode"><a name="171">171: </a></span>    /**
+<span class="nocode"><a name="172">172: </a></span>     * Returns a clone of this object.
+<span class="nocode"><a name="173">173: </a></span>     *
+<span class="nocode"><a name="174">174: </a></span>     * @return A clone.
+<span class="nocode"><a name="175">175: </a></span>     * 
+<span class="nocode"><a name="176">176: </a></span>     * @throws CloneNotSupportedException not thrown by this class, but 
+<span class="nocode"><a name="177">177: </a></span>     *         subclasses may differ.
+<span class="nocode"><a name="178">178: </a></span>     */
+<span class="nocode"><a name="179">179: </a></span>    public Object clone() throws CloneNotSupportedException {
+<span class="nocode"><a name="180">180: </a></span>        return super.clone();
+<span class="nocode"><a name="181">181: </a></span>    }
+<span class="nocode"><a name="182">182: </a></span>    
+<span class="nocode"><a name="183">183: </a></span>    /**
+<span class="nocode"><a name="184">184: </a></span>     * Tests if this object is equal to another.
+<span class="nocode"><a name="185">185: </a></span>     *
+<span class="nocode"><a name="186">186: </a></span>     * @param obj  the object to test against for equality (&lt;code&gt;null&lt;/code&gt;
+<span class="nocode"><a name="187">187: </a></span>     *             permitted).
+<span class="nocode"><a name="188">188: </a></span>     *
+<span class="nocode"><a name="189">189: </a></span>     * @return A boolean.
+<span class="nocode"><a name="190">190: </a></span>     */
+<span class="nocode"><a name="191">191: </a></span>    public boolean equals(Object obj) {
+<span class="nocode"><a name="192">192: </a></span>        if (obj == this) {
+<span class="nocode"><a name="193">193: </a></span>            return true;
+<span class="nocode"><a name="194">194: </a></span>        }
+<span class="nocode"><a name="195">195: </a></span>        if (!(obj instanceof XYDataItem)) {
+<span class="nocode"><a name="196">196: </a></span>            return false;
+<span class="nocode"><a name="197">197: </a></span>        }
+<span class="nocode"><a name="198">198: </a></span>        XYDataItem that = (XYDataItem) obj;
+<span class="nocode"><a name="199">199: </a></span>        if (!this.x.equals(that.x)) {
+<span class="nocode"><a name="200">200: </a></span>            return false;
+<span class="nocode"><a name="201">201: </a></span>        }
+<span class="nocode"><a name="202">202: </a></span>        if (!ObjectUtilities.equal(this.y, that.y)) {
+<span class="nocode"><a name="203">203: </a></span>            return false;
+<span class="nocode"><a name="204">204: </a></span>        }
+<span class="nocode"><a name="205">205: </a></span>        return true;        
+<span class="nocode"><a name="206">206: </a></span>    }
+<span class="nocode"><a name="207">207: </a></span>
+<span class="nocode"><a name="208">208: </a></span>    /**
+<span class="nocode"><a name="209">209: </a></span>     * Returns a hash code.
+<span class="nocode"><a name="210">210: </a></span>     * 
+<span class="nocode"><a name="211">211: </a></span>     * @return A hash code.
+<span class="nocode"><a name="212">212: </a></span>     */
+<span class="nocode"><a name="213">213: </a></span>    public int hashCode() {
+<span class="nocode"><a name="214">214: </a></span>        int result;
+<span class="nocode"><a name="215">215: </a></span>        result = this.x.hashCode();
+<span class="nocode"><a name="216">216: </a></span>        result = 29 * result + (this.y != null ? this.y.hashCode() : 0);
+<span class="nocode"><a name="217">217: </a></span>        return result;
+<span class="nocode"><a name="218">218: </a></span>    }
+<span class="nocode"><a name="219">219: </a></span>    
+<span class="nocode"><a name="220">220: </a></span>}
+</pre><table class="mutation_table" summary="Mutations">
+<tr><th>ID</th><th>Line</th><th>Type</th><th>Detected</th></tr><tr><td>20257</td><td><a href="#70">70</a></td><td>Negate jump condition (Replace IFNONNULL with  IFNULL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>20258</td><td><a href="#112">112</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20259</td><td><a href="#143">143</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>20263</td><td><a href="#145">145</a></td><td>Replace arithmetic operator (Replace DSUB with DADD)</td><td><img src="detected.png"/></td></tr>
+<tr><td>20260</td><td><a href="#145">145</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>20261</td><td><a href="#145">145(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>20262</td><td><a href="#145">145(2)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>20265</td><td><a href="#147">147</a></td><td>Replace a constant (Replace 0 with -1(DOUBLE))</td><td><img src="detected.png"/></td></tr>
+<tr><td>20264</td><td><a href="#147">147</a></td><td>Replace a constant (Replace 0 with 1(DOUBLE))</td><td><img src="detected.png"/></td></tr>
+<tr><td>20266</td><td><a href="#147">147</a></td><td>Negate jump condition (Replace IFLE with  IFGT)</td><td><img src="detected.png"/></td></tr>
+<tr><td>20268</td><td><a href="#148">148</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>20267</td><td><a href="#148">148</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>20269</td><td><a href="#151">151</a></td><td>Replace a constant (Replace 0 with 1(DOUBLE))</td><td><img src="detected.png"/></td></tr>
+<tr><td>20270</td><td><a href="#151">151</a></td><td>Replace a constant (Replace 0 with -1(DOUBLE))</td><td><img src="detected.png"/></td></tr>
+<tr><td>20271</td><td><a href="#151">151</a></td><td>Negate jump condition (Replace IFGE with  IFLT)</td><td><img src="detected.png"/></td></tr>
+<tr><td>20273</td><td><a href="#152">152</a></td><td>Replace a constant (Replace -1 with -2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20272</td><td><a href="#152">152</a></td><td>Replace a constant (Replace -1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>20274</td><td><a href="#155">155</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>20275</td><td><a href="#155">155</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>20276</td><td><a href="#164">164</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20277</td><td><a href="#164">164</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20278</td><td><a href="#180">180</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>20279</td><td><a href="#192">192</a></td><td>Negate jump condition (Replace IF_ACMPNE with  IF_ACMPEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>20281</td><td><a href="#193">193</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20280</td><td><a href="#193">193</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20282</td><td><a href="#195">195</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>20283</td><td><a href="#196">196</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20284</td><td><a href="#196">196</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20286</td><td><a href="#199">199</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>20285</td><td><a href="#199">199</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>20287</td><td><a href="#200">200</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20288</td><td><a href="#200">200</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20290</td><td><a href="#202">202</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20289</td><td><a href="#202">202</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>20292</td><td><a href="#203">203</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>20291</td><td><a href="#203">203</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>20293</td><td><a href="#205">205</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20294</td><td><a href="#205">205</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>20295</td><td><a href="#215">215</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20298</td><td><a href="#216">216</a></td><td>Replace a constant (Replace 29 with 28(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20296</td><td><a href="#216">216</a></td><td>Replace a constant (Replace 29 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20297</td><td><a href="#216">216</a></td><td>Replace a constant (Replace 29 with 30(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20303</td><td><a href="#216">216(1)</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20302</td><td><a href="#216">216(1)</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20300</td><td><a href="#216">216</a></td><td>Negate jump condition (Replace IFNULL with  IFNONNULL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>20299</td><td><a href="#216">216</a></td><td>Replace arithmetic operator (Replace IMUL with IADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20304</td><td><a href="#216">216(1)</a></td><td>Replace arithmetic operator (Replace IADD with ISUB)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>20301</td><td><a href="#216">216</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+</table>
+</body>
+</html>

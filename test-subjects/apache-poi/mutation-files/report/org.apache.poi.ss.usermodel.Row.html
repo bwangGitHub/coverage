@@ -1,0 +1,246 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN
+"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>
+org.apache.poi.ss.usermodel.Row
+</title>
+<link href="prettify.css" type="text/css" rel="stylesheet" />
+<script type="text/javascript" src="prettify.js"></script>
+</head>
+<body onload="prettyPrint()">
+<h2>Javalanche report for class:<br/> org.apache.poi.ss.usermodel.Row </h2><pre class="prettyprint" style="border: 1px solid #888;padding: 2px"><span class="nocode"><a name="1">  1: </a></span>/* ====================================================================
+<span class="nocode"><a name="2">  2: </a></span>   Licensed to the Apache Software Foundation (ASF) under one or more
+<span class="nocode"><a name="3">  3: </a></span>   contributor license agreements.  See the NOTICE file distributed with
+<span class="nocode"><a name="4">  4: </a></span>   this work for additional information regarding copyright ownership.
+<span class="nocode"><a name="5">  5: </a></span>   The ASF licenses this file to You under the Apache License, Version 2.0
+<span class="nocode"><a name="6">  6: </a></span>   (the &quot;License&quot;); you may not use this file except in compliance with
+<span class="nocode"><a name="7">  7: </a></span>   the License.  You may obtain a copy of the License at
+<span class="nocode"><a name="8">  8: </a></span>
+<span class="nocode"><a name="9">  9: </a></span>       http://www.apache.org/licenses/LICENSE-2.0
+<span class="nocode"><a name="10"> 10: </a></span>
+<span class="nocode"><a name="11"> 11: </a></span>   Unless required by applicable law or agreed to in writing, software
+<span class="nocode"><a name="12"> 12: </a></span>   distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+<span class="nocode"><a name="13"> 13: </a></span>   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+<span class="nocode"><a name="14"> 14: </a></span>   See the License for the specific language governing permissions and
+<span class="nocode"><a name="15"> 15: </a></span>   limitations under the License.
+<span class="nocode"><a name="16"> 16: </a></span>==================================================================== */
+<span class="nocode"><a name="17"> 17: </a></span>
+<span class="nocode"><a name="18"> 18: </a></span>package org.apache.poi.ss.usermodel;
+<span class="nocode"><a name="19"> 19: </a></span>
+<span class="nocode"><a name="20"> 20: </a></span>import java.util.Iterator;
+<span class="nocode"><a name="21"> 21: </a></span>
+<span class="nocode"><a name="22"> 22: </a></span>/**
+<span class="nocode"><a name="23"> 23: </a></span> * High level representation of a row of a spreadsheet.
+<span class="nocode"><a name="24"> 24: </a></span> */
+<span class="nocode"><a name="25"> 25: </a></span>public interface Row extends Iterable&lt;Cell&gt; {
+<span class="nocode"><a name="26"> 26: </a></span>
+<span class="nocode"><a name="27"> 27: </a></span>    /**
+<span class="nocode"><a name="28"> 28: </a></span>     * Use this to create new cells within the row and return it.
+<span class="nocode"><a name="29"> 29: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="30"> 30: </a></span>     * The cell that is returned is a {@link Cell#CELL_TYPE_BLANK}. The type can be changed
+<span class="nocode"><a name="31"> 31: </a></span>     * either through calling &lt;code&gt;setCellValue&lt;/code&gt; or &lt;code&gt;setCellType&lt;/code&gt;.
+<span class="nocode"><a name="32"> 32: </a></span>     *
+<span class="nocode"><a name="33"> 33: </a></span>     * @param column - the column number this cell represents
+<span class="nocode"><a name="34"> 34: </a></span>     * @return Cell a high level representation of the created cell.
+<span class="nocode"><a name="35"> 35: </a></span>     * @throws IllegalArgumentException if columnIndex &lt; 0 or greater than the maximum number of supported columns
+<span class="nocode"><a name="36"> 36: </a></span>     * (255 for *.xls, 1048576 for *.xlsx)
+<span class="nocode"><a name="37"> 37: </a></span>     */
+<span class="nocode"><a name="38"> 38: </a></span>    Cell createCell(int column);
+<span class="nocode"><a name="39"> 39: </a></span>
+<span class="nocode"><a name="40"> 40: </a></span>    /**
+<span class="nocode"><a name="41"> 41: </a></span>     * Use this to create new cells within the row and return it.
+<span class="nocode"><a name="42"> 42: </a></span>     * &lt;p&gt;
+<span class="nocode"><a name="43"> 43: </a></span>     * The cell that is returned is a {@link Cell#CELL_TYPE_BLANK}. The type can be changed
+<span class="nocode"><a name="44"> 44: </a></span>     * either through calling setCellValue or setCellType.
+<span class="nocode"><a name="45"> 45: </a></span>     *
+<span class="nocode"><a name="46"> 46: </a></span>     * @param column - the column number this cell represents
+<span class="nocode"><a name="47"> 47: </a></span>     * @return Cell a high level representation of the created cell.
+<span class="nocode"><a name="48"> 48: </a></span>     * @throws IllegalArgumentException if columnIndex &lt; 0 or greate than a maximum number of supported columns
+<span class="nocode"><a name="49"> 49: </a></span>     * (255 for *.xls, 1048576 for *.xlsx)
+<span class="nocode"><a name="50"> 50: </a></span>     */
+<span class="nocode"><a name="51"> 51: </a></span>    Cell createCell(int column, int type);
+<span class="nocode"><a name="52"> 52: </a></span>
+<span class="nocode"><a name="53"> 53: </a></span>    /**
+<span class="nocode"><a name="54"> 54: </a></span>     * Remove the Cell from this row.
+<span class="nocode"><a name="55"> 55: </a></span>     *
+<span class="nocode"><a name="56"> 56: </a></span>     * @param cell the cell to remove
+<span class="nocode"><a name="57"> 57: </a></span>     */
+<span class="nocode"><a name="58"> 58: </a></span>    void removeCell(Cell cell);
+<span class="nocode"><a name="59"> 59: </a></span>
+<span class="nocode"><a name="60"> 60: </a></span>    /**
+<span class="nocode"><a name="61"> 61: </a></span>     * Set the row number of this row.
+<span class="nocode"><a name="62"> 62: </a></span>     *
+<span class="nocode"><a name="63"> 63: </a></span>     * @param rowNum  the row number (0-based)
+<span class="nocode"><a name="64"> 64: </a></span>     * @throws IllegalArgumentException if rowNum &lt; 0
+<span class="nocode"><a name="65"> 65: </a></span>     */
+<span class="nocode"><a name="66"> 66: </a></span>    void setRowNum(int rowNum);
+<span class="nocode"><a name="67"> 67: </a></span>
+<span class="nocode"><a name="68"> 68: </a></span>    /**
+<span class="nocode"><a name="69"> 69: </a></span>     * Get row number this row represents
+<span class="nocode"><a name="70"> 70: </a></span>     *
+<span class="nocode"><a name="71"> 71: </a></span>     * @return the row number (0 based)
+<span class="nocode"><a name="72"> 72: </a></span>     */
+<span class="nocode"><a name="73"> 73: </a></span>    int getRowNum();
+<span class="nocode"><a name="74"> 74: </a></span>
+<span class="nocode"><a name="75"> 75: </a></span>    /**
+<span class="nocode"><a name="76"> 76: </a></span>     * Get the cell representing a given column (logical cell) 0-based.  If you
+<span class="nocode"><a name="77"> 77: </a></span>     * ask for a cell that is not defined....you get a null.
+<span class="nocode"><a name="78"> 78: </a></span>     *
+<span class="nocode"><a name="79"> 79: </a></span>     * @param cellnum  0 based column number
+<span class="nocode"><a name="80"> 80: </a></span>     * @return Cell representing that column or null if undefined.
+<span class="nocode"><a name="81"> 81: </a></span>     * @see #getCell(int, org.apache.poi.ss.usermodel.Row.MissingCellPolicy)
+<span class="nocode"><a name="82"> 82: </a></span>     */
+<span class="nocode"><a name="83"> 83: </a></span>    Cell getCell(int cellnum);
+<span class="nocode"><a name="84"> 84: </a></span>    
+<span class="nocode"><a name="85"> 85: </a></span>    /**
+<span class="nocode"><a name="86"> 86: </a></span>     * Returns the cell at the given (0 based) index, with the specified {@link org.apache.poi.ss.usermodel.Row.MissingCellPolicy}
+<span class="nocode"><a name="87"> 87: </a></span>     *
+<span class="nocode"><a name="88"> 88: </a></span>     * @return the cell at the given (0 based) index
+<span class="nocode"><a name="89"> 89: </a></span>     * @throws IllegalArgumentException if cellnum &lt; 0 or the specified MissingCellPolicy is invalid
+<span class="nocode"><a name="90"> 90: </a></span>     * @see Row#RETURN_NULL_AND_BLANK
+<span class="nocode"><a name="91"> 91: </a></span>     * @see Row#RETURN_BLANK_AS_NULL
+<span class="nocode"><a name="92"> 92: </a></span>     * @see Row#CREATE_NULL_AS_BLANK
+<span class="nocode"><a name="93"> 93: </a></span>     */
+<span class="nocode"><a name="94"> 94: </a></span>    Cell getCell(int cellnum, MissingCellPolicy policy);
+<span class="nocode"><a name="95"> 95: </a></span>
+<span class="nocode"><a name="96"> 96: </a></span>    /**
+<span class="nocode"><a name="97"> 97: </a></span>     * Get the number of the first cell contained in this row.
+<span class="nocode"><a name="98"> 98: </a></span>     *
+<span class="nocode"><a name="99"> 99: </a></span>     * @return short representing the first logical cell in the row,
+<span class="nocode"><a name="100">100: </a></span>     *  or -1 if the row does not contain any cells.
+<span class="nocode"><a name="101">101: </a></span>     */
+<span class="nocode"><a name="102">102: </a></span>    short getFirstCellNum();
+<span class="nocode"><a name="103">103: </a></span>
+<span class="nocode"><a name="104">104: </a></span>    /**
+<span class="nocode"><a name="105">105: </a></span>     * Gets the index of the last cell contained in this row &lt;b&gt;PLUS ONE&lt;/b&gt;. The result also
+<span class="nocode"><a name="106">106: </a></span>     * happens to be the 1-based column number of the last cell.  This value can be used as a
+<span class="nocode"><a name="107">107: </a></span>     * standard upper bound when iterating over cells:
+<span class="nocode"><a name="108">108: </a></span>     * &lt;pre&gt;
+<span class="nocode"><a name="109">109: </a></span>     * short minColIx = row.getFirstCellNum();
+<span class="nocode"><a name="110">110: </a></span>     * short maxColIx = row.getLastCellNum();
+<span class="nocode"><a name="111">111: </a></span>     * for(short colIx=minColIx; colIx&amp;lt;maxColIx; colIx++) {
+<span class="nocode"><a name="112">112: </a></span>     *   Cell cell = row.getCell(colIx);
+<span class="nocode"><a name="113">113: </a></span>     *   if(cell == null) {
+<span class="nocode"><a name="114">114: </a></span>     *     continue;
+<span class="nocode"><a name="115">115: </a></span>     *   }
+<span class="nocode"><a name="116">116: </a></span>     *   //... do something with cell
+<span class="nocode"><a name="117">117: </a></span>     * }
+<span class="nocode"><a name="118">118: </a></span>     * &lt;/pre&gt;
+<span class="nocode"><a name="119">119: </a></span>     *
+<span class="nocode"><a name="120">120: </a></span>     * @return short representing the last logical cell in the row &lt;b&gt;PLUS ONE&lt;/b&gt;,
+<span class="nocode"><a name="121">121: </a></span>     *   or -1 if the row does not contain any cells.
+<span class="nocode"><a name="122">122: </a></span>     */
+<span class="nocode"><a name="123">123: </a></span>    short getLastCellNum();
+<span class="nocode"><a name="124">124: </a></span>
+<span class="nocode"><a name="125">125: </a></span>    /**
+<span class="nocode"><a name="126">126: </a></span>     * Gets the number of defined cells (NOT number of cells in the actual row!).
+<span class="nocode"><a name="127">127: </a></span>     * That is to say if only columns 0,4,5 have values then there would be 3.
+<span class="nocode"><a name="128">128: </a></span>     *
+<span class="nocode"><a name="129">129: </a></span>     * @return int representing the number of defined cells in the row.
+<span class="nocode"><a name="130">130: </a></span>     */
+<span class="nocode"><a name="131">131: </a></span>    int getPhysicalNumberOfCells();
+<span class="nocode"><a name="132">132: </a></span>
+<span class="nocode"><a name="133">133: </a></span>    /**
+<span class="nocode"><a name="134">134: </a></span>     * Set the row's height or set to ff (-1) for undefined/default-height.  Set the height in &quot;twips&quot; or
+<span class="nocode"><a name="135">135: </a></span>     * 1/20th of a point.
+<span class="nocode"><a name="136">136: </a></span>     *
+<span class="nocode"><a name="137">137: </a></span>     * @param height  rowheight or 0xff for undefined (use sheet default)
+<span class="nocode"><a name="138">138: </a></span>     */
+<span class="nocode"><a name="139">139: </a></span>    void setHeight(short height);
+<span class="nocode"><a name="140">140: </a></span>
+<span class="nocode"><a name="141">141: </a></span>    /**
+<span class="nocode"><a name="142">142: </a></span>     * Set whether or not to display this row with 0 height
+<span class="nocode"><a name="143">143: </a></span>     *
+<span class="nocode"><a name="144">144: </a></span>     * @param zHeight  height is zero or not.
+<span class="nocode"><a name="145">145: </a></span>     */
+<span class="nocode"><a name="146">146: </a></span>    void setZeroHeight(boolean zHeight);
+<span class="nocode"><a name="147">147: </a></span>
+<span class="nocode"><a name="148">148: </a></span>    /**
+<span class="nocode"><a name="149">149: </a></span>     * Get whether or not to display this row with 0 height
+<span class="nocode"><a name="150">150: </a></span>     *
+<span class="nocode"><a name="151">151: </a></span>     * @return - zHeight height is zero or not.
+<span class="nocode"><a name="152">152: </a></span>     */
+<span class="nocode"><a name="153">153: </a></span>    boolean getZeroHeight();
+<span class="nocode"><a name="154">154: </a></span>
+<span class="nocode"><a name="155">155: </a></span>    /**
+<span class="nocode"><a name="156">156: </a></span>     * Set the row's height in points.
+<span class="nocode"><a name="157">157: </a></span>     *
+<span class="nocode"><a name="158">158: </a></span>     * @param height the height in points. &lt;code&gt;-1&lt;/code&gt;  resets to the default height
+<span class="nocode"><a name="159">159: </a></span>     */
+<span class="nocode"><a name="160">160: </a></span>    void setHeightInPoints(float height);
+<span class="nocode"><a name="161">161: </a></span>
+<span class="nocode"><a name="162">162: </a></span>    /**
+<span class="nocode"><a name="163">163: </a></span>     * Get the row's height measured in twips (1/20th of a point). If the height is not set, the default worksheet value is returned,
+<span class="nocode"><a name="164">164: </a></span>     * See {@link Sheet#getDefaultRowHeightInPoints()}
+<span class="nocode"><a name="165">165: </a></span>     *
+<span class="nocode"><a name="166">166: </a></span>     * @return row height measured in twips (1/20th of a point)
+<span class="nocode"><a name="167">167: </a></span>     */
+<span class="nocode"><a name="168">168: </a></span>    short getHeight();
+<span class="nocode"><a name="169">169: </a></span>
+<span class="nocode"><a name="170">170: </a></span>    /**
+<span class="nocode"><a name="171">171: </a></span>     * Returns row height measured in point size. If the height is not set, the default worksheet value is returned,
+<span class="nocode"><a name="172">172: </a></span>     * See {@link Sheet#getDefaultRowHeightInPoints()}
+<span class="nocode"><a name="173">173: </a></span>     *
+<span class="nocode"><a name="174">174: </a></span>     * @return row height measured in point size
+<span class="nocode"><a name="175">175: </a></span>     * @see Sheet#getDefaultRowHeightInPoints()
+<span class="nocode"><a name="176">176: </a></span>     */
+<span class="nocode"><a name="177">177: </a></span>    float getHeightInPoints();
+<span class="nocode"><a name="178">178: </a></span>
+<span class="nocode"><a name="179">179: </a></span>    /**
+<span class="nocode"><a name="180">180: </a></span>     * Is this row formatted? Most aren't, but some rows
+<span class="nocode"><a name="181">181: </a></span>     *  do have whole-row styles. For those that do, you
+<span class="nocode"><a name="182">182: </a></span>     *  can get the formatting from {@link #getRowStyle()}
+<span class="nocode"><a name="183">183: </a></span>     */
+<span class="nocode"><a name="184">184: </a></span>    boolean isFormatted();
+<span class="nocode"><a name="185">185: </a></span>    
+<span class="nocode"><a name="186">186: </a></span>    /**
+<span class="nocode"><a name="187">187: </a></span>     * Returns the whole-row cell styles. Most rows won't
+<span class="nocode"><a name="188">188: </a></span>     *  have one of these, so will return null. Call
+<span class="nocode"><a name="189">189: </a></span>     *  {@link #isFormatted()} to check first.
+<span class="nocode"><a name="190">190: </a></span>     */
+<span class="nocode"><a name="191">191: </a></span>    CellStyle getRowStyle();
+<span class="nocode"><a name="192">192: </a></span>    
+<span class="nocode"><a name="193">193: </a></span>    /**
+<span class="nocode"><a name="194">194: </a></span>     * Applies a whole-row cell styling to the row.
+<span class="nocode"><a name="195">195: </a></span>     */
+<span class="nocode"><a name="196">196: </a></span>    void setRowStyle(CellStyle style);
+<span class="nocode"><a name="197">197: </a></span>    
+<span class="nocode"><a name="198">198: </a></span>    /**
+<span class="nocode"><a name="199">199: </a></span>     * @return Cell iterator of the physically defined cells.  Note element 4 may
+<span class="nocode"><a name="200">200: </a></span>     * actually be row cell depending on how many are defined!
+<span class="nocode"><a name="201">201: </a></span>     */
+<span class="nocode"><a name="202">202: </a></span>    Iterator&lt;Cell&gt; cellIterator();
+<span class="nocode"><a name="203">203: </a></span>
+<span class="nocode"><a name="204">204: </a></span>    /**
+<span class="nocode"><a name="205">205: </a></span>     * Returns the Sheet this row belongs to
+<span class="nocode"><a name="206">206: </a></span>     *
+<span class="nocode"><a name="207">207: </a></span>     * @return the Sheet that owns this row
+<span class="nocode"><a name="208">208: </a></span>     */
+<span class="nocode"><a name="209">209: </a></span>    Sheet getSheet();
+<span class="nocode"><a name="210">210: </a></span>
+<span class="nocode"><a name="211">211: </a></span>    /**
+<span class="nocode"><a name="212">212: </a></span>     * Used to specify the different possible policies
+<span class="nocode"><a name="213">213: </a></span>     *  if for the case of null and blank cells
+<span class="nocode"><a name="214">214: </a></span>     */
+<span class="nocode"><a name="215">215: </a></span>    public static final class MissingCellPolicy {
+<span class="nocode"><a name="216">216: </a></span>    	private static int NEXT_ID = 1;
+<span class="nocode"><a name="217">217: </a></span>    	public final int id;
+<span class="nocode"><a name="218">218: </a></span>    	private MissingCellPolicy() {
+<span class="nocode"><a name="219">219: </a></span>    		this.id = NEXT_ID++;
+<span class="nocode"><a name="220">220: </a></span>    	}
+<span class="nocode"><a name="221">221: </a></span>    }
+<span class="nocode"><a name="222">222: </a></span>    /** Missing cells are returned as null, Blank cells are returned as normal */
+<span class="nocode"><a name="223">223: </a></span>    public static final MissingCellPolicy RETURN_NULL_AND_BLANK = new MissingCellPolicy();
+<span class="nocode"><a name="224">224: </a></span>    /** Missing cells are returned as null, as are blank cells */
+<span class="nocode"><a name="225">225: </a></span>    public static final MissingCellPolicy RETURN_BLANK_AS_NULL = new MissingCellPolicy();
+<span class="nocode"><a name="226">226: </a></span>    /** A new, blank cell is created for missing cells. Blank cells are returned as normal */
+<span class="nocode"><a name="227">227: </a></span>    public static final MissingCellPolicy CREATE_NULL_AS_BLANK = new MissingCellPolicy();
+<span class="nocode"><a name="228">228: </a></span>}
+</pre><table class="mutation_table" summary="Mutations">
+<tr><th>ID</th><th>Line</th><th>Type</th><th>Detected</th></tr><tr><td>18141</td><td><a href="#219">219</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18142</td><td><a href="#219">219</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>18143</td><td><a href="#219">219</a></td><td>Replace arithmetic operator (Replace IADD with ISUB)</td><td><img src="not_detected.png"/></td></tr>
+</table>
+</body>
+</html>

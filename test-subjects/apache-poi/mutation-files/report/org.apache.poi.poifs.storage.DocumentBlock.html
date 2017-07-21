@@ -1,0 +1,280 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN
+"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>
+org.apache.poi.poifs.storage.DocumentBlock
+</title>
+<link href="prettify.css" type="text/css" rel="stylesheet" />
+<script type="text/javascript" src="prettify.js"></script>
+</head>
+<body onload="prettyPrint()">
+<h2>Javalanche report for class:<br/> org.apache.poi.poifs.storage.DocumentBlock </h2><pre class="prettyprint" style="border: 1px solid #888;padding: 2px"><span class="nocode"><a name="1">  1: </a></span>/* ====================================================================
+<span class="nocode"><a name="2">  2: </a></span>   Licensed to the Apache Software Foundation (ASF) under one or more
+<span class="nocode"><a name="3">  3: </a></span>   contributor license agreements.  See the NOTICE file distributed with
+<span class="nocode"><a name="4">  4: </a></span>   this work for additional information regarding copyright ownership.
+<span class="nocode"><a name="5">  5: </a></span>   The ASF licenses this file to You under the Apache License, Version 2.0
+<span class="nocode"><a name="6">  6: </a></span>   (the &quot;License&quot;); you may not use this file except in compliance with
+<span class="nocode"><a name="7">  7: </a></span>   the License.  You may obtain a copy of the License at
+<span class="nocode"><a name="8">  8: </a></span>
+<span class="nocode"><a name="9">  9: </a></span>       http://www.apache.org/licenses/LICENSE-2.0
+<span class="nocode"><a name="10"> 10: </a></span>
+<span class="nocode"><a name="11"> 11: </a></span>   Unless required by applicable law or agreed to in writing, software
+<span class="nocode"><a name="12"> 12: </a></span>   distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+<span class="nocode"><a name="13"> 13: </a></span>   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+<span class="nocode"><a name="14"> 14: </a></span>   See the License for the specific language governing permissions and
+<span class="nocode"><a name="15"> 15: </a></span>   limitations under the License.
+<span class="nocode"><a name="16"> 16: </a></span>==================================================================== */
+<span class="nocode"><a name="17"> 17: </a></span>
+<span class="nocode"><a name="18"> 18: </a></span>package org.apache.poi.poifs.storage;
+<span class="nocode"><a name="19"> 19: </a></span>
+<span class="nocode"><a name="20"> 20: </a></span>import java.io.IOException;
+<span class="nocode"><a name="21"> 21: </a></span>import java.io.InputStream;
+<span class="nocode"><a name="22"> 22: </a></span>import java.io.OutputStream;
+<span class="nocode"><a name="23"> 23: </a></span>import java.util.Arrays;
+<span class="nocode"><a name="24"> 24: </a></span>
+<span class="nocode"><a name="25"> 25: </a></span>import org.apache.poi.poifs.common.POIFSBigBlockSize;
+<span class="nocode"><a name="26"> 26: </a></span>import org.apache.poi.poifs.common.POIFSConstants;
+<span class="nocode"><a name="27"> 27: </a></span>import org.apache.poi.util.IOUtils;
+<span class="nocode"><a name="28"> 28: </a></span>
+<span class="nocode"><a name="29"> 29: </a></span>/**
+<span class="nocode"><a name="30"> 30: </a></span> * A block of document data.
+<span class="nocode"><a name="31"> 31: </a></span> *
+<span class="nocode"><a name="32"> 32: </a></span> * @author Marc Johnson (mjohnson at apache dot org)
+<span class="nocode"><a name="33"> 33: </a></span> */
+<span class="nocode"><a name="34"> 34: </a></span>public final class DocumentBlock extends BigBlock {
+<span class="nocode"><a name="35"> 35: </a></span>    private static final byte _default_value = ( byte ) 0xFF;
+<span class="nocode"><a name="36"> 36: </a></span>    private byte[]            _data;
+<span class="nocode"><a name="37"> 37: </a></span>    private int               _bytes_read;
+<span class="nocode"><a name="38"> 38: </a></span>
+<span class="nocode"><a name="39"> 39: </a></span>    /**
+<span class="nocode"><a name="40"> 40: </a></span>     * create a document block from a raw data block
+<span class="nocode"><a name="41"> 41: </a></span>     *
+<span class="nocode"><a name="42"> 42: </a></span>     * @param block the raw data block
+<span class="nocode"><a name="43"> 43: </a></span>     *
+<span class="nocode"><a name="44"> 44: </a></span>     * @exception IOException
+<span class="nocode"><a name="45"> 45: </a></span>     */
+<span class="nocode"><a name="46"> 46: </a></span>
+<span class="nocode"><a name="47"> 47: </a></span>    public DocumentBlock(final RawDataBlock block)
+<span class="nocode"><a name="48"> 48: </a></span>        throws IOException
+<span class="nocode"><a name="49"> 49: </a></span>    {
+<span class="nocode"><a name="50"> 50: </a></span>        super(
+<span class="nocode"><a name="51"> 51: </a></span>              block.getBigBlockSize() == POIFSConstants.SMALLER_BIG_BLOCK_SIZE ?
+<span class="nocode"><a name="52"> 52: </a></span>                    POIFSConstants.SMALLER_BIG_BLOCK_SIZE_DETAILS :
+<span class="nocode"><a name="53"> 53: </a></span>                    POIFSConstants.LARGER_BIG_BLOCK_SIZE_DETAILS
+<span class="nocode"><a name="54"> 54: </a></span>        );
+<span class="nocode"><a name="55"> 55: </a></span>        _data       = block.getData();
+<span class="nocode"><a name="56"> 56: </a></span>        _bytes_read = _data.length;
+<span class="nocode"><a name="57"> 57: </a></span>    }
+<span class="nocode"><a name="58"> 58: </a></span>
+<span class="nocode"><a name="59"> 59: </a></span>    /**
+<span class="nocode"><a name="60"> 60: </a></span>     * Create a single instance initialized with data.
+<span class="nocode"><a name="61"> 61: </a></span>     *
+<span class="nocode"><a name="62"> 62: </a></span>     * @param stream the InputStream delivering the data.
+<span class="nocode"><a name="63"> 63: </a></span>     *
+<span class="nocode"><a name="64"> 64: </a></span>     * @exception IOException
+<span class="nocode"><a name="65"> 65: </a></span>     */
+<span class="nocode"><a name="66"> 66: </a></span>
+<span class="nocode"><a name="67"> 67: </a></span>    public DocumentBlock(final InputStream stream, POIFSBigBlockSize bigBlockSize)
+<span class="nocode"><a name="68"> 68: </a></span>        throws IOException
+<span class="nocode"><a name="69"> 69: </a></span>    {
+<span class="nocode"><a name="70"> 70: </a></span>        this(bigBlockSize);
+<span class="nocode"><a name="71"> 71: </a></span>        int count = IOUtils.readFully(stream, _data);
+<span class="nocode"><a name="72"> 72: </a></span>
+<span class="nocode"><a name="73"> 73: </a></span>        _bytes_read = (count == -1) ? 0
+<span class="nocode"><a name="74"> 74: </a></span>                                    : count;
+<span class="nocode"><a name="75"> 75: </a></span>    }
+<span class="nocode"><a name="76"> 76: </a></span>
+<span class="nocode"><a name="77"> 77: </a></span>    /**
+<span class="nocode"><a name="78"> 78: </a></span>     * Create a single instance initialized with default values
+<span class="nocode"><a name="79"> 79: </a></span>     */
+<span class="nocode"><a name="80"> 80: </a></span>
+<span class="nocode"><a name="81"> 81: </a></span>    private DocumentBlock(POIFSBigBlockSize bigBlockSize)
+<span class="nocode"><a name="82"> 82: </a></span>    {
+<span class="nocode"><a name="83"> 83: </a></span>        super(bigBlockSize);
+<span class="nocode"><a name="84"> 84: </a></span>        _data = new byte[ bigBlockSize.getBigBlockSize() ];
+<span class="nocode"><a name="85"> 85: </a></span>        Arrays.fill(_data, _default_value);
+<span class="nocode"><a name="86"> 86: </a></span>    }
+<span class="nocode"><a name="87"> 87: </a></span>
+<span class="nocode"><a name="88"> 88: </a></span>    /**
+<span class="nocode"><a name="89"> 89: </a></span>     * Get the number of bytes read for this block
+<span class="nocode"><a name="90"> 90: </a></span>     *
+<span class="nocode"><a name="91"> 91: </a></span>     * @return bytes read into the block
+<span class="nocode"><a name="92"> 92: </a></span>     */
+<span class="nocode"><a name="93"> 93: </a></span>
+<span class="nocode"><a name="94"> 94: </a></span>    public int size()
+<span class="nocode"><a name="95"> 95: </a></span>    {
+<span class="nocode"><a name="96"> 96: </a></span>        return _bytes_read;
+<span class="nocode"><a name="97"> 97: </a></span>    }
+<span class="nocode"><a name="98"> 98: </a></span>
+<span class="nocode"><a name="99"> 99: </a></span>    /**
+<span class="nocode"><a name="100">100: </a></span>     * Was this a partially read block?
+<span class="nocode"><a name="101">101: </a></span>     *
+<span class="nocode"><a name="102">102: </a></span>     * @return true if the block was only partially filled with data
+<span class="nocode"><a name="103">103: </a></span>     */
+<span class="nocode"><a name="104">104: </a></span>
+<span class="nocode"><a name="105">105: </a></span>    public boolean partiallyRead()
+<span class="nocode"><a name="106">106: </a></span>    {
+<span class="nocode"><a name="107">107: </a></span>        return _bytes_read != bigBlockSize.getBigBlockSize();
+<span class="nocode"><a name="108">108: </a></span>    }
+<span class="nocode"><a name="109">109: </a></span>
+<span class="nocode"><a name="110">110: </a></span>    /**
+<span class="nocode"><a name="111">111: </a></span>     * @return the fill byte used
+<span class="nocode"><a name="112">112: </a></span>     */
+<span class="nocode"><a name="113">113: </a></span>
+<span class="nocode"><a name="114">114: </a></span>    public static byte getFillByte()
+<span class="nocode"><a name="115">115: </a></span>    {
+<span class="nocode"><a name="116">116: </a></span>        return _default_value;
+<span class="nocode"><a name="117">117: </a></span>    }
+<span class="nocode"><a name="118">118: </a></span>
+<span class="nocode"><a name="119">119: </a></span>    /**
+<span class="nocode"><a name="120">120: </a></span>     * convert a single long array into an array of DocumentBlock
+<span class="nocode"><a name="121">121: </a></span>     * instances
+<span class="nocode"><a name="122">122: </a></span>     *
+<span class="nocode"><a name="123">123: </a></span>     * @param array the byte array to be converted
+<span class="nocode"><a name="124">124: </a></span>     * @param size the intended size of the array (which may be smaller)
+<span class="nocode"><a name="125">125: </a></span>     *
+<span class="nocode"><a name="126">126: </a></span>     * @return an array of DocumentBlock instances, filled from the
+<span class="nocode"><a name="127">127: </a></span>     *         input array
+<span class="nocode"><a name="128">128: </a></span>     */
+<span class="nocode"><a name="129">129: </a></span>
+<span class="nocode"><a name="130">130: </a></span>    public static DocumentBlock [] convert(final POIFSBigBlockSize bigBlockSize,
+<span class="nocode"><a name="131">131: </a></span>                                           final byte [] array,
+<span class="nocode"><a name="132">132: </a></span>                                           final int size)
+<span class="nocode"><a name="133">133: </a></span>    {
+<span class="nocode"><a name="134">134: </a></span>        DocumentBlock[] rval   =
+<span class="nocode"><a name="135">135: </a></span>            new DocumentBlock[ (size + bigBlockSize.getBigBlockSize() - 1) / bigBlockSize.getBigBlockSize() ];
+<span class="nocode"><a name="136">136: </a></span>        int             offset = 0;
+<span class="nocode"><a name="137">137: </a></span>
+<span class="nocode"><a name="138">138: </a></span>        for (int k = 0; k &lt; rval.length; k++)
+<span class="nocode"><a name="139">139: </a></span>        {
+<span class="nocode"><a name="140">140: </a></span>            rval[ k ] = new DocumentBlock(bigBlockSize);
+<span class="nocode"><a name="141">141: </a></span>            if (offset &lt; array.length)
+<span class="nocode"><a name="142">142: </a></span>            {
+<span class="nocode"><a name="143">143: </a></span>                int length = Math.min(bigBlockSize.getBigBlockSize(),
+<span class="nocode"><a name="144">144: </a></span>                                      array.length - offset);
+<span class="nocode"><a name="145">145: </a></span>
+<span class="nocode"><a name="146">146: </a></span>                System.arraycopy(array, offset, rval[ k ]._data, 0, length);
+<span class="nocode"><a name="147">147: </a></span>                if (length != bigBlockSize.getBigBlockSize())
+<span class="nocode"><a name="148">148: </a></span>                {
+<span class="nocode"><a name="149">149: </a></span>                    Arrays.fill(rval[ k ]._data, length,
+<span class="nocode"><a name="150">150: </a></span>                          bigBlockSize.getBigBlockSize(),
+<span class="nocode"><a name="151">151: </a></span>                                _default_value);
+<span class="nocode"><a name="152">152: </a></span>                }
+<span class="nocode"><a name="153">153: </a></span>            }
+<span class="nocode"><a name="154">154: </a></span>            else
+<span class="nocode"><a name="155">155: </a></span>            {
+<span class="nocode"><a name="156">156: </a></span>                Arrays.fill(rval[ k ]._data, _default_value);
+<span class="nocode"><a name="157">157: </a></span>            }
+<span class="nocode"><a name="158">158: </a></span>            offset += bigBlockSize.getBigBlockSize();
+<span class="nocode"><a name="159">159: </a></span>        }
+<span class="nocode"><a name="160">160: </a></span>        return rval;
+<span class="nocode"><a name="161">161: </a></span>    }
+<span class="nocode"><a name="162">162: </a></span>
+<span class="nocode"><a name="163">163: </a></span>    public static DataInputBlock getDataInputBlock(DocumentBlock[] blocks, int offset) {
+<span class="nocode"><a name="164">164: </a></span>        if(blocks == null || blocks.length == 0) {
+<span class="nocode"><a name="165">165: </a></span>           return null;
+<span class="nocode"><a name="166">166: </a></span>        }
+<span class="nocode"><a name="167">167: </a></span>        
+<span class="nocode"><a name="168">168: </a></span>        // Key things about the size of the block
+<span class="nocode"><a name="169">169: </a></span>        POIFSBigBlockSize bigBlockSize = blocks[0].bigBlockSize;
+<span class="nocode"><a name="170">170: </a></span>        int BLOCK_SHIFT = bigBlockSize.getHeaderValue();
+<span class="nocode"><a name="171">171: </a></span>        int BLOCK_SIZE = bigBlockSize.getBigBlockSize();
+<span class="nocode"><a name="172">172: </a></span>        int BLOCK_MASK = BLOCK_SIZE - 1;
+<span class="nocode"><a name="173">173: </a></span>
+<span class="nocode"><a name="174">174: </a></span>        // Now do the offset lookup
+<span class="nocode"><a name="175">175: </a></span>        int firstBlockIndex = offset &gt;&gt; BLOCK_SHIFT;
+<span class="nocode"><a name="176">176: </a></span>        int firstBlockOffset= offset &amp; BLOCK_MASK;
+<span class="nocode"><a name="177">177: </a></span>        return new DataInputBlock(blocks[firstBlockIndex]._data, firstBlockOffset);
+<span class="nocode"><a name="178">178: </a></span>    }
+<span class="nocode"><a name="179">179: </a></span>
+<span class="nocode"><a name="180">180: </a></span>    /* ********** START extension of BigBlock ********** */
+<span class="nocode"><a name="181">181: </a></span>
+<span class="nocode"><a name="182">182: </a></span>    /**
+<span class="nocode"><a name="183">183: </a></span>     * Write the block's data to an OutputStream
+<span class="nocode"><a name="184">184: </a></span>     *
+<span class="nocode"><a name="185">185: </a></span>     * @param stream the OutputStream to which the stored data should
+<span class="nocode"><a name="186">186: </a></span>     *               be written
+<span class="nocode"><a name="187">187: </a></span>     *
+<span class="nocode"><a name="188">188: </a></span>     * @exception IOException on problems writing to the specified
+<span class="nocode"><a name="189">189: </a></span>     *            stream
+<span class="nocode"><a name="190">190: </a></span>     */
+<span class="nocode"><a name="191">191: </a></span>
+<span class="nocode"><a name="192">192: </a></span>    void writeData(final OutputStream stream)
+<span class="nocode"><a name="193">193: </a></span>        throws IOException
+<span class="nocode"><a name="194">194: </a></span>    {
+<span class="nocode"><a name="195">195: </a></span>        doWriteData(stream, _data);
+<span class="nocode"><a name="196">196: </a></span>    }
+<span class="nocode"><a name="197">197: </a></span>
+<span class="nocode"><a name="198">198: </a></span>    /* **********  END  extension of BigBlock ********** */
+<span class="nocode"><a name="199">199: </a></span>}   // end public class DocumentBlock
+<span class="nocode"><a name="200">200: </a></span>
+</pre><table class="mutation_table" summary="Mutations">
+<tr><th>ID</th><th>Line</th><th>Type</th><th>Detected</th></tr><tr><td>37562</td><td><a href="#50">50</a></td><td>Replace a constant (Replace 512 with 511(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>37563</td><td><a href="#50">50</a></td><td>Replace a constant (Replace 512 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>37561</td><td><a href="#50">50</a></td><td>Replace a constant (Replace 512 with 513(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>37564</td><td><a href="#50">50</a></td><td>Negate jump condition (Replace IF_ICMPNE with  IF_ICMPEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>37565</td><td><a href="#55">55</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>37566</td><td><a href="#71">71</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>37568</td><td><a href="#73">73</a></td><td>Replace a constant (Replace -1 with -2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>37567</td><td><a href="#73">73</a></td><td>Replace a constant (Replace -1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>37571</td><td><a href="#73">73(1)</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>37570</td><td><a href="#73">73(1)</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>37569</td><td><a href="#73">73</a></td><td>Negate jump condition (Replace IF_ICMPNE with  IF_ICMPEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>37572</td><td><a href="#84">84</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>37573</td><td><a href="#85">85</a></td><td>Replace a constant (Replace -1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>37574</td><td><a href="#85">85</a></td><td>Replace a constant (Replace -1 with -2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>37575</td><td><a href="#85">85</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>37578</td><td><a href="#107">107</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>37579</td><td><a href="#107">107</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>37580</td><td><a href="#107">107(1)</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>37581</td><td><a href="#107">107(1)</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>37577</td><td><a href="#107">107</a></td><td>Negate jump condition (Replace IF_ICMPEQ with  IF_ICMPNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>37576</td><td><a href="#107">107</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>37583</td><td><a href="#116">116</a></td><td>Replace a constant (Replace -1 with -2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>37582</td><td><a href="#116">116</a></td><td>Replace a constant (Replace -1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>37587</td><td><a href="#134">134</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>37586</td><td><a href="#134">134</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>37585</td><td><a href="#134">134</a></td><td>Replace arithmetic operator (Replace IADD with ISUB)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>37588</td><td><a href="#134">134(1)</a></td><td>Replace arithmetic operator (Replace ISUB with IADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>37590</td><td><a href="#134">134(2)</a></td><td>Replace arithmetic operator (Replace IDIV with IMUL)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>37584</td><td><a href="#134">134</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>37589</td><td><a href="#134">134(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>37591</td><td><a href="#136">136</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>37592</td><td><a href="#136">136</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>37593</td><td><a href="#138">138</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>37594</td><td><a href="#138">138</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>37595</td><td><a href="#138">138</a></td><td>Negate jump condition (Replace IF_ICMPGE with  IF_ICMPLT)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>37596</td><td><a href="#141">141</a></td><td>Negate jump condition (Replace IF_ICMPGE with  IF_ICMPLT)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>37598</td><td><a href="#143">143</a></td><td>Replace arithmetic operator (Replace ISUB with IADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>37597</td><td><a href="#143">143</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>37599</td><td><a href="#143">143(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>37600</td><td><a href="#146">146</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>37601</td><td><a href="#146">146</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>37602</td><td><a href="#146">146</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>37604</td><td><a href="#147">147</a></td><td>Negate jump condition (Replace IF_ICMPEQ with  IF_ICMPNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>37603</td><td><a href="#147">147</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>37606</td><td><a href="#149">149</a></td><td>Replace a constant (Replace -1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>37607</td><td><a href="#149">149</a></td><td>Replace a constant (Replace -1 with -2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>37605</td><td><a href="#149">149</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>37608</td><td><a href="#149">149(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>37609</td><td><a href="#156">156</a></td><td>Replace a constant (Replace -1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>37610</td><td><a href="#156">156</a></td><td>Replace a constant (Replace -1 with -2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>37611</td><td><a href="#156">156</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>37613</td><td><a href="#158">158</a></td><td>Replace arithmetic operator (Replace IADD with ISUB)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>37612</td><td><a href="#158">158</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>37614</td><td><a href="#164">164</a></td><td>Negate jump condition (Replace IFNULL with  IFNONNULL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>37615</td><td><a href="#164">164(1)</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>37616</td><td><a href="#169">169</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>37617</td><td><a href="#169">169</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>37618</td><td><a href="#170">170</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>37619</td><td><a href="#171">171</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>37621</td><td><a href="#172">172</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>37620</td><td><a href="#172">172</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>37622</td><td><a href="#172">172</a></td><td>Replace arithmetic operator (Replace ISUB with IADD)</td><td><img src="detected.png"/></td></tr>
+<tr><td>37623</td><td><a href="#175">175</a></td><td>Replace arithmetic operator (Replace ISHR with ISHL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>37624</td><td><a href="#176">176</a></td><td>Replace arithmetic operator (Replace IAND with IOR)</td><td><img src="detected.png"/></td></tr>
+<tr><td>37625</td><td><a href="#195">195</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+</table>
+</body>
+</html>

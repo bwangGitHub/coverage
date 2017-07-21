@@ -1,0 +1,19 @@
+Testsuite: org.apache.poi.hssf.usermodel.TestHSSFDateUtil
+Tests run: 16, Failures: 0, Errors: 0, Time elapsed: 0.013 sec
+
+Testcase: testDateConversion took 0.001 sec
+Testcase: testExcelConversionOnDSTStart took 0.001 sec
+Testcase: testJavaConversionOnDSTStart took 0.001 sec
+Testcase: testExcelConversionOnDSTEnd took 0.002 sec
+Testcase: testJavaConversionOnDSTEnd took 0.001 sec
+Testcase: testCalendarConversion took 0.002 sec
+Testcase: testIdentifyDateFormats took 0.001 sec
+Testcase: testOnARealFile took 0 sec
+Testcase: testDateBug_2Excel took 0.001 sec
+Testcase: testDateBug_2Java took 0 sec
+Testcase: testDate1904 took 0 sec
+Testcase: testAbsoluteDay took 0 sec
+Testcase: testConvertTime took 0 sec
+Testcase: testParseDate took 0 sec
+Testcase: testConvertDateTime took 0 sec
+Testcase: testBug19172 took 0 sec

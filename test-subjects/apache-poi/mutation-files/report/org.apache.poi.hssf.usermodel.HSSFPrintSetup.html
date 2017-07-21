@@ -1,0 +1,417 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN
+"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>
+org.apache.poi.hssf.usermodel.HSSFPrintSetup
+</title>
+<link href="prettify.css" type="text/css" rel="stylesheet" />
+<script type="text/javascript" src="prettify.js"></script>
+</head>
+<body onload="prettyPrint()">
+<h2>Javalanche report for class:<br/> org.apache.poi.hssf.usermodel.HSSFPrintSetup </h2><pre class="prettyprint" style="border: 1px solid #888;padding: 2px"><span class="nocode"><a name="1">  1: </a></span>/* ====================================================================
+<span class="nocode"><a name="2">  2: </a></span>   Licensed to the Apache Software Foundation (ASF) under one or more
+<span class="nocode"><a name="3">  3: </a></span>   contributor license agreements.  See the NOTICE file distributed with
+<span class="nocode"><a name="4">  4: </a></span>   this work for additional information regarding copyright ownership.
+<span class="nocode"><a name="5">  5: </a></span>   The ASF licenses this file to You under the Apache License, Version 2.0
+<span class="nocode"><a name="6">  6: </a></span>   (the &quot;License&quot;); you may not use this file except in compliance with
+<span class="nocode"><a name="7">  7: </a></span>   the License.  You may obtain a copy of the License at
+<span class="nocode"><a name="8">  8: </a></span>
+<span class="nocode"><a name="9">  9: </a></span>       http://www.apache.org/licenses/LICENSE-2.0
+<span class="nocode"><a name="10"> 10: </a></span>
+<span class="nocode"><a name="11"> 11: </a></span>   Unless required by applicable law or agreed to in writing, software
+<span class="nocode"><a name="12"> 12: </a></span>   distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+<span class="nocode"><a name="13"> 13: </a></span>   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+<span class="nocode"><a name="14"> 14: </a></span>   See the License for the specific language governing permissions and
+<span class="nocode"><a name="15"> 15: </a></span>   limitations under the License.
+<span class="nocode"><a name="16"> 16: </a></span>==================================================================== */
+<span class="nocode"><a name="17"> 17: </a></span>
+<span class="nocode"><a name="18"> 18: </a></span>
+<span class="nocode"><a name="19"> 19: </a></span>package org.apache.poi.hssf.usermodel;
+<span class="nocode"><a name="20"> 20: </a></span>
+<span class="nocode"><a name="21"> 21: </a></span>import org.apache.poi.hssf.record.PrintSetupRecord;
+<span class="nocode"><a name="22"> 22: </a></span>import org.apache.poi.ss.usermodel.PrintSetup;
+<span class="nocode"><a name="23"> 23: </a></span>
+<span class="nocode"><a name="24"> 24: </a></span>/**
+<span class="nocode"><a name="25"> 25: </a></span> * Used to modify the print setup.
+<span class="nocode"><a name="26"> 26: </a></span> * &lt;P&gt;
+<span class="nocode"><a name="27"> 27: </a></span> * Paper size constants have been added for the ones I have access
+<span class="nocode"><a name="28"> 28: </a></span> * to.  They follow as:&lt;br&gt;
+<span class="nocode"><a name="29"> 29: </a></span> *  public static final short LETTER_PAPERSIZE 	          = 1;&lt;br&gt;
+<span class="nocode"><a name="30"> 30: </a></span> *  public static final short LEGAL_PAPERSIZE 		  = 5;&lt;br&gt;
+<span class="nocode"><a name="31"> 31: </a></span> *  public static final short EXECUTIVE_PAPERSIZE 	  = 7;&lt;br&gt;
+<span class="nocode"><a name="32"> 32: </a></span> *  public static final short A4_PAPERSIZE 	  	  = 9;&lt;br&gt;
+<span class="nocode"><a name="33"> 33: </a></span> *  public static final short A5_PAPERSIZE 		  = 11;&lt;br&gt;
+<span class="nocode"><a name="34"> 34: </a></span> *  public static final short ENVELOPE_10_PAPERSIZE 	  = 20;&lt;br&gt;
+<span class="nocode"><a name="35"> 35: </a></span> *  public static final short ENVELOPE_DL_PAPERSIZE 	  = 27;&lt;br&gt;
+<span class="nocode"><a name="36"> 36: </a></span> *  public static final short ENVELOPE_CS_PAPERSIZE 	  = 28;&lt;br&gt;
+<span class="nocode"><a name="37"> 37: </a></span> *  public static final short ENVELOPE_MONARCH_PAPERSIZE  = 37;&lt;br&gt;
+<span class="nocode"><a name="38"> 38: </a></span> * &lt;P&gt;
+<span class="nocode"><a name="39"> 39: </a></span> * @author Shawn Laubach (slaubach at apache dot org) */
+<span class="nocode"><a name="40"> 40: </a></span>public class HSSFPrintSetup implements PrintSetup {    
+<span class="nocode"><a name="41"> 41: </a></span>    PrintSetupRecord printSetupRecord;
+<span class="nocode"><a name="42"> 42: </a></span>    
+<span class="nocode"><a name="43"> 43: </a></span>    /**    
+<span class="nocode"><a name="44"> 44: </a></span>     * Constructor.  Takes the low level print setup record.    
+<span class="nocode"><a name="45"> 45: </a></span>     * @param printSetupRecord the low level print setup record    
+<span class="nocode"><a name="46"> 46: </a></span>     */
+<span class="nocode"><a name="47"> 47: </a></span>    protected HSSFPrintSetup(PrintSetupRecord printSetupRecord) {
+<span class="nocode"><a name="48"> 48: </a></span>	this.printSetupRecord = printSetupRecord;
+<span class="nocode"><a name="49"> 49: </a></span>    }    
+<span class="nocode"><a name="50"> 50: </a></span>    
+<span class="nocode"><a name="51"> 51: </a></span>    /**    
+<span class="nocode"><a name="52"> 52: </a></span>     * Set the paper size.    
+<span class="nocode"><a name="53"> 53: </a></span>     * @param size the paper size.    
+<span class="nocode"><a name="54"> 54: </a></span>     */
+<span class="nocode"><a name="55"> 55: </a></span>    public void setPaperSize(short size)    {
+<span class="nocode"><a name="56"> 56: </a></span>	printSetupRecord.setPaperSize(size);
+<span class="nocode"><a name="57"> 57: </a></span>    }    
+<span class="nocode"><a name="58"> 58: </a></span>    
+<span class="nocode"><a name="59"> 59: </a></span>    /**    
+<span class="nocode"><a name="60"> 60: </a></span>     * Set the scale.    
+<span class="nocode"><a name="61"> 61: </a></span>     * @param scale the scale to use    
+<span class="nocode"><a name="62"> 62: </a></span>     */
+<span class="nocode"><a name="63"> 63: </a></span>    public void setScale(short scale)    {
+<span class="nocode"><a name="64"> 64: </a></span>	printSetupRecord.setScale(scale);
+<span class="nocode"><a name="65"> 65: </a></span>    }    
+<span class="nocode"><a name="66"> 66: </a></span>    
+<span class="nocode"><a name="67"> 67: </a></span>    /**    
+<span class="nocode"><a name="68"> 68: </a></span>     * Set the page numbering start.    
+<span class="nocode"><a name="69"> 69: </a></span>     * @param start the page numbering start    
+<span class="nocode"><a name="70"> 70: </a></span>     */
+<span class="nocode"><a name="71"> 71: </a></span>    public void setPageStart(short start)    {
+<span class="nocode"><a name="72"> 72: </a></span>	printSetupRecord.setPageStart(start);
+<span class="nocode"><a name="73"> 73: </a></span>    }    
+<span class="nocode"><a name="74"> 74: </a></span>    
+<span class="nocode"><a name="75"> 75: </a></span>    /**    
+<span class="nocode"><a name="76"> 76: </a></span>     * Set the number of pages wide to fit the sheet in    
+<span class="nocode"><a name="77"> 77: </a></span>     * @param width the number of pages    
+<span class="nocode"><a name="78"> 78: </a></span>     */
+<span class="nocode"><a name="79"> 79: </a></span>    public void setFitWidth(short width)    {
+<span class="nocode"><a name="80"> 80: </a></span>	printSetupRecord.setFitWidth(width);
+<span class="nocode"><a name="81"> 81: </a></span>    }    
+<span class="nocode"><a name="82"> 82: </a></span>    
+<span class="nocode"><a name="83"> 83: </a></span>    /**    
+<span class="nocode"><a name="84"> 84: </a></span>     * Set the number of pages high to fit the sheet in    
+<span class="nocode"><a name="85"> 85: </a></span>     * @param height the number of pages    
+<span class="nocode"><a name="86"> 86: </a></span>     */
+<span class="nocode"><a name="87"> 87: </a></span>    public void setFitHeight(short height)    {
+<span class="nocode"><a name="88"> 88: </a></span>	printSetupRecord.setFitHeight(height);
+<span class="nocode"><a name="89"> 89: </a></span>    }    
+<span class="nocode"><a name="90"> 90: </a></span>    
+<span class="nocode"><a name="91"> 91: </a></span>    /**    
+<span class="nocode"><a name="92"> 92: </a></span>     * Sets the options flags.  Not advisable to do it directly.    
+<span class="nocode"><a name="93"> 93: </a></span>     * @param options The bit flags for the options    
+<span class="nocode"><a name="94"> 94: </a></span>     */
+<span class="nocode"><a name="95"> 95: </a></span>    public void setOptions(short options)    {
+<span class="nocode"><a name="96"> 96: </a></span>	printSetupRecord.setOptions(options);
+<span class="nocode"><a name="97"> 97: </a></span>    }    
+<span class="nocode"><a name="98"> 98: </a></span>    
+<span class="nocode"><a name="99"> 99: </a></span>    /**    
+<span class="nocode"><a name="100">100: </a></span>     * Set whether to go left to right or top down in ordering    
+<span class="nocode"><a name="101">101: </a></span>     * @param ltor left to right    
+<span class="nocode"><a name="102">102: </a></span>     */
+<span class="nocode"><a name="103">103: </a></span>    public void setLeftToRight(boolean ltor)    {
+<span class="nocode"><a name="104">104: </a></span>	printSetupRecord.setLeftToRight(ltor);
+<span class="nocode"><a name="105">105: </a></span>    }    
+<span class="nocode"><a name="106">106: </a></span>    
+<span class="nocode"><a name="107">107: </a></span>    /**    
+<span class="nocode"><a name="108">108: </a></span>     * Set whether to print in landscape    
+<span class="nocode"><a name="109">109: </a></span>     * @param ls landscape    
+<span class="nocode"><a name="110">110: </a></span>     */
+<span class="nocode"><a name="111">111: </a></span>    public void setLandscape(boolean ls)    {
+<span class="nocode"><a name="112">112: </a></span>	printSetupRecord.setLandscape(!ls);
+<span class="nocode"><a name="113">113: </a></span>    }    
+<span class="nocode"><a name="114">114: </a></span>    
+<span class="nocode"><a name="115">115: </a></span>    /**    
+<span class="nocode"><a name="116">116: </a></span>     * Valid settings.  I'm not for sure.    
+<span class="nocode"><a name="117">117: </a></span>     * @param valid Valid    
+<span class="nocode"><a name="118">118: </a></span>     */
+<span class="nocode"><a name="119">119: </a></span>    public void setValidSettings(boolean valid)    {
+<span class="nocode"><a name="120">120: </a></span>	printSetupRecord.setValidSettings(valid);
+<span class="nocode"><a name="121">121: </a></span>    }    
+<span class="nocode"><a name="122">122: </a></span>    
+<span class="nocode"><a name="123">123: </a></span>    /**    
+<span class="nocode"><a name="124">124: </a></span>     * Set whether it is black and white    
+<span class="nocode"><a name="125">125: </a></span>     * @param mono Black and white    
+<span class="nocode"><a name="126">126: </a></span>     */
+<span class="nocode"><a name="127">127: </a></span>    public void setNoColor(boolean mono)    {
+<span class="nocode"><a name="128">128: </a></span>	printSetupRecord.setNoColor(mono);
+<span class="nocode"><a name="129">129: </a></span>    }    
+<span class="nocode"><a name="130">130: </a></span>    
+<span class="nocode"><a name="131">131: </a></span>    /**    
+<span class="nocode"><a name="132">132: </a></span>     * Set whether it is in draft mode    
+<span class="nocode"><a name="133">133: </a></span>     * @param d draft    
+<span class="nocode"><a name="134">134: </a></span>     */
+<span class="nocode"><a name="135">135: </a></span>    public void setDraft(boolean d)    {
+<span class="nocode"><a name="136">136: </a></span>	printSetupRecord.setDraft(d);
+<span class="nocode"><a name="137">137: </a></span>    }    
+<span class="nocode"><a name="138">138: </a></span>    
+<span class="nocode"><a name="139">139: </a></span>    /**    
+<span class="nocode"><a name="140">140: </a></span>     * Print the include notes    
+<span class="nocode"><a name="141">141: </a></span>     * @param printnotes print the notes    
+<span class="nocode"><a name="142">142: </a></span>     */
+<span class="nocode"><a name="143">143: </a></span>    public void setNotes(boolean printnotes)    {
+<span class="nocode"><a name="144">144: </a></span>	printSetupRecord.setNotes(printnotes);
+<span class="nocode"><a name="145">145: </a></span>    }    
+<span class="nocode"><a name="146">146: </a></span>    
+<span class="nocode"><a name="147">147: </a></span>    /**    
+<span class="nocode"><a name="148">148: </a></span>     * Set no orientation. ?    
+<span class="nocode"><a name="149">149: </a></span>     * @param orientation Orientation.    
+<span class="nocode"><a name="150">150: </a></span>     */
+<span class="nocode"><a name="151">151: </a></span>    public void setNoOrientation(boolean orientation)    {
+<span class="nocode"><a name="152">152: </a></span>	printSetupRecord.setNoOrientation(orientation);
+<span class="nocode"><a name="153">153: </a></span>    }    
+<span class="nocode"><a name="154">154: </a></span>    
+<span class="nocode"><a name="155">155: </a></span>    /**    
+<span class="nocode"><a name="156">156: </a></span>     * Set whether to use page start    
+<span class="nocode"><a name="157">157: </a></span>     * @param page Use page start    
+<span class="nocode"><a name="158">158: </a></span>     */
+<span class="nocode"><a name="159">159: </a></span>    public void setUsePage(boolean page)    {
+<span class="nocode"><a name="160">160: </a></span>	printSetupRecord.setUsePage(page);
+<span class="nocode"><a name="161">161: </a></span>    }    
+<span class="nocode"><a name="162">162: </a></span>    
+<span class="nocode"><a name="163">163: </a></span>    /**    
+<span class="nocode"><a name="164">164: </a></span>     * Sets the horizontal resolution.    
+<span class="nocode"><a name="165">165: </a></span>     * @param resolution horizontal resolution    
+<span class="nocode"><a name="166">166: </a></span>     */
+<span class="nocode"><a name="167">167: </a></span>    public void setHResolution(short resolution)    {
+<span class="nocode"><a name="168">168: </a></span>	printSetupRecord.setHResolution(resolution);
+<span class="nocode"><a name="169">169: </a></span>    }    
+<span class="nocode"><a name="170">170: </a></span>    
+<span class="nocode"><a name="171">171: </a></span>    /**    
+<span class="nocode"><a name="172">172: </a></span>     * Sets the vertical resolution.    
+<span class="nocode"><a name="173">173: </a></span>     * @param resolution vertical resolution    
+<span class="nocode"><a name="174">174: </a></span>     */
+<span class="nocode"><a name="175">175: </a></span>    public void setVResolution(short resolution)    {
+<span class="nocode"><a name="176">176: </a></span>	printSetupRecord.setVResolution(resolution);
+<span class="nocode"><a name="177">177: </a></span>    }    
+<span class="nocode"><a name="178">178: </a></span>    
+<span class="nocode"><a name="179">179: </a></span>    /**    
+<span class="nocode"><a name="180">180: </a></span>     * Sets the header margin.    
+<span class="nocode"><a name="181">181: </a></span>     * @param headermargin header margin    
+<span class="nocode"><a name="182">182: </a></span>     */
+<span class="nocode"><a name="183">183: </a></span>    public void setHeaderMargin(double headermargin)    {
+<span class="nocode"><a name="184">184: </a></span>	printSetupRecord.setHeaderMargin(headermargin);
+<span class="nocode"><a name="185">185: </a></span>    }    
+<span class="nocode"><a name="186">186: </a></span>    
+<span class="nocode"><a name="187">187: </a></span>    /**    
+<span class="nocode"><a name="188">188: </a></span>     * Sets the footer margin.    
+<span class="nocode"><a name="189">189: </a></span>     * @param footermargin footer margin    
+<span class="nocode"><a name="190">190: </a></span>     */
+<span class="nocode"><a name="191">191: </a></span>    public void setFooterMargin(double footermargin)    {
+<span class="nocode"><a name="192">192: </a></span>	printSetupRecord.setFooterMargin(footermargin);
+<span class="nocode"><a name="193">193: </a></span>    }    
+<span class="nocode"><a name="194">194: </a></span>    
+<span class="nocode"><a name="195">195: </a></span>    /**    
+<span class="nocode"><a name="196">196: </a></span>     * Sets the number of copies.    
+<span class="nocode"><a name="197">197: </a></span>     * @param copies number of copies    
+<span class="nocode"><a name="198">198: </a></span>     */
+<span class="nocode"><a name="199">199: </a></span>    public void setCopies(short copies)    {
+<span class="nocode"><a name="200">200: </a></span>	printSetupRecord.setCopies(copies);
+<span class="nocode"><a name="201">201: </a></span>    }    
+<span class="nocode"><a name="202">202: </a></span>    
+<span class="nocode"><a name="203">203: </a></span>    /**    
+<span class="nocode"><a name="204">204: </a></span>     * Returns the paper size.    
+<span class="nocode"><a name="205">205: </a></span>     * @return paper size    
+<span class="nocode"><a name="206">206: </a></span>     */
+<span class="nocode"><a name="207">207: </a></span>    public short getPaperSize()    {
+<span class="nocode"><a name="208">208: </a></span>        return printSetupRecord.getPaperSize();
+<span class="nocode"><a name="209">209: </a></span>    }    
+<span class="nocode"><a name="210">210: </a></span>    
+<span class="nocode"><a name="211">211: </a></span>    /**    
+<span class="nocode"><a name="212">212: </a></span>     * Returns the scale.    
+<span class="nocode"><a name="213">213: </a></span>     * @return scale    
+<span class="nocode"><a name="214">214: </a></span>     */
+<span class="nocode"><a name="215">215: </a></span>    public short getScale()    {
+<span class="nocode"><a name="216">216: </a></span>        return printSetupRecord.getScale();
+<span class="nocode"><a name="217">217: </a></span>    }    
+<span class="nocode"><a name="218">218: </a></span>    
+<span class="nocode"><a name="219">219: </a></span>    /**    
+<span class="nocode"><a name="220">220: </a></span>     * Returns the page start.    
+<span class="nocode"><a name="221">221: </a></span>     * @return page start    
+<span class="nocode"><a name="222">222: </a></span>     */
+<span class="nocode"><a name="223">223: </a></span>    public short getPageStart()    {
+<span class="nocode"><a name="224">224: </a></span>        return printSetupRecord.getPageStart();
+<span class="nocode"><a name="225">225: </a></span>    }    
+<span class="nocode"><a name="226">226: </a></span>    
+<span class="nocode"><a name="227">227: </a></span>    /**    
+<span class="nocode"><a name="228">228: </a></span>     * Returns the number of pages wide to fit sheet in.    
+<span class="nocode"><a name="229">229: </a></span>     * @return number of pages wide to fit sheet in    
+<span class="nocode"><a name="230">230: </a></span>     */
+<span class="nocode"><a name="231">231: </a></span>    public short getFitWidth()    {
+<span class="nocode"><a name="232">232: </a></span>        return printSetupRecord.getFitWidth();
+<span class="nocode"><a name="233">233: </a></span>    }    
+<span class="nocode"><a name="234">234: </a></span>    
+<span class="nocode"><a name="235">235: </a></span>    /**    
+<span class="nocode"><a name="236">236: </a></span>     * Returns the number of pages high to fit the sheet in.    
+<span class="nocode"><a name="237">237: </a></span>     * @return number of pages high to fit the sheet in    
+<span class="nocode"><a name="238">238: </a></span>     */
+<span class="nocode"><a name="239">239: </a></span>    public short getFitHeight()    {
+<span class="nocode"><a name="240">240: </a></span>        return printSetupRecord.getFitHeight();
+<span class="nocode"><a name="241">241: </a></span>    }    
+<span class="nocode"><a name="242">242: </a></span>    
+<span class="nocode"><a name="243">243: </a></span>    /**    
+<span class="nocode"><a name="244">244: </a></span>     * Returns the bit flags for the options.    
+<span class="nocode"><a name="245">245: </a></span>     * @return bit flags for the options    
+<span class="nocode"><a name="246">246: </a></span>     */
+<span class="nocode"><a name="247">247: </a></span>    public short getOptions()    {
+<span class="nocode"><a name="248">248: </a></span>        return printSetupRecord.getOptions();
+<span class="nocode"><a name="249">249: </a></span>    }    
+<span class="nocode"><a name="250">250: </a></span>    
+<span class="nocode"><a name="251">251: </a></span>    /**    
+<span class="nocode"><a name="252">252: </a></span>     * Returns the left to right print order.    
+<span class="nocode"><a name="253">253: </a></span>     * @return left to right print order    
+<span class="nocode"><a name="254">254: </a></span>     */
+<span class="nocode"><a name="255">255: </a></span>    public boolean getLeftToRight()    {
+<span class="nocode"><a name="256">256: </a></span>        return printSetupRecord.getLeftToRight();
+<span class="nocode"><a name="257">257: </a></span>    }    
+<span class="nocode"><a name="258">258: </a></span>    
+<span class="nocode"><a name="259">259: </a></span>    /**    
+<span class="nocode"><a name="260">260: </a></span>     * Returns the landscape mode.    
+<span class="nocode"><a name="261">261: </a></span>     * @return landscape mode    
+<span class="nocode"><a name="262">262: </a></span>     */
+<span class="nocode"><a name="263">263: </a></span>    public boolean getLandscape()    {
+<span class="nocode"><a name="264">264: </a></span>        return !printSetupRecord.getLandscape();
+<span class="nocode"><a name="265">265: </a></span>    }    
+<span class="nocode"><a name="266">266: </a></span>    
+<span class="nocode"><a name="267">267: </a></span>    /**    
+<span class="nocode"><a name="268">268: </a></span>     * Returns the valid settings.    
+<span class="nocode"><a name="269">269: </a></span>     * @return valid settings    
+<span class="nocode"><a name="270">270: </a></span>     */
+<span class="nocode"><a name="271">271: </a></span>    public boolean getValidSettings()    {
+<span class="nocode"><a name="272">272: </a></span>        return printSetupRecord.getValidSettings();
+<span class="nocode"><a name="273">273: </a></span>    }    
+<span class="nocode"><a name="274">274: </a></span>    
+<span class="nocode"><a name="275">275: </a></span>    /**    
+<span class="nocode"><a name="276">276: </a></span>     * Returns the black and white setting.    
+<span class="nocode"><a name="277">277: </a></span>     * @return black and white setting    
+<span class="nocode"><a name="278">278: </a></span>     */
+<span class="nocode"><a name="279">279: </a></span>    public boolean getNoColor()    {
+<span class="nocode"><a name="280">280: </a></span>        return printSetupRecord.getNoColor();
+<span class="nocode"><a name="281">281: </a></span>    }    
+<span class="nocode"><a name="282">282: </a></span>    
+<span class="nocode"><a name="283">283: </a></span>    /**    
+<span class="nocode"><a name="284">284: </a></span>     * Returns the draft mode.    
+<span class="nocode"><a name="285">285: </a></span>     * @return draft mode    
+<span class="nocode"><a name="286">286: </a></span>     */
+<span class="nocode"><a name="287">287: </a></span>    public boolean getDraft()    {
+<span class="nocode"><a name="288">288: </a></span>        return printSetupRecord.getDraft();
+<span class="nocode"><a name="289">289: </a></span>    }    
+<span class="nocode"><a name="290">290: </a></span>    
+<span class="nocode"><a name="291">291: </a></span>    /**    
+<span class="nocode"><a name="292">292: </a></span>     * Returns the print notes.    
+<span class="nocode"><a name="293">293: </a></span>     * @return print notes    
+<span class="nocode"><a name="294">294: </a></span>     */
+<span class="nocode"><a name="295">295: </a></span>    public boolean getNotes()    {
+<span class="nocode"><a name="296">296: </a></span>        return printSetupRecord.getNotes();
+<span class="nocode"><a name="297">297: </a></span>    }    
+<span class="nocode"><a name="298">298: </a></span>    
+<span class="nocode"><a name="299">299: </a></span>    /**    
+<span class="nocode"><a name="300">300: </a></span>     * Returns the no orientation.    
+<span class="nocode"><a name="301">301: </a></span>     * @return no orientation    
+<span class="nocode"><a name="302">302: </a></span>     */
+<span class="nocode"><a name="303">303: </a></span>    public boolean getNoOrientation()    {
+<span class="nocode"><a name="304">304: </a></span>        return printSetupRecord.getNoOrientation();
+<span class="nocode"><a name="305">305: </a></span>    }    
+<span class="nocode"><a name="306">306: </a></span>    
+<span class="nocode"><a name="307">307: </a></span>    /**    
+<span class="nocode"><a name="308">308: </a></span>     * Returns the use page numbers.    
+<span class="nocode"><a name="309">309: </a></span>     * @return use page numbers    
+<span class="nocode"><a name="310">310: </a></span>     */
+<span class="nocode"><a name="311">311: </a></span>    public boolean getUsePage()    {
+<span class="nocode"><a name="312">312: </a></span>        return printSetupRecord.getUsePage();
+<span class="nocode"><a name="313">313: </a></span>    }    
+<span class="nocode"><a name="314">314: </a></span>    
+<span class="nocode"><a name="315">315: </a></span>    /**    
+<span class="nocode"><a name="316">316: </a></span>     * Returns the horizontal resolution.    
+<span class="nocode"><a name="317">317: </a></span>     * @return horizontal resolution    
+<span class="nocode"><a name="318">318: </a></span>     */
+<span class="nocode"><a name="319">319: </a></span>    public short getHResolution()    {
+<span class="nocode"><a name="320">320: </a></span>        return printSetupRecord.getHResolution();
+<span class="nocode"><a name="321">321: </a></span>    }    
+<span class="nocode"><a name="322">322: </a></span>    
+<span class="nocode"><a name="323">323: </a></span>    /**    
+<span class="nocode"><a name="324">324: </a></span>     * Returns the vertical resolution.    
+<span class="nocode"><a name="325">325: </a></span>     * @return vertical resolution    
+<span class="nocode"><a name="326">326: </a></span>     */
+<span class="nocode"><a name="327">327: </a></span>    public short getVResolution()    {
+<span class="nocode"><a name="328">328: </a></span>        return printSetupRecord.getVResolution();
+<span class="nocode"><a name="329">329: </a></span>    }    
+<span class="nocode"><a name="330">330: </a></span>    
+<span class="nocode"><a name="331">331: </a></span>    /**    
+<span class="nocode"><a name="332">332: </a></span>     * Returns the header margin.    
+<span class="nocode"><a name="333">333: </a></span>     * @return header margin    
+<span class="nocode"><a name="334">334: </a></span>     */
+<span class="nocode"><a name="335">335: </a></span>    public double getHeaderMargin()    {
+<span class="nocode"><a name="336">336: </a></span>        return printSetupRecord.getHeaderMargin();
+<span class="nocode"><a name="337">337: </a></span>    }    
+<span class="nocode"><a name="338">338: </a></span>    
+<span class="nocode"><a name="339">339: </a></span>    /**    
+<span class="nocode"><a name="340">340: </a></span>     * Returns the footer margin.    
+<span class="nocode"><a name="341">341: </a></span>     * @return footer margin    
+<span class="nocode"><a name="342">342: </a></span>     */
+<span class="nocode"><a name="343">343: </a></span>    public double getFooterMargin()    {
+<span class="nocode"><a name="344">344: </a></span>        return printSetupRecord.getFooterMargin();
+<span class="nocode"><a name="345">345: </a></span>    }    
+<span class="nocode"><a name="346">346: </a></span>    
+<span class="nocode"><a name="347">347: </a></span>    /**    
+<span class="nocode"><a name="348">348: </a></span>     * Returns the number of copies.    
+<span class="nocode"><a name="349">349: </a></span>     * @return number of copies    
+<span class="nocode"><a name="350">350: </a></span>     */
+<span class="nocode"><a name="351">351: </a></span>    public short getCopies()    {
+<span class="nocode"><a name="352">352: </a></span>        return printSetupRecord.getCopies();
+<span class="nocode"><a name="353">353: </a></span>    }
+<span class="nocode"><a name="354">354: </a></span>}
+</pre><table class="mutation_table" summary="Mutations">
+<tr><th>ID</th><th>Line</th><th>Type</th><th>Detected</th></tr><tr><td>61889</td><td><a href="#56">56</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>61890</td><td><a href="#64">64</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>61891</td><td><a href="#72">72</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>61892</td><td><a href="#80">80</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>61893</td><td><a href="#88">88</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>61894</td><td><a href="#96">96</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>61895</td><td><a href="#104">104</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>61898</td><td><a href="#112">112</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>61897</td><td><a href="#112">112</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>61899</td><td><a href="#112">112(1)</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>61900</td><td><a href="#112">112(1)</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>61896</td><td><a href="#112">112</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>61901</td><td><a href="#112">112</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>61902</td><td><a href="#120">120</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>61903</td><td><a href="#128">128</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>61904</td><td><a href="#136">136</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>61905</td><td><a href="#144">144</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>61906</td><td><a href="#152">152</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>61907</td><td><a href="#160">160</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>61908</td><td><a href="#168">168</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>61909</td><td><a href="#176">176</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>61910</td><td><a href="#184">184</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>61911</td><td><a href="#192">192</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>61912</td><td><a href="#200">200</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>61913</td><td><a href="#208">208</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>61914</td><td><a href="#216">216</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>61915</td><td><a href="#224">224</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>61916</td><td><a href="#232">232</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>61917</td><td><a href="#240">240</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>61918</td><td><a href="#248">248</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>61919</td><td><a href="#256">256</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>61923</td><td><a href="#264">264</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>61922</td><td><a href="#264">264</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>61925</td><td><a href="#264">264(1)</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>61924</td><td><a href="#264">264(1)</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>61921</td><td><a href="#264">264</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>61920</td><td><a href="#264">264</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>61926</td><td><a href="#272">272</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>61927</td><td><a href="#280">280</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>61928</td><td><a href="#288">288</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>61929</td><td><a href="#296">296</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>61930</td><td><a href="#304">304</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>61931</td><td><a href="#312">312</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>61932</td><td><a href="#320">320</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>61933</td><td><a href="#328">328</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>61934</td><td><a href="#336">336</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>61935</td><td><a href="#344">344</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>61936</td><td><a href="#352">352</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+</table>
+</body>
+</html>

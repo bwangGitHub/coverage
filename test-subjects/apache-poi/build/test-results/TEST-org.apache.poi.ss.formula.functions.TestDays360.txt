@@ -1,0 +1,4 @@
+Testsuite: org.apache.poi.ss.formula.functions.TestDays360
+Tests run: 1, Failures: 0, Errors: 0, Time elapsed: 0.001 sec
+
+Testcase: testBasic took 0.001 sec

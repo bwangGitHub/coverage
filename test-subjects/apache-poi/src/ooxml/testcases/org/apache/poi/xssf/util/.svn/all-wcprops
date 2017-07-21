@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/repos/asf/!svn/ver/1067217/poi/trunk/src/ooxml/testcases/org/apache/poi/xssf/util
+END
+TestCTColComparator.java
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/repos/asf/!svn/ver/805262/poi/trunk/src/ooxml/testcases/org/apache/poi/xssf/util/TestCTColComparator.java
+END
+MemoryUsage.java
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/repos/asf/!svn/ver/953725/poi/trunk/src/ooxml/testcases/org/apache/poi/xssf/util/MemoryUsage.java
+END
+TestEvilUnclosedBRFixingInputStream.java
+K 25
+svn:wc:ra_dav:version-url
+V 123
+/repos/asf/!svn/ver/1067217/poi/trunk/src/ooxml/testcases/org/apache/poi/xssf/util/TestEvilUnclosedBRFixingInputStream.java
+END
+TestNumericRanges.java
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/repos/asf/!svn/ver/712084/poi/trunk/src/ooxml/testcases/org/apache/poi/xssf/util/TestNumericRanges.java
+END

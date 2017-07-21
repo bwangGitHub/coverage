@@ -1,0 +1,273 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN
+"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>
+org.apache.poi.ddf.EscherSplitMenuColorsRecord
+</title>
+<link href="prettify.css" type="text/css" rel="stylesheet" />
+<script type="text/javascript" src="prettify.js"></script>
+</head>
+<body onload="prettyPrint()">
+<h2>Javalanche report for class:<br/> org.apache.poi.ddf.EscherSplitMenuColorsRecord </h2><pre class="prettyprint" style="border: 1px solid #888;padding: 2px"><span class="nocode"><a name="1">  1: </a></span>/* ====================================================================
+<span class="nocode"><a name="2">  2: </a></span>   Licensed to the Apache Software Foundation (ASF) under one or more
+<span class="nocode"><a name="3">  3: </a></span>   contributor license agreements.  See the NOTICE file distributed with
+<span class="nocode"><a name="4">  4: </a></span>   this work for additional information regarding copyright ownership.
+<span class="nocode"><a name="5">  5: </a></span>   The ASF licenses this file to You under the Apache License, Version 2.0
+<span class="nocode"><a name="6">  6: </a></span>   (the &quot;License&quot;); you may not use this file except in compliance with
+<span class="nocode"><a name="7">  7: </a></span>   the License.  You may obtain a copy of the License at
+<span class="nocode"><a name="8">  8: </a></span>
+<span class="nocode"><a name="9">  9: </a></span>       http://www.apache.org/licenses/LICENSE-2.0
+<span class="nocode"><a name="10"> 10: </a></span>
+<span class="nocode"><a name="11"> 11: </a></span>   Unless required by applicable law or agreed to in writing, software
+<span class="nocode"><a name="12"> 12: </a></span>   distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+<span class="nocode"><a name="13"> 13: </a></span>   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+<span class="nocode"><a name="14"> 14: </a></span>   See the License for the specific language governing permissions and
+<span class="nocode"><a name="15"> 15: </a></span>   limitations under the License.
+<span class="nocode"><a name="16"> 16: </a></span>==================================================================== */
+<span class="nocode"><a name="17"> 17: </a></span>
+<span class="nocode"><a name="18"> 18: </a></span>package org.apache.poi.ddf;
+<span class="nocode"><a name="19"> 19: </a></span>
+<span class="nocode"><a name="20"> 20: </a></span>import org.apache.poi.util.HexDump;
+<span class="nocode"><a name="21"> 21: </a></span>import org.apache.poi.util.LittleEndian;
+<span class="nocode"><a name="22"> 22: </a></span>import org.apache.poi.util.RecordFormatException;
+<span class="nocode"><a name="23"> 23: </a></span>
+<span class="nocode"><a name="24"> 24: </a></span>/**
+<span class="nocode"><a name="25"> 25: </a></span> * A list of the most recently used colours for the drawings contained in
+<span class="nocode"><a name="26"> 26: </a></span> * this document.
+<span class="nocode"><a name="27"> 27: </a></span> *
+<span class="nocode"><a name="28"> 28: </a></span> * @author Glen Stampoultzis (glens at apache.org)
+<span class="nocode"><a name="29"> 29: </a></span> */
+<span class="nocode"><a name="30"> 30: </a></span>public class EscherSplitMenuColorsRecord
+<span class="nocode"><a name="31"> 31: </a></span>    extends EscherRecord
+<span class="nocode"><a name="32"> 32: </a></span>{
+<span class="nocode"><a name="33"> 33: </a></span>    public static final short RECORD_ID = (short) 0xF11E;
+<span class="nocode"><a name="34"> 34: </a></span>    public static final String RECORD_DESCRIPTION = &quot;MsofbtSplitMenuColors&quot;;
+<span class="nocode"><a name="35"> 35: </a></span>
+<span class="nocode"><a name="36"> 36: </a></span>    private int field_1_color1;
+<span class="nocode"><a name="37"> 37: </a></span>    private int field_2_color2;
+<span class="nocode"><a name="38"> 38: </a></span>    private int field_3_color3;
+<span class="nocode"><a name="39"> 39: </a></span>    private int field_4_color4;
+<span class="nocode"><a name="40"> 40: </a></span>
+<span class="nocode"><a name="41"> 41: </a></span>    public int fillFields(byte[] data, int offset, EscherRecordFactory recordFactory) {
+<span class="nocode"><a name="42"> 42: </a></span>        int bytesRemaining = readHeader( data, offset );
+<span class="nocode"><a name="43"> 43: </a></span>        int pos            = offset + 8;
+<span class="nocode"><a name="44"> 44: </a></span>        int size           = 0;
+<span class="nocode"><a name="45"> 45: </a></span>        field_1_color1 =  LittleEndian.getInt( data, pos + size );size+=4;
+<span class="nocode"><a name="46"> 46: </a></span>        field_2_color2 =  LittleEndian.getInt( data, pos + size );size+=4;
+<span class="nocode"><a name="47"> 47: </a></span>        field_3_color3 =  LittleEndian.getInt( data, pos + size );size+=4;
+<span class="nocode"><a name="48"> 48: </a></span>        field_4_color4 =  LittleEndian.getInt( data, pos + size );size+=4;
+<span class="nocode"><a name="49"> 49: </a></span>        bytesRemaining -= size;
+<span class="nocode"><a name="50"> 50: </a></span>        if (bytesRemaining != 0)
+<span class="nocode"><a name="51"> 51: </a></span>            throw new RecordFormatException(&quot;Expecting no remaining data but got &quot; + bytesRemaining + &quot; byte(s).&quot;);
+<span class="nocode"><a name="52"> 52: </a></span>        return 8 + size + bytesRemaining;
+<span class="nocode"><a name="53"> 53: </a></span>    }
+<span class="nocode"><a name="54"> 54: </a></span>
+<span class="nocode"><a name="55"> 55: </a></span>    public int serialize( int offset, byte[] data, EscherSerializationListener listener )
+<span class="nocode"><a name="56"> 56: </a></span>    {
+<span class="nocode"><a name="57"> 57: </a></span>//        int field_2_numIdClusters = field_5_fileIdClusters.length + 1;
+<span class="nocode"><a name="58"> 58: </a></span>        listener.beforeRecordSerialize( offset, getRecordId(), this );
+<span class="nocode"><a name="59"> 59: </a></span>
+<span class="nocode"><a name="60"> 60: </a></span>        int pos = offset;
+<span class="nocode"><a name="61"> 61: </a></span>        LittleEndian.putShort( data, pos, getOptions() );     pos += 2;
+<span class="nocode"><a name="62"> 62: </a></span>        LittleEndian.putShort( data, pos, getRecordId() );    pos += 2;
+<span class="nocode"><a name="63"> 63: </a></span>        int remainingBytes =  getRecordSize() - 8;
+<span class="nocode"><a name="64"> 64: </a></span>
+<span class="nocode"><a name="65"> 65: </a></span>        LittleEndian.putInt( data, pos, remainingBytes );          pos += 4;
+<span class="nocode"><a name="66"> 66: </a></span>        LittleEndian.putInt( data, pos, field_1_color1 );          pos += 4;
+<span class="nocode"><a name="67"> 67: </a></span>        LittleEndian.putInt( data, pos, field_2_color2 );          pos += 4;
+<span class="nocode"><a name="68"> 68: </a></span>        LittleEndian.putInt( data, pos, field_3_color3 );          pos += 4;
+<span class="nocode"><a name="69"> 69: </a></span>        LittleEndian.putInt( data, pos, field_4_color4 );          pos += 4;
+<span class="nocode"><a name="70"> 70: </a></span>        listener.afterRecordSerialize( pos, getRecordId(), pos - offset, this );
+<span class="nocode"><a name="71"> 71: </a></span>        return getRecordSize();
+<span class="nocode"><a name="72"> 72: </a></span>    }
+<span class="nocode"><a name="73"> 73: </a></span>
+<span class="nocode"><a name="74"> 74: </a></span>    public int getRecordSize()
+<span class="nocode"><a name="75"> 75: </a></span>    {
+<span class="nocode"><a name="76"> 76: </a></span>        return 8 + 4 * 4;
+<span class="nocode"><a name="77"> 77: </a></span>    }
+<span class="nocode"><a name="78"> 78: </a></span>
+<span class="nocode"><a name="79"> 79: </a></span>    public short getRecordId() {
+<span class="nocode"><a name="80"> 80: </a></span>        return RECORD_ID;
+<span class="nocode"><a name="81"> 81: </a></span>    }
+<span class="nocode"><a name="82"> 82: </a></span>
+<span class="nocode"><a name="83"> 83: </a></span>    public String getRecordName() {
+<span class="nocode"><a name="84"> 84: </a></span>        return &quot;SplitMenuColors&quot;;
+<span class="nocode"><a name="85"> 85: </a></span>    }
+<span class="nocode"><a name="86"> 86: </a></span>
+<span class="nocode"><a name="87"> 87: </a></span>    /**
+<span class="nocode"><a name="88"> 88: </a></span>     * @return  a string representation of this record.
+<span class="nocode"><a name="89"> 89: </a></span>     */
+<span class="nocode"><a name="90"> 90: </a></span>    public String toString() {
+<span class="nocode"><a name="91"> 91: </a></span>        return getClass().getName() + &quot;:&quot; + '\n' +
+<span class="nocode"><a name="92"> 92: </a></span>                &quot;  RecordId: 0x&quot; + HexDump.toHex(RECORD_ID) + '\n' +
+<span class="nocode"><a name="93"> 93: </a></span>                &quot;  Version: 0x&quot; + HexDump.toHex(getVersion()) + '\n' +
+<span class="nocode"><a name="94"> 94: </a></span>                &quot;  Instance: 0x&quot; + HexDump.toHex(getInstance()) + '\n' +
+<span class="nocode"><a name="95"> 95: </a></span>                &quot;  Color1: 0x&quot; + HexDump.toHex(field_1_color1) + '\n' +
+<span class="nocode"><a name="96"> 96: </a></span>                &quot;  Color2: 0x&quot; + HexDump.toHex(field_2_color2) + '\n' +
+<span class="nocode"><a name="97"> 97: </a></span>                &quot;  Color3: 0x&quot; + HexDump.toHex(field_3_color3) + '\n' +
+<span class="nocode"><a name="98"> 98: </a></span>                &quot;  Color4: 0x&quot; + HexDump.toHex(field_4_color4) + '\n' +
+<span class="nocode"><a name="99"> 99: </a></span>                &quot;&quot;;
+<span class="nocode"><a name="100">100: </a></span>    }
+<span class="nocode"><a name="101">101: </a></span>
+<span class="nocode"><a name="102">102: </a></span>    public int getColor1()
+<span class="nocode"><a name="103">103: </a></span>    {
+<span class="nocode"><a name="104">104: </a></span>        return field_1_color1;
+<span class="nocode"><a name="105">105: </a></span>    }
+<span class="nocode"><a name="106">106: </a></span>
+<span class="nocode"><a name="107">107: </a></span>    public void setColor1( int field_1_color1 )
+<span class="nocode"><a name="108">108: </a></span>    {
+<span class="nocode"><a name="109">109: </a></span>        this.field_1_color1 = field_1_color1;
+<span class="nocode"><a name="110">110: </a></span>    }
+<span class="nocode"><a name="111">111: </a></span>
+<span class="nocode"><a name="112">112: </a></span>    public int getColor2()
+<span class="nocode"><a name="113">113: </a></span>    {
+<span class="nocode"><a name="114">114: </a></span>        return field_2_color2;
+<span class="nocode"><a name="115">115: </a></span>    }
+<span class="nocode"><a name="116">116: </a></span>
+<span class="nocode"><a name="117">117: </a></span>    public void setColor2( int field_2_color2 )
+<span class="nocode"><a name="118">118: </a></span>    {
+<span class="nocode"><a name="119">119: </a></span>        this.field_2_color2 = field_2_color2;
+<span class="nocode"><a name="120">120: </a></span>    }
+<span class="nocode"><a name="121">121: </a></span>
+<span class="nocode"><a name="122">122: </a></span>    public int getColor3()
+<span class="nocode"><a name="123">123: </a></span>    {
+<span class="nocode"><a name="124">124: </a></span>        return field_3_color3;
+<span class="nocode"><a name="125">125: </a></span>    }
+<span class="nocode"><a name="126">126: </a></span>
+<span class="nocode"><a name="127">127: </a></span>    public void setColor3( int field_3_color3 )
+<span class="nocode"><a name="128">128: </a></span>    {
+<span class="nocode"><a name="129">129: </a></span>        this.field_3_color3 = field_3_color3;
+<span class="nocode"><a name="130">130: </a></span>    }
+<span class="nocode"><a name="131">131: </a></span>
+<span class="nocode"><a name="132">132: </a></span>    public int getColor4()
+<span class="nocode"><a name="133">133: </a></span>    {
+<span class="nocode"><a name="134">134: </a></span>        return field_4_color4;
+<span class="nocode"><a name="135">135: </a></span>    }
+<span class="nocode"><a name="136">136: </a></span>
+<span class="nocode"><a name="137">137: </a></span>    public void setColor4( int field_4_color4 )
+<span class="nocode"><a name="138">138: </a></span>    {
+<span class="nocode"><a name="139">139: </a></span>        this.field_4_color4 = field_4_color4;
+<span class="nocode"><a name="140">140: </a></span>    }
+<span class="nocode"><a name="141">141: </a></span>
+<span class="nocode"><a name="142">142: </a></span>}
+</pre><table class="mutation_table" summary="Mutations">
+<tr><th>ID</th><th>Line</th><th>Type</th><th>Detected</th></tr><tr><td>3686</td><td><a href="#42">42</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>3687</td><td><a href="#43">43</a></td><td>Replace a constant (Replace 8 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3688</td><td><a href="#43">43</a></td><td>Replace a constant (Replace 8 with 7(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3689</td><td><a href="#43">43</a></td><td>Replace a constant (Replace 8 with 9(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3690</td><td><a href="#43">43</a></td><td>Replace arithmetic operator (Replace IADD with ISUB)</td><td><img src="detected.png"/></td></tr>
+<tr><td>3692</td><td><a href="#44">44</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3691</td><td><a href="#44">44</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3693</td><td><a href="#45">45</a></td><td>Replace arithmetic operator (Replace IADD with ISUB)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>3694</td><td><a href="#45">45</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>3695</td><td><a href="#46">46</a></td><td>Replace arithmetic operator (Replace IADD with ISUB)</td><td><img src="detected.png"/></td></tr>
+<tr><td>3696</td><td><a href="#46">46</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>3697</td><td><a href="#47">47</a></td><td>Replace arithmetic operator (Replace IADD with ISUB)</td><td><img src="detected.png"/></td></tr>
+<tr><td>3698</td><td><a href="#47">47</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>3699</td><td><a href="#48">48</a></td><td>Replace arithmetic operator (Replace IADD with ISUB)</td><td><img src="detected.png"/></td></tr>
+<tr><td>3700</td><td><a href="#48">48</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>3701</td><td><a href="#49">49</a></td><td>Replace arithmetic operator (Replace ISUB with IADD)</td><td><img src="detected.png"/></td></tr>
+<tr><td>3702</td><td><a href="#50">50</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>3703</td><td><a href="#51">51</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>3704</td><td><a href="#51">51(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>3705</td><td><a href="#51">51(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>3706</td><td><a href="#51">51(3)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>3707</td><td><a href="#52">52</a></td><td>Replace a constant (Replace 8 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3709</td><td><a href="#52">52</a></td><td>Replace a constant (Replace 8 with 9(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3708</td><td><a href="#52">52</a></td><td>Replace a constant (Replace 8 with 7(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3710</td><td><a href="#52">52</a></td><td>Replace arithmetic operator (Replace IADD with ISUB)</td><td><img src="detected.png"/></td></tr>
+<tr><td>3711</td><td><a href="#52">52(1)</a></td><td>Replace arithmetic operator (Replace IADD with ISUB)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>3712</td><td><a href="#58">58</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>3713</td><td><a href="#58">58(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>3714</td><td><a href="#61">61</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>3715</td><td><a href="#61">61(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>3716</td><td><a href="#62">62</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>3717</td><td><a href="#62">62(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>3719</td><td><a href="#63">63</a></td><td>Replace a constant (Replace 8 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3720</td><td><a href="#63">63</a></td><td>Replace a constant (Replace 8 with 7(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3721</td><td><a href="#63">63</a></td><td>Replace a constant (Replace 8 with 9(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3722</td><td><a href="#63">63</a></td><td>Replace arithmetic operator (Replace ISUB with IADD)</td><td><img src="detected.png"/></td></tr>
+<tr><td>3718</td><td><a href="#63">63</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>3723</td><td><a href="#65">65</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>3724</td><td><a href="#66">66</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>3725</td><td><a href="#67">67</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>3726</td><td><a href="#68">68</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>3727</td><td><a href="#69">69</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>3729</td><td><a href="#70">70</a></td><td>Replace arithmetic operator (Replace ISUB with IADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>3728</td><td><a href="#70">70</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>3730</td><td><a href="#70">70(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>3731</td><td><a href="#71">71</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>3734</td><td><a href="#76">76</a></td><td>Replace a constant (Replace 24 with 25(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3733</td><td><a href="#76">76</a></td><td>Replace a constant (Replace 24 with 23(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3732</td><td><a href="#76">76</a></td><td>Replace a constant (Replace 24 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3737</td><td><a href="#80">80</a></td><td>Replace a constant (Replace -3810 with -3809(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3736</td><td><a href="#80">80</a></td><td>Replace a constant (Replace -3810 with -3811(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3735</td><td><a href="#80">80</a></td><td>Replace a constant (Replace -3810 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3744</td><td><a href="#91">91</a></td><td>Replace a constant (Replace 10 with 11(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3743</td><td><a href="#91">91</a></td><td>Replace a constant (Replace 10 with 9(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3742</td><td><a href="#91">91</a></td><td>Replace a constant (Replace 10 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3749</td><td><a href="#91">91(1)</a></td><td>Replace a constant (Replace -3810 with -3809(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3747</td><td><a href="#91">91(1)</a></td><td>Replace a constant (Replace -3810 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3748</td><td><a href="#91">91(1)</a></td><td>Replace a constant (Replace -3810 with -3811(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3752</td><td><a href="#91">91(2)</a></td><td>Replace a constant (Replace 10 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3753</td><td><a href="#91">91(2)</a></td><td>Replace a constant (Replace 10 with 9(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3754</td><td><a href="#91">91(2)</a></td><td>Replace a constant (Replace 10 with 11(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3760</td><td><a href="#91">91(3)</a></td><td>Replace a constant (Replace 10 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3761</td><td><a href="#91">91(3)</a></td><td>Replace a constant (Replace 10 with 9(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3762</td><td><a href="#91">91(3)</a></td><td>Replace a constant (Replace 10 with 11(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3769</td><td><a href="#91">91(4)</a></td><td>Replace a constant (Replace 10 with 9(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3770</td><td><a href="#91">91(4)</a></td><td>Replace a constant (Replace 10 with 11(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3768</td><td><a href="#91">91(4)</a></td><td>Replace a constant (Replace 10 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3777</td><td><a href="#91">91(5)</a></td><td>Replace a constant (Replace 10 with 11(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3776</td><td><a href="#91">91(5)</a></td><td>Replace a constant (Replace 10 with 9(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3775</td><td><a href="#91">91(5)</a></td><td>Replace a constant (Replace 10 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3784</td><td><a href="#91">91(6)</a></td><td>Replace a constant (Replace 10 with 11(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3782</td><td><a href="#91">91(6)</a></td><td>Replace a constant (Replace 10 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3783</td><td><a href="#91">91(6)</a></td><td>Replace a constant (Replace 10 with 9(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3789</td><td><a href="#91">91(7)</a></td><td>Replace a constant (Replace 10 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3791</td><td><a href="#91">91(7)</a></td><td>Replace a constant (Replace 10 with 11(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3790</td><td><a href="#91">91(7)</a></td><td>Replace a constant (Replace 10 with 9(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3797</td><td><a href="#91">91(8)</a></td><td>Replace a constant (Replace 10 with 9(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3796</td><td><a href="#91">91(8)</a></td><td>Replace a constant (Replace 10 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3798</td><td><a href="#91">91(8)</a></td><td>Replace a constant (Replace 10 with 11(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>3738</td><td><a href="#91">91</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>3739</td><td><a href="#91">91(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>3740</td><td><a href="#91">91(2)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>3741</td><td><a href="#91">91(3)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>3745</td><td><a href="#91">91(4)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>3746</td><td><a href="#91">91(5)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>3750</td><td><a href="#91">91(6)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>3751</td><td><a href="#91">91(7)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>3755</td><td><a href="#91">91(8)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>3756</td><td><a href="#91">91(9)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>3757</td><td><a href="#91">91(10)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>3758</td><td><a href="#91">91(11)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>3759</td><td><a href="#91">91(12)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>3763</td><td><a href="#91">91(13)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>3764</td><td><a href="#91">91(14)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>3765</td><td><a href="#91">91(15)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>3766</td><td><a href="#91">91(16)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>3767</td><td><a href="#91">91(17)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>3771</td><td><a href="#91">91(18)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>3772</td><td><a href="#91">91(19)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>3773</td><td><a href="#91">91(20)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>3774</td><td><a href="#91">91(21)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>3778</td><td><a href="#91">91(22)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>3779</td><td><a href="#91">91(23)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>3780</td><td><a href="#91">91(24)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>3781</td><td><a href="#91">91(25)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>3785</td><td><a href="#91">91(26)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>3786</td><td><a href="#91">91(27)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>3787</td><td><a href="#91">91(28)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>3788</td><td><a href="#91">91(29)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>3792</td><td><a href="#91">91(30)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>3793</td><td><a href="#91">91(31)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>3794</td><td><a href="#91">91(32)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>3795</td><td><a href="#91">91(33)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>3799</td><td><a href="#91">91(34)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>3800</td><td><a href="#91">91(35)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>3801</td><td><a href="#91">91(36)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+</table>
+</body>
+</html>

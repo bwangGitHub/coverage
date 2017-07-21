@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/repos/asf/!svn/ver/1067217/poi/trunk/src/ooxml/java/org/apache/poi/xssf/util
+END
+CTColComparator.java
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/repos/asf/!svn/ver/712084/poi/trunk/src/ooxml/java/org/apache/poi/xssf/util/CTColComparator.java
+END
+EvilUnclosedBRFixingInputStream.java
+K 25
+svn:wc:ra_dav:version-url
+V 114
+/repos/asf/!svn/ver/1067217/poi/trunk/src/ooxml/java/org/apache/poi/xssf/util/EvilUnclosedBRFixingInputStream.java
+END
+NumericRanges.java
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/repos/asf/!svn/ver/712084/poi/trunk/src/ooxml/java/org/apache/poi/xssf/util/NumericRanges.java
+END

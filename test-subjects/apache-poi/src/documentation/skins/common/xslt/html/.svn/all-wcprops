@@ -1,0 +1,59 @@
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/repos/asf/!svn/ver/1102428/poi/trunk/src/documentation/skins/common/xslt/html
+END
+tabutils.xsl
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/repos/asf/!svn/ver/712084/poi/trunk/src/documentation/skins/common/xslt/html/tabutils.xsl
+END
+split.xsl
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/repos/asf/!svn/ver/712084/poi/trunk/src/documentation/skins/common/xslt/html/split.xsl
+END
+pathutils.xsl
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/repos/asf/!svn/ver/781867/poi/trunk/src/documentation/skins/common/xslt/html/pathutils.xsl
+END
+tab2menu.xsl
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/repos/asf/!svn/ver/781867/poi/trunk/src/documentation/skins/common/xslt/html/tab2menu.xsl
+END
+dotdots.xsl
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/repos/asf/!svn/ver/712084/poi/trunk/src/documentation/skins/common/xslt/html/dotdots.xsl
+END
+renderlogo.xsl
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/repos/asf/!svn/ver/712084/poi/trunk/src/documentation/skins/common/xslt/html/renderlogo.xsl
+END
+book2menu.xsl
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/repos/asf/!svn/ver/781867/poi/trunk/src/documentation/skins/common/xslt/html/book2menu.xsl
+END
+site2xhtml.xsl
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/repos/asf/!svn/ver/1102428/poi/trunk/src/documentation/skins/common/xslt/html/site2xhtml.xsl
+END
+document2html.xsl
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/repos/asf/!svn/ver/781867/poi/trunk/src/documentation/skins/common/xslt/html/document2html.xsl
+END

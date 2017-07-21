@@ -1,0 +1,4 @@
+Testsuite: org.apache.poi.ss.formula.atp.TestYearFracCalculator
+Tests run: 1, Failures: 0, Errors: 0, Time elapsed: 0.002 sec
+
+Testcase: testBasis1 took 0.002 sec

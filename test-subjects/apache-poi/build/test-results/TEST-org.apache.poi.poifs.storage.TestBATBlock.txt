@@ -1,0 +1,11 @@
+Testsuite: org.apache.poi.poifs.storage.TestBATBlock
+Tests run: 8, Failures: 0, Errors: 0, Time elapsed: 0.002 sec
+
+Testcase: testCreateBATBlocks took 0 sec
+Testcase: testCreateXBATBlocks took 0.001 sec
+Testcase: testCalculateXBATStorageRequirements took 0 sec
+Testcase: testEntriesPerBlock took 0 sec
+Testcase: testEntriesPerXBATBlock took 0 sec
+Testcase: testGetXBATChainOffset took 0 sec
+Testcase: testCalculateMaximumSize took 0 sec
+Testcase: testGetBATBlockAndIndex took 0 sec

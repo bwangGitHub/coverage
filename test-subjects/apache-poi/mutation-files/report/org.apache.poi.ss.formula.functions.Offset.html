@@ -1,0 +1,361 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN
+"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>
+org.apache.poi.ss.formula.functions.Offset
+</title>
+<link href="prettify.css" type="text/css" rel="stylesheet" />
+<script type="text/javascript" src="prettify.js"></script>
+</head>
+<body onload="prettyPrint()">
+<h2>Javalanche report for class:<br/> org.apache.poi.ss.formula.functions.Offset </h2><pre class="prettyprint" style="border: 1px solid #888;padding: 2px"><span class="nocode"><a name="1">  1: </a></span>/* ====================================================================
+<span class="nocode"><a name="2">  2: </a></span>   Licensed to the Apache Software Foundation (ASF) under one or more
+<span class="nocode"><a name="3">  3: </a></span>   contributor license agreements.  See the NOTICE file distributed with
+<span class="nocode"><a name="4">  4: </a></span>   this work for additional information regarding copyright ownership.
+<span class="nocode"><a name="5">  5: </a></span>   The ASF licenses this file to You under the Apache License, Version 2.0
+<span class="nocode"><a name="6">  6: </a></span>   (the &quot;License&quot;); you may not use this file except in compliance with
+<span class="nocode"><a name="7">  7: </a></span>   the License.  You may obtain a copy of the License at
+<span class="nocode"><a name="8">  8: </a></span>
+<span class="nocode"><a name="9">  9: </a></span>       http://www.apache.org/licenses/LICENSE-2.0
+<span class="nocode"><a name="10"> 10: </a></span>
+<span class="nocode"><a name="11"> 11: </a></span>   Unless required by applicable law or agreed to in writing, software
+<span class="nocode"><a name="12"> 12: </a></span>   distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+<span class="nocode"><a name="13"> 13: </a></span>   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+<span class="nocode"><a name="14"> 14: </a></span>   See the License for the specific language governing permissions and
+<span class="nocode"><a name="15"> 15: </a></span>   limitations under the License.
+<span class="nocode"><a name="16"> 16: </a></span>==================================================================== */
+<span class="nocode"><a name="17"> 17: </a></span>
+<span class="nocode"><a name="18"> 18: </a></span>package org.apache.poi.ss.formula.functions;
+<span class="nocode"><a name="19"> 19: </a></span>
+<span class="nocode"><a name="20"> 20: </a></span>import org.apache.poi.ss.formula.eval.AreaEval;
+<span class="nocode"><a name="21"> 21: </a></span>import org.apache.poi.ss.formula.eval.ErrorEval;
+<span class="nocode"><a name="22"> 22: </a></span>import org.apache.poi.ss.formula.eval.EvaluationException;
+<span class="nocode"><a name="23"> 23: </a></span>import org.apache.poi.ss.formula.eval.OperandResolver;
+<span class="nocode"><a name="24"> 24: </a></span>import org.apache.poi.ss.formula.eval.RefEval;
+<span class="nocode"><a name="25"> 25: </a></span>import org.apache.poi.ss.formula.eval.ValueEval;
+<span class="nocode"><a name="26"> 26: </a></span>/**
+<span class="nocode"><a name="27"> 27: </a></span> * Implementation for Excel function OFFSET()&lt;p/&gt;
+<span class="nocode"><a name="28"> 28: </a></span> *
+<span class="nocode"><a name="29"> 29: </a></span> * OFFSET returns an area reference that is a specified number of rows and columns from a
+<span class="nocode"><a name="30"> 30: </a></span> * reference cell or area.&lt;p/&gt;
+<span class="nocode"><a name="31"> 31: </a></span> *
+<span class="nocode"><a name="32"> 32: </a></span> * &lt;b&gt;Syntax&lt;/b&gt;:&lt;br/&gt;
+<span class="nocode"><a name="33"> 33: </a></span> * &lt;b&gt;OFFSET&lt;/b&gt;(&lt;b&gt;reference&lt;/b&gt;, &lt;b&gt;rows&lt;/b&gt;, &lt;b&gt;cols&lt;/b&gt;, height, width)&lt;p/&gt;
+<span class="nocode"><a name="34"> 34: </a></span> * &lt;b&gt;reference&lt;/b&gt; is the base reference.&lt;br/&gt;
+<span class="nocode"><a name="35"> 35: </a></span> * &lt;b&gt;rows&lt;/b&gt; is the number of rows up or down from the base reference.&lt;br/&gt;
+<span class="nocode"><a name="36"> 36: </a></span> * &lt;b&gt;cols&lt;/b&gt; is the number of columns left or right from the base reference.&lt;br/&gt;
+<span class="nocode"><a name="37"> 37: </a></span> * &lt;b&gt;height&lt;/b&gt; (default same height as base reference) is the row count for the returned area reference.&lt;br/&gt;
+<span class="nocode"><a name="38"> 38: </a></span> * &lt;b&gt;width&lt;/b&gt; (default same width as base reference) is the column count for the returned area reference.&lt;br/&gt;
+<span class="nocode"><a name="39"> 39: </a></span> *
+<span class="nocode"><a name="40"> 40: </a></span> * @author Josh Micich
+<span class="nocode"><a name="41"> 41: </a></span> */
+<span class="nocode"><a name="42"> 42: </a></span>public final class Offset implements Function {
+<span class="nocode"><a name="43"> 43: </a></span>	// These values are specific to BIFF8
+<span class="nocode"><a name="44"> 44: </a></span>	private static final int LAST_VALID_ROW_INDEX = 0xFFFF;
+<span class="nocode"><a name="45"> 45: </a></span>	private static final int LAST_VALID_COLUMN_INDEX = 0xFF;
+<span class="nocode"><a name="46"> 46: </a></span>
+<span class="nocode"><a name="47"> 47: </a></span>
+<span class="nocode"><a name="48"> 48: </a></span>	/**
+<span class="nocode"><a name="49"> 49: </a></span>	 * A one dimensional base + offset.  Represents either a row range or a column range.
+<span class="nocode"><a name="50"> 50: </a></span>	 * Two instances of this class together specify an area range.
+<span class="nocode"><a name="51"> 51: </a></span>	 */
+<span class="nocode"><a name="52"> 52: </a></span>	/* package */ static final class LinearOffsetRange {
+<span class="nocode"><a name="53"> 53: </a></span>
+<span class="nocode"><a name="54"> 54: </a></span>		private final int _offset;
+<span class="nocode"><a name="55"> 55: </a></span>		private final int _length;
+<span class="nocode"><a name="56"> 56: </a></span>
+<span class="nocode"><a name="57"> 57: </a></span>		public LinearOffsetRange(int offset, int length) {
+<span class="nocode"><a name="58"> 58: </a></span>			if(length == 0) {
+<span class="nocode"><a name="59"> 59: </a></span>				// handled that condition much earlier
+<span class="nocode"><a name="60"> 60: </a></span>				throw new RuntimeException(&quot;length may not be zero&quot;);
+<span class="nocode"><a name="61"> 61: </a></span>			}
+<span class="nocode"><a name="62"> 62: </a></span>			_offset = offset;
+<span class="nocode"><a name="63"> 63: </a></span>			_length = length;
+<span class="nocode"><a name="64"> 64: </a></span>		}
+<span class="nocode"><a name="65"> 65: </a></span>
+<span class="nocode"><a name="66"> 66: </a></span>		public short getFirstIndex() {
+<span class="nocode"><a name="67"> 67: </a></span>			return (short) _offset;
+<span class="nocode"><a name="68"> 68: </a></span>		}
+<span class="nocode"><a name="69"> 69: </a></span>		public short getLastIndex() {
+<span class="nocode"><a name="70"> 70: </a></span>			return (short) (_offset + _length - 1);
+<span class="nocode"><a name="71"> 71: </a></span>		}
+<span class="nocode"><a name="72"> 72: </a></span>		/**
+<span class="nocode"><a name="73"> 73: </a></span>		 * Moves the range by the specified translation amount.&lt;p/&gt;
+<span class="nocode"><a name="74"> 74: </a></span>		 *
+<span class="nocode"><a name="75"> 75: </a></span>		 * This method also 'normalises' the range: Excel specifies that the width and height
+<span class="nocode"><a name="76"> 76: </a></span>		 * parameters (length field here) cannot be negative.  However, OFFSET() does produce
+<span class="nocode"><a name="77"> 77: </a></span>		 * sensible results in these cases.  That behavior is replicated here. &lt;p/&gt;
+<span class="nocode"><a name="78"> 78: </a></span>		 *
+<span class="nocode"><a name="79"> 79: </a></span>		 * @param translationAmount may be zero negative or positive
+<span class="nocode"><a name="80"> 80: </a></span>		 *
+<span class="nocode"><a name="81"> 81: </a></span>		 * @return the equivalent &lt;tt&gt;LinearOffsetRange&lt;/tt&gt; with a positive length, moved by the
+<span class="nocode"><a name="82"> 82: </a></span>		 * specified translationAmount.
+<span class="nocode"><a name="83"> 83: </a></span>		 */
+<span class="nocode"><a name="84"> 84: </a></span>		public LinearOffsetRange normaliseAndTranslate(int translationAmount) {
+<span class="nocode"><a name="85"> 85: </a></span>			if (_length &gt; 0) {
+<span class="nocode"><a name="86"> 86: </a></span>				if(translationAmount == 0) {
+<span class="nocode"><a name="87"> 87: </a></span>					return this;
+<span class="nocode"><a name="88"> 88: </a></span>				}
+<span class="nocode"><a name="89"> 89: </a></span>				return new LinearOffsetRange(translationAmount + _offset, _length);
+<span class="nocode"><a name="90"> 90: </a></span>			}
+<span class="nocode"><a name="91"> 91: </a></span>			return new LinearOffsetRange(translationAmount + _offset + _length + 1, -_length);
+<span class="nocode"><a name="92"> 92: </a></span>		}
+<span class="nocode"><a name="93"> 93: </a></span>
+<span class="nocode"><a name="94"> 94: </a></span>		public boolean isOutOfBounds(int lowValidIx, int highValidIx) {
+<span class="nocode"><a name="95"> 95: </a></span>			if(_offset &lt; lowValidIx) {
+<span class="nocode"><a name="96"> 96: </a></span>				return true;
+<span class="nocode"><a name="97"> 97: </a></span>			}
+<span class="nocode"><a name="98"> 98: </a></span>			if(getLastIndex() &gt; highValidIx) {
+<span class="nocode"><a name="99"> 99: </a></span>				return true;
+<span class="nocode"><a name="100">100: </a></span>			}
+<span class="nocode"><a name="101">101: </a></span>			return false;
+<span class="nocode"><a name="102">102: </a></span>		}
+<span class="nocode"><a name="103">103: </a></span>		public String toString() {
+<span class="nocode"><a name="104">104: </a></span>			StringBuffer sb = new StringBuffer(64);
+<span class="nocode"><a name="105">105: </a></span>			sb.append(getClass().getName()).append(&quot; [&quot;);
+<span class="nocode"><a name="106">106: </a></span>			sb.append(_offset).append(&quot;...&quot;).append(getLastIndex());
+<span class="nocode"><a name="107">107: </a></span>			sb.append(&quot;]&quot;);
+<span class="nocode"><a name="108">108: </a></span>			return sb.toString();
+<span class="nocode"><a name="109">109: </a></span>		}
+<span class="nocode"><a name="110">110: </a></span>	}
+<span class="nocode"><a name="111">111: </a></span>
+<span class="nocode"><a name="112">112: </a></span>	/**
+<span class="nocode"><a name="113">113: </a></span>	 * Encapsulates either an area or cell reference which may be 2d or 3d.
+<span class="nocode"><a name="114">114: </a></span>	 */
+<span class="nocode"><a name="115">115: </a></span>	private static final class BaseRef {
+<span class="nocode"><a name="116">116: </a></span>		private final int _firstRowIndex;
+<span class="nocode"><a name="117">117: </a></span>		private final int _firstColumnIndex;
+<span class="nocode"><a name="118">118: </a></span>		private final int _width;
+<span class="nocode"><a name="119">119: </a></span>		private final int _height;
+<span class="nocode"><a name="120">120: </a></span>		private final RefEval _refEval;
+<span class="nocode"><a name="121">121: </a></span>		private final AreaEval _areaEval;
+<span class="nocode"><a name="122">122: </a></span>
+<span class="nocode"><a name="123">123: </a></span>		public BaseRef(RefEval re) {
+<span class="nocode"><a name="124">124: </a></span>			_refEval = re;
+<span class="nocode"><a name="125">125: </a></span>			_areaEval = null;
+<span class="nocode"><a name="126">126: </a></span>			_firstRowIndex = re.getRow();
+<span class="nocode"><a name="127">127: </a></span>			_firstColumnIndex = re.getColumn();
+<span class="nocode"><a name="128">128: </a></span>			_height = 1;
+<span class="nocode"><a name="129">129: </a></span>			_width = 1;
+<span class="nocode"><a name="130">130: </a></span>		}
+<span class="nocode"><a name="131">131: </a></span>
+<span class="nocode"><a name="132">132: </a></span>		public BaseRef(AreaEval ae) {
+<span class="nocode"><a name="133">133: </a></span>			_refEval = null;
+<span class="nocode"><a name="134">134: </a></span>			_areaEval = ae;
+<span class="nocode"><a name="135">135: </a></span>			_firstRowIndex = ae.getFirstRow();
+<span class="nocode"><a name="136">136: </a></span>			_firstColumnIndex = ae.getFirstColumn();
+<span class="nocode"><a name="137">137: </a></span>			_height = ae.getLastRow() - ae.getFirstRow() + 1;
+<span class="nocode"><a name="138">138: </a></span>			_width = ae.getLastColumn() - ae.getFirstColumn() + 1;
+<span class="nocode"><a name="139">139: </a></span>		}
+<span class="nocode"><a name="140">140: </a></span>
+<span class="nocode"><a name="141">141: </a></span>		public int getWidth() {
+<span class="nocode"><a name="142">142: </a></span>			return _width;
+<span class="nocode"><a name="143">143: </a></span>		}
+<span class="nocode"><a name="144">144: </a></span>		public int getHeight() {
+<span class="nocode"><a name="145">145: </a></span>			return _height;
+<span class="nocode"><a name="146">146: </a></span>		}
+<span class="nocode"><a name="147">147: </a></span>		public int getFirstRowIndex() {
+<span class="nocode"><a name="148">148: </a></span>			return _firstRowIndex;
+<span class="nocode"><a name="149">149: </a></span>		}
+<span class="nocode"><a name="150">150: </a></span>		public int getFirstColumnIndex() {
+<span class="nocode"><a name="151">151: </a></span>			return _firstColumnIndex;
+<span class="nocode"><a name="152">152: </a></span>		}
+<span class="nocode"><a name="153">153: </a></span>
+<span class="nocode"><a name="154">154: </a></span>		public AreaEval offset(int relFirstRowIx, int relLastRowIx,
+<span class="nocode"><a name="155">155: </a></span>				int relFirstColIx, int relLastColIx) {
+<span class="nocode"><a name="156">156: </a></span>			if (_refEval == null) {
+<span class="nocode"><a name="157">157: </a></span>				return _areaEval.offset(relFirstRowIx, relLastRowIx, relFirstColIx, relLastColIx);
+<span class="nocode"><a name="158">158: </a></span>			}
+<span class="nocode"><a name="159">159: </a></span>			return _refEval.offset(relFirstRowIx, relLastRowIx, relFirstColIx, relLastColIx);
+<span class="nocode"><a name="160">160: </a></span>		}
+<span class="nocode"><a name="161">161: </a></span>	}
+<span class="nocode"><a name="162">162: </a></span>
+<span class="nocode"><a name="163">163: </a></span>	public ValueEval evaluate(ValueEval[] args, int srcCellRow, int srcCellCol) {
+<span class="nocode"><a name="164">164: </a></span>		if(args.length &lt; 3 || args.length &gt; 5) {
+<span class="nocode"><a name="165">165: </a></span>			return ErrorEval.VALUE_INVALID;
+<span class="nocode"><a name="166">166: </a></span>		}
+<span class="nocode"><a name="167">167: </a></span>
+<span class="nocode"><a name="168">168: </a></span>		try {
+<span class="nocode"><a name="169">169: </a></span>			BaseRef baseRef = evaluateBaseRef(args[0]);
+<span class="nocode"><a name="170">170: </a></span>			int rowOffset = evaluateIntArg(args[1], srcCellRow, srcCellCol);
+<span class="nocode"><a name="171">171: </a></span>			int columnOffset = evaluateIntArg(args[2], srcCellRow, srcCellCol);
+<span class="nocode"><a name="172">172: </a></span>			int height = baseRef.getHeight();
+<span class="nocode"><a name="173">173: </a></span>			int width = baseRef.getWidth();
+<span class="nocode"><a name="174">174: </a></span>			switch(args.length) {
+<span class="nocode"><a name="175">175: </a></span>				case 5:
+<span class="nocode"><a name="176">176: </a></span>					width = evaluateIntArg(args[4], srcCellRow, srcCellCol);
+<span class="nocode"><a name="177">177: </a></span>				case 4:
+<span class="nocode"><a name="178">178: </a></span>					height = evaluateIntArg(args[3], srcCellRow, srcCellCol);
+<span class="nocode"><a name="179">179: </a></span>			}
+<span class="nocode"><a name="180">180: </a></span>			// Zero height or width raises #REF! error
+<span class="nocode"><a name="181">181: </a></span>			if(height == 0 || width == 0) {
+<span class="nocode"><a name="182">182: </a></span>				return ErrorEval.REF_INVALID;
+<span class="nocode"><a name="183">183: </a></span>			}
+<span class="nocode"><a name="184">184: </a></span>			LinearOffsetRange rowOffsetRange = new LinearOffsetRange(rowOffset, height);
+<span class="nocode"><a name="185">185: </a></span>			LinearOffsetRange colOffsetRange = new LinearOffsetRange(columnOffset, width);
+<span class="nocode"><a name="186">186: </a></span>			return createOffset(baseRef, rowOffsetRange, colOffsetRange);
+<span class="nocode"><a name="187">187: </a></span>		} catch (EvaluationException e) {
+<span class="nocode"><a name="188">188: </a></span>			return e.getErrorEval();
+<span class="nocode"><a name="189">189: </a></span>		}
+<span class="nocode"><a name="190">190: </a></span>	}
+<span class="nocode"><a name="191">191: </a></span>
+<span class="nocode"><a name="192">192: </a></span>	private static AreaEval createOffset(BaseRef baseRef,
+<span class="nocode"><a name="193">193: </a></span>			LinearOffsetRange orRow, LinearOffsetRange orCol) throws EvaluationException {
+<span class="nocode"><a name="194">194: </a></span>		LinearOffsetRange absRows = orRow.normaliseAndTranslate(baseRef.getFirstRowIndex());
+<span class="nocode"><a name="195">195: </a></span>		LinearOffsetRange absCols = orCol.normaliseAndTranslate(baseRef.getFirstColumnIndex());
+<span class="nocode"><a name="196">196: </a></span>
+<span class="nocode"><a name="197">197: </a></span>		if(absRows.isOutOfBounds(0, LAST_VALID_ROW_INDEX)) {
+<span class="nocode"><a name="198">198: </a></span>			throw new EvaluationException(ErrorEval.REF_INVALID);
+<span class="nocode"><a name="199">199: </a></span>		}
+<span class="nocode"><a name="200">200: </a></span>		if(absCols.isOutOfBounds(0, LAST_VALID_COLUMN_INDEX)) {
+<span class="nocode"><a name="201">201: </a></span>			throw new EvaluationException(ErrorEval.REF_INVALID);
+<span class="nocode"><a name="202">202: </a></span>		}
+<span class="nocode"><a name="203">203: </a></span>		return baseRef.offset(orRow.getFirstIndex(), orRow.getLastIndex(), orCol.getFirstIndex(), orCol.getLastIndex());
+<span class="nocode"><a name="204">204: </a></span>	}
+<span class="nocode"><a name="205">205: </a></span>
+<span class="nocode"><a name="206">206: </a></span>	private static BaseRef evaluateBaseRef(ValueEval eval) throws EvaluationException {
+<span class="nocode"><a name="207">207: </a></span>
+<span class="nocode"><a name="208">208: </a></span>		if(eval instanceof RefEval) {
+<span class="nocode"><a name="209">209: </a></span>			return new BaseRef((RefEval)eval);
+<span class="nocode"><a name="210">210: </a></span>		}
+<span class="nocode"><a name="211">211: </a></span>		if(eval instanceof AreaEval) {
+<span class="nocode"><a name="212">212: </a></span>			return new BaseRef((AreaEval)eval);
+<span class="nocode"><a name="213">213: </a></span>		}
+<span class="nocode"><a name="214">214: </a></span>		if (eval instanceof ErrorEval) {
+<span class="nocode"><a name="215">215: </a></span>			throw new EvaluationException((ErrorEval) eval);
+<span class="nocode"><a name="216">216: </a></span>		}
+<span class="nocode"><a name="217">217: </a></span>		throw new EvaluationException(ErrorEval.VALUE_INVALID);
+<span class="nocode"><a name="218">218: </a></span>	}
+<span class="nocode"><a name="219">219: </a></span>
+<span class="nocode"><a name="220">220: </a></span>	/**
+<span class="nocode"><a name="221">221: </a></span>	 * OFFSET's numeric arguments (2..5) have similar processing rules
+<span class="nocode"><a name="222">222: </a></span>	 */
+<span class="nocode"><a name="223">223: </a></span>	static int evaluateIntArg(ValueEval eval, int srcCellRow, int srcCellCol) throws EvaluationException {
+<span class="nocode"><a name="224">224: </a></span>		ValueEval ve = OperandResolver.getSingleValue(eval, srcCellRow, srcCellCol);
+<span class="nocode"><a name="225">225: </a></span>		return OperandResolver.coerceValueToInt(ve);
+<span class="nocode"><a name="226">226: </a></span>	}
+<span class="nocode"><a name="227">227: </a></span>}
+</pre><table class="mutation_table" summary="Mutations">
+<tr><th>ID</th><th>Line</th><th>Type</th><th>Detected</th></tr><tr><td>63476</td><td><a href="#58">58</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>63479</td><td><a href="#70">70</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>63478</td><td><a href="#70">70</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>63477</td><td><a href="#70">70</a></td><td>Replace arithmetic operator (Replace IADD with ISUB)</td><td><img src="detected.png"/></td></tr>
+<tr><td>63480</td><td><a href="#70">70(1)</a></td><td>Replace arithmetic operator (Replace ISUB with IADD)</td><td><img src="detected.png"/></td></tr>
+<tr><td>63481</td><td><a href="#85">85</a></td><td>Negate jump condition (Replace IFLE with  IFGT)</td><td><img src="detected.png"/></td></tr>
+<tr><td>63482</td><td><a href="#86">86</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>63483</td><td><a href="#89">89</a></td><td>Replace arithmetic operator (Replace IADD with ISUB)</td><td><img src="detected.png"/></td></tr>
+<tr><td>63487</td><td><a href="#91">91</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>63486</td><td><a href="#91">91</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>63484</td><td><a href="#91">91</a></td><td>Replace arithmetic operator (Replace IADD with ISUB)</td><td><img src="detected.png"/></td></tr>
+<tr><td>63485</td><td><a href="#91">91(1)</a></td><td>Replace arithmetic operator (Replace IADD with ISUB)</td><td><img src="detected.png"/></td></tr>
+<tr><td>63488</td><td><a href="#91">91(2)</a></td><td>Replace arithmetic operator (Replace IADD with ISUB)</td><td><img src="detected.png"/></td></tr>
+<tr><td>63489</td><td><a href="#91">91(3)</a></td><td>Replace arithmetic operator (Replace INEG with remove right opereand)</td><td><img src="detected.png"/></td></tr>
+<tr><td>63490</td><td><a href="#95">95</a></td><td>Negate jump condition (Replace IF_ICMPGE with  IF_ICMPLT)</td><td><img src="detected.png"/></td></tr>
+<tr><td>63491</td><td><a href="#96">96</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>63492</td><td><a href="#96">96</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>63494</td><td><a href="#98">98</a></td><td>Negate jump condition (Replace IF_ICMPLE with  IF_ICMPGT)</td><td><img src="detected.png"/></td></tr>
+<tr><td>63493</td><td><a href="#98">98</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>63495</td><td><a href="#99">99</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>63496</td><td><a href="#99">99</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>63497</td><td><a href="#101">101</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>63498</td><td><a href="#101">101</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>63501</td><td><a href="#104">104</a></td><td>Replace a constant (Replace 64 with 63(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>63500</td><td><a href="#104">104</a></td><td>Replace a constant (Replace 64 with 65(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>63499</td><td><a href="#104">104</a></td><td>Replace a constant (Replace 64 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>63502</td><td><a href="#105">105</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>63503</td><td><a href="#105">105(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>63504</td><td><a href="#105">105(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>63505</td><td><a href="#105">105(3)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>63506</td><td><a href="#106">106</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>63507</td><td><a href="#106">106(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>63508</td><td><a href="#106">106(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>63509</td><td><a href="#106">106(3)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>63510</td><td><a href="#107">107</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>63511</td><td><a href="#108">108</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>63453</td><td><a href="#126">126</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>63454</td><td><a href="#127">127</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>63456</td><td><a href="#128">128</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>63455</td><td><a href="#128">128</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>63458</td><td><a href="#129">129</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>63457</td><td><a href="#129">129</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>63459</td><td><a href="#135">135</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>63460</td><td><a href="#136">136</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>63465</td><td><a href="#137">137</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>63464</td><td><a href="#137">137</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>63463</td><td><a href="#137">137</a></td><td>Replace arithmetic operator (Replace ISUB with IADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>63466</td><td><a href="#137">137(1)</a></td><td>Replace arithmetic operator (Replace IADD with ISUB)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>63461</td><td><a href="#137">137</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>63462</td><td><a href="#137">137(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>63470</td><td><a href="#138">138</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>63471</td><td><a href="#138">138</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>63469</td><td><a href="#138">138</a></td><td>Replace arithmetic operator (Replace ISUB with IADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>63472</td><td><a href="#138">138(1)</a></td><td>Replace arithmetic operator (Replace IADD with ISUB)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>63467</td><td><a href="#138">138</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>63468</td><td><a href="#138">138(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>63473</td><td><a href="#156">156</a></td><td>Negate jump condition (Replace IFNONNULL with  IFNULL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>63474</td><td><a href="#157">157</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>63475</td><td><a href="#159">159</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>60486</td><td><a href="#164">164</a></td><td>Replace a constant (Replace 3 with 4(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>60484</td><td><a href="#164">164</a></td><td>Replace a constant (Replace 3 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>60485</td><td><a href="#164">164</a></td><td>Replace a constant (Replace 3 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>60489</td><td><a href="#164">164(1)</a></td><td>Replace a constant (Replace 5 with 6(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>60490</td><td><a href="#164">164(1)</a></td><td>Replace a constant (Replace 5 with 4(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>60488</td><td><a href="#164">164(1)</a></td><td>Replace a constant (Replace 5 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>60487</td><td><a href="#164">164</a></td><td>Negate jump condition (Replace IF_ICMPLT with  IF_ICMPGE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>60491</td><td><a href="#164">164(1)</a></td><td>Negate jump condition (Replace IF_ICMPLE with  IF_ICMPGT)</td><td><img src="detected.png"/></td></tr>
+<tr><td>60493</td><td><a href="#169">169</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>60492</td><td><a href="#169">169</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>60494</td><td><a href="#169">169</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>60496</td><td><a href="#170">170</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>60495</td><td><a href="#170">170</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>60497</td><td><a href="#170">170</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>60498</td><td><a href="#171">171</a></td><td>Replace a constant (Replace 2 with 3(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>60499</td><td><a href="#171">171</a></td><td>Replace a constant (Replace 2 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>60500</td><td><a href="#171">171</a></td><td>Replace a constant (Replace 2 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>60501</td><td><a href="#171">171</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>60502</td><td><a href="#172">172</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>60503</td><td><a href="#173">173</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>60506</td><td><a href="#176">176</a></td><td>Replace a constant (Replace 4 with 5(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>60504</td><td><a href="#176">176</a></td><td>Replace a constant (Replace 4 with 3(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>60505</td><td><a href="#176">176</a></td><td>Replace a constant (Replace 4 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>60507</td><td><a href="#176">176</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>60509</td><td><a href="#178">178</a></td><td>Replace a constant (Replace 3 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>60510</td><td><a href="#178">178</a></td><td>Replace a constant (Replace 3 with 4(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>60508</td><td><a href="#178">178</a></td><td>Replace a constant (Replace 3 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>60511</td><td><a href="#178">178</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>60512</td><td><a href="#181">181</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>60513</td><td><a href="#181">181(1)</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>60514</td><td><a href="#186">186</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>60515</td><td><a href="#188">188</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>60516</td><td><a href="#194">194</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>60517</td><td><a href="#194">194(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>60518</td><td><a href="#195">195</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>60519</td><td><a href="#195">195(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>60520</td><td><a href="#197">197</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>60521</td><td><a href="#197">197</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>60524</td><td><a href="#197">197(1)</a></td><td>Replace a constant (Replace 65535 with 65534(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>60523</td><td><a href="#197">197(1)</a></td><td>Replace a constant (Replace 65535 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>60522</td><td><a href="#197">197(1)</a></td><td>Replace a constant (Replace 65535 with 65536(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>60526</td><td><a href="#197">197</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>60525</td><td><a href="#197">197</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>60528</td><td><a href="#200">200</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>60527</td><td><a href="#200">200</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>60529</td><td><a href="#200">200(1)</a></td><td>Replace a constant (Replace 255 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>60530</td><td><a href="#200">200(1)</a></td><td>Replace a constant (Replace 255 with 254(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>60531</td><td><a href="#200">200(1)</a></td><td>Replace a constant (Replace 255 with 256(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>60533</td><td><a href="#200">200</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>60532</td><td><a href="#200">200</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>60534</td><td><a href="#203">203</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>60535</td><td><a href="#203">203(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>60536</td><td><a href="#203">203(2)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>60537</td><td><a href="#203">203(3)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>60538</td><td><a href="#203">203(4)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>60539</td><td><a href="#208">208</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>60540</td><td><a href="#211">211</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>60541</td><td><a href="#214">214</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>60542</td><td><a href="#224">224</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>60543</td><td><a href="#225">225</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+</table>
+</body>
+</html>

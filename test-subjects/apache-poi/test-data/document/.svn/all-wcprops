@@ -1,0 +1,1019 @@
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/repos/asf/!svn/ver/1230045/poi/trunk/test-data/document
+END
+45690.docm
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/repos/asf/!svn/ver/832643/poi/trunk/test-data/document/45690.docm
+END
+TestDocument.docx
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/repos/asf/!svn/ver/996976/poi/trunk/test-data/document/TestDocument.docx
+END
+SampleDoc.doc
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/repos/asf/!svn/ver/814335/poi/trunk/test-data/document/SampleDoc.doc
+END
+MarkAuthorsTable.doc
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/repos/asf/!svn/ver/953343/poi/trunk/test-data/document/MarkAuthorsTable.doc
+END
+TestPoiXMLDocumentCorePropertiesGetKeywords.docx
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/repos/asf/!svn/ver/935860/poi/trunk/test-data/document/TestPoiXMLDocumentCorePropertiesGetKeywords.docx
+END
+NoHeadFoot.docx
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/repos/asf/!svn/ver/814335/poi/trunk/test-data/document/NoHeadFoot.docx
+END
+HeaderFooterUnicode.doc
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/repos/asf/!svn/ver/814335/poi/trunk/test-data/document/HeaderFooterUnicode.doc
+END
+EmbeddedDocument.docx
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/repos/asf/!svn/ver/1139541/poi/trunk/test-data/document/EmbeddedDocument.docx
+END
+Bug51834.doc
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/repos/asf/!svn/ver/1178113/poi/trunk/test-data/document/Bug51834.doc
+END
+drawing.docx
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/repos/asf/!svn/ver/1138440/poi/trunk/test-data/document/drawing.docx
+END
+Bug47731.doc
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/repos/asf/!svn/ver/1150463/poi/trunk/test-data/document/Bug47731.doc
+END
+PageSpecificHeadFoot.docx
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/repos/asf/!svn/ver/814335/poi/trunk/test-data/document/PageSpecificHeadFoot.docx
+END
+equation.doc
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/repos/asf/!svn/ver/1137673/poi/trunk/test-data/document/equation.doc
+END
+pictures_escher.doc
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/repos/asf/!svn/ver/1151888/poi/trunk/test-data/document/pictures_escher.doc
+END
+documentProtection_readonly_no_password.docx
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/repos/asf/!svn/ver/830657/poi/trunk/test-data/document/documentProtection_readonly_no_password.docx
+END
+Bug52032_2.doc
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/repos/asf/!svn/ver/1195077/poi/trunk/test-data/document/Bug52032_2.doc
+END
+form_footnotes.docx
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/repos/asf/!svn/ver/814335/poi/trunk/test-data/document/form_footnotes.docx
+END
+footnote.doc
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/repos/asf/!svn/ver/814335/poi/trunk/test-data/document/footnote.doc
+END
+Bug49919.doc
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/repos/asf/!svn/ver/1005447/poi/trunk/test-data/document/Bug49919.doc
+END
+ThreeColFoot.doc
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/repos/asf/!svn/ver/814335/poi/trunk/test-data/document/ThreeColFoot.doc
+END
+page-break-before.doc
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/repos/asf/!svn/ver/1160263/poi/trunk/test-data/document/page-break-before.doc
+END
+testPictures.doc
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/repos/asf/!svn/ver/806959/poi/trunk/test-data/document/testPictures.doc
+END
+Bug46610_2.doc
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/repos/asf/!svn/ver/814335/poi/trunk/test-data/document/Bug46610_2.doc
+END
+word95err.doc
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/repos/asf/!svn/ver/1001712/poi/trunk/test-data/document/word95err.doc
+END
+o_kurs.doc
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/repos/asf/!svn/ver/979286/poi/trunk/test-data/document/o_kurs.doc
+END
+Headers.docx
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/repos/asf/!svn/ver/814335/poi/trunk/test-data/document/Headers.docx
+END
+endnotes.docx
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/repos/asf/!svn/ver/814335/poi/trunk/test-data/document/endnotes.docx
+END
+Word6_sections.doc
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/repos/asf/!svn/ver/998131/poi/trunk/test-data/document/Word6_sections.doc
+END
+testCroppedPictures.doc
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/repos/asf/!svn/ver/1134663/poi/trunk/test-data/document/testCroppedPictures.doc
+END
+Bug44431.doc
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/repos/asf/!svn/ver/1139204/poi/trunk/test-data/document/Bug44431.doc
+END
+Bug50075.doc
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/repos/asf/!svn/ver/1022456/poi/trunk/test-data/document/Bug50075.doc
+END
+protected_sample.docx
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/repos/asf/!svn/ver/830657/poi/trunk/test-data/document/protected_sample.docx
+END
+Bug48075.doc
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/repos/asf/!svn/ver/1145288/poi/trunk/test-data/document/Bug48075.doc
+END
+Bug47742.doc
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/repos/asf/!svn/ver/1139204/poi/trunk/test-data/document/Bug47742.doc
+END
+testRangeInsertion.doc
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/repos/asf/!svn/ver/806959/poi/trunk/test-data/document/testRangeInsertion.doc
+END
+header_image.doc
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/repos/asf/!svn/ver/814335/poi/trunk/test-data/document/header_image.doc
+END
+WordWithAttachments.docx
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/repos/asf/!svn/ver/806959/poi/trunk/test-data/document/WordWithAttachments.docx
+END
+empty.doc
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/repos/asf/!svn/ver/894173/poi/trunk/test-data/document/empty.doc
+END
+nature1.png
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/repos/asf/!svn/ver/1212745/poi/trunk/test-data/document/nature1.png
+END
+headerFooter.docx
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/repos/asf/!svn/ver/806959/poi/trunk/test-data/document/headerFooter.docx
+END
+saved-by-table.doc
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/repos/asf/!svn/ver/806959/poi/trunk/test-data/document/saved-by-table.doc
+END
+ThreeColHeadFoot.docx
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/repos/asf/!svn/ver/814335/poi/trunk/test-data/document/ThreeColHeadFoot.docx
+END
+Bug46220.doc
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/repos/asf/!svn/ver/1139204/poi/trunk/test-data/document/Bug46220.doc
+END
+Styles.docx
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/repos/asf/!svn/ver/953698/poi/trunk/test-data/document/Styles.docx
+END
+documentProtection_no_protection.docx
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/repos/asf/!svn/ver/830657/poi/trunk/test-data/document/documentProtection_no_protection.docx
+END
+nature1.gif
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/repos/asf/!svn/ver/1212745/poi/trunk/test-data/document/nature1.gif
+END
+testRangeDelete.doc
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/repos/asf/!svn/ver/806959/poi/trunk/test-data/document/testRangeDelete.doc
+END
+ThreeColHead.docx
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/repos/asf/!svn/ver/814335/poi/trunk/test-data/document/ThreeColHead.docx
+END
+52449.docx
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/repos/asf/!svn/ver/1230045/poi/trunk/test-data/document/52449.docx
+END
+SampleDoc.txt
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/repos/asf/!svn/ver/806959/poi/trunk/test-data/document/SampleDoc.txt
+END
+documentProperties.docx
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/repos/asf/!svn/ver/806959/poi/trunk/test-data/document/documentProperties.docx
+END
+documentProtection_no_protection_tag_existing.docx
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/repos/asf/!svn/ver/830657/poi/trunk/test-data/document/documentProtection_no_protection_tag_existing.docx
+END
+NoHeadFoot.doc
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/repos/asf/!svn/ver/814335/poi/trunk/test-data/document/NoHeadFoot.doc
+END
+Bug49933.doc
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/repos/asf/!svn/ver/1144685/poi/trunk/test-data/document/Bug49933.doc
+END
+Word95.doc
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/repos/asf/!svn/ver/959346/poi/trunk/test-data/document/Word95.doc
+END
+FieldCodes.docx
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/repos/asf/!svn/ver/958965/poi/trunk/test-data/document/FieldCodes.docx
+END
+Word6_sections2.doc
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/repos/asf/!svn/ver/998621/poi/trunk/test-data/document/Word6_sections2.doc
+END
+endingnote.doc
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/repos/asf/!svn/ver/1148959/poi/trunk/test-data/document/endingnote.doc
+END
+watermark.doc
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/repos/asf/!svn/ver/1160745/poi/trunk/test-data/document/watermark.doc
+END
+Bug47958.doc
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/repos/asf/!svn/ver/1139204/poi/trunk/test-data/document/Bug47958.doc
+END
+IllustrativeCases.docx
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/repos/asf/!svn/ver/806959/poi/trunk/test-data/document/IllustrativeCases.docx
+END
+issue_51265_1.docx
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/repos/asf/!svn/ver/1212745/poi/trunk/test-data/document/issue_51265_1.docx
+END
+Bug50936_1.doc
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/repos/asf/!svn/ver/1195080/poi/trunk/test-data/document/Bug50936_1.doc
+END
+Bug50936_3.doc
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/repos/asf/!svn/ver/1195080/poi/trunk/test-data/document/Bug50936_3.doc
+END
+table-merges.doc
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/repos/asf/!svn/ver/1149528/poi/trunk/test-data/document/table-merges.doc
+END
+pageref.doc
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/repos/asf/!svn/ver/1137673/poi/trunk/test-data/document/pageref.doc
+END
+EmptyDocumentWithHeaderFooter.docx
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/repos/asf/!svn/ver/953698/poi/trunk/test-data/document/EmptyDocumentWithHeaderFooter.docx
+END
+AIOOB-Tap.doc
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/repos/asf/!svn/ver/806959/poi/trunk/test-data/document/AIOOB-Tap.doc
+END
+WithTabs.docx
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/repos/asf/!svn/ver/948199/poi/trunk/test-data/document/WithTabs.docx
+END
+ThreeColHeadFoot.doc
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/repos/asf/!svn/ver/814335/poi/trunk/test-data/document/ThreeColHeadFoot.doc
+END
+bookmarks.docx
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/repos/asf/!svn/ver/886733/poi/trunk/test-data/document/bookmarks.docx
+END
+Bug49820.doc
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/repos/asf/!svn/ver/998897/poi/trunk/test-data/document/Bug49820.doc
+END
+Bug51944.doc
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/repos/asf/!svn/ver/1195079/poi/trunk/test-data/document/Bug51944.doc
+END
+Bug45269.doc
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/repos/asf/!svn/ver/951498/poi/trunk/test-data/document/Bug45269.doc
+END
+ThreeColHead.doc
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/repos/asf/!svn/ver/814335/poi/trunk/test-data/document/ThreeColHead.doc
+END
+Bug47287.doc
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/repos/asf/!svn/ver/1139204/poi/trunk/test-data/document/Bug47287.doc
+END
+HeaderFooterProblematic.doc
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/repos/asf/!svn/ver/998146/poi/trunk/test-data/document/HeaderFooterProblematic.doc
+END
+nature2.jpg
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/repos/asf/!svn/ver/1212745/poi/trunk/test-data/document/nature2.jpg
+END
+lists-margins.doc
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/repos/asf/!svn/ver/1173161/poi/trunk/test-data/document/lists-margins.doc
+END
+Bug34898.doc
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/repos/asf/!svn/ver/1139204/poi/trunk/test-data/document/Bug34898.doc
+END
+nature4.jpg
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/repos/asf/!svn/ver/1212745/poi/trunk/test-data/document/nature4.jpg
+END
+ListEntryNoListTable.doc
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/repos/asf/!svn/ver/806959/poi/trunk/test-data/document/ListEntryNoListTable.doc
+END
+page-break.doc
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/repos/asf/!svn/ver/1160289/poi/trunk/test-data/document/page-break.doc
+END
+two_images.doc
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/repos/asf/!svn/ver/814335/poi/trunk/test-data/document/two_images.doc
+END
+abstract2.jpg
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/repos/asf/!svn/ver/1212745/poi/trunk/test-data/document/abstract2.jpg
+END
+documentProtection_forms_no_password.docx
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/repos/asf/!svn/ver/830657/poi/trunk/test-data/document/documentProtection_forms_no_password.docx
+END
+simple-list.doc
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/repos/asf/!svn/ver/894173/poi/trunk/test-data/document/simple-list.doc
+END
+abstract4.jpg
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/repos/asf/!svn/ver/1212745/poi/trunk/test-data/document/abstract4.jpg
+END
+hyperlink.doc
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/repos/asf/!svn/ver/1137673/poi/trunk/test-data/document/hyperlink.doc
+END
+simple_image.jpg
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/repos/asf/!svn/ver/806959/poi/trunk/test-data/document/simple_image.jpg
+END
+picture.doc
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/repos/asf/!svn/ver/1147450/poi/trunk/test-data/document/picture.doc
+END
+PasswordProtected.doc
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/repos/asf/!svn/ver/806959/poi/trunk/test-data/document/PasswordProtected.doc
+END
+documentProtection_trackedChanges_no_password.docx
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/repos/asf/!svn/ver/830657/poi/trunk/test-data/document/documentProtection_trackedChanges_no_password.docx
+END
+FloatingPictures.doc
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/repos/asf/!svn/ver/1002123/poi/trunk/test-data/document/FloatingPictures.doc
+END
+Bug48065.doc
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/repos/asf/!svn/ver/1143809/poi/trunk/test-data/document/Bug48065.doc
+END
+Bug45473.doc
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/repos/asf/!svn/ver/1139204/poi/trunk/test-data/document/Bug45473.doc
+END
+Bug28627.doc
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/repos/asf/!svn/ver/806959/poi/trunk/test-data/document/Bug28627.doc
+END
+word_with_embeded_ooxml.doc
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/repos/asf/!svn/ver/1049802/poi/trunk/test-data/document/word_with_embeded_ooxml.doc
+END
+Bug52032_1.doc
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/repos/asf/!svn/ver/1195077/poi/trunk/test-data/document/Bug52032_1.doc
+END
+Bug52032_3.doc
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/repos/asf/!svn/ver/1195077/poi/trunk/test-data/document/Bug52032_3.doc
+END
+PageSpecificHeadFoot.doc
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/repos/asf/!svn/ver/814335/poi/trunk/test-data/document/PageSpecificHeadFoot.doc
+END
+Bug45877.doc
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/repos/asf/!svn/ver/998634/poi/trunk/test-data/document/Bug45877.doc
+END
+Bug46610_1.doc
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/repos/asf/!svn/ver/814335/poi/trunk/test-data/document/Bug46610_1.doc
+END
+Bug46610_3.doc
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/repos/asf/!svn/ver/814335/poi/trunk/test-data/document/Bug46610_3.doc
+END
+Word6.doc
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/repos/asf/!svn/ver/959346/poi/trunk/test-data/document/Word6.doc
+END
+Bug51170.docx
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/repos/asf/!svn/ver/1169679/poi/trunk/test-data/document/Bug51170.docx
+END
+issue_51265_3.docx
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/repos/asf/!svn/ver/1212745/poi/trunk/test-data/document/issue_51265_3.docx
+END
+vector_image.doc
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/repos/asf/!svn/ver/806959/poi/trunk/test-data/document/vector_image.doc
+END
+vector_image.emf
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/repos/asf/!svn/ver/806959/poi/trunk/test-data/document/vector_image.emf
+END
+footnotes.docx
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/repos/asf/!svn/ver/814335/poi/trunk/test-data/document/footnotes.docx
+END
+word_with_embeded.doc
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/repos/asf/!svn/ver/806959/poi/trunk/test-data/document/word_with_embeded.doc
+END
+headerPic.docx
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/repos/asf/!svn/ver/1083764/poi/trunk/test-data/document/headerPic.docx
+END
+heading123.docx
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/repos/asf/!svn/ver/819469/poi/trunk/test-data/document/heading123.docx
+END
+Bug51604.doc
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/repos/asf/!svn/ver/1155211/poi/trunk/test-data/document/Bug51604.doc
+END
+Numbering.docx
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/repos/asf/!svn/ver/953698/poi/trunk/test-data/document/Numbering.docx
+END
+parentinvguid.doc
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/repos/asf/!svn/ver/1065535/poi/trunk/test-data/document/parentinvguid.doc
+END
+test.doc
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/repos/asf/!svn/ver/806959/poi/trunk/test-data/document/test.doc
+END
+ThreeColFoot.docx
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/repos/asf/!svn/ver/814335/poi/trunk/test-data/document/ThreeColFoot.docx
+END
+Bug50955.doc
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/repos/asf/!svn/ver/1139204/poi/trunk/test-data/document/Bug50955.doc
+END
+Bug46817.doc
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/repos/asf/!svn/ver/1139204/poi/trunk/test-data/document/Bug46817.doc
+END
+Bug51686.doc
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/repos/asf/!svn/ver/1160143/poi/trunk/test-data/document/Bug51686.doc
+END
+test.dotx
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/repos/asf/!svn/ver/814335/poi/trunk/test-data/document/test.dotx
+END
+ProblemExtracting.doc
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/repos/asf/!svn/ver/806959/poi/trunk/test-data/document/ProblemExtracting.doc
+END
+WithGIF.docx
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/repos/asf/!svn/ver/1128301/poi/trunk/test-data/document/WithGIF.docx
+END
+smarttag-snippet.docx
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/repos/asf/!svn/ver/1210774/poi/trunk/test-data/document/smarttag-snippet.docx
+END
+simple-table2.doc
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/repos/asf/!svn/ver/953694/poi/trunk/test-data/document/simple-table2.doc
+END
+documentProtection_comments_no_password.docx
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/repos/asf/!svn/ver/830657/poi/trunk/test-data/document/documentProtection_comments_no_password.docx
+END
+test2.doc
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/repos/asf/!svn/ver/814335/poi/trunk/test-data/document/test2.doc
+END
+HeaderFooterUnicode.docx
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/repos/asf/!svn/ver/814335/poi/trunk/test-data/document/HeaderFooterUnicode.docx
+END
+delins.docx
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/repos/asf/!svn/ver/814335/poi/trunk/test-data/document/delins.docx
+END
+FldSimple.docx
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/repos/asf/!svn/ver/983630/poi/trunk/test-data/document/FldSimple.docx
+END
+simple_image.png
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/repos/asf/!svn/ver/806959/poi/trunk/test-data/document/simple_image.png
+END
+testRangeReplacement.doc
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/repos/asf/!svn/ver/806959/poi/trunk/test-data/document/testRangeReplacement.doc
+END
+simple-table.doc
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/repos/asf/!svn/ver/894173/poi/trunk/test-data/document/simple-table.doc
+END
+Bug44603.doc
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/repos/asf/!svn/ver/806959/poi/trunk/test-data/document/Bug44603.doc
+END
+DiffFirstPageHeadFoot.docx
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/repos/asf/!svn/ver/814335/poi/trunk/test-data/document/DiffFirstPageHeadFoot.docx
+END
+PngPicture.doc
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/repos/asf/!svn/ver/1207497/poi/trunk/test-data/document/PngPicture.doc
+END
+FancyFoot.docx
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/repos/asf/!svn/ver/814335/poi/trunk/test-data/document/FancyFoot.docx
+END
+Bug47742-text.txt
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/repos/asf/!svn/ver/1212745/poi/trunk/test-data/document/Bug47742-text.txt
+END
+Bug33519.doc
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/repos/asf/!svn/ver/1139204/poi/trunk/test-data/document/Bug33519.doc
+END
+test-fields.doc
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/repos/asf/!svn/ver/1081291/poi/trunk/test-data/document/test-fields.doc
+END
+Bug51890.doc
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/repos/asf/!svn/ver/1177710/poi/trunk/test-data/document/Bug51890.doc
+END
+WithArtShapes.doc
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/repos/asf/!svn/ver/806959/poi/trunk/test-data/document/WithArtShapes.doc
+END
+FancyFoot.doc
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/repos/asf/!svn/ver/814335/poi/trunk/test-data/document/FancyFoot.doc
+END
+HeaderWithMacros.doc
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/repos/asf/!svn/ver/806959/poi/trunk/test-data/document/HeaderWithMacros.doc
+END
+SimpleHeadThreeColFoot.doc
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/repos/asf/!svn/ver/814335/poi/trunk/test-data/document/SimpleHeadThreeColFoot.doc
+END
+simple.doc
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/repos/asf/!svn/ver/894173/poi/trunk/test-data/document/simple.doc
+END
+ob_is.doc
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/repos/asf/!svn/ver/979618/poi/trunk/test-data/document/ob_is.doc
+END
+Bug41898.doc
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/repos/asf/!svn/ver/1155339/poi/trunk/test-data/document/Bug41898.doc
+END
+Lists.doc
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/repos/asf/!svn/ver/998943/poi/trunk/test-data/document/Lists.doc
+END
+SampleDoc.docx
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/repos/asf/!svn/ver/814335/poi/trunk/test-data/document/SampleDoc.docx
+END
+rasp.doc
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/repos/asf/!svn/ver/961342/poi/trunk/test-data/document/rasp.doc
+END
+Bug50936_2.doc
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/repos/asf/!svn/ver/1195080/poi/trunk/test-data/document/Bug50936_2.doc
+END
+sample.docx
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/repos/asf/!svn/ver/806959/poi/trunk/test-data/document/sample.docx
+END
+table_footnotes.docx
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/repos/asf/!svn/ver/814335/poi/trunk/test-data/document/table_footnotes.docx
+END
+52288.docx
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/repos/asf/!svn/ver/1210768/poi/trunk/test-data/document/52288.docx
+END
+SimpleHeadThreeColFoot.docx
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/repos/asf/!svn/ver/814335/poi/trunk/test-data/document/SimpleHeadThreeColFoot.docx
+END
+Bug44292.doc
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/repos/asf/!svn/ver/806959/poi/trunk/test-data/document/Bug44292.doc
+END
+innertable.doc
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/repos/asf/!svn/ver/1142867/poi/trunk/test-data/document/innertable.doc
+END
+DiffFirstPageHeadFoot.doc
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/repos/asf/!svn/ver/814335/poi/trunk/test-data/document/DiffFirstPageHeadFoot.doc
+END
+Bug47286.doc
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/repos/asf/!svn/ver/1144202/poi/trunk/test-data/document/Bug47286.doc
+END
+nature1.jpg
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/repos/asf/!svn/ver/1212745/poi/trunk/test-data/document/nature1.jpg
+END
+documentProperties.doc
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/repos/asf/!svn/ver/1143315/poi/trunk/test-data/document/documentProperties.doc
+END
+Bug49908.doc
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/repos/asf/!svn/ver/1022458/poi/trunk/test-data/document/Bug49908.doc
+END
+nature3.jpg
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/repos/asf/!svn/ver/1212745/poi/trunk/test-data/document/nature3.jpg
+END
+VariousPictures.docx
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/repos/asf/!svn/ver/953698/poi/trunk/test-data/document/VariousPictures.docx
+END
+abstract1.jpg
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/repos/asf/!svn/ver/1212745/poi/trunk/test-data/document/abstract1.jpg
+END
+abstract3.jpg
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/repos/asf/!svn/ver/1212745/poi/trunk/test-data/document/abstract3.jpg
+END
+issue_51265_2.docx
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/repos/asf/!svn/ver/1212745/poi/trunk/test-data/document/issue_51265_2.docx
+END

@@ -1,0 +1,6 @@
+Testsuite: org.apache.poi.ss.util.TestExpandedDouble
+Tests run: 3, Failures: 0, Errors: 0, Time elapsed: 0.004 sec
+
+Testcase: testNegative took 0 sec
+Testcase: testSubnormal took 0 sec
+Testcase: testRoundTripShifting took 0.003 sec

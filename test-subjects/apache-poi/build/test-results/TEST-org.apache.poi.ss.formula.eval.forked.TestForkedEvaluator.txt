@@ -1,0 +1,5 @@
+Testsuite: org.apache.poi.ss.formula.eval.forked.TestForkedEvaluator
+Tests run: 2, Failures: 0, Errors: 0, Time elapsed: 0.002 sec
+
+Testcase: testBasic took 0.002 sec
+Testcase: testMissingInputCell took 0 sec

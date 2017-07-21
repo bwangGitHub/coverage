@@ -1,0 +1,80 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN
+"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>
+org.apache.poi.ss.formula.udf.DefaultUDFFinder
+</title>
+<link href="prettify.css" type="text/css" rel="stylesheet" />
+<script type="text/javascript" src="prettify.js"></script>
+</head>
+<body onload="prettyPrint()">
+<h2>Javalanche report for class:<br/> org.apache.poi.ss.formula.udf.DefaultUDFFinder </h2><pre class="prettyprint" style="border: 1px solid #888;padding: 2px"><span class="nocode"><a name="1">  1: </a></span>/* ====================================================================
+<span class="nocode"><a name="2">  2: </a></span>   Licensed to the Apache Software Foundation (ASF) under one or more
+<span class="nocode"><a name="3">  3: </a></span>   contributor license agreements.  See the NOTICE file distributed with
+<span class="nocode"><a name="4">  4: </a></span>   this work for additional information regarding copyright ownership.
+<span class="nocode"><a name="5">  5: </a></span>   The ASF licenses this file to You under the Apache License, Version 2.0
+<span class="nocode"><a name="6">  6: </a></span>   (the &quot;License&quot;); you may not use this file except in compliance with
+<span class="nocode"><a name="7">  7: </a></span>   the License.  You may obtain a copy of the License at
+<span class="nocode"><a name="8">  8: </a></span>
+<span class="nocode"><a name="9">  9: </a></span>       http://www.apache.org/licenses/LICENSE-2.0
+<span class="nocode"><a name="10"> 10: </a></span>
+<span class="nocode"><a name="11"> 11: </a></span>   Unless required by applicable law or agreed to in writing, software
+<span class="nocode"><a name="12"> 12: </a></span>   distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+<span class="nocode"><a name="13"> 13: </a></span>   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+<span class="nocode"><a name="14"> 14: </a></span>   See the License for the specific language governing permissions and
+<span class="nocode"><a name="15"> 15: </a></span>   limitations under the License.
+<span class="nocode"><a name="16"> 16: </a></span>==================================================================== */
+<span class="nocode"><a name="17"> 17: </a></span>
+<span class="nocode"><a name="18"> 18: </a></span>package org.apache.poi.ss.formula.udf;
+<span class="nocode"><a name="19"> 19: </a></span>
+<span class="nocode"><a name="20"> 20: </a></span>import java.util.HashMap;
+<span class="nocode"><a name="21"> 21: </a></span>import java.util.Map;
+<span class="nocode"><a name="22"> 22: </a></span>
+<span class="nocode"><a name="23"> 23: </a></span>import org.apache.poi.ss.formula.functions.FreeRefFunction;
+<span class="nocode"><a name="24"> 24: </a></span>
+<span class="nocode"><a name="25"> 25: </a></span>/**
+<span class="nocode"><a name="26"> 26: </a></span> * Default UDF finder - for adding your own user defined functions.
+<span class="nocode"><a name="27"> 27: </a></span> *
+<span class="nocode"><a name="28"> 28: </a></span> * @author PUdalau
+<span class="nocode"><a name="29"> 29: </a></span> */
+<span class="nocode"><a name="30"> 30: </a></span>public final class DefaultUDFFinder implements UDFFinder {
+<span class="nocode"><a name="31"> 31: </a></span>	private final Map&lt;String, FreeRefFunction&gt; _functionsByName;
+<span class="nocode"><a name="32"> 32: </a></span>
+<span class="nocode"><a name="33"> 33: </a></span>	public DefaultUDFFinder(String[] functionNames, FreeRefFunction[] functionImpls) {
+<span class="nocode"><a name="34"> 34: </a></span>		int nFuncs = functionNames.length;
+<span class="nocode"><a name="35"> 35: </a></span>		if (functionImpls.length != nFuncs) {
+<span class="nocode"><a name="36"> 36: </a></span>			throw new IllegalArgumentException(
+<span class="nocode"><a name="37"> 37: </a></span>					&quot;Mismatch in number of function names and implementations&quot;);
+<span class="nocode"><a name="38"> 38: </a></span>		}
+<span class="nocode"><a name="39"> 39: </a></span>		HashMap&lt;String, FreeRefFunction&gt; m = new HashMap&lt;String, FreeRefFunction&gt;(nFuncs * 3 / 2);
+<span class="nocode"><a name="40"> 40: </a></span>		for (int i = 0; i &lt; functionImpls.length; i++) {
+<span class="nocode"><a name="41"> 41: </a></span>			m.put(functionNames[i].toUpperCase(), functionImpls[i]);
+<span class="nocode"><a name="42"> 42: </a></span>		}
+<span class="nocode"><a name="43"> 43: </a></span>		_functionsByName = m;
+<span class="nocode"><a name="44"> 44: </a></span>	}
+<span class="nocode"><a name="45"> 45: </a></span>
+<span class="nocode"><a name="46"> 46: </a></span>	public FreeRefFunction findFunction(String name) {
+<span class="nocode"><a name="47"> 47: </a></span>		return _functionsByName.get(name.toUpperCase());
+<span class="nocode"><a name="48"> 48: </a></span>	}
+<span class="nocode"><a name="49"> 49: </a></span>}
+</pre><table class="mutation_table" summary="Mutations">
+<tr><th>ID</th><th>Line</th><th>Type</th><th>Detected</th></tr><tr><td>70279</td><td><a href="#35">35</a></td><td>Negate jump condition (Replace IF_ICMPEQ with  IF_ICMPNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>70280</td><td><a href="#39">39</a></td><td>Replace a constant (Replace 3 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>70282</td><td><a href="#39">39</a></td><td>Replace a constant (Replace 3 with 4(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>70281</td><td><a href="#39">39</a></td><td>Replace a constant (Replace 3 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>70285</td><td><a href="#39">39(1)</a></td><td>Replace a constant (Replace 2 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>70284</td><td><a href="#39">39(1)</a></td><td>Replace a constant (Replace 2 with 3(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>70286</td><td><a href="#39">39(1)</a></td><td>Replace a constant (Replace 2 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>70283</td><td><a href="#39">39</a></td><td>Replace arithmetic operator (Replace IMUL with IADD)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>70287</td><td><a href="#39">39(1)</a></td><td>Replace arithmetic operator (Replace IDIV with IMUL)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>70288</td><td><a href="#40">40</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>70289</td><td><a href="#40">40</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>70290</td><td><a href="#40">40</a></td><td>Negate jump condition (Replace IF_ICMPGE with  IF_ICMPLT)</td><td><img src="detected.png"/></td></tr>
+<tr><td>70291</td><td><a href="#41">41</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>70292</td><td><a href="#41">41(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>70293</td><td><a href="#47">47</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>70294</td><td><a href="#47">47(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+</table>
+</body>
+</html>

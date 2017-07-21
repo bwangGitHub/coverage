@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/repos/asf/!svn/ver/1212745/poi/trunk/src/excelant/testcases/org/apache/poi/ss/examples/formula
+END
+ExcelAntUserDefinedFunctionTestHelper.java
+K 25
+svn:wc:ra_dav:version-url
+V 138
+/repos/asf/!svn/ver/1212745/poi/trunk/src/excelant/testcases/org/apache/poi/ss/examples/formula/ExcelAntUserDefinedFunctionTestHelper.java
+END
+TestExcelAntUserDefinedFunction.java
+K 25
+svn:wc:ra_dav:version-url
+V 132
+/repos/asf/!svn/ver/1212745/poi/trunk/src/excelant/testcases/org/apache/poi/ss/examples/formula/TestExcelAntUserDefinedFunction.java
+END
+CalculateMortgageFunction.java
+K 25
+svn:wc:ra_dav:version-url
+V 126
+/repos/asf/!svn/ver/1212745/poi/trunk/src/excelant/testcases/org/apache/poi/ss/examples/formula/CalculateMortgageFunction.java
+END

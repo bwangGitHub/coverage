@@ -1,0 +1,243 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN
+"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>
+org.jfree.chart.needle.PointerNeedle
+</title>
+<link href="prettify.css" type="text/css" rel="stylesheet" />
+<script type="text/javascript" src="prettify.js"></script>
+</head>
+<body onload="prettyPrint()">
+<h2>Javalanche report for class:<br/> org.jfree.chart.needle.PointerNeedle </h2><pre class="prettyprint" style="border: 1px solid #888;padding: 2px"><span class="nocode"><a name="1">  1: </a></span>/* ===========================================================
+<span class="nocode"><a name="2">  2: </a></span> * JFreeChart : a free chart library for the Java(tm) platform
+<span class="nocode"><a name="3">  3: </a></span> * ===========================================================
+<span class="nocode"><a name="4">  4: </a></span> *
+<span class="nocode"><a name="5">  5: </a></span> * (C) Copyright 2000-2007, by Object Refinery Limited and Contributors.
+<span class="nocode"><a name="6">  6: </a></span> *
+<span class="nocode"><a name="7">  7: </a></span> * Project Info:  http://www.jfree.org/jfreechart/index.html
+<span class="nocode"><a name="8">  8: </a></span> *
+<span class="nocode"><a name="9">  9: </a></span> * This library is free software; you can redistribute it and/or modify it 
+<span class="nocode"><a name="10"> 10: </a></span> * under the terms of the GNU Lesser General Public License as published by 
+<span class="nocode"><a name="11"> 11: </a></span> * the Free Software Foundation; either version 2.1 of the License, or 
+<span class="nocode"><a name="12"> 12: </a></span> * (at your option) any later version.
+<span class="nocode"><a name="13"> 13: </a></span> *
+<span class="nocode"><a name="14"> 14: </a></span> * This library is distributed in the hope that it will be useful, but 
+<span class="nocode"><a name="15"> 15: </a></span> * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY 
+<span class="nocode"><a name="16"> 16: </a></span> * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public 
+<span class="nocode"><a name="17"> 17: </a></span> * License for more details.
+<span class="nocode"><a name="18"> 18: </a></span> *
+<span class="nocode"><a name="19"> 19: </a></span> * You should have received a copy of the GNU Lesser General Public
+<span class="nocode"><a name="20"> 20: </a></span> * License along with this library; if not, write to the Free Software
+<span class="nocode"><a name="21"> 21: </a></span> * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, 
+<span class="nocode"><a name="22"> 22: </a></span> * USA.  
+<span class="nocode"><a name="23"> 23: </a></span> *
+<span class="nocode"><a name="24"> 24: </a></span> * [Java is a trademark or registered trademark of Sun Microsystems, Inc. 
+<span class="nocode"><a name="25"> 25: </a></span> * in the United States and other countries.]
+<span class="nocode"><a name="26"> 26: </a></span> *
+<span class="nocode"><a name="27"> 27: </a></span> * ------------------
+<span class="nocode"><a name="28"> 28: </a></span> * PointerNeedle.java
+<span class="nocode"><a name="29"> 29: </a></span> * ------------------
+<span class="nocode"><a name="30"> 30: </a></span> * (C) Copyright 2002-2007, by the Australian Antarctic Division and 
+<span class="nocode"><a name="31"> 31: </a></span> *                          Contributors.
+<span class="nocode"><a name="32"> 32: </a></span> *
+<span class="nocode"><a name="33"> 33: </a></span> * Original Author:  Bryan Scott (for the Australian Antarctic Division);
+<span class="nocode"><a name="34"> 34: </a></span> * Contributor(s):   David Gilbert (for Object Refinery Limited);
+<span class="nocode"><a name="35"> 35: </a></span> *
+<span class="nocode"><a name="36"> 36: </a></span> * Changes:
+<span class="nocode"><a name="37"> 37: </a></span> * --------
+<span class="nocode"><a name="38"> 38: </a></span> * 25-Sep-2002 : Version 1, contributed by Bryan Scott (DG);
+<span class="nocode"><a name="39"> 39: </a></span> * 26-Mar-2003 : Implemented Serializable (DG);
+<span class="nocode"><a name="40"> 40: </a></span> * 09-Sep-2003 : Added equals() method (DG);
+<span class="nocode"><a name="41"> 41: </a></span> * 08-Jun-2005 : Implemented Cloneable (DG);
+<span class="nocode"><a name="42"> 42: </a></span> * 22-Nov-2007 : Implemented hashCode() (DG);
+<span class="nocode"><a name="43"> 43: </a></span> *
+<span class="nocode"><a name="44"> 44: </a></span> */
+<span class="nocode"><a name="45"> 45: </a></span>
+<span class="nocode"><a name="46"> 46: </a></span>package org.jfree.chart.needle;
+<span class="nocode"><a name="47"> 47: </a></span>
+<span class="nocode"><a name="48"> 48: </a></span>import java.awt.Graphics2D;
+<span class="nocode"><a name="49"> 49: </a></span>import java.awt.geom.GeneralPath;
+<span class="nocode"><a name="50"> 50: </a></span>import java.awt.geom.Point2D;
+<span class="nocode"><a name="51"> 51: </a></span>import java.awt.geom.Rectangle2D;
+<span class="nocode"><a name="52"> 52: </a></span>import java.io.Serializable;
+<span class="nocode"><a name="53"> 53: </a></span>
+<span class="nocode"><a name="54"> 54: </a></span>/**
+<span class="nocode"><a name="55"> 55: </a></span> * A needle in the shape of a pointer, for use with the
+<span class="nocode"><a name="56"> 56: </a></span> * {@link org.jfree.chart.plot.CompassPlot} class.
+<span class="nocode"><a name="57"> 57: </a></span> */
+<span class="nocode"><a name="58"> 58: </a></span>public class PointerNeedle extends MeterNeedle 
+<span class="nocode"><a name="59"> 59: </a></span>                           implements Cloneable, Serializable {
+<span class="nocode"><a name="60"> 60: </a></span>
+<span class="nocode"><a name="61"> 61: </a></span>    /** For serialization. */
+<span class="nocode"><a name="62"> 62: </a></span>    private static final long serialVersionUID = -4744677345334729606L;
+<span class="nocode"><a name="63"> 63: </a></span>    
+<span class="nocode"><a name="64"> 64: </a></span>    /**
+<span class="nocode"><a name="65"> 65: </a></span>     * Draws the needle.
+<span class="nocode"><a name="66"> 66: </a></span>     *
+<span class="nocode"><a name="67"> 67: </a></span>     * @param g2  the graphics device.
+<span class="nocode"><a name="68"> 68: </a></span>     * @param plotArea  the plot area.
+<span class="nocode"><a name="69"> 69: </a></span>     * @param rotate  the rotation point.
+<span class="nocode"><a name="70"> 70: </a></span>     * @param angle  the angle.
+<span class="nocode"><a name="71"> 71: </a></span>     */
+<span class="nocode"><a name="72"> 72: </a></span>    protected void drawNeedle(Graphics2D g2, Rectangle2D plotArea, 
+<span class="nocode"><a name="73"> 73: </a></span>                              Point2D rotate, double angle) {
+<span class="nocode"><a name="74"> 74: </a></span>
+<span class="nocode"><a name="75"> 75: </a></span>        GeneralPath shape1 = new GeneralPath();
+<span class="nocode"><a name="76"> 76: </a></span>        GeneralPath shape2 = new GeneralPath();
+<span class="nocode"><a name="77"> 77: </a></span>        float minX = (float) plotArea.getMinX();
+<span class="nocode"><a name="78"> 78: </a></span>        float minY = (float) plotArea.getMinY();
+<span class="nocode"><a name="79"> 79: </a></span>        float maxX = (float) plotArea.getMaxX();
+<span class="nocode"><a name="80"> 80: </a></span>        float maxY = (float) plotArea.getMaxY();
+<span class="nocode"><a name="81"> 81: </a></span>        float midX = (float) (minX + (plotArea.getWidth() / 2));
+<span class="nocode"><a name="82"> 82: </a></span>        float midY = (float) (minY + (plotArea.getHeight() / 2));
+<span class="nocode"><a name="83"> 83: </a></span>
+<span class="nocode"><a name="84"> 84: </a></span>        shape1.moveTo(minX, midY);
+<span class="nocode"><a name="85"> 85: </a></span>        shape1.lineTo(midX, minY);
+<span class="nocode"><a name="86"> 86: </a></span>        shape1.lineTo(maxX, midY);
+<span class="nocode"><a name="87"> 87: </a></span>        shape1.closePath();
+<span class="nocode"><a name="88"> 88: </a></span>
+<span class="nocode"><a name="89"> 89: </a></span>        shape2.moveTo(minX, midY);
+<span class="nocode"><a name="90"> 90: </a></span>        shape2.lineTo(midX, maxY);
+<span class="nocode"><a name="91"> 91: </a></span>        shape2.lineTo(maxX, midY);
+<span class="nocode"><a name="92"> 92: </a></span>        shape2.closePath();
+<span class="nocode"><a name="93"> 93: </a></span>
+<span class="nocode"><a name="94"> 94: </a></span>        if ((rotate != null) &amp;&amp; (angle != 0)) {
+<span class="nocode"><a name="95"> 95: </a></span>            /// we have rotation huston, please spin me
+<span class="nocode"><a name="96"> 96: </a></span>            getTransform().setToRotation(angle, rotate.getX(), rotate.getY());
+<span class="nocode"><a name="97"> 97: </a></span>            shape1.transform(getTransform());
+<span class="nocode"><a name="98"> 98: </a></span>            shape2.transform(getTransform());
+<span class="nocode"><a name="99"> 99: </a></span>        }
+<span class="nocode"><a name="100">100: </a></span>
+<span class="nocode"><a name="101">101: </a></span>        if (getFillPaint() != null) {
+<span class="nocode"><a name="102">102: </a></span>            g2.setPaint(getFillPaint());
+<span class="nocode"><a name="103">103: </a></span>            g2.fill(shape1);
+<span class="nocode"><a name="104">104: </a></span>        }
+<span class="nocode"><a name="105">105: </a></span>
+<span class="nocode"><a name="106">106: </a></span>        if (getHighlightPaint() != null) {
+<span class="nocode"><a name="107">107: </a></span>            g2.setPaint(getHighlightPaint());
+<span class="nocode"><a name="108">108: </a></span>            g2.fill(shape2);
+<span class="nocode"><a name="109">109: </a></span>        }
+<span class="nocode"><a name="110">110: </a></span>
+<span class="nocode"><a name="111">111: </a></span>        if (getOutlinePaint() != null) {
+<span class="nocode"><a name="112">112: </a></span>            g2.setStroke(getOutlineStroke());
+<span class="nocode"><a name="113">113: </a></span>            g2.setPaint(getOutlinePaint());
+<span class="nocode"><a name="114">114: </a></span>            g2.draw(shape1);
+<span class="nocode"><a name="115">115: </a></span>            g2.draw(shape2);
+<span class="nocode"><a name="116">116: </a></span>        }
+<span class="nocode"><a name="117">117: </a></span>    }
+<span class="nocode"><a name="118">118: </a></span>
+<span class="nocode"><a name="119">119: </a></span>    /**
+<span class="nocode"><a name="120">120: </a></span>     * Tests another object for equality with this object.
+<span class="nocode"><a name="121">121: </a></span>     * 
+<span class="nocode"><a name="122">122: </a></span>     * @param obj  the object to test (&lt;code&gt;null&lt;/code&gt; permitted).
+<span class="nocode"><a name="123">123: </a></span>     * 
+<span class="nocode"><a name="124">124: </a></span>     * @return A boolean.
+<span class="nocode"><a name="125">125: </a></span>     */
+<span class="nocode"><a name="126">126: </a></span>    public boolean equals(Object obj) {
+<span class="nocode"><a name="127">127: </a></span>        if (obj == this) {
+<span class="nocode"><a name="128">128: </a></span>            return true;
+<span class="nocode"><a name="129">129: </a></span>        }
+<span class="nocode"><a name="130">130: </a></span>        if (!(obj instanceof PointerNeedle)) {
+<span class="nocode"><a name="131">131: </a></span>            return false;   
+<span class="nocode"><a name="132">132: </a></span>        }
+<span class="nocode"><a name="133">133: </a></span>        if (!super.equals(obj)) {
+<span class="nocode"><a name="134">134: </a></span>            return false;
+<span class="nocode"><a name="135">135: </a></span>        }
+<span class="nocode"><a name="136">136: </a></span>        return true;
+<span class="nocode"><a name="137">137: </a></span>    }
+<span class="nocode"><a name="138">138: </a></span>
+<span class="nocode"><a name="139">139: </a></span>    /**
+<span class="nocode"><a name="140">140: </a></span>     * Returns a hash code for this instance.
+<span class="nocode"><a name="141">141: </a></span>     * 
+<span class="nocode"><a name="142">142: </a></span>     * @return A hash code.
+<span class="nocode"><a name="143">143: </a></span>     */
+<span class="nocode"><a name="144">144: </a></span>    public int hashCode() {
+<span class="nocode"><a name="145">145: </a></span>        return super.hashCode();
+<span class="nocode"><a name="146">146: </a></span>    }
+<span class="nocode"><a name="147">147: </a></span>
+<span class="nocode"><a name="148">148: </a></span>    /**
+<span class="nocode"><a name="149">149: </a></span>     * Returns a clone of this needle.
+<span class="nocode"><a name="150">150: </a></span>     * 
+<span class="nocode"><a name="151">151: </a></span>     * @return A clone.
+<span class="nocode"><a name="152">152: </a></span>     * 
+<span class="nocode"><a name="153">153: </a></span>     * @throws CloneNotSupportedException if the &lt;code&gt;PointerNeedle&lt;/code&gt; 
+<span class="nocode"><a name="154">154: </a></span>     *     cannot be cloned (in theory, this should not happen).
+<span class="nocode"><a name="155">155: </a></span>     */
+<span class="nocode"><a name="156">156: </a></span>    public Object clone() throws CloneNotSupportedException {
+<span class="nocode"><a name="157">157: </a></span>        return super.clone();   
+<span class="nocode"><a name="158">158: </a></span>    }
+<span class="nocode"><a name="159">159: </a></span>
+<span class="nocode"><a name="160">160: </a></span>}
+</pre><table class="mutation_table" summary="Mutations">
+<tr><th>ID</th><th>Line</th><th>Type</th><th>Detected</th></tr><tr><td>24747</td><td><a href="#77">77</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>24748</td><td><a href="#78">78</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>24749</td><td><a href="#79">79</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>24750</td><td><a href="#80">80</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>24754</td><td><a href="#81">81</a></td><td>Replace a constant (Replace 2.0 with 1.0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>24752</td><td><a href="#81">81</a></td><td>Replace a constant (Replace 2.0 with 3.0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>24753</td><td><a href="#81">81</a></td><td>Replace a constant (Replace 2.0 with 0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>24755</td><td><a href="#81">81</a></td><td>Replace arithmetic operator (Replace DDIV with DMUL)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>24756</td><td><a href="#81">81(1)</a></td><td>Replace arithmetic operator (Replace DADD with DSUB)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>24751</td><td><a href="#81">81</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>24759</td><td><a href="#82">82</a></td><td>Replace a constant (Replace 2.0 with 0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>24758</td><td><a href="#82">82</a></td><td>Replace a constant (Replace 2.0 with 3.0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>24760</td><td><a href="#82">82</a></td><td>Replace a constant (Replace 2.0 with 1.0(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>24761</td><td><a href="#82">82</a></td><td>Replace arithmetic operator (Replace DDIV with DMUL)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>24762</td><td><a href="#82">82(1)</a></td><td>Replace arithmetic operator (Replace DADD with DSUB)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>24757</td><td><a href="#82">82</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>24763</td><td><a href="#84">84</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>24764</td><td><a href="#85">85</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>24765</td><td><a href="#86">86</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>24766</td><td><a href="#87">87</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>24767</td><td><a href="#89">89</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>24768</td><td><a href="#90">90</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>24769</td><td><a href="#91">91</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>24770</td><td><a href="#92">92</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>24773</td><td><a href="#94">94</a></td><td>Replace a constant (Replace 0 with -1(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>24772</td><td><a href="#94">94</a></td><td>Replace a constant (Replace 0 with 1(DOUBLE))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>24771</td><td><a href="#94">94</a></td><td>Negate jump condition (Replace IFNULL with  IFNONNULL)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>24774</td><td><a href="#94">94(1)</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>24775</td><td><a href="#96">96</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>24776</td><td><a href="#96">96(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>24777</td><td><a href="#96">96(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>24778</td><td><a href="#96">96(3)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>24779</td><td><a href="#97">97</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>24780</td><td><a href="#97">97(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>24781</td><td><a href="#98">98</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>24782</td><td><a href="#98">98(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>24784</td><td><a href="#101">101</a></td><td>Negate jump condition (Replace IFNULL with  IFNONNULL)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>24783</td><td><a href="#101">101</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>24785</td><td><a href="#102">102</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>24786</td><td><a href="#102">102(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>24787</td><td><a href="#103">103</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>24789</td><td><a href="#106">106</a></td><td>Negate jump condition (Replace IFNULL with  IFNONNULL)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>24788</td><td><a href="#106">106</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>24790</td><td><a href="#107">107</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>24791</td><td><a href="#107">107(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>24792</td><td><a href="#108">108</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>24794</td><td><a href="#111">111</a></td><td>Negate jump condition (Replace IFNULL with  IFNONNULL)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>24793</td><td><a href="#111">111</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>24795</td><td><a href="#112">112</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>24796</td><td><a href="#112">112(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>24797</td><td><a href="#113">113</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>24798</td><td><a href="#113">113(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>24799</td><td><a href="#114">114</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>24800</td><td><a href="#115">115</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>24801</td><td><a href="#127">127</a></td><td>Negate jump condition (Replace IF_ACMPNE with  IF_ACMPEQ)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>24803</td><td><a href="#128">128</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>24802</td><td><a href="#128">128</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>24804</td><td><a href="#130">130</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>24806</td><td><a href="#131">131</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>24805</td><td><a href="#131">131</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>24808</td><td><a href="#133">133</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>24807</td><td><a href="#133">133</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>24810</td><td><a href="#134">134</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>24809</td><td><a href="#134">134</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>24811</td><td><a href="#136">136</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>24812</td><td><a href="#136">136</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>24813</td><td><a href="#145">145</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>24814</td><td><a href="#157">157</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+</table>
+</body>
+</html>

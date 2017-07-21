@@ -1,0 +1,5 @@
+Testsuite: org.apache.poi.hssf.usermodel.TestBug42464
+Tests run: 2, Failures: 0, Errors: 0, Time elapsed: 0.155 sec
+
+Testcase: testOKFile took 0.088 sec
+Testcase: testExpSharedBadFile took 0.066 sec

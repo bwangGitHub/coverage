@@ -1,0 +1,527 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN
+"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>
+org.apache.poi.hssf.record.DVRecord
+</title>
+<link href="prettify.css" type="text/css" rel="stylesheet" />
+<script type="text/javascript" src="prettify.js"></script>
+</head>
+<body onload="prettyPrint()">
+<h2>Javalanche report for class:<br/> org.apache.poi.hssf.record.DVRecord </h2><pre class="prettyprint" style="border: 1px solid #888;padding: 2px"><span class="nocode"><a name="1">  1: </a></span>/* ====================================================================
+<span class="nocode"><a name="2">  2: </a></span>   Licensed to the Apache Software Foundation (ASF) under one or more
+<span class="nocode"><a name="3">  3: </a></span>   contributor license agreements.  See the NOTICE file distributed with
+<span class="nocode"><a name="4">  4: </a></span>   this work for additional information regarding copyright ownership.
+<span class="nocode"><a name="5">  5: </a></span>   The ASF licenses this file to You under the Apache License, Version 2.0
+<span class="nocode"><a name="6">  6: </a></span>   (the &quot;License&quot;); you may not use this file except in compliance with
+<span class="nocode"><a name="7">  7: </a></span>   the License.  You may obtain a copy of the License at
+<span class="nocode"><a name="8">  8: </a></span>
+<span class="nocode"><a name="9">  9: </a></span>       http://www.apache.org/licenses/LICENSE-2.0
+<span class="nocode"><a name="10"> 10: </a></span>
+<span class="nocode"><a name="11"> 11: </a></span>   Unless required by applicable law or agreed to in writing, software
+<span class="nocode"><a name="12"> 12: </a></span>   distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+<span class="nocode"><a name="13"> 13: </a></span>   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+<span class="nocode"><a name="14"> 14: </a></span>   See the License for the specific language governing permissions and
+<span class="nocode"><a name="15"> 15: </a></span>   limitations under the License.
+<span class="nocode"><a name="16"> 16: </a></span>==================================================================== */
+<span class="nocode"><a name="17"> 17: </a></span>
+<span class="nocode"><a name="18"> 18: </a></span>package org.apache.poi.hssf.record;
+<span class="nocode"><a name="19"> 19: </a></span>
+<span class="nocode"><a name="20"> 20: </a></span>import org.apache.poi.hssf.record.common.UnicodeString;
+<span class="nocode"><a name="21"> 21: </a></span>import org.apache.poi.ss.formula.ptg.Ptg;
+<span class="nocode"><a name="22"> 22: </a></span>import org.apache.poi.hssf.usermodel.HSSFDataValidation;
+<span class="nocode"><a name="23"> 23: </a></span>import org.apache.poi.ss.formula.Formula;
+<span class="nocode"><a name="24"> 24: </a></span>import org.apache.poi.ss.util.CellRangeAddress;
+<span class="nocode"><a name="25"> 25: </a></span>import org.apache.poi.ss.util.CellRangeAddressList;
+<span class="nocode"><a name="26"> 26: </a></span>import org.apache.poi.util.BitField;
+<span class="nocode"><a name="27"> 27: </a></span>import org.apache.poi.util.LittleEndianOutput;
+<span class="nocode"><a name="28"> 28: </a></span>import org.apache.poi.util.StringUtil;
+<span class="nocode"><a name="29"> 29: </a></span>
+<span class="nocode"><a name="30"> 30: </a></span>/**
+<span class="nocode"><a name="31"> 31: </a></span> * Title:        DATAVALIDATION Record (0x01BE)&lt;p/&gt;
+<span class="nocode"><a name="32"> 32: </a></span> * Description:  This record stores data validation settings and a list of cell ranges
+<span class="nocode"><a name="33"> 33: </a></span> *               which contain these settings. The data validation settings of a sheet
+<span class="nocode"><a name="34"> 34: </a></span> *               are stored in a sequential list of DV records. This list is followed by
+<span class="nocode"><a name="35"> 35: </a></span> *               DVAL record(s)
+<span class="nocode"><a name="36"> 36: </a></span> * @author Dragos Buleandra (dragos.buleandra@trade2b.ro)
+<span class="nocode"><a name="37"> 37: </a></span> * @author Josh Micich
+<span class="nocode"><a name="38"> 38: </a></span> */
+<span class="nocode"><a name="39"> 39: </a></span>public final class DVRecord extends StandardRecord {
+<span class="nocode"><a name="40"> 40: </a></span>	public final static short sid = 0x01BE;
+<span class="nocode"><a name="41"> 41: </a></span>	
+<span class="nocode"><a name="42"> 42: </a></span>	/** the unicode string used for error/prompt title/text when not present */
+<span class="nocode"><a name="43"> 43: </a></span>	private static final UnicodeString NULL_TEXT_STRING = new UnicodeString(&quot;\0&quot;);
+<span class="nocode"><a name="44"> 44: </a></span>
+<span class="nocode"><a name="45"> 45: </a></span>	/** Option flags */
+<span class="nocode"><a name="46"> 46: </a></span>	private int _option_flags;
+<span class="nocode"><a name="47"> 47: </a></span>	/** Title of the prompt box */
+<span class="nocode"><a name="48"> 48: </a></span>	private UnicodeString _promptTitle;
+<span class="nocode"><a name="49"> 49: </a></span>	/** Title of the error box */
+<span class="nocode"><a name="50"> 50: </a></span>	private UnicodeString _errorTitle;
+<span class="nocode"><a name="51"> 51: </a></span>	/** Text of the prompt box */
+<span class="nocode"><a name="52"> 52: </a></span>	private UnicodeString _promptText;
+<span class="nocode"><a name="53"> 53: </a></span>	/** Text of the error box */
+<span class="nocode"><a name="54"> 54: </a></span>	private UnicodeString _errorText;
+<span class="nocode"><a name="55"> 55: </a></span>	/** Not used - Excel seems to always write 0x3FE0 */
+<span class="nocode"><a name="56"> 56: </a></span>	private short _not_used_1 = 0x3FE0;
+<span class="nocode"><a name="57"> 57: </a></span>	/** Formula data for first condition (RPN token array without size field) */
+<span class="nocode"><a name="58"> 58: </a></span>	private Formula _formula1;
+<span class="nocode"><a name="59"> 59: </a></span>	/** Not used - Excel seems to always write 0x0000 */
+<span class="nocode"><a name="60"> 60: </a></span>	private short _not_used_2 = 0x0000;
+<span class="nocode"><a name="61"> 61: </a></span>	/** Formula data for second condition (RPN token array without size field) */
+<span class="nocode"><a name="62"> 62: </a></span>	private Formula _formula2;
+<span class="nocode"><a name="63"> 63: </a></span>	/** Cell range address list with all affected ranges */
+<span class="nocode"><a name="64"> 64: </a></span>	private CellRangeAddressList _regions;
+<span class="nocode"><a name="65"> 65: </a></span>
+<span class="nocode"><a name="66"> 66: </a></span>	/**
+<span class="nocode"><a name="67"> 67: </a></span>	 * Option flags field
+<span class="nocode"><a name="68"> 68: </a></span>	 * 
+<span class="nocode"><a name="69"> 69: </a></span>	 * @see HSSFDataValidation utility class
+<span class="nocode"><a name="70"> 70: </a></span>	 */
+<span class="nocode"><a name="71"> 71: </a></span>	private static final BitField opt_data_type                    = new BitField(0x0000000F);
+<span class="nocode"><a name="72"> 72: </a></span>	private static final BitField opt_error_style                  = new BitField(0x00000070);
+<span class="nocode"><a name="73"> 73: </a></span>	private static final BitField opt_string_list_formula          = new BitField(0x00000080);
+<span class="nocode"><a name="74"> 74: </a></span>	private static final BitField opt_empty_cell_allowed           = new BitField(0x00000100);
+<span class="nocode"><a name="75"> 75: </a></span>	private static final BitField opt_suppress_dropdown_arrow      = new BitField(0x00000200);
+<span class="nocode"><a name="76"> 76: </a></span>	private static final BitField opt_show_prompt_on_cell_selected = new BitField(0x00040000);
+<span class="nocode"><a name="77"> 77: </a></span>	private static final BitField opt_show_error_on_invalid_value  = new BitField(0x00080000);
+<span class="nocode"><a name="78"> 78: </a></span>	private static final BitField opt_condition_operator           = new BitField(0x00700000);
+<span class="nocode"><a name="79"> 79: </a></span>
+<span class="nocode"><a name="80"> 80: </a></span>	public DVRecord(int validationType, int operator, int errorStyle, boolean emptyCellAllowed,
+<span class="nocode"><a name="81"> 81: </a></span>			boolean suppressDropDownArrow, boolean isExplicitList,
+<span class="nocode"><a name="82"> 82: </a></span>			boolean showPromptBox, String promptTitle, String promptText, 
+<span class="nocode"><a name="83"> 83: </a></span>			boolean showErrorBox, String errorTitle, String errorText,
+<span class="nocode"><a name="84"> 84: </a></span>			Ptg[] formula1, Ptg[] formula2,
+<span class="nocode"><a name="85"> 85: </a></span>			CellRangeAddressList regions) {
+<span class="nocode"><a name="86"> 86: </a></span>		
+<span class="nocode"><a name="87"> 87: </a></span>		int flags = 0;
+<span class="nocode"><a name="88"> 88: </a></span>		flags = opt_data_type.setValue(flags, validationType);
+<span class="nocode"><a name="89"> 89: </a></span>		flags = opt_condition_operator.setValue(flags, operator);
+<span class="nocode"><a name="90"> 90: </a></span>		flags = opt_error_style.setValue(flags, errorStyle);
+<span class="nocode"><a name="91"> 91: </a></span>		flags = opt_empty_cell_allowed.setBoolean(flags, emptyCellAllowed);
+<span class="nocode"><a name="92"> 92: </a></span>		flags = opt_suppress_dropdown_arrow.setBoolean(flags, suppressDropDownArrow);
+<span class="nocode"><a name="93"> 93: </a></span>		flags = opt_string_list_formula.setBoolean(flags, isExplicitList);
+<span class="nocode"><a name="94"> 94: </a></span>		flags = opt_show_prompt_on_cell_selected.setBoolean(flags, showPromptBox);
+<span class="nocode"><a name="95"> 95: </a></span>		flags = opt_show_error_on_invalid_value.setBoolean(flags, showErrorBox);
+<span class="nocode"><a name="96"> 96: </a></span>		_option_flags = flags;
+<span class="nocode"><a name="97"> 97: </a></span>		_promptTitle = resolveTitleText(promptTitle);
+<span class="nocode"><a name="98"> 98: </a></span>		_promptText = resolveTitleText(promptText);
+<span class="nocode"><a name="99"> 99: </a></span>		_errorTitle = resolveTitleText(errorTitle);
+<span class="nocode"><a name="100">100: </a></span>		_errorText = resolveTitleText(errorText);
+<span class="nocode"><a name="101">101: </a></span>		_formula1 = Formula.create(formula1);
+<span class="nocode"><a name="102">102: </a></span>		_formula2 = Formula.create(formula2);
+<span class="nocode"><a name="103">103: </a></span>		_regions = regions;
+<span class="nocode"><a name="104">104: </a></span>	}
+<span class="nocode"><a name="105">105: </a></span>
+<span class="nocode"><a name="106">106: </a></span>	public DVRecord(RecordInputStream in) {
+<span class="nocode"><a name="107">107: </a></span>
+<span class="nocode"><a name="108">108: </a></span>		_option_flags = in.readInt();
+<span class="nocode"><a name="109">109: </a></span>
+<span class="nocode"><a name="110">110: </a></span>		_promptTitle = readUnicodeString(in);
+<span class="nocode"><a name="111">111: </a></span>		_errorTitle = readUnicodeString(in);
+<span class="nocode"><a name="112">112: </a></span>		_promptText = readUnicodeString(in);
+<span class="nocode"><a name="113">113: </a></span>		_errorText = readUnicodeString(in);
+<span class="nocode"><a name="114">114: </a></span>
+<span class="nocode"><a name="115">115: </a></span>		int field_size_first_formula = in.readUShort();
+<span class="nocode"><a name="116">116: </a></span>		_not_used_1 = in.readShort();
+<span class="nocode"><a name="117">117: </a></span>
+<span class="nocode"><a name="118">118: </a></span>		// &quot;You may not use unions, intersections or array constants in Data Validation criteria&quot;
+<span class="nocode"><a name="119">119: </a></span>
+<span class="nocode"><a name="120">120: </a></span>		// read first formula data condition
+<span class="nocode"><a name="121">121: </a></span>		_formula1 = Formula.read(field_size_first_formula, in);
+<span class="nocode"><a name="122">122: </a></span>
+<span class="nocode"><a name="123">123: </a></span>		int field_size_sec_formula = in.readUShort();
+<span class="nocode"><a name="124">124: </a></span>		_not_used_2 = in.readShort();
+<span class="nocode"><a name="125">125: </a></span>
+<span class="nocode"><a name="126">126: </a></span>		// read sec formula data condition
+<span class="nocode"><a name="127">127: </a></span>		_formula2 = Formula.read(field_size_sec_formula, in);
+<span class="nocode"><a name="128">128: </a></span>
+<span class="nocode"><a name="129">129: </a></span>		// read cell range address list with all affected ranges
+<span class="nocode"><a name="130">130: </a></span>		_regions = new CellRangeAddressList(in);
+<span class="nocode"><a name="131">131: </a></span>	}
+<span class="nocode"><a name="132">132: </a></span>
+<span class="nocode"><a name="133">133: </a></span>	// --&gt; start option flags
+<span class="nocode"><a name="134">134: </a></span>	/**
+<span class="nocode"><a name="135">135: </a></span>	 * @return the condition data type
+<span class="nocode"><a name="136">136: </a></span>	 * @see org.apache.poi.ss.usermodel.DataValidationConstraint.ValidationType
+<span class="nocode"><a name="137">137: </a></span>	 */
+<span class="nocode"><a name="138">138: </a></span>	public int getDataType() {
+<span class="nocode"><a name="139">139: </a></span>	   return opt_data_type.getValue(_option_flags);
+<span class="nocode"><a name="140">140: </a></span>	}
+<span class="nocode"><a name="141">141: </a></span>
+<span class="nocode"><a name="142">142: </a></span>	/**
+<span class="nocode"><a name="143">143: </a></span>	 * @return the condition error style
+<span class="nocode"><a name="144">144: </a></span>	 * @see org.apache.poi.ss.usermodel.DataValidation.ErrorStyle
+<span class="nocode"><a name="145">145: </a></span>	 */
+<span class="nocode"><a name="146">146: </a></span>	public int getErrorStyle() {
+<span class="nocode"><a name="147">147: </a></span>	   return opt_error_style.getValue(_option_flags);
+<span class="nocode"><a name="148">148: </a></span>	}
+<span class="nocode"><a name="149">149: </a></span>
+<span class="nocode"><a name="150">150: </a></span>	/**
+<span class="nocode"><a name="151">151: </a></span>	 * @return &lt;code&gt;true&lt;/code&gt; if in list validations the string list is explicitly given in the
+<span class="nocode"><a name="152">152: </a></span>	 *  formula, &lt;code&gt;false&lt;/code&gt; otherwise
+<span class="nocode"><a name="153">153: </a></span>	  */
+<span class="nocode"><a name="154">154: </a></span>	public boolean getListExplicitFormula() {
+<span class="nocode"><a name="155">155: </a></span>	   return (opt_string_list_formula.isSet(_option_flags));
+<span class="nocode"><a name="156">156: </a></span>	}
+<span class="nocode"><a name="157">157: </a></span>
+<span class="nocode"><a name="158">158: </a></span>	/**
+<span class="nocode"><a name="159">159: </a></span>	 * @return &lt;code&gt;true&lt;/code&gt; if empty values are allowed in cells, &lt;code&gt;false&lt;/code&gt; otherwise
+<span class="nocode"><a name="160">160: </a></span>	 */
+<span class="nocode"><a name="161">161: </a></span>	public boolean getEmptyCellAllowed() {
+<span class="nocode"><a name="162">162: </a></span>	   return (opt_empty_cell_allowed.isSet(_option_flags));
+<span class="nocode"><a name="163">163: </a></span>	}
+<span class="nocode"><a name="164">164: </a></span>
+<span class="nocode"><a name="165">165: </a></span>
+<span class="nocode"><a name="166">166: </a></span>	/**
+<span class="nocode"><a name="167">167: </a></span>	  * @return &lt;code&gt;true&lt;/code&gt; if drop down arrow should be suppressed when list validation is
+<span class="nocode"><a name="168">168: </a></span>	  * used, &lt;code&gt;false&lt;/code&gt; otherwise
+<span class="nocode"><a name="169">169: </a></span>	 */
+<span class="nocode"><a name="170">170: </a></span>	public boolean getSuppressDropdownArrow() {
+<span class="nocode"><a name="171">171: </a></span>	   return (opt_suppress_dropdown_arrow.isSet(_option_flags));
+<span class="nocode"><a name="172">172: </a></span>	}
+<span class="nocode"><a name="173">173: </a></span>
+<span class="nocode"><a name="174">174: </a></span>	/**
+<span class="nocode"><a name="175">175: </a></span>	 * @return &lt;code&gt;true&lt;/code&gt; if a prompt window should appear when cell is selected, &lt;code&gt;false&lt;/code&gt; otherwise
+<span class="nocode"><a name="176">176: </a></span>	 */
+<span class="nocode"><a name="177">177: </a></span>	public boolean getShowPromptOnCellSelected() {
+<span class="nocode"><a name="178">178: </a></span>	   return (opt_show_prompt_on_cell_selected.isSet(_option_flags));
+<span class="nocode"><a name="179">179: </a></span>	}
+<span class="nocode"><a name="180">180: </a></span>
+<span class="nocode"><a name="181">181: </a></span>	/**
+<span class="nocode"><a name="182">182: </a></span>	 * @return &lt;code&gt;true&lt;/code&gt; if an error window should appear when an invalid value is entered
+<span class="nocode"><a name="183">183: </a></span>	 *  in the cell, &lt;code&gt;false&lt;/code&gt; otherwise
+<span class="nocode"><a name="184">184: </a></span>	 */
+<span class="nocode"><a name="185">185: </a></span>	public boolean getShowErrorOnInvalidValue() {
+<span class="nocode"><a name="186">186: </a></span>	   return (opt_show_error_on_invalid_value.isSet(_option_flags));
+<span class="nocode"><a name="187">187: </a></span>	}
+<span class="nocode"><a name="188">188: </a></span>
+<span class="nocode"><a name="189">189: </a></span>	/**
+<span class="nocode"><a name="190">190: </a></span>	 * get the condition operator
+<span class="nocode"><a name="191">191: </a></span>	 * @return the condition operator
+<span class="nocode"><a name="192">192: </a></span>	 * @see HSSFDataValidation utility class
+<span class="nocode"><a name="193">193: </a></span>	 */
+<span class="nocode"><a name="194">194: </a></span>	public int getConditionOperator() {
+<span class="nocode"><a name="195">195: </a></span>	   return opt_condition_operator.getValue(_option_flags);
+<span class="nocode"><a name="196">196: </a></span>	}
+<span class="nocode"><a name="197">197: </a></span>	// &lt;-- end option flags
+<span class="nocode"><a name="198">198: </a></span>
+<span class="nocode"><a name="199">199: </a></span>
+<span class="nocode"><a name="200">200: </a></span>
+<span class="nocode"><a name="201">201: </a></span>
+<span class="nocode"><a name="202">202: </a></span>	public CellRangeAddressList getCellRangeAddress() {
+<span class="nocode"><a name="203">203: </a></span>		return this._regions;
+<span class="nocode"><a name="204">204: </a></span>	}
+<span class="nocode"><a name="205">205: </a></span>
+<span class="nocode"><a name="206">206: </a></span>
+<span class="nocode"><a name="207">207: </a></span>	public String toString() {
+<span class="nocode"><a name="208">208: </a></span>		StringBuffer sb = new StringBuffer();
+<span class="nocode"><a name="209">209: </a></span>		sb.append(&quot;[DV]\n&quot;);
+<span class="nocode"><a name="210">210: </a></span>		sb.append(&quot; options=&quot;).append(Integer.toHexString(_option_flags));
+<span class="nocode"><a name="211">211: </a></span>		sb.append(&quot; title-prompt=&quot;).append(formatTextTitle(_promptTitle));
+<span class="nocode"><a name="212">212: </a></span>		sb.append(&quot; title-error=&quot;).append(formatTextTitle(_errorTitle));
+<span class="nocode"><a name="213">213: </a></span>		sb.append(&quot; text-prompt=&quot;).append(formatTextTitle(_promptText));
+<span class="nocode"><a name="214">214: </a></span>		sb.append(&quot; text-error=&quot;).append(formatTextTitle(_errorText));
+<span class="nocode"><a name="215">215: </a></span>		sb.append(&quot;\n&quot;);
+<span class="nocode"><a name="216">216: </a></span>		appendFormula(sb, &quot;Formula 1:&quot;,  _formula1);
+<span class="nocode"><a name="217">217: </a></span>		appendFormula(sb, &quot;Formula 2:&quot;,  _formula2);
+<span class="nocode"><a name="218">218: </a></span>		sb.append(&quot;Regions: &quot;);
+<span class="nocode"><a name="219">219: </a></span>		int nRegions = _regions.countRanges();
+<span class="nocode"><a name="220">220: </a></span>		for(int i=0; i&lt;nRegions; i++) {
+<span class="nocode"><a name="221">221: </a></span>			if (i&gt;0) {
+<span class="nocode"><a name="222">222: </a></span>				sb.append(&quot;, &quot;);
+<span class="nocode"><a name="223">223: </a></span>			}
+<span class="nocode"><a name="224">224: </a></span>			CellRangeAddress addr = _regions.getCellRangeAddress(i);
+<span class="nocode"><a name="225">225: </a></span>			sb.append('(').append(addr.getFirstRow()).append(',').append(addr.getLastRow());
+<span class="nocode"><a name="226">226: </a></span>			sb.append(',').append(addr.getFirstColumn()).append(',').append(addr.getLastColumn()).append(')');
+<span class="nocode"><a name="227">227: </a></span>		}
+<span class="nocode"><a name="228">228: </a></span>		sb.append(&quot;\n&quot;);
+<span class="nocode"><a name="229">229: </a></span>		sb.append(&quot;[/DV]&quot;);
+<span class="nocode"><a name="230">230: </a></span>
+<span class="nocode"><a name="231">231: </a></span>		return sb.toString();
+<span class="nocode"><a name="232">232: </a></span>	}
+<span class="nocode"><a name="233">233: </a></span>
+<span class="nocode"><a name="234">234: </a></span>	private static String formatTextTitle(UnicodeString us) {
+<span class="nocode"><a name="235">235: </a></span>		String str = us.getString();
+<span class="nocode"><a name="236">236: </a></span>		if (str.length() == 1 &amp;&amp; str.charAt(0) == '\0') {
+<span class="nocode"><a name="237">237: </a></span>			return &quot;'\\0'&quot;;
+<span class="nocode"><a name="238">238: </a></span>		}
+<span class="nocode"><a name="239">239: </a></span>		return str;
+<span class="nocode"><a name="240">240: </a></span>	}
+<span class="nocode"><a name="241">241: </a></span>
+<span class="nocode"><a name="242">242: </a></span>	private static void appendFormula(StringBuffer sb, String label, Formula f) {
+<span class="nocode"><a name="243">243: </a></span>		sb.append(label);
+<span class="nocode"><a name="244">244: </a></span>		
+<span class="nocode"><a name="245">245: </a></span>		if (f == null) {
+<span class="nocode"><a name="246">246: </a></span>			sb.append(&quot;&lt;empty&gt;\n&quot;);
+<span class="nocode"><a name="247">247: </a></span>			return;
+<span class="nocode"><a name="248">248: </a></span>		}
+<span class="nocode"><a name="249">249: </a></span>		Ptg[] ptgs = f.getTokens();
+<span class="nocode"><a name="250">250: </a></span>		sb.append('\n');
+<span class="nocode"><a name="251">251: </a></span>		for (int i = 0; i &lt; ptgs.length; i++) {
+<span class="nocode"><a name="252">252: </a></span>			sb.append('\t').append(ptgs[i].toString()).append('\n');
+<span class="nocode"><a name="253">253: </a></span>		}
+<span class="nocode"><a name="254">254: </a></span>	}
+<span class="nocode"><a name="255">255: </a></span>
+<span class="nocode"><a name="256">256: </a></span>	public void serialize(LittleEndianOutput out) {
+<span class="nocode"><a name="257">257: </a></span>
+<span class="nocode"><a name="258">258: </a></span>		out.writeInt(_option_flags);
+<span class="nocode"><a name="259">259: </a></span>		
+<span class="nocode"><a name="260">260: </a></span>		serializeUnicodeString(_promptTitle, out);
+<span class="nocode"><a name="261">261: </a></span>		serializeUnicodeString(_errorTitle, out);
+<span class="nocode"><a name="262">262: </a></span>		serializeUnicodeString(_promptText, out);
+<span class="nocode"><a name="263">263: </a></span>		serializeUnicodeString(_errorText, out);
+<span class="nocode"><a name="264">264: </a></span>		out.writeShort(_formula1.getEncodedTokenSize());
+<span class="nocode"><a name="265">265: </a></span>		out.writeShort(_not_used_1);
+<span class="nocode"><a name="266">266: </a></span>		_formula1.serializeTokens(out);
+<span class="nocode"><a name="267">267: </a></span>		
+<span class="nocode"><a name="268">268: </a></span>		out.writeShort(_formula2.getEncodedTokenSize());
+<span class="nocode"><a name="269">269: </a></span>		out.writeShort(_not_used_2);
+<span class="nocode"><a name="270">270: </a></span>		_formula2.serializeTokens(out);
+<span class="nocode"><a name="271">271: </a></span>		
+<span class="nocode"><a name="272">272: </a></span>		_regions.serialize(out);
+<span class="nocode"><a name="273">273: </a></span>	}
+<span class="nocode"><a name="274">274: </a></span>
+<span class="nocode"><a name="275">275: </a></span>	/**
+<span class="nocode"><a name="276">276: </a></span>	 * When entered via the UI, Excel translates empty string into &quot;\0&quot;
+<span class="nocode"><a name="277">277: </a></span>	 * While it is possible to encode the title/text as empty string (Excel doesn't exactly crash),
+<span class="nocode"><a name="278">278: </a></span>	 * the resulting tool-tip text / message box looks wrong.  It is best to do the same as the 
+<span class="nocode"><a name="279">279: </a></span>	 * Excel UI and encode 'not present' as &quot;\0&quot;. 
+<span class="nocode"><a name="280">280: </a></span>	 */
+<span class="nocode"><a name="281">281: </a></span>	private static UnicodeString resolveTitleText(String str) {
+<span class="nocode"><a name="282">282: </a></span>		if (str == null || str.length() &lt; 1) {
+<span class="nocode"><a name="283">283: </a></span>			return NULL_TEXT_STRING;
+<span class="nocode"><a name="284">284: </a></span>		}
+<span class="nocode"><a name="285">285: </a></span>		return new UnicodeString(str);
+<span class="nocode"><a name="286">286: </a></span>	}
+<span class="nocode"><a name="287">287: </a></span>	
+<span class="nocode"><a name="288">288: </a></span>	private static UnicodeString readUnicodeString(RecordInputStream in) {
+<span class="nocode"><a name="289">289: </a></span>		return new UnicodeString(in);
+<span class="nocode"><a name="290">290: </a></span>	}
+<span class="nocode"><a name="291">291: </a></span>
+<span class="nocode"><a name="292">292: </a></span>	private static void serializeUnicodeString(UnicodeString us, LittleEndianOutput out) {
+<span class="nocode"><a name="293">293: </a></span>		StringUtil.writeUnicodeString(out, us.getString());
+<span class="nocode"><a name="294">294: </a></span>	}
+<span class="nocode"><a name="295">295: </a></span>	private static int getUnicodeStringSize(UnicodeString us) {
+<span class="nocode"><a name="296">296: </a></span>		String str = us.getString();
+<span class="nocode"><a name="297">297: </a></span>		return 3 + str.length() * (StringUtil.hasMultibyte(str) ? 2 : 1);
+<span class="nocode"><a name="298">298: </a></span>	}
+<span class="nocode"><a name="299">299: </a></span>
+<span class="nocode"><a name="300">300: </a></span>	protected int getDataSize() {
+<span class="nocode"><a name="301">301: </a></span>		int size = 4+2+2+2+2;//options_field+first_formula_size+first_unused+sec_formula_size+sec+unused;
+<span class="nocode"><a name="302">302: </a></span>		size += getUnicodeStringSize(_promptTitle);
+<span class="nocode"><a name="303">303: </a></span>		size += getUnicodeStringSize(_errorTitle);
+<span class="nocode"><a name="304">304: </a></span>		size += getUnicodeStringSize(_promptText);
+<span class="nocode"><a name="305">305: </a></span>		size += getUnicodeStringSize(_errorText);
+<span class="nocode"><a name="306">306: </a></span>		size += _formula1.getEncodedTokenSize();
+<span class="nocode"><a name="307">307: </a></span>		size += _formula2.getEncodedTokenSize();
+<span class="nocode"><a name="308">308: </a></span>		size += _regions.getSize();
+<span class="nocode"><a name="309">309: </a></span>		return size;
+<span class="nocode"><a name="310">310: </a></span>	}
+<span class="nocode"><a name="311">311: </a></span>
+<span class="nocode"><a name="312">312: </a></span>	public short getSid() {
+<span class="nocode"><a name="313">313: </a></span>		return sid;
+<span class="nocode"><a name="314">314: </a></span>	}
+<span class="nocode"><a name="315">315: </a></span>	
+<span class="nocode"><a name="316">316: </a></span>	/**
+<span class="nocode"><a name="317">317: </a></span>	 * Clones the object. Uses serialisation, as the
+<span class="nocode"><a name="318">318: </a></span>	 *  contents are somewhat complex
+<span class="nocode"><a name="319">319: </a></span>	 */
+<span class="nocode"><a name="320">320: </a></span>	public Object clone() {
+<span class="nocode"><a name="321">321: </a></span>		return cloneViaReserialise();
+<span class="nocode"><a name="322">322: </a></span>	}
+<span class="nocode"><a name="323">323: </a></span>}
+</pre><table class="mutation_table" summary="Mutations">
+<tr><th>ID</th><th>Line</th><th>Type</th><th>Detected</th></tr><tr><td>42864</td><td><a href="#56">56</a></td><td>Replace a constant (Replace 16352 with 16353(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>42865</td><td><a href="#56">56</a></td><td>Replace a constant (Replace 16352 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>42866</td><td><a href="#56">56</a></td><td>Replace a constant (Replace 16352 with 16351(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>42887</td><td><a href="#56">56(1)</a></td><td>Replace a constant (Replace 16352 with 16351(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>42886</td><td><a href="#56">56(1)</a></td><td>Replace a constant (Replace 16352 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>42885</td><td><a href="#56">56(1)</a></td><td>Replace a constant (Replace 16352 with 16353(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>42867</td><td><a href="#60">60</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>42868</td><td><a href="#60">60</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>42889</td><td><a href="#60">60(1)</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>42888</td><td><a href="#60">60(1)</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>42869</td><td><a href="#87">87</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>42870</td><td><a href="#87">87</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>42871</td><td><a href="#88">88</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>42872</td><td><a href="#89">89</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>42873</td><td><a href="#90">90</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>42874</td><td><a href="#91">91</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>42875</td><td><a href="#92">92</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>42876</td><td><a href="#93">93</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>42877</td><td><a href="#94">94</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>42878</td><td><a href="#95">95</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>42879</td><td><a href="#97">97</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>42880</td><td><a href="#98">98</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>42881</td><td><a href="#99">99</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>42882</td><td><a href="#100">100</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>42883</td><td><a href="#101">101</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>42884</td><td><a href="#102">102</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>42890</td><td><a href="#108">108</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>42891</td><td><a href="#110">110</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>42892</td><td><a href="#111">111</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>42893</td><td><a href="#112">112</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>42894</td><td><a href="#113">113</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>42895</td><td><a href="#115">115</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>42896</td><td><a href="#116">116</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>42897</td><td><a href="#121">121</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>42898</td><td><a href="#123">123</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>42899</td><td><a href="#124">124</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>42900</td><td><a href="#127">127</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>42901</td><td><a href="#139">139</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>42902</td><td><a href="#147">147</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>42903</td><td><a href="#155">155</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>42904</td><td><a href="#162">162</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>42905</td><td><a href="#171">171</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>42906</td><td><a href="#178">178</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>42907</td><td><a href="#186">186</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>42908</td><td><a href="#195">195</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>42909</td><td><a href="#209">209</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>42910</td><td><a href="#210">210</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>42911</td><td><a href="#210">210(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>42912</td><td><a href="#210">210(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>42913</td><td><a href="#211">211</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>42914</td><td><a href="#211">211(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>42915</td><td><a href="#211">211(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>42916</td><td><a href="#212">212</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>42917</td><td><a href="#212">212(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>42918</td><td><a href="#212">212(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>42919</td><td><a href="#213">213</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>42920</td><td><a href="#213">213(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>42921</td><td><a href="#213">213(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>42922</td><td><a href="#214">214</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>42923</td><td><a href="#214">214(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>42924</td><td><a href="#214">214(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>42925</td><td><a href="#215">215</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>42926</td><td><a href="#216">216</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>42927</td><td><a href="#217">217</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>42928</td><td><a href="#218">218</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>42929</td><td><a href="#219">219</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>42930</td><td><a href="#220">220</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>42931</td><td><a href="#220">220</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>42932</td><td><a href="#220">220</a></td><td>Negate jump condition (Replace IF_ICMPGE with  IF_ICMPLT)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>42933</td><td><a href="#221">221</a></td><td>Negate jump condition (Replace IFLE with  IFGT)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>42934</td><td><a href="#222">222</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>42935</td><td><a href="#224">224</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>42938</td><td><a href="#225">225</a></td><td>Replace a constant (Replace 40 with 39(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>42936</td><td><a href="#225">225</a></td><td>Replace a constant (Replace 40 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>42937</td><td><a href="#225">225</a></td><td>Replace a constant (Replace 40 with 41(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>42944</td><td><a href="#225">225(1)</a></td><td>Replace a constant (Replace 44 with 45(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>42943</td><td><a href="#225">225(1)</a></td><td>Replace a constant (Replace 44 with 43(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>42942</td><td><a href="#225">225(1)</a></td><td>Replace a constant (Replace 44 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>42939</td><td><a href="#225">225</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>42940</td><td><a href="#225">225(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>42941</td><td><a href="#225">225(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>42945</td><td><a href="#225">225(3)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>42946</td><td><a href="#225">225(4)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>42947</td><td><a href="#225">225(5)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>42949</td><td><a href="#226">226</a></td><td>Replace a constant (Replace 44 with 43(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>42948</td><td><a href="#226">226</a></td><td>Replace a constant (Replace 44 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>42950</td><td><a href="#226">226</a></td><td>Replace a constant (Replace 44 with 45(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>42954</td><td><a href="#226">226(1)</a></td><td>Replace a constant (Replace 44 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>42955</td><td><a href="#226">226(1)</a></td><td>Replace a constant (Replace 44 with 43(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>42956</td><td><a href="#226">226(1)</a></td><td>Replace a constant (Replace 44 with 45(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>42961</td><td><a href="#226">226(2)</a></td><td>Replace a constant (Replace 41 with 42(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>42962</td><td><a href="#226">226(2)</a></td><td>Replace a constant (Replace 41 with 40(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>42960</td><td><a href="#226">226(2)</a></td><td>Replace a constant (Replace 41 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>42951</td><td><a href="#226">226</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>42952</td><td><a href="#226">226(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>42953</td><td><a href="#226">226(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>42957</td><td><a href="#226">226(3)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>42958</td><td><a href="#226">226(4)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>42959</td><td><a href="#226">226(5)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>42963</td><td><a href="#226">226(6)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>42964</td><td><a href="#228">228</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>42965</td><td><a href="#229">229</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>42966</td><td><a href="#231">231</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>42967</td><td><a href="#235">235</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>42970</td><td><a href="#236">236</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>42969</td><td><a href="#236">236</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>42972</td><td><a href="#236">236(1)</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>42973</td><td><a href="#236">236(1)</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>42971</td><td><a href="#236">236</a></td><td>Negate jump condition (Replace IF_ICMPNE with  IF_ICMPEQ)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>42975</td><td><a href="#236">236(1)</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>42968</td><td><a href="#236">236</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>42974</td><td><a href="#236">236(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>42976</td><td><a href="#243">243</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>42977</td><td><a href="#245">245</a></td><td>Negate jump condition (Replace IFNONNULL with  IFNULL)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>42978</td><td><a href="#246">246</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>42979</td><td><a href="#249">249</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>42982</td><td><a href="#250">250</a></td><td>Replace a constant (Replace 10 with 11(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>42981</td><td><a href="#250">250</a></td><td>Replace a constant (Replace 10 with 9(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>42980</td><td><a href="#250">250</a></td><td>Replace a constant (Replace 10 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>42983</td><td><a href="#250">250</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>42985</td><td><a href="#251">251</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>42984</td><td><a href="#251">251</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>42986</td><td><a href="#251">251</a></td><td>Negate jump condition (Replace IF_ICMPGE with  IF_ICMPLT)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>42987</td><td><a href="#252">252</a></td><td>Replace a constant (Replace 9 with 10(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>42988</td><td><a href="#252">252</a></td><td>Replace a constant (Replace 9 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>42989</td><td><a href="#252">252</a></td><td>Replace a constant (Replace 9 with 8(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>42995</td><td><a href="#252">252(1)</a></td><td>Replace a constant (Replace 10 with 11(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>42993</td><td><a href="#252">252(1)</a></td><td>Replace a constant (Replace 10 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>42994</td><td><a href="#252">252(1)</a></td><td>Replace a constant (Replace 10 with 9(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>42990</td><td><a href="#252">252</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>42991</td><td><a href="#252">252(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>42992</td><td><a href="#252">252(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>42996</td><td><a href="#252">252(3)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>42997</td><td><a href="#258">258</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>42998</td><td><a href="#260">260</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>42999</td><td><a href="#261">261</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>43000</td><td><a href="#262">262</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>43001</td><td><a href="#263">263</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>43002</td><td><a href="#264">264</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>43003</td><td><a href="#264">264(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>43004</td><td><a href="#265">265</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>43005</td><td><a href="#266">266</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>43006</td><td><a href="#268">268</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>43007</td><td><a href="#268">268(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>43008</td><td><a href="#269">269</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>43009</td><td><a href="#270">270</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>43010</td><td><a href="#272">272</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>43013</td><td><a href="#282">282</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43014</td><td><a href="#282">282</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43011</td><td><a href="#282">282</a></td><td>Negate jump condition (Replace IFNULL with  IFNONNULL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>43015</td><td><a href="#282">282(1)</a></td><td>Negate jump condition (Replace IF_ICMPGE with  IF_ICMPLT)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43012</td><td><a href="#282">282</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43016</td><td><a href="#293">293</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>43017</td><td><a href="#293">293(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>43018</td><td><a href="#296">296</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>43020</td><td><a href="#297">297</a></td><td>Replace a constant (Replace 3 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>43021</td><td><a href="#297">297</a></td><td>Replace a constant (Replace 3 with 4(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>43019</td><td><a href="#297">297</a></td><td>Replace a constant (Replace 3 with 2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>43026</td><td><a href="#297">297(1)</a></td><td>Replace a constant (Replace 2 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43027</td><td><a href="#297">297(1)</a></td><td>Replace a constant (Replace 2 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43025</td><td><a href="#297">297(1)</a></td><td>Replace a constant (Replace 2 with 3(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43029</td><td><a href="#297">297(2)</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>43028</td><td><a href="#297">297(2)</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>43024</td><td><a href="#297">297</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>43030</td><td><a href="#297">297</a></td><td>Replace arithmetic operator (Replace IMUL with IADD)</td><td><img src="detected.png"/></td></tr>
+<tr><td>43031</td><td><a href="#297">297(1)</a></td><td>Replace arithmetic operator (Replace IADD with ISUB)</td><td><img src="detected.png"/></td></tr>
+<tr><td>43022</td><td><a href="#297">297</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>43023</td><td><a href="#297">297(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>43033</td><td><a href="#301">301</a></td><td>Replace a constant (Replace 12 with 13(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>43032</td><td><a href="#301">301</a></td><td>Replace a constant (Replace 12 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>43034</td><td><a href="#301">301</a></td><td>Replace a constant (Replace 12 with 11(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>43036</td><td><a href="#302">302</a></td><td>Replace arithmetic operator (Replace IADD with ISUB)</td><td><img src="detected.png"/></td></tr>
+<tr><td>43035</td><td><a href="#302">302</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>43038</td><td><a href="#303">303</a></td><td>Replace arithmetic operator (Replace IADD with ISUB)</td><td><img src="detected.png"/></td></tr>
+<tr><td>43037</td><td><a href="#303">303</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>43040</td><td><a href="#304">304</a></td><td>Replace arithmetic operator (Replace IADD with ISUB)</td><td><img src="detected.png"/></td></tr>
+<tr><td>43039</td><td><a href="#304">304</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>43042</td><td><a href="#305">305</a></td><td>Replace arithmetic operator (Replace IADD with ISUB)</td><td><img src="detected.png"/></td></tr>
+<tr><td>43041</td><td><a href="#305">305</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>43044</td><td><a href="#306">306</a></td><td>Replace arithmetic operator (Replace IADD with ISUB)</td><td><img src="detected.png"/></td></tr>
+<tr><td>43043</td><td><a href="#306">306</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>43046</td><td><a href="#307">307</a></td><td>Replace arithmetic operator (Replace IADD with ISUB)</td><td><img src="detected.png"/></td></tr>
+<tr><td>43045</td><td><a href="#307">307</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>43048</td><td><a href="#308">308</a></td><td>Replace arithmetic operator (Replace IADD with ISUB)</td><td><img src="detected.png"/></td></tr>
+<tr><td>43047</td><td><a href="#308">308</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>43050</td><td><a href="#313">313</a></td><td>Replace a constant (Replace 446 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>43049</td><td><a href="#313">313</a></td><td>Replace a constant (Replace 446 with 445(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>43051</td><td><a href="#313">313</a></td><td>Replace a constant (Replace 446 with 447(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>43052</td><td><a href="#321">321</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+</table>
+</body>
+</html>

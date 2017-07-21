@@ -1,0 +1,515 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN
+"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>
+org.apache.poi.hssf.usermodel.HSSFFontFormatting
+</title>
+<link href="prettify.css" type="text/css" rel="stylesheet" />
+<script type="text/javascript" src="prettify.js"></script>
+</head>
+<body onload="prettyPrint()">
+<h2>Javalanche report for class:<br/> org.apache.poi.hssf.usermodel.HSSFFontFormatting </h2><pre class="prettyprint" style="border: 1px solid #888;padding: 2px"><span class="nocode"><a name="1">  1: </a></span>/* ====================================================================
+<span class="nocode"><a name="2">  2: </a></span>   Licensed to the Apache Software Foundation (ASF) under one or more
+<span class="nocode"><a name="3">  3: </a></span>   contributor license agreements.  See the NOTICE file distributed with
+<span class="nocode"><a name="4">  4: </a></span>   this work for additional information regarding copyright ownership.
+<span class="nocode"><a name="5">  5: </a></span>   The ASF licenses this file to You under the Apache License, Version 2.0
+<span class="nocode"><a name="6">  6: </a></span>   (the &quot;License&quot;); you may not use this file except in compliance with
+<span class="nocode"><a name="7">  7: </a></span>   the License.  You may obtain a copy of the License at
+<span class="nocode"><a name="8">  8: </a></span>
+<span class="nocode"><a name="9">  9: </a></span>       http://www.apache.org/licenses/LICENSE-2.0
+<span class="nocode"><a name="10"> 10: </a></span>
+<span class="nocode"><a name="11"> 11: </a></span>   Unless required by applicable law or agreed to in writing, software
+<span class="nocode"><a name="12"> 12: </a></span>   distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+<span class="nocode"><a name="13"> 13: </a></span>   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+<span class="nocode"><a name="14"> 14: </a></span>   See the License for the specific language governing permissions and
+<span class="nocode"><a name="15"> 15: </a></span>   limitations under the License.
+<span class="nocode"><a name="16"> 16: </a></span>==================================================================== */
+<span class="nocode"><a name="17"> 17: </a></span>
+<span class="nocode"><a name="18"> 18: </a></span>package org.apache.poi.hssf.usermodel;
+<span class="nocode"><a name="19"> 19: </a></span>
+<span class="nocode"><a name="20"> 20: </a></span>import org.apache.poi.hssf.record.CFRuleRecord;
+<span class="nocode"><a name="21"> 21: </a></span>import org.apache.poi.hssf.record.cf.FontFormatting;
+<span class="nocode"><a name="22"> 22: </a></span>/**
+<span class="nocode"><a name="23"> 23: </a></span> * High level representation for Font Formatting component
+<span class="nocode"><a name="24"> 24: </a></span> * of Conditional Formatting settings
+<span class="nocode"><a name="25"> 25: </a></span> * 
+<span class="nocode"><a name="26"> 26: </a></span> * @author Dmitriy Kumshayev
+<span class="nocode"><a name="27"> 27: </a></span> *
+<span class="nocode"><a name="28"> 28: </a></span> */
+<span class="nocode"><a name="29"> 29: </a></span>public final class HSSFFontFormatting implements org.apache.poi.ss.usermodel.FontFormatting
+<span class="nocode"><a name="30"> 30: </a></span>{
+<span class="nocode"><a name="31"> 31: </a></span>
+<span class="nocode"><a name="32"> 32: </a></span>	/** Underline type - None */
+<span class="nocode"><a name="33"> 33: </a></span>	public final static byte U_NONE              = FontFormatting.U_NONE;
+<span class="nocode"><a name="34"> 34: </a></span>	/** Underline type - Single */
+<span class="nocode"><a name="35"> 35: </a></span>	public final static byte U_SINGLE            = FontFormatting.U_SINGLE;
+<span class="nocode"><a name="36"> 36: </a></span>	/** Underline type - Double */
+<span class="nocode"><a name="37"> 37: </a></span>	public final static byte U_DOUBLE            = FontFormatting.U_DOUBLE;
+<span class="nocode"><a name="38"> 38: </a></span>	/**  Underline type - Single Accounting */
+<span class="nocode"><a name="39"> 39: </a></span>	public final static byte U_SINGLE_ACCOUNTING = FontFormatting.U_SINGLE_ACCOUNTING;
+<span class="nocode"><a name="40"> 40: </a></span>	/** Underline type - Double Accounting */
+<span class="nocode"><a name="41"> 41: </a></span>	public final static byte U_DOUBLE_ACCOUNTING = FontFormatting.U_DOUBLE_ACCOUNTING;
+<span class="nocode"><a name="42"> 42: </a></span>
+<span class="nocode"><a name="43"> 43: </a></span>	private final FontFormatting fontFormatting;
+<span class="nocode"><a name="44"> 44: </a></span>	
+<span class="nocode"><a name="45"> 45: </a></span>	protected HSSFFontFormatting(CFRuleRecord cfRuleRecord)
+<span class="nocode"><a name="46"> 46: </a></span>	{
+<span class="nocode"><a name="47"> 47: </a></span>		this.fontFormatting = cfRuleRecord.getFontFormatting();
+<span class="nocode"><a name="48"> 48: </a></span>	}
+<span class="nocode"><a name="49"> 49: </a></span>	
+<span class="nocode"><a name="50"> 50: </a></span>	protected FontFormatting getFontFormattingBlock()
+<span class="nocode"><a name="51"> 51: </a></span>	{
+<span class="nocode"><a name="52"> 52: </a></span>		return fontFormatting;
+<span class="nocode"><a name="53"> 53: </a></span>	}
+<span class="nocode"><a name="54"> 54: </a></span>
+<span class="nocode"><a name="55"> 55: </a></span>	/**
+<span class="nocode"><a name="56"> 56: </a></span>	 * get the type of super or subscript for the font
+<span class="nocode"><a name="57"> 57: </a></span>	 *
+<span class="nocode"><a name="58"> 58: </a></span>	 * @return super or subscript option
+<span class="nocode"><a name="59"> 59: </a></span>	 * @see #SS_NONE
+<span class="nocode"><a name="60"> 60: </a></span>	 * @see #SS_SUPER
+<span class="nocode"><a name="61"> 61: </a></span>	 * @see #SS_SUB
+<span class="nocode"><a name="62"> 62: </a></span>	 */
+<span class="nocode"><a name="63"> 63: </a></span>	public short getEscapementType()
+<span class="nocode"><a name="64"> 64: </a></span>	{
+<span class="nocode"><a name="65"> 65: </a></span>		return fontFormatting.getEscapementType();
+<span class="nocode"><a name="66"> 66: </a></span>	}
+<span class="nocode"><a name="67"> 67: </a></span>
+<span class="nocode"><a name="68"> 68: </a></span>	/**
+<span class="nocode"><a name="69"> 69: </a></span>	 * @return font color index
+<span class="nocode"><a name="70"> 70: </a></span>	 */
+<span class="nocode"><a name="71"> 71: </a></span>	public short getFontColorIndex()
+<span class="nocode"><a name="72"> 72: </a></span>	{
+<span class="nocode"><a name="73"> 73: </a></span>		return fontFormatting.getFontColorIndex();
+<span class="nocode"><a name="74"> 74: </a></span>	}
+<span class="nocode"><a name="75"> 75: </a></span>
+<span class="nocode"><a name="76"> 76: </a></span>	/**
+<span class="nocode"><a name="77"> 77: </a></span>	 * gets the height of the font in 1/20th point units
+<span class="nocode"><a name="78"> 78: </a></span>	 *
+<span class="nocode"><a name="79"> 79: </a></span>	 * @return fontheight (in points/20); or -1 if not modified
+<span class="nocode"><a name="80"> 80: </a></span>	 */
+<span class="nocode"><a name="81"> 81: </a></span>	public int getFontHeight()
+<span class="nocode"><a name="82"> 82: </a></span>	{
+<span class="nocode"><a name="83"> 83: </a></span>		return fontFormatting.getFontHeight();
+<span class="nocode"><a name="84"> 84: </a></span>	}
+<span class="nocode"><a name="85"> 85: </a></span>
+<span class="nocode"><a name="86"> 86: </a></span>	/**
+<span class="nocode"><a name="87"> 87: </a></span>	 * get the font weight for this font (100-1000dec or 0x64-0x3e8).  Default is
+<span class="nocode"><a name="88"> 88: </a></span>	 * 0x190 for normal and 0x2bc for bold
+<span class="nocode"><a name="89"> 89: </a></span>	 *
+<span class="nocode"><a name="90"> 90: </a></span>	 * @return bw - a number between 100-1000 for the fonts &quot;boldness&quot;
+<span class="nocode"><a name="91"> 91: </a></span>	 */
+<span class="nocode"><a name="92"> 92: </a></span>
+<span class="nocode"><a name="93"> 93: </a></span>	public short getFontWeight()
+<span class="nocode"><a name="94"> 94: </a></span>	{
+<span class="nocode"><a name="95"> 95: </a></span>		return fontFormatting.getFontWeight();
+<span class="nocode"><a name="96"> 96: </a></span>	}
+<span class="nocode"><a name="97"> 97: </a></span>
+<span class="nocode"><a name="98"> 98: </a></span>	/**
+<span class="nocode"><a name="99"> 99: </a></span>	 * @see org.apache.poi.hssf.record.cf.FontFormatting#getRawRecord()
+<span class="nocode"><a name="100">100: </a></span>	 */
+<span class="nocode"><a name="101">101: </a></span>	protected byte[] getRawRecord()
+<span class="nocode"><a name="102">102: </a></span>	{
+<span class="nocode"><a name="103">103: </a></span>		return fontFormatting.getRawRecord();
+<span class="nocode"><a name="104">104: </a></span>	}
+<span class="nocode"><a name="105">105: </a></span>
+<span class="nocode"><a name="106">106: </a></span>	/**
+<span class="nocode"><a name="107">107: </a></span>	 * get the type of underlining for the font
+<span class="nocode"><a name="108">108: </a></span>	 *
+<span class="nocode"><a name="109">109: </a></span>	 * @return font underlining type
+<span class="nocode"><a name="110">110: </a></span>	 *
+<span class="nocode"><a name="111">111: </a></span>	 * @see #U_NONE
+<span class="nocode"><a name="112">112: </a></span>	 * @see #U_SINGLE
+<span class="nocode"><a name="113">113: </a></span>	 * @see #U_DOUBLE
+<span class="nocode"><a name="114">114: </a></span>	 * @see #U_SINGLE_ACCOUNTING
+<span class="nocode"><a name="115">115: </a></span>	 * @see #U_DOUBLE_ACCOUNTING
+<span class="nocode"><a name="116">116: </a></span>	 */
+<span class="nocode"><a name="117">117: </a></span>	public short getUnderlineType()
+<span class="nocode"><a name="118">118: </a></span>	{
+<span class="nocode"><a name="119">119: </a></span>		return fontFormatting.getUnderlineType();
+<span class="nocode"><a name="120">120: </a></span>	}
+<span class="nocode"><a name="121">121: </a></span>
+<span class="nocode"><a name="122">122: </a></span>	/**
+<span class="nocode"><a name="123">123: </a></span>	 * get whether the font weight is set to bold or not
+<span class="nocode"><a name="124">124: </a></span>	 *
+<span class="nocode"><a name="125">125: </a></span>	 * @return bold - whether the font is bold or not
+<span class="nocode"><a name="126">126: </a></span>	 */
+<span class="nocode"><a name="127">127: </a></span>	public boolean isBold()
+<span class="nocode"><a name="128">128: </a></span>	{
+<span class="nocode"><a name="129">129: </a></span>		return fontFormatting.isFontWeightModified() &amp;&amp; fontFormatting.isBold();
+<span class="nocode"><a name="130">130: </a></span>	}
+<span class="nocode"><a name="131">131: </a></span>
+<span class="nocode"><a name="132">132: </a></span>	/**
+<span class="nocode"><a name="133">133: </a></span>	 * @return true if escapement type was modified from default   
+<span class="nocode"><a name="134">134: </a></span>	 */
+<span class="nocode"><a name="135">135: </a></span>	public boolean isEscapementTypeModified()
+<span class="nocode"><a name="136">136: </a></span>	{
+<span class="nocode"><a name="137">137: </a></span>		return fontFormatting.isEscapementTypeModified();
+<span class="nocode"><a name="138">138: </a></span>	}
+<span class="nocode"><a name="139">139: </a></span>
+<span class="nocode"><a name="140">140: </a></span>	/**
+<span class="nocode"><a name="141">141: </a></span>	 * @return true if font cancellation was modified from default   
+<span class="nocode"><a name="142">142: </a></span>	 */
+<span class="nocode"><a name="143">143: </a></span>	public boolean isFontCancellationModified()
+<span class="nocode"><a name="144">144: </a></span>	{
+<span class="nocode"><a name="145">145: </a></span>		return fontFormatting.isFontCancellationModified();
+<span class="nocode"><a name="146">146: </a></span>	}
+<span class="nocode"><a name="147">147: </a></span>
+<span class="nocode"><a name="148">148: </a></span>	/**
+<span class="nocode"><a name="149">149: </a></span>	 * @return true if font outline type was modified from default   
+<span class="nocode"><a name="150">150: </a></span>	 */
+<span class="nocode"><a name="151">151: </a></span>	public boolean isFontOutlineModified()
+<span class="nocode"><a name="152">152: </a></span>	{
+<span class="nocode"><a name="153">153: </a></span>		return fontFormatting.isFontOutlineModified();
+<span class="nocode"><a name="154">154: </a></span>	}
+<span class="nocode"><a name="155">155: </a></span>
+<span class="nocode"><a name="156">156: </a></span>	/**
+<span class="nocode"><a name="157">157: </a></span>	 * @return true if font shadow type was modified from default   
+<span class="nocode"><a name="158">158: </a></span>	 */
+<span class="nocode"><a name="159">159: </a></span>	public boolean isFontShadowModified()
+<span class="nocode"><a name="160">160: </a></span>	{
+<span class="nocode"><a name="161">161: </a></span>		return fontFormatting.isFontShadowModified();
+<span class="nocode"><a name="162">162: </a></span>	}
+<span class="nocode"><a name="163">163: </a></span>
+<span class="nocode"><a name="164">164: </a></span>	/**
+<span class="nocode"><a name="165">165: </a></span>	 * @return true if font style was modified from default   
+<span class="nocode"><a name="166">166: </a></span>	 */
+<span class="nocode"><a name="167">167: </a></span>	public boolean isFontStyleModified()
+<span class="nocode"><a name="168">168: </a></span>	{
+<span class="nocode"><a name="169">169: </a></span>		return fontFormatting.isFontStyleModified();
+<span class="nocode"><a name="170">170: </a></span>	}
+<span class="nocode"><a name="171">171: </a></span>
+<span class="nocode"><a name="172">172: </a></span>	/**
+<span class="nocode"><a name="173">173: </a></span>	 * @return true if font style was set to &lt;i&gt;italic&lt;/i&gt; 
+<span class="nocode"><a name="174">174: </a></span>	 */
+<span class="nocode"><a name="175">175: </a></span>	public boolean isItalic()
+<span class="nocode"><a name="176">176: </a></span>	{
+<span class="nocode"><a name="177">177: </a></span>		return fontFormatting.isFontStyleModified() &amp;&amp; fontFormatting.isItalic();
+<span class="nocode"><a name="178">178: </a></span>	}
+<span class="nocode"><a name="179">179: </a></span>
+<span class="nocode"><a name="180">180: </a></span>	/**
+<span class="nocode"><a name="181">181: </a></span>	 * @return true if font outline is on
+<span class="nocode"><a name="182">182: </a></span>	 */
+<span class="nocode"><a name="183">183: </a></span>	public boolean isOutlineOn()
+<span class="nocode"><a name="184">184: </a></span>	{
+<span class="nocode"><a name="185">185: </a></span>		return fontFormatting.isFontOutlineModified() &amp;&amp; fontFormatting.isOutlineOn();
+<span class="nocode"><a name="186">186: </a></span>	}
+<span class="nocode"><a name="187">187: </a></span>
+<span class="nocode"><a name="188">188: </a></span>	/**
+<span class="nocode"><a name="189">189: </a></span>	 * @return true if font shadow is on
+<span class="nocode"><a name="190">190: </a></span>	 */
+<span class="nocode"><a name="191">191: </a></span>	public boolean isShadowOn()
+<span class="nocode"><a name="192">192: </a></span>	{
+<span class="nocode"><a name="193">193: </a></span>		return fontFormatting.isFontOutlineModified() &amp;&amp; fontFormatting.isShadowOn();
+<span class="nocode"><a name="194">194: </a></span>	}
+<span class="nocode"><a name="195">195: </a></span>
+<span class="nocode"><a name="196">196: </a></span>	/**
+<span class="nocode"><a name="197">197: </a></span>	 * @return true if font strikeout is on
+<span class="nocode"><a name="198">198: </a></span>	 */
+<span class="nocode"><a name="199">199: </a></span>	public boolean isStruckout()
+<span class="nocode"><a name="200">200: </a></span>	{
+<span class="nocode"><a name="201">201: </a></span>		return fontFormatting.isFontCancellationModified() &amp;&amp; fontFormatting.isStruckout();
+<span class="nocode"><a name="202">202: </a></span>	}
+<span class="nocode"><a name="203">203: </a></span>
+<span class="nocode"><a name="204">204: </a></span>	/**
+<span class="nocode"><a name="205">205: </a></span>	 * @return true if font underline type was modified from default   
+<span class="nocode"><a name="206">206: </a></span>	 */
+<span class="nocode"><a name="207">207: </a></span>	public boolean isUnderlineTypeModified()
+<span class="nocode"><a name="208">208: </a></span>	{
+<span class="nocode"><a name="209">209: </a></span>		return fontFormatting.isUnderlineTypeModified();
+<span class="nocode"><a name="210">210: </a></span>	}
+<span class="nocode"><a name="211">211: </a></span>
+<span class="nocode"><a name="212">212: </a></span>	/**
+<span class="nocode"><a name="213">213: </a></span>	 * @return true if font weight was modified from default   
+<span class="nocode"><a name="214">214: </a></span>	 */
+<span class="nocode"><a name="215">215: </a></span>	public boolean isFontWeightModified()
+<span class="nocode"><a name="216">216: </a></span>	{
+<span class="nocode"><a name="217">217: </a></span>		return fontFormatting.isFontWeightModified();
+<span class="nocode"><a name="218">218: </a></span>	}
+<span class="nocode"><a name="219">219: </a></span>
+<span class="nocode"><a name="220">220: </a></span>	/**
+<span class="nocode"><a name="221">221: </a></span>	 * set font style options.
+<span class="nocode"><a name="222">222: </a></span>	 * 
+<span class="nocode"><a name="223">223: </a></span>	 * @param italic - if true, set posture style to italic, otherwise to normal 
+<span class="nocode"><a name="224">224: </a></span>	 * @param bold if true, set font weight to bold, otherwise to normal
+<span class="nocode"><a name="225">225: </a></span>	 */
+<span class="nocode"><a name="226">226: </a></span>	
+<span class="nocode"><a name="227">227: </a></span>	public void setFontStyle(boolean italic, boolean bold)
+<span class="nocode"><a name="228">228: </a></span>	{
+<span class="nocode"><a name="229">229: </a></span>		boolean modified = italic || bold;
+<span class="nocode"><a name="230">230: </a></span>		fontFormatting.setItalic(italic);
+<span class="nocode"><a name="231">231: </a></span>		fontFormatting.setBold(bold);
+<span class="nocode"><a name="232">232: </a></span>		fontFormatting.setFontStyleModified(modified);
+<span class="nocode"><a name="233">233: </a></span>		fontFormatting.setFontWieghtModified(modified);
+<span class="nocode"><a name="234">234: </a></span>	}
+<span class="nocode"><a name="235">235: </a></span>
+<span class="nocode"><a name="236">236: </a></span>	/**
+<span class="nocode"><a name="237">237: </a></span>	 * set font style options to default values (non-italic, non-bold)
+<span class="nocode"><a name="238">238: </a></span>	 */
+<span class="nocode"><a name="239">239: </a></span>	public void resetFontStyle()
+<span class="nocode"><a name="240">240: </a></span>	{
+<span class="nocode"><a name="241">241: </a></span>		setFontStyle(false,false);
+<span class="nocode"><a name="242">242: </a></span>	}
+<span class="nocode"><a name="243">243: </a></span>
+<span class="nocode"><a name="244">244: </a></span>	/**
+<span class="nocode"><a name="245">245: </a></span>	 * set the escapement type for the font
+<span class="nocode"><a name="246">246: </a></span>	 *
+<span class="nocode"><a name="247">247: </a></span>	 * @param escapementType  super or subscript option
+<span class="nocode"><a name="248">248: </a></span>	 * @see #SS_NONE
+<span class="nocode"><a name="249">249: </a></span>	 * @see #SS_SUPER
+<span class="nocode"><a name="250">250: </a></span>	 * @see #SS_SUB
+<span class="nocode"><a name="251">251: </a></span>	 */
+<span class="nocode"><a name="252">252: </a></span>	public void setEscapementType(short escapementType)
+<span class="nocode"><a name="253">253: </a></span>	{
+<span class="nocode"><a name="254">254: </a></span>		switch(escapementType)
+<span class="nocode"><a name="255">255: </a></span>		{
+<span class="nocode"><a name="256">256: </a></span>			case HSSFFontFormatting.SS_SUB:
+<span class="nocode"><a name="257">257: </a></span>			case HSSFFontFormatting.SS_SUPER:
+<span class="nocode"><a name="258">258: </a></span>				fontFormatting.setEscapementType(escapementType);
+<span class="nocode"><a name="259">259: </a></span>				fontFormatting.setEscapementTypeModified(true);
+<span class="nocode"><a name="260">260: </a></span>				break;
+<span class="nocode"><a name="261">261: </a></span>			case HSSFFontFormatting.SS_NONE:
+<span class="nocode"><a name="262">262: </a></span>				fontFormatting.setEscapementType(escapementType);
+<span class="nocode"><a name="263">263: </a></span>				fontFormatting.setEscapementTypeModified(false);
+<span class="nocode"><a name="264">264: </a></span>				break;
+<span class="nocode"><a name="265">265: </a></span>			default:
+<span class="nocode"><a name="266">266: </a></span>		}
+<span class="nocode"><a name="267">267: </a></span>	}
+<span class="nocode"><a name="268">268: </a></span>
+<span class="nocode"><a name="269">269: </a></span>	/**
+<span class="nocode"><a name="270">270: </a></span>	 * @param modified
+<span class="nocode"><a name="271">271: </a></span>	 * @see org.apache.poi.hssf.record.cf.FontFormatting#setEscapementTypeModified(boolean)
+<span class="nocode"><a name="272">272: </a></span>	 */
+<span class="nocode"><a name="273">273: </a></span>	public void setEscapementTypeModified(boolean modified)
+<span class="nocode"><a name="274">274: </a></span>	{
+<span class="nocode"><a name="275">275: </a></span>		fontFormatting.setEscapementTypeModified(modified);
+<span class="nocode"><a name="276">276: </a></span>	}
+<span class="nocode"><a name="277">277: </a></span>
+<span class="nocode"><a name="278">278: </a></span>	/**
+<span class="nocode"><a name="279">279: </a></span>	 * @param modified
+<span class="nocode"><a name="280">280: </a></span>	 * @see org.apache.poi.hssf.record.cf.FontFormatting#setFontCancellationModified(boolean)
+<span class="nocode"><a name="281">281: </a></span>	 */
+<span class="nocode"><a name="282">282: </a></span>	public void setFontCancellationModified(boolean modified)
+<span class="nocode"><a name="283">283: </a></span>	{
+<span class="nocode"><a name="284">284: </a></span>		fontFormatting.setFontCancellationModified(modified);
+<span class="nocode"><a name="285">285: </a></span>	}
+<span class="nocode"><a name="286">286: </a></span>
+<span class="nocode"><a name="287">287: </a></span>	/**
+<span class="nocode"><a name="288">288: </a></span>	 * @param fci
+<span class="nocode"><a name="289">289: </a></span>	 * @see org.apache.poi.hssf.record.cf.FontFormatting#setFontColorIndex(short)
+<span class="nocode"><a name="290">290: </a></span>	 */
+<span class="nocode"><a name="291">291: </a></span>	public void setFontColorIndex(short fci)
+<span class="nocode"><a name="292">292: </a></span>	{
+<span class="nocode"><a name="293">293: </a></span>		fontFormatting.setFontColorIndex(fci);
+<span class="nocode"><a name="294">294: </a></span>	}
+<span class="nocode"><a name="295">295: </a></span>
+<span class="nocode"><a name="296">296: </a></span>	/**
+<span class="nocode"><a name="297">297: </a></span>	 * @param height
+<span class="nocode"><a name="298">298: </a></span>	 * @see org.apache.poi.hssf.record.cf.FontFormatting#setFontHeight(int)
+<span class="nocode"><a name="299">299: </a></span>	 */
+<span class="nocode"><a name="300">300: </a></span>	public void setFontHeight(int height)
+<span class="nocode"><a name="301">301: </a></span>	{
+<span class="nocode"><a name="302">302: </a></span>		fontFormatting.setFontHeight(height);
+<span class="nocode"><a name="303">303: </a></span>	}
+<span class="nocode"><a name="304">304: </a></span>
+<span class="nocode"><a name="305">305: </a></span>	/**
+<span class="nocode"><a name="306">306: </a></span>	 * @param modified
+<span class="nocode"><a name="307">307: </a></span>	 * @see org.apache.poi.hssf.record.cf.FontFormatting#setFontOutlineModified(boolean)
+<span class="nocode"><a name="308">308: </a></span>	 */
+<span class="nocode"><a name="309">309: </a></span>	public void setFontOutlineModified(boolean modified)
+<span class="nocode"><a name="310">310: </a></span>	{
+<span class="nocode"><a name="311">311: </a></span>		fontFormatting.setFontOutlineModified(modified);
+<span class="nocode"><a name="312">312: </a></span>	}
+<span class="nocode"><a name="313">313: </a></span>
+<span class="nocode"><a name="314">314: </a></span>	/**
+<span class="nocode"><a name="315">315: </a></span>	 * @param modified
+<span class="nocode"><a name="316">316: </a></span>	 * @see org.apache.poi.hssf.record.cf.FontFormatting#setFontShadowModified(boolean)
+<span class="nocode"><a name="317">317: </a></span>	 */
+<span class="nocode"><a name="318">318: </a></span>	public void setFontShadowModified(boolean modified)
+<span class="nocode"><a name="319">319: </a></span>	{
+<span class="nocode"><a name="320">320: </a></span>		fontFormatting.setFontShadowModified(modified);
+<span class="nocode"><a name="321">321: </a></span>	}
+<span class="nocode"><a name="322">322: </a></span>
+<span class="nocode"><a name="323">323: </a></span>	/**
+<span class="nocode"><a name="324">324: </a></span>	 * @param modified
+<span class="nocode"><a name="325">325: </a></span>	 * @see org.apache.poi.hssf.record.cf.FontFormatting#setFontStyleModified(boolean)
+<span class="nocode"><a name="326">326: </a></span>	 */
+<span class="nocode"><a name="327">327: </a></span>	public void setFontStyleModified(boolean modified)
+<span class="nocode"><a name="328">328: </a></span>	{
+<span class="nocode"><a name="329">329: </a></span>		fontFormatting.setFontStyleModified(modified);
+<span class="nocode"><a name="330">330: </a></span>	}
+<span class="nocode"><a name="331">331: </a></span>
+<span class="nocode"><a name="332">332: </a></span>	/**
+<span class="nocode"><a name="333">333: </a></span>	 * @param on
+<span class="nocode"><a name="334">334: </a></span>	 * @see org.apache.poi.hssf.record.cf.FontFormatting#setOutline(boolean)
+<span class="nocode"><a name="335">335: </a></span>	 */
+<span class="nocode"><a name="336">336: </a></span>	public void setOutline(boolean on)
+<span class="nocode"><a name="337">337: </a></span>	{
+<span class="nocode"><a name="338">338: </a></span>		fontFormatting.setOutline(on);
+<span class="nocode"><a name="339">339: </a></span>		fontFormatting.setFontOutlineModified(on);
+<span class="nocode"><a name="340">340: </a></span>	}
+<span class="nocode"><a name="341">341: </a></span>
+<span class="nocode"><a name="342">342: </a></span>	/**
+<span class="nocode"><a name="343">343: </a></span>	 * @param on
+<span class="nocode"><a name="344">344: </a></span>	 * @see org.apache.poi.hssf.record.cf.FontFormatting#setShadow(boolean)
+<span class="nocode"><a name="345">345: </a></span>	 */
+<span class="nocode"><a name="346">346: </a></span>	public void setShadow(boolean on)
+<span class="nocode"><a name="347">347: </a></span>	{
+<span class="nocode"><a name="348">348: </a></span>		fontFormatting.setShadow(on);
+<span class="nocode"><a name="349">349: </a></span>		fontFormatting.setFontShadowModified(on);
+<span class="nocode"><a name="350">350: </a></span>	}
+<span class="nocode"><a name="351">351: </a></span>
+<span class="nocode"><a name="352">352: </a></span>	/**
+<span class="nocode"><a name="353">353: </a></span>	 * @param strike
+<span class="nocode"><a name="354">354: </a></span>	 * @see org.apache.poi.hssf.record.cf.FontFormatting#setStrikeout(boolean)
+<span class="nocode"><a name="355">355: </a></span>	 */
+<span class="nocode"><a name="356">356: </a></span>	public void setStrikeout(boolean strike)
+<span class="nocode"><a name="357">357: </a></span>	{
+<span class="nocode"><a name="358">358: </a></span>		fontFormatting.setStrikeout(strike);
+<span class="nocode"><a name="359">359: </a></span>		fontFormatting.setFontCancellationModified(strike);
+<span class="nocode"><a name="360">360: </a></span>	}
+<span class="nocode"><a name="361">361: </a></span>
+<span class="nocode"><a name="362">362: </a></span>	/**
+<span class="nocode"><a name="363">363: </a></span>	 * set the type of underlining type for the font
+<span class="nocode"><a name="364">364: </a></span>	 *
+<span class="nocode"><a name="365">365: </a></span>	 * @param underlineType  super or subscript option
+<span class="nocode"><a name="366">366: </a></span>	 *
+<span class="nocode"><a name="367">367: </a></span>	 * @see #U_NONE
+<span class="nocode"><a name="368">368: </a></span>	 * @see #U_SINGLE
+<span class="nocode"><a name="369">369: </a></span>	 * @see #U_DOUBLE
+<span class="nocode"><a name="370">370: </a></span>	 * @see #U_SINGLE_ACCOUNTING
+<span class="nocode"><a name="371">371: </a></span>	 * @see #U_DOUBLE_ACCOUNTING
+<span class="nocode"><a name="372">372: </a></span>	 */
+<span class="nocode"><a name="373">373: </a></span>	public void setUnderlineType(short underlineType)
+<span class="nocode"><a name="374">374: </a></span>	{
+<span class="nocode"><a name="375">375: </a></span>		switch(underlineType)
+<span class="nocode"><a name="376">376: </a></span>		{
+<span class="nocode"><a name="377">377: </a></span>			case HSSFFontFormatting.U_SINGLE:
+<span class="nocode"><a name="378">378: </a></span>			case HSSFFontFormatting.U_DOUBLE:
+<span class="nocode"><a name="379">379: </a></span>			case HSSFFontFormatting.U_SINGLE_ACCOUNTING:
+<span class="nocode"><a name="380">380: </a></span>			case HSSFFontFormatting.U_DOUBLE_ACCOUNTING:
+<span class="nocode"><a name="381">381: </a></span>				fontFormatting.setUnderlineType(underlineType);
+<span class="nocode"><a name="382">382: </a></span>				setUnderlineTypeModified(true);
+<span class="nocode"><a name="383">383: </a></span>				break;
+<span class="nocode"><a name="384">384: </a></span>				
+<span class="nocode"><a name="385">385: </a></span>			case HSSFFontFormatting.U_NONE:
+<span class="nocode"><a name="386">386: </a></span>				fontFormatting.setUnderlineType(underlineType);
+<span class="nocode"><a name="387">387: </a></span>				setUnderlineTypeModified(false);
+<span class="nocode"><a name="388">388: </a></span>				break;
+<span class="nocode"><a name="389">389: </a></span>			default:
+<span class="nocode"><a name="390">390: </a></span>		}
+<span class="nocode"><a name="391">391: </a></span>	}
+<span class="nocode"><a name="392">392: </a></span>
+<span class="nocode"><a name="393">393: </a></span>	/**
+<span class="nocode"><a name="394">394: </a></span>	 * @param modified
+<span class="nocode"><a name="395">395: </a></span>	 * @see org.apache.poi.hssf.record.cf.FontFormatting#setUnderlineTypeModified(boolean)
+<span class="nocode"><a name="396">396: </a></span>	 */
+<span class="nocode"><a name="397">397: </a></span>	public void setUnderlineTypeModified(boolean modified)
+<span class="nocode"><a name="398">398: </a></span>	{
+<span class="nocode"><a name="399">399: </a></span>		fontFormatting.setUnderlineTypeModified(modified);
+<span class="nocode"><a name="400">400: </a></span>	}
+<span class="nocode"><a name="401">401: </a></span>}
+</pre><table class="mutation_table" summary="Mutations">
+<tr><th>ID</th><th>Line</th><th>Type</th><th>Detected</th></tr><tr><td>64962</td><td><a href="#47">47</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>64963</td><td><a href="#65">65</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>64964</td><td><a href="#73">73</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>64965</td><td><a href="#83">83</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>64966</td><td><a href="#95">95</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>64967</td><td><a href="#103">103</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>64968</td><td><a href="#119">119</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>64973</td><td><a href="#129">129</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>64974</td><td><a href="#129">129</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>64975</td><td><a href="#129">129(1)</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>64976</td><td><a href="#129">129(1)</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>64970</td><td><a href="#129">129</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>64972</td><td><a href="#129">129(1)</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>64969</td><td><a href="#129">129</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>64971</td><td><a href="#129">129(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>64977</td><td><a href="#137">137</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>64978</td><td><a href="#145">145</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>64979</td><td><a href="#153">153</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>64980</td><td><a href="#161">161</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>64981</td><td><a href="#169">169</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>64986</td><td><a href="#177">177</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>64987</td><td><a href="#177">177</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>64988</td><td><a href="#177">177(1)</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>64989</td><td><a href="#177">177(1)</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>64983</td><td><a href="#177">177</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>64985</td><td><a href="#177">177(1)</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>64982</td><td><a href="#177">177</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>64984</td><td><a href="#177">177(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>64995</td><td><a href="#185">185</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>64994</td><td><a href="#185">185</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>64996</td><td><a href="#185">185(1)</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>64997</td><td><a href="#185">185(1)</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>64991</td><td><a href="#185">185</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>64993</td><td><a href="#185">185(1)</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>64990</td><td><a href="#185">185</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>64992</td><td><a href="#185">185(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65002</td><td><a href="#193">193</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65003</td><td><a href="#193">193</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65005</td><td><a href="#193">193(1)</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65004</td><td><a href="#193">193(1)</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>64999</td><td><a href="#193">193</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65001</td><td><a href="#193">193(1)</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>64998</td><td><a href="#193">193</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65000</td><td><a href="#193">193(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65010</td><td><a href="#201">201</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65011</td><td><a href="#201">201</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65012</td><td><a href="#201">201(1)</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65013</td><td><a href="#201">201(1)</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65007</td><td><a href="#201">201</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65009</td><td><a href="#201">201(1)</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65006</td><td><a href="#201">201</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65008</td><td><a href="#201">201(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65014</td><td><a href="#209">209</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65015</td><td><a href="#217">217</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65019</td><td><a href="#229">229</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>65018</td><td><a href="#229">229</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65020</td><td><a href="#229">229(1)</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65021</td><td><a href="#229">229(1)</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65016</td><td><a href="#229">229</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>65017</td><td><a href="#229">229(1)</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65022</td><td><a href="#230">230</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>65023</td><td><a href="#231">231</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>65024</td><td><a href="#232">232</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>65025</td><td><a href="#233">233</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>65027</td><td><a href="#241">241</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65026</td><td><a href="#241">241</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65029</td><td><a href="#241">241(1)</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65028</td><td><a href="#241">241(1)</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65030</td><td><a href="#241">241</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65031</td><td><a href="#258">258</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>65032</td><td><a href="#259">259</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65033</td><td><a href="#259">259</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65034</td><td><a href="#259">259</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65035</td><td><a href="#262">262</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>65036</td><td><a href="#263">263</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65037</td><td><a href="#263">263</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65038</td><td><a href="#263">263</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65039</td><td><a href="#275">275</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65040</td><td><a href="#284">284</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65041</td><td><a href="#293">293</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>65042</td><td><a href="#302">302</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>65043</td><td><a href="#311">311</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65044</td><td><a href="#320">320</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65045</td><td><a href="#329">329</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65046</td><td><a href="#338">338</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65047</td><td><a href="#339">339</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65048</td><td><a href="#348">348</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65049</td><td><a href="#349">349</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65050</td><td><a href="#358">358</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65051</td><td><a href="#359">359</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65052</td><td><a href="#381">381</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>65053</td><td><a href="#382">382</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65054</td><td><a href="#382">382</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65055</td><td><a href="#382">382</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65056</td><td><a href="#386">386</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>65057</td><td><a href="#387">387</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65058</td><td><a href="#387">387</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65059</td><td><a href="#387">387</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>65060</td><td><a href="#399">399</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+</table>
+</body>
+</html>

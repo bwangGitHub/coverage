@@ -1,0 +1,424 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN
+"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>
+org.apache.poi.poifs.eventfilesystem.POIFSReader
+</title>
+<link href="prettify.css" type="text/css" rel="stylesheet" />
+<script type="text/javascript" src="prettify.js"></script>
+</head>
+<body onload="prettyPrint()">
+<h2>Javalanche report for class:<br/> org.apache.poi.poifs.eventfilesystem.POIFSReader </h2><pre class="prettyprint" style="border: 1px solid #888;padding: 2px"><span class="nocode"><a name="1">  1: </a></span>
+<span class="nocode"><a name="2">  2: </a></span>/* ====================================================================
+<span class="nocode"><a name="3">  3: </a></span>   Licensed to the Apache Software Foundation (ASF) under one or more
+<span class="nocode"><a name="4">  4: </a></span>   contributor license agreements.  See the NOTICE file distributed with
+<span class="nocode"><a name="5">  5: </a></span>   this work for additional information regarding copyright ownership.
+<span class="nocode"><a name="6">  6: </a></span>   The ASF licenses this file to You under the Apache License, Version 2.0
+<span class="nocode"><a name="7">  7: </a></span>   (the &quot;License&quot;); you may not use this file except in compliance with
+<span class="nocode"><a name="8">  8: </a></span>   the License.  You may obtain a copy of the License at
+<span class="nocode"><a name="9">  9: </a></span>
+<span class="nocode"><a name="10"> 10: </a></span>       http://www.apache.org/licenses/LICENSE-2.0
+<span class="nocode"><a name="11"> 11: </a></span>
+<span class="nocode"><a name="12"> 12: </a></span>   Unless required by applicable law or agreed to in writing, software
+<span class="nocode"><a name="13"> 13: </a></span>   distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+<span class="nocode"><a name="14"> 14: </a></span>   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+<span class="nocode"><a name="15"> 15: </a></span>   See the License for the specific language governing permissions and
+<span class="nocode"><a name="16"> 16: </a></span>   limitations under the License.
+<span class="nocode"><a name="17"> 17: </a></span>==================================================================== */
+<span class="nocode"><a name="18"> 18: </a></span>        
+<span class="nocode"><a name="19"> 19: </a></span>
+<span class="nocode"><a name="20"> 20: </a></span>package org.apache.poi.poifs.eventfilesystem;
+<span class="nocode"><a name="21"> 21: </a></span>
+<span class="nocode"><a name="22"> 22: </a></span>import java.io.*;
+<span class="nocode"><a name="23"> 23: </a></span>
+<span class="nocode"><a name="24"> 24: </a></span>import java.util.*;
+<span class="nocode"><a name="25"> 25: </a></span>
+<span class="nocode"><a name="26"> 26: </a></span>import org.apache.poi.poifs.filesystem.DocumentInputStream;
+<span class="nocode"><a name="27"> 27: </a></span>import org.apache.poi.poifs.filesystem.POIFSDocument;
+<span class="nocode"><a name="28"> 28: </a></span>import org.apache.poi.poifs.filesystem.POIFSDocumentPath;
+<span class="nocode"><a name="29"> 29: </a></span>import org.apache.poi.poifs.property.DirectoryProperty;
+<span class="nocode"><a name="30"> 30: </a></span>import org.apache.poi.poifs.property.Property;
+<span class="nocode"><a name="31"> 31: </a></span>import org.apache.poi.poifs.property.PropertyTable;
+<span class="nocode"><a name="32"> 32: </a></span>import org.apache.poi.poifs.storage.BlockAllocationTableReader;
+<span class="nocode"><a name="33"> 33: </a></span>import org.apache.poi.poifs.storage.BlockList;
+<span class="nocode"><a name="34"> 34: </a></span>import org.apache.poi.poifs.storage.HeaderBlock;
+<span class="nocode"><a name="35"> 35: </a></span>import org.apache.poi.poifs.storage.RawDataBlockList;
+<span class="nocode"><a name="36"> 36: </a></span>import org.apache.poi.poifs.storage.SmallBlockTableReader;
+<span class="nocode"><a name="37"> 37: </a></span>
+<span class="nocode"><a name="38"> 38: </a></span>/**
+<span class="nocode"><a name="39"> 39: </a></span> * An event-driven reader for POIFS file systems. Users of this class
+<span class="nocode"><a name="40"> 40: </a></span> * first create an instance of it, then use the registerListener
+<span class="nocode"><a name="41"> 41: </a></span> * methods to register POIFSReaderListener instances for specific
+<span class="nocode"><a name="42"> 42: </a></span> * documents. Once all the listeners have been registered, the read()
+<span class="nocode"><a name="43"> 43: </a></span> * method is called, which results in the listeners being notified as
+<span class="nocode"><a name="44"> 44: </a></span> * their documents are read.
+<span class="nocode"><a name="45"> 45: </a></span> *
+<span class="nocode"><a name="46"> 46: </a></span> * @author Marc Johnson (mjohnson at apache dot org)
+<span class="nocode"><a name="47"> 47: </a></span> */
+<span class="nocode"><a name="48"> 48: </a></span>
+<span class="nocode"><a name="49"> 49: </a></span>public class POIFSReader
+<span class="nocode"><a name="50"> 50: </a></span>{
+<span class="nocode"><a name="51"> 51: </a></span>    private POIFSReaderRegistry registry;
+<span class="nocode"><a name="52"> 52: </a></span>    private boolean             registryClosed;
+<span class="nocode"><a name="53"> 53: </a></span>
+<span class="nocode"><a name="54"> 54: </a></span>    /**
+<span class="nocode"><a name="55"> 55: </a></span>     * Create a POIFSReader
+<span class="nocode"><a name="56"> 56: </a></span>     */
+<span class="nocode"><a name="57"> 57: </a></span>
+<span class="nocode"><a name="58"> 58: </a></span>    public POIFSReader()
+<span class="nocode"><a name="59"> 59: </a></span>    {
+<span class="nocode"><a name="60"> 60: </a></span>        registry       = new POIFSReaderRegistry();
+<span class="nocode"><a name="61"> 61: </a></span>        registryClosed = false;
+<span class="nocode"><a name="62"> 62: </a></span>    }
+<span class="nocode"><a name="63"> 63: </a></span>
+<span class="nocode"><a name="64"> 64: </a></span>    /**
+<span class="nocode"><a name="65"> 65: </a></span>     * Read from an InputStream and process the documents we get
+<span class="nocode"><a name="66"> 66: </a></span>     *
+<span class="nocode"><a name="67"> 67: </a></span>     * @param stream the InputStream from which to read the data
+<span class="nocode"><a name="68"> 68: </a></span>     *
+<span class="nocode"><a name="69"> 69: </a></span>     * @exception IOException on errors reading, or on invalid data
+<span class="nocode"><a name="70"> 70: </a></span>     */
+<span class="nocode"><a name="71"> 71: </a></span>
+<span class="nocode"><a name="72"> 72: </a></span>    public void read(final InputStream stream)
+<span class="nocode"><a name="73"> 73: </a></span>        throws IOException
+<span class="nocode"><a name="74"> 74: </a></span>    {
+<span class="nocode"><a name="75"> 75: </a></span>        registryClosed = true;
+<span class="nocode"><a name="76"> 76: </a></span>
+<span class="nocode"><a name="77"> 77: </a></span>        // read the header block from the stream
+<span class="nocode"><a name="78"> 78: </a></span>        HeaderBlock header_block = new HeaderBlock(stream);
+<span class="nocode"><a name="79"> 79: </a></span>
+<span class="nocode"><a name="80"> 80: </a></span>        // read the rest of the stream into blocks
+<span class="nocode"><a name="81"> 81: </a></span>        RawDataBlockList data_blocks = new RawDataBlockList(stream, header_block.getBigBlockSize());
+<span class="nocode"><a name="82"> 82: </a></span>
+<span class="nocode"><a name="83"> 83: </a></span>        // set up the block allocation table (necessary for the
+<span class="nocode"><a name="84"> 84: </a></span>        // data_blocks to be manageable
+<span class="nocode"><a name="85"> 85: </a></span>        new BlockAllocationTableReader(header_block.getBigBlockSize(),
+<span class="nocode"><a name="86"> 86: </a></span>                                       header_block.getBATCount(),
+<span class="nocode"><a name="87"> 87: </a></span>                                       header_block.getBATArray(),
+<span class="nocode"><a name="88"> 88: </a></span>                                       header_block.getXBATCount(),
+<span class="nocode"><a name="89"> 89: </a></span>                                       header_block.getXBATIndex(),
+<span class="nocode"><a name="90"> 90: </a></span>                                       data_blocks);
+<span class="nocode"><a name="91"> 91: </a></span>
+<span class="nocode"><a name="92"> 92: </a></span>        // get property table from the document
+<span class="nocode"><a name="93"> 93: </a></span>        PropertyTable properties =
+<span class="nocode"><a name="94"> 94: </a></span>            new PropertyTable(header_block, data_blocks);
+<span class="nocode"><a name="95"> 95: </a></span>
+<span class="nocode"><a name="96"> 96: </a></span>        // process documents
+<span class="nocode"><a name="97"> 97: </a></span>        processProperties(SmallBlockTableReader
+<span class="nocode"><a name="98"> 98: </a></span>            .getSmallDocumentBlocks(
+<span class="nocode"><a name="99"> 99: </a></span>                  header_block.getBigBlockSize(),
+<span class="nocode"><a name="100">100: </a></span>                  data_blocks, properties.getRoot(), 
+<span class="nocode"><a name="101">101: </a></span>                  header_block.getSBATStart()), 
+<span class="nocode"><a name="102">102: </a></span>                  data_blocks, properties.getRoot()
+<span class="nocode"><a name="103">103: </a></span>                        .getChildren(), new POIFSDocumentPath());
+<span class="nocode"><a name="104">104: </a></span>    }
+<span class="nocode"><a name="105">105: </a></span>
+<span class="nocode"><a name="106">106: </a></span>    /**
+<span class="nocode"><a name="107">107: </a></span>     * Register a POIFSReaderListener for all documents
+<span class="nocode"><a name="108">108: </a></span>     *
+<span class="nocode"><a name="109">109: </a></span>     * @param listener the listener to be registered
+<span class="nocode"><a name="110">110: </a></span>     *
+<span class="nocode"><a name="111">111: </a></span>     * @exception NullPointerException if listener is null
+<span class="nocode"><a name="112">112: </a></span>     * @exception IllegalStateException if read() has already been
+<span class="nocode"><a name="113">113: </a></span>     *                                  called
+<span class="nocode"><a name="114">114: </a></span>     */
+<span class="nocode"><a name="115">115: </a></span>
+<span class="nocode"><a name="116">116: </a></span>    public void registerListener(final POIFSReaderListener listener)
+<span class="nocode"><a name="117">117: </a></span>    {
+<span class="nocode"><a name="118">118: </a></span>        if (listener == null)
+<span class="nocode"><a name="119">119: </a></span>        {
+<span class="nocode"><a name="120">120: </a></span>            throw new NullPointerException();
+<span class="nocode"><a name="121">121: </a></span>        }
+<span class="nocode"><a name="122">122: </a></span>        if (registryClosed)
+<span class="nocode"><a name="123">123: </a></span>        {
+<span class="nocode"><a name="124">124: </a></span>            throw new IllegalStateException();
+<span class="nocode"><a name="125">125: </a></span>        }
+<span class="nocode"><a name="126">126: </a></span>        registry.registerListener(listener);
+<span class="nocode"><a name="127">127: </a></span>    }
+<span class="nocode"><a name="128">128: </a></span>
+<span class="nocode"><a name="129">129: </a></span>    /**
+<span class="nocode"><a name="130">130: </a></span>     * Register a POIFSReaderListener for a document in the root
+<span class="nocode"><a name="131">131: </a></span>     * directory
+<span class="nocode"><a name="132">132: </a></span>     *
+<span class="nocode"><a name="133">133: </a></span>     * @param listener the listener to be registered
+<span class="nocode"><a name="134">134: </a></span>     * @param name the document name
+<span class="nocode"><a name="135">135: </a></span>     *
+<span class="nocode"><a name="136">136: </a></span>     * @exception NullPointerException if listener is null or name is
+<span class="nocode"><a name="137">137: </a></span>     *                                 null or empty
+<span class="nocode"><a name="138">138: </a></span>     * @exception IllegalStateException if read() has already been
+<span class="nocode"><a name="139">139: </a></span>     *                                  called
+<span class="nocode"><a name="140">140: </a></span>     */
+<span class="nocode"><a name="141">141: </a></span>
+<span class="nocode"><a name="142">142: </a></span>    public void registerListener(final POIFSReaderListener listener,
+<span class="nocode"><a name="143">143: </a></span>                                 final String name)
+<span class="nocode"><a name="144">144: </a></span>    {
+<span class="nocode"><a name="145">145: </a></span>        registerListener(listener, null, name);
+<span class="nocode"><a name="146">146: </a></span>    }
+<span class="nocode"><a name="147">147: </a></span>
+<span class="nocode"><a name="148">148: </a></span>    /**
+<span class="nocode"><a name="149">149: </a></span>     * Register a POIFSReaderListener for a document in the specified
+<span class="nocode"><a name="150">150: </a></span>     * directory
+<span class="nocode"><a name="151">151: </a></span>     *
+<span class="nocode"><a name="152">152: </a></span>     * @param listener the listener to be registered
+<span class="nocode"><a name="153">153: </a></span>     * @param path the document path; if null, the root directory is
+<span class="nocode"><a name="154">154: </a></span>     *             assumed
+<span class="nocode"><a name="155">155: </a></span>     * @param name the document name
+<span class="nocode"><a name="156">156: </a></span>     *
+<span class="nocode"><a name="157">157: </a></span>     * @exception NullPointerException if listener is null or name is
+<span class="nocode"><a name="158">158: </a></span>     *                                 null or empty
+<span class="nocode"><a name="159">159: </a></span>     * @exception IllegalStateException if read() has already been
+<span class="nocode"><a name="160">160: </a></span>     *                                  called
+<span class="nocode"><a name="161">161: </a></span>     */
+<span class="nocode"><a name="162">162: </a></span>
+<span class="nocode"><a name="163">163: </a></span>    public void registerListener(final POIFSReaderListener listener,
+<span class="nocode"><a name="164">164: </a></span>                                 final POIFSDocumentPath path,
+<span class="nocode"><a name="165">165: </a></span>                                 final String name)
+<span class="nocode"><a name="166">166: </a></span>    {
+<span class="nocode"><a name="167">167: </a></span>        if ((listener == null) || (name == null) || (name.length() == 0))
+<span class="nocode"><a name="168">168: </a></span>        {
+<span class="nocode"><a name="169">169: </a></span>            throw new NullPointerException();
+<span class="nocode"><a name="170">170: </a></span>        }
+<span class="nocode"><a name="171">171: </a></span>        if (registryClosed)
+<span class="nocode"><a name="172">172: </a></span>        {
+<span class="nocode"><a name="173">173: </a></span>            throw new IllegalStateException();
+<span class="nocode"><a name="174">174: </a></span>        }
+<span class="nocode"><a name="175">175: </a></span>        registry.registerListener(listener,
+<span class="nocode"><a name="176">176: </a></span>                                  (path == null) ? new POIFSDocumentPath()
+<span class="nocode"><a name="177">177: </a></span>                                                 : path, name);
+<span class="nocode"><a name="178">178: </a></span>    }
+<span class="nocode"><a name="179">179: </a></span>
+<span class="nocode"><a name="180">180: </a></span>    /**
+<span class="nocode"><a name="181">181: </a></span>     * read in files
+<span class="nocode"><a name="182">182: </a></span>     *
+<span class="nocode"><a name="183">183: </a></span>     * @param args names of the files
+<span class="nocode"><a name="184">184: </a></span>     *
+<span class="nocode"><a name="185">185: </a></span>     * @exception IOException
+<span class="nocode"><a name="186">186: </a></span>     */
+<span class="nocode"><a name="187">187: </a></span>
+<span class="nocode"><a name="188">188: </a></span>    public static void main(String args[])
+<span class="nocode"><a name="189">189: </a></span>        throws IOException
+<span class="nocode"><a name="190">190: </a></span>    {
+<span class="nocode"><a name="191">191: </a></span>        if (args.length == 0)
+<span class="nocode"><a name="192">192: </a></span>        {
+<span class="nocode"><a name="193">193: </a></span>            System.err
+<span class="nocode"><a name="194">194: </a></span>                .println(&quot;at least one argument required: input filename(s)&quot;);
+<span class="nocode"><a name="195">195: </a></span>            System.exit(1);
+<span class="nocode"><a name="196">196: </a></span>        }
+<span class="nocode"><a name="197">197: </a></span>
+<span class="nocode"><a name="198">198: </a></span>        // register for all
+<span class="nocode"><a name="199">199: </a></span>        for (int j = 0; j &lt; args.length; j++)
+<span class="nocode"><a name="200">200: </a></span>        {
+<span class="nocode"><a name="201">201: </a></span>            POIFSReader         reader   = new POIFSReader();
+<span class="nocode"><a name="202">202: </a></span>            POIFSReaderListener listener = new SampleListener();
+<span class="nocode"><a name="203">203: </a></span>
+<span class="nocode"><a name="204">204: </a></span>            reader.registerListener(listener);
+<span class="nocode"><a name="205">205: </a></span>            System.out.println(&quot;reading &quot; + args[ j ]);
+<span class="nocode"><a name="206">206: </a></span>            FileInputStream istream = new FileInputStream(args[ j ]);
+<span class="nocode"><a name="207">207: </a></span>
+<span class="nocode"><a name="208">208: </a></span>            reader.read(istream);
+<span class="nocode"><a name="209">209: </a></span>            istream.close();
+<span class="nocode"><a name="210">210: </a></span>        }
+<span class="nocode"><a name="211">211: </a></span>    }
+<span class="nocode"><a name="212">212: </a></span>
+<span class="nocode"><a name="213">213: </a></span>    private void processProperties(final BlockList small_blocks,
+<span class="nocode"><a name="214">214: </a></span>                                   final BlockList big_blocks,
+<span class="nocode"><a name="215">215: </a></span>                                   final Iterator properties,
+<span class="nocode"><a name="216">216: </a></span>                                   final POIFSDocumentPath path)
+<span class="nocode"><a name="217">217: </a></span>        throws IOException
+<span class="nocode"><a name="218">218: </a></span>    {
+<span class="nocode"><a name="219">219: </a></span>        while (properties.hasNext())
+<span class="nocode"><a name="220">220: </a></span>        {
+<span class="nocode"><a name="221">221: </a></span>            Property property = ( Property ) properties.next();
+<span class="nocode"><a name="222">222: </a></span>            String   name     = property.getName();
+<span class="nocode"><a name="223">223: </a></span>
+<span class="nocode"><a name="224">224: </a></span>            if (property.isDirectory())
+<span class="nocode"><a name="225">225: </a></span>            {
+<span class="nocode"><a name="226">226: </a></span>                POIFSDocumentPath new_path = new POIFSDocumentPath(path,
+<span class="nocode"><a name="227">227: </a></span>                                                 new String[]
+<span class="nocode"><a name="228">228: </a></span>                {
+<span class="nocode"><a name="229">229: </a></span>                    name
+<span class="nocode"><a name="230">230: </a></span>                });
+<span class="nocode"><a name="231">231: </a></span>
+<span class="nocode"><a name="232">232: </a></span>                processProperties(
+<span class="nocode"><a name="233">233: </a></span>                    small_blocks, big_blocks,
+<span class="nocode"><a name="234">234: </a></span>                    (( DirectoryProperty ) property).getChildren(), new_path);
+<span class="nocode"><a name="235">235: </a></span>            }
+<span class="nocode"><a name="236">236: </a></span>            else
+<span class="nocode"><a name="237">237: </a></span>            {
+<span class="nocode"><a name="238">238: </a></span>                int      startBlock = property.getStartBlock();
+<span class="nocode"><a name="239">239: </a></span>                Iterator listeners  = registry.getListeners(path, name);
+<span class="nocode"><a name="240">240: </a></span>
+<span class="nocode"><a name="241">241: </a></span>                if (listeners.hasNext())
+<span class="nocode"><a name="242">242: </a></span>                {
+<span class="nocode"><a name="243">243: </a></span>                    int           size     = property.getSize();
+<span class="nocode"><a name="244">244: </a></span>                    POIFSDocument document = null;
+<span class="nocode"><a name="245">245: </a></span>
+<span class="nocode"><a name="246">246: </a></span>                    if (property.shouldUseSmallBlocks())
+<span class="nocode"><a name="247">247: </a></span>                    {
+<span class="nocode"><a name="248">248: </a></span>                        document =
+<span class="nocode"><a name="249">249: </a></span>                            new POIFSDocument(name, small_blocks
+<span class="nocode"><a name="250">250: </a></span>                                .fetchBlocks(startBlock, -1), size);
+<span class="nocode"><a name="251">251: </a></span>                    }
+<span class="nocode"><a name="252">252: </a></span>                    else
+<span class="nocode"><a name="253">253: </a></span>                    {
+<span class="nocode"><a name="254">254: </a></span>                        document =
+<span class="nocode"><a name="255">255: </a></span>                            new POIFSDocument(name, big_blocks
+<span class="nocode"><a name="256">256: </a></span>                                .fetchBlocks(startBlock, -1), size);
+<span class="nocode"><a name="257">257: </a></span>                    }
+<span class="nocode"><a name="258">258: </a></span>                    while (listeners.hasNext())
+<span class="nocode"><a name="259">259: </a></span>                    {
+<span class="nocode"><a name="260">260: </a></span>                        POIFSReaderListener listener =
+<span class="nocode"><a name="261">261: </a></span>                            ( POIFSReaderListener ) listeners.next();
+<span class="nocode"><a name="262">262: </a></span>
+<span class="nocode"><a name="263">263: </a></span>                        listener.processPOIFSReaderEvent(
+<span class="nocode"><a name="264">264: </a></span>                            new POIFSReaderEvent(
+<span class="nocode"><a name="265">265: </a></span>                                new DocumentInputStream(document), path,
+<span class="nocode"><a name="266">266: </a></span>                                name));
+<span class="nocode"><a name="267">267: </a></span>                    }
+<span class="nocode"><a name="268">268: </a></span>                }
+<span class="nocode"><a name="269">269: </a></span>                else
+<span class="nocode"><a name="270">270: </a></span>                {
+<span class="nocode"><a name="271">271: </a></span>
+<span class="nocode"><a name="272">272: </a></span>                    // consume the document's data and discard it
+<span class="nocode"><a name="273">273: </a></span>                    if (property.shouldUseSmallBlocks())
+<span class="nocode"><a name="274">274: </a></span>                    {
+<span class="nocode"><a name="275">275: </a></span>                        small_blocks.fetchBlocks(startBlock, -1);
+<span class="nocode"><a name="276">276: </a></span>                    }
+<span class="nocode"><a name="277">277: </a></span>                    else
+<span class="nocode"><a name="278">278: </a></span>                    {
+<span class="nocode"><a name="279">279: </a></span>                        big_blocks.fetchBlocks(startBlock, -1);
+<span class="nocode"><a name="280">280: </a></span>                    }
+<span class="nocode"><a name="281">281: </a></span>                }
+<span class="nocode"><a name="282">282: </a></span>            }
+<span class="nocode"><a name="283">283: </a></span>        }
+<span class="nocode"><a name="284">284: </a></span>    }
+<span class="nocode"><a name="285">285: </a></span>
+<span class="nocode"><a name="286">286: </a></span>    private static class SampleListener
+<span class="nocode"><a name="287">287: </a></span>        implements POIFSReaderListener
+<span class="nocode"><a name="288">288: </a></span>    {
+<span class="nocode"><a name="289">289: </a></span>
+<span class="nocode"><a name="290">290: </a></span>        /**
+<span class="nocode"><a name="291">291: </a></span>         * Constructor SampleListener
+<span class="nocode"><a name="292">292: </a></span>         */
+<span class="nocode"><a name="293">293: </a></span>
+<span class="nocode"><a name="294">294: </a></span>        SampleListener()
+<span class="nocode"><a name="295">295: </a></span>        {
+<span class="nocode"><a name="296">296: </a></span>        }
+<span class="nocode"><a name="297">297: </a></span>
+<span class="nocode"><a name="298">298: </a></span>        /**
+<span class="nocode"><a name="299">299: </a></span>         * Method processPOIFSReaderEvent
+<span class="nocode"><a name="300">300: </a></span>         *
+<span class="nocode"><a name="301">301: </a></span>         * @param event
+<span class="nocode"><a name="302">302: </a></span>         */
+<span class="nocode"><a name="303">303: </a></span>
+<span class="nocode"><a name="304">304: </a></span>        public void processPOIFSReaderEvent(final POIFSReaderEvent event)
+<span class="nocode"><a name="305">305: </a></span>        {
+<span class="nocode"><a name="306">306: </a></span>            DocumentInputStream istream = event.getStream();
+<span class="nocode"><a name="307">307: </a></span>            POIFSDocumentPath   path    = event.getPath();
+<span class="nocode"><a name="308">308: </a></span>            String              name    = event.getName();
+<span class="nocode"><a name="309">309: </a></span>
+<span class="nocode"><a name="310">310: </a></span>            try
+<span class="nocode"><a name="311">311: </a></span>            {
+<span class="nocode"><a name="312">312: </a></span>                byte[] data = new byte[ istream.available() ];
+<span class="nocode"><a name="313">313: </a></span>
+<span class="nocode"><a name="314">314: </a></span>                istream.read(data);
+<span class="nocode"><a name="315">315: </a></span>                int pathLength = path.length();
+<span class="nocode"><a name="316">316: </a></span>
+<span class="nocode"><a name="317">317: </a></span>                for (int k = 0; k &lt; pathLength; k++)
+<span class="nocode"><a name="318">318: </a></span>                {
+<span class="nocode"><a name="319">319: </a></span>                    System.out.print(&quot;/&quot; + path.getComponent(k));
+<span class="nocode"><a name="320">320: </a></span>                }
+<span class="nocode"><a name="321">321: </a></span>                System.out.println(&quot;/&quot; + name + &quot;: &quot; + data.length
+<span class="nocode"><a name="322">322: </a></span>                                   + &quot; bytes read&quot;);
+<span class="nocode"><a name="323">323: </a></span>            }
+<span class="nocode"><a name="324">324: </a></span>            catch (IOException ignored)
+<span class="nocode"><a name="325">325: </a></span>            {
+<span class="nocode"><a name="326">326: </a></span>            }
+<span class="nocode"><a name="327">327: </a></span>        }
+<span class="nocode"><a name="328">328: </a></span>    }   // end private class SampleListener
+<span class="nocode"><a name="329">329: </a></span>}       // end public class POIFSReader
+<span class="nocode"><a name="330">330: </a></span>
+</pre><table class="mutation_table" summary="Mutations">
+<tr><th>ID</th><th>Line</th><th>Type</th><th>Detected</th></tr><tr><td>51773</td><td><a href="#61">61</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>51774</td><td><a href="#61">61</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>51775</td><td><a href="#75">75</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>51776</td><td><a href="#75">75</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>51777</td><td><a href="#81">81</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>51778</td><td><a href="#85">85</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>51779</td><td><a href="#85">85(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>51780</td><td><a href="#85">85(2)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>51781</td><td><a href="#85">85(3)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>51782</td><td><a href="#85">85(4)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>51783</td><td><a href="#97">97</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>51784</td><td><a href="#97">97(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>51785</td><td><a href="#97">97(2)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>51786</td><td><a href="#97">97(3)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>51787</td><td><a href="#97">97(4)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>51788</td><td><a href="#97">97(5)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>51789</td><td><a href="#97">97(6)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>51790</td><td><a href="#118">118</a></td><td>Negate jump condition (Replace IFNONNULL with  IFNULL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>51791</td><td><a href="#122">122</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>51792</td><td><a href="#126">126</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>51793</td><td><a href="#145">145</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>51794</td><td><a href="#167">167</a></td><td>Negate jump condition (Replace IFNULL with  IFNONNULL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>51795</td><td><a href="#167">167(1)</a></td><td>Negate jump condition (Replace IFNULL with  IFNONNULL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>51797</td><td><a href="#167">167(2)</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="detected.png"/></td></tr>
+<tr><td>51796</td><td><a href="#167">167</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>51798</td><td><a href="#171">171</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>51799</td><td><a href="#175">175</a></td><td>Negate jump condition (Replace IFNONNULL with  IFNULL)</td><td><img src="detected.png"/></td></tr>
+<tr><td>51800</td><td><a href="#175">175</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>51801</td><td><a href="#191">191</a></td><td>Negate jump condition (Replace IFNE with  IFEQ)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>51802</td><td><a href="#193">193</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>51804</td><td><a href="#195">195</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>51803</td><td><a href="#195">195</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>51806</td><td><a href="#199">199</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>51805</td><td><a href="#199">199</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>51807</td><td><a href="#199">199</a></td><td>Negate jump condition (Replace IF_ICMPGE with  IF_ICMPLT)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>51808</td><td><a href="#204">204</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>51809</td><td><a href="#205">205</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>51810</td><td><a href="#205">205(1)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>51811</td><td><a href="#205">205(2)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>51812</td><td><a href="#205">205(3)</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>51813</td><td><a href="#208">208</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>51814</td><td><a href="#209">209</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>51816</td><td><a href="#219">219</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>51815</td><td><a href="#219">219</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>51817</td><td><a href="#221">221</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>51818</td><td><a href="#222">222</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>51820</td><td><a href="#224">224</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>51819</td><td><a href="#224">224</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>51822</td><td><a href="#226">226</a></td><td>Replace a constant (Replace 1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>51821</td><td><a href="#226">226</a></td><td>Replace a constant (Replace 1 with 2(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>51823</td><td><a href="#226">226(1)</a></td><td>Replace a constant (Replace 0 with 1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>51824</td><td><a href="#226">226(1)</a></td><td>Replace a constant (Replace 0 with -1(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>51825</td><td><a href="#232">232</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>51826</td><td><a href="#232">232(1)</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>51827</td><td><a href="#238">238</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>51828</td><td><a href="#239">239</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>51830</td><td><a href="#241">241</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>51829</td><td><a href="#241">241</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>51831</td><td><a href="#243">243</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>51833</td><td><a href="#246">246</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>51832</td><td><a href="#246">246</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>51834</td><td><a href="#248">248</a></td><td>Replace a constant (Replace -1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>51835</td><td><a href="#248">248</a></td><td>Replace a constant (Replace -1 with -2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>51836</td><td><a href="#248">248</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>51838</td><td><a href="#254">254</a></td><td>Replace a constant (Replace -1 with -2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>51837</td><td><a href="#254">254</a></td><td>Replace a constant (Replace -1 with 0(INT))</td><td><img src="detected.png"/></td></tr>
+<tr><td>51839</td><td><a href="#254">254</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>51841</td><td><a href="#258">258</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="detected.png"/></td></tr>
+<tr><td>51840</td><td><a href="#258">258</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>51842</td><td><a href="#260">260</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>51843</td><td><a href="#263">263</a></td><td>Remove method call</td><td><img src="detected.png"/></td></tr>
+<tr><td>51845</td><td><a href="#273">273</a></td><td>Negate jump condition (Replace IFEQ with  IFNE)</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>51844</td><td><a href="#273">273</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>51846</td><td><a href="#275">275</a></td><td>Replace a constant (Replace -1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>51847</td><td><a href="#275">275</a></td><td>Replace a constant (Replace -1 with -2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>51848</td><td><a href="#275">275</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>51849</td><td><a href="#279">279</a></td><td>Replace a constant (Replace -1 with 0(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>51850</td><td><a href="#279">279</a></td><td>Replace a constant (Replace -1 with -2(INT))</td><td><img src="not_detected.png"/></td></tr>
+<tr><td>51851</td><td><a href="#279">279</a></td><td>Remove method call</td><td><img src="not_detected.png"/></td></tr>
+</table>
+</body>
+</html>

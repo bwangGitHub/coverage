@@ -1,0 +1,6 @@
+Testsuite: org.apache.poi.hpsf.basic.TestClassID
+Tests run: 3, Failures: 0, Errors: 0, Time elapsed: 0 sec
+
+Testcase: testEquals took 0 sec
+Testcase: testWriteArrayStoreException took 0 sec
+Testcase: testClassID took 0 sec

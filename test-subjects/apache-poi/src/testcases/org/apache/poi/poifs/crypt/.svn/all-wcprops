@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/repos/asf/!svn/ver/1293784/poi/trunk/src/testcases/org/apache/poi/poifs/crypt
+END
+TestEncryptionInfo.java
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/repos/asf/!svn/ver/1101397/poi/trunk/src/testcases/org/apache/poi/poifs/crypt/TestEncryptionInfo.java
+END
+TestDecryptor.java
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/repos/asf/!svn/ver/1293784/poi/trunk/src/testcases/org/apache/poi/poifs/crypt/TestDecryptor.java
+END
+AllPOIFSCryptoTests.java
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/repos/asf/!svn/ver/1101397/poi/trunk/src/testcases/org/apache/poi/poifs/crypt/AllPOIFSCryptoTests.java
+END

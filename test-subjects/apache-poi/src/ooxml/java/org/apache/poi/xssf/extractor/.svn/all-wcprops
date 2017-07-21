@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/repos/asf/!svn/ver/1296977/poi/trunk/src/ooxml/java/org/apache/poi/xssf/extractor
+END
+XSSFExcelExtractor.java
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/repos/asf/!svn/ver/1296977/poi/trunk/src/ooxml/java/org/apache/poi/xssf/extractor/XSSFExcelExtractor.java
+END
+XSSFEventBasedExcelExtractor.java
+K 25
+svn:wc:ra_dav:version-url
+V 116
+/repos/asf/!svn/ver/1037753/poi/trunk/src/ooxml/java/org/apache/poi/xssf/extractor/XSSFEventBasedExcelExtractor.java
+END
+XSSFImportFromXML.java
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/repos/asf/!svn/ver/1092286/poi/trunk/src/ooxml/java/org/apache/poi/xssf/extractor/XSSFImportFromXML.java
+END
+XSSFExportToXml.java
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/repos/asf/!svn/ver/1092286/poi/trunk/src/ooxml/java/org/apache/poi/xssf/extractor/XSSFExportToXml.java
+END

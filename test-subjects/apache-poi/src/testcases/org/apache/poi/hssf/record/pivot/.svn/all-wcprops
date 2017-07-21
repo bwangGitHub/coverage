@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/repos/asf/!svn/ver/760646/poi/trunk/src/testcases/org/apache/poi/hssf/record/pivot
+END
+TestPageItemRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/repos/asf/!svn/ver/758770/poi/trunk/src/testcases/org/apache/poi/hssf/record/pivot/TestPageItemRecord.java
+END
+TestExtendedPivotTableViewFieldsRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 127
+/repos/asf/!svn/ver/760646/poi/trunk/src/testcases/org/apache/poi/hssf/record/pivot/TestExtendedPivotTableViewFieldsRecord.java
+END
+AllPivotRecordTests.java
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/repos/asf/!svn/ver/758770/poi/trunk/src/testcases/org/apache/poi/hssf/record/pivot/AllPivotRecordTests.java
+END
+TestViewFieldsRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/repos/asf/!svn/ver/743601/poi/trunk/src/testcases/org/apache/poi/hssf/record/pivot/TestViewFieldsRecord.java
+END

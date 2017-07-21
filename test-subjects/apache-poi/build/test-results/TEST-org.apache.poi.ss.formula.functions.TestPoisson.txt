@@ -1,0 +1,9 @@
+Testsuite: org.apache.poi.ss.formula.functions.TestPoisson
+Tests run: 6, Failures: 0, Errors: 0, Time elapsed: 0.001 sec
+
+Testcase: testCumulativeProbability took 0 sec
+Testcase: testNonCumulativeProbability took 0 sec
+Testcase: testNegativeMean took 0 sec
+Testcase: testNegativeX took 0 sec
+Testcase: testXAsDecimalNumber took 0 sec
+Testcase: testXZeroMeanZero took 0.001 sec

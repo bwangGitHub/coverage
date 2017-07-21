@@ -1,0 +1,7 @@
+Testsuite: org.apache.poi.hssf.model.TestOperandClassTransformer
+Tests run: 4, Failures: 0, Errors: 0, Time elapsed: 0.002 sec
+
+Testcase: testMdeterm took 0 sec
+Testcase: testDirectOperandOfValueOperator took 0 sec
+Testcase: testRtoV took 0 sec
+Testcase: testComplexIRR_bug45041 took 0.001 sec

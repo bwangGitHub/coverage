@@ -1,0 +1,269 @@
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/repos/asf/!svn/ver/1297021/poi/trunk/src/testcases/org/apache/poi/ss/formula/functions
+END
+TestLen.java
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/repos/asf/!svn/ver/1037426/poi/trunk/src/testcases/org/apache/poi/ss/formula/functions/TestLen.java
+END
+TestLookupFunctionsFromSpreadsheet.java
+K 25
+svn:wc:ra_dav:version-url
+V 127
+/repos/asf/!svn/ver/1037426/poi/trunk/src/testcases/org/apache/poi/ss/formula/functions/TestLookupFunctionsFromSpreadsheet.java
+END
+TestTFunc.java
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/repos/asf/!svn/ver/1037426/poi/trunk/src/testcases/org/apache/poi/ss/formula/functions/TestTFunc.java
+END
+AbstractNumericTestCase.java
+K 25
+svn:wc:ra_dav:version-url
+V 116
+/repos/asf/!svn/ver/1037426/poi/trunk/src/testcases/org/apache/poi/ss/formula/functions/AbstractNumericTestCase.java
+END
+TestClean.java
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/repos/asf/!svn/ver/1060788/poi/trunk/src/testcases/org/apache/poi/ss/formula/functions/TestClean.java
+END
+TestText.java
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/repos/asf/!svn/ver/1221123/poi/trunk/src/testcases/org/apache/poi/ss/formula/functions/TestText.java
+END
+TestAddress.java
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/repos/asf/!svn/ver/1296979/poi/trunk/src/testcases/org/apache/poi/ss/formula/functions/TestAddress.java
+END
+TestRoundFuncs.java
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/repos/asf/!svn/ver/1037426/poi/trunk/src/testcases/org/apache/poi/ss/formula/functions/TestRoundFuncs.java
+END
+TestOffset.java
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/repos/asf/!svn/ver/1037426/poi/trunk/src/testcases/org/apache/poi/ss/formula/functions/TestOffset.java
+END
+TestCountFuncs.java
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/repos/asf/!svn/ver/1296979/poi/trunk/src/testcases/org/apache/poi/ss/formula/functions/TestCountFuncs.java
+END
+TestLeftRight.java
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/repos/asf/!svn/ver/1037426/poi/trunk/src/testcases/org/apache/poi/ss/formula/functions/TestLeftRight.java
+END
+TestDays360.java
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/repos/asf/!svn/ver/1037426/poi/trunk/src/testcases/org/apache/poi/ss/formula/functions/TestDays360.java
+END
+TestXYNumericFunction.java
+K 25
+svn:wc:ra_dav:version-url
+V 114
+/repos/asf/!svn/ver/1037426/poi/trunk/src/testcases/org/apache/poi/ss/formula/functions/TestXYNumericFunction.java
+END
+TestPoisson.java
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/repos/asf/!svn/ver/1037426/poi/trunk/src/testcases/org/apache/poi/ss/formula/functions/TestPoisson.java
+END
+TestRank.java
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/repos/asf/!svn/ver/1297021/poi/trunk/src/testcases/org/apache/poi/ss/formula/functions/TestRank.java
+END
+TestTime.java
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/repos/asf/!svn/ver/1037426/poi/trunk/src/testcases/org/apache/poi/ss/formula/functions/TestTime.java
+END
+TestPmt.java
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/repos/asf/!svn/ver/1037426/poi/trunk/src/testcases/org/apache/poi/ss/formula/functions/TestPmt.java
+END
+TestNpv.java
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/repos/asf/!svn/ver/1296979/poi/trunk/src/testcases/org/apache/poi/ss/formula/functions/TestNpv.java
+END
+TestNper.java
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/repos/asf/!svn/ver/1037426/poi/trunk/src/testcases/org/apache/poi/ss/formula/functions/TestNper.java
+END
+TestRowCol.java
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/repos/asf/!svn/ver/1037426/poi/trunk/src/testcases/org/apache/poi/ss/formula/functions/TestRowCol.java
+END
+TestSumproduct.java
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/repos/asf/!svn/ver/1037426/poi/trunk/src/testcases/org/apache/poi/ss/formula/functions/TestSumproduct.java
+END
+TestSumifs.java
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/repos/asf/!svn/ver/1296979/poi/trunk/src/testcases/org/apache/poi/ss/formula/functions/TestSumifs.java
+END
+TestMid.java
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/repos/asf/!svn/ver/1037426/poi/trunk/src/testcases/org/apache/poi/ss/formula/functions/TestMid.java
+END
+TestAverage.java
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/repos/asf/!svn/ver/1037426/poi/trunk/src/testcases/org/apache/poi/ss/formula/functions/TestAverage.java
+END
+EvalFactory.java
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/repos/asf/!svn/ver/1038691/poi/trunk/src/testcases/org/apache/poi/ss/formula/functions/EvalFactory.java
+END
+TestFind.java
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/repos/asf/!svn/ver/1037426/poi/trunk/src/testcases/org/apache/poi/ss/formula/functions/TestFind.java
+END
+TestMathX.java
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/repos/asf/!svn/ver/1135079/poi/trunk/src/testcases/org/apache/poi/ss/formula/functions/TestMathX.java
+END
+TestIsBlank.java
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/repos/asf/!svn/ver/1037426/poi/trunk/src/testcases/org/apache/poi/ss/formula/functions/TestIsBlank.java
+END
+TestCalendarFieldFunction.java
+K 25
+svn:wc:ra_dav:version-url
+V 118
+/repos/asf/!svn/ver/1085591/poi/trunk/src/testcases/org/apache/poi/ss/formula/functions/TestCalendarFieldFunction.java
+END
+TestSumif.java
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/repos/asf/!svn/ver/1170652/poi/trunk/src/testcases/org/apache/poi/ss/formula/functions/TestSumif.java
+END
+TestStatsLib.java
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/repos/asf/!svn/ver/1044642/poi/trunk/src/testcases/org/apache/poi/ss/formula/functions/TestStatsLib.java
+END
+TestIndexFunctionFromSpreadsheet.java
+K 25
+svn:wc:ra_dav:version-url
+V 125
+/repos/asf/!svn/ver/1037426/poi/trunk/src/testcases/org/apache/poi/ss/formula/functions/TestIndexFunctionFromSpreadsheet.java
+END
+TestFinanceLib.java
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/repos/asf/!svn/ver/1037426/poi/trunk/src/testcases/org/apache/poi/ss/formula/functions/TestFinanceLib.java
+END
+TestTrunc.java
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/repos/asf/!svn/ver/1294595/poi/trunk/src/testcases/org/apache/poi/ss/formula/functions/TestTrunc.java
+END
+TestMatch.java
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/repos/asf/!svn/ver/1037426/poi/trunk/src/testcases/org/apache/poi/ss/formula/functions/TestMatch.java
+END
+TestIrr.java
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/repos/asf/!svn/ver/1044370/poi/trunk/src/testcases/org/apache/poi/ss/formula/functions/TestIrr.java
+END
+TestSubtotal.java
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/repos/asf/!svn/ver/1296979/poi/trunk/src/testcases/org/apache/poi/ss/formula/functions/TestSubtotal.java
+END
+TestIndirect.java
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/repos/asf/!svn/ver/1037426/poi/trunk/src/testcases/org/apache/poi/ss/formula/functions/TestIndirect.java
+END
+AllIndividualFunctionEvaluationTests.java
+K 25
+svn:wc:ra_dav:version-url
+V 129
+/repos/asf/!svn/ver/1060788/poi/trunk/src/testcases/org/apache/poi/ss/formula/functions/AllIndividualFunctionEvaluationTests.java
+END
+NumericFunctionInvoker.java
+K 25
+svn:wc:ra_dav:version-url
+V 115
+/repos/asf/!svn/ver/1037426/poi/trunk/src/testcases/org/apache/poi/ss/formula/functions/NumericFunctionInvoker.java
+END
+TestIndex.java
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/repos/asf/!svn/ver/1037426/poi/trunk/src/testcases/org/apache/poi/ss/formula/functions/TestIndex.java
+END
+TestTrim.java
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/repos/asf/!svn/ver/1037426/poi/trunk/src/testcases/org/apache/poi/ss/formula/functions/TestTrim.java
+END
+TestValue.java
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/repos/asf/!svn/ver/1037426/poi/trunk/src/testcases/org/apache/poi/ss/formula/functions/TestValue.java
+END
+TestDate.java
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/repos/asf/!svn/ver/1037426/poi/trunk/src/testcases/org/apache/poi/ss/formula/functions/TestDate.java
+END

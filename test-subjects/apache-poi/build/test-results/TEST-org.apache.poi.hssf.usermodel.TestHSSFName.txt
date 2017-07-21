@@ -1,0 +1,29 @@
+Testsuite: org.apache.poi.hssf.usermodel.TestHSSFName
+Tests run: 26, Failures: 0, Errors: 0, Time elapsed: 0.011 sec
+
+Testcase: testRepeatingRowsAndColumsNames took 0 sec
+Testcase: testNamedRange took 0.002 sec
+Testcase: testNamedRead took 0 sec
+Testcase: testNamedReadModify took 0.001 sec
+Testcase: testPrintAreaFileRead took 0 sec
+Testcase: testDeletedReference took 0.001 sec
+Testcase: testTypeOfRootPtg took 0 sec
+Testcase: testCreate took 0 sec
+Testcase: testUnicodeNamedRange took 0.001 sec
+Testcase: testAddRemove took 0.001 sec
+Testcase: testScope took 0 sec
+Testcase: testMultiNamedRange took 0 sec
+Testcase: testSinglePrintArea took 0.001 sec
+Testcase: testSinglePrintAreaWOSheet took 0 sec
+Testcase: testPrintAreaFile took 0 sec
+Testcase: testMultiplePrintAreaFile took 0.001 sec
+Testcase: testPrintAreaCoords took 0 sec
+Testcase: testPrintAreaUnion took 0.001 sec
+Testcase: testPrintAreaRemove took 0 sec
+Testcase: testMultipleNamedWrite took 0 sec
+Testcase: testNamedCell_1 took 0.001 sec
+Testcase: testNamedCell_2 took 0 sec
+Testcase: testUninitialisedNameGetRefersToFormula_bug46973 took 0 sec
+Testcase: testDeletedCell took 0 sec
+Testcase: testFunctionNames took 0 sec
+Testcase: testDefferedSetting took 0.001 sec

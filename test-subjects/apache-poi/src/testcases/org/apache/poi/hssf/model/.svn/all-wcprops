@@ -1,0 +1,89 @@
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/repos/asf/!svn/ver/1296979/poi/trunk/src/testcases/org/apache/poi/hssf/model
+END
+AllModelTests.java
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/repos/asf/!svn/ver/814335/poi/trunk/src/testcases/org/apache/poi/hssf/model/AllModelTests.java
+END
+TestWorkbook.java
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/repos/asf/!svn/ver/1296979/poi/trunk/src/testcases/org/apache/poi/hssf/model/TestWorkbook.java
+END
+TestFormulaParserIf.java
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/repos/asf/!svn/ver/1038685/poi/trunk/src/testcases/org/apache/poi/hssf/model/TestFormulaParserIf.java
+END
+TestOperandClassTransformer.java
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/repos/asf/!svn/ver/1038685/poi/trunk/src/testcases/org/apache/poi/hssf/model/TestOperandClassTransformer.java
+END
+TestSheetAdditional.java
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/repos/asf/!svn/ver/893051/poi/trunk/src/testcases/org/apache/poi/hssf/model/TestSheetAdditional.java
+END
+TestFormulaParser.java
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/repos/asf/!svn/ver/1038685/poi/trunk/src/testcases/org/apache/poi/hssf/model/TestFormulaParser.java
+END
+TestShapes.java
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/repos/asf/!svn/ver/1138465/poi/trunk/src/testcases/org/apache/poi/hssf/model/TestShapes.java
+END
+TestLinkTable.java
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/repos/asf/!svn/ver/1296979/poi/trunk/src/testcases/org/apache/poi/hssf/model/TestLinkTable.java
+END
+TestDrawingManager.java
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/repos/asf/!svn/ver/805552/poi/trunk/src/testcases/org/apache/poi/hssf/model/TestDrawingManager.java
+END
+TestDrawingManager2.java
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/repos/asf/!svn/ver/805552/poi/trunk/src/testcases/org/apache/poi/hssf/model/TestDrawingManager2.java
+END
+TestRVA.java
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/repos/asf/!svn/ver/1038685/poi/trunk/src/testcases/org/apache/poi/hssf/model/TestRVA.java
+END
+TestRowBlocksReader.java
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/repos/asf/!svn/ver/776056/poi/trunk/src/testcases/org/apache/poi/hssf/model/TestRowBlocksReader.java
+END
+TestSheet.java
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/repos/asf/!svn/ver/1148295/poi/trunk/src/testcases/org/apache/poi/hssf/model/TestSheet.java
+END
+TestFormulaParserEval.java
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/repos/asf/!svn/ver/1038685/poi/trunk/src/testcases/org/apache/poi/hssf/model/TestFormulaParserEval.java
+END

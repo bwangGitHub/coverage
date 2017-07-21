@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/repos/asf/!svn/ver/1305810/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf
+END
+HWPFDocumentCore.java
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/repos/asf/!svn/ver/1296980/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/HWPFDocumentCore.java
+END
+QuickTest.java
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/repos/asf/!svn/ver/777204/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/QuickTest.java
+END
+HWPFOldDocument.java
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/repos/asf/!svn/ver/1195133/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/HWPFOldDocument.java
+END
+OldWordFileFormatException.java
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/repos/asf/!svn/ver/959346/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/OldWordFileFormatException.java
+END
+HWPFDocument.java
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/repos/asf/!svn/ver/1195133/poi/trunk/src/scratchpad/src/org/apache/poi/hwpf/HWPFDocument.java
+END

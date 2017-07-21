@@ -1,0 +1,281 @@
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/repos/asf/!svn/ver/1082936/poi/trunk/src/java/org/apache/poi/hssf/record/chart
+END
+ChartRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/repos/asf/!svn/ver/743601/poi/trunk/src/java/org/apache/poi/hssf/record/chart/ChartRecord.java
+END
+UnitsRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/repos/asf/!svn/ver/719053/poi/trunk/src/java/org/apache/poi/hssf/record/chart/UnitsRecord.java
+END
+ChartEndBlockRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/repos/asf/!svn/ver/964855/poi/trunk/src/java/org/apache/poi/hssf/record/chart/ChartEndBlockRecord.java
+END
+EndRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/repos/asf/!svn/ver/950611/poi/trunk/src/java/org/apache/poi/hssf/record/chart/EndRecord.java
+END
+DataLabelExtensionRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/repos/asf/!svn/ver/721007/poi/trunk/src/java/org/apache/poi/hssf/record/chart/DataLabelExtensionRecord.java
+END
+AreaRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/repos/asf/!svn/ver/719053/poi/trunk/src/java/org/apache/poi/hssf/record/chart/AreaRecord.java
+END
+AxisParentRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/repos/asf/!svn/ver/719053/poi/trunk/src/java/org/apache/poi/hssf/record/chart/AxisParentRecord.java
+END
+ChartEndObjectRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/repos/asf/!svn/ver/1082936/poi/trunk/src/java/org/apache/poi/hssf/record/chart/ChartEndObjectRecord.java
+END
+DataFormatRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/repos/asf/!svn/ver/719053/poi/trunk/src/java/org/apache/poi/hssf/record/chart/DataFormatRecord.java
+END
+SeriesIndexRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/repos/asf/!svn/ver/719053/poi/trunk/src/java/org/apache/poi/hssf/record/chart/SeriesIndexRecord.java
+END
+BeginRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/repos/asf/!svn/ver/950611/poi/trunk/src/java/org/apache/poi/hssf/record/chart/BeginRecord.java
+END
+AxisLineFormatRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/repos/asf/!svn/ver/719053/poi/trunk/src/java/org/apache/poi/hssf/record/chart/AxisLineFormatRecord.java
+END
+AxisUsedRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/repos/asf/!svn/ver/719053/poi/trunk/src/java/org/apache/poi/hssf/record/chart/AxisUsedRecord.java
+END
+FontBasisRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/repos/asf/!svn/ver/719053/poi/trunk/src/java/org/apache/poi/hssf/record/chart/FontBasisRecord.java
+END
+NumberFormatIndexRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/repos/asf/!svn/ver/719053/poi/trunk/src/java/org/apache/poi/hssf/record/chart/NumberFormatIndexRecord.java
+END
+SeriesToChartGroupRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/repos/asf/!svn/ver/719053/poi/trunk/src/java/org/apache/poi/hssf/record/chart/SeriesToChartGroupRecord.java
+END
+LineFormatRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/repos/asf/!svn/ver/719053/poi/trunk/src/java/org/apache/poi/hssf/record/chart/LineFormatRecord.java
+END
+AxisRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/repos/asf/!svn/ver/719053/poi/trunk/src/java/org/apache/poi/hssf/record/chart/AxisRecord.java
+END
+BarRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/repos/asf/!svn/ver/719053/poi/trunk/src/java/org/apache/poi/hssf/record/chart/BarRecord.java
+END
+ChartStartObjectRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/repos/asf/!svn/ver/713892/poi/trunk/src/java/org/apache/poi/hssf/record/chart/ChartStartObjectRecord.java
+END
+PlotAreaRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/repos/asf/!svn/ver/719053/poi/trunk/src/java/org/apache/poi/hssf/record/chart/PlotAreaRecord.java
+END
+DatRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/repos/asf/!svn/ver/719053/poi/trunk/src/java/org/apache/poi/hssf/record/chart/DatRecord.java
+END
+PlotGrowthRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/repos/asf/!svn/ver/719053/poi/trunk/src/java/org/apache/poi/hssf/record/chart/PlotGrowthRecord.java
+END
+ChartFormatRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/repos/asf/!svn/ver/743601/poi/trunk/src/java/org/apache/poi/hssf/record/chart/ChartFormatRecord.java
+END
+ChartTitleFormatRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/repos/asf/!svn/ver/719053/poi/trunk/src/java/org/apache/poi/hssf/record/chart/ChartTitleFormatRecord.java
+END
+CategorySeriesAxisRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/repos/asf/!svn/ver/719053/poi/trunk/src/java/org/apache/poi/hssf/record/chart/CategorySeriesAxisRecord.java
+END
+SeriesLabelsRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/repos/asf/!svn/ver/719053/poi/trunk/src/java/org/apache/poi/hssf/record/chart/SeriesLabelsRecord.java
+END
+AxisOptionsRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/repos/asf/!svn/ver/719053/poi/trunk/src/java/org/apache/poi/hssf/record/chart/AxisOptionsRecord.java
+END
+AreaFormatRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/repos/asf/!svn/ver/719053/poi/trunk/src/java/org/apache/poi/hssf/record/chart/AreaFormatRecord.java
+END
+SeriesChartGroupIndexRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 111
+/repos/asf/!svn/ver/719053/poi/trunk/src/java/org/apache/poi/hssf/record/chart/SeriesChartGroupIndexRecord.java
+END
+ObjectLinkRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/repos/asf/!svn/ver/719053/poi/trunk/src/java/org/apache/poi/hssf/record/chart/ObjectLinkRecord.java
+END
+TextRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/repos/asf/!svn/ver/719053/poi/trunk/src/java/org/apache/poi/hssf/record/chart/TextRecord.java
+END
+SheetPropertiesRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/repos/asf/!svn/ver/743601/poi/trunk/src/java/org/apache/poi/hssf/record/chart/SheetPropertiesRecord.java
+END
+CatLabRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/repos/asf/!svn/ver/884065/poi/trunk/src/java/org/apache/poi/hssf/record/chart/CatLabRecord.java
+END
+SeriesListRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/repos/asf/!svn/ver/743601/poi/trunk/src/java/org/apache/poi/hssf/record/chart/SeriesListRecord.java
+END
+ChartFRTInfoRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/repos/asf/!svn/ver/777660/poi/trunk/src/java/org/apache/poi/hssf/record/chart/ChartFRTInfoRecord.java
+END
+ValueRangeRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/repos/asf/!svn/ver/719053/poi/trunk/src/java/org/apache/poi/hssf/record/chart/ValueRangeRecord.java
+END
+FrameRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/repos/asf/!svn/ver/719053/poi/trunk/src/java/org/apache/poi/hssf/record/chart/FrameRecord.java
+END
+ChartStartBlockRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/repos/asf/!svn/ver/964855/poi/trunk/src/java/org/apache/poi/hssf/record/chart/ChartStartBlockRecord.java
+END
+SeriesRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/repos/asf/!svn/ver/719053/poi/trunk/src/java/org/apache/poi/hssf/record/chart/SeriesRecord.java
+END
+TickRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/repos/asf/!svn/ver/719053/poi/trunk/src/java/org/apache/poi/hssf/record/chart/TickRecord.java
+END
+FontIndexRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/repos/asf/!svn/ver/719053/poi/trunk/src/java/org/apache/poi/hssf/record/chart/FontIndexRecord.java
+END
+LegendRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/repos/asf/!svn/ver/719053/poi/trunk/src/java/org/apache/poi/hssf/record/chart/LegendRecord.java
+END
+SeriesTextRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/repos/asf/!svn/ver/719053/poi/trunk/src/java/org/apache/poi/hssf/record/chart/SeriesTextRecord.java
+END
+LinkedDataRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/repos/asf/!svn/ver/1038683/poi/trunk/src/java/org/apache/poi/hssf/record/chart/LinkedDataRecord.java
+END
+DefaultDataLabelTextPropertiesRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 120
+/repos/asf/!svn/ver/719053/poi/trunk/src/java/org/apache/poi/hssf/record/chart/DefaultDataLabelTextPropertiesRecord.java
+END

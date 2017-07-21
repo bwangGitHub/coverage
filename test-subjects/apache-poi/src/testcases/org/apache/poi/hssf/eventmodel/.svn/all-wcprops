@@ -1,0 +1,17 @@
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/repos/asf/!svn/ver/893929/poi/trunk/src/testcases/org/apache/poi/hssf/eventmodel
+END
+TestAbortableListener.java
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/repos/asf/!svn/ver/893929/poi/trunk/src/testcases/org/apache/poi/hssf/eventmodel/TestAbortableListener.java
+END
+TestEventRecordFactory.java
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/repos/asf/!svn/ver/771865/poi/trunk/src/testcases/org/apache/poi/hssf/eventmodel/TestEventRecordFactory.java
+END

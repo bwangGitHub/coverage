@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/repos/asf/!svn/ver/1082946/poi/trunk/src/ooxml/testcases/org/apache/poi/xssf/usermodel/extensions
+END
+TestXSSFBorder.java
+K 25
+svn:wc:ra_dav:version-url
+V 118
+/repos/asf/!svn/ver/1082946/poi/trunk/src/ooxml/testcases/org/apache/poi/xssf/usermodel/extensions/TestXSSFBorder.java
+END
+TestXSSFSheetComments.java
+K 25
+svn:wc:ra_dav:version-url
+V 124
+/repos/asf/!svn/ver/712084/poi/trunk/src/ooxml/testcases/org/apache/poi/xssf/usermodel/extensions/TestXSSFSheetComments.java
+END
+TestXSSFCellFill.java
+K 25
+svn:wc:ra_dav:version-url
+V 119
+/repos/asf/!svn/ver/946136/poi/trunk/src/ooxml/testcases/org/apache/poi/xssf/usermodel/extensions/TestXSSFCellFill.java
+END

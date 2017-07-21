@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/repos/asf/!svn/ver/781867/poi/trunk/src/records/styles
+END
+record_document.xsl
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/repos/asf/!svn/ver/781867/poi/trunk/src/records/styles/record_document.xsl
+END
+record_test.xsl
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/repos/asf/!svn/ver/712084/poi/trunk/src/records/styles/record_test.xsl
+END
+record.xsl
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/repos/asf/!svn/ver/712084/poi/trunk/src/records/styles/record.xsl
+END
