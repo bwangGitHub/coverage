@@ -1,6 +1,0 @@
-Testsuite: org.apache.poi.ss.formula.constant.TestConstantValueParser
-Tests run: 3, Failures: 0, Errors: 0, Time elapsed: 0.001 sec
-
-Testcase: testDecode took 0 sec
-Testcase: testGetEncodedSize took 0 sec
-Testcase: testEncode took 0 sec

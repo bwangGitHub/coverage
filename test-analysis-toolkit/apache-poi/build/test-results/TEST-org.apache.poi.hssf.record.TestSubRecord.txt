@@ -1,6 +1,0 @@
-Testsuite: org.apache.poi.hssf.record.TestSubRecord
-Tests run: 3, Failures: 0, Errors: 0, Time elapsed: 0 sec
-
-Testcase: testReadAll_bug45778 took 0 sec
-Testcase: testReadManualComboWithFormula took 0 sec
-Testcase: testWayTooMuchPadding_bug46545 took 0 sec

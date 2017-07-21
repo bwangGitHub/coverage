@@ -1,6 +1,0 @@
-Testsuite: org.apache.poi.ss.util.TestSheetBuilder
-Tests run: 3, Failures: 0, Errors: 0, Time elapsed: 0.001 sec
-
-Testcase: testNotCreateEmptyCells took 0.001 sec
-Testcase: testEmptyCells took 0 sec
-Testcase: testSheetName took 0 sec

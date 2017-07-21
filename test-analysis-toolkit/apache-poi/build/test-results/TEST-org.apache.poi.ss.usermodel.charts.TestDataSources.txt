@@ -1,9 +1,0 @@
-Testsuite: org.apache.poi.ss.usermodel.charts.TestDataSources
-Tests run: 6, Failures: 0, Errors: 0, Time elapsed: 0.003 sec
-
-Testcase: testNumericArrayDataSource took 0.001 sec
-Testcase: testStringArrayDataSource took 0 sec
-Testcase: testNumericCellDataSource took 0.001 sec
-Testcase: testStringCellDataSource took 0.001 sec
-Testcase: testMixedCellDataSource took 0 sec
-Testcase: testIOBExceptionOnInvalidIndex took 0 sec

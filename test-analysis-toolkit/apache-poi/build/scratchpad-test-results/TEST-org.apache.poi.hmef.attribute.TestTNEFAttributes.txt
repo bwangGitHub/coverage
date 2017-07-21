@@ -1,9 +1,0 @@
-Testsuite: org.apache.poi.hmef.attribute.TestTNEFAttributes
-Tests run: 6, Failures: 0, Errors: 0, Time elapsed: 0.014 sec
-
-Testcase: testCounts took 0.002 sec
-Testcase: testBasics took 0.002 sec
-Testcase: testCommon took 0.001 sec
-Testcase: testString took 0.002 sec
-Testcase: testDate took 0.001 sec
-Testcase: testMAPI took 0.001 sec

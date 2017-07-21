@@ -1,9 +1,0 @@
-Testsuite: org.apache.poi.ss.util.TestCellReference
-Tests run: 6, Failures: 0, Errors: 0, Time elapsed: 0.001 sec
-
-Testcase: testGetCellRefParts took 0 sec
-Testcase: testGetColNumFromRef took 0 sec
-Testcase: testGetRowNumFromRef took 0 sec
-Testcase: testConvertNumToColString took 0.001 sec
-Testcase: testBadRowNumber took 0 sec
-Testcase: testInvalidReference took 0 sec

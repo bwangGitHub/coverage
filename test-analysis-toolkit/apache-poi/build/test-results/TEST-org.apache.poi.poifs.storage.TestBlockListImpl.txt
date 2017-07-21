@@ -1,7 +1,0 @@
-Testsuite: org.apache.poi.poifs.storage.TestBlockListImpl
-Tests run: 4, Failures: 0, Errors: 0, Time elapsed: 0.002 sec
-
-Testcase: testRemove took 0.001 sec
-Testcase: testFetchBlocks took 0 sec
-Testcase: testZap took 0 sec
-Testcase: testSetBAT took 0 sec

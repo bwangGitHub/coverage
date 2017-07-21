@@ -1,4 +1,0 @@
-Testsuite: org.apache.poi.hpsf.basic.TestHPSFBugs
-Tests run: 1, Failures: 0, Errors: 0, Time elapsed: 0.006 sec
-
-Testcase: test48832 took 0.006 sec

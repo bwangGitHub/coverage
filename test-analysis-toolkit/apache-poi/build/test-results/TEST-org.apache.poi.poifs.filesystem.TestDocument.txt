@@ -1,4 +1,0 @@
-Testsuite: org.apache.poi.poifs.filesystem.TestDocument
-Tests run: 1, Failures: 0, Errors: 0, Time elapsed: 0.251 sec
-
-Testcase: testPOIFSDocument took 0.251 sec

@@ -1,8 +1,0 @@
-Testsuite: org.apache.poi.hmef.TestHMEFMessage
-Tests run: 5, Failures: 0, Errors: 0, Time elapsed: 0.022 sec
-
-Testcase: testCounts took 0.002 sec
-Testcase: testOpen took 0.002 sec
-Testcase: testBasicMessageAttributes took 0.002 sec
-Testcase: testBasicMessageMAPIAttributes took 0.001 sec
-Testcase: testMessageContents took 0.012 sec

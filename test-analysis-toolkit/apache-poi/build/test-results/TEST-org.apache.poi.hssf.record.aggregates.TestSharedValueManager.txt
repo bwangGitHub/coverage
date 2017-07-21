@@ -1,7 +1,0 @@
-Testsuite: org.apache.poi.hssf.record.aggregates.TestSharedValueManager
-Tests run: 4, Failures: 0, Errors: 0, Time elapsed: 0.016 sec
-
-Testcase: testPartiallyOverlappingRanges took 0.006 sec
-Testcase: testCompletelyOverlappedRanges took 0.004 sec
-Testcase: testRecalculateFormulas47747 took 0.001 sec
-Testcase: testBug52527 took 0.005 sec

@@ -1,7 +1,0 @@
-Testsuite: org.apache.poi.ss.formula.functions.TestText
-Tests run: 4, Failures: 0, Errors: 0, Time elapsed: 0.003 sec
-
-Testcase: testTextWithStringFirstArg took 0 sec
-Testcase: testTextWithDeciamlFormatSecondArg took 0 sec
-Testcase: testTextWithFractionFormatSecondArg took 0.001 sec
-Testcase: testTextWithDateFormatSecondArg took 0.001 sec

@@ -1,8 +1,0 @@
-Testsuite: org.apache.poi.ss.formula.functions.TestSumproduct
-Tests run: 5, Failures: 0, Errors: 0, Time elapsed: 0 sec
-
-Testcase: testScalarSimple took 0 sec
-Testcase: testAreaSimple took 0 sec
-Testcase: testOneByOneArea took 0 sec
-Testcase: testMismatchAreaDimensions took 0 sec
-Testcase: testAreaWithErrorCell took 0 sec

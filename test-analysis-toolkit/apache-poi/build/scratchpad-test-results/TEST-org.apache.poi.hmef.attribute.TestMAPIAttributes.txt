@@ -1,7 +1,0 @@
-Testsuite: org.apache.poi.hmef.attribute.TestMAPIAttributes
-Tests run: 4, Failures: 0, Errors: 0, Time elapsed: 0.013 sec
-
-Testcase: testCounts took 0.003 sec
-Testcase: testBasics took 0.004 sec
-Testcase: testTyped took 0.001 sec
-Testcase: testCommon took 0.001 sec

@@ -1,6 +1,0 @@
-Testsuite: org.apache.poi.poifs.property.TestRootProperty
-Tests run: 3, Failures: 0, Errors: 0, Time elapsed: 0.001 sec
-
-Testcase: testConstructor took 0.001 sec
-Testcase: testReadingConstructor took 0 sec
-Testcase: testSetSize took 0 sec

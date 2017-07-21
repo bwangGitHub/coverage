@@ -1,9 +1,0 @@
-Testsuite: org.apache.poi.poifs.filesystem.TestPOIFSFileSystem
-Tests run: 6, Failures: 0, Errors: 0, Time elapsed: 0.04 sec
-
-Testcase: testAlwaysClose took 0 sec
-Testcase: testShortLastBlock took 0.004 sec
-Testcase: testFATandDIFATsectors took 0 sec
-Testcase: testBATandXBAT took 0.034 sec
-Testcase: test4KBlocks took 0.001 sec
-Testcase: testNotesOLE2Files took 0 sec

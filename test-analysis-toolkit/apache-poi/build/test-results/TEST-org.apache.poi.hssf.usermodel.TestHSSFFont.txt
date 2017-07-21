@@ -1,7 +1,0 @@
-Testsuite: org.apache.poi.hssf.usermodel.TestHSSFFont
-Tests run: 4, Failures: 0, Errors: 0, Time elapsed: 0.002 sec
-
-Testcase: testDefaultFont took 0 sec
-Testcase: test45338 took 0 sec
-Testcase: testGetNumberOfFonts took 0 sec
-Testcase: testCreateSave took 0.001 sec

@@ -1,5 +1,0 @@
-Testsuite: org.apache.poi.ss.formula.eval.TestMissingArgEval
-Tests run: 2, Failures: 0, Errors: 0, Time elapsed: 0 sec
-
-Testcase: testEvaluateMissingArgs took 0 sec
-Testcase: testCountFuncs took 0 sec

@@ -1,6 +1,0 @@
-Testsuite: org.apache.poi.hdgf.TestHDGFCore
-Tests run: 3, Failures: 0, Errors: 0, Time elapsed: 0.34 sec
-
-Testcase: testCreate took 0.172 sec
-Testcase: testTrailer took 0.015 sec
-Testcase: testNegativeChunkLength took 0.153 sec

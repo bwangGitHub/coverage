@@ -1,8 +1,0 @@
-Testsuite: org.apache.poi.ss.formula.atp.TestDateParser
-Tests run: 5, Failures: 0, Errors: 0, Time elapsed: 0.001 sec
-
-Testcase: testFailWhenNoDate took 0.001 sec
-Testcase: testFailWhenLooksLikeDateButItIsnt took 0 sec
-Testcase: testFailWhenIsInvalidDate took 0 sec
-Testcase: testShouldParseValidDate took 0 sec
-Testcase: testShouldIgnoreTimestamp took 0 sec

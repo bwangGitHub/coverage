@@ -1,4 +1,0 @@
-Testsuite: org.apache.poi.ss.formula.TestPlainCellCache
-Tests run: 1, Failures: 0, Errors: 0, Time elapsed: 0.439 sec
-
-Testcase: testLoc took 0.439 sec

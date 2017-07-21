@@ -1,7 +1,0 @@
-Testsuite: org.apache.poi.ss.formula.functions.TestRowCol
-Tests run: 4, Failures: 0, Errors: 0, Time elapsed: 0 sec
-
-Testcase: testCol took 0 sec
-Testcase: testRow took 0 sec
-Testcase: testColumns took 0 sec
-Testcase: testRows took 0 sec

@@ -1,9 +1,0 @@
-Testsuite: org.apache.poi.ddf.TestEscherContainerRecord
-Tests run: 6, Failures: 0, Errors: 0, Time elapsed: 0.002 sec
-
-Testcase: testFillFields took 0 sec
-Testcase: testSerialize took 0 sec
-Testcase: testToString took 0 sec
-Testcase: testGetRecordSize took 0 sec
-Testcase: testBug44857 took 0 sec
-Testcase: testChildren took 0 sec

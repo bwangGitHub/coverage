@@ -1,5 +1,0 @@
-Testsuite: org.apache.poi.ss.formula.functions.TestRoundFuncs
-Tests run: 2, Failures: 0, Errors: 0, Time elapsed: 0 sec
-
-Testcase: testRounddownWithStringArg took 0 sec
-Testcase: testRoundupWithStringArg took 0 sec

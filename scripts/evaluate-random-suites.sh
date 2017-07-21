@@ -73,7 +73,7 @@ do
 
         echo "Measuring coverage"
         $BASE_DIR/scripts/measure-coverage.sh $1 "$MASTER_SUITE_PACKAGE.random.$CURRENT_TEST_NAME" > $CURRENT_TEST_DIR/coverage.log
-        cp $BASE_DIR/test-subjects/closure-results/CodeCover/codecover-results.html $BASE_DIR/test-subjects/closure-results/random"$SIZE"/methods"$SUITE_NUM"/codecover-results.html
+        cp $BASE_DIR/test-subjects/joda-time-results/CodeCover/codecover-results.html $BASE_DIR/test-subjects/joda-time-results/random"$SIZE"/methods"$SUITE_NUM"/codecover-results.html
         echo "pcl $RESULT_FILE" >&3
         read COVERAGE_SCORE <&4
         echo -n $COVERAGE_SCORE, >> $DATA_FILE

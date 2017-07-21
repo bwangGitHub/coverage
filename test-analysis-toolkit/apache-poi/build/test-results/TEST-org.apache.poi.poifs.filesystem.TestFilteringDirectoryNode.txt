@@ -1,6 +1,0 @@
-Testsuite: org.apache.poi.poifs.filesystem.TestFilteringDirectoryNode
-Tests run: 3, Failures: 0, Errors: 0, Time elapsed: 0.001 sec
-
-Testcase: testNoFiltering took 0.001 sec
-Testcase: testChildFiltering took 0 sec
-Testcase: testNestedFiltering took 0 sec

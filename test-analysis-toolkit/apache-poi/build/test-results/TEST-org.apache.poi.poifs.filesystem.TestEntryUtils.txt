@@ -1,6 +1,0 @@
-Testsuite: org.apache.poi.poifs.filesystem.TestEntryUtils
-Tests run: 3, Failures: 0, Errors: 0, Time elapsed: 0.001 sec
-
-Testcase: testCopyRecursively took 0 sec
-Testcase: testAreDocumentsIdentical took 0 sec
-Testcase: testAreDirectoriesIdentical took 0 sec

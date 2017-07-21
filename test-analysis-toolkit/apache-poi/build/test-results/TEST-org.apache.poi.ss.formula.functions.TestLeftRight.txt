@@ -1,5 +1,0 @@
-Testsuite: org.apache.poi.ss.formula.functions.TestLeftRight
-Tests run: 2, Failures: 0, Errors: 0, Time elapsed: 0 sec
-
-Testcase: testLeftRight_bug49841 took 0 sec
-Testcase: testLeftRightNegativeOperand took 0 sec

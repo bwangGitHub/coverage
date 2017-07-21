@@ -1,9 +1,0 @@
-Testsuite: org.apache.poi.ss.formula.atp.TestRandBetween
-Tests run: 6, Failures: 0, Errors: 0, Time elapsed: 0.005 sec
-
-Testcase: testRandBetweenSameValues took 0.001 sec
-Testcase: testRandBetweenSpecialCase took 0.001 sec
-Testcase: testRandBetweenTopBlank took 0.001 sec
-Testcase: testRandBetweenWrongInputTypes took 0.001 sec
-Testcase: testRandBetweenBottomGreaterThanTop took 0.001 sec
-Testcase: testRandBetweenBoundaryCheck took 0 sec

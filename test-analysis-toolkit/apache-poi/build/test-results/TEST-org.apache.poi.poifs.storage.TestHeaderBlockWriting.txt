@@ -1,7 +1,0 @@
-Testsuite: org.apache.poi.poifs.storage.TestHeaderBlockWriting
-Tests run: 4, Failures: 0, Errors: 0, Time elapsed: 0.001 sec
-
-Testcase: testConstructors took 0 sec
-Testcase: testSetSBATStart took 0 sec
-Testcase: testSetPropertyStart took 0.001 sec
-Testcase: testSetBATBlocks took 0 sec

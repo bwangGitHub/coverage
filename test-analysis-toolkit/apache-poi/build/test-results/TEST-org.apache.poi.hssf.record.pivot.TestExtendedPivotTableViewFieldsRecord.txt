@@ -1,5 +1,0 @@
-Testsuite: org.apache.poi.hssf.record.pivot.TestExtendedPivotTableViewFieldsRecord
-Tests run: 2, Failures: 0, Errors: 0, Time elapsed: 0 sec
-
-Testcase: testSubNameNotPresent_bug46693 took 0 sec
-Testcase: testOlderFormat_bug46918 took 0 sec

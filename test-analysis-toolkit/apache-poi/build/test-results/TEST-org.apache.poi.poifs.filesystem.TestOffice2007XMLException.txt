@@ -1,5 +1,0 @@
-Testsuite: org.apache.poi.poifs.filesystem.TestOffice2007XMLException
-Tests run: 2, Failures: 0, Errors: 0, Time elapsed: 0.001 sec
-
-Testcase: testXMLException took 0 sec
-Testcase: testDetectAsPOIFS took 0 sec

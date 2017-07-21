@@ -1,7 +1,0 @@
-Testsuite: org.apache.poi.poifs.crypt.TestDecryptor
-Tests run: 4, Failures: 0, Errors: 0, Time elapsed: 0.282 sec
-
-Testcase: testPasswordVerification took 0.115 sec
-Testcase: testDecrypt took 0.037 sec
-Testcase: testAgile took 0.069 sec
-Testcase: testDataLength took 0.061 sec

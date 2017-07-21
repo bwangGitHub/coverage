@@ -1,4 +1,0 @@
-Testsuite: org.apache.poi.hpsf.basic.TestReadAllFiles
-Tests run: 1, Failures: 0, Errors: 0, Time elapsed: 0.026 sec
-
-Testcase: testReadAllFiles took 0.026 sec

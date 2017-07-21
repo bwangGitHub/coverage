@@ -1,7 +1,0 @@
-Testsuite: org.apache.poi.hmef.TestAttachments
-Tests run: 4, Failures: 0, Errors: 0, Time elapsed: 0.191 sec
-
-Testcase: testCounts took 0.085 sec
-Testcase: testBasicAttachments took 0.003 sec
-Testcase: testAttachmentDetails took 0.006 sec
-Testcase: testAttachmentContents took 0.072 sec

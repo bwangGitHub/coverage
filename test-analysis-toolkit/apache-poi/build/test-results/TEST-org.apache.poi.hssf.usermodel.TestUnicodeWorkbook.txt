@@ -1,4 +1,0 @@
-Testsuite: org.apache.poi.hssf.usermodel.TestUnicodeWorkbook
-Tests run: 1, Failures: 0, Errors: 0, Time elapsed: 0.001 sec
-
-Testcase: testUmlatReadWrite took 0.001 sec

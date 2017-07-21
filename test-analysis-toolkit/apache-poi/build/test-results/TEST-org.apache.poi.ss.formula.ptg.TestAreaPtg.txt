@@ -1,6 +1,0 @@
-Testsuite: org.apache.poi.ss.formula.ptg.TestAreaPtg
-Tests run: 3, Failures: 0, Errors: 0, Time elapsed: 0.001 sec
-
-Testcase: testSetColumnsAbsolute took 0 sec
-Testcase: testSetColumnsRelative took 0 sec
-Testcase: testFormulaParser took 0.001 sec

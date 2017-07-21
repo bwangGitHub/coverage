@@ -1,9 +1,0 @@
-Testsuite: org.apache.poi.hssf.record.TestSSTRecordSizeCalculator
-Tests run: 6, Failures: 0, Errors: 0, Time elapsed: 0.001 sec
-
-Testcase: testBasic took 0 sec
-Testcase: testBigStringAcrossUnicode took 0 sec
-Testcase: testPerfectFit took 0 sec
-Testcase: testJustOversized took 0 sec
-Testcase: testSecondStringStartsOnNewContinuation took 0 sec
-Testcase: testHeaderCrossesNormalContinuePoint took 0 sec

@@ -1,8 +1,0 @@
-Testsuite: org.apache.poi.ss.formula.functions.TestFinanceLib
-Tests run: 5, Failures: 0, Errors: 0, Time elapsed: 0.001 sec
-
-Testcase: testFv took 0 sec
-Testcase: testNpv took 0 sec
-Testcase: testPmt took 0 sec
-Testcase: testPv took 0 sec
-Testcase: testNper took 0 sec

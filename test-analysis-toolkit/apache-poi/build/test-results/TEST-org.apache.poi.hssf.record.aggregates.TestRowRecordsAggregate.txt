@@ -1,6 +1,0 @@
-Testsuite: org.apache.poi.hssf.record.aggregates.TestRowRecordsAggregate
-Tests run: 3, Failures: 0, Errors: 0, Time elapsed: 0.002 sec
-
-Testcase: testRowGet took 0 sec
-Testcase: testArraysAndTables took 0.002 sec
-Testcase: testUnknownContinue_bug46280 took 0 sec

@@ -1,8 +1,0 @@
-Testsuite: org.apache.poi.hdgf.TestHDGFLZW
-Tests run: 5, Failures: 0, Errors: 0, Time elapsed: 0.038 sec
-
-Testcase: testFromToInt took 0 sec
-Testcase: testCounts took 0 sec
-Testcase: testDecompress took 0 sec
-Testcase: testCompressMini took 0.029 sec
-Testcase: testCompressMidi took 0 sec

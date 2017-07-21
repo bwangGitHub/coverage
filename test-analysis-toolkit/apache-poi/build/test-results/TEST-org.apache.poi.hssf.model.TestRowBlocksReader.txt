@@ -1,4 +1,0 @@
-Testsuite: org.apache.poi.hssf.model.TestRowBlocksReader
-Tests run: 1, Failures: 0, Errors: 0, Time elapsed: 0 sec
-
-Testcase: testAbnormalPivotTableRecords_bug46280 took 0 sec

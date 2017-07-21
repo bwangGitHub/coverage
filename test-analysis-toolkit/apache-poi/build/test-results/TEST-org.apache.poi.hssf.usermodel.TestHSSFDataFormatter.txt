@@ -1,8 +1,0 @@
-Testsuite: org.apache.poi.hssf.usermodel.TestHSSFDataFormatter
-Tests run: 5, Failures: 0, Errors: 0, Time elapsed: 0.029 sec
-
-Testcase: testGetFormattedCellValueHSSFCell took 0.01 sec
-Testcase: testGetFormattedCellValueHSSFCellHSSFFormulaEvaluator took 0 sec
-Testcase: testSetDefaultNumberFormat took 0.001 sec
-Testcase: testGeneralAtFormat took 0 sec
-Testcase: testFromFile took 0.002 sec

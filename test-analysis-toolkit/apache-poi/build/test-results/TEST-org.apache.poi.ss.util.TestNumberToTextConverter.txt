@@ -1,5 +1,0 @@
-Testsuite: org.apache.poi.ss.util.TestNumberToTextConverter
-Tests run: 2, Failures: 0, Errors: 0, Time elapsed: 0.005 sec
-
-Testcase: testAll took 0.005 sec
-Testcase: testSimpleRendering_bug56156 took 0 sec

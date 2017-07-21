@@ -1,6 +1,0 @@
-Testsuite: org.apache.poi.ss.formula.functions.TestIrr
-Tests run: 3, Failures: 0, Errors: 0, Time elapsed: 0.002 sec
-
-Testcase: testIrr took 0 sec
-Testcase: testEvaluateInSheet took 0 sec
-Testcase: testIrrFromSpreadsheet took 0.002 sec

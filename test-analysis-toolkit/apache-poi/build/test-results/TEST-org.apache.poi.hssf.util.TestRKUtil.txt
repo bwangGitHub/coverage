@@ -1,4 +1,0 @@
-Testsuite: org.apache.poi.hssf.util.TestRKUtil
-Tests run: 1, Failures: 0, Errors: 0, Time elapsed: 0 sec
-
-Testcase: testDecode took 0 sec

@@ -1,5 +1,0 @@
-Testsuite: org.apache.poi.hssf.eventusermodel.TestFormatTrackingHSSFListener
-Tests run: 2, Failures: 0, Errors: 0, Time elapsed: 0.245 sec
-
-Testcase: testFormats took 0.002 sec
-Testcase: testTurnToString took 0.243 sec

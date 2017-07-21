@@ -20,6 +20,7 @@ java $PROJECT_JVM_ARGS -cp $UNINSTRUMENTED_CLASSPATH org.pitest.mutationtest.Mut
 --targetClasses $MASTER_SUITE_PACKAGE.* \
 --mutableCodePaths $BUILD_DIR \
 --sourceDirs $SRC_DIR \
---jvmArgs $PROJECT_JVM_ARGS \
--verbose
+--outputFormats CSV \
+--verbose
+#--jvmArgs $PROJECT_JVM_ARGS \
 cd -

@@ -1,9 +1,0 @@
-Testsuite: org.apache.poi.hssf.record.TestFormulaRecord
-Tests run: 6, Failures: 0, Errors: 0, Time elapsed: 0.001 sec
-
-Testcase: testCreateFormulaRecord took 0 sec
-Testcase: testCheckNanPreserve took 0 sec
-Testcase: testExpFormula took 0 sec
-Testcase: testWithConcat took 0 sec
-Testcase: testReserialize took 0 sec
-Testcase: testCachedValue_bug46479 took 0.001 sec

@@ -1,8 +1,0 @@
-Testsuite: org.apache.poi.util.TestStringUtil
-Tests run: 5, Failures: 0, Errors: 0, Time elapsed: 0.002 sec
-
-Testcase: testFormat took 0.001 sec
-Testcase: testGetFromUnicodeHighSymbolsWithCodesMoreThan127 took 0 sec
-Testcase: testPutCompressedUnicode took 0 sec
-Testcase: testPutUncompressedUnicode took 0 sec
-Testcase: testStringsIterator took 0.001 sec

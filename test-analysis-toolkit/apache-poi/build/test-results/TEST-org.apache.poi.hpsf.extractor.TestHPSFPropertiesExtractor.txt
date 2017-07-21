@@ -1,8 +1,0 @@
-Testsuite: org.apache.poi.hpsf.extractor.TestHPSFPropertiesExtractor
-Tests run: 5, Failures: 0, Errors: 0, Time elapsed: 0.054 sec
-
-Testcase: testNormalProperties took 0.004 sec
-Testcase: testNormalUnicodeProperties took 0 sec
-Testcase: testCustomProperties took 0.001 sec
-Testcase: testConstructors took 0.005 sec
-Testcase: test42726 took 0.043 sec

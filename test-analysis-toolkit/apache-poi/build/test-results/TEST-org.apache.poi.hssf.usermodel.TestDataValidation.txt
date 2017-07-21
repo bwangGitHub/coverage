@@ -1,5 +1,0 @@
-Testsuite: org.apache.poi.hssf.usermodel.TestDataValidation
-Tests run: 2, Failures: 0, Errors: 0, Time elapsed: 0.01 sec
-
-Testcase: testAddToExistingSheet took 0.003 sec
-Testcase: testDataValidation took 0.007 sec

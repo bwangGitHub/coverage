@@ -1,4 +1,0 @@
-Testsuite: org.apache.poi.poifs.storage.TestSmallBlockTableReader
-Tests run: 1, Failures: 0, Errors: 0, Time elapsed: 0.001 sec
-
-Testcase: testReadingConstructor took 0 sec

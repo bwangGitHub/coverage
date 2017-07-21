@@ -1,8 +1,0 @@
-Testsuite: org.apache.poi.hdgf.chunks.TestChunks
-Tests run: 5, Failures: 0, Errors: 0, Time elapsed: 0.021 sec
-
-Testcase: testChunkHeaderA took 0.004 sec
-Testcase: testChunkHeaderB took 0.003 sec
-Testcase: testOneChunk took 0.003 sec
-Testcase: testAnotherChunk took 0.001 sec
-Testcase: testManyChunks took 0.001 sec

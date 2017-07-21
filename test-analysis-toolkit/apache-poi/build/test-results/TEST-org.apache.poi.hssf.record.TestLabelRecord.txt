@@ -1,4 +1,0 @@
-Testsuite: org.apache.poi.hssf.record.TestLabelRecord
-Tests run: 1, Failures: 0, Errors: 0, Time elapsed: 0.057 sec
-
-Testcase: testEmptyString took 0.057 sec

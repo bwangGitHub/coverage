@@ -1,7 +1,0 @@
-Testsuite: org.apache.poi.hssf.record.TestSSTDeserializer
-Tests run: 4, Failures: 0, Errors: 0, Time elapsed: 0.004 sec
-
-Testcase: testSpanRichTextToPlainText took 0.001 sec
-Testcase: testContinuationWithNoOverlap took 0 sec
-Testcase: testStringAcross2Continuations took 0 sec
-Testcase: testExtendedStrings took 0.002 sec

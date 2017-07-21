@@ -1,1 +1,0 @@
-The tests fail from Ant but run successfully if you run them directly with JUnit.
