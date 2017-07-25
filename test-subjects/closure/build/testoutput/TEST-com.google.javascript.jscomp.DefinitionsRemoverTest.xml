@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuite errors="0" failures="0" hostname="battower" name="com.google.javascript.jscomp.DefinitionsRemoverTest" tests="5" time="0.012" timestamp="2013-02-28T06:31:58">
+  <properties>
+    <property name="java.vendor" value="Sun Microsystems Inc." />
+    <property name="lib.dir" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/lib" />
+    <property name="sun.java.launcher" value="SUN_STANDARD" />
+    <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers" />
+    <property name="os.name" value="Linux" />
+    <property name="sun.boot.class.path" value="/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/resources.jar:/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/rt.jar:/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/sunrsasign.jar:/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/jsse.jar:/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/jce.jar:/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/charsets.jar:/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/modules/jdk.boot.jar:/usr/lib/jvm/java-6-sun-1.6.0.26/jre/classes" />
+    <property name="build.svnVersion" value="exported" />
+    <property name="maven-repository-id" value="sonatype-nexus-staging" />
+    <property name="java.vm.specification.vendor" value="Sun Microsystems Inc." />
+    <property name="ant.home" value="/usr/share/ant" />
+    <property name="jsonml-jarfile" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/build/secure_compiler.jar" />
+    <property name="java.runtime.version" value="1.6.0_26-b03" />
+    <property name="gen.dir" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/gen" />
+    <property name="user.name" value="laura" />
+    <property name="ant.file.compiler" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/build.xml" />
+    <property name="cc.src.dir" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/instSrc" />
+    <property name="build.dir" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/build" />
+    <property name="jsonml.dir" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/src/com/google/javascript/jscomp/jsonml" />
+    <property name="ant.build.javac.target" value="1.6" />
+    <property name="cc.lib.dir" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/instLib" />
+    <property name="user.language" value="en" />
+    <property name="sun.boot.library.path" value="/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/amd64" />
+    <property name="ant.project.default-target" value="jar" />
+    <property name="ant.project.name" value="compiler" />
+    <property name="cc.build.dir" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/instBuild" />
+    <property name="java.version" value="1.6.0_26" />
+    <property name="user.timezone" value="" />
+    <property name="sun.arch.data.model" value="64" />
+    <property name="cc.compiler-jarfile" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/instBuild/compiler.jar" />
+    <property name="java.endorsed.dirs" value="/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/endorsed" />
+    <property name="sun.cpu.isalist" value="" />
+    <property name="sun.jnu.encoding" value="UTF-8" />
+    <property name="file.encoding.pkg" value="sun.io" />
+    <property name="cc.gen.dir" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/instGen" />
+    <property name="file.separator" value="/" />
+    <property name="java.specification.name" value="Java Platform API Specification" />
+    <property name="protoc.executable" value="protoc" />
+    <property name="classes.dir" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/build/classes" />
+    <property name="java.class.version" value="50.0" />
+    <property name="testClasses.dir" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/build/test" />
+    <property name="user.country" value="CA" />
+    <property name="jsonml-classes.dir" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/build/jsonml-classes" />
+    <property name="java.home" value="/usr/lib/jvm/java-6-sun-1.6.0.26/jre" />
+    <property name="java.vm.info" value="mixed mode" />
+    <property name="externs.dir" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/externs" />
+    <property name="ant.file" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/build.xml" />
+    <property name="os.version" value="3.2.0-4-amd64" />
+    <property name="javac.debug" value="on" />
+    <property name="path.separator" value=":" />
+    <property name="java.vm.version" value="20.1-b02" />
+    <property name="num-fuzz-tests" value="10000" />
+    <property name="ant.library.dir" value="/usr/share/ant/lib" />
+    <property name="java.awt.printerjob" value="sun.print.PSPrinterJob" />
+    <property name="webservice-jarfile" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/build/webservice.jar" />
+    <property name="sun.io.unicode.encoding" value="UnicodeLittle" />
+    <property name="test.fork" value="true" />
+    <property name="webservice.dir" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/src/com/google/javascript/jscomp/webservice" />
+    <property name="buildlib.dir" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/build/lib" />
+    <property name="cc.closure.build.dir" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/instBuild" />
+    <property name="ant.build.javac.source" value="1.6" />
+    <property name="user.home" value="/home/laura" />
+    <property name="cc.buildlib.dir" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/instBuild/lib" />
+    <property name="java.specification.vendor" value="Sun Microsystems Inc." />
+    <property name="test.dir" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/test" />
+    <property name="java.library.path" value="/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/amd64/server:/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/amd64:/usr/lib/jvm/java-6-sun-1.6.0.26/jre/../lib/amd64:/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib" />
+    <property name="java.vendor.url" value="http://java.sun.com/" />
+    <property name="java.vm.vendor" value="Sun Microsystems Inc." />
+    <property name="java.runtime.name" value="Java(TM) SE Runtime Environment" />
+    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner testsfile=/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/junittestcases3948662715662201768.properties filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.SummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.BriefJUnitResultFormatter formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/build/testoutput/IGNORETHIS.xml crashfile=/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/junitvmwatcher984647660801049597.properties propsfile=/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/junit4306649417180714283.properties" />
+    <property name="java.class.path" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/build/classes:/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/lib/ant-launcher.jar:/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/lib/ant.jar:/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/lib/args4j.jar:/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/lib/caja-r4314.jar:/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/lib/codecover-ant.jar:/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/lib/codecover-batch.jar:/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/lib/codecover-core.jar:/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/lib/guava.jar:/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/lib/jarjar.jar:/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/lib/json.jar:/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/lib/jsr305.jar:/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/lib/junit.jar:/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/lib/org.codecover.instrumentation.java15-0.1.jar:/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/lib/protobuf-java.jar:/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/build/lib/rhino.jar:/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/build/test:/home/laura/.ant/lib/junit-4.8.1.jar:/usr/share/java/ant-launcher-1.8.2.jar:/usr/share/ant/lib/ant.jar:/usr/share/ant/lib/ant-junit.jar:/usr/share/ant/lib/ant-junit4.jar" />
+    <property name="ant.version" value="Apache Ant(TM) version 1.8.2 compiled on September 22 2011" />
+    <property name="test.class" value="*Test" />
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification" />
+    <property name="ant.file.type" value="file" />
+    <property name="java.vm.specification.version" value="1.0" />
+    <property name="sun.os.patch.level" value="unknown" />
+    <property name="sun.cpu.endian" value="little" />
+    <property name="java.io.tmpdir" value="/tmp" />
+    <property name="java.vendor.url.bug" value="http://java.sun.com/cgi-bin/bugreport.cgi" />
+    <property name="cc.classes.dir" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/instBuild/classes" />
+    <property name="java.awt.graphicsenv" value="sun.awt.X11GraphicsEnvironment" />
+    <property name="os.arch" value="amd64" />
+    <property name="maven-repository-url" value="https://oss.sonatype.org/service/local/staging/deploy/maven2/" />
+    <property name="webservice-classes.dir" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/build/webservice-classes" />
+    <property name="java.ext.dirs" value="/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/ext:/usr/java/packages/lib/ext" />
+    <property name="user.dir" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure" />
+    <property name="ant.file.type.compiler" value="file" />
+    <property name="line.separator" value="&#xa;" />
+    <property name="java.vm.name" value="Java HotSpot(TM) 64-Bit Server VM" />
+    <property name="basedir" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure" />
+    <property name="ant.java.version" value="1.6" />
+    <property name="ant.core.lib" value="/usr/share/ant/lib/ant.jar" />
+    <property name="file.encoding" value="UTF-8" />
+    <property name="closure.build.dir" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/build" />
+    <property name="compiler-jarfile" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/build/compiler.jar" />
+    <property name="java.specification.version" value="1.6" />
+    <property name="src.dir" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/src" />
+    <property name="javadoc.dir" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/build/javadoc" />
+    <property name="ant.project.invoked-targets" value="test" />
+    <property name="tools.dir" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/tools" />
+  </properties>
+  <testcase classname="com.google.javascript.jscomp.DefinitionsRemoverTest" name="testRemoveFunction" time="0.0040" />
+  <testcase classname="com.google.javascript.jscomp.DefinitionsRemoverTest" name="testRemoveAssignment" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.DefinitionsRemoverTest" name="testRemoveVarAssignment" time="0.0030" />
+  <testcase classname="com.google.javascript.jscomp.DefinitionsRemoverTest" name="testRemoveLiteral" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.DefinitionsRemoverTest" name="testRemoveFunctionExpressionName" time="0.0010" />
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

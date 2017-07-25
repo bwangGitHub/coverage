@@ -1,0 +1,1483 @@
+<html xmlns:stringutils="xalan://org.apache.tools.ant.util.StringUtils" xmlns:lxslt="http://xml.apache.org/xslt">
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Unit Test Results: com.google.javascript.jscomp.parsing.JsDocInfoParserTest</title>
+<link title="Style" type="text/css" rel="stylesheet" href="../../../../../stylesheet.css">
+<script language="JavaScript" type="text/javascript">
+        var TestCases = new Array();
+        var cur;
+        
+    cur = TestCases['com.google.javascript.jscomp.parsing.JsDocInfoParserTest'] = new Array();
+    
+        cur['ant.build.javac.source'] = '1.6';
+    
+        cur['ant.build.javac.target'] = '1.6';
+    
+        cur['ant.core.lib'] = '/usr/share/ant/lib/ant.jar';
+    
+        cur['ant.file'] = '/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/build.xml';
+    
+        cur['ant.file.compiler'] = '/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/build.xml';
+    
+        cur['ant.file.type'] = 'file';
+    
+        cur['ant.file.type.compiler'] = 'file';
+    
+        cur['ant.home'] = '/usr/share/ant';
+    
+        cur['ant.java.version'] = '1.6';
+    
+        cur['ant.library.dir'] = '/usr/share/ant/lib';
+    
+        cur['ant.project.default-target'] = 'jar';
+    
+        cur['ant.project.invoked-targets'] = 'test';
+    
+        cur['ant.project.name'] = 'compiler';
+    
+        cur['ant.version'] = 'Apache Ant(TM) version 1.8.2 compiled on September 22 2011';
+    
+        cur['basedir'] = '/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure';
+    
+        cur['build.dir'] = '/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/build';
+    
+        cur['build.svnVersion'] = 'exported';
+    
+        cur['buildlib.dir'] = '/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/build/lib';
+    
+        cur['cc.build.dir'] = '/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/instBuild';
+    
+        cur['cc.buildlib.dir'] = '/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/instBuild/lib';
+    
+        cur['cc.classes.dir'] = '/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/instBuild/classes';
+    
+        cur['cc.closure.build.dir'] = '/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/instBuild';
+    
+        cur['cc.compiler-jarfile'] = '/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/instBuild/compiler.jar';
+    
+        cur['cc.gen.dir'] = '/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/instGen';
+    
+        cur['cc.lib.dir'] = '/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/instLib';
+    
+        cur['cc.src.dir'] = '/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/instSrc';
+    
+        cur['classes.dir'] = '/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/build/classes';
+    
+        cur['closure.build.dir'] = '/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/build';
+    
+        cur['compiler-jarfile'] = '/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/build/compiler.jar';
+    
+        cur['externs.dir'] = '/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/externs';
+    
+        cur['file.encoding'] = 'UTF-8';
+    
+        cur['file.encoding.pkg'] = 'sun.io';
+    
+        cur['file.separator'] = '/';
+    
+        cur['gen.dir'] = '/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/gen';
+    
+        cur['java.awt.graphicsenv'] = 'sun.awt.X11GraphicsEnvironment';
+    
+        cur['java.awt.printerjob'] = 'sun.print.PSPrinterJob';
+    
+        cur['java.class.path'] = '/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/build/classes:/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/lib/ant-launcher.jar:/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/lib/ant.jar:/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/lib/args4j.jar:/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/lib/caja-r4314.jar:/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/lib/codecover-ant.jar:/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/lib/codecover-batch.jar:/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/lib/codecover-core.jar:/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/lib/guava.jar:/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/lib/jarjar.jar:/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/lib/json.jar:/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/lib/jsr305.jar:/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/lib/junit.jar:/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/lib/org.codecover.instrumentation.java15-0.1.jar:/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/lib/protobuf-java.jar:/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/build/lib/rhino.jar:/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/build/test:/home/laura/.ant/lib/junit-4.8.1.jar:/usr/share/java/ant-launcher-1.8.2.jar:/usr/share/ant/lib/ant.jar:/usr/share/ant/lib/ant-junit.jar:/usr/share/ant/lib/ant-junit4.jar';
+    
+        cur['java.class.version'] = '50.0';
+    
+        cur['java.endorsed.dirs'] = '/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/endorsed';
+    
+        cur['java.ext.dirs'] = '/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/ext:/usr/java/packages/lib/ext';
+    
+        cur['java.home'] = '/usr/lib/jvm/java-6-sun-1.6.0.26/jre';
+    
+        cur['java.io.tmpdir'] = '/tmp';
+    
+        cur['java.library.path'] = '/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/amd64/server:/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/amd64:/usr/lib/jvm/java-6-sun-1.6.0.26/jre/../lib/amd64:/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib';
+    
+        cur['java.runtime.name'] = 'Java(TM) SE Runtime Environment';
+    
+        cur['java.runtime.version'] = '1.6.0_26-b03';
+    
+        cur['java.specification.name'] = 'Java Platform API Specification';
+    
+        cur['java.specification.vendor'] = 'Sun Microsystems Inc.';
+    
+        cur['java.specification.version'] = '1.6';
+    
+        cur['java.vendor'] = 'Sun Microsystems Inc.';
+    
+        cur['java.vendor.url'] = 'http://java.sun.com/';
+    
+        cur['java.vendor.url.bug'] = 'http://java.sun.com/cgi-bin/bugreport.cgi';
+    
+        cur['java.version'] = '1.6.0_26';
+    
+        cur['java.vm.info'] = 'mixed mode';
+    
+        cur['java.vm.name'] = 'Java HotSpot(TM) 64-Bit Server VM';
+    
+        cur['java.vm.specification.name'] = 'Java Virtual Machine Specification';
+    
+        cur['java.vm.specification.vendor'] = 'Sun Microsystems Inc.';
+    
+        cur['java.vm.specification.version'] = '1.0';
+    
+        cur['java.vm.vendor'] = 'Sun Microsystems Inc.';
+    
+        cur['java.vm.version'] = '20.1-b02';
+    
+        cur['javac.debug'] = 'on';
+    
+        cur['javadoc.dir'] = '/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/build/javadoc';
+    
+        cur['jsonml.dir'] = '/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/src/com/google/javascript/jscomp/jsonml';
+    
+        cur['jsonml-classes.dir'] = '/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/build/jsonml-classes';
+    
+        cur['jsonml-jarfile'] = '/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/build/secure_compiler.jar';
+    
+        cur['lib.dir'] = '/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/lib';
+    
+        cur['line.separator'] = '
+';
+    
+        cur['maven-repository-id'] = 'sonatype-nexus-staging';
+    
+        cur['maven-repository-url'] = 'https://oss.sonatype.org/service/local/staging/deploy/maven2/';
+    
+        cur['num-fuzz-tests'] = '10000';
+    
+        cur['os.arch'] = 'amd64';
+    
+        cur['os.name'] = 'Linux';
+    
+        cur['os.version'] = '3.2.0-4-amd64';
+    
+        cur['path.separator'] = ':';
+    
+        cur['protoc.executable'] = 'protoc';
+    
+        cur['src.dir'] = '/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/src';
+    
+        cur['sun.arch.data.model'] = '64';
+    
+        cur['sun.boot.class.path'] = '/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/resources.jar:/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/rt.jar:/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/sunrsasign.jar:/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/jsse.jar:/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/jce.jar:/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/charsets.jar:/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/modules/jdk.boot.jar:/usr/lib/jvm/java-6-sun-1.6.0.26/jre/classes';
+    
+        cur['sun.boot.library.path'] = '/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/amd64';
+    
+        cur['sun.cpu.endian'] = 'little';
+    
+        cur['sun.cpu.isalist'] = '';
+    
+        cur['sun.io.unicode.encoding'] = 'UnicodeLittle';
+    
+        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner testsfile=/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/junittestcases3948662715662201768.properties filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.SummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.BriefJUnitResultFormatter formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/build/testoutput/IGNORETHIS.xml crashfile=/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/junitvmwatcher984647660801049597.properties propsfile=/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/junit4306649417180714283.properties';
+    
+        cur['sun.java.launcher'] = 'SUN_STANDARD';
+    
+        cur['sun.jnu.encoding'] = 'UTF-8';
+    
+        cur['sun.management.compiler'] = 'HotSpot 64-Bit Tiered Compilers';
+    
+        cur['sun.os.patch.level'] = 'unknown';
+    
+        cur['test.class'] = '*Test';
+    
+        cur['test.dir'] = '/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/test';
+    
+        cur['test.fork'] = 'true';
+    
+        cur['testClasses.dir'] = '/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/build/test';
+    
+        cur['tools.dir'] = '/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/tools';
+    
+        cur['user.country'] = 'CA';
+    
+        cur['user.dir'] = '/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure';
+    
+        cur['user.home'] = '/home/laura';
+    
+        cur['user.language'] = 'en';
+    
+        cur['user.name'] = 'laura';
+    
+        cur['user.timezone'] = '';
+    
+        cur['webservice.dir'] = '/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/src/com/google/javascript/jscomp/webservice';
+    
+        cur['webservice-classes.dir'] = '/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/build/webservice-classes';
+    
+        cur['webservice-jarfile'] = '/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/build/webservice.jar';
+    </script><script language="JavaScript" type="text/javascript">
+        function displayProperties (name) {
+          var win = window.open('','JUnitSystemProperties','scrollbars=1,resizable=1');
+          var doc = win.document;
+          doc.open();
+          doc.write("<html><head><title>Properties of " + name + "</title>");
+          doc.write("<style type=\"text/css\">");
+          doc.write("body {font:normal 68% verdana,arial,helvetica; color:#000000; }");
+          doc.write("table tr td, table tr th { font-size: 68%; }");
+          doc.write("table.properties { border-collapse:collapse; border-left:solid 1 #cccccc; border-top:solid 1 #cccccc; padding:5px; }");
+          doc.write("table.properties th { text-align:left; border-right:solid 1 #cccccc; border-bottom:solid 1 #cccccc; background-color:#eeeeee; }");
+          doc.write("table.properties td { font:normal; text-align:left; border-right:solid 1 #cccccc; border-bottom:solid 1 #cccccc; background-color:#fffffff; }");
+          doc.write("h3 { margin-bottom: 0.5em; font: bold 115% verdana,arial,helvetica }");
+          doc.write("</style>");
+          doc.write("</head><body>");
+          doc.write("<h3>Properties of " + name + "</h3>");
+          doc.write("<div align=\"right\"><a href=\"javascript:window.close();\">Close</a></div>");
+          doc.write("<table class='properties'>");
+          doc.write("<tr><th>Name</th><th>Value</th></tr>");
+          for (prop in TestCases[name]) {
+            doc.write("<tr><th>" + prop + "</th><td>" + TestCases[name][prop] + "</td></tr>");
+          }
+          doc.write("</table>");
+          doc.write("</body></html>");
+          doc.close();
+          win.focus();
+        }
+      
+      </script>
+</head>
+<body>
+<h1>Unit Test Results.</h1>
+<table width="100%">
+<tr>
+<td align="left"></td><td align="right">Designed for use with <a href="http://www.junit.org/">JUnit</a> and <a href="http://ant.apache.org/">Ant</a>.</td>
+</tr>
+</table>
+<hr size="1">
+<h3>Class com.google.javascript.jscomp.parsing.JsDocInfoParserTest</h3>
+<table width="95%" cellspacing="2" cellpadding="5" border="0" class="details">
+<tr valign="top">
+<th width="80%">Name</th><th>Tests</th><th>Errors</th><th>Failures</th><th nowrap>Time(s)</th><th nowrap>Time Stamp</th><th>Host</th>
+</tr>
+<tr valign="top" class="Pass">
+<td><a href="204_JsDocInfoParserTest.html" title="Display all tests">JsDocInfoParserTest</a></td><td><a href="204_JsDocInfoParserTest.html" title="Display all tests">404</a></td><td>0</td><td>0</td><td>0.121</td><td>2013-02-28T06:32:08</td><td>battower</td>
+</tr>
+</table>
+<h2>Tests</h2>
+<table width="95%" cellspacing="2" cellpadding="5" border="0" class="details">
+<tr valign="top">
+<th>Name</th><th>Status</th><th width="80%">Type</th><th nowrap>Time(s)</th>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testInterfaceExtends"></a>testInterfaceExtends</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testPrivateType"></a>testPrivateType</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseTypeViaStatic1"></a>testParseTypeViaStatic1</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseTypeViaStatic2"></a>testParseTypeViaStatic2</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseTypeViaStatic3"></a>testParseTypeViaStatic3</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseTypeViaStatic4"></a>testParseTypeViaStatic4</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseInvalidTypeViaStatic"></a>testParseInvalidTypeViaStatic</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseInvalidTypeViaStatic2"></a>testParseInvalidTypeViaStatic2</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseNamedType1"></a>testParseNamedType1</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseNamedType2"></a>testParseNamedType2</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseNamedType3"></a>testParseNamedType3</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseNamedType4"></a>testParseNamedType4</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseNamedType5"></a>testParseNamedType5</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseNamedType6"></a>testParseNamedType6</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseNamedTypeError1"></a>testParseNamedTypeError1</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseNamedTypeError2"></a>testParseNamedTypeError2</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testTypedefType1"></a>testTypedefType1</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testTypedefType2"></a>testTypedefType2</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testTypedefType3"></a>testTypedefType3</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseStringType1"></a>testParseStringType1</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseStringType2"></a>testParseStringType2</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseBooleanType1"></a>testParseBooleanType1</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseBooleanType2"></a>testParseBooleanType2</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseNumberType1"></a>testParseNumberType1</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseNumberType2"></a>testParseNumberType2</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseNullType1"></a>testParseNullType1</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseNullType2"></a>testParseNullType2</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseAllType1"></a>testParseAllType1</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseAllType2"></a>testParseAllType2</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseObjectType"></a>testParseObjectType</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseDateType"></a>testParseDateType</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseFunctionType"></a>testParseFunctionType</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseRegExpType"></a>testParseRegExpType</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseErrorTypes"></a>testParseErrorTypes</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseUndefinedType1"></a>testParseUndefinedType1</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseUndefinedType2"></a>testParseUndefinedType2</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseUndefinedType3"></a>testParseUndefinedType3</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseTemplatizedType1"></a>testParseTemplatizedType1</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseTemplatizedType2"></a>testParseTemplatizedType2</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseTemplatizedType3"></a>testParseTemplatizedType3</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseTemplatizedType4"></a>testParseTemplatizedType4</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseTemplatizedType5"></a>testParseTemplatizedType5</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseTemplatizedType6"></a>testParseTemplatizedType6</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseTemplatizedType7"></a>testParseTemplatizedType7</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseTemplatizedType8"></a>testParseTemplatizedType8</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseTemplatizedType9"></a>testParseTemplatizedType9</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseTemplatizedType10"></a>testParseTemplatizedType10</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseTemplatizedType11"></a>testParseTemplatizedType11</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseTemplatizedType12"></a>testParseTemplatizedType12</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseTemplatizedType13"></a>testParseTemplatizedType13</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseUnionType1"></a>testParseUnionType1</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseUnionType2"></a>testParseUnionType2</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseUnionType3"></a>testParseUnionType3</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseUnionType4"></a>testParseUnionType4</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseUnionType5"></a>testParseUnionType5</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseUnionType6"></a>testParseUnionType6</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseUnionType7"></a>testParseUnionType7</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseUnionType8"></a>testParseUnionType8</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseUnionType9"></a>testParseUnionType9</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseUnionType10"></a>testParseUnionType10</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseUnionType11"></a>testParseUnionType11</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseUnionType12"></a>testParseUnionType12</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseUnionType13"></a>testParseUnionType13</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseUnionType14"></a>testParseUnionType14</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseUnionType15"></a>testParseUnionType15</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseUnionType16"></a>testParseUnionType16</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseUnionType17"></a>testParseUnionType17</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseUnionType18"></a>testParseUnionType18</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseUnionTypeError1"></a>testParseUnionTypeError1</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseUnknownType1"></a>testParseUnknownType1</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseUnknownType2"></a>testParseUnknownType2</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseUnknownType3"></a>testParseUnknownType3</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseFunctionalType1"></a>testParseFunctionalType1</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseFunctionalType2"></a>testParseFunctionalType2</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseFunctionalType3"></a>testParseFunctionalType3</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseFunctionalType4"></a>testParseFunctionalType4</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseFunctionalType5"></a>testParseFunctionalType5</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseFunctionalType6"></a>testParseFunctionalType6</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseFunctionalType7"></a>testParseFunctionalType7</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseFunctionalType8"></a>testParseFunctionalType8</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseFunctionalType9"></a>testParseFunctionalType9</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseFunctionalType10"></a>testParseFunctionalType10</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseFunctionalType11"></a>testParseFunctionalType11</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseFunctionalType12"></a>testParseFunctionalType12</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseFunctionalType13"></a>testParseFunctionalType13</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseFunctionalType14"></a>testParseFunctionalType14</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseFunctionalType15"></a>testParseFunctionalType15</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseFunctionalType16"></a>testParseFunctionalType16</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseFunctionalType17"></a>testParseFunctionalType17</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseFunctionalType18"></a>testParseFunctionalType18</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseFunctionalType19"></a>testParseFunctionalType19</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testStructuralConstructor"></a>testStructuralConstructor</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testNominalConstructor"></a>testNominalConstructor</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testBug1419535"></a>testBug1419535</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testIssue477"></a>testIssue477</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testMalformedThisAnnotation"></a>testMalformedThisAnnotation</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseFunctionalTypeError1"></a>testParseFunctionalTypeError1</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseFunctionalTypeError2"></a>testParseFunctionalTypeError2</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseFunctionalTypeError3"></a>testParseFunctionalTypeError3</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseFunctionalTypeError4"></a>testParseFunctionalTypeError4</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseFunctionalTypeError5"></a>testParseFunctionalTypeError5</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseFunctionalTypeError6"></a>testParseFunctionalTypeError6</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseFunctionalTypeError7"></a>testParseFunctionalTypeError7</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseFunctionalTypeError8"></a>testParseFunctionalTypeError8</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseFunctionalTypeError9"></a>testParseFunctionalTypeError9</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseFunctionalTypeError10"></a>testParseFunctionalTypeError10</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseFunctionalTypeError11"></a>testParseFunctionalTypeError11</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseFunctionalTypeError12"></a>testParseFunctionalTypeError12</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseArrayType1"></a>testParseArrayType1</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseArrayType2"></a>testParseArrayType2</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseArrayType3"></a>testParseArrayType3</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseArrayTypeError1"></a>testParseArrayTypeError1</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseArrayTypeError2"></a>testParseArrayTypeError2</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseArrayTypeError3"></a>testParseArrayTypeError3</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseArrayTypeError4"></a>testParseArrayTypeError4</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseNullableModifiers1"></a>testParseNullableModifiers1</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseNullableModifiers2"></a>testParseNullableModifiers2</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseNullableModifiers3"></a>testParseNullableModifiers3</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseNullableModifiers4"></a>testParseNullableModifiers4</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseNullableModifiers5"></a>testParseNullableModifiers5</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseNullableModifiers6"></a>testParseNullableModifiers6</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseNullableModifiers7"></a>testParseNullableModifiers7</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseNullableModifiers8"></a>testParseNullableModifiers8</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseNullableModifiers9"></a>testParseNullableModifiers9</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseOptionalModifier"></a>testParseOptionalModifier</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseNewline1"></a>testParseNewline1</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseNewline2"></a>testParseNewline2</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseNewline3"></a>testParseNewline3</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseNewline4"></a>testParseNewline4</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseNewline5"></a>testParseNewline5</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseReturnType1"></a>testParseReturnType1</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseReturnType2"></a>testParseReturnType2</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseReturnType3"></a>testParseReturnType3</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseThisType1"></a>testParseThisType1</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseThisType2"></a>testParseThisType2</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseThisType3"></a>testParseThisType3</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseThisType4"></a>testParseThisType4</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseThisType5"></a>testParseThisType5</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseThisType6"></a>testParseThisType6</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseParam1"></a>testParseParam1</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseParam2"></a>testParseParam2</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseParam3"></a>testParseParam3</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseParam4"></a>testParseParam4</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseParam5"></a>testParseParam5</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseParam6"></a>testParseParam6</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseParam7"></a>testParseParam7</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseParam8"></a>testParseParam8</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseParam9"></a>testParseParam9</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseParam10"></a>testParseParam10</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseParam11"></a>testParseParam11</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseParam12"></a>testParseParam12</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseParam13"></a>testParseParam13</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseParam14"></a>testParseParam14</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseParam15"></a>testParseParam15</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseParam16"></a>testParseParam16</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseParam17"></a>testParseParam17</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseParam18"></a>testParseParam18</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseParam19"></a>testParseParam19</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseParam20"></a>testParseParam20</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseParam21"></a>testParseParam21</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseThrows1"></a>testParseThrows1</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseThrows2"></a>testParseThrows2</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseRecordType1"></a>testParseRecordType1</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseRecordType2"></a>testParseRecordType2</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseRecordType3"></a>testParseRecordType3</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseRecordType4"></a>testParseRecordType4</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseRecordType5"></a>testParseRecordType5</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseRecordType6"></a>testParseRecordType6</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseRecordType7"></a>testParseRecordType7</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseRecordType8"></a>testParseRecordType8</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseRecordType9"></a>testParseRecordType9</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseRecordType10"></a>testParseRecordType10</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseRecordType11"></a>testParseRecordType11</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseRecordType12"></a>testParseRecordType12</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseRecordType13"></a>testParseRecordType13</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseRecordType14"></a>testParseRecordType14</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseRecordType15"></a>testParseRecordType15</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseRecordType16"></a>testParseRecordType16</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseRecordType17"></a>testParseRecordType17</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseRecordType18"></a>testParseRecordType18</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseRecordType19"></a>testParseRecordType19</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseRecordType20"></a>testParseRecordType20</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseRecordType21"></a>testParseRecordType21</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseRecordType22"></a>testParseRecordType22</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseRecordType23"></a>testParseRecordType23</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseParamError1"></a>testParseParamError1</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseParamError2"></a>testParseParamError2</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseParamError3"></a>testParseParamError3</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseParamError4"></a>testParseParamError4</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseParamError5"></a>testParseParamError5</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseExtends1"></a>testParseExtends1</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseExtends2"></a>testParseExtends2</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseExtendsGenerics"></a>testParseExtendsGenerics</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseImplementsGenerics"></a>testParseImplementsGenerics</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseExtends4"></a>testParseExtends4</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseExtends5"></a>testParseExtends5</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseExtends6"></a>testParseExtends6</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseExtendsInvalidName"></a>testParseExtendsInvalidName</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseExtendsNullable1"></a>testParseExtendsNullable1</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseExtendsNullable2"></a>testParseExtendsNullable2</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseEnum1"></a>testParseEnum1</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseEnum2"></a>testParseEnum2</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseEnum3"></a>testParseEnum3</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseDesc1"></a>testParseDesc1</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseDesc2"></a>testParseDesc2</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseDesc3"></a>testParseDesc3</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseDesc4"></a>testParseDesc4</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseDesc5"></a>testParseDesc5</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseDesc6"></a>testParseDesc6</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseDesc7"></a>testParseDesc7</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseDesc8"></a>testParseDesc8</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseDesc9"></a>testParseDesc9</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseDesc10"></a>testParseDesc10</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseDesc11"></a>testParseDesc11</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseDesc12"></a>testParseDesc12</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseMeaning1"></a>testParseMeaning1</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseMeaning2"></a>testParseMeaning2</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseMeaning3"></a>testParseMeaning3</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseMeaning4"></a>testParseMeaning4</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseLends1"></a>testParseLends1</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseLends2"></a>testParseLends2</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseLends3"></a>testParseLends3</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseLends4"></a>testParseLends4</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseLends5"></a>testParseLends5</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseLends6"></a>testParseLends6</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseLends7"></a>testParseLends7</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParsePreserve"></a>testParsePreserve</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseLicense"></a>testParseLicense</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseLicenseAscii"></a>testParseLicenseAscii</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseLicenseWithAnnotation"></a>testParseLicenseWithAnnotation</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseDefine1"></a>testParseDefine1</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseDefine2"></a>testParseDefine2</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseDefine3"></a>testParseDefine3</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseDefine4"></a>testParseDefine4</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseDefine5"></a>testParseDefine5</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseDefineErrors1"></a>testParseDefineErrors1</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseDefineErrors2"></a>testParseDefineErrors2</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseDefineErrors3"></a>testParseDefineErrors3</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseDefineErrors4"></a>testParseDefineErrors4</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseDefineErrors5"></a>testParseDefineErrors5</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseDefineErrors7"></a>testParseDefineErrors7</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseDefineErrors8"></a>testParseDefineErrors8</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseNoCheck1"></a>testParseNoCheck1</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseNoCheck2"></a>testParseNoCheck2</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseOverride1"></a>testParseOverride1</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseOverride2"></a>testParseOverride2</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseInheritDoc1"></a>testParseInheritDoc1</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseInheritDoc2"></a>testParseInheritDoc2</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseInheritDoc3"></a>testParseInheritDoc3</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseNoAlias1"></a>testParseNoAlias1</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseNoAlias2"></a>testParseNoAlias2</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseDeprecated1"></a>testParseDeprecated1</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseDeprecated2"></a>testParseDeprecated2</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseExport1"></a>testParseExport1</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseExport2"></a>testParseExport2</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseExpose1"></a>testParseExpose1</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseExpose2"></a>testParseExpose2</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseExterns1"></a>testParseExterns1</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseExterns2"></a>testParseExterns2</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseExterns3"></a>testParseExterns3</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseJavaDispatch1"></a>testParseJavaDispatch1</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseJavaDispatch2"></a>testParseJavaDispatch2</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseJavaDispatch3"></a>testParseJavaDispatch3</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseNoCompile1"></a>testParseNoCompile1</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseNoCompile2"></a>testParseNoCompile2</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testBugAnnotation"></a>testBugAnnotation</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testDescriptionAnnotation"></a>testDescriptionAnnotation</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testRegression1"></a>testRegression1</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testRegression2"></a>testRegression2</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testRegression3"></a>testRegression3</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testRegression4"></a>testRegression4</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testRegression5"></a>testRegression5</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testRegression6"></a>testRegression6</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testRegression7"></a>testRegression7</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testRegression8"></a>testRegression8</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testRegression9"></a>testRegression9</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testRegression10"></a>testRegression10</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testRegression11"></a>testRegression11</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testRegression12"></a>testRegression12</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testRegression13"></a>testRegression13</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testRegression14"></a>testRegression14</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testRegression15"></a>testRegression15</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testRegression16"></a>testRegression16</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testRegression17"></a>testRegression17</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testFullRegression1"></a>testFullRegression1</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testFullRegression2"></a>testFullRegression2</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testFullRegression3"></a>testFullRegression3</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testBug907488"></a>testBug907488</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testBug907494"></a>testBug907494</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testBug909468"></a>testBug909468</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseInterface"></a>testParseInterface</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseImplicitCast1"></a>testParseImplicitCast1</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseImplicitCast2"></a>testParseImplicitCast2</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseDuplicateImplicitCast"></a>testParseDuplicateImplicitCast</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseInterfaceDoubled"></a>testParseInterfaceDoubled</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseImplements"></a>testParseImplements</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseImplementsTwo"></a>testParseImplementsTwo</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseImplementsSameTwice"></a>testParseImplementsSameTwice</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseImplementsNoName"></a>testParseImplementsNoName</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseImplementsMissingRC"></a>testParseImplementsMissingRC</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseImplementsNullable1"></a>testParseImplementsNullable1</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseImplementsNullable2"></a>testParseImplementsNullable2</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testInterfaceMultiExtends1"></a>testInterfaceMultiExtends1</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testInterfaceMultiExtends2"></a>testInterfaceMultiExtends2</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testBadClassMultiExtends"></a>testBadClassMultiExtends</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testBadExtendsWithNullable"></a>testBadExtendsWithNullable</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testBadImplementsWithNullable"></a>testBadImplementsWithNullable</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testBadTypeDefInterfaceAndConstructor1"></a>testBadTypeDefInterfaceAndConstructor1</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testBadTypeDefInterfaceAndConstructor2"></a>testBadTypeDefInterfaceAndConstructor2</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testDocumentationParameter"></a>testDocumentationParameter</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testMultilineDocumentationParameter"></a>testMultilineDocumentationParameter</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testDocumentationMultipleParameter"></a>testDocumentationMultipleParameter</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testDocumentationMultipleParameter2"></a>testDocumentationMultipleParameter2</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAuthors"></a>testAuthors</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSuppress1"></a>testSuppress1</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSuppress2"></a>testSuppress2</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testBadSuppress1"></a>testBadSuppress1</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testBadSuppress2"></a>testBadSuppress2</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testBadSuppress3"></a>testBadSuppress3</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testBadSuppress4"></a>testBadSuppress4</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testBadSuppress5"></a>testBadSuppress5</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testBadSuppress6"></a>testBadSuppress6</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testBadSuppress7"></a>testBadSuppress7</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testModifies1"></a>testModifies1</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testModifies2"></a>testModifies2</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testModifies3"></a>testModifies3</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testModifies4"></a>testModifies4</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testModifies5"></a>testModifies5</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testModifies6"></a>testModifies6</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testBadModifies1"></a>testBadModifies1</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testBadModifies2"></a>testBadModifies2</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testBadModifies3"></a>testBadModifies3</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testBadModifies4"></a>testBadModifies4</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testBadModifies5"></a>testBadModifies5</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testBadModifies6"></a>testBadModifies6</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testBadModifies7"></a>testBadModifies7</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testBadModifies8"></a>testBadModifies8</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testBadModifies9"></a>testBadModifies9</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testFileOverviewSingleLine"></a>testFileOverviewSingleLine</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testFileOverviewMultiLine"></a>testFileOverviewMultiLine</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testFileOverviewDuplicate"></a>testFileOverviewDuplicate</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testReferences"></a>testReferences</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSingleTags"></a>testSingleTags</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSingleTagsReordered"></a>testSingleTagsReordered</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testVersionDuplication"></a>testVersionDuplication</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testVersionMissing"></a>testVersionMissing</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAuthorMissing"></a>testAuthorMissing</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSeeMissing"></a>testSeeMissing</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSourceName"></a>testSourceName</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseBlockComment"></a>testParseBlockComment</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseBlockComment2"></a>testParseBlockComment2</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseBlockComment3"></a>testParseBlockComment3</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseWithMarkers1"></a>testParseWithMarkers1</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseWithMarkers2"></a>testParseWithMarkers2</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseWithMarkers3"></a>testParseWithMarkers3</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseWithMarkers4"></a>testParseWithMarkers4</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseWithMarkers5"></a>testParseWithMarkers5</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseWithMarkers6"></a>testParseWithMarkers6</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseWithMarkerNames1"></a>testParseWithMarkerNames1</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseWithMarkerNames2"></a>testParseWithMarkerNames2</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseWithMarkerNames3"></a>testParseWithMarkerNames3</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseWithoutMarkerName"></a>testParseWithoutMarkerName</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseWithMarkerType"></a>testParseWithMarkerType</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseWithMarkerType2"></a>testParseWithMarkerType2</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testTypeTagConflict1"></a>testTypeTagConflict1</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testTypeTagConflict2"></a>testTypeTagConflict2</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testTypeTagConflict3"></a>testTypeTagConflict3</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testTypeTagConflict4"></a>testTypeTagConflict4</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testTypeTagConflict5"></a>testTypeTagConflict5</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testTypeTagConflict6"></a>testTypeTagConflict6</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testTypeTagConflict7"></a>testTypeTagConflict7</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testTypeTagConflict8"></a>testTypeTagConflict8</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testTypeTagConflict9"></a>testTypeTagConflict9</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testTypeTagConflict10"></a>testTypeTagConflict10</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testTypeTagConflict11"></a>testTypeTagConflict11</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testTypeTagConflict12"></a>testTypeTagConflict12</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testTypeTagConflict13"></a>testTypeTagConflict13</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testTypeTagConflict14"></a>testTypeTagConflict14</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testTypeTagConflict15"></a>testTypeTagConflict15</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testTypeTagConflict16"></a>testTypeTagConflict16</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testTypeTagConflict17"></a>testTypeTagConflict17</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testTypeTagConflict18"></a>testTypeTagConflict18</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testTypeTagConflict19"></a>testTypeTagConflict19</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testTypeTagConflict20"></a>testTypeTagConflict20</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testTypeTagConflict21"></a>testTypeTagConflict21</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testTypeTagConflict22"></a>testTypeTagConflict22</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testTypeTagConflict23"></a>testTypeTagConflict23</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testTypeTagConflict24"></a>testTypeTagConflict24</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testProtectedType"></a>testProtectedType</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testPublicType"></a>testPublicType</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testConstType"></a>testConstType</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testStableIdGeneratorConflict"></a>testStableIdGeneratorConflict</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParserWithTemplateTypeNameMissing"></a>testParserWithTemplateTypeNameMissing</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParserWithTemplateDuplicated"></a>testParserWithTemplateDuplicated</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParserWithTwoTemplates"></a>testParserWithTwoTemplates</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testWhitelistedNewAnnotations"></a>testWhitelistedNewAnnotations</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testWhitelistedConflictingAnnotation"></a>testWhitelistedConflictingAnnotation</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testNonIdentifierAnnotation"></a>testNonIdentifierAnnotation</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testUnsupportedJsDocSyntax1"></a>testUnsupportedJsDocSyntax1</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testUnsupportedJsDocSyntax2"></a>testUnsupportedJsDocSyntax2</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testWhitelistedAnnotations"></a>testWhitelistedAnnotations</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetOriginalCommentString"></a>testGetOriginalCommentString</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseNgInject1"></a>testParseNgInject1</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testParseNgInject2"></a>testParseNgInject2</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+</table>
+<div class="Properties">
+<a href="javascript:displayProperties('com.google.javascript.jscomp.parsing.JsDocInfoParserTest');">
+                    Properties &raquo;
+                </a>
+</div>
+</body>
+</html>

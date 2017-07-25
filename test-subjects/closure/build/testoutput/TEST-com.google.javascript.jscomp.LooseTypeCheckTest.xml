@@ -1,0 +1,888 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuite errors="0" failures="0" hostname="battower" name="com.google.javascript.jscomp.LooseTypeCheckTest" tests="781" time="1.279" timestamp="2013-02-28T06:32:01">
+  <properties>
+    <property name="java.vendor" value="Sun Microsystems Inc." />
+    <property name="lib.dir" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/lib" />
+    <property name="sun.java.launcher" value="SUN_STANDARD" />
+    <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers" />
+    <property name="os.name" value="Linux" />
+    <property name="sun.boot.class.path" value="/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/resources.jar:/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/rt.jar:/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/sunrsasign.jar:/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/jsse.jar:/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/jce.jar:/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/charsets.jar:/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/modules/jdk.boot.jar:/usr/lib/jvm/java-6-sun-1.6.0.26/jre/classes" />
+    <property name="build.svnVersion" value="exported" />
+    <property name="maven-repository-id" value="sonatype-nexus-staging" />
+    <property name="java.vm.specification.vendor" value="Sun Microsystems Inc." />
+    <property name="ant.home" value="/usr/share/ant" />
+    <property name="jsonml-jarfile" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/build/secure_compiler.jar" />
+    <property name="java.runtime.version" value="1.6.0_26-b03" />
+    <property name="gen.dir" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/gen" />
+    <property name="user.name" value="laura" />
+    <property name="ant.file.compiler" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/build.xml" />
+    <property name="cc.src.dir" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/instSrc" />
+    <property name="build.dir" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/build" />
+    <property name="jsonml.dir" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/src/com/google/javascript/jscomp/jsonml" />
+    <property name="ant.build.javac.target" value="1.6" />
+    <property name="cc.lib.dir" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/instLib" />
+    <property name="user.language" value="en" />
+    <property name="sun.boot.library.path" value="/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/amd64" />
+    <property name="ant.project.default-target" value="jar" />
+    <property name="ant.project.name" value="compiler" />
+    <property name="cc.build.dir" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/instBuild" />
+    <property name="java.version" value="1.6.0_26" />
+    <property name="user.timezone" value="" />
+    <property name="sun.arch.data.model" value="64" />
+    <property name="cc.compiler-jarfile" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/instBuild/compiler.jar" />
+    <property name="java.endorsed.dirs" value="/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/endorsed" />
+    <property name="sun.cpu.isalist" value="" />
+    <property name="sun.jnu.encoding" value="UTF-8" />
+    <property name="file.encoding.pkg" value="sun.io" />
+    <property name="cc.gen.dir" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/instGen" />
+    <property name="file.separator" value="/" />
+    <property name="java.specification.name" value="Java Platform API Specification" />
+    <property name="protoc.executable" value="protoc" />
+    <property name="classes.dir" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/build/classes" />
+    <property name="java.class.version" value="50.0" />
+    <property name="testClasses.dir" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/build/test" />
+    <property name="user.country" value="CA" />
+    <property name="jsonml-classes.dir" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/build/jsonml-classes" />
+    <property name="java.home" value="/usr/lib/jvm/java-6-sun-1.6.0.26/jre" />
+    <property name="java.vm.info" value="mixed mode" />
+    <property name="externs.dir" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/externs" />
+    <property name="ant.file" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/build.xml" />
+    <property name="os.version" value="3.2.0-4-amd64" />
+    <property name="javac.debug" value="on" />
+    <property name="path.separator" value=":" />
+    <property name="java.vm.version" value="20.1-b02" />
+    <property name="num-fuzz-tests" value="10000" />
+    <property name="ant.library.dir" value="/usr/share/ant/lib" />
+    <property name="java.awt.printerjob" value="sun.print.PSPrinterJob" />
+    <property name="webservice-jarfile" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/build/webservice.jar" />
+    <property name="sun.io.unicode.encoding" value="UnicodeLittle" />
+    <property name="test.fork" value="true" />
+    <property name="webservice.dir" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/src/com/google/javascript/jscomp/webservice" />
+    <property name="buildlib.dir" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/build/lib" />
+    <property name="cc.closure.build.dir" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/instBuild" />
+    <property name="ant.build.javac.source" value="1.6" />
+    <property name="user.home" value="/home/laura" />
+    <property name="cc.buildlib.dir" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/instBuild/lib" />
+    <property name="java.specification.vendor" value="Sun Microsystems Inc." />
+    <property name="test.dir" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/test" />
+    <property name="java.library.path" value="/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/amd64/server:/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/amd64:/usr/lib/jvm/java-6-sun-1.6.0.26/jre/../lib/amd64:/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib" />
+    <property name="java.vendor.url" value="http://java.sun.com/" />
+    <property name="java.vm.vendor" value="Sun Microsystems Inc." />
+    <property name="java.runtime.name" value="Java(TM) SE Runtime Environment" />
+    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner testsfile=/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/junittestcases3948662715662201768.properties filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.SummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.BriefJUnitResultFormatter formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/build/testoutput/IGNORETHIS.xml crashfile=/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/junitvmwatcher984647660801049597.properties propsfile=/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/junit4306649417180714283.properties" />
+    <property name="java.class.path" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/build/classes:/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/lib/ant-launcher.jar:/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/lib/ant.jar:/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/lib/args4j.jar:/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/lib/caja-r4314.jar:/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/lib/codecover-ant.jar:/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/lib/codecover-batch.jar:/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/lib/codecover-core.jar:/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/lib/guava.jar:/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/lib/jarjar.jar:/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/lib/json.jar:/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/lib/jsr305.jar:/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/lib/junit.jar:/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/lib/org.codecover.instrumentation.java15-0.1.jar:/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/lib/protobuf-java.jar:/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/build/lib/rhino.jar:/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/build/test:/home/laura/.ant/lib/junit-4.8.1.jar:/usr/share/java/ant-launcher-1.8.2.jar:/usr/share/ant/lib/ant.jar:/usr/share/ant/lib/ant-junit.jar:/usr/share/ant/lib/ant-junit4.jar" />
+    <property name="ant.version" value="Apache Ant(TM) version 1.8.2 compiled on September 22 2011" />
+    <property name="test.class" value="*Test" />
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification" />
+    <property name="ant.file.type" value="file" />
+    <property name="java.vm.specification.version" value="1.0" />
+    <property name="sun.os.patch.level" value="unknown" />
+    <property name="sun.cpu.endian" value="little" />
+    <property name="java.io.tmpdir" value="/tmp" />
+    <property name="java.vendor.url.bug" value="http://java.sun.com/cgi-bin/bugreport.cgi" />
+    <property name="cc.classes.dir" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/instBuild/classes" />
+    <property name="java.awt.graphicsenv" value="sun.awt.X11GraphicsEnvironment" />
+    <property name="os.arch" value="amd64" />
+    <property name="maven-repository-url" value="https://oss.sonatype.org/service/local/staging/deploy/maven2/" />
+    <property name="webservice-classes.dir" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/build/webservice-classes" />
+    <property name="java.ext.dirs" value="/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/ext:/usr/java/packages/lib/ext" />
+    <property name="user.dir" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure" />
+    <property name="ant.file.type.compiler" value="file" />
+    <property name="line.separator" value="&#xa;" />
+    <property name="java.vm.name" value="Java HotSpot(TM) 64-Bit Server VM" />
+    <property name="basedir" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure" />
+    <property name="ant.java.version" value="1.6" />
+    <property name="ant.core.lib" value="/usr/share/ant/lib/ant.jar" />
+    <property name="file.encoding" value="UTF-8" />
+    <property name="closure.build.dir" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/build" />
+    <property name="compiler-jarfile" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/build/compiler.jar" />
+    <property name="java.specification.version" value="1.6" />
+    <property name="src.dir" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/src" />
+    <property name="javadoc.dir" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/build/javadoc" />
+    <property name="ant.project.invoked-targets" value="test" />
+    <property name="tools.dir" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/tools" />
+  </properties>
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testGlobalThis1" time="0.0040" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testGlobalThis2" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testGlobalThis3" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testGlobalThis4" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testGlobalThis5" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testGlobalThis6" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testInnerFunction1" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testInnerFunction2" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testInnerFunction3" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testInnerFunction4" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testComparison2" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testComparison3" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testComparison4" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testHook" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testObjectLiteral" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testInitialTypingScope" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testTypeCheck1" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testTypeCheck2" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testTypeCheck4" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testTypeCheck5" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testTypeCheck6" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testTypeCheck8" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testTypeCheck9" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testTypeCheck10" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testTypeCheck11" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testTypeCheck12" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testTypeCheck13" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testTypeCheck14" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testTypeCheck15" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testTypeCheck16a" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testTypeCheck16b" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testTypeCheck17" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testTypeCheck18" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testTypeCheck19" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testTypeCheck20" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testTypeCheckBasicDowncast" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testTypeCheckNoDowncastToNumber" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testTypeCheck21" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testTypeCheck22" time="0.0030" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testTypeCheck23" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testTypeCheck24" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testTypeCheckDefaultExterns" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testTypeCheckCustomExterns" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testTemplatizedArray1" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testTemplatizedArray2" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testTemplatizedArray3" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testTemplatizedArray4" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testTemplatizedArray5" time="0.0030" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testTemplatizedArray6" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testTemplatizedArray7" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testTemplatizedObject1" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testTemplatizedObject2" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testTemplatizedObject3" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testTemplatizedObject4" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testUnionOfFunctionAndType" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testOptionalParameterComparedToUndefined" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testOptionalAllType" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testOptionalUnknownNamedType" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testOptionalArgFunctionParam" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testOptionalArgFunctionParam2" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testOptionalArgFunctionParam3" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testOptionalArgFunctionParam4" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testOptionalArgFunctionParamError" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testOptionalNullableArgFunctionParam" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testOptionalNullableArgFunctionParam2" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testOptionalNullableArgFunctionParam3" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testOptionalArgFunctionReturn" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testOptionalArgFunctionReturn2" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testBooleanType" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testBooleanReduction1" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testBooleanReduction2" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testBooleanReduction3" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testBooleanReduction4" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testBooleanReduction5" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testBooleanReduction6" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testBooleanReduction7" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testNullAnd" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testNullOr" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testBooleanPreservation1" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testBooleanPreservation2" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testBooleanPreservation3" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testBooleanPreservation4" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testTypeOfReduction1" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testTypeOfReduction2" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testTypeOfReduction3" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testTypeOfReduction4" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testTypeOfReduction5" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testTypeOfReduction6" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testTypeOfReduction7" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testTypeOfReduction8" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testTypeOfReduction9" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testTypeOfReduction10" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testTypeOfReduction11" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testTypeOfReduction12" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testTypeOfReduction13" time="0.0030" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testTypeOfReduction14" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testTypeOfReduction15" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testQualifiedNameReduction1" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testQualifiedNameReduction2" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testQualifiedNameReduction3" time="0.0030" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testQualifiedNameReduction4" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testInstanceOfReduction1" time="0.0030" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testInstanceOfReduction2" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testPropertyInferredPropagation" time="0.0030" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testPropertyInference1" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testPropertyInference2" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testPropertyInference3" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testPropertyInference4" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testPropertyInference5" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testPropertyInference6" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testPropertyInference7" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testPropertyInference8" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testNoPersistentTypeInferenceForObjectProperties" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testNoPersistentTypeInferenceForFunctionProperties" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testObjectPropertyTypeInferredInLocalScope1" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testObjectPropertyTypeInferredInLocalScope2" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testObjectPropertyTypeInferredInLocalScope3" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testMismatchingOverridingInferredPropertyBeforeDeclaredProperty1" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testMismatchingOverridingInferredPropertyBeforeDeclaredProperty2" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testMismatchingOverridingInferredPropertyBeforeDeclaredProperty3" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testMismatchingOverridingInferredPropertyBeforeDeclaredProperty4" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testPropertyUsedBeforeDefinition1" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testPropertyUsedBeforeDefinition2" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testAdd1" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testAdd2" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testAdd3" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testAdd4" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testAdd5" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testAdd6" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testAdd7" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testAdd8" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testAdd9" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testAdd10" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testAdd11" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testAdd12" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testAdd13" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testAdd14" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testAdd15" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testAdd16" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testAdd17" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testAdd18" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testAdd19" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testAdd20" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testAdd21" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testNumericComparison1" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testNumericComparison2" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testNumericComparison3" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testNumericComparison4" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testNumericComparison5" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testNumericComparison6" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testStringComparison1" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testStringComparison2" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testStringComparison3" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testStringComparison4" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testStringComparison5" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testStringComparison6" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testValueOfComparison1" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testValueOfComparison2" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testValueOfComparison3" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testGenericRelationalExpression" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testInstanceof1" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testInstanceof2" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testInstanceof3" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testInstanceof4" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testInstanceof5" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testInstanceof6" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testInstanceOfReduction3" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testScoping1" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testScoping2" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testScoping3" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testScoping4" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testScoping5" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testScoping6" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testScoping7" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testScoping8" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testScoping9" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testScoping10" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testScoping11" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testFunctionArguments1" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testFunctionArguments2" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testFunctionArguments3" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testFunctionArguments4" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testFunctionArguments5" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testFunctionArguments6" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testFunctionArguments7" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testFunctionArguments8" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testFunctionArguments9" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testFunctionArguments10" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testFunctionArguments11" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testFunctionArguments12" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testFunctionArguments13" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testFunctionArguments14" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testFunctionArguments15" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testPrintFunctionName1" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testPrintFunctionName2" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testFunctionInference1" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testFunctionInference2" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testFunctionInference3" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testFunctionInference4" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testFunctionInference5" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testFunctionInference6" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testFunctionInference7" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testFunctionInference8" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testFunctionInference9" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testFunctionInference10" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testFunctionInference11" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testFunctionInference12" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testFunctionInference13" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testFunctionInference14" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testFunctionInference15" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testFunctionInference16" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testFunctionInference17" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testFunctionInference18" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testFunctionInference19" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testFunctionInference20" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testInnerFunction5" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testInnerFunction6" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testInnerFunction7" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testInnerFunction8" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testInnerFunction9" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testAbstractMethodHandling1" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testAbstractMethodHandling2" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testAbstractMethodHandling3" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testAbstractMethodHandling4" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testAbstractMethodHandling5" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testAbstractMethodHandling6" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testMethodInference1" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testMethodInference2" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testMethodInference3" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testMethodInference4" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testMethodInference5" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testMethodInference6" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testMethodInference7" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testMethodInference8" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testMethodInference9" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testStaticMethodDeclaration1" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testStaticMethodDeclaration2" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testStaticMethodDeclaration3" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testDuplicateStaticMethodDecl1" time="0.0030" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testDuplicateStaticMethodDecl2" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testDuplicateStaticMethodDecl3" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testDuplicateStaticMethodDecl4" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testDuplicateStaticMethodDecl5" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testDuplicateStaticPropertyDecl1" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testDuplicateStaticPropertyDecl2" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testDuplicateStaticPropertyDecl3" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testDuplicateStaticPropertyDecl4" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testDuplicateStaticPropertyDecl5" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testDuplicateStaticPropertyDecl6" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testDuplicateStaticPropertyDecl7" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testDuplicateStaticPropertyDecl8" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testDuplicateStaticPropertyDecl9" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testDuplicateLocalVarDecl" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testStubFunctionDeclaration1" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testStubFunctionDeclaration2" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testStubFunctionDeclaration3" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testStubFunctionDeclaration4" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testStubFunctionDeclaration5" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testStubFunctionDeclaration6" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testStubFunctionDeclaration7" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testStubFunctionDeclaration8" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testStubFunctionDeclaration9" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testStubFunctionDeclaration10" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testNestedFunctionInference1" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testTypeRedefinition" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testIn1" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testIn2" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testIn3" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testIn4" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testIn5" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testIn6" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testIn7" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testComparison5" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testComparison6" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testComparison7" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testComparison8" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testComparison9" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testComparison10" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testEnumStaticMethod1" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testEnumStaticMethod2" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testEnum1" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testEnum2" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testEnum3" time="0.024" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testEnum4" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testEnum5" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testEnum6" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testEnum7" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testEnum8" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testEnum9" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testEnum10" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testEnum11" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testEnum12" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testEnum13" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testEnum14" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testEnum15" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testEnum16" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testEnum17" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testEnum18" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testEnum19" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testEnum20" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testEnum21" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testEnum22" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testEnum23" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testEnum24" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testEnum25" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testEnum26" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testEnum27" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testEnum28" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testEnum29" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testEnum30" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testEnum31" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testEnum32" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testEnum34" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testEnum35" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testEnum36" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testEnum37" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testEnum38" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testEnum39" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testEnum40" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testAliasedEnum1" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testAliasedEnum2" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testAliasedEnum3" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testAliasedEnum4" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testAliasedEnum5" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testBackwardsEnumUse1" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testBackwardsEnumUse2" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testBackwardsEnumUse3" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testBackwardsEnumUse4" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testBackwardsEnumUse5" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testBackwardsConstructor1" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testBackwardsConstructor2" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testMinimalConstructorAnnotation" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testGoodExtends1" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testGoodExtends2" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testGoodExtends3" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testGoodExtends4" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testGoodExtends5" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testGoodExtends6" time="0.0030" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testGoodExtends7" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testGoodExtends8" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testGoodExtends9" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testGoodExtends10" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testGoodExtends11" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testBadExtends1" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testBadExtends2" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testBadExtends3" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testLateExtends" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testSuperclassMatch" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testSuperclassMatchWithMixin" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testSuperclassMismatch1" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testSuperclassMismatch2" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testSuperClassDefinedAfterSubClass1" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testSuperClassDefinedAfterSubClass2" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testDirectPrototypeAssignment1" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testDirectPrototypeAssignment2" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testGoodImplements1" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testGoodImplements2" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testBadImplements1" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testBadImplements2" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testBadImplements3" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testInterfaceExtends" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testBadInterfaceExtends1" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testBadInterfaceExtends2" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testBadInterfaceExtends3" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testBadInterfaceExtends4" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testBadInterfaceExtends5" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testBadImplementsAConstructor" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testBadImplementsNonInterfaceType" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testBadImplementsNonObjectType" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testInterfaceAssignment1" time="0.0030" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testInterfaceAssignment2" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testInterfaceAssignment3" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testInterfaceAssignment4" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testInterfaceAssignment5" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testInterfaceAssignment6" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testInterfaceAssignment7" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testInterfaceAssignment8" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testInterfaceAssignment9" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testInterfaceAssignment10" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testInterfaceAssignment11" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testInterfaceAssignment12" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testInterfaceAssignment13" time="0.0030" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testGetprop1" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testArrayAccess1" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testArrayAccess2" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testArrayAccess3" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testArrayAccess4" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testArrayAccess6" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testArrayAccess7" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testArrayAccess8" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testPropAccess" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testPropAccess2" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testPropAccess3" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testPropAccess4" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testSwitchCase1" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testSwitchCase2" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testVar1" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testVar2" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testVar3" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testVar4" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testVar5" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testVar6" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testVar7" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testVar8" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testVar9" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testVar10" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testVar11" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testVar12" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testVar13" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testVar14" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testVar15" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testAssign1" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testAssign2" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testAssign3" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testAssign4" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testAssignInference" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testOr1" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testOr2" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testOr3" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testOr4" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testOr5" time="0.0030" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testAnd1" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testAnd2" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testAnd3" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testAnd4" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testAnd5" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testAnd6" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testAnd7" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testHookRestrictsType1" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testHookRestrictsType2" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testHookRestrictsType3" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testHookRestrictsType4" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testHookRestrictsType5" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testHookRestrictsType6" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testHookRestrictsType7" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testWhileRestrictsType1" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testWhileRestrictsType2" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testHigherOrderFunctions1" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testHigherOrderFunctions2" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testHigherOrderFunctions3" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testHigherOrderFunctions4" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testConstructorAlias1" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testConstructorAlias2" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testConstructorAlias3" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testConstructorAlias4" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testConstructorAlias5" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testConstructorAlias6" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testConstructorAlias7" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testConstructorAlias8" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testConstructorAlias9" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testConstructorAlias10" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testClosure1" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testClosure2" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testClosure3" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testClosure4" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testClosure5" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testClosure6" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testReturn1" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testReturn2" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testReturn3" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testReturn4" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testReturn5" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testReturn6" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testReturn7" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testReturn8" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testThis1" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testThis2" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testThis3" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testThis4" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testThis5" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testThis6" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testThis7" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testThis8" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testThis9" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testThis10" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testControlFlowRestrictsType1a" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testControlFlowRestrictsType1b" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testControlFlowRestrictsType1c" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testControlFlowRestrictsType2" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testControlFlowRestrictsType3" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testControlFlowRestrictsType4" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testControlFlowRestrictsType5" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testControlFlowRestrictsType6" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testControlFlowRestrictsType7" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testControlFlowRestrictsType8" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testControlFlowRestrictsType9" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testSwitchCase3" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testSwitchCase4" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testSwitchCase5" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testSwitchCase6" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testSwitchCase7" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testSwitchCase8" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testNoTypeCheck1" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testNoTypeCheck2" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testNoTypeCheck3" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testNoTypeCheck4" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testNoTypeCheck5" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testNoTypeCheck6" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testNoTypeCheck7" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testNoTypeCheck8" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testImplicitCast" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testImplicitCastSubclassAccess" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testImplicitCastNotInExterns" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testNumberNode" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testStringNode" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testBooleanNodeTrue" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testBooleanNodeFalse" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testUndefinedNode" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testNumberAutoboxing" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testNumberUnboxing" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testStringAutoboxing" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testStringUnboxing" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testBooleanAutoboxing" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testBooleanUnboxing" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testIssue86" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testIssue124" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testIssue124b" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testBug592170" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testBug901455" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testBug908701" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testBug908625" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testBug911118" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testBug909000" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testBug930117" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testBug1484445" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testBug1859535" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testBug1940591" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testBug1942972" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testBug1943776" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testBug1987544" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testBug1940769" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testBug2335992" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testBug2341812" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testScopedConstructors" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testQualifiedNameInference1" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testQualifiedNameInference2" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testQualifiedNameInference3" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testQualifiedNameInference4" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testSheqRefinedScope" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testAssignToUntypedVariable" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testAssignToUntypedProperty" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testNew1" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testNew2" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testNew3" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testNew4" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testNew5" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testNew6" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testNew7" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testNew8" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testNew9" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testNew10" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testNew11" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testNew12" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testNew13" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testNew14" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testNew15" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testNew16" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testName1" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testName2" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testName3" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testName4" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testName5" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testBitOperation1" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testBitOperation2" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testBitOperation3" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testBitOperation4" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testBitOperation5" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testBitOperation6" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testBitOperation7" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testBitOperation8" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testBitOperation9" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testCall1" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testCall2" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testCall3" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testCall4" time="0.032" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testCall5" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testCall6" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testCall7" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testCall8" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testCall9" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testCall10" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testCall11" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testFunctionCall1" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testFunctionCall2" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testFunctionCall3" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testFunctionCall4" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testFunctionCall5" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testFunctionCall6" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testFunctionCall7" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testFunctionCall8" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testCast2" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testCast3" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testCast4" time="0.0030" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testCast5" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testCast6" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testCast7" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testCast8" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testCast9" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testCast10" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testCast11" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testCast12" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testCast13" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testCast14" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testCast15" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testCast16" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testNestedCasts" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testNativeCast1" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testNativeCast2" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testNativeCast3" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testNativeCast4" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testBadConstructorCall" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testTypeof" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testConstructorType1" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testConstructorType2" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testConstructorType3" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testConstructorType4" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testConstructorType5" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testConstructorType6" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testConstructorType7" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testAnonymousType1" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testAnonymousType2" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testAnonymousType3" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testBang1" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testBang2" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testBang3" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testBang4" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testBang5" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testBang6" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testBang7" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testDefinePropertyOnNullableObject1" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testDefinePropertyOnNullableObject2" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testUnknownConstructorInstanceType1" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testUnknownConstructorInstanceType2" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testUnknownConstructorInstanceType3" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testUnknownPrototypeChain" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testNamespacedConstructor" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testComplexNamespace" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testAddingMethodsUsingPrototypeIdiomSimpleNamespace" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testAddingMethodsUsingPrototypeIdiomComplexNamespace1" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testAddingMethodsUsingPrototypeIdiomComplexNamespace2" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testAddingMethodsPrototypeIdiomAndObjectLiteralSimpleNamespace" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testDontAddMethodsIfNoConstructor" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testFunctionAssignement" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testAddMethodsPrototypeTwoWays" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testPrototypePropertyTypes" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testValueTypeBuiltInPrototypePropertyType" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testDeclareBuiltInConstructor" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testExtendBuiltInType1" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testExtendBuiltInType2" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testExtendFunction1" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testExtendFunction2" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testInheritanceCheck1" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testInheritanceCheck2" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testInheritanceCheck3" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testInheritanceCheck4" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testInheritanceCheck5" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testInheritanceCheck6" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testInheritanceCheck7" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testInheritanceCheck8" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testInheritanceCheck9_1" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testInheritanceCheck9_2" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testInheritanceCheck9_3" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testInheritanceCheck10_1" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testInheritanceCheck10_2" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testInheritanceCheck10_3" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testInterfaceInheritanceCheck11" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testInheritanceCheck12" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testInheritanceCheck13" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testInheritanceCheck14" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testInterfaceInheritanceCheck1" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testInterfaceInheritanceCheck2" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testInterfaceInheritanceCheck3" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testInterfaceInheritanceCheck4" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testInterfaceInheritanceCheck5" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testInterfaceInheritanceCheck6" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testInterfaceInheritanceCheck7" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testInterfaceInheritanceCheck8" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testInterfacePropertyNotImplemented" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testInterfacePropertyNotImplemented2" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testStubConstructorImplementingInterface" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testObjectLiteralDeclaration1" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testCallDateConstructorAsFunction" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testCallErrorConstructorAsFunction" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testCallArrayConstructorAsFunction" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testPropertyTypeOfUnionType" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testAnnotatedPropertyOnInterface1" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testAnnotatedPropertyOnInterface2" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testAnnotatedPropertyOnInterface3" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testAnnotatedPropertyOnInterface4" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testWarnUnannotatedPropertyOnInterface5" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testWarnUnannotatedPropertyOnInterface6" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testWarnDataPropertyOnInterface3" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testWarnDataPropertyOnInterface4" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testErrorMismatchingPropertyOnInterface4" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testErrorMismatchingPropertyOnInterface5" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testErrorMismatchingPropertyOnInterface6" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testInterfaceNonEmptyFunction" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testDoubleNestedInterface" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testStaticDataPropertyOnNestedInterface" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testInterfaceInstantiation" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testPrototypeLoop" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testDirectPrototypeAssign" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testResolutionViaRegistry1" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testResolutionViaRegistry2" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testResolutionViaRegistry3" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testResolutionViaRegistry4" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testResolutionViaRegistry5" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testGatherProperyWithoutAnnotation1" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testGatherProperyWithoutAnnotation2" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testFunctionMasksVariableBug" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testDfa1" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testDfa2" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testDfa3" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testDfa4" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testDfa5" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testDfa6" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testDfa7" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testDfa8" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testDfa9" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testDfa10" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testDfa11" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testDfa12" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testDfa13" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testTypeInferenceWithCast1" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testTypeInferenceWithCast2" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testTypeInferenceWithCast3" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testTypeInferenceWithCast4" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testTypeInferenceWithCast5" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testTypeInferenceWithClosure1" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testTypeInferenceWithClosure2" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testForwardPropertyReference" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testNoForwardTypeDeclaration" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testNoForwardTypeDeclarationAndNoBraces" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testForwardTypeDeclaration1" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testForwardTypeDeclaration2" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testForwardTypeDeclaration3" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testDuplicateTypeDef" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testTypeDef1" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testTypeDef2" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testTypeDef3" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testCircularTypeDef" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testGetTypedPercent1" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testGetTypedPercent2" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testGetTypedPercent3" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testGetTypedPercent4" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testPrototypePropertyReference" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testResolvingNamedTypes" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testMissingProperty1" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testMissingProperty2" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testMissingProperty3" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testMissingProperty4" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testMissingProperty5" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testMissingProperty6" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testMissingProperty7" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testMissingProperty8" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testMissingProperty9" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testMissingProperty10" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testMissingProperty11" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testMissingProperty12" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testMissingProperty13" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testMissingProperty14" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testMissingProperty15" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testMissingProperty16" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testMissingProperty17" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testMissingProperty18" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testMissingProperty19" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testMissingProperty21" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testMissingProperty22" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testMissingProperty23" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testMissingProperty24" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testMissingProperty25" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testMissingProperty26" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testMissingProperty27" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testMissingProperty28" time="0.0030" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testMissingProperty29" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testDeclaredNativeTypeEquality" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testUndefinedVar" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testFlowScopeBug1" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testFlowScopeBug2" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testAddSingletonGetter" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.LooseTypeCheckTest" name="testTypeCheckStandaloneAST" time="0.0010" />
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

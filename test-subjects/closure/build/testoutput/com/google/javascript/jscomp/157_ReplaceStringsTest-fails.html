@@ -1,0 +1,570 @@
+<html xmlns:stringutils="xalan://org.apache.tools.ant.util.StringUtils" xmlns:lxslt="http://xml.apache.org/xslt">
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Unit Test Results: com.google.javascript.jscomp.ReplaceStringsTest</title>
+<link title="Style" type="text/css" rel="stylesheet" href="../../../../stylesheet.css">
+<script language="JavaScript" type="text/javascript">
+        var TestCases = new Array();
+        var cur;
+        
+    cur = TestCases['com.google.javascript.jscomp.ReplaceStringsTest'] = new Array();
+    
+        cur['ant.build.javac.source'] = '1.6';
+    
+        cur['ant.build.javac.target'] = '1.6';
+    
+        cur['ant.core.lib'] = '/usr/share/ant/lib/ant.jar';
+    
+        cur['ant.file'] = '/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/build.xml';
+    
+        cur['ant.file.compiler'] = '/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/build.xml';
+    
+        cur['ant.file.type'] = 'file';
+    
+        cur['ant.file.type.compiler'] = 'file';
+    
+        cur['ant.home'] = '/usr/share/ant';
+    
+        cur['ant.java.version'] = '1.6';
+    
+        cur['ant.library.dir'] = '/usr/share/ant/lib';
+    
+        cur['ant.project.default-target'] = 'jar';
+    
+        cur['ant.project.invoked-targets'] = 'test';
+    
+        cur['ant.project.name'] = 'compiler';
+    
+        cur['ant.version'] = 'Apache Ant(TM) version 1.8.2 compiled on September 22 2011';
+    
+        cur['basedir'] = '/home/laura/workspace/test-analysis-toolkit/test-subjects/closure';
+    
+        cur['build.dir'] = '/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/build';
+    
+        cur['build.svnVersion'] = 'exported';
+    
+        cur['buildlib.dir'] = '/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/build/lib';
+    
+        cur['classes.dir'] = '/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/build/classes';
+    
+        cur['closure.build.dir'] = '/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/build';
+    
+        cur['compiler-jarfile'] = '/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/build/compiler.jar';
+    
+        cur['externs.dir'] = '/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/externs';
+    
+        cur['file.encoding'] = 'UTF-8';
+    
+        cur['file.encoding.pkg'] = 'sun.io';
+    
+        cur['file.separator'] = '/';
+    
+        cur['gen.dir'] = '/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/gen';
+    
+        cur['java.awt.graphicsenv'] = 'sun.awt.X11GraphicsEnvironment';
+    
+        cur['java.awt.printerjob'] = 'sun.print.PSPrinterJob';
+    
+        cur['java.class.path'] = '/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/build/classes:/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/lib/ant-launcher.jar:/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/lib/ant.jar:/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/lib/args4j.jar:/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/lib/caja-r4314.jar:/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/lib/guava.jar:/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/lib/jarjar.jar:/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/lib/json.jar:/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/lib/jsr305.jar:/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/lib/junit.jar:/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/lib/protobuf-java.jar:/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/build/lib/rhino.jar:/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/build/test:/home/laura/.ant/lib/junit-4.8.1.jar:/usr/share/java/ant-launcher-1.8.2.jar:/usr/share/ant/lib/ant.jar:/usr/share/ant/lib/ant-junit.jar:/usr/share/ant/lib/ant-junit4.jar';
+    
+        cur['java.class.version'] = '50.0';
+    
+        cur['java.endorsed.dirs'] = '/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/endorsed';
+    
+        cur['java.ext.dirs'] = '/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/ext:/usr/java/packages/lib/ext';
+    
+        cur['java.home'] = '/usr/lib/jvm/java-6-sun-1.6.0.26/jre';
+    
+        cur['java.io.tmpdir'] = '/tmp';
+    
+        cur['java.library.path'] = '/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/amd64/server:/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/amd64:/usr/lib/jvm/java-6-sun-1.6.0.26/jre/../lib/amd64:/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib';
+    
+        cur['java.runtime.name'] = 'Java(TM) SE Runtime Environment';
+    
+        cur['java.runtime.version'] = '1.6.0_26-b03';
+    
+        cur['java.specification.name'] = 'Java Platform API Specification';
+    
+        cur['java.specification.vendor'] = 'Sun Microsystems Inc.';
+    
+        cur['java.specification.version'] = '1.6';
+    
+        cur['java.vendor'] = 'Sun Microsystems Inc.';
+    
+        cur['java.vendor.url'] = 'http://java.sun.com/';
+    
+        cur['java.vendor.url.bug'] = 'http://java.sun.com/cgi-bin/bugreport.cgi';
+    
+        cur['java.version'] = '1.6.0_26';
+    
+        cur['java.vm.info'] = 'mixed mode';
+    
+        cur['java.vm.name'] = 'Java HotSpot(TM) 64-Bit Server VM';
+    
+        cur['java.vm.specification.name'] = 'Java Virtual Machine Specification';
+    
+        cur['java.vm.specification.vendor'] = 'Sun Microsystems Inc.';
+    
+        cur['java.vm.specification.version'] = '1.0';
+    
+        cur['java.vm.vendor'] = 'Sun Microsystems Inc.';
+    
+        cur['java.vm.version'] = '20.1-b02';
+    
+        cur['javac.debug'] = 'on';
+    
+        cur['javadoc.dir'] = '/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/build/javadoc';
+    
+        cur['jsonml.dir'] = '/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/src/com/google/javascript/jscomp/jsonml';
+    
+        cur['jsonml-classes.dir'] = '/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/build/jsonml-classes';
+    
+        cur['jsonml-jarfile'] = '/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/build/secure_compiler.jar';
+    
+        cur['lib.dir'] = '/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/lib';
+    
+        cur['line.separator'] = '
+';
+    
+        cur['maven-repository-id'] = 'sonatype-nexus-staging';
+    
+        cur['maven-repository-url'] = 'https://oss.sonatype.org/service/local/staging/deploy/maven2/';
+    
+        cur['num-fuzz-tests'] = '10000';
+    
+        cur['os.arch'] = 'amd64';
+    
+        cur['os.name'] = 'Linux';
+    
+        cur['os.version'] = '3.2.0-4-amd64';
+    
+        cur['path.separator'] = ':';
+    
+        cur['protoc.executable'] = 'protoc';
+    
+        cur['src.dir'] = '/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/src';
+    
+        cur['sun.arch.data.model'] = '64';
+    
+        cur['sun.boot.class.path'] = '/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/resources.jar:/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/rt.jar:/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/sunrsasign.jar:/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/jsse.jar:/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/jce.jar:/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/charsets.jar:/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/modules/jdk.boot.jar:/usr/lib/jvm/java-6-sun-1.6.0.26/jre/classes';
+    
+        cur['sun.boot.library.path'] = '/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/amd64';
+    
+        cur['sun.cpu.endian'] = 'little';
+    
+        cur['sun.cpu.isalist'] = '';
+    
+        cur['sun.io.unicode.encoding'] = 'UnicodeLittle';
+    
+        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner testsfile=/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/junittestcases2585143490315417822.properties filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.SummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.BriefJUnitResultFormatter formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/build/testoutput/IGNORETHIS.xml crashfile=/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/junitvmwatcher655518385467522977.properties propsfile=/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/junit311194844629172637.properties';
+    
+        cur['sun.java.launcher'] = 'SUN_STANDARD';
+    
+        cur['sun.jnu.encoding'] = 'UTF-8';
+    
+        cur['sun.management.compiler'] = 'HotSpot 64-Bit Tiered Compilers';
+    
+        cur['sun.os.patch.level'] = 'unknown';
+    
+        cur['test.class'] = '*Test';
+    
+        cur['test.dir'] = '/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/test';
+    
+        cur['test.fork'] = 'true';
+    
+        cur['testClasses.dir'] = '/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/build/test';
+    
+        cur['tools.dir'] = '/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/tools';
+    
+        cur['user.country'] = 'CA';
+    
+        cur['user.dir'] = '/home/laura/workspace/test-analysis-toolkit/test-subjects/closure';
+    
+        cur['user.home'] = '/home/laura';
+    
+        cur['user.language'] = 'en';
+    
+        cur['user.name'] = 'laura';
+    
+        cur['user.timezone'] = '';
+    
+        cur['webservice.dir'] = '/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/src/com/google/javascript/jscomp/webservice';
+    
+        cur['webservice-classes.dir'] = '/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/build/webservice-classes';
+    
+        cur['webservice-jarfile'] = '/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/build/webservice.jar';
+    </script><script language="JavaScript" type="text/javascript">
+        function displayProperties (name) {
+          var win = window.open('','JUnitSystemProperties','scrollbars=1,resizable=1');
+          var doc = win.document;
+          doc.open();
+          doc.write("<html><head><title>Properties of " + name + "</title>");
+          doc.write("<style type=\"text/css\">");
+          doc.write("body {font:normal 68% verdana,arial,helvetica; color:#000000; }");
+          doc.write("table tr td, table tr th { font-size: 68%; }");
+          doc.write("table.properties { border-collapse:collapse; border-left:solid 1 #cccccc; border-top:solid 1 #cccccc; padding:5px; }");
+          doc.write("table.properties th { text-align:left; border-right:solid 1 #cccccc; border-bottom:solid 1 #cccccc; background-color:#eeeeee; }");
+          doc.write("table.properties td { font:normal; text-align:left; border-right:solid 1 #cccccc; border-bottom:solid 1 #cccccc; background-color:#fffffff; }");
+          doc.write("h3 { margin-bottom: 0.5em; font: bold 115% verdana,arial,helvetica }");
+          doc.write("</style>");
+          doc.write("</head><body>");
+          doc.write("<h3>Properties of " + name + "</h3>");
+          doc.write("<div align=\"right\"><a href=\"javascript:window.close();\">Close</a></div>");
+          doc.write("<table class='properties'>");
+          doc.write("<tr><th>Name</th><th>Value</th></tr>");
+          for (prop in TestCases[name]) {
+            doc.write("<tr><th>" + prop + "</th><td>" + TestCases[name][prop] + "</td></tr>");
+          }
+          doc.write("</table>");
+          doc.write("</body></html>");
+          doc.close();
+          win.focus();
+        }
+      
+      </script>
+</head>
+<body>
+<h1>Unit Test Results.</h1>
+<table width="100%">
+<tr>
+<td align="left"></td><td align="right">Designed for use with <a href="http://www.junit.org/">JUnit</a> and <a href="http://ant.apache.org/">Ant</a>.</td>
+</tr>
+</table>
+<hr size="1">
+<h3>Class com.google.javascript.jscomp.ReplaceStringsTest</h3>
+<table width="95%" cellspacing="2" cellpadding="5" border="0" class="details">
+<tr valign="top">
+<th width="80%">Name</th><th>Tests</th><th>Errors</th><th>Failures</th><th nowrap>Time(s)</th><th nowrap>Time Stamp</th><th>Host</th>
+</tr>
+<tr valign="top" class="Failure">
+<td><a href="157_ReplaceStringsTest.html" title="Display all tests">ReplaceStringsTest</a></td><td><a href="157_ReplaceStringsTest.html" title="Display all tests">30</a></td><td>0</td><td><a href="157_ReplaceStringsTest-fails.html" title="Display only failures">5</a></td><td>0.025</td><td>2013-02-19T19:56:11</td><td>battower</td>
+</tr>
+</table>
+<h2>Failures</h2>
+<table width="95%" cellspacing="2" cellpadding="5" border="0" class="details">
+<tr valign="top">
+<th>Name</th><th>Status</th><th width="80%">Type</th><th nowrap>Time(s)</th>
+</tr>
+<tr valign="top" class="Failure">
+<td><a name="testThrowConstStringError"></a>testThrowConstStringError</td><td>Failure</td><td>
+Expected: var AA="uvw",AB="xyz";throw Error("a");
+Result: var AA="uvw",AB="xyz";throw Error(AB);
+Node tree inequality:
+Tree1:
+BLOCK [synthetic: 1]
+    SCRIPT 1 [synthetic: 1] [source_file: expected0] [input_id: InputId: expected0]
+        VAR 1 [source_file: expected0]
+            NAME AA 1 [source_file: expected0]
+                STRING uvw 1 [source_file: expected0]
+            NAME AB 1 [source_file: expected0]
+                STRING xyz 1 [source_file: expected0]
+        THROW 1 [source_file: expected0]
+            CALL 1 [free_call: 1] [source_file: expected0]
+                NAME Error 1 [source_file: expected0]
+                STRING a 1 [source_file: expected0]
+
+
+Tree2:
+BLOCK [synthetic: 1] : global this
+    SCRIPT 1 [synthetic: 1] [source_file: testcode] [input_id: InputId: testcode]
+        VAR 1 [source_file: testcode]
+            NAME AA 1 [source_file: testcode] : string
+                STRING uvw 1 [source_file: testcode] : string
+            NAME AB 1 [source_file: testcode] : string
+                STRING xyz 1 [source_file: testcode] : string
+        THROW 1 [source_file: testcode]
+            CALL 1 [free_call: 1] [source_file: testcode] : Error
+                NAME Error 1 [source_file: testcode] : function (new:Error, *=, *=, *=): Error
+                NAME AB 1 [source_file: testcode] : string
+
+
+Subtree1: STRING a 1 [source_file: expected0]
+
+
+Subtree2: NAME AB 1 [source_file: testcode] : string
+<br>
+<br>
+<code>junit.framework.AssertionFailedError: <br>Expected: var AA="uvw",AB="xyz";throw Error("a");<br>Result: var AA="uvw",AB="xyz";throw Error(AB);<br>Node tree inequality:<br>Tree1:<br>BLOCK [synthetic: 1]<br>    SCRIPT 1 [synthetic: 1] [source_file: expected0] [input_id: InputId: expected0]<br>        VAR 1 [source_file: expected0]<br>            NAME AA 1 [source_file: expected0]<br>                STRING uvw 1 [source_file: expected0]<br>            NAME AB 1 [source_file: expected0]<br>                STRING xyz 1 [source_file: expected0]<br>        THROW 1 [source_file: expected0]<br>            CALL 1 [free_call: 1] [source_file: expected0]<br>                NAME Error 1 [source_file: expected0]<br>                STRING a 1 [source_file: expected0]<br>
+<br>
+<br>Tree2:<br>BLOCK [synthetic: 1] : global this<br>    SCRIPT 1 [synthetic: 1] [source_file: testcode] [input_id: InputId: testcode]<br>        VAR 1 [source_file: testcode]<br>            NAME AA 1 [source_file: testcode] : string<br>                STRING uvw 1 [source_file: testcode] : string<br>            NAME AB 1 [source_file: testcode] : string<br>                STRING xyz 1 [source_file: testcode] : string<br>        THROW 1 [source_file: testcode]<br>            CALL 1 [free_call: 1] [source_file: testcode] : Error<br>                NAME Error 1 [source_file: testcode] : function (new:Error, *=, *=, *=): Error<br>                NAME AB 1 [source_file: testcode] : string<br>
+<br>
+<br>Subtree1: STRING a 1 [source_file: expected0]<br>
+<br>
+<br>Subtree2: NAME AB 1 [source_file: testcode] : string<br>
+<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:907)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:447)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:373)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:342)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:330)<br>	at com.google.javascript.jscomp.ReplaceStringsTest.testDebugStrings(ReplaceStringsTest.java:406)<br>	at com.google.javascript.jscomp.ReplaceStringsTest.testThrowConstStringError(ReplaceStringsTest.java:195)<br>
+</code></td><td>0.001</td>
+</tr>
+<tr valign="top" class="Failure">
+<td><a name="testLoggerOnObject1"></a>testLoggerOnObject1</td><td>Failure</td><td>
+Expected: var x$logger_=goog.debug.Logger.getLogger("a");x$logger_.info("b")
+Result: var x$logger_=goog.debug.Logger.getLogger("a");x$logger_.info("Some message")
+Node tree inequality:
+Tree1:
+BLOCK [synthetic: 1]
+    SCRIPT 1 [synthetic: 1] [source_file: expected0] [input_id: InputId: expected0]
+        VAR 1 [source_file: expected0]
+            NAME x$logger_ 1 [source_file: expected0]
+                CALL 1 [source_file: expected0]
+                    GETPROP 1 [source_file: expected0]
+                        GETPROP 1 [source_file: expected0]
+                            GETPROP 1 [source_file: expected0]
+                                NAME goog 1 [source_file: expected0]
+                                STRING debug 1 [source_file: expected0]
+                            STRING Logger 1 [source_file: expected0]
+                        STRING getLogger 1 [source_file: expected0]
+                    STRING a 1 [source_file: expected0]
+        EXPR_RESULT 1 [source_file: expected0]
+            CALL 1 [source_file: expected0]
+                GETPROP 1 [source_file: expected0]
+                    NAME x$logger_ 1 [source_file: expected0]
+                    STRING info 1 [source_file: expected0]
+                STRING b 1 [source_file: expected0]
+
+
+Tree2:
+BLOCK [synthetic: 1] : global this
+    SCRIPT 1 [synthetic: 1] [source_file: testcode] [input_id: InputId: testcode]
+        VAR 1 [source_file: testcode]
+            NAME x$logger_ 1 [originalname: x.logger_] [source_file: testcode]
+                CALL 1 [source_file: testcode] : ?
+                    GETPROP 1 [source_file: testcode] : ?
+                        GETPROP 1 [source_file: testcode] : ?
+                            GETPROP 1 [source_file: testcode] : ?
+                                NAME goog 1 [source_file: testcode] : ?
+                                STRING debug 1 [source_file: testcode] : string
+                            STRING Logger 1 [source_file: testcode] : string
+                        STRING getLogger 1 [source_file: testcode] : string
+                    STRING a 1 [source_file: testcode]
+        EXPR_RESULT 1 [source_file: testcode]
+            CALL 1 [source_file: testcode] : ?
+                GETPROP 1 [source_file: testcode] : ?
+                    NAME x$logger_ 1 [originalname: x.logger_.info] [source_file: testcode] : ?
+                    STRING info 1 [source_file: testcode] : string
+                STRING Some message 1 [source_file: testcode] : string
+
+
+Subtree1: STRING b 1 [source_file: expected0]
+
+
+Subtree2: STRING Some message 1 [source_file: testcode] : string
+<br>
+<br>
+<code>junit.framework.AssertionFailedError: <br>Expected: var x$logger_=goog.debug.Logger.getLogger("a");x$logger_.info("b")<br>Result: var x$logger_=goog.debug.Logger.getLogger("a");x$logger_.info("Some message")<br>Node tree inequality:<br>Tree1:<br>BLOCK [synthetic: 1]<br>    SCRIPT 1 [synthetic: 1] [source_file: expected0] [input_id: InputId: expected0]<br>        VAR 1 [source_file: expected0]<br>            NAME x$logger_ 1 [source_file: expected0]<br>                CALL 1 [source_file: expected0]<br>                    GETPROP 1 [source_file: expected0]<br>                        GETPROP 1 [source_file: expected0]<br>                            GETPROP 1 [source_file: expected0]<br>                                NAME goog 1 [source_file: expected0]<br>                                STRING debug 1 [source_file: expected0]<br>                            STRING Logger 1 [source_file: expected0]<br>                        STRING getLogger 1 [source_file: expected0]<br>                    STRING a 1 [source_file: expected0]<br>        EXPR_RESULT 1 [source_file: expected0]<br>            CALL 1 [source_file: expected0]<br>                GETPROP 1 [source_file: expected0]<br>                    NAME x$logger_ 1 [source_file: expected0]<br>                    STRING info 1 [source_file: expected0]<br>                STRING b 1 [source_file: expected0]<br>
+<br>
+<br>Tree2:<br>BLOCK [synthetic: 1] : global this<br>    SCRIPT 1 [synthetic: 1] [source_file: testcode] [input_id: InputId: testcode]<br>        VAR 1 [source_file: testcode]<br>            NAME x$logger_ 1 [originalname: x.logger_] [source_file: testcode]<br>                CALL 1 [source_file: testcode] : ?<br>                    GETPROP 1 [source_file: testcode] : ?<br>                        GETPROP 1 [source_file: testcode] : ?<br>                            GETPROP 1 [source_file: testcode] : ?<br>                                NAME goog 1 [source_file: testcode] : ?<br>                                STRING debug 1 [source_file: testcode] : string<br>                            STRING Logger 1 [source_file: testcode] : string<br>                        STRING getLogger 1 [source_file: testcode] : string<br>                    STRING a 1 [source_file: testcode]<br>        EXPR_RESULT 1 [source_file: testcode]<br>            CALL 1 [source_file: testcode] : ?<br>                GETPROP 1 [source_file: testcode] : ?<br>                    NAME x$logger_ 1 [originalname: x.logger_.info] [source_file: testcode] : ?<br>                    STRING info 1 [source_file: testcode] : string<br>                STRING Some message 1 [source_file: testcode] : string<br>
+<br>
+<br>Subtree1: STRING b 1 [source_file: expected0]<br>
+<br>
+<br>Subtree2: STRING Some message 1 [source_file: testcode] : string<br>
+<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:907)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:447)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:373)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:342)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:330)<br>	at com.google.javascript.jscomp.ReplaceStringsTest.testDebugStrings(ReplaceStringsTest.java:406)<br>	at com.google.javascript.jscomp.ReplaceStringsTest.testLoggerOnObject1(ReplaceStringsTest.java:254)<br>
+</code></td><td>0.001</td>
+</tr>
+<tr valign="top" class="Failure">
+<td><a name="testLoggerOnVar"></a>testLoggerOnVar</td><td>Failure</td><td>
+Expected: var logger=goog.debug.Logger.getLogger("a");logger.info("b")
+Result: var logger=goog.debug.Logger.getLogger("a");logger.info("Some message")
+Node tree inequality:
+Tree1:
+BLOCK [synthetic: 1]
+    SCRIPT 1 [synthetic: 1] [source_file: expected0] [input_id: InputId: expected0]
+        VAR 1 [source_file: expected0]
+            NAME logger 1 [source_file: expected0]
+                CALL 1 [source_file: expected0]
+                    GETPROP 1 [source_file: expected0]
+                        GETPROP 1 [source_file: expected0]
+                            GETPROP 1 [source_file: expected0]
+                                NAME goog 1 [source_file: expected0]
+                                STRING debug 1 [source_file: expected0]
+                            STRING Logger 1 [source_file: expected0]
+                        STRING getLogger 1 [source_file: expected0]
+                    STRING a 1 [source_file: expected0]
+        EXPR_RESULT 1 [source_file: expected0]
+            CALL 1 [source_file: expected0]
+                GETPROP 1 [source_file: expected0]
+                    NAME logger 1 [source_file: expected0]
+                    STRING info 1 [source_file: expected0]
+                STRING b 1 [source_file: expected0]
+
+
+Tree2:
+BLOCK [synthetic: 1] : global this
+    SCRIPT 1 [synthetic: 1] [source_file: testcode] [input_id: InputId: testcode]
+        VAR 1 [source_file: testcode]
+            NAME logger 1 [source_file: testcode] : ?
+                CALL 1 [source_file: testcode] : ?
+                    GETPROP 1 [source_file: testcode] : ?
+                        GETPROP 1 [source_file: testcode] : ?
+                            GETPROP 1 [source_file: testcode] : ?
+                                NAME goog 1 [source_file: testcode] : ?
+                                STRING debug 1 [source_file: testcode] : string
+                            STRING Logger 1 [source_file: testcode] : string
+                        STRING getLogger 1 [source_file: testcode] : string
+                    STRING a 1 [source_file: testcode]
+        EXPR_RESULT 1 [source_file: testcode]
+            CALL 1 [source_file: testcode] : ?
+                GETPROP 1 [source_file: testcode] : ?
+                    NAME logger 1 [source_file: testcode] : ?
+                    STRING info 1 [source_file: testcode] : string
+                STRING Some message 1 [source_file: testcode] : string
+
+
+Subtree1: STRING b 1 [source_file: expected0]
+
+
+Subtree2: STRING Some message 1 [source_file: testcode] : string
+<br>
+<br>
+<code>junit.framework.AssertionFailedError: <br>Expected: var logger=goog.debug.Logger.getLogger("a");logger.info("b")<br>Result: var logger=goog.debug.Logger.getLogger("a");logger.info("Some message")<br>Node tree inequality:<br>Tree1:<br>BLOCK [synthetic: 1]<br>    SCRIPT 1 [synthetic: 1] [source_file: expected0] [input_id: InputId: expected0]<br>        VAR 1 [source_file: expected0]<br>            NAME logger 1 [source_file: expected0]<br>                CALL 1 [source_file: expected0]<br>                    GETPROP 1 [source_file: expected0]<br>                        GETPROP 1 [source_file: expected0]<br>                            GETPROP 1 [source_file: expected0]<br>                                NAME goog 1 [source_file: expected0]<br>                                STRING debug 1 [source_file: expected0]<br>                            STRING Logger 1 [source_file: expected0]<br>                        STRING getLogger 1 [source_file: expected0]<br>                    STRING a 1 [source_file: expected0]<br>        EXPR_RESULT 1 [source_file: expected0]<br>            CALL 1 [source_file: expected0]<br>                GETPROP 1 [source_file: expected0]<br>                    NAME logger 1 [source_file: expected0]<br>                    STRING info 1 [source_file: expected0]<br>                STRING b 1 [source_file: expected0]<br>
+<br>
+<br>Tree2:<br>BLOCK [synthetic: 1] : global this<br>    SCRIPT 1 [synthetic: 1] [source_file: testcode] [input_id: InputId: testcode]<br>        VAR 1 [source_file: testcode]<br>            NAME logger 1 [source_file: testcode] : ?<br>                CALL 1 [source_file: testcode] : ?<br>                    GETPROP 1 [source_file: testcode] : ?<br>                        GETPROP 1 [source_file: testcode] : ?<br>                            GETPROP 1 [source_file: testcode] : ?<br>                                NAME goog 1 [source_file: testcode] : ?<br>                                STRING debug 1 [source_file: testcode] : string<br>                            STRING Logger 1 [source_file: testcode] : string<br>                        STRING getLogger 1 [source_file: testcode] : string<br>                    STRING a 1 [source_file: testcode]<br>        EXPR_RESULT 1 [source_file: testcode]<br>            CALL 1 [source_file: testcode] : ?<br>                GETPROP 1 [source_file: testcode] : ?<br>                    NAME logger 1 [source_file: testcode] : ?<br>                    STRING info 1 [source_file: testcode] : string<br>                STRING Some message 1 [source_file: testcode] : string<br>
+<br>
+<br>Subtree1: STRING b 1 [source_file: expected0]<br>
+<br>
+<br>Subtree2: STRING Some message 1 [source_file: testcode] : string<br>
+<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:907)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:447)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:373)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:342)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:330)<br>	at com.google.javascript.jscomp.ReplaceStringsTest.testDebugStrings(ReplaceStringsTest.java:406)<br>	at com.google.javascript.jscomp.ReplaceStringsTest.testLoggerOnVar(ReplaceStringsTest.java:304)<br>
+</code></td><td>0.001</td>
+</tr>
+<tr valign="top" class="Failure">
+<td><a name="testLoggerOnThis"></a>testLoggerOnThis</td><td>Failure</td><td>
+Expected: function f(){this.logger_=goog.debug.Logger.getLogger("a");this.logger_.info("b")}
+Result: function f(){this.logger_=goog.debug.Logger.getLogger("a");this.logger_.info("Some message")}
+Node tree inequality:
+Tree1:
+BLOCK [synthetic: 1]
+    SCRIPT 1 [synthetic: 1] [source_file: expected0] [input_id: InputId: expected0]
+        FUNCTION f 1 [source_file: expected0]
+            NAME f 1 [source_file: expected0]
+            PARAM_LIST 1 [source_file: expected0]
+            BLOCK 1 [source_file: expected0]
+                EXPR_RESULT 1 [source_file: expected0]
+                    ASSIGN 1 [source_file: expected0]
+                        GETPROP 1 [source_file: expected0]
+                            THIS 1 [source_file: expected0]
+                            STRING logger_ 1 [source_file: expected0]
+                        CALL 1 [source_file: expected0]
+                            GETPROP 1 [source_file: expected0]
+                                GETPROP 1 [source_file: expected0]
+                                    GETPROP 1 [source_file: expected0]
+                                        NAME goog 1 [source_file: expected0]
+                                        STRING debug 1 [source_file: expected0]
+                                    STRING Logger 1 [source_file: expected0]
+                                STRING getLogger 1 [source_file: expected0]
+                            STRING a 1 [source_file: expected0]
+                EXPR_RESULT 1 [source_file: expected0]
+                    CALL 1 [source_file: expected0]
+                        GETPROP 1 [source_file: expected0]
+                            GETPROP 1 [source_file: expected0]
+                                THIS 1 [source_file: expected0]
+                                STRING logger_ 1 [source_file: expected0]
+                            STRING info 1 [source_file: expected0]
+                        STRING b 1 [source_file: expected0]
+
+
+Tree2:
+BLOCK [synthetic: 1] : global this
+    SCRIPT 1 [synthetic: 1] [source_file: testcode] [input_id: InputId: testcode]
+        FUNCTION f 1 [source_file: testcode] : function (): undefined
+            NAME f 1 [source_file: testcode] : function (): undefined
+            PARAM_LIST 1 [source_file: testcode]
+            BLOCK 1 [source_file: testcode]
+                EXPR_RESULT 1 [source_file: testcode]
+                    ASSIGN 1 [source_file: testcode] : ?
+                        GETPROP 1 [source_file: testcode] : ?
+                            THIS 1 [source_file: testcode] : ?
+                            STRING logger_ 1 [source_file: testcode] : string
+                        CALL 1 [source_file: testcode] : ?
+                            GETPROP 1 [source_file: testcode] : ?
+                                GETPROP 1 [source_file: testcode] : ?
+                                    GETPROP 1 [source_file: testcode] : ?
+                                        NAME goog 1 [source_file: testcode] : ?
+                                        STRING debug 1 [source_file: testcode] : string
+                                    STRING Logger 1 [source_file: testcode] : string
+                                STRING getLogger 1 [source_file: testcode] : string
+                            STRING a 1 [source_file: testcode]
+                EXPR_RESULT 1 [source_file: testcode]
+                    CALL 1 [source_file: testcode] : ??
+                        GETPROP 1 [source_file: testcode] : ??
+                            GETPROP 1 [source_file: testcode] : ??
+                                THIS 1 [source_file: testcode] : ?
+                                STRING logger_ 1 [source_file: testcode] : string
+                            STRING info 1 [source_file: testcode] : string
+                        STRING Some message 1 [source_file: testcode] : string
+
+
+Subtree1: STRING b 1 [source_file: expected0]
+
+
+Subtree2: STRING Some message 1 [source_file: testcode] : string
+<br>
+<br>
+<code>junit.framework.AssertionFailedError: <br>Expected: function f(){this.logger_=goog.debug.Logger.getLogger("a");this.logger_.info("b")}<br>Result: function f(){this.logger_=goog.debug.Logger.getLogger("a");this.logger_.info("Some message")}<br>Node tree inequality:<br>Tree1:<br>BLOCK [synthetic: 1]<br>    SCRIPT 1 [synthetic: 1] [source_file: expected0] [input_id: InputId: expected0]<br>        FUNCTION f 1 [source_file: expected0]<br>            NAME f 1 [source_file: expected0]<br>            PARAM_LIST 1 [source_file: expected0]<br>            BLOCK 1 [source_file: expected0]<br>                EXPR_RESULT 1 [source_file: expected0]<br>                    ASSIGN 1 [source_file: expected0]<br>                        GETPROP 1 [source_file: expected0]<br>                            THIS 1 [source_file: expected0]<br>                            STRING logger_ 1 [source_file: expected0]<br>                        CALL 1 [source_file: expected0]<br>                            GETPROP 1 [source_file: expected0]<br>                                GETPROP 1 [source_file: expected0]<br>                                    GETPROP 1 [source_file: expected0]<br>                                        NAME goog 1 [source_file: expected0]<br>                                        STRING debug 1 [source_file: expected0]<br>                                    STRING Logger 1 [source_file: expected0]<br>                                STRING getLogger 1 [source_file: expected0]<br>                            STRING a 1 [source_file: expected0]<br>                EXPR_RESULT 1 [source_file: expected0]<br>                    CALL 1 [source_file: expected0]<br>                        GETPROP 1 [source_file: expected0]<br>                            GETPROP 1 [source_file: expected0]<br>                                THIS 1 [source_file: expected0]<br>                                STRING logger_ 1 [source_file: expected0]<br>                            STRING info 1 [source_file: expected0]<br>                        STRING b 1 [source_file: expected0]<br>
+<br>
+<br>Tree2:<br>BLOCK [synthetic: 1] : global this<br>    SCRIPT 1 [synthetic: 1] [source_file: testcode] [input_id: InputId: testcode]<br>        FUNCTION f 1 [source_file: testcode] : function (): undefined<br>            NAME f 1 [source_file: testcode] : function (): undefined<br>            PARAM_LIST 1 [source_file: testcode]<br>            BLOCK 1 [source_file: testcode]<br>                EXPR_RESULT 1 [source_file: testcode]<br>                    ASSIGN 1 [source_file: testcode] : ?<br>                        GETPROP 1 [source_file: testcode] : ?<br>                            THIS 1 [source_file: testcode] : ?<br>                            STRING logger_ 1 [source_file: testcode] : string<br>                        CALL 1 [source_file: testcode] : ?<br>                            GETPROP 1 [source_file: testcode] : ?<br>                                GETPROP 1 [source_file: testcode] : ?<br>                                    GETPROP 1 [source_file: testcode] : ?<br>                                        NAME goog 1 [source_file: testcode] : ?<br>                                        STRING debug 1 [source_file: testcode] : string<br>                                    STRING Logger 1 [source_file: testcode] : string<br>                                STRING getLogger 1 [source_file: testcode] : string<br>                            STRING a 1 [source_file: testcode]<br>                EXPR_RESULT 1 [source_file: testcode]<br>                    CALL 1 [source_file: testcode] : ??<br>                        GETPROP 1 [source_file: testcode] : ??<br>                            GETPROP 1 [source_file: testcode] : ??<br>                                THIS 1 [source_file: testcode] : ?<br>                                STRING logger_ 1 [source_file: testcode] : string<br>                            STRING info 1 [source_file: testcode] : string<br>                        STRING Some message 1 [source_file: testcode] : string<br>
+<br>
+<br>Subtree1: STRING b 1 [source_file: expected0]<br>
+<br>
+<br>Subtree2: STRING Some message 1 [source_file: testcode] : string<br>
+<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:907)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:447)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:373)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:342)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:330)<br>	at com.google.javascript.jscomp.ReplaceStringsTest.testDebugStrings(ReplaceStringsTest.java:406)<br>	at com.google.javascript.jscomp.ReplaceStringsTest.testLoggerOnThis(ReplaceStringsTest.java:315)<br>
+</code></td><td>0.001</td>
+</tr>
+<tr valign="top" class="Failure">
+<td><a name="testRepeatedErrorString3"></a>testRepeatedErrorString3</td><td>Failure</td><td>
+Expected: var AB="b";throw Error("a");throw Error("a");
+Result: var AB="b";throw Error(AB);throw Error(AB);
+Node tree inequality:
+Tree1:
+BLOCK [synthetic: 1]
+    SCRIPT 1 [synthetic: 1] [source_file: expected0] [input_id: InputId: expected0]
+        VAR 1 [source_file: expected0]
+            NAME AB 1 [source_file: expected0]
+                STRING b 1 [source_file: expected0]
+        THROW 1 [source_file: expected0]
+            CALL 1 [free_call: 1] [source_file: expected0]
+                NAME Error 1 [source_file: expected0]
+                STRING a 1 [source_file: expected0]
+        THROW 1 [source_file: expected0]
+            CALL 1 [free_call: 1] [source_file: expected0]
+                NAME Error 1 [source_file: expected0]
+                STRING a 1 [source_file: expected0]
+
+
+Tree2:
+BLOCK [synthetic: 1] : global this
+    SCRIPT 1 [synthetic: 1] [source_file: testcode] [input_id: InputId: testcode]
+        VAR 1 [source_file: testcode]
+            NAME AB 1 [source_file: testcode] : string
+                STRING b 1 [source_file: testcode] : string
+        THROW 1 [source_file: testcode]
+            CALL 1 [free_call: 1] [source_file: testcode] : Error
+                NAME Error 1 [source_file: testcode] : function (new:Error, *=, *=, *=): Error
+                NAME AB 1 [source_file: testcode] : string
+        THROW 1 [source_file: testcode]
+            CALL 1 [free_call: 1] [source_file: testcode] : Error
+                NAME Error 1 [source_file: testcode] : function (new:Error, *=, *=, *=): Error
+                NAME AB 1 [source_file: testcode] : string
+
+
+Subtree1: STRING a 1 [source_file: expected0]
+
+
+Subtree2: NAME AB 1 [source_file: testcode] : string
+<br>
+<br>
+<code>junit.framework.AssertionFailedError: <br>Expected: var AB="b";throw Error("a");throw Error("a");<br>Result: var AB="b";throw Error(AB);throw Error(AB);<br>Node tree inequality:<br>Tree1:<br>BLOCK [synthetic: 1]<br>    SCRIPT 1 [synthetic: 1] [source_file: expected0] [input_id: InputId: expected0]<br>        VAR 1 [source_file: expected0]<br>            NAME AB 1 [source_file: expected0]<br>                STRING b 1 [source_file: expected0]<br>        THROW 1 [source_file: expected0]<br>            CALL 1 [free_call: 1] [source_file: expected0]<br>                NAME Error 1 [source_file: expected0]<br>                STRING a 1 [source_file: expected0]<br>        THROW 1 [source_file: expected0]<br>            CALL 1 [free_call: 1] [source_file: expected0]<br>                NAME Error 1 [source_file: expected0]<br>                STRING a 1 [source_file: expected0]<br>
+<br>
+<br>Tree2:<br>BLOCK [synthetic: 1] : global this<br>    SCRIPT 1 [synthetic: 1] [source_file: testcode] [input_id: InputId: testcode]<br>        VAR 1 [source_file: testcode]<br>            NAME AB 1 [source_file: testcode] : string<br>                STRING b 1 [source_file: testcode] : string<br>        THROW 1 [source_file: testcode]<br>            CALL 1 [free_call: 1] [source_file: testcode] : Error<br>                NAME Error 1 [source_file: testcode] : function (new:Error, *=, *=, *=): Error<br>                NAME AB 1 [source_file: testcode] : string<br>        THROW 1 [source_file: testcode]<br>            CALL 1 [free_call: 1] [source_file: testcode] : Error<br>                NAME Error 1 [source_file: testcode] : function (new:Error, *=, *=, *=): Error<br>                NAME AB 1 [source_file: testcode] : string<br>
+<br>
+<br>Subtree1: STRING a 1 [source_file: expected0]<br>
+<br>
+<br>Subtree2: NAME AB 1 [source_file: testcode] : string<br>
+<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:907)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:447)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:373)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:342)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:330)<br>	at com.google.javascript.jscomp.ReplaceStringsTest.testDebugStrings(ReplaceStringsTest.java:406)<br>	at com.google.javascript.jscomp.ReplaceStringsTest.testRepeatedErrorString3(ReplaceStringsTest.java:344)<br>
+</code></td><td>0.001</td>
+</tr>
+</table>
+<div class="Properties">
+<a href="javascript:displayProperties('com.google.javascript.jscomp.ReplaceStringsTest');">
+                    Properties &raquo;
+                </a>
+</div>
+</body>
+</html>

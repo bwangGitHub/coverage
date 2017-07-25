@@ -1,0 +1,495 @@
+<html xmlns:stringutils="xalan://org.apache.tools.ant.util.StringUtils" xmlns:lxslt="http://xml.apache.org/xslt">
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Unit Test Results: com.google.javascript.jscomp.AmbiguatePropertiesTest</title>
+<link title="Style" type="text/css" rel="stylesheet" href="../../../../stylesheet.css">
+<script language="JavaScript" type="text/javascript">
+        var TestCases = new Array();
+        var cur;
+        
+    cur = TestCases['com.google.javascript.jscomp.AmbiguatePropertiesTest'] = new Array();
+    
+        cur['ant.build.javac.source'] = '1.6';
+    
+        cur['ant.build.javac.target'] = '1.6';
+    
+        cur['ant.core.lib'] = '/usr/share/ant/lib/ant.jar';
+    
+        cur['ant.file'] = '/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/build.xml';
+    
+        cur['ant.file.compiler'] = '/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/build.xml';
+    
+        cur['ant.file.type'] = 'file';
+    
+        cur['ant.file.type.compiler'] = 'file';
+    
+        cur['ant.home'] = '/usr/share/ant';
+    
+        cur['ant.java.version'] = '1.6';
+    
+        cur['ant.library.dir'] = '/usr/share/ant/lib';
+    
+        cur['ant.project.default-target'] = 'jar';
+    
+        cur['ant.project.invoked-targets'] = 'test';
+    
+        cur['ant.project.name'] = 'compiler';
+    
+        cur['ant.version'] = 'Apache Ant(TM) version 1.8.2 compiled on September 22 2011';
+    
+        cur['basedir'] = '/home/laura/workspace/test-analysis-toolkit/test-subjects/closure';
+    
+        cur['build.dir'] = '/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/build';
+    
+        cur['build.svnVersion'] = 'exported';
+    
+        cur['buildlib.dir'] = '/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/build/lib';
+    
+        cur['classes.dir'] = '/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/build/classes';
+    
+        cur['closure.build.dir'] = '/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/build';
+    
+        cur['compiler-jarfile'] = '/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/build/compiler.jar';
+    
+        cur['externs.dir'] = '/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/externs';
+    
+        cur['file.encoding'] = 'UTF-8';
+    
+        cur['file.encoding.pkg'] = 'sun.io';
+    
+        cur['file.separator'] = '/';
+    
+        cur['gen.dir'] = '/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/gen';
+    
+        cur['java.awt.graphicsenv'] = 'sun.awt.X11GraphicsEnvironment';
+    
+        cur['java.awt.printerjob'] = 'sun.print.PSPrinterJob';
+    
+        cur['java.class.path'] = '/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/build/classes:/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/lib/ant-launcher.jar:/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/lib/ant.jar:/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/lib/args4j.jar:/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/lib/caja-r4314.jar:/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/lib/guava.jar:/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/lib/jarjar.jar:/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/lib/json.jar:/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/lib/jsr305.jar:/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/lib/junit.jar:/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/lib/protobuf-java.jar:/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/build/lib/rhino.jar:/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/build/test:/home/laura/.ant/lib/junit-4.8.1.jar:/usr/share/java/ant-launcher-1.8.2.jar:/usr/share/ant/lib/ant.jar:/usr/share/ant/lib/ant-junit.jar:/usr/share/ant/lib/ant-junit4.jar';
+    
+        cur['java.class.version'] = '50.0';
+    
+        cur['java.endorsed.dirs'] = '/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/endorsed';
+    
+        cur['java.ext.dirs'] = '/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/ext:/usr/java/packages/lib/ext';
+    
+        cur['java.home'] = '/usr/lib/jvm/java-6-sun-1.6.0.26/jre';
+    
+        cur['java.io.tmpdir'] = '/tmp';
+    
+        cur['java.library.path'] = '/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/amd64/server:/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/amd64:/usr/lib/jvm/java-6-sun-1.6.0.26/jre/../lib/amd64:/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib';
+    
+        cur['java.runtime.name'] = 'Java(TM) SE Runtime Environment';
+    
+        cur['java.runtime.version'] = '1.6.0_26-b03';
+    
+        cur['java.specification.name'] = 'Java Platform API Specification';
+    
+        cur['java.specification.vendor'] = 'Sun Microsystems Inc.';
+    
+        cur['java.specification.version'] = '1.6';
+    
+        cur['java.vendor'] = 'Sun Microsystems Inc.';
+    
+        cur['java.vendor.url'] = 'http://java.sun.com/';
+    
+        cur['java.vendor.url.bug'] = 'http://java.sun.com/cgi-bin/bugreport.cgi';
+    
+        cur['java.version'] = '1.6.0_26';
+    
+        cur['java.vm.info'] = 'mixed mode';
+    
+        cur['java.vm.name'] = 'Java HotSpot(TM) 64-Bit Server VM';
+    
+        cur['java.vm.specification.name'] = 'Java Virtual Machine Specification';
+    
+        cur['java.vm.specification.vendor'] = 'Sun Microsystems Inc.';
+    
+        cur['java.vm.specification.version'] = '1.0';
+    
+        cur['java.vm.vendor'] = 'Sun Microsystems Inc.';
+    
+        cur['java.vm.version'] = '20.1-b02';
+    
+        cur['javac.debug'] = 'on';
+    
+        cur['javadoc.dir'] = '/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/build/javadoc';
+    
+        cur['jsonml.dir'] = '/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/src/com/google/javascript/jscomp/jsonml';
+    
+        cur['jsonml-classes.dir'] = '/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/build/jsonml-classes';
+    
+        cur['jsonml-jarfile'] = '/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/build/secure_compiler.jar';
+    
+        cur['lib.dir'] = '/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/lib';
+    
+        cur['line.separator'] = '
+';
+    
+        cur['maven-repository-id'] = 'sonatype-nexus-staging';
+    
+        cur['maven-repository-url'] = 'https://oss.sonatype.org/service/local/staging/deploy/maven2/';
+    
+        cur['num-fuzz-tests'] = '10000';
+    
+        cur['os.arch'] = 'amd64';
+    
+        cur['os.name'] = 'Linux';
+    
+        cur['os.version'] = '3.2.0-4-amd64';
+    
+        cur['path.separator'] = ':';
+    
+        cur['protoc.executable'] = 'protoc';
+    
+        cur['src.dir'] = '/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/src';
+    
+        cur['sun.arch.data.model'] = '64';
+    
+        cur['sun.boot.class.path'] = '/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/resources.jar:/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/rt.jar:/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/sunrsasign.jar:/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/jsse.jar:/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/jce.jar:/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/charsets.jar:/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/modules/jdk.boot.jar:/usr/lib/jvm/java-6-sun-1.6.0.26/jre/classes';
+    
+        cur['sun.boot.library.path'] = '/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/amd64';
+    
+        cur['sun.cpu.endian'] = 'little';
+    
+        cur['sun.cpu.isalist'] = '';
+    
+        cur['sun.io.unicode.encoding'] = 'UnicodeLittle';
+    
+        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner testsfile=/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/junittestcases8846228244022863917.properties filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.SummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.BriefJUnitResultFormatter formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/build/testoutput/IGNORETHIS.xml crashfile=/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/junitvmwatcher46313732646306246.properties propsfile=/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/junit4513192656643825087.properties';
+    
+        cur['sun.java.launcher'] = 'SUN_STANDARD';
+    
+        cur['sun.jnu.encoding'] = 'UTF-8';
+    
+        cur['sun.management.compiler'] = 'HotSpot 64-Bit Tiered Compilers';
+    
+        cur['sun.os.patch.level'] = 'unknown';
+    
+        cur['test.class'] = '*Test';
+    
+        cur['test.dir'] = '/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/test';
+    
+        cur['test.fork'] = 'true';
+    
+        cur['testClasses.dir'] = '/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/build/test';
+    
+        cur['tools.dir'] = '/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/tools';
+    
+        cur['user.country'] = 'CA';
+    
+        cur['user.dir'] = '/home/laura/workspace/test-analysis-toolkit/test-subjects/closure';
+    
+        cur['user.home'] = '/home/laura';
+    
+        cur['user.language'] = 'en';
+    
+        cur['user.name'] = 'laura';
+    
+        cur['user.timezone'] = '';
+    
+        cur['webservice.dir'] = '/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/src/com/google/javascript/jscomp/webservice';
+    
+        cur['webservice-classes.dir'] = '/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/build/webservice-classes';
+    
+        cur['webservice-jarfile'] = '/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/build/webservice.jar';
+    </script><script language="JavaScript" type="text/javascript">
+        function displayProperties (name) {
+          var win = window.open('','JUnitSystemProperties','scrollbars=1,resizable=1');
+          var doc = win.document;
+          doc.open();
+          doc.write("<html><head><title>Properties of " + name + "</title>");
+          doc.write("<style type=\"text/css\">");
+          doc.write("body {font:normal 68% verdana,arial,helvetica; color:#000000; }");
+          doc.write("table tr td, table tr th { font-size: 68%; }");
+          doc.write("table.properties { border-collapse:collapse; border-left:solid 1 #cccccc; border-top:solid 1 #cccccc; padding:5px; }");
+          doc.write("table.properties th { text-align:left; border-right:solid 1 #cccccc; border-bottom:solid 1 #cccccc; background-color:#eeeeee; }");
+          doc.write("table.properties td { font:normal; text-align:left; border-right:solid 1 #cccccc; border-bottom:solid 1 #cccccc; background-color:#fffffff; }");
+          doc.write("h3 { margin-bottom: 0.5em; font: bold 115% verdana,arial,helvetica }");
+          doc.write("</style>");
+          doc.write("</head><body>");
+          doc.write("<h3>Properties of " + name + "</h3>");
+          doc.write("<div align=\"right\"><a href=\"javascript:window.close();\">Close</a></div>");
+          doc.write("<table class='properties'>");
+          doc.write("<tr><th>Name</th><th>Value</th></tr>");
+          for (prop in TestCases[name]) {
+            doc.write("<tr><th>" + prop + "</th><td>" + TestCases[name][prop] + "</td></tr>");
+          }
+          doc.write("</table>");
+          doc.write("</body></html>");
+          doc.close();
+          win.focus();
+        }
+      
+      </script>
+</head>
+<body>
+<h1>Unit Test Results.</h1>
+<table width="100%">
+<tr>
+<td align="left"></td><td align="right">Designed for use with <a href="http://www.junit.org/">JUnit</a> and <a href="http://ant.apache.org/">Ant</a>.</td>
+</tr>
+</table>
+<hr size="1">
+<h3>Class com.google.javascript.jscomp.AmbiguatePropertiesTest</h3>
+<table width="95%" cellspacing="2" cellpadding="5" border="0" class="details">
+<tr valign="top">
+<th width="80%">Name</th><th>Tests</th><th>Errors</th><th>Failures</th><th nowrap>Time(s)</th><th nowrap>Time Stamp</th><th>Host</th>
+</tr>
+<tr valign="top" class="Error">
+<td><a href="11_AmbiguatePropertiesTest.html" title="Display all tests">AmbiguatePropertiesTest</a></td><td><a href="11_AmbiguatePropertiesTest.html" title="Display all tests">40</a></td><td><a href="11_AmbiguatePropertiesTest-errors.html" title="Display only errors">40</a></td><td>0</td><td>0.093</td><td>2013-02-19T19:38:23</td><td>battower</td>
+</tr>
+</table>
+<h2>Errors</h2>
+<table width="95%" cellspacing="2" cellpadding="5" border="0" class="details">
+<tr valign="top">
+<th>Name</th><th>Status</th><th width="80%">Type</th><th nowrap>Time(s)</th>
+</tr>
+<tr valign="top" class="Error">
+<td><a name="testOneVar1"></a>testOneVar1</td><td>Error</td><td>N/A<br>
+<br>
+<code>java.lang.IllegalStateException<br>	at com.google.common.base.Preconditions.checkState(Preconditions.java:133)<br>	at com.google.javascript.jscomp.AmbiguateProperties.&lt;init&gt;(AmbiguateProperties.java:132)<br>	at com.google.javascript.jscomp.AmbiguatePropertiesTest$1.process(AmbiguatePropertiesTest.java:51)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:804)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:447)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:373)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:342)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:330)<br>	at com.google.javascript.jscomp.AmbiguatePropertiesTest.testOneVar1(AmbiguatePropertiesTest.java:71)<br>
+</code></td><td>0.006</td>
+</tr>
+<tr valign="top" class="Error">
+<td><a name="testOneVar2"></a>testOneVar2</td><td>Error</td><td>N/A<br>
+<br>
+<code>java.lang.IllegalStateException<br>	at com.google.common.base.Preconditions.checkState(Preconditions.java:133)<br>	at com.google.javascript.jscomp.AmbiguateProperties.&lt;init&gt;(AmbiguateProperties.java:132)<br>	at com.google.javascript.jscomp.AmbiguatePropertiesTest$1.process(AmbiguatePropertiesTest.java:51)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:804)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:447)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:373)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:342)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:330)<br>	at com.google.javascript.jscomp.CompilerTestCase.testSame(CompilerTestCase.java:569)<br>	at com.google.javascript.jscomp.AmbiguatePropertiesTest.testOneVar2(AmbiguatePropertiesTest.java:76)<br>
+</code></td><td>0.002</td>
+</tr>
+<tr valign="top" class="Error">
+<td><a name="testOneVar3"></a>testOneVar3</td><td>Error</td><td>N/A<br>
+<br>
+<code>java.lang.IllegalStateException<br>	at com.google.common.base.Preconditions.checkState(Preconditions.java:133)<br>	at com.google.javascript.jscomp.AmbiguateProperties.&lt;init&gt;(AmbiguateProperties.java:132)<br>	at com.google.javascript.jscomp.AmbiguatePropertiesTest$1.process(AmbiguatePropertiesTest.java:51)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:804)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:447)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:373)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:342)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:330)<br>	at com.google.javascript.jscomp.CompilerTestCase.testSame(CompilerTestCase.java:569)<br>	at com.google.javascript.jscomp.AmbiguatePropertiesTest.testOneVar3(AmbiguatePropertiesTest.java:81)<br>
+</code></td><td>0.003</td>
+</tr>
+<tr valign="top" class="Error">
+<td><a name="testOneVar4"></a>testOneVar4</td><td>Error</td><td>N/A<br>
+<br>
+<code>java.lang.IllegalStateException<br>	at com.google.common.base.Preconditions.checkState(Preconditions.java:133)<br>	at com.google.javascript.jscomp.AmbiguateProperties.&lt;init&gt;(AmbiguateProperties.java:132)<br>	at com.google.javascript.jscomp.AmbiguatePropertiesTest$1.process(AmbiguatePropertiesTest.java:51)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:804)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:447)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:373)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:342)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:330)<br>	at com.google.javascript.jscomp.CompilerTestCase.testSame(CompilerTestCase.java:569)<br>	at com.google.javascript.jscomp.AmbiguatePropertiesTest.testOneVar4(AmbiguatePropertiesTest.java:86)<br>
+</code></td><td>0.002</td>
+</tr>
+<tr valign="top" class="Error">
+<td><a name="testTwoVar1"></a>testTwoVar1</td><td>Error</td><td>N/A<br>
+<br>
+<code>java.lang.IllegalStateException<br>	at com.google.common.base.Preconditions.checkState(Preconditions.java:133)<br>	at com.google.javascript.jscomp.AmbiguateProperties.&lt;init&gt;(AmbiguateProperties.java:132)<br>	at com.google.javascript.jscomp.AmbiguatePropertiesTest$1.process(AmbiguatePropertiesTest.java:51)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:804)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:447)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:373)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:342)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:330)<br>	at com.google.javascript.jscomp.AmbiguatePropertiesTest.testTwoVar1(AmbiguatePropertiesTest.java:101)<br>
+</code></td><td>0.002</td>
+</tr>
+<tr valign="top" class="Error">
+<td><a name="testTwoVar2"></a>testTwoVar2</td><td>Error</td><td>N/A<br>
+<br>
+<code>java.lang.IllegalStateException<br>	at com.google.common.base.Preconditions.checkState(Preconditions.java:133)<br>	at com.google.javascript.jscomp.AmbiguateProperties.&lt;init&gt;(AmbiguateProperties.java:132)<br>	at com.google.javascript.jscomp.AmbiguatePropertiesTest$1.process(AmbiguatePropertiesTest.java:51)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:804)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:447)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:373)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:342)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:330)<br>	at com.google.javascript.jscomp.CompilerTestCase.testSame(CompilerTestCase.java:569)<br>	at com.google.javascript.jscomp.AmbiguatePropertiesTest.testTwoVar2(AmbiguatePropertiesTest.java:109)<br>
+</code></td><td>0.002</td>
+</tr>
+<tr valign="top" class="Error">
+<td><a name="testTwoIndependentVar"></a>testTwoIndependentVar</td><td>Error</td><td>N/A<br>
+<br>
+<code>java.lang.IllegalStateException<br>	at com.google.common.base.Preconditions.checkState(Preconditions.java:133)<br>	at com.google.javascript.jscomp.AmbiguateProperties.&lt;init&gt;(AmbiguateProperties.java:132)<br>	at com.google.javascript.jscomp.AmbiguatePropertiesTest$1.process(AmbiguatePropertiesTest.java:51)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:804)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:447)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:373)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:342)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:330)<br>	at com.google.javascript.jscomp.AmbiguatePropertiesTest.testTwoIndependentVar(AmbiguatePropertiesTest.java:123)<br>
+</code></td><td>0.002</td>
+</tr>
+<tr valign="top" class="Error">
+<td><a name="testTwoTypesTwoVar"></a>testTwoTypesTwoVar</td><td>Error</td><td>N/A<br>
+<br>
+<code>java.lang.IllegalStateException<br>	at com.google.common.base.Preconditions.checkState(Preconditions.java:133)<br>	at com.google.javascript.jscomp.AmbiguateProperties.&lt;init&gt;(AmbiguateProperties.java:132)<br>	at com.google.javascript.jscomp.AmbiguatePropertiesTest$1.process(AmbiguatePropertiesTest.java:51)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:804)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:447)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:373)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:342)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:330)<br>	at com.google.javascript.jscomp.AmbiguatePropertiesTest.testTwoTypesTwoVar(AmbiguatePropertiesTest.java:141)<br>
+</code></td><td>0.003</td>
+</tr>
+<tr valign="top" class="Error">
+<td><a name="testUnion"></a>testUnion</td><td>Error</td><td>N/A<br>
+<br>
+<code>java.lang.IllegalStateException<br>	at com.google.common.base.Preconditions.checkState(Preconditions.java:133)<br>	at com.google.javascript.jscomp.AmbiguateProperties.&lt;init&gt;(AmbiguateProperties.java:132)<br>	at com.google.javascript.jscomp.AmbiguatePropertiesTest$1.process(AmbiguatePropertiesTest.java:51)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:804)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:447)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:373)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:342)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:330)<br>	at com.google.javascript.jscomp.AmbiguatePropertiesTest.testUnion(AmbiguatePropertiesTest.java:162)<br>
+</code></td><td>0.003</td>
+</tr>
+<tr valign="top" class="Error">
+<td><a name="testUnions"></a>testUnions</td><td>Error</td><td>N/A<br>
+<br>
+<code>java.lang.IllegalStateException<br>	at com.google.common.base.Preconditions.checkState(Preconditions.java:133)<br>	at com.google.javascript.jscomp.AmbiguateProperties.&lt;init&gt;(AmbiguateProperties.java:132)<br>	at com.google.javascript.jscomp.AmbiguatePropertiesTest$1.process(AmbiguatePropertiesTest.java:51)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:804)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:447)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:373)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:342)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:330)<br>	at com.google.javascript.jscomp.AmbiguatePropertiesTest.testUnions(AmbiguatePropertiesTest.java:205)<br>
+</code></td><td>0.003</td>
+</tr>
+<tr valign="top" class="Error">
+<td><a name="testExtends"></a>testExtends</td><td>Error</td><td>N/A<br>
+<br>
+<code>java.lang.IllegalStateException<br>	at com.google.common.base.Preconditions.checkState(Preconditions.java:133)<br>	at com.google.javascript.jscomp.AmbiguateProperties.&lt;init&gt;(AmbiguateProperties.java:132)<br>	at com.google.javascript.jscomp.AmbiguatePropertiesTest$1.process(AmbiguatePropertiesTest.java:51)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:804)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:447)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:373)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:342)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:330)<br>	at com.google.javascript.jscomp.AmbiguatePropertiesTest.testExtends(AmbiguatePropertiesTest.java:233)<br>
+</code></td><td>0.003</td>
+</tr>
+<tr valign="top" class="Error">
+<td><a name="testLotsOfVars"></a>testLotsOfVars</td><td>Error</td><td>N/A<br>
+<br>
+<code>java.lang.IllegalStateException<br>	at com.google.common.base.Preconditions.checkState(Preconditions.java:133)<br>	at com.google.javascript.jscomp.AmbiguateProperties.&lt;init&gt;(AmbiguateProperties.java:132)<br>	at com.google.javascript.jscomp.AmbiguatePropertiesTest$1.process(AmbiguatePropertiesTest.java:51)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:804)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:447)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:373)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:342)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:330)<br>	at com.google.javascript.jscomp.AmbiguatePropertiesTest.testLotsOfVars(AmbiguatePropertiesTest.java:250)<br>
+</code></td><td>0.004</td>
+</tr>
+<tr valign="top" class="Error">
+<td><a name="testLotsOfClasses"></a>testLotsOfClasses</td><td>Error</td><td>N/A<br>
+<br>
+<code>java.lang.IllegalStateException<br>	at com.google.common.base.Preconditions.checkState(Preconditions.java:133)<br>	at com.google.javascript.jscomp.AmbiguateProperties.&lt;init&gt;(AmbiguateProperties.java:132)<br>	at com.google.javascript.jscomp.AmbiguatePropertiesTest$1.process(AmbiguatePropertiesTest.java:51)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:804)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:447)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:373)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:342)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:330)<br>	at com.google.javascript.jscomp.AmbiguatePropertiesTest.testLotsOfClasses(AmbiguatePropertiesTest.java:262)<br>
+</code></td><td>0.003</td>
+</tr>
+<tr valign="top" class="Error">
+<td><a name="testFunctionType"></a>testFunctionType</td><td>Error</td><td>N/A<br>
+<br>
+<code>java.lang.IllegalStateException<br>	at com.google.common.base.Preconditions.checkState(Preconditions.java:133)<br>	at com.google.javascript.jscomp.AmbiguateProperties.&lt;init&gt;(AmbiguateProperties.java:132)<br>	at com.google.javascript.jscomp.AmbiguatePropertiesTest$1.process(AmbiguatePropertiesTest.java:51)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:804)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:447)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:373)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:342)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:330)<br>	at com.google.javascript.jscomp.AmbiguatePropertiesTest.testFunctionType(AmbiguatePropertiesTest.java:279)<br>
+</code></td><td>0.002</td>
+</tr>
+<tr valign="top" class="Error">
+<td><a name="testPrototypePropertiesAsObjLitKeys1"></a>testPrototypePropertiesAsObjLitKeys1</td><td>Error</td><td>N/A<br>
+<br>
+<code>java.lang.IllegalStateException<br>	at com.google.common.base.Preconditions.checkState(Preconditions.java:133)<br>	at com.google.javascript.jscomp.AmbiguateProperties.&lt;init&gt;(AmbiguateProperties.java:132)<br>	at com.google.javascript.jscomp.AmbiguatePropertiesTest$1.process(AmbiguatePropertiesTest.java:51)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:804)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:447)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:373)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:342)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:330)<br>	at com.google.javascript.jscomp.AmbiguatePropertiesTest.testPrototypePropertiesAsObjLitKeys1(AmbiguatePropertiesTest.java:283)<br>
+</code></td><td>0.002</td>
+</tr>
+<tr valign="top" class="Error">
+<td><a name="testPrototypePropertiesAsObjLitKeys2"></a>testPrototypePropertiesAsObjLitKeys2</td><td>Error</td><td>N/A<br>
+<br>
+<code>java.lang.IllegalStateException<br>	at com.google.common.base.Preconditions.checkState(Preconditions.java:133)<br>	at com.google.javascript.jscomp.AmbiguateProperties.&lt;init&gt;(AmbiguateProperties.java:132)<br>	at com.google.javascript.jscomp.AmbiguatePropertiesTest$1.process(AmbiguatePropertiesTest.java:51)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:804)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:447)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:373)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:342)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:330)<br>	at com.google.javascript.jscomp.CompilerTestCase.testSame(CompilerTestCase.java:569)<br>	at com.google.javascript.jscomp.AmbiguatePropertiesTest.testPrototypePropertiesAsObjLitKeys2(AmbiguatePropertiesTest.java:290)<br>
+</code></td><td>0.002</td>
+</tr>
+<tr valign="top" class="Error">
+<td><a name="testQuotedPrototypeProperty"></a>testQuotedPrototypeProperty</td><td>Error</td><td>N/A<br>
+<br>
+<code>java.lang.IllegalStateException<br>	at com.google.common.base.Preconditions.checkState(Preconditions.java:133)<br>	at com.google.javascript.jscomp.AmbiguateProperties.&lt;init&gt;(AmbiguateProperties.java:132)<br>	at com.google.javascript.jscomp.AmbiguatePropertiesTest$1.process(AmbiguatePropertiesTest.java:51)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:804)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:447)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:373)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:342)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:330)<br>	at com.google.javascript.jscomp.CompilerTestCase.testSame(CompilerTestCase.java:569)<br>	at com.google.javascript.jscomp.AmbiguatePropertiesTest.testQuotedPrototypeProperty(AmbiguatePropertiesTest.java:295)<br>
+</code></td><td>0.002</td>
+</tr>
+<tr valign="top" class="Error">
+<td><a name="testOverlappingOriginalAndGeneratedNames"></a>testOverlappingOriginalAndGeneratedNames</td><td>Error</td><td>N/A<br>
+<br>
+<code>java.lang.IllegalStateException<br>	at com.google.common.base.Preconditions.checkState(Preconditions.java:133)<br>	at com.google.javascript.jscomp.AmbiguateProperties.&lt;init&gt;(AmbiguateProperties.java:132)<br>	at com.google.javascript.jscomp.AmbiguatePropertiesTest$1.process(AmbiguatePropertiesTest.java:51)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:804)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:447)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:373)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:342)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:330)<br>	at com.google.javascript.jscomp.AmbiguatePropertiesTest.testOverlappingOriginalAndGeneratedNames(AmbiguatePropertiesTest.java:302)<br>
+</code></td><td>0.003</td>
+</tr>
+<tr valign="top" class="Error">
+<td><a name="testPropertyAddedToObject"></a>testPropertyAddedToObject</td><td>Error</td><td>N/A<br>
+<br>
+<code>java.lang.IllegalStateException<br>	at com.google.common.base.Preconditions.checkState(Preconditions.java:133)<br>	at com.google.javascript.jscomp.AmbiguateProperties.&lt;init&gt;(AmbiguateProperties.java:132)<br>	at com.google.javascript.jscomp.AmbiguatePropertiesTest$1.process(AmbiguatePropertiesTest.java:51)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:804)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:447)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:373)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:342)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:330)<br>	at com.google.javascript.jscomp.CompilerTestCase.testSame(CompilerTestCase.java:569)<br>	at com.google.javascript.jscomp.AmbiguatePropertiesTest.testPropertyAddedToObject(AmbiguatePropertiesTest.java:315)<br>
+</code></td><td>0.002</td>
+</tr>
+<tr valign="top" class="Error">
+<td><a name="testPropertyAddedToFunction"></a>testPropertyAddedToFunction</td><td>Error</td><td>N/A<br>
+<br>
+<code>java.lang.IllegalStateException<br>	at com.google.common.base.Preconditions.checkState(Preconditions.java:133)<br>	at com.google.javascript.jscomp.AmbiguateProperties.&lt;init&gt;(AmbiguateProperties.java:132)<br>	at com.google.javascript.jscomp.AmbiguatePropertiesTest$1.process(AmbiguatePropertiesTest.java:51)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:804)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:447)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:373)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:342)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:330)<br>	at com.google.javascript.jscomp.AmbiguatePropertiesTest.testPropertyAddedToFunction(AmbiguatePropertiesTest.java:319)<br>
+</code></td><td>0.002</td>
+</tr>
+<tr valign="top" class="Error">
+<td><a name="testPropertyOfObjectOfUnknownType"></a>testPropertyOfObjectOfUnknownType</td><td>Error</td><td>N/A<br>
+<br>
+<code>java.lang.IllegalStateException<br>	at com.google.common.base.Preconditions.checkState(Preconditions.java:133)<br>	at com.google.javascript.jscomp.AmbiguateProperties.&lt;init&gt;(AmbiguateProperties.java:132)<br>	at com.google.javascript.jscomp.AmbiguatePropertiesTest$1.process(AmbiguatePropertiesTest.java:51)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:804)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:447)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:373)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:342)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:330)<br>	at com.google.javascript.jscomp.CompilerTestCase.testSame(CompilerTestCase.java:569)<br>	at com.google.javascript.jscomp.AmbiguatePropertiesTest.testPropertyOfObjectOfUnknownType(AmbiguatePropertiesTest.java:324)<br>
+</code></td><td>0.002</td>
+</tr>
+<tr valign="top" class="Error">
+<td><a name="testPropertyOnParamOfUnknownType"></a>testPropertyOnParamOfUnknownType</td><td>Error</td><td>N/A<br>
+<br>
+<code>java.lang.IllegalStateException<br>	at com.google.common.base.Preconditions.checkState(Preconditions.java:133)<br>	at com.google.javascript.jscomp.AmbiguateProperties.&lt;init&gt;(AmbiguateProperties.java:132)<br>	at com.google.javascript.jscomp.AmbiguatePropertiesTest$1.process(AmbiguatePropertiesTest.java:51)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:804)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:447)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:373)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:342)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:330)<br>	at com.google.javascript.jscomp.CompilerTestCase.testSame(CompilerTestCase.java:569)<br>	at com.google.javascript.jscomp.AmbiguatePropertiesTest.testPropertyOnParamOfUnknownType(AmbiguatePropertiesTest.java:328)<br>
+</code></td><td>0.002</td>
+</tr>
+<tr valign="top" class="Error">
+<td><a name="testSetPropertyOfGlobalThis"></a>testSetPropertyOfGlobalThis</td><td>Error</td><td>N/A<br>
+<br>
+<code>java.lang.IllegalStateException<br>	at com.google.common.base.Preconditions.checkState(Preconditions.java:133)<br>	at com.google.javascript.jscomp.AmbiguateProperties.&lt;init&gt;(AmbiguateProperties.java:132)<br>	at com.google.javascript.jscomp.AmbiguatePropertiesTest$1.process(AmbiguatePropertiesTest.java:51)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:804)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:447)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:373)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:342)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:330)<br>	at com.google.javascript.jscomp.CompilerTestCase.testSame(CompilerTestCase.java:569)<br>	at com.google.javascript.jscomp.AmbiguatePropertiesTest.testSetPropertyOfGlobalThis(AmbiguatePropertiesTest.java:336)<br>
+</code></td><td>0.001</td>
+</tr>
+<tr valign="top" class="Error">
+<td><a name="testReadPropertyOfGlobalThis"></a>testReadPropertyOfGlobalThis</td><td>Error</td><td>N/A<br>
+<br>
+<code>java.lang.IllegalStateException<br>	at com.google.common.base.Preconditions.checkState(Preconditions.java:133)<br>	at com.google.javascript.jscomp.AmbiguateProperties.&lt;init&gt;(AmbiguateProperties.java:132)<br>	at com.google.javascript.jscomp.AmbiguatePropertiesTest$1.process(AmbiguatePropertiesTest.java:51)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:804)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:447)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:373)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:342)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:330)<br>	at com.google.javascript.jscomp.CompilerTestCase.testSame(CompilerTestCase.java:569)<br>	at com.google.javascript.jscomp.AmbiguatePropertiesTest.testReadPropertyOfGlobalThis(AmbiguatePropertiesTest.java:340)<br>
+</code></td><td>0.001</td>
+</tr>
+<tr valign="top" class="Error">
+<td><a name="testSetQuotedPropertyOfThis"></a>testSetQuotedPropertyOfThis</td><td>Error</td><td>N/A<br>
+<br>
+<code>java.lang.IllegalStateException<br>	at com.google.common.base.Preconditions.checkState(Preconditions.java:133)<br>	at com.google.javascript.jscomp.AmbiguateProperties.&lt;init&gt;(AmbiguateProperties.java:132)<br>	at com.google.javascript.jscomp.AmbiguatePropertiesTest$1.process(AmbiguatePropertiesTest.java:51)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:804)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:447)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:373)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:342)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:330)<br>	at com.google.javascript.jscomp.CompilerTestCase.testSame(CompilerTestCase.java:569)<br>	at com.google.javascript.jscomp.AmbiguatePropertiesTest.testSetQuotedPropertyOfThis(AmbiguatePropertiesTest.java:344)<br>
+</code></td><td>0.002</td>
+</tr>
+<tr valign="top" class="Error">
+<td><a name="testExternedPropertyName"></a>testExternedPropertyName</td><td>Error</td><td>N/A<br>
+<br>
+<code>java.lang.IllegalStateException<br>	at com.google.common.base.Preconditions.checkState(Preconditions.java:133)<br>	at com.google.javascript.jscomp.AmbiguateProperties.&lt;init&gt;(AmbiguateProperties.java:132)<br>	at com.google.javascript.jscomp.AmbiguatePropertiesTest$1.process(AmbiguatePropertiesTest.java:51)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:804)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:447)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:373)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:342)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:330)<br>	at com.google.javascript.jscomp.AmbiguatePropertiesTest.testExternedPropertyName(AmbiguatePropertiesTest.java:348)<br>
+</code></td><td>0.002</td>
+</tr>
+<tr valign="top" class="Error">
+<td><a name="testExternedPropertyNameDefinedByObjectLiteral"></a>testExternedPropertyNameDefinedByObjectLiteral</td><td>Error</td><td>N/A<br>
+<br>
+<code>java.lang.IllegalStateException<br>	at com.google.common.base.Preconditions.checkState(Preconditions.java:133)<br>	at com.google.javascript.jscomp.AmbiguateProperties.&lt;init&gt;(AmbiguateProperties.java:132)<br>	at com.google.javascript.jscomp.AmbiguatePropertiesTest$1.process(AmbiguatePropertiesTest.java:51)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:804)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:447)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:373)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:342)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:330)<br>	at com.google.javascript.jscomp.CompilerTestCase.testSame(CompilerTestCase.java:569)<br>	at com.google.javascript.jscomp.AmbiguatePropertiesTest.testExternedPropertyNameDefinedByObjectLiteral(AmbiguatePropertiesTest.java:361)<br>
+</code></td><td>0.001</td>
+</tr>
+<tr valign="top" class="Error">
+<td><a name="testStaticAndInstanceMethodWithSameName"></a>testStaticAndInstanceMethodWithSameName</td><td>Error</td><td>N/A<br>
+<br>
+<code>java.lang.IllegalStateException<br>	at com.google.common.base.Preconditions.checkState(Preconditions.java:133)<br>	at com.google.javascript.jscomp.AmbiguateProperties.&lt;init&gt;(AmbiguateProperties.java:132)<br>	at com.google.javascript.jscomp.AmbiguatePropertiesTest$1.process(AmbiguatePropertiesTest.java:51)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:804)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:447)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:373)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:342)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:330)<br>	at com.google.javascript.jscomp.AmbiguatePropertiesTest.testStaticAndInstanceMethodWithSameName(AmbiguatePropertiesTest.java:365)<br>
+</code></td><td>0.002</td>
+</tr>
+<tr valign="top" class="Error">
+<td><a name="testStaticAndInstanceProperties"></a>testStaticAndInstanceProperties</td><td>Error</td><td>N/A<br>
+<br>
+<code>java.lang.IllegalStateException<br>	at com.google.common.base.Preconditions.checkState(Preconditions.java:133)<br>	at com.google.javascript.jscomp.AmbiguateProperties.&lt;init&gt;(AmbiguateProperties.java:132)<br>	at com.google.javascript.jscomp.AmbiguatePropertiesTest$1.process(AmbiguatePropertiesTest.java:51)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:804)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:447)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:373)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:342)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:330)<br>	at com.google.javascript.jscomp.AmbiguatePropertiesTest.testStaticAndInstanceProperties(AmbiguatePropertiesTest.java:374)<br>
+</code></td><td>0.002</td>
+</tr>
+<tr valign="top" class="Error">
+<td><a name="testStaticAndSubInstanceProperties"></a>testStaticAndSubInstanceProperties</td><td>Error</td><td>N/A<br>
+<br>
+<code>java.lang.IllegalStateException<br>	at com.google.common.base.Preconditions.checkState(Preconditions.java:133)<br>	at com.google.javascript.jscomp.AmbiguateProperties.&lt;init&gt;(AmbiguateProperties.java:132)<br>	at com.google.javascript.jscomp.AmbiguatePropertiesTest$1.process(AmbiguatePropertiesTest.java:51)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:804)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:447)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:373)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:342)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:330)<br>	at com.google.javascript.jscomp.AmbiguatePropertiesTest.testStaticAndSubInstanceProperties(AmbiguatePropertiesTest.java:396)<br>
+</code></td><td>0.001</td>
+</tr>
+<tr valign="top" class="Error">
+<td><a name="testStaticWithFunctions"></a>testStaticWithFunctions</td><td>Error</td><td>N/A<br>
+<br>
+<code>java.lang.IllegalStateException<br>	at com.google.common.base.Preconditions.checkState(Preconditions.java:133)<br>	at com.google.javascript.jscomp.AmbiguateProperties.&lt;init&gt;(AmbiguateProperties.java:132)<br>	at com.google.javascript.jscomp.AmbiguatePropertiesTest$1.process(AmbiguatePropertiesTest.java:51)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:804)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:447)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:373)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:342)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:330)<br>	at com.google.javascript.jscomp.AmbiguatePropertiesTest.testStaticWithFunctions(AmbiguatePropertiesTest.java:410)<br>
+</code></td><td>0.001</td>
+</tr>
+<tr valign="top" class="Error">
+<td><a name="testTypeMismatch"></a>testTypeMismatch</td><td>Error</td><td>N/A<br>
+<br>
+<code>java.lang.IllegalStateException<br>	at com.google.common.base.Preconditions.checkState(Preconditions.java:133)<br>	at com.google.javascript.jscomp.AmbiguateProperties.&lt;init&gt;(AmbiguateProperties.java:132)<br>	at com.google.javascript.jscomp.AmbiguatePropertiesTest$1.process(AmbiguatePropertiesTest.java:51)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:804)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:447)<br>	at com.google.javascript.jscomp.CompilerTestCase.testSame(CompilerTestCase.java:644)<br>	at com.google.javascript.jscomp.AmbiguatePropertiesTest.testTypeMismatch(AmbiguatePropertiesTest.java:435)<br>
+</code></td><td>0.001</td>
+</tr>
+<tr valign="top" class="Error">
+<td><a name="testRenamingMap"></a>testRenamingMap</td><td>Error</td><td>N/A<br>
+<br>
+<code>java.lang.IllegalStateException<br>	at com.google.common.base.Preconditions.checkState(Preconditions.java:133)<br>	at com.google.javascript.jscomp.AmbiguateProperties.&lt;init&gt;(AmbiguateProperties.java:132)<br>	at com.google.javascript.jscomp.AmbiguatePropertiesTest$1.process(AmbiguatePropertiesTest.java:51)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:804)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:447)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:373)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:342)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:330)<br>	at com.google.javascript.jscomp.AmbiguatePropertiesTest.testRenamingMap(AmbiguatePropertiesTest.java:459)<br>
+</code></td><td>0.002</td>
+</tr>
+<tr valign="top" class="Error">
+<td><a name="testInline"></a>testInline</td><td>Error</td><td>N/A<br>
+<br>
+<code>java.lang.IllegalStateException<br>	at com.google.common.base.Preconditions.checkState(Preconditions.java:133)<br>	at com.google.javascript.jscomp.AmbiguateProperties.&lt;init&gt;(AmbiguateProperties.java:132)<br>	at com.google.javascript.jscomp.AmbiguatePropertiesTest$1.process(AmbiguatePropertiesTest.java:51)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:804)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:447)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:373)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:342)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:330)<br>	at com.google.javascript.jscomp.AmbiguatePropertiesTest.testInline(AmbiguatePropertiesTest.java:490)<br>
+</code></td><td>0.002</td>
+</tr>
+<tr valign="top" class="Error">
+<td><a name="testImplementsAndExtends"></a>testImplementsAndExtends</td><td>Error</td><td>N/A<br>
+<br>
+<code>java.lang.IllegalStateException<br>	at com.google.common.base.Preconditions.checkState(Preconditions.java:133)<br>	at com.google.javascript.jscomp.AmbiguateProperties.&lt;init&gt;(AmbiguateProperties.java:132)<br>	at com.google.javascript.jscomp.AmbiguatePropertiesTest$1.process(AmbiguatePropertiesTest.java:51)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:804)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:447)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:373)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:342)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:330)<br>	at com.google.javascript.jscomp.AmbiguatePropertiesTest.testImplementsAndExtends(AmbiguatePropertiesTest.java:516)<br>
+</code></td><td>0.002</td>
+</tr>
+<tr valign="top" class="Error">
+<td><a name="testImplementsAndExtends2"></a>testImplementsAndExtends2</td><td>Error</td><td>N/A<br>
+<br>
+<code>java.lang.IllegalStateException<br>	at com.google.common.base.Preconditions.checkState(Preconditions.java:133)<br>	at com.google.javascript.jscomp.AmbiguateProperties.&lt;init&gt;(AmbiguateProperties.java:132)<br>	at com.google.javascript.jscomp.AmbiguatePropertiesTest$1.process(AmbiguatePropertiesTest.java:51)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:804)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:447)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:373)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:342)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:330)<br>	at com.google.javascript.jscomp.AmbiguatePropertiesTest.testImplementsAndExtends2(AmbiguatePropertiesTest.java:540)<br>
+</code></td><td>0.001</td>
+</tr>
+<tr valign="top" class="Error">
+<td><a name="testExtendsInterface"></a>testExtendsInterface</td><td>Error</td><td>N/A<br>
+<br>
+<code>java.lang.IllegalStateException<br>	at com.google.common.base.Preconditions.checkState(Preconditions.java:133)<br>	at com.google.javascript.jscomp.AmbiguateProperties.&lt;init&gt;(AmbiguateProperties.java:132)<br>	at com.google.javascript.jscomp.AmbiguatePropertiesTest$1.process(AmbiguatePropertiesTest.java:51)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:804)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:447)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:373)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:342)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:330)<br>	at com.google.javascript.jscomp.AmbiguatePropertiesTest.testExtendsInterface(AmbiguatePropertiesTest.java:554)<br>
+</code></td><td>0.001</td>
+</tr>
+<tr valign="top" class="Error">
+<td><a name="testFunctionSubType"></a>testFunctionSubType</td><td>Error</td><td>N/A<br>
+<br>
+<code>java.lang.IllegalStateException<br>	at com.google.common.base.Preconditions.checkState(Preconditions.java:133)<br>	at com.google.javascript.jscomp.AmbiguateProperties.&lt;init&gt;(AmbiguateProperties.java:132)<br>	at com.google.javascript.jscomp.AmbiguatePropertiesTest$1.process(AmbiguatePropertiesTest.java:51)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:804)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:447)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:373)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:342)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:330)<br>	at com.google.javascript.jscomp.AmbiguatePropertiesTest.testFunctionSubType(AmbiguatePropertiesTest.java:566)<br>
+</code></td><td>0.002</td>
+</tr>
+<tr valign="top" class="Error">
+<td><a name="testFunctionSubType2"></a>testFunctionSubType2</td><td>Error</td><td>N/A<br>
+<br>
+<code>java.lang.IllegalStateException<br>	at com.google.common.base.Preconditions.checkState(Preconditions.java:133)<br>	at com.google.javascript.jscomp.AmbiguateProperties.&lt;init&gt;(AmbiguateProperties.java:132)<br>	at com.google.javascript.jscomp.AmbiguatePropertiesTest$1.process(AmbiguatePropertiesTest.java:51)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:804)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:447)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:373)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:342)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:330)<br>	at com.google.javascript.jscomp.AmbiguatePropertiesTest.testFunctionSubType2(AmbiguatePropertiesTest.java:578)<br>
+</code></td><td>0.001</td>
+</tr>
+<tr valign="top" class="Error">
+<td><a name="testPredeclaredType"></a>testPredeclaredType</td><td>Error</td><td>N/A<br>
+<br>
+<code>java.lang.IllegalStateException<br>	at com.google.common.base.Preconditions.checkState(Preconditions.java:133)<br>	at com.google.javascript.jscomp.AmbiguateProperties.&lt;init&gt;(AmbiguateProperties.java:132)<br>	at com.google.javascript.jscomp.AmbiguatePropertiesTest$1.process(AmbiguatePropertiesTest.java:51)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:804)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:447)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:373)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:342)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:330)<br>	at com.google.javascript.jscomp.AmbiguatePropertiesTest.testPredeclaredType(AmbiguatePropertiesTest.java:598)<br>
+</code></td><td>0.002</td>
+</tr>
+</table>
+<div class="Properties">
+<a href="javascript:displayProperties('com.google.javascript.jscomp.AmbiguatePropertiesTest');">
+                    Properties &raquo;
+                </a>
+</div>
+</body>
+</html>

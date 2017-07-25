@@ -1,0 +1,535 @@
+<html xmlns:stringutils="xalan://org.apache.tools.ant.util.StringUtils" xmlns:lxslt="http://xml.apache.org/xslt">
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Unit Test Results: com.google.javascript.jscomp.RuntimeTypeCheckTest</title>
+<link title="Style" type="text/css" rel="stylesheet" href="../../../../stylesheet.css">
+<script language="JavaScript" type="text/javascript">
+        var TestCases = new Array();
+        var cur;
+        
+    cur = TestCases['com.google.javascript.jscomp.RuntimeTypeCheckTest'] = new Array();
+    
+        cur['ant.build.javac.source'] = '1.6';
+    
+        cur['ant.build.javac.target'] = '1.6';
+    
+        cur['ant.core.lib'] = '/usr/share/ant/lib/ant.jar';
+    
+        cur['ant.file'] = '/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/build.xml';
+    
+        cur['ant.file.compiler'] = '/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/build.xml';
+    
+        cur['ant.file.type'] = 'file';
+    
+        cur['ant.file.type.compiler'] = 'file';
+    
+        cur['ant.home'] = '/usr/share/ant';
+    
+        cur['ant.java.version'] = '1.6';
+    
+        cur['ant.library.dir'] = '/usr/share/ant/lib';
+    
+        cur['ant.project.default-target'] = 'jar';
+    
+        cur['ant.project.invoked-targets'] = 'test';
+    
+        cur['ant.project.name'] = 'compiler';
+    
+        cur['ant.version'] = 'Apache Ant(TM) version 1.8.2 compiled on September 22 2011';
+    
+        cur['basedir'] = '/home/laura/workspace/test-analysis-toolkit/test-subjects/closure';
+    
+        cur['build.dir'] = '/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/build';
+    
+        cur['build.svnVersion'] = 'exported';
+    
+        cur['buildlib.dir'] = '/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/build/lib';
+    
+        cur['classes.dir'] = '/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/build/classes';
+    
+        cur['closure.build.dir'] = '/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/build';
+    
+        cur['compiler-jarfile'] = '/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/build/compiler.jar';
+    
+        cur['externs.dir'] = '/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/externs';
+    
+        cur['file.encoding'] = 'UTF-8';
+    
+        cur['file.encoding.pkg'] = 'sun.io';
+    
+        cur['file.separator'] = '/';
+    
+        cur['gen.dir'] = '/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/gen';
+    
+        cur['java.awt.graphicsenv'] = 'sun.awt.X11GraphicsEnvironment';
+    
+        cur['java.awt.printerjob'] = 'sun.print.PSPrinterJob';
+    
+        cur['java.class.path'] = '/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/build/classes:/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/lib/ant-launcher.jar:/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/lib/ant.jar:/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/lib/args4j.jar:/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/lib/caja-r4314.jar:/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/lib/guava.jar:/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/lib/jarjar.jar:/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/lib/json.jar:/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/lib/jsr305.jar:/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/lib/junit.jar:/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/lib/protobuf-java.jar:/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/build/lib/rhino.jar:/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/build/test:/home/laura/.ant/lib/junit-4.8.1.jar:/usr/share/java/ant-launcher-1.8.2.jar:/usr/share/ant/lib/ant.jar:/usr/share/ant/lib/ant-junit.jar:/usr/share/ant/lib/ant-junit4.jar';
+    
+        cur['java.class.version'] = '50.0';
+    
+        cur['java.endorsed.dirs'] = '/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/endorsed';
+    
+        cur['java.ext.dirs'] = '/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/ext:/usr/java/packages/lib/ext';
+    
+        cur['java.home'] = '/usr/lib/jvm/java-6-sun-1.6.0.26/jre';
+    
+        cur['java.io.tmpdir'] = '/tmp';
+    
+        cur['java.library.path'] = '/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/amd64/server:/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/amd64:/usr/lib/jvm/java-6-sun-1.6.0.26/jre/../lib/amd64:/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib';
+    
+        cur['java.runtime.name'] = 'Java(TM) SE Runtime Environment';
+    
+        cur['java.runtime.version'] = '1.6.0_26-b03';
+    
+        cur['java.specification.name'] = 'Java Platform API Specification';
+    
+        cur['java.specification.vendor'] = 'Sun Microsystems Inc.';
+    
+        cur['java.specification.version'] = '1.6';
+    
+        cur['java.vendor'] = 'Sun Microsystems Inc.';
+    
+        cur['java.vendor.url'] = 'http://java.sun.com/';
+    
+        cur['java.vendor.url.bug'] = 'http://java.sun.com/cgi-bin/bugreport.cgi';
+    
+        cur['java.version'] = '1.6.0_26';
+    
+        cur['java.vm.info'] = 'mixed mode';
+    
+        cur['java.vm.name'] = 'Java HotSpot(TM) 64-Bit Server VM';
+    
+        cur['java.vm.specification.name'] = 'Java Virtual Machine Specification';
+    
+        cur['java.vm.specification.vendor'] = 'Sun Microsystems Inc.';
+    
+        cur['java.vm.specification.version'] = '1.0';
+    
+        cur['java.vm.vendor'] = 'Sun Microsystems Inc.';
+    
+        cur['java.vm.version'] = '20.1-b02';
+    
+        cur['javac.debug'] = 'on';
+    
+        cur['javadoc.dir'] = '/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/build/javadoc';
+    
+        cur['jsonml.dir'] = '/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/src/com/google/javascript/jscomp/jsonml';
+    
+        cur['jsonml-classes.dir'] = '/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/build/jsonml-classes';
+    
+        cur['jsonml-jarfile'] = '/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/build/secure_compiler.jar';
+    
+        cur['lib.dir'] = '/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/lib';
+    
+        cur['line.separator'] = '
+';
+    
+        cur['maven-repository-id'] = 'sonatype-nexus-staging';
+    
+        cur['maven-repository-url'] = 'https://oss.sonatype.org/service/local/staging/deploy/maven2/';
+    
+        cur['num-fuzz-tests'] = '10000';
+    
+        cur['os.arch'] = 'amd64';
+    
+        cur['os.name'] = 'Linux';
+    
+        cur['os.version'] = '3.2.0-4-amd64';
+    
+        cur['path.separator'] = ':';
+    
+        cur['protoc.executable'] = 'protoc';
+    
+        cur['src.dir'] = '/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/src';
+    
+        cur['sun.arch.data.model'] = '64';
+    
+        cur['sun.boot.class.path'] = '/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/resources.jar:/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/rt.jar:/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/sunrsasign.jar:/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/jsse.jar:/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/jce.jar:/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/charsets.jar:/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/modules/jdk.boot.jar:/usr/lib/jvm/java-6-sun-1.6.0.26/jre/classes';
+    
+        cur['sun.boot.library.path'] = '/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/amd64';
+    
+        cur['sun.cpu.endian'] = 'little';
+    
+        cur['sun.cpu.isalist'] = '';
+    
+        cur['sun.io.unicode.encoding'] = 'UnicodeLittle';
+    
+        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner testsfile=/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/junittestcases7907414127225220977.properties filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.SummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.BriefJUnitResultFormatter formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/build/testoutput/IGNORETHIS.xml crashfile=/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/junitvmwatcher3991492321278074197.properties propsfile=/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/junit4979492318036784971.properties';
+    
+        cur['sun.java.launcher'] = 'SUN_STANDARD';
+    
+        cur['sun.jnu.encoding'] = 'UTF-8';
+    
+        cur['sun.management.compiler'] = 'HotSpot 64-Bit Tiered Compilers';
+    
+        cur['sun.os.patch.level'] = 'unknown';
+    
+        cur['test.class'] = '*Test';
+    
+        cur['test.dir'] = '/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/test';
+    
+        cur['test.fork'] = 'true';
+    
+        cur['testClasses.dir'] = '/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/build/test';
+    
+        cur['tools.dir'] = '/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/tools';
+    
+        cur['user.country'] = 'CA';
+    
+        cur['user.dir'] = '/home/laura/workspace/test-analysis-toolkit/test-subjects/closure';
+    
+        cur['user.home'] = '/home/laura';
+    
+        cur['user.language'] = 'en';
+    
+        cur['user.name'] = 'laura';
+    
+        cur['user.timezone'] = '';
+    
+        cur['webservice.dir'] = '/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/src/com/google/javascript/jscomp/webservice';
+    
+        cur['webservice-classes.dir'] = '/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/build/webservice-classes';
+    
+        cur['webservice-jarfile'] = '/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/build/webservice.jar';
+    </script><script language="JavaScript" type="text/javascript">
+        function displayProperties (name) {
+          var win = window.open('','JUnitSystemProperties','scrollbars=1,resizable=1');
+          var doc = win.document;
+          doc.open();
+          doc.write("<html><head><title>Properties of " + name + "</title>");
+          doc.write("<style type=\"text/css\">");
+          doc.write("body {font:normal 68% verdana,arial,helvetica; color:#000000; }");
+          doc.write("table tr td, table tr th { font-size: 68%; }");
+          doc.write("table.properties { border-collapse:collapse; border-left:solid 1 #cccccc; border-top:solid 1 #cccccc; padding:5px; }");
+          doc.write("table.properties th { text-align:left; border-right:solid 1 #cccccc; border-bottom:solid 1 #cccccc; background-color:#eeeeee; }");
+          doc.write("table.properties td { font:normal; text-align:left; border-right:solid 1 #cccccc; border-bottom:solid 1 #cccccc; background-color:#fffffff; }");
+          doc.write("h3 { margin-bottom: 0.5em; font: bold 115% verdana,arial,helvetica }");
+          doc.write("</style>");
+          doc.write("</head><body>");
+          doc.write("<h3>Properties of " + name + "</h3>");
+          doc.write("<div align=\"right\"><a href=\"javascript:window.close();\">Close</a></div>");
+          doc.write("<table class='properties'>");
+          doc.write("<tr><th>Name</th><th>Value</th></tr>");
+          for (prop in TestCases[name]) {
+            doc.write("<tr><th>" + prop + "</th><td>" + TestCases[name][prop] + "</td></tr>");
+          }
+          doc.write("</table>");
+          doc.write("</body></html>");
+          doc.close();
+          win.focus();
+        }
+      
+      </script>
+</head>
+<body>
+<h1>Unit Test Results.</h1>
+<table width="100%">
+<tr>
+<td align="left"></td><td align="right">Designed for use with <a href="http://www.junit.org/">JUnit</a> and <a href="http://ant.apache.org/">Ant</a>.</td>
+</tr>
+</table>
+<hr size="1">
+<h3>Class com.google.javascript.jscomp.RuntimeTypeCheckTest</h3>
+<table width="95%" cellspacing="2" cellpadding="5" border="0" class="details">
+<tr valign="top">
+<th width="80%">Name</th><th>Tests</th><th>Errors</th><th>Failures</th><th nowrap>Time(s)</th><th nowrap>Time Stamp</th><th>Host</th>
+</tr>
+<tr valign="top" class="Error">
+<td><a href="160_RuntimeTypeCheckTest.html" title="Display all tests">RuntimeTypeCheckTest</a></td><td><a href="160_RuntimeTypeCheckTest.html" title="Display all tests">20</a></td><td><a href="160_RuntimeTypeCheckTest-errors.html" title="Display only errors">20</a></td><td>0</td><td>0.050</td><td>2013-02-19T20:48:37</td><td>battower</td>
+</tr>
+</table>
+<h2>Errors</h2>
+<table width="95%" cellspacing="2" cellpadding="5" border="0" class="details">
+<tr valign="top">
+<th>Name</th><th>Status</th><th width="80%">Type</th><th nowrap>Time(s)</th>
+</tr>
+<tr valign="top" class="Error">
+<td><a name="testValue"></a>testValue</td><td>Error</td><td>INTERNAL COMPILER ERROR.
+Please report this problem.
+null
+  Node(FUNCTION f): testcode:1:25
+/** @param {number} i */ function f(i) {}
+  Parent(SCRIPT): testcode:1:0
+/** @param {number} i */ function f(i) {}
+<br>
+<br>
+<code>java.lang.RuntimeException: INTERNAL COMPILER ERROR.<br>Please report this problem.<br>null<br>  Node(FUNCTION f): testcode:1:25<br>/** @param {number} i */ function f(i) {}<br>  Parent(SCRIPT): testcode:1:0<br>/** @param {number} i */ function f(i) {}<br>
+<br>	at com.google.javascript.jscomp.RuntimeTypeCheck$AddMarkers.visitFunction(RuntimeTypeCheck.java:116)<br>	at com.google.javascript.jscomp.RuntimeTypeCheck$AddMarkers.visit(RuntimeTypeCheck.java:111)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:505)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:277)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:456)<br>	at com.google.javascript.jscomp.RuntimeTypeCheck.process(RuntimeTypeCheck.java:82)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:804)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:447)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:373)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:342)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:330)<br>	at com.google.javascript.jscomp.RuntimeTypeCheckTest.testChecks(RuntimeTypeCheckTest.java:248)<br>	at com.google.javascript.jscomp.RuntimeTypeCheckTest.testValue(RuntimeTypeCheckTest.java:40)<br>Caused by: java.lang.NullPointerException<br>
+</code></td><td>0.006</td>
+</tr>
+<tr valign="top" class="Error">
+<td><a name="testUnion"></a>testUnion</td><td>Error</td><td>INTERNAL COMPILER ERROR.
+Please report this problem.
+null
+  Node(FUNCTION f): testcode:1:32
+/** @param {number|string} x */ function f(x) {}
+  Parent(SCRIPT): testcode:1:0
+/** @param {number|string} x */ function f(x) {}
+<br>
+<br>
+<code>java.lang.RuntimeException: INTERNAL COMPILER ERROR.<br>Please report this problem.<br>null<br>  Node(FUNCTION f): testcode:1:32<br>/** @param {number|string} x */ function f(x) {}<br>  Parent(SCRIPT): testcode:1:0<br>/** @param {number|string} x */ function f(x) {}<br>
+<br>	at com.google.javascript.jscomp.RuntimeTypeCheck$AddMarkers.visitFunction(RuntimeTypeCheck.java:116)<br>	at com.google.javascript.jscomp.RuntimeTypeCheck$AddMarkers.visit(RuntimeTypeCheck.java:111)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:505)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:277)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:456)<br>	at com.google.javascript.jscomp.RuntimeTypeCheck.process(RuntimeTypeCheck.java:82)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:804)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:447)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:373)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:342)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:330)<br>	at com.google.javascript.jscomp.RuntimeTypeCheckTest.testChecks(RuntimeTypeCheckTest.java:248)<br>	at com.google.javascript.jscomp.RuntimeTypeCheckTest.testUnion(RuntimeTypeCheckTest.java:92)<br>Caused by: java.lang.NullPointerException<br>
+</code></td><td>0.002</td>
+</tr>
+<tr valign="top" class="Error">
+<td><a name="testFunctionType"></a>testFunctionType</td><td>Error</td><td>INTERNAL COMPILER ERROR.
+Please report this problem.
+null
+  Node(FUNCTION f): testcode:1:24
+/** @type {!Function} */function f() {}
+  Parent(SCRIPT): testcode:1:0
+/** @type {!Function} */function f() {}
+<br>
+<br>
+<code>java.lang.RuntimeException: INTERNAL COMPILER ERROR.<br>Please report this problem.<br>null<br>  Node(FUNCTION f): testcode:1:24<br>/** @type {!Function} */function f() {}<br>  Parent(SCRIPT): testcode:1:0<br>/** @type {!Function} */function f() {}<br>
+<br>	at com.google.javascript.jscomp.RuntimeTypeCheck$AddMarkers.visitFunction(RuntimeTypeCheck.java:116)<br>	at com.google.javascript.jscomp.RuntimeTypeCheck$AddMarkers.visit(RuntimeTypeCheck.java:111)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:505)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:277)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:456)<br>	at com.google.javascript.jscomp.RuntimeTypeCheck.process(RuntimeTypeCheck.java:82)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:804)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:447)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:373)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:342)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:330)<br>	at com.google.javascript.jscomp.RuntimeTypeCheckTest.testChecks(RuntimeTypeCheckTest.java:248)<br>	at com.google.javascript.jscomp.RuntimeTypeCheckTest.testFunctionType(RuntimeTypeCheckTest.java:238)<br>Caused by: java.lang.NullPointerException<br>
+</code></td><td>0.002</td>
+</tr>
+<tr valign="top" class="Error">
+<td><a name="testReturn"></a>testReturn</td><td>Error</td><td>INTERNAL COMPILER ERROR.
+Please report this problem.
+null
+  Node(FUNCTION f): testcode:1:24
+/** @return {string} */ function f() { return 'x'; }
+  Parent(SCRIPT): testcode:1:0
+/** @return {string} */ function f() { return 'x'; }
+<br>
+<br>
+<code>java.lang.RuntimeException: INTERNAL COMPILER ERROR.<br>Please report this problem.<br>null<br>  Node(FUNCTION f): testcode:1:24<br>/** @return {string} */ function f() { return 'x'; }<br>  Parent(SCRIPT): testcode:1:0<br>/** @return {string} */ function f() { return 'x'; }<br>
+<br>	at com.google.javascript.jscomp.RuntimeTypeCheck$AddMarkers.visitFunction(RuntimeTypeCheck.java:116)<br>	at com.google.javascript.jscomp.RuntimeTypeCheck$AddMarkers.visit(RuntimeTypeCheck.java:111)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:505)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:277)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:456)<br>	at com.google.javascript.jscomp.RuntimeTypeCheck.process(RuntimeTypeCheck.java:82)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:804)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:447)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:373)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:342)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:330)<br>	at com.google.javascript.jscomp.RuntimeTypeCheckTest.testChecks(RuntimeTypeCheckTest.java:248)<br>	at com.google.javascript.jscomp.RuntimeTypeCheckTest.testReturn(RuntimeTypeCheckTest.java:106)<br>Caused by: java.lang.NullPointerException<br>
+</code></td><td>0.002</td>
+</tr>
+<tr valign="top" class="Error">
+<td><a name="testInterface"></a>testInterface</td><td>Error</td><td>INTERNAL COMPILER ERROR.
+Please report this problem.
+null
+  Node(FUNCTION I): testcode:1:17
+/** @interface */function I() {}/** @param {!I} i */function f(i) {}
+  Parent(SCRIPT): testcode:1:0
+/** @interface */function I() {}/** @param {!I} i */function f(i) {}
+<br>
+<br>
+<code>java.lang.RuntimeException: INTERNAL COMPILER ERROR.<br>Please report this problem.<br>null<br>  Node(FUNCTION I): testcode:1:17<br>/** @interface */function I() {}/** @param {!I} i */function f(i) {}<br>  Parent(SCRIPT): testcode:1:0<br>/** @interface */function I() {}/** @param {!I} i */function f(i) {}<br>
+<br>	at com.google.javascript.jscomp.RuntimeTypeCheck$AddMarkers.visitFunction(RuntimeTypeCheck.java:116)<br>	at com.google.javascript.jscomp.RuntimeTypeCheck$AddMarkers.visit(RuntimeTypeCheck.java:111)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:505)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:277)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:456)<br>	at com.google.javascript.jscomp.RuntimeTypeCheck.process(RuntimeTypeCheck.java:82)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:804)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:447)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:373)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:342)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:330)<br>	at com.google.javascript.jscomp.RuntimeTypeCheckTest.testChecks(RuntimeTypeCheckTest.java:248)<br>	at com.google.javascript.jscomp.RuntimeTypeCheckTest.testInterface(RuntimeTypeCheckTest.java:147)<br>Caused by: java.lang.NullPointerException<br>
+</code></td><td>0.002</td>
+</tr>
+<tr valign="top" class="Error">
+<td><a name="testConstValue"></a>testConstValue</td><td>Error</td><td>INTERNAL COMPILER ERROR.
+Please report this problem.
+null
+  Node(FUNCTION f): testcode:1:29
+/** @param {number} CONST */ function f(CONST) {}
+  Parent(SCRIPT): testcode:1:0
+/** @param {number} CONST */ function f(CONST) {}
+<br>
+<br>
+<code>java.lang.RuntimeException: INTERNAL COMPILER ERROR.<br>Please report this problem.<br>null<br>  Node(FUNCTION f): testcode:1:29<br>/** @param {number} CONST */ function f(CONST) {}<br>  Parent(SCRIPT): testcode:1:0<br>/** @param {number} CONST */ function f(CONST) {}<br>
+<br>	at com.google.javascript.jscomp.RuntimeTypeCheck$AddMarkers.visitFunction(RuntimeTypeCheck.java:116)<br>	at com.google.javascript.jscomp.RuntimeTypeCheck$AddMarkers.visit(RuntimeTypeCheck.java:111)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:505)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:277)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:456)<br>	at com.google.javascript.jscomp.RuntimeTypeCheck.process(RuntimeTypeCheck.java:82)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:804)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:447)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:373)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:342)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:330)<br>	at com.google.javascript.jscomp.RuntimeTypeCheckTest.testChecks(RuntimeTypeCheckTest.java:248)<br>	at com.google.javascript.jscomp.RuntimeTypeCheckTest.testConstValue(RuntimeTypeCheckTest.java:50)<br>Caused by: java.lang.NullPointerException<br>
+</code></td><td>0.002</td>
+</tr>
+<tr valign="top" class="Error">
+<td><a name="testValueWithInnerFn"></a>testValueWithInnerFn</td><td>Error</td><td>INTERNAL COMPILER ERROR.
+Please report this problem.
+null
+  Node(FUNCTION g): testcode:1:41
+/** @param {number} i */ function f(i) { function g() {} }
+  Parent(BLOCK): testcode:1:39
+/** @param {number} i */ function f(i) { function g() {} }
+<br>
+<br>
+<code>java.lang.RuntimeException: INTERNAL COMPILER ERROR.<br>Please report this problem.<br>null<br>  Node(FUNCTION g): testcode:1:41<br>/** @param {number} i */ function f(i) { function g() {} }<br>  Parent(BLOCK): testcode:1:39<br>/** @param {number} i */ function f(i) { function g() {} }<br>
+<br>	at com.google.javascript.jscomp.RuntimeTypeCheck$AddMarkers.visitFunction(RuntimeTypeCheck.java:116)<br>	at com.google.javascript.jscomp.RuntimeTypeCheck$AddMarkers.visit(RuntimeTypeCheck.java:111)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:505)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseFunction(NodeTraversal.java:543)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:490)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:277)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:456)<br>	at com.google.javascript.jscomp.RuntimeTypeCheck.process(RuntimeTypeCheck.java:82)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:804)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:447)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:373)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:342)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:330)<br>	at com.google.javascript.jscomp.RuntimeTypeCheckTest.testChecks(RuntimeTypeCheckTest.java:248)<br>	at com.google.javascript.jscomp.RuntimeTypeCheckTest.testValueWithInnerFn(RuntimeTypeCheckTest.java:58)<br>Caused by: java.lang.NullPointerException<br>
+</code></td><td>0.002</td>
+</tr>
+<tr valign="top" class="Error">
+<td><a name="testNullValue"></a>testNullValue</td><td>Error</td><td>INTERNAL COMPILER ERROR.
+Please report this problem.
+null
+  Node(FUNCTION f): testcode:1:23
+/** @param {null} i */ function f(i) {}
+  Parent(SCRIPT): testcode:1:0
+/** @param {null} i */ function f(i) {}
+<br>
+<br>
+<code>java.lang.RuntimeException: INTERNAL COMPILER ERROR.<br>Please report this problem.<br>null<br>  Node(FUNCTION f): testcode:1:23<br>/** @param {null} i */ function f(i) {}<br>  Parent(SCRIPT): testcode:1:0<br>/** @param {null} i */ function f(i) {}<br>
+<br>	at com.google.javascript.jscomp.RuntimeTypeCheck$AddMarkers.visitFunction(RuntimeTypeCheck.java:116)<br>	at com.google.javascript.jscomp.RuntimeTypeCheck$AddMarkers.visit(RuntimeTypeCheck.java:111)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:505)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:277)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:456)<br>	at com.google.javascript.jscomp.RuntimeTypeCheck.process(RuntimeTypeCheck.java:82)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:804)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:447)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:373)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:342)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:330)<br>	at com.google.javascript.jscomp.RuntimeTypeCheckTest.testChecks(RuntimeTypeCheckTest.java:248)<br>	at com.google.javascript.jscomp.RuntimeTypeCheckTest.testNullValue(RuntimeTypeCheckTest.java:67)<br>Caused by: java.lang.NullPointerException<br>
+</code></td><td>0.001</td>
+</tr>
+<tr valign="top" class="Error">
+<td><a name="testValues"></a>testValues</td><td>Error</td><td>INTERNAL COMPILER ERROR.
+Please report this problem.
+null
+  Node(FUNCTION f): testcode:2:20
+@param {string} j*/ function f(i, j) {}
+  Parent(SCRIPT): testcode:1:0
+/** @param {number} i
+<br>
+<br>
+<code>java.lang.RuntimeException: INTERNAL COMPILER ERROR.<br>Please report this problem.<br>null<br>  Node(FUNCTION f): testcode:2:20<br>@param {string} j*/ function f(i, j) {}<br>  Parent(SCRIPT): testcode:1:0<br>/** @param {number} i<br>
+<br>	at com.google.javascript.jscomp.RuntimeTypeCheck$AddMarkers.visitFunction(RuntimeTypeCheck.java:116)<br>	at com.google.javascript.jscomp.RuntimeTypeCheck$AddMarkers.visit(RuntimeTypeCheck.java:111)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:505)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:277)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:456)<br>	at com.google.javascript.jscomp.RuntimeTypeCheck.process(RuntimeTypeCheck.java:82)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:804)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:447)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:373)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:342)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:330)<br>	at com.google.javascript.jscomp.RuntimeTypeCheckTest.testChecks(RuntimeTypeCheckTest.java:248)<br>	at com.google.javascript.jscomp.RuntimeTypeCheckTest.testValues(RuntimeTypeCheckTest.java:74)<br>Caused by: java.lang.NullPointerException<br>
+</code></td><td>0.002</td>
+</tr>
+<tr valign="top" class="Error">
+<td><a name="testSkipParamOK"></a>testSkipParamOK</td><td>Error</td><td>INTERNAL COMPILER ERROR.
+Please report this problem.
+null
+  Node(FUNCTION f): testcode:2:20
+@param {string} j*/ function f(i, j) {}
+  Parent(SCRIPT): testcode:1:0
+/** @param {*} i
+<br>
+<br>
+<code>java.lang.RuntimeException: INTERNAL COMPILER ERROR.<br>Please report this problem.<br>null<br>  Node(FUNCTION f): testcode:2:20<br>@param {string} j*/ function f(i, j) {}<br>  Parent(SCRIPT): testcode:1:0<br>/** @param {*} i<br>
+<br>	at com.google.javascript.jscomp.RuntimeTypeCheck$AddMarkers.visitFunction(RuntimeTypeCheck.java:116)<br>	at com.google.javascript.jscomp.RuntimeTypeCheck$AddMarkers.visit(RuntimeTypeCheck.java:111)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:505)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:277)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:456)<br>	at com.google.javascript.jscomp.RuntimeTypeCheck.process(RuntimeTypeCheck.java:82)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:804)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:447)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:373)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:342)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:330)<br>	at com.google.javascript.jscomp.RuntimeTypeCheckTest.testChecks(RuntimeTypeCheckTest.java:248)<br>	at com.google.javascript.jscomp.RuntimeTypeCheckTest.testSkipParamOK(RuntimeTypeCheckTest.java:84)<br>Caused by: java.lang.NullPointerException<br>
+</code></td><td>0.002</td>
+</tr>
+<tr valign="top" class="Error">
+<td><a name="testUntypedParam"></a>testUntypedParam</td><td>Error</td><td>INTERNAL COMPILER ERROR.
+Please report this problem.
+null
+  Node(FUNCTION f): testcode:1:11
+/** ... */ function f(x) {}
+  Parent(SCRIPT): testcode:1:0
+/** ... */ function f(x) {}
+<br>
+<br>
+<code>java.lang.RuntimeException: INTERNAL COMPILER ERROR.<br>Please report this problem.<br>null<br>  Node(FUNCTION f): testcode:1:11<br>/** ... */ function f(x) {}<br>  Parent(SCRIPT): testcode:1:0<br>/** ... */ function f(x) {}<br>
+<br>	at com.google.javascript.jscomp.RuntimeTypeCheck$AddMarkers.visitFunction(RuntimeTypeCheck.java:116)<br>	at com.google.javascript.jscomp.RuntimeTypeCheck$AddMarkers.visit(RuntimeTypeCheck.java:111)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:505)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:277)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:456)<br>	at com.google.javascript.jscomp.RuntimeTypeCheck.process(RuntimeTypeCheck.java:82)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:804)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:447)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:373)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:342)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:330)<br>	at com.google.javascript.jscomp.RuntimeTypeCheckTest.testChecks(RuntimeTypeCheckTest.java:248)<br>	at com.google.javascript.jscomp.RuntimeTypeCheckTest.testUntypedParam(RuntimeTypeCheckTest.java:102)<br>Caused by: java.lang.NullPointerException<br>
+</code></td><td>0.002</td>
+</tr>
+<tr valign="top" class="Error">
+<td><a name="testNativeClass"></a>testNativeClass</td><td>Error</td><td>INTERNAL COMPILER ERROR.
+Please report this problem.
+null
+  Node(FUNCTION f): testcode:1:26
+/** @param {!String} x */ function f(x) {}
+  Parent(SCRIPT): testcode:1:0
+/** @param {!String} x */ function f(x) {}
+<br>
+<br>
+<code>java.lang.RuntimeException: INTERNAL COMPILER ERROR.<br>Please report this problem.<br>null<br>  Node(FUNCTION f): testcode:1:26<br>/** @param {!String} x */ function f(x) {}<br>  Parent(SCRIPT): testcode:1:0<br>/** @param {!String} x */ function f(x) {}<br>
+<br>	at com.google.javascript.jscomp.RuntimeTypeCheck$AddMarkers.visitFunction(RuntimeTypeCheck.java:116)<br>	at com.google.javascript.jscomp.RuntimeTypeCheck$AddMarkers.visit(RuntimeTypeCheck.java:111)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:505)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:277)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:456)<br>	at com.google.javascript.jscomp.RuntimeTypeCheck.process(RuntimeTypeCheck.java:82)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:804)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:447)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:373)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:342)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:330)<br>	at com.google.javascript.jscomp.RuntimeTypeCheckTest.testChecks(RuntimeTypeCheckTest.java:248)<br>	at com.google.javascript.jscomp.RuntimeTypeCheckTest.testNativeClass(RuntimeTypeCheckTest.java:114)<br>Caused by: java.lang.NullPointerException<br>
+</code></td><td>0.002</td>
+</tr>
+<tr valign="top" class="Error">
+<td><a name="testQualifiedClass"></a>testQualifiedClass</td><td>Error</td><td>INTERNAL COMPILER ERROR.
+Please report this problem.
+null
+  Node(FUNCTION ): testcode:1:45
+var goog = {}; /** @constructor */goog.Foo = function() {};/** @param {!goog.Foo} x */ function f(x) {}
+  Parent(ASSIGN): testcode:1:34
+var goog = {}; /** @constructor */goog.Foo = function() {};/** @param {!goog.Foo} x */ function f(x) {}
+<br>
+<br>
+<code>java.lang.RuntimeException: INTERNAL COMPILER ERROR.<br>Please report this problem.<br>null<br>  Node(FUNCTION ): testcode:1:45<br>var goog = {}; /** @constructor */goog.Foo = function() {};/** @param {!goog.Foo} x */ function f(x) {}<br>  Parent(ASSIGN): testcode:1:34<br>var goog = {}; /** @constructor */goog.Foo = function() {};/** @param {!goog.Foo} x */ function f(x) {}<br>
+<br>	at com.google.javascript.jscomp.RuntimeTypeCheck$AddMarkers.visitFunction(RuntimeTypeCheck.java:116)<br>	at com.google.javascript.jscomp.RuntimeTypeCheck$AddMarkers.visit(RuntimeTypeCheck.java:111)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:505)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:277)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:456)<br>	at com.google.javascript.jscomp.RuntimeTypeCheck.process(RuntimeTypeCheck.java:82)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:804)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:447)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:373)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:342)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:330)<br>	at com.google.javascript.jscomp.RuntimeTypeCheckTest.testChecks(RuntimeTypeCheckTest.java:248)<br>	at com.google.javascript.jscomp.RuntimeTypeCheckTest.testQualifiedClass(RuntimeTypeCheckTest.java:122)<br>Caused by: java.lang.NullPointerException<br>
+</code></td><td>0.002</td>
+</tr>
+<tr valign="top" class="Error">
+<td><a name="testInnerClasses"></a>testInnerClasses</td><td>Error</td><td>INTERNAL COMPILER ERROR.
+Please report this problem.
+null
+  Node(FUNCTION inner): testcode:1:35
+function f() { /** @constructor */ function inner() {} }function g() { /** @constructor */ function inner() {} }
+  Parent(BLOCK): testcode:1:13
+function f() { /** @constructor */ function inner() {} }function g() { /** @constructor */ function inner() {} }
+<br>
+<br>
+<code>java.lang.RuntimeException: INTERNAL COMPILER ERROR.<br>Please report this problem.<br>null<br>  Node(FUNCTION inner): testcode:1:35<br>function f() { /** @constructor */ function inner() {} }function g() { /** @constructor */ function inner() {} }<br>  Parent(BLOCK): testcode:1:13<br>function f() { /** @constructor */ function inner() {} }function g() { /** @constructor */ function inner() {} }<br>
+<br>	at com.google.javascript.jscomp.RuntimeTypeCheck$AddMarkers.visitFunction(RuntimeTypeCheck.java:116)<br>	at com.google.javascript.jscomp.RuntimeTypeCheck$AddMarkers.visit(RuntimeTypeCheck.java:111)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:505)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseFunction(NodeTraversal.java:543)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:490)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:277)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:456)<br>	at com.google.javascript.jscomp.RuntimeTypeCheck.process(RuntimeTypeCheck.java:82)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:804)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:447)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:373)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:342)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:330)<br>	at com.google.javascript.jscomp.RuntimeTypeCheckTest.testChecks(RuntimeTypeCheckTest.java:248)<br>	at com.google.javascript.jscomp.RuntimeTypeCheckTest.testInnerClasses(RuntimeTypeCheckTest.java:133)<br>Caused by: java.lang.NullPointerException<br>
+</code></td><td>0.002</td>
+</tr>
+<tr valign="top" class="Error">
+<td><a name="testImplementedInterface"></a>testImplementedInterface</td><td>Error</td><td>INTERNAL COMPILER ERROR.
+Please report this problem.
+null
+  Node(FUNCTION I): testcode:1:17
+/** @interface */function I() {}/** @param {!I} i */function f(i) {}/** @constructor
+  Parent(SCRIPT): testcode:1:0
+/** @interface */function I() {}/** @param {!I} i */function f(i) {}/** @constructor
+<br>
+<br>
+<code>java.lang.RuntimeException: INTERNAL COMPILER ERROR.<br>Please report this problem.<br>null<br>  Node(FUNCTION I): testcode:1:17<br>/** @interface */function I() {}/** @param {!I} i */function f(i) {}/** @constructor<br>  Parent(SCRIPT): testcode:1:0<br>/** @interface */function I() {}/** @param {!I} i */function f(i) {}/** @constructor<br>
+<br>	at com.google.javascript.jscomp.RuntimeTypeCheck$AddMarkers.visitFunction(RuntimeTypeCheck.java:116)<br>	at com.google.javascript.jscomp.RuntimeTypeCheck$AddMarkers.visit(RuntimeTypeCheck.java:111)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:505)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:277)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:456)<br>	at com.google.javascript.jscomp.RuntimeTypeCheck.process(RuntimeTypeCheck.java:82)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:804)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:447)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:373)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:342)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:330)<br>	at com.google.javascript.jscomp.RuntimeTypeCheckTest.testChecks(RuntimeTypeCheckTest.java:248)<br>	at com.google.javascript.jscomp.RuntimeTypeCheckTest.testImplementedInterface(RuntimeTypeCheckTest.java:157)<br>Caused by: java.lang.NullPointerException<br>
+</code></td><td>0.002</td>
+</tr>
+<tr valign="top" class="Error">
+<td><a name="testExtendedInterface"></a>testExtendedInterface</td><td>Error</td><td>INTERNAL COMPILER ERROR.
+Please report this problem.
+null
+  Node(FUNCTION I): testcode:1:17
+/** @interface */function I() {}/** @interface
+  Parent(SCRIPT): testcode:1:0
+/** @interface */function I() {}/** @interface
+<br>
+<br>
+<code>java.lang.RuntimeException: INTERNAL COMPILER ERROR.<br>Please report this problem.<br>null<br>  Node(FUNCTION I): testcode:1:17<br>/** @interface */function I() {}/** @interface<br>  Parent(SCRIPT): testcode:1:0<br>/** @interface */function I() {}/** @interface<br>
+<br>	at com.google.javascript.jscomp.RuntimeTypeCheck$AddMarkers.visitFunction(RuntimeTypeCheck.java:116)<br>	at com.google.javascript.jscomp.RuntimeTypeCheck$AddMarkers.visit(RuntimeTypeCheck.java:111)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:505)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:277)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:456)<br>	at com.google.javascript.jscomp.RuntimeTypeCheck.process(RuntimeTypeCheck.java:82)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:804)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:447)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:373)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:342)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:330)<br>	at com.google.javascript.jscomp.RuntimeTypeCheckTest.testChecks(RuntimeTypeCheckTest.java:248)<br>	at com.google.javascript.jscomp.RuntimeTypeCheckTest.testExtendedInterface(RuntimeTypeCheckTest.java:171)<br>Caused by: java.lang.NullPointerException<br>
+</code></td><td>0.002</td>
+</tr>
+<tr valign="top" class="Error">
+<td><a name="testImplementedInterfaceOrdering"></a>testImplementedInterfaceOrdering</td><td>Error</td><td>INTERNAL COMPILER ERROR.
+Please report this problem.
+null
+  Node(FUNCTION I): testcode:1:17
+/** @interface */function I() {}/** @param {!I} i */function f(i) {}/** @constructor
+  Parent(SCRIPT): testcode:1:0
+/** @interface */function I() {}/** @param {!I} i */function f(i) {}/** @constructor
+<br>
+<br>
+<code>java.lang.RuntimeException: INTERNAL COMPILER ERROR.<br>Please report this problem.<br>null<br>  Node(FUNCTION I): testcode:1:17<br>/** @interface */function I() {}/** @param {!I} i */function f(i) {}/** @constructor<br>  Parent(SCRIPT): testcode:1:0<br>/** @interface */function I() {}/** @param {!I} i */function f(i) {}/** @constructor<br>
+<br>	at com.google.javascript.jscomp.RuntimeTypeCheck$AddMarkers.visitFunction(RuntimeTypeCheck.java:116)<br>	at com.google.javascript.jscomp.RuntimeTypeCheck$AddMarkers.visit(RuntimeTypeCheck.java:111)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:505)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:277)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:456)<br>	at com.google.javascript.jscomp.RuntimeTypeCheck.process(RuntimeTypeCheck.java:82)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:804)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:447)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:373)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:342)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:330)<br>	at com.google.javascript.jscomp.RuntimeTypeCheckTest.testChecks(RuntimeTypeCheckTest.java:248)<br>	at com.google.javascript.jscomp.RuntimeTypeCheckTest.testImplementedInterfaceOrdering(RuntimeTypeCheckTest.java:188)<br>Caused by: java.lang.NullPointerException<br>
+</code></td><td>0.002</td>
+</tr>
+<tr valign="top" class="Error">
+<td><a name="testImplementedInterfaceOrderingGoogInherits"></a>testImplementedInterfaceOrderingGoogInherits</td><td>Error</td><td>INTERNAL COMPILER ERROR.
+Please report this problem.
+null
+  Node(FUNCTION ): testcode:1:31
+var goog = {}; goog.inherits = function(x, y) {};/** @interface */function I() {}/** @param {!I} i */function f(i) {}/** @constructor */function B() {}/** @constructor
+  Parent(ASSIGN): testcode:1:15
+var goog = {}; goog.inherits = function(x, y) {};/** @interface */function I() {}/** @param {!I} i */function f(i) {}/** @constructor */function B() {}/** @constructor
+<br>
+<br>
+<code>java.lang.RuntimeException: INTERNAL COMPILER ERROR.<br>Please report this problem.<br>null<br>  Node(FUNCTION ): testcode:1:31<br>var goog = {}; goog.inherits = function(x, y) {};/** @interface */function I() {}/** @param {!I} i */function f(i) {}/** @constructor */function B() {}/** @constructor<br>  Parent(ASSIGN): testcode:1:15<br>var goog = {}; goog.inherits = function(x, y) {};/** @interface */function I() {}/** @param {!I} i */function f(i) {}/** @constructor */function B() {}/** @constructor<br>
+<br>	at com.google.javascript.jscomp.RuntimeTypeCheck$AddMarkers.visitFunction(RuntimeTypeCheck.java:116)<br>	at com.google.javascript.jscomp.RuntimeTypeCheck$AddMarkers.visit(RuntimeTypeCheck.java:111)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:505)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:277)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:456)<br>	at com.google.javascript.jscomp.RuntimeTypeCheck.process(RuntimeTypeCheck.java:82)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:804)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:447)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:373)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:342)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:330)<br>	at com.google.javascript.jscomp.RuntimeTypeCheckTest.testChecks(RuntimeTypeCheckTest.java:248)<br>	at com.google.javascript.jscomp.RuntimeTypeCheckTest.testImplementedInterfaceOrderingGoogInherits(RuntimeTypeCheckTest.java:204)<br>Caused by: java.lang.NullPointerException<br>
+</code></td><td>0.001</td>
+</tr>
+<tr valign="top" class="Error">
+<td><a name="testInnerConstructor"></a>testInnerConstructor</td><td>Error</td><td>INTERNAL COMPILER ERROR.
+Please report this problem.
+null
+  Node(FUNCTION C): testcode:1:34
+(function() { /** @constructor */ function C() {} })()
+  Parent(BLOCK): testcode:1:12
+(function() { /** @constructor */ function C() {} })()
+<br>
+<br>
+<code>java.lang.RuntimeException: INTERNAL COMPILER ERROR.<br>Please report this problem.<br>null<br>  Node(FUNCTION C): testcode:1:34<br>(function() { /** @constructor */ function C() {} })()<br>  Parent(BLOCK): testcode:1:12<br>(function() { /** @constructor */ function C() {} })()<br>
+<br>	at com.google.javascript.jscomp.RuntimeTypeCheck$AddMarkers.visitFunction(RuntimeTypeCheck.java:116)<br>	at com.google.javascript.jscomp.RuntimeTypeCheck$AddMarkers.visit(RuntimeTypeCheck.java:111)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:505)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseFunction(NodeTraversal.java:543)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:490)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:277)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:456)<br>	at com.google.javascript.jscomp.RuntimeTypeCheck.process(RuntimeTypeCheck.java:82)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:804)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:447)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:373)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:342)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:330)<br>	at com.google.javascript.jscomp.RuntimeTypeCheckTest.testChecks(RuntimeTypeCheckTest.java:248)<br>	at com.google.javascript.jscomp.RuntimeTypeCheckTest.testInnerConstructor(RuntimeTypeCheckTest.java:227)<br>Caused by: java.lang.NullPointerException<br>
+</code></td><td>0.003</td>
+</tr>
+<tr valign="top" class="Error">
+<td><a name="testReturnNothing"></a>testReturnNothing</td><td>Error</td><td>INTERNAL COMPILER ERROR.
+Please report this problem.
+null
+  Node(FUNCTION f): testcode:1:0
+function f() { return; }
+  Parent(SCRIPT): testcode:1:0
+function f() { return; }
+<br>
+<br>
+<code>java.lang.RuntimeException: INTERNAL COMPILER ERROR.<br>Please report this problem.<br>null<br>  Node(FUNCTION f): testcode:1:0<br>function f() { return; }<br>  Parent(SCRIPT): testcode:1:0<br>function f() { return; }<br>
+<br>	at com.google.javascript.jscomp.RuntimeTypeCheck$AddMarkers.visitFunction(RuntimeTypeCheck.java:116)<br>	at com.google.javascript.jscomp.RuntimeTypeCheck$AddMarkers.visit(RuntimeTypeCheck.java:111)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:505)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:277)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:456)<br>	at com.google.javascript.jscomp.RuntimeTypeCheck.process(RuntimeTypeCheck.java:82)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:804)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:447)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:373)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:342)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:330)<br>	at com.google.javascript.jscomp.RuntimeTypeCheckTest.testChecks(RuntimeTypeCheckTest.java:248)<br>	at com.google.javascript.jscomp.RuntimeTypeCheckTest.testReturnNothing(RuntimeTypeCheckTest.java:234)<br>Caused by: java.lang.NullPointerException<br>
+</code></td><td>0.004</td>
+</tr>
+</table>
+<div class="Properties">
+<a href="javascript:displayProperties('com.google.javascript.jscomp.RuntimeTypeCheckTest');">
+                    Properties &raquo;
+                </a>
+</div>
+</body>
+</html>

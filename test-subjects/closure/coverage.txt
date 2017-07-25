@@ -1,0 +1,58 @@
+[EMMA v2.0.5312 report, generated Tue Feb 19 16:24:06 EST 2013]
+-------------------------------------------------------------------------------
+OVERALL COVERAGE SUMMARY:
+
+[class, %]	[method, %]	[block, %]	[line, %]	[name]
+93%  (2097/2249)!	74%  (20818/28129)	76%  (463774/608477)!	75%  (98321.8/130933)!	all classes
+
+OVERALL STATS SUMMARY:
+
+total packages:	39
+total classes:	2249
+total methods:	28129
+total executable files:	977
+total executable lines:	130933
+
+COVERAGE BREAKDOWN BY PACKAGE:
+
+[class, %]	[method, %]	[block, %]	[line, %]	[name]
+0%   (0/2)!	0%   (0/10)!	0%   (0/67)!	0%   (0/17)!	com.google.caja
+0%   (0/1)!	0%   (0/4)!	0%   (0/17)!	0%   (0/6)!	com.google.javascript.rhino.head.xml
+0%   (0/1)!	0%   (0/1)!	0%   (0/4)!	0%   (0/2)!	org.mozilla.classfile
+100% (1/1)	2%   (1/43)!	0%   (5/2288)!	0%   (1/564)!	com.google.javascript.rhino.head.optimizer
+71%  (5/7)!	7%   (9/133)!	6%   (148/2687)!	7%   (36/484)!	com.google.common.primitives
+100% (5/5)	16%  (10/64)!	9%   (113/1302)!	11%  (24.3/220)!	com.google.caja.util
+100% (1/1)	33%  (1/3)!	17%  (10/59)!	20%  (4/20)!	com.google.javascript.rhino.head.jdk15
+82%  (69/84)!	19%  (383/2003)!	19%  (6364/33754)!	16%  (1238.7/7582)!	com.google.protobuf
+100% (2/2)	36%  (12/33)!	21%  (113/549)!	27%  (41/150)!	junit.runner
+52%  (24/46)!	22%  (291/1315)!	21%  (9879/46804)!	22%  (2504.3/11337)!	com.google.javascript.rhino.head
+80%  (8/10)!	28%  (23/82)!	22%  (342/1546)!	20%  (73/364)!	com.google.common.io
+100% (5/5)	35%  (49/139)!	24%  (817/3360)!	28%  (210/762)!	org.json
+100% (2/2)	33%  (27/82)!	27%  (267/999)!	28%  (72.6/257)!	com.google.debugging.sourcemap.proto
+80%  (53/66)!	36%  (286/796)!	29%  (2732/9325)!	33%  (808.1/2414)!	com.google.javascript.rhino.head.ast
+100% (1/1)	44%  (4/9)!	30%  (42/138)!	30%  (12/40)!	com.google.javascript.rhino.head.jdk13
+75%  (158/211)!	33%  (708/2121)!	31%  (7564/24682)!	30%  (1581.1/5318)!	com.google.common.collect
+71%  (5/7)!	54%  (55/102)!	32%  (408/1261)!	41%  (131.9/323)!	junit.framework
+100% (10/10)	57%  (53/93)!	39%  (700/1782)!	39%  (129.9/334)!	com.google.caja.parser
+100% (2/2)	56%  (20/36)!	48%  (252/530)!	50%  (65.9/131)!	junit.textui
+88%  (52/59)!	43%  (168/387)!	48%  (2588/5340)!	43%  (410.7/958)!	com.google.common.base
+47%  (9/19)!	48%  (26/54)!	49%  (380/780)!	54%  (94.9/177)!	org.kohsuke.args4j.spi
+97%  (70/72)!	48%  (276/570)!	54%  (7357/13614)!	49%  (1266.3/2572)!	com.google.caja.parser.js
+100% (8/8)	38%  (20/52)!	59%  (1404/2386)!	36%  (115.2/319)!	com.google.caja.lexer.escaping
+87%  (27/31)!	67%  (144/214)!	66%  (3993/6036)!	61%  (618.4/1016)!	com.google.caja.lexer
+89%  (8/9)!	63%  (44/70)!	70%  (1134/1626)!	68%  (210.9/308)!	org.kohsuke.args4j
+97%  (33/34)!	91%  (632/698)	78%  (8819/11263)!	79%  (2204.2/2779)!	com.google.javascript.rhino
+100% (1/1)	100% (6/6)	82%  (107/131)	86%  (14.7/17)	com.google.javascript.jscomp.testing
+100% (7/7)	62%  (26/42)!	86%  (1036/1198)	81%  (134.1/165)	com.google.caja.reporting
+98%  (39/40)!	81%  (212/263)	87%  (4970/5742)	88%  (1039.9/1188)	com.google.javascript.jscomp.graph
+100% (17/17)	95%  (101/106)	87%  (2582/2971)	93%  (502.9/540)	com.google.javascript.jscomp.deps
+100% (58/58)	90%  (366/407)	89%  (8625/9718)	89%  (2000.3/2251)	com.google.debugging.sourcemap
+100% (30/30)	80%  (127/159)	89%  (2002/2255)	86%  (394/456)	com.google.javascript.jscomp.type
+100% (25/25)	90%  (348/388)	90%  (9801/10936)	91%  (2247.3/2469)	com.google.javascript.jscomp.jsonml
+99%  (1238/1251)!	93%  (14153/15253)	92%  (253130/274827)	93%  (59332.8/64104)	com.google.javascript.jscomp
+100% (5/5)	84%  (37/44)	94%  (1414/1502)	95%  (271.8/287)	com.google.javascript.rhino.testing
+100% (20/20)	79%  (139/177)	97%  (14689/15214)	91%  (1040.8/1139)	com.google.javascript.jscomp.regex
+100% (25/25)	98%  (868/886)	97%  (20986/21715)	97%  (4270.5/4419)	com.google.javascript.jscomp.parsing
+100% (73/73)	93%  (1112/1202)	97%  (41153/42217)	97%  (7109.4/7334)	com.google.javascript.rhino.jstype
+100% (1/1)	99%  (81/82)	100% (47848/47852)	100% (8109/8110)	com.google
+-------------------------------------------------------------------------------

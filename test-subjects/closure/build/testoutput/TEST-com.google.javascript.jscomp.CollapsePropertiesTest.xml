@@ -1,0 +1,335 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuite errors="0" failures="0" hostname="battower" name="com.google.javascript.jscomp.CollapsePropertiesTest" tests="228" time="0.297" timestamp="2013-02-28T06:31:56">
+  <properties>
+    <property name="java.vendor" value="Sun Microsystems Inc." />
+    <property name="lib.dir" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/lib" />
+    <property name="sun.java.launcher" value="SUN_STANDARD" />
+    <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers" />
+    <property name="os.name" value="Linux" />
+    <property name="sun.boot.class.path" value="/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/resources.jar:/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/rt.jar:/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/sunrsasign.jar:/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/jsse.jar:/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/jce.jar:/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/charsets.jar:/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/modules/jdk.boot.jar:/usr/lib/jvm/java-6-sun-1.6.0.26/jre/classes" />
+    <property name="build.svnVersion" value="exported" />
+    <property name="maven-repository-id" value="sonatype-nexus-staging" />
+    <property name="java.vm.specification.vendor" value="Sun Microsystems Inc." />
+    <property name="ant.home" value="/usr/share/ant" />
+    <property name="jsonml-jarfile" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/build/secure_compiler.jar" />
+    <property name="java.runtime.version" value="1.6.0_26-b03" />
+    <property name="gen.dir" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/gen" />
+    <property name="user.name" value="laura" />
+    <property name="ant.file.compiler" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/build.xml" />
+    <property name="cc.src.dir" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/instSrc" />
+    <property name="build.dir" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/build" />
+    <property name="jsonml.dir" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/src/com/google/javascript/jscomp/jsonml" />
+    <property name="ant.build.javac.target" value="1.6" />
+    <property name="cc.lib.dir" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/instLib" />
+    <property name="user.language" value="en" />
+    <property name="sun.boot.library.path" value="/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/amd64" />
+    <property name="ant.project.default-target" value="jar" />
+    <property name="ant.project.name" value="compiler" />
+    <property name="cc.build.dir" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/instBuild" />
+    <property name="java.version" value="1.6.0_26" />
+    <property name="user.timezone" value="" />
+    <property name="sun.arch.data.model" value="64" />
+    <property name="cc.compiler-jarfile" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/instBuild/compiler.jar" />
+    <property name="java.endorsed.dirs" value="/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/endorsed" />
+    <property name="sun.cpu.isalist" value="" />
+    <property name="sun.jnu.encoding" value="UTF-8" />
+    <property name="file.encoding.pkg" value="sun.io" />
+    <property name="cc.gen.dir" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/instGen" />
+    <property name="file.separator" value="/" />
+    <property name="java.specification.name" value="Java Platform API Specification" />
+    <property name="protoc.executable" value="protoc" />
+    <property name="classes.dir" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/build/classes" />
+    <property name="java.class.version" value="50.0" />
+    <property name="testClasses.dir" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/build/test" />
+    <property name="user.country" value="CA" />
+    <property name="jsonml-classes.dir" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/build/jsonml-classes" />
+    <property name="java.home" value="/usr/lib/jvm/java-6-sun-1.6.0.26/jre" />
+    <property name="java.vm.info" value="mixed mode" />
+    <property name="externs.dir" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/externs" />
+    <property name="ant.file" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/build.xml" />
+    <property name="os.version" value="3.2.0-4-amd64" />
+    <property name="javac.debug" value="on" />
+    <property name="path.separator" value=":" />
+    <property name="java.vm.version" value="20.1-b02" />
+    <property name="num-fuzz-tests" value="10000" />
+    <property name="ant.library.dir" value="/usr/share/ant/lib" />
+    <property name="java.awt.printerjob" value="sun.print.PSPrinterJob" />
+    <property name="webservice-jarfile" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/build/webservice.jar" />
+    <property name="sun.io.unicode.encoding" value="UnicodeLittle" />
+    <property name="test.fork" value="true" />
+    <property name="webservice.dir" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/src/com/google/javascript/jscomp/webservice" />
+    <property name="buildlib.dir" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/build/lib" />
+    <property name="cc.closure.build.dir" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/instBuild" />
+    <property name="ant.build.javac.source" value="1.6" />
+    <property name="user.home" value="/home/laura" />
+    <property name="cc.buildlib.dir" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/instBuild/lib" />
+    <property name="java.specification.vendor" value="Sun Microsystems Inc." />
+    <property name="test.dir" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/test" />
+    <property name="java.library.path" value="/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/amd64/server:/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/amd64:/usr/lib/jvm/java-6-sun-1.6.0.26/jre/../lib/amd64:/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib" />
+    <property name="java.vendor.url" value="http://java.sun.com/" />
+    <property name="java.vm.vendor" value="Sun Microsystems Inc." />
+    <property name="java.runtime.name" value="Java(TM) SE Runtime Environment" />
+    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner testsfile=/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/junittestcases3948662715662201768.properties filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.SummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.BriefJUnitResultFormatter formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/build/testoutput/IGNORETHIS.xml crashfile=/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/junitvmwatcher984647660801049597.properties propsfile=/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/junit4306649417180714283.properties" />
+    <property name="java.class.path" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/build/classes:/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/lib/ant-launcher.jar:/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/lib/ant.jar:/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/lib/args4j.jar:/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/lib/caja-r4314.jar:/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/lib/codecover-ant.jar:/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/lib/codecover-batch.jar:/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/lib/codecover-core.jar:/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/lib/guava.jar:/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/lib/jarjar.jar:/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/lib/json.jar:/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/lib/jsr305.jar:/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/lib/junit.jar:/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/lib/org.codecover.instrumentation.java15-0.1.jar:/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/lib/protobuf-java.jar:/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/build/lib/rhino.jar:/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/build/test:/home/laura/.ant/lib/junit-4.8.1.jar:/usr/share/java/ant-launcher-1.8.2.jar:/usr/share/ant/lib/ant.jar:/usr/share/ant/lib/ant-junit.jar:/usr/share/ant/lib/ant-junit4.jar" />
+    <property name="ant.version" value="Apache Ant(TM) version 1.8.2 compiled on September 22 2011" />
+    <property name="test.class" value="*Test" />
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification" />
+    <property name="ant.file.type" value="file" />
+    <property name="java.vm.specification.version" value="1.0" />
+    <property name="sun.os.patch.level" value="unknown" />
+    <property name="sun.cpu.endian" value="little" />
+    <property name="java.io.tmpdir" value="/tmp" />
+    <property name="java.vendor.url.bug" value="http://java.sun.com/cgi-bin/bugreport.cgi" />
+    <property name="cc.classes.dir" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/instBuild/classes" />
+    <property name="java.awt.graphicsenv" value="sun.awt.X11GraphicsEnvironment" />
+    <property name="os.arch" value="amd64" />
+    <property name="maven-repository-url" value="https://oss.sonatype.org/service/local/staging/deploy/maven2/" />
+    <property name="webservice-classes.dir" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/build/webservice-classes" />
+    <property name="java.ext.dirs" value="/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/ext:/usr/java/packages/lib/ext" />
+    <property name="user.dir" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure" />
+    <property name="ant.file.type.compiler" value="file" />
+    <property name="line.separator" value="&#xa;" />
+    <property name="java.vm.name" value="Java HotSpot(TM) 64-Bit Server VM" />
+    <property name="basedir" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure" />
+    <property name="ant.java.version" value="1.6" />
+    <property name="ant.core.lib" value="/usr/share/ant/lib/ant.jar" />
+    <property name="file.encoding" value="UTF-8" />
+    <property name="closure.build.dir" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/build" />
+    <property name="compiler-jarfile" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/build/compiler.jar" />
+    <property name="java.specification.version" value="1.6" />
+    <property name="src.dir" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/src" />
+    <property name="javadoc.dir" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/build/javadoc" />
+    <property name="ant.project.invoked-targets" value="test" />
+    <property name="tools.dir" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/tools" />
+  </properties>
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testNewOperator" time="0.0030" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testCollapse" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testMultiLevelCollapse" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testDecrement" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testIncrement" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testObjLitDeclaration" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testObjLitDeclarationWithGet1" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testObjLitDeclarationWithGet2" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testObjLitDeclarationWithGet3" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testObjLitDeclarationWithSet1" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testObjLitDeclarationWithSet2" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testObjLitDeclarationWithSet3" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testObjLitDeclarationWithGetAndSet1" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testObjLitDeclarationWithDuplicateKeys" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testObjLitAssignmentDepth1" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testObjLitAssignmentDepth2" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testObjLitAssignmentDepth3" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testObjLitAssignmentDepth4" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testGlobalObjectDeclaredToPreserveItsPreviousValue1" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testGlobalObjectDeclaredToPreserveItsPreviousValue2" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testGlobalObjectDeclaredToPreserveItsPreviousValue3" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testGlobalObjectNameInBooleanExpressionDepth1_1" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testGlobalObjectNameInBooleanExpressionDepth1_2" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testGlobalObjectNameInBooleanExpressionDepth1_3" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testGlobalObjectNameInBooleanExpressionDepth1_4" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testGlobalObjectNameInBooleanExpressionDepth1_5" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testGlobalObjectNameInBooleanExpressionDepth1_6" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testGlobalObjectNameInBooleanExpressionDepth2" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testGlobalObjectNameInBooleanExpressionDepth3" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testGlobalFunctionNameInBooleanExpressionDepth1" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testGlobalFunctionNameInBooleanExpressionDepth2" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testAliasCreatedForObjectDepth1_1" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testAliasCreatedForObjectDepth1_2" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testAliasCreatedForObjectDepth1_3" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testAliasCreatedForObjectDepth2_1" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testAliasCreatedForObjectDepth2_2" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testAliasCreatedForEnumDepth1_1" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testAliasCreatedForEnumDepth1_2" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testAliasCreatedForEnumDepth1_3" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testAliasCreatedForEnumDepth1_4" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testAliasCreatedForEnumDepth2_1" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testAliasCreatedForEnumDepth2_2" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testAliasCreatedForEnumDepth2_3" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testAliasCreatedForEnumOfObjects" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testAliasCreatedForEnumOfObjects2" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testAliasCreatedForPropertyOfEnumOfObjects" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testAliasCreatedForPropertyOfEnumOfObjects2" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testMisusedEnumTag" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testMisusedConstructorTag" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testAliasCreatedForFunctionDepth1_1" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testAliasCreatedForCtorDepth1_1" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testAliasCreatedForFunctionDepth1_2" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testAliasCreatedForCtorDepth1_2" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testAliasCreatedForFunctionDepth1_3" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testAliasCreatedForCtorDepth1_3" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testAliasCreatedForFunctionDepth2" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testAliasCreatedForCtorDepth2" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testAliasCreatedForClassDepth1_1" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testAliasCreatedForClassDepth1_2" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testAliasCreatedForClassDepth1_3" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testAliasCreatedForClassDepth2_1" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testAliasCreatedForClassDepth2_2" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testAliasCreatedForClassDepth2_3" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testAliasCreatedForClassProperty" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testNestedObjLit" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testObjLitDeclarationUsedInSameVarList" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testPropGetInsideAnObjLit" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testObjLitWithQuotedKeyThatDoesNotGetRead" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testObjLitWithQuotedKeyThatGetsRead" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testFunctionWithQuotedPropertyThatDoesNotGetRead" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testFunctionWithQuotedPropertyThatGetsRead" time="0.0080" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testObjLitAssignedToMultipleNames1" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testObjLitAssignedToMultipleNames2" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testObjLitRedefinedInGlobalScope" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testObjLitRedefinedInLocalScope" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testObjLitAssignedInTernaryExpression1" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testObjLitAssignedInTernaryExpression2" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testGlobalVarSetToObjLitConditionally1" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testGlobalVarSetToObjLitConditionally1b" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testGlobalVarSetToObjLitConditionally2" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testGlobalVarSetToObjLitConditionally3" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testObjectPropertySetToObjLitConditionally" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testFunctionPropertySetToObjLitConditionally" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testPrototypePropertySetToAnObjectLiteral" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testObjectPropertyResetInLocalScope" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testFunctionPropertyResetInLocalScope" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testNamespaceResetInGlobalScope1" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testNamespaceResetInGlobalScope2" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testNamespaceResetInLocalScope1" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testNamespaceResetInLocalScope2" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testNamespaceDefinedInLocalScope" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testAddPropertyToObjectInLocalScopeDepth1" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testAddPropertyToObjectInLocalScopeDepth2" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testAddPropertyToFunctionInLocalScopeDepth1" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testAddPropertyToFunctionInLocalScopeDepth2" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testAddPropertyToUncollapsibleObjectInLocalScopeDepth1" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testAddPropertyToUncollapsibleFunctionInLocalScopeDepth1" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testAddPropertyToUncollapsibleNamedCtorInLocalScopeDepth1" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testAddPropertyToUncollapsibleCtorInLocalScopeDepth1" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testAddPropertyToUncollapsibleObjectInLocalScopeDepth2" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testAddPropertyToUncollapsibleFunctionInLocalScopeDepth2" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testAddPropertyToUncollapsibleCtorInLocalScopeDepth2" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testPropertyOfChildFuncOfUncollapsibleObjectDepth1" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testPropertyOfChildFuncOfUncollapsibleObjectDepth2" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testAddPropertyToChildFuncOfUncollapsibleObjectInLocalScope" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testAddPropertyToChildTypeOfUncollapsibleObjectInLocalScope" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testAddPropertyToChildOfUncollapsibleFunctionInLocalScope" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testAddPropertyToChildOfUncollapsibleCtorInLocalScope" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testResetObjectPropertyInLocalScope" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testResetFunctionPropertyInLocalScope" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testGlobalNameReferencedInLocalScopeBeforeDefined1" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testGlobalNameReferencedInLocalScopeBeforeDefined2" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testTwiceDefinedGlobalNameDepth1_1" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testTwiceDefinedGlobalNameDepth1_2" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testTwiceDefinedGlobalNameDepth2" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testFunctionCallDepth1" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testFunctionCallDepth2" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testFunctionAlias" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testCallToRedefinedFunction" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testCollapsePrototypeName" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testReferencedPrototypeProperty" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testSetStaticAndPrototypePropertiesOnFunction" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testReadUndefinedPropertyDepth1" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testReadUndefinedPropertyDepth2" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testCallUndefinedMethodOnObjLitDepth1" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testCallUndefinedMethodOnObjLitDepth2" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testPropertiesOfAnUndefinedVar" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testPropertyOfAnObjectThatIsNeitherFunctionNorObjLit" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testStaticFunctionReferencingThis1" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testStaticFunctionReferencingThis2" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testStaticFunctionReferencingThis3" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testStaticFunctionReferencingThis4" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testPrototypeMethodReferencingThis" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testConstructorReferencingThis" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testSafeReferenceOfThis" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testGlobalFunctionReferenceOfThis" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testFunctionGivenTwoNames" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testObjLitWithUsedNumericKey" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testObjLitWithUnusedNumericKey" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testObjLitWithNonIdentifierKeys" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testChainedAssignments1" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testChainedAssignments2" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testChainedAssignments3" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testChainedAssignments4" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testChainedAssignments5" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testChainedAssignments6" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testChainedAssignments7" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testChainedVarAssignments1" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testChainedVarAssignments2" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testChainedVarAssignments3" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testChainedVarAssignments4" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testChainedVarAssignments5" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testPeerAndSubpropertyOfUncollapsibleProperty" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testComplexAssignmentAfterInitialAssignment" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testRenamePrefixOfUncollapsibleProperty" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testMethodCall" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testObjLitDefinedInLocalScopeIsLeftAlone" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testPropertiesOnBothSidesOfAssignment" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testCallOnUndefinedProperty" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testGetPropOnUndefinedProperty" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testLocalAlias1" time="0.0030" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testLocalAlias2" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testLocalAlias3" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testLocalAlias4" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testLocalAlias5" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testLocalAlias6" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testLocalAlias7" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testGlobalWriteToAncestor" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testGlobalWriteToNonAncestor" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testLocalWriteToAncestor" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testLocalWriteToNonAncestor" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testNonWellformedAlias1" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testNonWellformedAlias2" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testLocalAliasOfAncestor" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testGlobalAliasOfAncestor" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testLocalAliasOfOtherName" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testLocalAliasOfFunction" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testNoInlineGetpropIntoCall" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testInlineAliasWithModifications" time="0.0030" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testCollapsePropertyOnExternType" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testCollapseForEachWithoutExterns" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testNoCollapseForEachInExterns" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testDoNotCollapsePropertyOnExternType" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testBug1704733" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testBug1956277" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testBug1974371" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testEnumOfObjects1" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testEnumOfObjects2" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testEnumOfObjects3" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testEnumOfObjects4" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testObjectOfObjects1" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testReferenceInAnonymousObject0" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testReferenceInAnonymousObject1" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testReferenceInAnonymousObject2" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testReferenceInAnonymousObject3" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testReferenceInAnonymousObject4" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testReferenceInAnonymousObject5" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testCrashInCommaOperator" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testCrashInNestedAssign" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testTwinReferenceCancelsChildCollapsing" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testPropWithDollarSign" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testPropWithDollarSign2" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testPropWithDollarSign3" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testPropWithDollarSign4" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testPropWithDollarSign5" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testConstKey" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testPropertyOnGlobalCtor" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testPropertyOnGlobalInterface" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testPropertyOnGlobalFunction" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testIssue389" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testAliasedTopLevelName" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testAliasedTopLevelEnum" time="0.0020" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testAssignFunctionBeforeDefinition" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testObjectLitBeforeDefinition" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testTypedef1" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testTypedef2" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testDelete1" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testDelete2" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testDelete3" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testDelete4" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testDelete5" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testDelete6" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testDelete7" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testDelete8" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testDelete9" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testDelete10" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testDelete11" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.CollapsePropertiesTest" name="testPreserveConstructorDoc" time="0.0010" />
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

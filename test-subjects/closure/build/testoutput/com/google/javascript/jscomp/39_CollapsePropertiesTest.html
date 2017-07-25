@@ -1,0 +1,939 @@
+<html xmlns:stringutils="xalan://org.apache.tools.ant.util.StringUtils" xmlns:lxslt="http://xml.apache.org/xslt">
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Unit Test Results: com.google.javascript.jscomp.CollapsePropertiesTest</title>
+<link title="Style" type="text/css" rel="stylesheet" href="../../../../stylesheet.css">
+<script language="JavaScript" type="text/javascript">
+        var TestCases = new Array();
+        var cur;
+        
+    cur = TestCases['com.google.javascript.jscomp.CollapsePropertiesTest'] = new Array();
+    
+        cur['ant.build.javac.source'] = '1.6';
+    
+        cur['ant.build.javac.target'] = '1.6';
+    
+        cur['ant.core.lib'] = '/usr/share/ant/lib/ant.jar';
+    
+        cur['ant.file'] = '/media/batdrive/test-analysis-toolkit/test-subjects/closure/build.xml';
+    
+        cur['ant.file.compiler'] = '/media/batdrive/test-analysis-toolkit/test-subjects/closure/build.xml';
+    
+        cur['ant.file.type'] = 'file';
+    
+        cur['ant.file.type.compiler'] = 'file';
+    
+        cur['ant.home'] = '/usr/share/ant';
+    
+        cur['ant.java.version'] = '1.6';
+    
+        cur['ant.library.dir'] = '/usr/share/ant/lib';
+    
+        cur['ant.project.default-target'] = 'jar';
+    
+        cur['ant.project.invoked-targets'] = 'test';
+    
+        cur['ant.project.name'] = 'compiler';
+    
+        cur['ant.version'] = 'Apache Ant(TM) version 1.8.2 compiled on September 22 2011';
+    
+        cur['basedir'] = '/media/batdrive/test-analysis-toolkit/test-subjects/closure';
+    
+        cur['build.dir'] = '/media/batdrive/test-analysis-toolkit/test-subjects/closure/build';
+    
+        cur['build.svnVersion'] = 'exported';
+    
+        cur['buildlib.dir'] = '/media/batdrive/test-analysis-toolkit/test-subjects/closure/build/lib';
+    
+        cur['classes.dir'] = '/media/batdrive/test-analysis-toolkit/test-subjects/closure/build/classes';
+    
+        cur['closure.build.dir'] = '/media/batdrive/test-analysis-toolkit/test-subjects/closure/build';
+    
+        cur['compiler-jarfile'] = '/media/batdrive/test-analysis-toolkit/test-subjects/closure/build/compiler.jar';
+    
+        cur['externs.dir'] = '/media/batdrive/test-analysis-toolkit/test-subjects/closure/externs';
+    
+        cur['file.encoding'] = 'UTF-8';
+    
+        cur['file.encoding.pkg'] = 'sun.io';
+    
+        cur['file.separator'] = '/';
+    
+        cur['gen.dir'] = '/media/batdrive/test-analysis-toolkit/test-subjects/closure/gen';
+    
+        cur['java.awt.graphicsenv'] = 'sun.awt.X11GraphicsEnvironment';
+    
+        cur['java.awt.printerjob'] = 'sun.print.PSPrinterJob';
+    
+        cur['java.class.path'] = '/media/batdrive/test-analysis-toolkit/test-subjects/closure/build/classes:/media/batdrive/test-analysis-toolkit/test-subjects/closure/lib/ant-launcher.jar:/media/batdrive/test-analysis-toolkit/test-subjects/closure/lib/ant.jar:/media/batdrive/test-analysis-toolkit/test-subjects/closure/lib/args4j.jar:/media/batdrive/test-analysis-toolkit/test-subjects/closure/lib/caja-r4314.jar:/media/batdrive/test-analysis-toolkit/test-subjects/closure/lib/guava.jar:/media/batdrive/test-analysis-toolkit/test-subjects/closure/lib/jarjar.jar:/media/batdrive/test-analysis-toolkit/test-subjects/closure/lib/json.jar:/media/batdrive/test-analysis-toolkit/test-subjects/closure/lib/jsr305.jar:/media/batdrive/test-analysis-toolkit/test-subjects/closure/lib/junit.jar:/media/batdrive/test-analysis-toolkit/test-subjects/closure/lib/protobuf-java.jar:/media/batdrive/test-analysis-toolkit/test-subjects/closure/build/lib/rhino.jar:/media/batdrive/test-analysis-toolkit/test-subjects/closure/build/test:/home/laura/.ant/lib/junit-4.8.1.jar:/usr/share/java/ant-launcher-1.8.2.jar:/usr/share/ant/lib/ant.jar:/usr/share/ant/lib/ant-junit.jar:/usr/share/ant/lib/ant-junit4.jar';
+    
+        cur['java.class.version'] = '50.0';
+    
+        cur['java.endorsed.dirs'] = '/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/endorsed';
+    
+        cur['java.ext.dirs'] = '/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/ext:/usr/java/packages/lib/ext';
+    
+        cur['java.home'] = '/usr/lib/jvm/java-6-sun-1.6.0.26/jre';
+    
+        cur['java.io.tmpdir'] = '/tmp';
+    
+        cur['java.library.path'] = '/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/amd64/server:/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/amd64:/usr/lib/jvm/java-6-sun-1.6.0.26/jre/../lib/amd64:/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib';
+    
+        cur['java.runtime.name'] = 'Java(TM) SE Runtime Environment';
+    
+        cur['java.runtime.version'] = '1.6.0_26-b03';
+    
+        cur['java.specification.name'] = 'Java Platform API Specification';
+    
+        cur['java.specification.vendor'] = 'Sun Microsystems Inc.';
+    
+        cur['java.specification.version'] = '1.6';
+    
+        cur['java.vendor'] = 'Sun Microsystems Inc.';
+    
+        cur['java.vendor.url'] = 'http://java.sun.com/';
+    
+        cur['java.vendor.url.bug'] = 'http://java.sun.com/cgi-bin/bugreport.cgi';
+    
+        cur['java.version'] = '1.6.0_26';
+    
+        cur['java.vm.info'] = 'mixed mode';
+    
+        cur['java.vm.name'] = 'Java HotSpot(TM) 64-Bit Server VM';
+    
+        cur['java.vm.specification.name'] = 'Java Virtual Machine Specification';
+    
+        cur['java.vm.specification.vendor'] = 'Sun Microsystems Inc.';
+    
+        cur['java.vm.specification.version'] = '1.0';
+    
+        cur['java.vm.vendor'] = 'Sun Microsystems Inc.';
+    
+        cur['java.vm.version'] = '20.1-b02';
+    
+        cur['javac.debug'] = 'on';
+    
+        cur['javadoc.dir'] = '/media/batdrive/test-analysis-toolkit/test-subjects/closure/build/javadoc';
+    
+        cur['jsonml.dir'] = '/media/batdrive/test-analysis-toolkit/test-subjects/closure/src/com/google/javascript/jscomp/jsonml';
+    
+        cur['jsonml-classes.dir'] = '/media/batdrive/test-analysis-toolkit/test-subjects/closure/build/jsonml-classes';
+    
+        cur['jsonml-jarfile'] = '/media/batdrive/test-analysis-toolkit/test-subjects/closure/build/secure_compiler.jar';
+    
+        cur['lib.dir'] = '/media/batdrive/test-analysis-toolkit/test-subjects/closure/lib';
+    
+        cur['line.separator'] = '
+';
+    
+        cur['maven-repository-id'] = 'sonatype-nexus-staging';
+    
+        cur['maven-repository-url'] = 'https://oss.sonatype.org/service/local/staging/deploy/maven2/';
+    
+        cur['num-fuzz-tests'] = '10000';
+    
+        cur['os.arch'] = 'amd64';
+    
+        cur['os.name'] = 'Linux';
+    
+        cur['os.version'] = '3.2.0-4-amd64';
+    
+        cur['path.separator'] = ':';
+    
+        cur['protoc.executable'] = 'protoc';
+    
+        cur['src.dir'] = '/media/batdrive/test-analysis-toolkit/test-subjects/closure/src';
+    
+        cur['sun.arch.data.model'] = '64';
+    
+        cur['sun.boot.class.path'] = '/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/resources.jar:/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/rt.jar:/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/sunrsasign.jar:/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/jsse.jar:/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/jce.jar:/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/charsets.jar:/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/modules/jdk.boot.jar:/usr/lib/jvm/java-6-sun-1.6.0.26/jre/classes';
+    
+        cur['sun.boot.library.path'] = '/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/amd64';
+    
+        cur['sun.cpu.endian'] = 'little';
+    
+        cur['sun.cpu.isalist'] = '';
+    
+        cur['sun.io.unicode.encoding'] = 'UnicodeLittle';
+    
+        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner testsfile=/media/batdrive/test-analysis-toolkit/test-subjects/closure/junittestcases8501929311070627468.properties filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.SummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.BriefJUnitResultFormatter formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/media/batdrive/test-analysis-toolkit/test-subjects/closure/build/testoutput/IGNORETHIS.xml crashfile=/media/batdrive/test-analysis-toolkit/test-subjects/closure/junitvmwatcher2797713000426082891.properties propsfile=/media/batdrive/test-analysis-toolkit/test-subjects/closure/junit2790541872009548604.properties';
+    
+        cur['sun.java.launcher'] = 'SUN_STANDARD';
+    
+        cur['sun.jnu.encoding'] = 'UTF-8';
+    
+        cur['sun.management.compiler'] = 'HotSpot 64-Bit Tiered Compilers';
+    
+        cur['sun.os.patch.level'] = 'unknown';
+    
+        cur['test.class'] = '*Test';
+    
+        cur['test.dir'] = '/media/batdrive/test-analysis-toolkit/test-subjects/closure/test';
+    
+        cur['test.fork'] = 'true';
+    
+        cur['testClasses.dir'] = '/media/batdrive/test-analysis-toolkit/test-subjects/closure/build/test';
+    
+        cur['tools.dir'] = '/media/batdrive/test-analysis-toolkit/test-subjects/closure/tools';
+    
+        cur['user.country'] = 'CA';
+    
+        cur['user.dir'] = '/media/batdrive/test-analysis-toolkit/test-subjects/closure';
+    
+        cur['user.home'] = '/home/laura';
+    
+        cur['user.language'] = 'en';
+    
+        cur['user.name'] = 'laura';
+    
+        cur['user.timezone'] = '';
+    
+        cur['webservice.dir'] = '/media/batdrive/test-analysis-toolkit/test-subjects/closure/src/com/google/javascript/jscomp/webservice';
+    
+        cur['webservice-classes.dir'] = '/media/batdrive/test-analysis-toolkit/test-subjects/closure/build/webservice-classes';
+    
+        cur['webservice-jarfile'] = '/media/batdrive/test-analysis-toolkit/test-subjects/closure/build/webservice.jar';
+    </script><script language="JavaScript" type="text/javascript">
+        function displayProperties (name) {
+          var win = window.open('','JUnitSystemProperties','scrollbars=1,resizable=1');
+          var doc = win.document;
+          doc.open();
+          doc.write("<html><head><title>Properties of " + name + "</title>");
+          doc.write("<style type=\"text/css\">");
+          doc.write("body {font:normal 68% verdana,arial,helvetica; color:#000000; }");
+          doc.write("table tr td, table tr th { font-size: 68%; }");
+          doc.write("table.properties { border-collapse:collapse; border-left:solid 1 #cccccc; border-top:solid 1 #cccccc; padding:5px; }");
+          doc.write("table.properties th { text-align:left; border-right:solid 1 #cccccc; border-bottom:solid 1 #cccccc; background-color:#eeeeee; }");
+          doc.write("table.properties td { font:normal; text-align:left; border-right:solid 1 #cccccc; border-bottom:solid 1 #cccccc; background-color:#fffffff; }");
+          doc.write("h3 { margin-bottom: 0.5em; font: bold 115% verdana,arial,helvetica }");
+          doc.write("</style>");
+          doc.write("</head><body>");
+          doc.write("<h3>Properties of " + name + "</h3>");
+          doc.write("<div align=\"right\"><a href=\"javascript:window.close();\">Close</a></div>");
+          doc.write("<table class='properties'>");
+          doc.write("<tr><th>Name</th><th>Value</th></tr>");
+          for (prop in TestCases[name]) {
+            doc.write("<tr><th>" + prop + "</th><td>" + TestCases[name][prop] + "</td></tr>");
+          }
+          doc.write("</table>");
+          doc.write("</body></html>");
+          doc.close();
+          win.focus();
+        }
+      
+      </script>
+</head>
+<body>
+<h1>Unit Test Results.</h1>
+<table width="100%">
+<tr>
+<td align="left"></td><td align="right">Designed for use with <a href="http://www.junit.org/">JUnit</a> and <a href="http://ant.apache.org/">Ant</a>.</td>
+</tr>
+</table>
+<hr size="1">
+<h3>Class com.google.javascript.jscomp.CollapsePropertiesTest</h3>
+<table width="95%" cellspacing="2" cellpadding="5" border="0" class="details">
+<tr valign="top">
+<th width="80%">Name</th><th>Tests</th><th>Errors</th><th>Failures</th><th nowrap>Time(s)</th><th nowrap>Time Stamp</th><th>Host</th>
+</tr>
+<tr valign="top" class="Pass">
+<td><a href="39_CollapsePropertiesTest.html" title="Display all tests">CollapsePropertiesTest</a></td><td><a href="39_CollapsePropertiesTest.html" title="Display all tests">228</a></td><td>0</td><td>0</td><td>0.304</td><td>2013-02-15T03:57:02</td><td>battower</td>
+</tr>
+</table>
+<h2>Tests</h2>
+<table width="95%" cellspacing="2" cellpadding="5" border="0" class="details">
+<tr valign="top">
+<th>Name</th><th>Status</th><th width="80%">Type</th><th nowrap>Time(s)</th>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testNewOperator"></a>testNewOperator</td><td>Success</td><td></td><td>0.003</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testCollapse"></a>testCollapse</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testMultiLevelCollapse"></a>testMultiLevelCollapse</td><td>Success</td><td></td><td>0.002</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testDecrement"></a>testDecrement</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testIncrement"></a>testIncrement</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testObjLitDeclaration"></a>testObjLitDeclaration</td><td>Success</td><td></td><td>0.002</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testObjLitDeclarationWithGet1"></a>testObjLitDeclarationWithGet1</td><td>Success</td><td></td><td>0.002</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testObjLitDeclarationWithGet2"></a>testObjLitDeclarationWithGet2</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testObjLitDeclarationWithGet3"></a>testObjLitDeclarationWithGet3</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testObjLitDeclarationWithSet1"></a>testObjLitDeclarationWithSet1</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testObjLitDeclarationWithSet2"></a>testObjLitDeclarationWithSet2</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testObjLitDeclarationWithSet3"></a>testObjLitDeclarationWithSet3</td><td>Success</td><td></td><td>0.002</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testObjLitDeclarationWithGetAndSet1"></a>testObjLitDeclarationWithGetAndSet1</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testObjLitDeclarationWithDuplicateKeys"></a>testObjLitDeclarationWithDuplicateKeys</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testObjLitAssignmentDepth1"></a>testObjLitAssignmentDepth1</td><td>Success</td><td></td><td>0.002</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testObjLitAssignmentDepth2"></a>testObjLitAssignmentDepth2</td><td>Success</td><td></td><td>0.002</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testObjLitAssignmentDepth3"></a>testObjLitAssignmentDepth3</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testObjLitAssignmentDepth4"></a>testObjLitAssignmentDepth4</td><td>Success</td><td></td><td>0.002</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGlobalObjectDeclaredToPreserveItsPreviousValue1"></a>testGlobalObjectDeclaredToPreserveItsPreviousValue1</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGlobalObjectDeclaredToPreserveItsPreviousValue2"></a>testGlobalObjectDeclaredToPreserveItsPreviousValue2</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGlobalObjectDeclaredToPreserveItsPreviousValue3"></a>testGlobalObjectDeclaredToPreserveItsPreviousValue3</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGlobalObjectNameInBooleanExpressionDepth1_1"></a>testGlobalObjectNameInBooleanExpressionDepth1_1</td><td>Success</td><td></td><td>0.002</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGlobalObjectNameInBooleanExpressionDepth1_2"></a>testGlobalObjectNameInBooleanExpressionDepth1_2</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGlobalObjectNameInBooleanExpressionDepth1_3"></a>testGlobalObjectNameInBooleanExpressionDepth1_3</td><td>Success</td><td></td><td>0.002</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGlobalObjectNameInBooleanExpressionDepth1_4"></a>testGlobalObjectNameInBooleanExpressionDepth1_4</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGlobalObjectNameInBooleanExpressionDepth1_5"></a>testGlobalObjectNameInBooleanExpressionDepth1_5</td><td>Success</td><td></td><td>0.002</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGlobalObjectNameInBooleanExpressionDepth1_6"></a>testGlobalObjectNameInBooleanExpressionDepth1_6</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGlobalObjectNameInBooleanExpressionDepth2"></a>testGlobalObjectNameInBooleanExpressionDepth2</td><td>Success</td><td></td><td>0.002</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGlobalObjectNameInBooleanExpressionDepth3"></a>testGlobalObjectNameInBooleanExpressionDepth3</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGlobalFunctionNameInBooleanExpressionDepth1"></a>testGlobalFunctionNameInBooleanExpressionDepth1</td><td>Success</td><td></td><td>0.002</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGlobalFunctionNameInBooleanExpressionDepth2"></a>testGlobalFunctionNameInBooleanExpressionDepth2</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAliasCreatedForObjectDepth1_1"></a>testAliasCreatedForObjectDepth1_1</td><td>Success</td><td></td><td>0.002</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAliasCreatedForObjectDepth1_2"></a>testAliasCreatedForObjectDepth1_2</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAliasCreatedForObjectDepth1_3"></a>testAliasCreatedForObjectDepth1_3</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAliasCreatedForObjectDepth2_1"></a>testAliasCreatedForObjectDepth2_1</td><td>Success</td><td></td><td>0.002</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAliasCreatedForObjectDepth2_2"></a>testAliasCreatedForObjectDepth2_2</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAliasCreatedForEnumDepth1_1"></a>testAliasCreatedForEnumDepth1_1</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAliasCreatedForEnumDepth1_2"></a>testAliasCreatedForEnumDepth1_2</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAliasCreatedForEnumDepth1_3"></a>testAliasCreatedForEnumDepth1_3</td><td>Success</td><td></td><td>0.002</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAliasCreatedForEnumDepth1_4"></a>testAliasCreatedForEnumDepth1_4</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAliasCreatedForEnumDepth2_1"></a>testAliasCreatedForEnumDepth2_1</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAliasCreatedForEnumDepth2_2"></a>testAliasCreatedForEnumDepth2_2</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAliasCreatedForEnumDepth2_3"></a>testAliasCreatedForEnumDepth2_3</td><td>Success</td><td></td><td>0.002</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAliasCreatedForEnumOfObjects"></a>testAliasCreatedForEnumOfObjects</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAliasCreatedForEnumOfObjects2"></a>testAliasCreatedForEnumOfObjects2</td><td>Success</td><td></td><td>0.002</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAliasCreatedForPropertyOfEnumOfObjects"></a>testAliasCreatedForPropertyOfEnumOfObjects</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAliasCreatedForPropertyOfEnumOfObjects2"></a>testAliasCreatedForPropertyOfEnumOfObjects2</td><td>Success</td><td></td><td>0.002</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testMisusedEnumTag"></a>testMisusedEnumTag</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testMisusedConstructorTag"></a>testMisusedConstructorTag</td><td>Success</td><td></td><td>0.002</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAliasCreatedForFunctionDepth1_1"></a>testAliasCreatedForFunctionDepth1_1</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAliasCreatedForCtorDepth1_1"></a>testAliasCreatedForCtorDepth1_1</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAliasCreatedForFunctionDepth1_2"></a>testAliasCreatedForFunctionDepth1_2</td><td>Success</td><td></td><td>0.002</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAliasCreatedForCtorDepth1_2"></a>testAliasCreatedForCtorDepth1_2</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAliasCreatedForFunctionDepth1_3"></a>testAliasCreatedForFunctionDepth1_3</td><td>Success</td><td></td><td>0.002</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAliasCreatedForCtorDepth1_3"></a>testAliasCreatedForCtorDepth1_3</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAliasCreatedForFunctionDepth2"></a>testAliasCreatedForFunctionDepth2</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAliasCreatedForCtorDepth2"></a>testAliasCreatedForCtorDepth2</td><td>Success</td><td></td><td>0.002</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAliasCreatedForClassDepth1_1"></a>testAliasCreatedForClassDepth1_1</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAliasCreatedForClassDepth1_2"></a>testAliasCreatedForClassDepth1_2</td><td>Success</td><td></td><td>0.002</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAliasCreatedForClassDepth1_3"></a>testAliasCreatedForClassDepth1_3</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAliasCreatedForClassDepth2_1"></a>testAliasCreatedForClassDepth2_1</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAliasCreatedForClassDepth2_2"></a>testAliasCreatedForClassDepth2_2</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAliasCreatedForClassDepth2_3"></a>testAliasCreatedForClassDepth2_3</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAliasCreatedForClassProperty"></a>testAliasCreatedForClassProperty</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testNestedObjLit"></a>testNestedObjLit</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testObjLitDeclarationUsedInSameVarList"></a>testObjLitDeclarationUsedInSameVarList</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testPropGetInsideAnObjLit"></a>testPropGetInsideAnObjLit</td><td>Success</td><td></td><td>0.002</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testObjLitWithQuotedKeyThatDoesNotGetRead"></a>testObjLitWithQuotedKeyThatDoesNotGetRead</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testObjLitWithQuotedKeyThatGetsRead"></a>testObjLitWithQuotedKeyThatGetsRead</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testFunctionWithQuotedPropertyThatDoesNotGetRead"></a>testFunctionWithQuotedPropertyThatDoesNotGetRead</td><td>Success</td><td></td><td>0.002</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testFunctionWithQuotedPropertyThatGetsRead"></a>testFunctionWithQuotedPropertyThatGetsRead</td><td>Success</td><td></td><td>0.009</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testObjLitAssignedToMultipleNames1"></a>testObjLitAssignedToMultipleNames1</td><td>Success</td><td></td><td>0.002</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testObjLitAssignedToMultipleNames2"></a>testObjLitAssignedToMultipleNames2</td><td>Success</td><td></td><td>0.002</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testObjLitRedefinedInGlobalScope"></a>testObjLitRedefinedInGlobalScope</td><td>Success</td><td></td><td>0.002</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testObjLitRedefinedInLocalScope"></a>testObjLitRedefinedInLocalScope</td><td>Success</td><td></td><td>0.002</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testObjLitAssignedInTernaryExpression1"></a>testObjLitAssignedInTernaryExpression1</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testObjLitAssignedInTernaryExpression2"></a>testObjLitAssignedInTernaryExpression2</td><td>Success</td><td></td><td>0.002</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGlobalVarSetToObjLitConditionally1"></a>testGlobalVarSetToObjLitConditionally1</td><td>Success</td><td></td><td>0.002</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGlobalVarSetToObjLitConditionally1b"></a>testGlobalVarSetToObjLitConditionally1b</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGlobalVarSetToObjLitConditionally2"></a>testGlobalVarSetToObjLitConditionally2</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGlobalVarSetToObjLitConditionally3"></a>testGlobalVarSetToObjLitConditionally3</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testObjectPropertySetToObjLitConditionally"></a>testObjectPropertySetToObjLitConditionally</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testFunctionPropertySetToObjLitConditionally"></a>testFunctionPropertySetToObjLitConditionally</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testPrototypePropertySetToAnObjectLiteral"></a>testPrototypePropertySetToAnObjectLiteral</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testObjectPropertyResetInLocalScope"></a>testObjectPropertyResetInLocalScope</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testFunctionPropertyResetInLocalScope"></a>testFunctionPropertyResetInLocalScope</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testNamespaceResetInGlobalScope1"></a>testNamespaceResetInGlobalScope1</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testNamespaceResetInGlobalScope2"></a>testNamespaceResetInGlobalScope2</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testNamespaceResetInLocalScope1"></a>testNamespaceResetInLocalScope1</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testNamespaceResetInLocalScope2"></a>testNamespaceResetInLocalScope2</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testNamespaceDefinedInLocalScope"></a>testNamespaceDefinedInLocalScope</td><td>Success</td><td></td><td>0.002</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddPropertyToObjectInLocalScopeDepth1"></a>testAddPropertyToObjectInLocalScopeDepth1</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddPropertyToObjectInLocalScopeDepth2"></a>testAddPropertyToObjectInLocalScopeDepth2</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddPropertyToFunctionInLocalScopeDepth1"></a>testAddPropertyToFunctionInLocalScopeDepth1</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddPropertyToFunctionInLocalScopeDepth2"></a>testAddPropertyToFunctionInLocalScopeDepth2</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddPropertyToUncollapsibleObjectInLocalScopeDepth1"></a>testAddPropertyToUncollapsibleObjectInLocalScopeDepth1</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddPropertyToUncollapsibleFunctionInLocalScopeDepth1"></a>testAddPropertyToUncollapsibleFunctionInLocalScopeDepth1</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddPropertyToUncollapsibleNamedCtorInLocalScopeDepth1"></a>testAddPropertyToUncollapsibleNamedCtorInLocalScopeDepth1</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddPropertyToUncollapsibleCtorInLocalScopeDepth1"></a>testAddPropertyToUncollapsibleCtorInLocalScopeDepth1</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddPropertyToUncollapsibleObjectInLocalScopeDepth2"></a>testAddPropertyToUncollapsibleObjectInLocalScopeDepth2</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddPropertyToUncollapsibleFunctionInLocalScopeDepth2"></a>testAddPropertyToUncollapsibleFunctionInLocalScopeDepth2</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddPropertyToUncollapsibleCtorInLocalScopeDepth2"></a>testAddPropertyToUncollapsibleCtorInLocalScopeDepth2</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testPropertyOfChildFuncOfUncollapsibleObjectDepth1"></a>testPropertyOfChildFuncOfUncollapsibleObjectDepth1</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testPropertyOfChildFuncOfUncollapsibleObjectDepth2"></a>testPropertyOfChildFuncOfUncollapsibleObjectDepth2</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddPropertyToChildFuncOfUncollapsibleObjectInLocalScope"></a>testAddPropertyToChildFuncOfUncollapsibleObjectInLocalScope</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddPropertyToChildTypeOfUncollapsibleObjectInLocalScope"></a>testAddPropertyToChildTypeOfUncollapsibleObjectInLocalScope</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddPropertyToChildOfUncollapsibleFunctionInLocalScope"></a>testAddPropertyToChildOfUncollapsibleFunctionInLocalScope</td><td>Success</td><td></td><td>0.002</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddPropertyToChildOfUncollapsibleCtorInLocalScope"></a>testAddPropertyToChildOfUncollapsibleCtorInLocalScope</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testResetObjectPropertyInLocalScope"></a>testResetObjectPropertyInLocalScope</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testResetFunctionPropertyInLocalScope"></a>testResetFunctionPropertyInLocalScope</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGlobalNameReferencedInLocalScopeBeforeDefined1"></a>testGlobalNameReferencedInLocalScopeBeforeDefined1</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGlobalNameReferencedInLocalScopeBeforeDefined2"></a>testGlobalNameReferencedInLocalScopeBeforeDefined2</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testTwiceDefinedGlobalNameDepth1_1"></a>testTwiceDefinedGlobalNameDepth1_1</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testTwiceDefinedGlobalNameDepth1_2"></a>testTwiceDefinedGlobalNameDepth1_2</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testTwiceDefinedGlobalNameDepth2"></a>testTwiceDefinedGlobalNameDepth2</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testFunctionCallDepth1"></a>testFunctionCallDepth1</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testFunctionCallDepth2"></a>testFunctionCallDepth2</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testFunctionAlias"></a>testFunctionAlias</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testCallToRedefinedFunction"></a>testCallToRedefinedFunction</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testCollapsePrototypeName"></a>testCollapsePrototypeName</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testReferencedPrototypeProperty"></a>testReferencedPrototypeProperty</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetStaticAndPrototypePropertiesOnFunction"></a>testSetStaticAndPrototypePropertiesOnFunction</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testReadUndefinedPropertyDepth1"></a>testReadUndefinedPropertyDepth1</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testReadUndefinedPropertyDepth2"></a>testReadUndefinedPropertyDepth2</td><td>Success</td><td></td><td>0.002</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testCallUndefinedMethodOnObjLitDepth1"></a>testCallUndefinedMethodOnObjLitDepth1</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testCallUndefinedMethodOnObjLitDepth2"></a>testCallUndefinedMethodOnObjLitDepth2</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testPropertiesOfAnUndefinedVar"></a>testPropertiesOfAnUndefinedVar</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testPropertyOfAnObjectThatIsNeitherFunctionNorObjLit"></a>testPropertyOfAnObjectThatIsNeitherFunctionNorObjLit</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testStaticFunctionReferencingThis1"></a>testStaticFunctionReferencingThis1</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testStaticFunctionReferencingThis2"></a>testStaticFunctionReferencingThis2</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testStaticFunctionReferencingThis3"></a>testStaticFunctionReferencingThis3</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testStaticFunctionReferencingThis4"></a>testStaticFunctionReferencingThis4</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testPrototypeMethodReferencingThis"></a>testPrototypeMethodReferencingThis</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testConstructorReferencingThis"></a>testConstructorReferencingThis</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSafeReferenceOfThis"></a>testSafeReferenceOfThis</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGlobalFunctionReferenceOfThis"></a>testGlobalFunctionReferenceOfThis</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testFunctionGivenTwoNames"></a>testFunctionGivenTwoNames</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testObjLitWithUsedNumericKey"></a>testObjLitWithUsedNumericKey</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testObjLitWithUnusedNumericKey"></a>testObjLitWithUnusedNumericKey</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testObjLitWithNonIdentifierKeys"></a>testObjLitWithNonIdentifierKeys</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testChainedAssignments1"></a>testChainedAssignments1</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testChainedAssignments2"></a>testChainedAssignments2</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testChainedAssignments3"></a>testChainedAssignments3</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testChainedAssignments4"></a>testChainedAssignments4</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testChainedAssignments5"></a>testChainedAssignments5</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testChainedAssignments6"></a>testChainedAssignments6</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testChainedAssignments7"></a>testChainedAssignments7</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testChainedVarAssignments1"></a>testChainedVarAssignments1</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testChainedVarAssignments2"></a>testChainedVarAssignments2</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testChainedVarAssignments3"></a>testChainedVarAssignments3</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testChainedVarAssignments4"></a>testChainedVarAssignments4</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testChainedVarAssignments5"></a>testChainedVarAssignments5</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testPeerAndSubpropertyOfUncollapsibleProperty"></a>testPeerAndSubpropertyOfUncollapsibleProperty</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testComplexAssignmentAfterInitialAssignment"></a>testComplexAssignmentAfterInitialAssignment</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testRenamePrefixOfUncollapsibleProperty"></a>testRenamePrefixOfUncollapsibleProperty</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testMethodCall"></a>testMethodCall</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testObjLitDefinedInLocalScopeIsLeftAlone"></a>testObjLitDefinedInLocalScopeIsLeftAlone</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testPropertiesOnBothSidesOfAssignment"></a>testPropertiesOnBothSidesOfAssignment</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testCallOnUndefinedProperty"></a>testCallOnUndefinedProperty</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetPropOnUndefinedProperty"></a>testGetPropOnUndefinedProperty</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testLocalAlias1"></a>testLocalAlias1</td><td>Success</td><td></td><td>0.003</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testLocalAlias2"></a>testLocalAlias2</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testLocalAlias3"></a>testLocalAlias3</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testLocalAlias4"></a>testLocalAlias4</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testLocalAlias5"></a>testLocalAlias5</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testLocalAlias6"></a>testLocalAlias6</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testLocalAlias7"></a>testLocalAlias7</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGlobalWriteToAncestor"></a>testGlobalWriteToAncestor</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGlobalWriteToNonAncestor"></a>testGlobalWriteToNonAncestor</td><td>Success</td><td></td><td>0.002</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testLocalWriteToAncestor"></a>testLocalWriteToAncestor</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testLocalWriteToNonAncestor"></a>testLocalWriteToNonAncestor</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testNonWellformedAlias1"></a>testNonWellformedAlias1</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testNonWellformedAlias2"></a>testNonWellformedAlias2</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testLocalAliasOfAncestor"></a>testLocalAliasOfAncestor</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGlobalAliasOfAncestor"></a>testGlobalAliasOfAncestor</td><td>Success</td><td></td><td>0.002</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testLocalAliasOfOtherName"></a>testLocalAliasOfOtherName</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testLocalAliasOfFunction"></a>testLocalAliasOfFunction</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testNoInlineGetpropIntoCall"></a>testNoInlineGetpropIntoCall</td><td>Success</td><td></td><td>0.002</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testInlineAliasWithModifications"></a>testInlineAliasWithModifications</td><td>Success</td><td></td><td>0.004</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testCollapsePropertyOnExternType"></a>testCollapsePropertyOnExternType</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testCollapseForEachWithoutExterns"></a>testCollapseForEachWithoutExterns</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testNoCollapseForEachInExterns"></a>testNoCollapseForEachInExterns</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testDoNotCollapsePropertyOnExternType"></a>testDoNotCollapsePropertyOnExternType</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testBug1704733"></a>testBug1704733</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testBug1956277"></a>testBug1956277</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testBug1974371"></a>testBug1974371</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testEnumOfObjects1"></a>testEnumOfObjects1</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testEnumOfObjects2"></a>testEnumOfObjects2</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testEnumOfObjects3"></a>testEnumOfObjects3</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testEnumOfObjects4"></a>testEnumOfObjects4</td><td>Success</td><td></td><td>0.002</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testObjectOfObjects1"></a>testObjectOfObjects1</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testReferenceInAnonymousObject0"></a>testReferenceInAnonymousObject0</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testReferenceInAnonymousObject1"></a>testReferenceInAnonymousObject1</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testReferenceInAnonymousObject2"></a>testReferenceInAnonymousObject2</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testReferenceInAnonymousObject3"></a>testReferenceInAnonymousObject3</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testReferenceInAnonymousObject4"></a>testReferenceInAnonymousObject4</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testReferenceInAnonymousObject5"></a>testReferenceInAnonymousObject5</td><td>Success</td><td></td><td>0.002</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testCrashInCommaOperator"></a>testCrashInCommaOperator</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testCrashInNestedAssign"></a>testCrashInNestedAssign</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testTwinReferenceCancelsChildCollapsing"></a>testTwinReferenceCancelsChildCollapsing</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testPropWithDollarSign"></a>testPropWithDollarSign</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testPropWithDollarSign2"></a>testPropWithDollarSign2</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testPropWithDollarSign3"></a>testPropWithDollarSign3</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testPropWithDollarSign4"></a>testPropWithDollarSign4</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testPropWithDollarSign5"></a>testPropWithDollarSign5</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testConstKey"></a>testConstKey</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testPropertyOnGlobalCtor"></a>testPropertyOnGlobalCtor</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testPropertyOnGlobalInterface"></a>testPropertyOnGlobalInterface</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testPropertyOnGlobalFunction"></a>testPropertyOnGlobalFunction</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testIssue389"></a>testIssue389</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAliasedTopLevelName"></a>testAliasedTopLevelName</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAliasedTopLevelEnum"></a>testAliasedTopLevelEnum</td><td>Success</td><td></td><td>0.002</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAssignFunctionBeforeDefinition"></a>testAssignFunctionBeforeDefinition</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testObjectLitBeforeDefinition"></a>testObjectLitBeforeDefinition</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testTypedef1"></a>testTypedef1</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testTypedef2"></a>testTypedef2</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testDelete1"></a>testDelete1</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testDelete2"></a>testDelete2</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testDelete3"></a>testDelete3</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testDelete4"></a>testDelete4</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testDelete5"></a>testDelete5</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testDelete6"></a>testDelete6</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testDelete7"></a>testDelete7</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testDelete8"></a>testDelete8</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testDelete9"></a>testDelete9</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testDelete10"></a>testDelete10</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testDelete11"></a>testDelete11</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testPreserveConstructorDoc"></a>testPreserveConstructorDoc</td><td>Success</td><td></td><td>0.002</td>
+</tr>
+</table>
+<div class="Properties">
+<a href="javascript:displayProperties('com.google.javascript.jscomp.CollapsePropertiesTest');">
+                    Properties &raquo;
+                </a>
+</div>
+</body>
+</html>

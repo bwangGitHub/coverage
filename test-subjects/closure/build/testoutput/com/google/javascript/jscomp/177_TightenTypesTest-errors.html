@@ -1,0 +1,871 @@
+<html xmlns:stringutils="xalan://org.apache.tools.ant.util.StringUtils" xmlns:lxslt="http://xml.apache.org/xslt">
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Unit Test Results: com.google.javascript.jscomp.TightenTypesTest</title>
+<link title="Style" type="text/css" rel="stylesheet" href="../../../../stylesheet.css">
+<script language="JavaScript" type="text/javascript">
+        var TestCases = new Array();
+        var cur;
+        
+    cur = TestCases['com.google.javascript.jscomp.TightenTypesTest'] = new Array();
+    
+        cur['ant.build.javac.source'] = '1.6';
+    
+        cur['ant.build.javac.target'] = '1.6';
+    
+        cur['ant.core.lib'] = '/usr/share/ant/lib/ant.jar';
+    
+        cur['ant.file'] = '/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/build.xml';
+    
+        cur['ant.file.compiler'] = '/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/build.xml';
+    
+        cur['ant.file.type'] = 'file';
+    
+        cur['ant.file.type.compiler'] = 'file';
+    
+        cur['ant.home'] = '/usr/share/ant';
+    
+        cur['ant.java.version'] = '1.6';
+    
+        cur['ant.library.dir'] = '/usr/share/ant/lib';
+    
+        cur['ant.project.default-target'] = 'jar';
+    
+        cur['ant.project.invoked-targets'] = 'test';
+    
+        cur['ant.project.name'] = 'compiler';
+    
+        cur['ant.version'] = 'Apache Ant(TM) version 1.8.2 compiled on September 22 2011';
+    
+        cur['basedir'] = '/home/laura/workspace/test-analysis-toolkit/test-subjects/closure';
+    
+        cur['build.dir'] = '/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/build';
+    
+        cur['build.svnVersion'] = 'exported';
+    
+        cur['buildlib.dir'] = '/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/build/lib';
+    
+        cur['classes.dir'] = '/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/build/classes';
+    
+        cur['closure.build.dir'] = '/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/build';
+    
+        cur['compiler-jarfile'] = '/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/build/compiler.jar';
+    
+        cur['externs.dir'] = '/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/externs';
+    
+        cur['file.encoding'] = 'UTF-8';
+    
+        cur['file.encoding.pkg'] = 'sun.io';
+    
+        cur['file.separator'] = '/';
+    
+        cur['gen.dir'] = '/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/gen';
+    
+        cur['java.awt.graphicsenv'] = 'sun.awt.X11GraphicsEnvironment';
+    
+        cur['java.awt.printerjob'] = 'sun.print.PSPrinterJob';
+    
+        cur['java.class.path'] = '/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/build/classes:/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/lib/ant-launcher.jar:/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/lib/ant.jar:/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/lib/args4j.jar:/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/lib/caja-r4314.jar:/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/lib/guava.jar:/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/lib/jarjar.jar:/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/lib/json.jar:/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/lib/jsr305.jar:/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/lib/junit.jar:/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/lib/protobuf-java.jar:/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/build/lib/rhino.jar:/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/build/test:/home/laura/.ant/lib/junit-4.8.1.jar:/usr/share/java/ant-launcher-1.8.2.jar:/usr/share/ant/lib/ant.jar:/usr/share/ant/lib/ant-junit.jar:/usr/share/ant/lib/ant-junit4.jar';
+    
+        cur['java.class.version'] = '50.0';
+    
+        cur['java.endorsed.dirs'] = '/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/endorsed';
+    
+        cur['java.ext.dirs'] = '/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/ext:/usr/java/packages/lib/ext';
+    
+        cur['java.home'] = '/usr/lib/jvm/java-6-sun-1.6.0.26/jre';
+    
+        cur['java.io.tmpdir'] = '/tmp';
+    
+        cur['java.library.path'] = '/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/amd64/server:/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/amd64:/usr/lib/jvm/java-6-sun-1.6.0.26/jre/../lib/amd64:/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib';
+    
+        cur['java.runtime.name'] = 'Java(TM) SE Runtime Environment';
+    
+        cur['java.runtime.version'] = '1.6.0_26-b03';
+    
+        cur['java.specification.name'] = 'Java Platform API Specification';
+    
+        cur['java.specification.vendor'] = 'Sun Microsystems Inc.';
+    
+        cur['java.specification.version'] = '1.6';
+    
+        cur['java.vendor'] = 'Sun Microsystems Inc.';
+    
+        cur['java.vendor.url'] = 'http://java.sun.com/';
+    
+        cur['java.vendor.url.bug'] = 'http://java.sun.com/cgi-bin/bugreport.cgi';
+    
+        cur['java.version'] = '1.6.0_26';
+    
+        cur['java.vm.info'] = 'mixed mode';
+    
+        cur['java.vm.name'] = 'Java HotSpot(TM) 64-Bit Server VM';
+    
+        cur['java.vm.specification.name'] = 'Java Virtual Machine Specification';
+    
+        cur['java.vm.specification.vendor'] = 'Sun Microsystems Inc.';
+    
+        cur['java.vm.specification.version'] = '1.0';
+    
+        cur['java.vm.vendor'] = 'Sun Microsystems Inc.';
+    
+        cur['java.vm.version'] = '20.1-b02';
+    
+        cur['javac.debug'] = 'on';
+    
+        cur['javadoc.dir'] = '/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/build/javadoc';
+    
+        cur['jsonml.dir'] = '/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/src/com/google/javascript/jscomp/jsonml';
+    
+        cur['jsonml-classes.dir'] = '/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/build/jsonml-classes';
+    
+        cur['jsonml-jarfile'] = '/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/build/secure_compiler.jar';
+    
+        cur['lib.dir'] = '/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/lib';
+    
+        cur['line.separator'] = '
+';
+    
+        cur['maven-repository-id'] = 'sonatype-nexus-staging';
+    
+        cur['maven-repository-url'] = 'https://oss.sonatype.org/service/local/staging/deploy/maven2/';
+    
+        cur['num-fuzz-tests'] = '10000';
+    
+        cur['os.arch'] = 'amd64';
+    
+        cur['os.name'] = 'Linux';
+    
+        cur['os.version'] = '3.2.0-4-amd64';
+    
+        cur['path.separator'] = ':';
+    
+        cur['protoc.executable'] = 'protoc';
+    
+        cur['src.dir'] = '/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/src';
+    
+        cur['sun.arch.data.model'] = '64';
+    
+        cur['sun.boot.class.path'] = '/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/resources.jar:/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/rt.jar:/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/sunrsasign.jar:/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/jsse.jar:/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/jce.jar:/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/charsets.jar:/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/modules/jdk.boot.jar:/usr/lib/jvm/java-6-sun-1.6.0.26/jre/classes';
+    
+        cur['sun.boot.library.path'] = '/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/amd64';
+    
+        cur['sun.cpu.endian'] = 'little';
+    
+        cur['sun.cpu.isalist'] = '';
+    
+        cur['sun.io.unicode.encoding'] = 'UnicodeLittle';
+    
+        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner testsfile=/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/junittestcases5933913712788304801.properties filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.SummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.BriefJUnitResultFormatter formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/build/testoutput/IGNORETHIS.xml crashfile=/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/junitvmwatcher6226730386606672354.properties propsfile=/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/junit740449767581928001.properties';
+    
+        cur['sun.java.launcher'] = 'SUN_STANDARD';
+    
+        cur['sun.jnu.encoding'] = 'UTF-8';
+    
+        cur['sun.management.compiler'] = 'HotSpot 64-Bit Tiered Compilers';
+    
+        cur['sun.os.patch.level'] = 'unknown';
+    
+        cur['test.class'] = '*Test';
+    
+        cur['test.dir'] = '/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/test';
+    
+        cur['test.fork'] = 'true';
+    
+        cur['testClasses.dir'] = '/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/build/test';
+    
+        cur['tools.dir'] = '/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/tools';
+    
+        cur['user.country'] = 'CA';
+    
+        cur['user.dir'] = '/home/laura/workspace/test-analysis-toolkit/test-subjects/closure';
+    
+        cur['user.home'] = '/home/laura';
+    
+        cur['user.language'] = 'en';
+    
+        cur['user.name'] = 'laura';
+    
+        cur['user.timezone'] = '';
+    
+        cur['webservice.dir'] = '/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/src/com/google/javascript/jscomp/webservice';
+    
+        cur['webservice-classes.dir'] = '/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/build/webservice-classes';
+    
+        cur['webservice-jarfile'] = '/home/laura/workspace/test-analysis-toolkit/test-subjects/closure/build/webservice.jar';
+    </script><script language="JavaScript" type="text/javascript">
+        function displayProperties (name) {
+          var win = window.open('','JUnitSystemProperties','scrollbars=1,resizable=1');
+          var doc = win.document;
+          doc.open();
+          doc.write("<html><head><title>Properties of " + name + "</title>");
+          doc.write("<style type=\"text/css\">");
+          doc.write("body {font:normal 68% verdana,arial,helvetica; color:#000000; }");
+          doc.write("table tr td, table tr th { font-size: 68%; }");
+          doc.write("table.properties { border-collapse:collapse; border-left:solid 1 #cccccc; border-top:solid 1 #cccccc; padding:5px; }");
+          doc.write("table.properties th { text-align:left; border-right:solid 1 #cccccc; border-bottom:solid 1 #cccccc; background-color:#eeeeee; }");
+          doc.write("table.properties td { font:normal; text-align:left; border-right:solid 1 #cccccc; border-bottom:solid 1 #cccccc; background-color:#fffffff; }");
+          doc.write("h3 { margin-bottom: 0.5em; font: bold 115% verdana,arial,helvetica }");
+          doc.write("</style>");
+          doc.write("</head><body>");
+          doc.write("<h3>Properties of " + name + "</h3>");
+          doc.write("<div align=\"right\"><a href=\"javascript:window.close();\">Close</a></div>");
+          doc.write("<table class='properties'>");
+          doc.write("<tr><th>Name</th><th>Value</th></tr>");
+          for (prop in TestCases[name]) {
+            doc.write("<tr><th>" + prop + "</th><td>" + TestCases[name][prop] + "</td></tr>");
+          }
+          doc.write("</table>");
+          doc.write("</body></html>");
+          doc.close();
+          win.focus();
+        }
+      
+      </script>
+</head>
+<body>
+<h1>Unit Test Results.</h1>
+<table width="100%">
+<tr>
+<td align="left"></td><td align="right">Designed for use with <a href="http://www.junit.org/">JUnit</a> and <a href="http://ant.apache.org/">Ant</a>.</td>
+</tr>
+</table>
+<hr size="1">
+<h3>Class com.google.javascript.jscomp.TightenTypesTest</h3>
+<table width="95%" cellspacing="2" cellpadding="5" border="0" class="details">
+<tr valign="top">
+<th width="80%">Name</th><th>Tests</th><th>Errors</th><th>Failures</th><th nowrap>Time(s)</th><th nowrap>Time Stamp</th><th>Host</th>
+</tr>
+<tr valign="top" class="Error">
+<td><a href="177_TightenTypesTest.html" title="Display all tests">TightenTypesTest</a></td><td><a href="177_TightenTypesTest.html" title="Display all tests">44</a></td><td><a href="177_TightenTypesTest-errors.html" title="Display only errors">44</a></td><td>0</td><td>0.033</td><td>2013-02-19T21:01:13</td><td>battower</td>
+</tr>
+</table>
+<h2>Errors</h2>
+<table width="95%" cellspacing="2" cellpadding="5" border="0" class="details">
+<tr valign="top">
+<th>Name</th><th>Status</th><th width="80%">Type</th><th nowrap>Time(s)</th>
+</tr>
+<tr valign="top" class="Error">
+<td><a name="testGetProp"></a>testGetProp</td><td>Error</td><td>INTERNAL COMPILER ERROR.
+Please report this problem.
+null
+  Node(FUNCTION Foo): testcode:1:20
+/** @constructor */ function Foo() {
+  Parent(SCRIPT): testcode:1:0
+/** @constructor */ function Foo() {
+<br>
+<br>
+<code>java.lang.RuntimeException: INTERNAL COMPILER ERROR.<br>Please report this problem.<br>null<br>  Node(FUNCTION Foo): testcode:1:20<br>/** @constructor */ function Foo() {<br>  Parent(SCRIPT): testcode:1:0<br>/** @constructor */ function Foo() {<br>
+<br>	at com.google.javascript.jscomp.TightenTypes$CreateScope.visit(TightenTypes.java:645)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:505)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:277)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:456)<br>	at com.google.javascript.jscomp.TightenTypes$ConcreteScope.initForScopeRoot(TightenTypes.java:244)<br>	at com.google.javascript.jscomp.TightenTypes.process(TightenTypes.java:134)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:804)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:447)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:373)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:342)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:330)<br>	at com.google.javascript.jscomp.CompilerTestCase.testSame(CompilerTestCase.java:569)<br>	at com.google.javascript.jscomp.TightenTypesTest.testGetProp(TightenTypesTest.java:239)<br>Caused by: java.lang.NullPointerException<br>
+</code></td><td>0.001</td>
+</tr>
+<tr valign="top" class="Error">
+<td><a name="testSubclass"></a>testSubclass</td><td>Error</td><td>INTERNAL COMPILER ERROR.
+Please report this problem.
+null
+  Node(FUNCTION Foo): testcode:2:0
+function Foo() {}
+  Parent(SCRIPT): testcode:1:0
+/** @constructor */
+<br>
+<br>
+<code>java.lang.RuntimeException: INTERNAL COMPILER ERROR.<br>Please report this problem.<br>null<br>  Node(FUNCTION Foo): testcode:2:0<br>function Foo() {}<br>  Parent(SCRIPT): testcode:1:0<br>/** @constructor */<br>
+<br>	at com.google.javascript.jscomp.TightenTypes$CreateScope.visit(TightenTypes.java:645)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:505)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:277)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:456)<br>	at com.google.javascript.jscomp.TightenTypes$ConcreteScope.initForScopeRoot(TightenTypes.java:244)<br>	at com.google.javascript.jscomp.TightenTypes.process(TightenTypes.java:134)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:804)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:447)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:373)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:342)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:330)<br>	at com.google.javascript.jscomp.CompilerTestCase.testSame(CompilerTestCase.java:569)<br>	at com.google.javascript.jscomp.TightenTypesTest.testSubclass(TightenTypesTest.java:355)<br>Caused by: java.lang.NullPointerException<br>
+</code></td><td>0.001</td>
+</tr>
+<tr valign="top" class="Error">
+<td><a name="testHook"></a>testHook</td><td>Error</td><td>INTERNAL COMPILER ERROR.
+Please report this problem.
+null
+  Node(FUNCTION Foo): testcode:1:20
+/** @constructor */ function Foo() {}
+  Parent(SCRIPT): testcode:1:0
+/** @constructor */ function Foo() {}
+<br>
+<br>
+<code>java.lang.RuntimeException: INTERNAL COMPILER ERROR.<br>Please report this problem.<br>null<br>  Node(FUNCTION Foo): testcode:1:20<br>/** @constructor */ function Foo() {}<br>  Parent(SCRIPT): testcode:1:0<br>/** @constructor */ function Foo() {}<br>
+<br>	at com.google.javascript.jscomp.TightenTypes$CreateScope.visit(TightenTypes.java:645)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:505)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:277)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:456)<br>	at com.google.javascript.jscomp.TightenTypes$ConcreteScope.initForScopeRoot(TightenTypes.java:244)<br>	at com.google.javascript.jscomp.TightenTypes.process(TightenTypes.java:134)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:804)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:447)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:373)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:342)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:330)<br>	at com.google.javascript.jscomp.CompilerTestCase.testSame(CompilerTestCase.java:569)<br>	at com.google.javascript.jscomp.TightenTypesTest.testHook(TightenTypesTest.java:215)<br>Caused by: java.lang.NullPointerException<br>
+</code></td><td>0.000</td>
+</tr>
+<tr valign="top" class="Error">
+<td><a name="testExternSubTypes"></a>testExternSubTypes</td><td>Error</td><td>INTERNAL COMPILER ERROR.
+Please report this problem.
+null
+  Node(FUNCTION A): externs:1:20
+/** @constructor */ function A() {};
+  Parent(SCRIPT): externs:1:0
+/** @constructor */ function A() {};
+<br>
+<br>
+<code>java.lang.RuntimeException: INTERNAL COMPILER ERROR.<br>Please report this problem.<br>null<br>  Node(FUNCTION A): externs:1:20<br>/** @constructor */ function A() {};<br>  Parent(SCRIPT): externs:1:0<br>/** @constructor */ function A() {};<br>
+<br>	at com.google.javascript.jscomp.TightenTypes$CreateScope.visit(TightenTypes.java:645)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:505)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:277)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:456)<br>	at com.google.javascript.jscomp.TightenTypes$ConcreteScope.initForExternRoot(TightenTypes.java:252)<br>	at com.google.javascript.jscomp.TightenTypes.process(TightenTypes.java:133)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:804)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:447)<br>	at com.google.javascript.jscomp.CompilerTestCase.testSame(CompilerTestCase.java:644)<br>	at com.google.javascript.jscomp.CompilerTestCase.testSame(CompilerTestCase.java:608)<br>	at com.google.javascript.jscomp.TightenTypesTest.testExternSubTypes(TightenTypesTest.java:520)<br>Caused by: java.lang.NullPointerException<br>
+</code></td><td>0.001</td>
+</tr>
+<tr valign="top" class="Error">
+<td><a name="testGetElem3"></a>testGetElem3</td><td>Error</td><td>INTERNAL COMPILER ERROR.
+Please report this problem.
+null
+  Node(FUNCTION Object): externs:5:0
+function Object(opt_value) {}
+  Parent(SCRIPT): externs:1:0
+/**
+<br>
+<br>
+<code>java.lang.RuntimeException: INTERNAL COMPILER ERROR.<br>Please report this problem.<br>null<br>  Node(FUNCTION Object): externs:5:0<br>function Object(opt_value) {}<br>  Parent(SCRIPT): externs:1:0<br>/**<br>
+<br>	at com.google.javascript.jscomp.TightenTypes$CreateScope.visit(TightenTypes.java:645)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:505)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:277)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:456)<br>	at com.google.javascript.jscomp.TightenTypes$ConcreteScope.initForExternRoot(TightenTypes.java:252)<br>	at com.google.javascript.jscomp.TightenTypes.process(TightenTypes.java:133)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:804)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:447)<br>	at com.google.javascript.jscomp.CompilerTestCase.testSame(CompilerTestCase.java:644)<br>	at com.google.javascript.jscomp.CompilerTestCase.testSame(CompilerTestCase.java:608)<br>	at com.google.javascript.jscomp.TightenTypesTest.testGetElem3(TightenTypesTest.java:302)<br>Caused by: java.lang.NullPointerException<br>
+</code></td><td>0.001</td>
+</tr>
+<tr valign="top" class="Error">
+<td><a name="testAnd"></a>testAnd</td><td>Error</td><td>INTERNAL COMPILER ERROR.
+Please report this problem.
+null
+  Node(FUNCTION Foo): testcode:1:20
+/** @constructor */ function Foo() {}
+  Parent(SCRIPT): testcode:1:0
+/** @constructor */ function Foo() {}
+<br>
+<br>
+<code>java.lang.RuntimeException: INTERNAL COMPILER ERROR.<br>Please report this problem.<br>null<br>  Node(FUNCTION Foo): testcode:1:20<br>/** @constructor */ function Foo() {}<br>  Parent(SCRIPT): testcode:1:0<br>/** @constructor */ function Foo() {}<br>
+<br>	at com.google.javascript.jscomp.TightenTypes$CreateScope.visit(TightenTypes.java:645)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:505)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:277)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:456)<br>	at com.google.javascript.jscomp.TightenTypes$ConcreteScope.initForScopeRoot(TightenTypes.java:244)<br>	at com.google.javascript.jscomp.TightenTypes.process(TightenTypes.java:134)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:804)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:447)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:373)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:342)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:330)<br>	at com.google.javascript.jscomp.CompilerTestCase.testSame(CompilerTestCase.java:569)<br>	at com.google.javascript.jscomp.TightenTypesTest.testAnd(TightenTypesTest.java:197)<br>Caused by: java.lang.NullPointerException<br>
+</code></td><td>0.001</td>
+</tr>
+<tr valign="top" class="Error">
+<td><a name="testTopLevelVariables"></a>testTopLevelVariables</td><td>Error</td><td>INTERNAL COMPILER ERROR.
+Please report this problem.
+null
+  Node(FUNCTION Foo): testcode:1:20
+/** @constructor */ function Foo() {}
+  Parent(SCRIPT): testcode:1:0
+/** @constructor */ function Foo() {}
+<br>
+<br>
+<code>java.lang.RuntimeException: INTERNAL COMPILER ERROR.<br>Please report this problem.<br>null<br>  Node(FUNCTION Foo): testcode:1:20<br>/** @constructor */ function Foo() {}<br>  Parent(SCRIPT): testcode:1:0<br>/** @constructor */ function Foo() {}<br>
+<br>	at com.google.javascript.jscomp.TightenTypes$CreateScope.visit(TightenTypes.java:645)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:505)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:277)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:456)<br>	at com.google.javascript.jscomp.TightenTypes$ConcreteScope.initForScopeRoot(TightenTypes.java:244)<br>	at com.google.javascript.jscomp.TightenTypes.process(TightenTypes.java:134)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:804)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:447)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:373)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:342)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:330)<br>	at com.google.javascript.jscomp.CompilerTestCase.testSame(CompilerTestCase.java:569)<br>	at com.google.javascript.jscomp.TightenTypesTest.testTopLevelVariables(TightenTypesTest.java:54)<br>Caused by: java.lang.NullPointerException<br>
+</code></td><td>0.000</td>
+</tr>
+<tr valign="top" class="Error">
+<td><a name="testNamespacedVariables"></a>testNamespacedVariables</td><td>Error</td><td>INTERNAL COMPILER ERROR.
+Please report this problem.
+null
+  Node(ASSIGN): testcode:1:23
+var goog = goog || {}; goog.foo = {};
+  Parent(EXPR_RESULT): testcode:1:23
+var goog = goog || {}; goog.foo = {};
+<br>
+<br>
+<code>java.lang.RuntimeException: INTERNAL COMPILER ERROR.<br>Please report this problem.<br>null<br>  Node(ASSIGN): testcode:1:23<br>var goog = goog || {}; goog.foo = {};<br>  Parent(EXPR_RESULT): testcode:1:23<br>var goog = goog || {}; goog.foo = {};<br>
+<br>	at com.google.javascript.jscomp.TightenTypes$CreateScope.getImplicitActionsFromProp(TightenTypes.java:925)<br>	at com.google.javascript.jscomp.TightenTypes$CreateScope.getImplicitActions(TightenTypes.java:853)<br>	at com.google.javascript.jscomp.TightenTypes$CreateScope.visit(TightenTypes.java:756)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:505)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:277)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:456)<br>	at com.google.javascript.jscomp.TightenTypes$ConcreteScope.initForScopeRoot(TightenTypes.java:244)<br>	at com.google.javascript.jscomp.TightenTypes.process(TightenTypes.java:134)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:804)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:447)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:373)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:342)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:330)<br>	at com.google.javascript.jscomp.CompilerTestCase.testSame(CompilerTestCase.java:569)<br>	at com.google.javascript.jscomp.TightenTypesTest.testNamespacedVariables(TightenTypesTest.java:76)<br>Caused by: java.lang.NullPointerException<br>
+</code></td><td>0.001</td>
+</tr>
+<tr valign="top" class="Error">
+<td><a name="testReturnSlot"></a>testReturnSlot</td><td>Error</td><td>INTERNAL COMPILER ERROR.
+Please report this problem.
+null
+  Node(FUNCTION Foo): testcode:1:20
+/** @constructor */ function Foo() {}
+  Parent(SCRIPT): testcode:1:0
+/** @constructor */ function Foo() {}
+<br>
+<br>
+<code>java.lang.RuntimeException: INTERNAL COMPILER ERROR.<br>Please report this problem.<br>null<br>  Node(FUNCTION Foo): testcode:1:20<br>/** @constructor */ function Foo() {}<br>  Parent(SCRIPT): testcode:1:0<br>/** @constructor */ function Foo() {}<br>
+<br>	at com.google.javascript.jscomp.TightenTypes$CreateScope.visit(TightenTypes.java:645)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:505)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:277)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:456)<br>	at com.google.javascript.jscomp.TightenTypes$ConcreteScope.initForScopeRoot(TightenTypes.java:244)<br>	at com.google.javascript.jscomp.TightenTypes.process(TightenTypes.java:134)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:804)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:447)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:373)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:342)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:330)<br>	at com.google.javascript.jscomp.CompilerTestCase.testSame(CompilerTestCase.java:569)<br>	at com.google.javascript.jscomp.TightenTypesTest.testReturnSlot(TightenTypesTest.java:91)<br>Caused by: java.lang.NullPointerException<br>
+</code></td><td>0.001</td>
+</tr>
+<tr valign="top" class="Error">
+<td><a name="testParameterSlots"></a>testParameterSlots</td><td>Error</td><td>INTERNAL COMPILER ERROR.
+Please report this problem.
+null
+  Node(FUNCTION Foo): testcode:1:20
+/** @constructor */ function Foo() {}
+  Parent(SCRIPT): testcode:1:0
+/** @constructor */ function Foo() {}
+<br>
+<br>
+<code>java.lang.RuntimeException: INTERNAL COMPILER ERROR.<br>Please report this problem.<br>null<br>  Node(FUNCTION Foo): testcode:1:20<br>/** @constructor */ function Foo() {}<br>  Parent(SCRIPT): testcode:1:0<br>/** @constructor */ function Foo() {}<br>
+<br>	at com.google.javascript.jscomp.TightenTypes$CreateScope.visit(TightenTypes.java:645)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:505)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:277)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:456)<br>	at com.google.javascript.jscomp.TightenTypes$ConcreteScope.initForScopeRoot(TightenTypes.java:244)<br>	at com.google.javascript.jscomp.TightenTypes.process(TightenTypes.java:134)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:804)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:447)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:373)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:342)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:330)<br>	at com.google.javascript.jscomp.CompilerTestCase.testSame(CompilerTestCase.java:569)<br>	at com.google.javascript.jscomp.TightenTypesTest.testParameterSlots(TightenTypesTest.java:102)<br>Caused by: java.lang.NullPointerException<br>
+</code></td><td>0.001</td>
+</tr>
+<tr valign="top" class="Error">
+<td><a name="testAliasedFunction"></a>testAliasedFunction</td><td>Error</td><td>INTERNAL COMPILER ERROR.
+Please report this problem.
+null
+  Node(FUNCTION Foo): testcode:1:20
+/** @constructor */ function Foo() {}
+  Parent(SCRIPT): testcode:1:0
+/** @constructor */ function Foo() {}
+<br>
+<br>
+<code>java.lang.RuntimeException: INTERNAL COMPILER ERROR.<br>Please report this problem.<br>null<br>  Node(FUNCTION Foo): testcode:1:20<br>/** @constructor */ function Foo() {}<br>  Parent(SCRIPT): testcode:1:0<br>/** @constructor */ function Foo() {}<br>
+<br>	at com.google.javascript.jscomp.TightenTypes$CreateScope.visit(TightenTypes.java:645)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:505)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:277)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:456)<br>	at com.google.javascript.jscomp.TightenTypes$ConcreteScope.initForScopeRoot(TightenTypes.java:244)<br>	at com.google.javascript.jscomp.TightenTypes.process(TightenTypes.java:134)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:804)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:447)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:373)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:342)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:330)<br>	at com.google.javascript.jscomp.CompilerTestCase.testSame(CompilerTestCase.java:569)<br>	at com.google.javascript.jscomp.TightenTypesTest.testAliasedFunction(TightenTypesTest.java:114)<br>Caused by: java.lang.NullPointerException<br>
+</code></td><td>0.000</td>
+</tr>
+<tr valign="top" class="Error">
+<td><a name="testCatchStatement"></a>testCatchStatement</td><td>Error</td><td>INTERNAL COMPILER ERROR.
+Please report this problem.
+null
+  Node(FUNCTION Object): externs:5:0
+function Object(opt_value) {}
+  Parent(SCRIPT): externs:1:0
+/**
+<br>
+<br>
+<code>java.lang.RuntimeException: INTERNAL COMPILER ERROR.<br>Please report this problem.<br>null<br>  Node(FUNCTION Object): externs:5:0<br>function Object(opt_value) {}<br>  Parent(SCRIPT): externs:1:0<br>/**<br>
+<br>	at com.google.javascript.jscomp.TightenTypes$CreateScope.visit(TightenTypes.java:645)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:505)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:277)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:456)<br>	at com.google.javascript.jscomp.TightenTypes$ConcreteScope.initForExternRoot(TightenTypes.java:252)<br>	at com.google.javascript.jscomp.TightenTypes.process(TightenTypes.java:133)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:804)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:447)<br>	at com.google.javascript.jscomp.CompilerTestCase.testSame(CompilerTestCase.java:644)<br>	at com.google.javascript.jscomp.TightenTypesTest.testCatchStatement(TightenTypesTest.java:126)<br>Caused by: java.lang.NullPointerException<br>
+</code></td><td>0.001</td>
+</tr>
+<tr valign="top" class="Error">
+<td><a name="testConstructorParameterSlots"></a>testConstructorParameterSlots</td><td>Error</td><td>INTERNAL COMPILER ERROR.
+Please report this problem.
+null
+  Node(FUNCTION Foo): testcode:1:20
+/** @constructor */ function Foo() {}
+  Parent(SCRIPT): testcode:1:0
+/** @constructor */ function Foo() {}
+<br>
+<br>
+<code>java.lang.RuntimeException: INTERNAL COMPILER ERROR.<br>Please report this problem.<br>null<br>  Node(FUNCTION Foo): testcode:1:20<br>/** @constructor */ function Foo() {}<br>  Parent(SCRIPT): testcode:1:0<br>/** @constructor */ function Foo() {}<br>
+<br>	at com.google.javascript.jscomp.TightenTypes$CreateScope.visit(TightenTypes.java:645)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:505)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:277)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:456)<br>	at com.google.javascript.jscomp.TightenTypes$ConcreteScope.initForScopeRoot(TightenTypes.java:244)<br>	at com.google.javascript.jscomp.TightenTypes.process(TightenTypes.java:134)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:804)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:447)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:373)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:342)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:330)<br>	at com.google.javascript.jscomp.CompilerTestCase.testSame(CompilerTestCase.java:569)<br>	at com.google.javascript.jscomp.TightenTypesTest.testConstructorParameterSlots(TightenTypesTest.java:137)<br>Caused by: java.lang.NullPointerException<br>
+</code></td><td>0.001</td>
+</tr>
+<tr valign="top" class="Error">
+<td><a name="testCallSlot"></a>testCallSlot</td><td>Error</td><td>INTERNAL COMPILER ERROR.
+Please report this problem.
+null
+  Node(FUNCTION foo): testcode:1:0
+function foo() {}
+  Parent(SCRIPT): testcode:1:0
+function foo() {}
+<br>
+<br>
+<code>java.lang.RuntimeException: INTERNAL COMPILER ERROR.<br>Please report this problem.<br>null<br>  Node(FUNCTION foo): testcode:1:0<br>function foo() {}<br>  Parent(SCRIPT): testcode:1:0<br>function foo() {}<br>
+<br>	at com.google.javascript.jscomp.TightenTypes$CreateScope.visit(TightenTypes.java:645)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:505)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:277)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:456)<br>	at com.google.javascript.jscomp.TightenTypes$ConcreteScope.initForScopeRoot(TightenTypes.java:244)<br>	at com.google.javascript.jscomp.TightenTypes.process(TightenTypes.java:134)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:804)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:447)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:373)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:342)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:330)<br>	at com.google.javascript.jscomp.CompilerTestCase.testSame(CompilerTestCase.java:569)<br>	at com.google.javascript.jscomp.TightenTypesTest.testCallSlot(TightenTypesTest.java:147)<br>Caused by: java.lang.NullPointerException<br>
+</code></td><td>0.001</td>
+</tr>
+<tr valign="top" class="Error">
+<td><a name="testObjectLiteralTraversal"></a>testObjectLiteralTraversal</td><td>Error</td><td>INTERNAL COMPILER ERROR.
+Please report this problem.
+null
+  Node(FUNCTION bar): testcode:2:0
+function bar() { return { 'a': foo()} };
+  Parent(SCRIPT): testcode:1:0
+var foo = function() {}
+<br>
+<br>
+<code>java.lang.RuntimeException: INTERNAL COMPILER ERROR.<br>Please report this problem.<br>null<br>  Node(FUNCTION bar): testcode:2:0<br>function bar() { return { 'a': foo()} };<br>  Parent(SCRIPT): testcode:1:0<br>var foo = function() {}<br>
+<br>	at com.google.javascript.jscomp.TightenTypes$CreateScope.visit(TightenTypes.java:645)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:505)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:277)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:456)<br>	at com.google.javascript.jscomp.TightenTypes$ConcreteScope.initForScopeRoot(TightenTypes.java:244)<br>	at com.google.javascript.jscomp.TightenTypes.process(TightenTypes.java:134)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:804)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:447)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:373)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:342)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:330)<br>	at com.google.javascript.jscomp.CompilerTestCase.testSame(CompilerTestCase.java:569)<br>	at com.google.javascript.jscomp.TightenTypesTest.testObjectLiteralTraversal(TightenTypesTest.java:160)<br>Caused by: java.lang.NullPointerException<br>
+</code></td><td>0.001</td>
+</tr>
+<tr valign="top" class="Error">
+<td><a name="testThis"></a>testThis</td><td>Error</td><td>INTERNAL COMPILER ERROR.
+Please report this problem.
+null
+  Node(FUNCTION Foo): testcode:1:20
+/** @constructor */ function Foo() {}
+  Parent(SCRIPT): testcode:1:0
+/** @constructor */ function Foo() {}
+<br>
+<br>
+<code>java.lang.RuntimeException: INTERNAL COMPILER ERROR.<br>Please report this problem.<br>null<br>  Node(FUNCTION Foo): testcode:1:20<br>/** @constructor */ function Foo() {}<br>  Parent(SCRIPT): testcode:1:0<br>/** @constructor */ function Foo() {}<br>
+<br>	at com.google.javascript.jscomp.TightenTypes$CreateScope.visit(TightenTypes.java:645)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:505)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:277)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:456)<br>	at com.google.javascript.jscomp.TightenTypes$ConcreteScope.initForScopeRoot(TightenTypes.java:244)<br>	at com.google.javascript.jscomp.TightenTypes.process(TightenTypes.java:134)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:804)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:447)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:373)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:342)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:330)<br>	at com.google.javascript.jscomp.CompilerTestCase.testSame(CompilerTestCase.java:569)<br>	at com.google.javascript.jscomp.TightenTypesTest.testThis(TightenTypesTest.java:167)<br>Caused by: java.lang.NullPointerException<br>
+</code></td><td>0.000</td>
+</tr>
+<tr valign="top" class="Error">
+<td><a name="testAssign"></a>testAssign</td><td>Error</td><td>INTERNAL COMPILER ERROR.
+Please report this problem.
+null
+  Node(FUNCTION Foo): testcode:1:20
+/** @constructor */ function Foo() {}
+  Parent(SCRIPT): testcode:1:0
+/** @constructor */ function Foo() {}
+<br>
+<br>
+<code>java.lang.RuntimeException: INTERNAL COMPILER ERROR.<br>Please report this problem.<br>null<br>  Node(FUNCTION Foo): testcode:1:20<br>/** @constructor */ function Foo() {}<br>  Parent(SCRIPT): testcode:1:0<br>/** @constructor */ function Foo() {}<br>
+<br>	at com.google.javascript.jscomp.TightenTypes$CreateScope.visit(TightenTypes.java:645)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:505)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:277)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:456)<br>	at com.google.javascript.jscomp.TightenTypes$ConcreteScope.initForScopeRoot(TightenTypes.java:244)<br>	at com.google.javascript.jscomp.TightenTypes.process(TightenTypes.java:134)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:804)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:447)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:373)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:342)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:330)<br>	at com.google.javascript.jscomp.CompilerTestCase.testSame(CompilerTestCase.java:569)<br>	at com.google.javascript.jscomp.TightenTypesTest.testAssign(TightenTypesTest.java:177)<br>Caused by: java.lang.NullPointerException<br>
+</code></td><td>0.001</td>
+</tr>
+<tr valign="top" class="Error">
+<td><a name="testComma"></a>testComma</td><td>Error</td><td>INTERNAL COMPILER ERROR.
+Please report this problem.
+null
+  Node(FUNCTION Foo): testcode:1:20
+/** @constructor */ function Foo() {b=new Foo()}
+  Parent(SCRIPT): testcode:1:0
+/** @constructor */ function Foo() {b=new Foo()}
+<br>
+<br>
+<code>java.lang.RuntimeException: INTERNAL COMPILER ERROR.<br>Please report this problem.<br>null<br>  Node(FUNCTION Foo): testcode:1:20<br>/** @constructor */ function Foo() {b=new Foo()}<br>  Parent(SCRIPT): testcode:1:0<br>/** @constructor */ function Foo() {b=new Foo()}<br>
+<br>	at com.google.javascript.jscomp.TightenTypes$CreateScope.visit(TightenTypes.java:645)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:505)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:277)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:456)<br>	at com.google.javascript.jscomp.TightenTypes$ConcreteScope.initForScopeRoot(TightenTypes.java:244)<br>	at com.google.javascript.jscomp.TightenTypes.process(TightenTypes.java:134)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:804)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:447)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:373)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:342)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:330)<br>	at com.google.javascript.jscomp.CompilerTestCase.testSame(CompilerTestCase.java:569)<br>	at com.google.javascript.jscomp.TightenTypesTest.testComma(TightenTypesTest.java:187)<br>Caused by: java.lang.NullPointerException<br>
+</code></td><td>0.001</td>
+</tr>
+<tr valign="top" class="Error">
+<td><a name="testOr"></a>testOr</td><td>Error</td><td>INTERNAL COMPILER ERROR.
+Please report this problem.
+null
+  Node(FUNCTION Foo): testcode:1:20
+/** @constructor */ function Foo() {}
+  Parent(SCRIPT): testcode:1:0
+/** @constructor */ function Foo() {}
+<br>
+<br>
+<code>java.lang.RuntimeException: INTERNAL COMPILER ERROR.<br>Please report this problem.<br>null<br>  Node(FUNCTION Foo): testcode:1:20<br>/** @constructor */ function Foo() {}<br>  Parent(SCRIPT): testcode:1:0<br>/** @constructor */ function Foo() {}<br>
+<br>	at com.google.javascript.jscomp.TightenTypes$CreateScope.visit(TightenTypes.java:645)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:505)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:277)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:456)<br>	at com.google.javascript.jscomp.TightenTypes$ConcreteScope.initForScopeRoot(TightenTypes.java:244)<br>	at com.google.javascript.jscomp.TightenTypes.process(TightenTypes.java:134)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:804)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:447)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:373)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:342)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:330)<br>	at com.google.javascript.jscomp.CompilerTestCase.testSame(CompilerTestCase.java:569)<br>	at com.google.javascript.jscomp.TightenTypesTest.testOr(TightenTypesTest.java:205)<br>Caused by: java.lang.NullPointerException<br>
+</code></td><td>0.000</td>
+</tr>
+<tr valign="top" class="Error">
+<td><a name="testFunctionLiteral"></a>testFunctionLiteral</td><td>Error</td><td>INTERNAL COMPILER ERROR.
+Please report this problem.
+null
+  Node(FUNCTION Foo): testcode:1:20
+/** @constructor */ function Foo() {}
+  Parent(SCRIPT): testcode:1:0
+/** @constructor */ function Foo() {}
+<br>
+<br>
+<code>java.lang.RuntimeException: INTERNAL COMPILER ERROR.<br>Please report this problem.<br>null<br>  Node(FUNCTION Foo): testcode:1:20<br>/** @constructor */ function Foo() {}<br>  Parent(SCRIPT): testcode:1:0<br>/** @constructor */ function Foo() {}<br>
+<br>	at com.google.javascript.jscomp.TightenTypes$CreateScope.visit(TightenTypes.java:645)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:505)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:277)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:456)<br>	at com.google.javascript.jscomp.TightenTypes$ConcreteScope.initForScopeRoot(TightenTypes.java:244)<br>	at com.google.javascript.jscomp.TightenTypes.process(TightenTypes.java:134)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:804)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:447)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:373)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:342)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:330)<br>	at com.google.javascript.jscomp.CompilerTestCase.testSame(CompilerTestCase.java:569)<br>	at com.google.javascript.jscomp.TightenTypesTest.testFunctionLiteral(TightenTypesTest.java:223)<br>Caused by: java.lang.NullPointerException<br>
+</code></td><td>0.001</td>
+</tr>
+<tr valign="top" class="Error">
+<td><a name="testNameLookup"></a>testNameLookup</td><td>Error</td><td>INTERNAL COMPILER ERROR.
+Please report this problem.
+null
+  Node(FUNCTION Foo): testcode:1:20
+/** @constructor */ function Foo() {}
+  Parent(SCRIPT): testcode:1:0
+/** @constructor */ function Foo() {}
+<br>
+<br>
+<code>java.lang.RuntimeException: INTERNAL COMPILER ERROR.<br>Please report this problem.<br>null<br>  Node(FUNCTION Foo): testcode:1:20<br>/** @constructor */ function Foo() {}<br>  Parent(SCRIPT): testcode:1:0<br>/** @constructor */ function Foo() {}<br>
+<br>	at com.google.javascript.jscomp.TightenTypes$CreateScope.visit(TightenTypes.java:645)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:505)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:277)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:456)<br>	at com.google.javascript.jscomp.TightenTypes$ConcreteScope.initForScopeRoot(TightenTypes.java:244)<br>	at com.google.javascript.jscomp.TightenTypes.process(TightenTypes.java:134)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:804)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:447)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:373)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:342)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:330)<br>	at com.google.javascript.jscomp.CompilerTestCase.testSame(CompilerTestCase.java:569)<br>	at com.google.javascript.jscomp.TightenTypesTest.testNameLookup(TightenTypesTest.java:230)<br>Caused by: java.lang.NullPointerException<br>
+</code></td><td>0.001</td>
+</tr>
+<tr valign="top" class="Error">
+<td><a name="testGetPrototypeProperty"></a>testGetPrototypeProperty</td><td>Error</td><td>INTERNAL COMPILER ERROR.
+Please report this problem.
+null
+  Node(FUNCTION Foo): testcode:1:20
+/** @constructor */ function Foo() {};
+  Parent(SCRIPT): testcode:1:0
+/** @constructor */ function Foo() {};
+<br>
+<br>
+<code>java.lang.RuntimeException: INTERNAL COMPILER ERROR.<br>Please report this problem.<br>null<br>  Node(FUNCTION Foo): testcode:1:20<br>/** @constructor */ function Foo() {};<br>  Parent(SCRIPT): testcode:1:0<br>/** @constructor */ function Foo() {};<br>
+<br>	at com.google.javascript.jscomp.TightenTypes$CreateScope.visit(TightenTypes.java:645)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:505)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:277)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:456)<br>	at com.google.javascript.jscomp.TightenTypes$ConcreteScope.initForScopeRoot(TightenTypes.java:244)<br>	at com.google.javascript.jscomp.TightenTypes.process(TightenTypes.java:134)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:804)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:447)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:373)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:342)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:330)<br>	at com.google.javascript.jscomp.CompilerTestCase.testSame(CompilerTestCase.java:569)<br>	at com.google.javascript.jscomp.TightenTypesTest.testGetPrototypeProperty(TightenTypesTest.java:259)<br>Caused by: java.lang.NullPointerException<br>
+</code></td><td>0.000</td>
+</tr>
+<tr valign="top" class="Error">
+<td><a name="testGetElem"></a>testGetElem</td><td>Error</td><td>INTERNAL COMPILER ERROR.
+Please report this problem.
+null
+  Node(FUNCTION Array): externs:7:0
+function Array(var_args) {}
+  Parent(SCRIPT): externs:1:0
+/**
+<br>
+<br>
+<code>java.lang.RuntimeException: INTERNAL COMPILER ERROR.<br>Please report this problem.<br>null<br>  Node(FUNCTION Array): externs:7:0<br>function Array(var_args) {}<br>  Parent(SCRIPT): externs:1:0<br>/**<br>
+<br>	at com.google.javascript.jscomp.TightenTypes$CreateScope.visit(TightenTypes.java:645)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:505)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:277)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:456)<br>	at com.google.javascript.jscomp.TightenTypes$ConcreteScope.initForExternRoot(TightenTypes.java:252)<br>	at com.google.javascript.jscomp.TightenTypes.process(TightenTypes.java:133)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:804)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:447)<br>	at com.google.javascript.jscomp.CompilerTestCase.testSame(CompilerTestCase.java:644)<br>	at com.google.javascript.jscomp.CompilerTestCase.testSame(CompilerTestCase.java:608)<br>	at com.google.javascript.jscomp.TightenTypesTest.testGetElem(TightenTypesTest.java:268)<br>Caused by: java.lang.NullPointerException<br>
+</code></td><td>0.001</td>
+</tr>
+<tr valign="top" class="Error">
+<td><a name="testScopeDiscovery"></a>testScopeDiscovery</td><td>Error</td><td>INTERNAL COMPILER ERROR.
+Please report this problem.
+null
+  Node(FUNCTION spam): testcode:1:0
+function spam() {}
+  Parent(SCRIPT): testcode:1:0
+function spam() {}
+<br>
+<br>
+<code>java.lang.RuntimeException: INTERNAL COMPILER ERROR.<br>Please report this problem.<br>null<br>  Node(FUNCTION spam): testcode:1:0<br>function spam() {}<br>  Parent(SCRIPT): testcode:1:0<br>function spam() {}<br>
+<br>	at com.google.javascript.jscomp.TightenTypes$CreateScope.visit(TightenTypes.java:645)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:505)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:277)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:456)<br>	at com.google.javascript.jscomp.TightenTypes$ConcreteScope.initForScopeRoot(TightenTypes.java:244)<br>	at com.google.javascript.jscomp.TightenTypes.process(TightenTypes.java:134)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:804)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:447)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:373)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:342)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:330)<br>	at com.google.javascript.jscomp.CompilerTestCase.testSame(CompilerTestCase.java:569)<br>	at com.google.javascript.jscomp.TightenTypesTest.testScopeDiscovery(TightenTypesTest.java:317)<br>Caused by: java.lang.NullPointerException<br>
+</code></td><td>0.001</td>
+</tr>
+<tr valign="top" class="Error">
+<td><a name="testSheqDiscovery"></a>testSheqDiscovery</td><td>Error</td><td>INTERNAL COMPILER ERROR.
+Please report this problem.
+null
+  Node(FUNCTION spam): testcode:1:0
+function spam() {}
+  Parent(SCRIPT): testcode:1:0
+function spam() {}
+<br>
+<br>
+<code>java.lang.RuntimeException: INTERNAL COMPILER ERROR.<br>Please report this problem.<br>null<br>  Node(FUNCTION spam): testcode:1:0<br>function spam() {}<br>  Parent(SCRIPT): testcode:1:0<br>function spam() {}<br>
+<br>	at com.google.javascript.jscomp.TightenTypes$CreateScope.visit(TightenTypes.java:645)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:505)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:277)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:456)<br>	at com.google.javascript.jscomp.TightenTypes$ConcreteScope.initForScopeRoot(TightenTypes.java:244)<br>	at com.google.javascript.jscomp.TightenTypes.process(TightenTypes.java:134)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:804)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:447)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:373)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:342)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:330)<br>	at com.google.javascript.jscomp.CompilerTestCase.testSame(CompilerTestCase.java:569)<br>	at com.google.javascript.jscomp.TightenTypesTest.testSheqDiscovery(TightenTypesTest.java:332)<br>Caused by: java.lang.NullPointerException<br>
+</code></td><td>0.000</td>
+</tr>
+<tr valign="top" class="Error">
+<td><a name="testArrayAssignments"></a>testArrayAssignments</td><td>Error</td><td>INTERNAL COMPILER ERROR.
+Please report this problem.
+null
+  Node(FUNCTION Foo): testcode:1:20
+/** @constructor */ function Foo() {}
+  Parent(SCRIPT): testcode:1:0
+/** @constructor */ function Foo() {}
+<br>
+<br>
+<code>java.lang.RuntimeException: INTERNAL COMPILER ERROR.<br>Please report this problem.<br>null<br>  Node(FUNCTION Foo): testcode:1:20<br>/** @constructor */ function Foo() {}<br>  Parent(SCRIPT): testcode:1:0<br>/** @constructor */ function Foo() {}<br>
+<br>	at com.google.javascript.jscomp.TightenTypes$CreateScope.visit(TightenTypes.java:645)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:505)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:277)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:456)<br>	at com.google.javascript.jscomp.TightenTypes$ConcreteScope.initForScopeRoot(TightenTypes.java:244)<br>	at com.google.javascript.jscomp.TightenTypes.process(TightenTypes.java:134)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:804)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:447)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:373)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:342)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:330)<br>	at com.google.javascript.jscomp.CompilerTestCase.testSame(CompilerTestCase.java:569)<br>	at com.google.javascript.jscomp.TightenTypesTest.testArrayAssignments(TightenTypesTest.java:397)<br>Caused by: java.lang.NullPointerException<br>
+</code></td><td>0.000</td>
+</tr>
+<tr valign="top" class="Error">
+<td><a name="testAllPropertyReference"></a>testAllPropertyReference</td><td>Error</td><td>INTERNAL COMPILER ERROR.
+Please report this problem.
+null
+  Node(FUNCTION Foo): testcode:1:20
+/** @constructor */ function Foo() {}
+  Parent(SCRIPT): testcode:1:0
+/** @constructor */ function Foo() {}
+<br>
+<br>
+<code>java.lang.RuntimeException: INTERNAL COMPILER ERROR.<br>Please report this problem.<br>null<br>  Node(FUNCTION Foo): testcode:1:20<br>/** @constructor */ function Foo() {}<br>  Parent(SCRIPT): testcode:1:0<br>/** @constructor */ function Foo() {}<br>
+<br>	at com.google.javascript.jscomp.TightenTypes$CreateScope.visit(TightenTypes.java:645)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:505)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:277)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:456)<br>	at com.google.javascript.jscomp.TightenTypes$ConcreteScope.initForScopeRoot(TightenTypes.java:244)<br>	at com.google.javascript.jscomp.TightenTypes.process(TightenTypes.java:134)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:804)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:447)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:373)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:342)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:330)<br>	at com.google.javascript.jscomp.CompilerTestCase.testSame(CompilerTestCase.java:569)<br>	at com.google.javascript.jscomp.TightenTypesTest.testAllPropertyReference(TightenTypesTest.java:409)<br>Caused by: java.lang.NullPointerException<br>
+</code></td><td>0.001</td>
+</tr>
+<tr valign="top" class="Error">
+<td><a name="testCallFunction"></a>testCallFunction</td><td>Error</td><td>INTERNAL COMPILER ERROR.
+Please report this problem.
+null
+  Node(FUNCTION Foo): testcode:1:20
+/** @constructor */ function Foo() { this.a = new A; }
+  Parent(SCRIPT): testcode:1:0
+/** @constructor */ function Foo() { this.a = new A; }
+<br>
+<br>
+<code>java.lang.RuntimeException: INTERNAL COMPILER ERROR.<br>Please report this problem.<br>null<br>  Node(FUNCTION Foo): testcode:1:20<br>/** @constructor */ function Foo() { this.a = new A; }<br>  Parent(SCRIPT): testcode:1:0<br>/** @constructor */ function Foo() { this.a = new A; }<br>
+<br>	at com.google.javascript.jscomp.TightenTypes$CreateScope.visit(TightenTypes.java:645)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:505)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:277)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:456)<br>	at com.google.javascript.jscomp.TightenTypes$ConcreteScope.initForScopeRoot(TightenTypes.java:244)<br>	at com.google.javascript.jscomp.TightenTypes.process(TightenTypes.java:134)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:804)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:447)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:373)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:342)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:330)<br>	at com.google.javascript.jscomp.CompilerTestCase.testSame(CompilerTestCase.java:569)<br>	at com.google.javascript.jscomp.TightenTypesTest.testCallFunction(TightenTypesTest.java:426)<br>Caused by: java.lang.NullPointerException<br>
+</code></td><td>0.000</td>
+</tr>
+<tr valign="top" class="Error">
+<td><a name="testCallFunctionWithArgs"></a>testCallFunctionWithArgs</td><td>Error</td><td>INTERNAL COMPILER ERROR.
+Please report this problem.
+null
+  Node(FUNCTION Foo): testcode:1:20
+/** @constructor */ function Foo(o) { this.a = o; }
+  Parent(SCRIPT): testcode:1:0
+/** @constructor */ function Foo(o) { this.a = o; }
+<br>
+<br>
+<code>java.lang.RuntimeException: INTERNAL COMPILER ERROR.<br>Please report this problem.<br>null<br>  Node(FUNCTION Foo): testcode:1:20<br>/** @constructor */ function Foo(o) { this.a = o; }<br>  Parent(SCRIPT): testcode:1:0<br>/** @constructor */ function Foo(o) { this.a = o; }<br>
+<br>	at com.google.javascript.jscomp.TightenTypes$CreateScope.visit(TightenTypes.java:645)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:505)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:277)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:456)<br>	at com.google.javascript.jscomp.TightenTypes$ConcreteScope.initForScopeRoot(TightenTypes.java:244)<br>	at com.google.javascript.jscomp.TightenTypes.process(TightenTypes.java:134)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:804)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:447)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:373)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:342)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:330)<br>	at com.google.javascript.jscomp.CompilerTestCase.testSame(CompilerTestCase.java:569)<br>	at com.google.javascript.jscomp.TightenTypesTest.testCallFunctionWithArgs(TightenTypesTest.java:443)<br>Caused by: java.lang.NullPointerException<br>
+</code></td><td>0.001</td>
+</tr>
+<tr valign="top" class="Error">
+<td><a name="testCallPrototypeFunction"></a>testCallPrototypeFunction</td><td>Error</td><td>INTERNAL COMPILER ERROR.
+Please report this problem.
+null
+  Node(FUNCTION Foo): testcode:1:20
+/** @constructor */ function Foo() {}
+  Parent(SCRIPT): testcode:1:0
+/** @constructor */ function Foo() {}
+<br>
+<br>
+<code>java.lang.RuntimeException: INTERNAL COMPILER ERROR.<br>Please report this problem.<br>null<br>  Node(FUNCTION Foo): testcode:1:20<br>/** @constructor */ function Foo() {}<br>  Parent(SCRIPT): testcode:1:0<br>/** @constructor */ function Foo() {}<br>
+<br>	at com.google.javascript.jscomp.TightenTypes$CreateScope.visit(TightenTypes.java:645)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:505)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:277)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:456)<br>	at com.google.javascript.jscomp.TightenTypes$ConcreteScope.initForScopeRoot(TightenTypes.java:244)<br>	at com.google.javascript.jscomp.TightenTypes.process(TightenTypes.java:134)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:804)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:447)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:373)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:342)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:330)<br>	at com.google.javascript.jscomp.CompilerTestCase.testSame(CompilerTestCase.java:569)<br>	at com.google.javascript.jscomp.TightenTypesTest.testCallPrototypeFunction(TightenTypesTest.java:461)<br>Caused by: java.lang.NullPointerException<br>
+</code></td><td>0.001</td>
+</tr>
+<tr valign="top" class="Error">
+<td><a name="testCallPrototypeFunctionWithArgs"></a>testCallPrototypeFunctionWithArgs</td><td>Error</td><td>INTERNAL COMPILER ERROR.
+Please report this problem.
+null
+  Node(FUNCTION Foo): testcode:1:20
+/** @constructor */ function Foo() { this.p = null }
+  Parent(SCRIPT): testcode:1:0
+/** @constructor */ function Foo() { this.p = null }
+<br>
+<br>
+<code>java.lang.RuntimeException: INTERNAL COMPILER ERROR.<br>Please report this problem.<br>null<br>  Node(FUNCTION Foo): testcode:1:20<br>/** @constructor */ function Foo() { this.p = null }<br>  Parent(SCRIPT): testcode:1:0<br>/** @constructor */ function Foo() { this.p = null }<br>
+<br>	at com.google.javascript.jscomp.TightenTypes$CreateScope.visit(TightenTypes.java:645)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:505)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:277)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:456)<br>	at com.google.javascript.jscomp.TightenTypes$ConcreteScope.initForScopeRoot(TightenTypes.java:244)<br>	at com.google.javascript.jscomp.TightenTypes.process(TightenTypes.java:134)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:804)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:447)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:373)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:342)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:330)<br>	at com.google.javascript.jscomp.CompilerTestCase.testSame(CompilerTestCase.java:569)<br>	at com.google.javascript.jscomp.TightenTypesTest.testCallPrototypeFunctionWithArgs(TightenTypesTest.java:475)<br>Caused by: java.lang.NullPointerException<br>
+</code></td><td>0.000</td>
+</tr>
+<tr valign="top" class="Error">
+<td><a name="testSetTimeout"></a>testSetTimeout</td><td>Error</td><td>INTERNAL COMPILER ERROR.
+Please report this problem.
+null
+  Node(FUNCTION Window): externs:1:20
+/** @constructor */ function Window() {};
+  Parent(SCRIPT): externs:1:0
+/** @constructor */ function Window() {};
+<br>
+<br>
+<code>java.lang.RuntimeException: INTERNAL COMPILER ERROR.<br>Please report this problem.<br>null<br>  Node(FUNCTION Window): externs:1:20<br>/** @constructor */ function Window() {};<br>  Parent(SCRIPT): externs:1:0<br>/** @constructor */ function Window() {};<br>
+<br>	at com.google.javascript.jscomp.TightenTypes$CreateScope.visit(TightenTypes.java:645)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:505)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:277)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:456)<br>	at com.google.javascript.jscomp.TightenTypes$ConcreteScope.initForExternRoot(TightenTypes.java:252)<br>	at com.google.javascript.jscomp.TightenTypes.process(TightenTypes.java:133)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:804)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:447)<br>	at com.google.javascript.jscomp.CompilerTestCase.testSame(CompilerTestCase.java:644)<br>	at com.google.javascript.jscomp.CompilerTestCase.testSame(CompilerTestCase.java:608)<br>	at com.google.javascript.jscomp.TightenTypesTest.testSetTimeout(TightenTypesTest.java:493)<br>Caused by: java.lang.NullPointerException<br>
+</code></td><td>0.000</td>
+</tr>
+<tr valign="top" class="Error">
+<td><a name="testExternType"></a>testExternType</td><td>Error</td><td>INTERNAL COMPILER ERROR.
+Please report this problem.
+null
+  Node(FUNCTION T): externs:1:20
+/** @constructor */ function T() {};
+  Parent(SCRIPT): externs:1:0
+/** @constructor */ function T() {};
+<br>
+<br>
+<code>java.lang.RuntimeException: INTERNAL COMPILER ERROR.<br>Please report this problem.<br>null<br>  Node(FUNCTION T): externs:1:20<br>/** @constructor */ function T() {};<br>  Parent(SCRIPT): externs:1:0<br>/** @constructor */ function T() {};<br>
+<br>	at com.google.javascript.jscomp.TightenTypes$CreateScope.visit(TightenTypes.java:645)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:505)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:277)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:456)<br>	at com.google.javascript.jscomp.TightenTypes$ConcreteScope.initForExternRoot(TightenTypes.java:252)<br>	at com.google.javascript.jscomp.TightenTypes.process(TightenTypes.java:133)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:804)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:447)<br>	at com.google.javascript.jscomp.CompilerTestCase.testSame(CompilerTestCase.java:644)<br>	at com.google.javascript.jscomp.CompilerTestCase.testSame(CompilerTestCase.java:608)<br>	at com.google.javascript.jscomp.TightenTypesTest.testExternType(TightenTypesTest.java:505)<br>Caused by: java.lang.NullPointerException<br>
+</code></td><td>0.001</td>
+</tr>
+<tr valign="top" class="Error">
+<td><a name="testExternSubTypesForObject"></a>testExternSubTypesForObject</td><td>Error</td><td>INTERNAL COMPILER ERROR.
+Please report this problem.
+null
+  Node(FUNCTION Object): externs:5:0
+function Object(opt_value) {}
+  Parent(SCRIPT): externs:1:0
+/**
+<br>
+<br>
+<code>java.lang.RuntimeException: INTERNAL COMPILER ERROR.<br>Please report this problem.<br>null<br>  Node(FUNCTION Object): externs:5:0<br>function Object(opt_value) {}<br>  Parent(SCRIPT): externs:1:0<br>/**<br>
+<br>	at com.google.javascript.jscomp.TightenTypes$CreateScope.visit(TightenTypes.java:645)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:505)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:277)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:456)<br>	at com.google.javascript.jscomp.TightenTypes$ConcreteScope.initForExternRoot(TightenTypes.java:252)<br>	at com.google.javascript.jscomp.TightenTypes.process(TightenTypes.java:133)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:804)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:447)<br>	at com.google.javascript.jscomp.CompilerTestCase.testSame(CompilerTestCase.java:644)<br>	at com.google.javascript.jscomp.TightenTypesTest.testExternSubTypesForObject(TightenTypesTest.java:544)<br>Caused by: java.lang.NullPointerException<br>
+</code></td><td>0.001</td>
+</tr>
+<tr valign="top" class="Error">
+<td><a name="testImplicitPropCall"></a>testImplicitPropCall</td><td>Error</td><td>INTERNAL COMPILER ERROR.
+Please report this problem.
+null
+  Node(FUNCTION Window): externs:1:20
+/** @constructor */ function Window() {};
+  Parent(SCRIPT): externs:1:0
+/** @constructor */ function Window() {};
+<br>
+<br>
+<code>java.lang.RuntimeException: INTERNAL COMPILER ERROR.<br>Please report this problem.<br>null<br>  Node(FUNCTION Window): externs:1:20<br>/** @constructor */ function Window() {};<br>  Parent(SCRIPT): externs:1:0<br>/** @constructor */ function Window() {};<br>
+<br>	at com.google.javascript.jscomp.TightenTypes$CreateScope.visit(TightenTypes.java:645)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:505)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:277)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:456)<br>	at com.google.javascript.jscomp.TightenTypes$ConcreteScope.initForExternRoot(TightenTypes.java:252)<br>	at com.google.javascript.jscomp.TightenTypes.process(TightenTypes.java:133)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:804)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:447)<br>	at com.google.javascript.jscomp.CompilerTestCase.testSame(CompilerTestCase.java:644)<br>	at com.google.javascript.jscomp.CompilerTestCase.testSame(CompilerTestCase.java:608)<br>	at com.google.javascript.jscomp.TightenTypesTest.testImplicitPropCall(TightenTypesTest.java:561)<br>Caused by: java.lang.NullPointerException<br>
+</code></td><td>0.000</td>
+</tr>
+<tr valign="top" class="Error">
+<td><a name="testImplicitPropCallWithArgs"></a>testImplicitPropCallWithArgs</td><td>Error</td><td>INTERNAL COMPILER ERROR.
+Please report this problem.
+null
+  Node(FUNCTION Window): externs:1:20
+/** @constructor */ function Window() {};
+  Parent(SCRIPT): externs:1:0
+/** @constructor */ function Window() {};
+<br>
+<br>
+<code>java.lang.RuntimeException: INTERNAL COMPILER ERROR.<br>Please report this problem.<br>null<br>  Node(FUNCTION Window): externs:1:20<br>/** @constructor */ function Window() {};<br>  Parent(SCRIPT): externs:1:0<br>/** @constructor */ function Window() {};<br>
+<br>	at com.google.javascript.jscomp.TightenTypes$CreateScope.visit(TightenTypes.java:645)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:505)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:277)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:456)<br>	at com.google.javascript.jscomp.TightenTypes$ConcreteScope.initForExternRoot(TightenTypes.java:252)<br>	at com.google.javascript.jscomp.TightenTypes.process(TightenTypes.java:133)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:804)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:447)<br>	at com.google.javascript.jscomp.CompilerTestCase.testSame(CompilerTestCase.java:644)<br>	at com.google.javascript.jscomp.CompilerTestCase.testSame(CompilerTestCase.java:608)<br>	at com.google.javascript.jscomp.TightenTypesTest.testImplicitPropCallWithArgs(TightenTypesTest.java:571)<br>Caused by: java.lang.NullPointerException<br>
+</code></td><td>0.001</td>
+</tr>
+<tr valign="top" class="Error">
+<td><a name="testUntypedImplicitCallFromProperty"></a>testUntypedImplicitCallFromProperty</td><td>Error</td><td>INTERNAL COMPILER ERROR.
+Please report this problem.
+null
+  Node(FUNCTION Element): externs:1:20
+/** @constructor */ function Element() {};
+  Parent(SCRIPT): externs:1:0
+/** @constructor */ function Element() {};
+<br>
+<br>
+<code>java.lang.RuntimeException: INTERNAL COMPILER ERROR.<br>Please report this problem.<br>null<br>  Node(FUNCTION Element): externs:1:20<br>/** @constructor */ function Element() {};<br>  Parent(SCRIPT): externs:1:0<br>/** @constructor */ function Element() {};<br>
+<br>	at com.google.javascript.jscomp.TightenTypes$CreateScope.visit(TightenTypes.java:645)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:505)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:277)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:456)<br>	at com.google.javascript.jscomp.TightenTypes$ConcreteScope.initForExternRoot(TightenTypes.java:252)<br>	at com.google.javascript.jscomp.TightenTypes.process(TightenTypes.java:133)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:804)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:447)<br>	at com.google.javascript.jscomp.CompilerTestCase.testSame(CompilerTestCase.java:644)<br>	at com.google.javascript.jscomp.CompilerTestCase.testSame(CompilerTestCase.java:608)<br>	at com.google.javascript.jscomp.TightenTypesTest.testUntypedImplicitCallFromProperty(TightenTypesTest.java:585)<br>Caused by: java.lang.NullPointerException<br>
+</code></td><td>0.001</td>
+</tr>
+<tr valign="top" class="Error">
+<td><a name="testImplicitCallFromProperty"></a>testImplicitCallFromProperty</td><td>Error</td><td>INTERNAL COMPILER ERROR.
+Please report this problem.
+null
+  Node(FUNCTION Element): externs:1:20
+/** @constructor */ function Element() {};
+  Parent(SCRIPT): externs:1:0
+/** @constructor */ function Element() {};
+<br>
+<br>
+<code>java.lang.RuntimeException: INTERNAL COMPILER ERROR.<br>Please report this problem.<br>null<br>  Node(FUNCTION Element): externs:1:20<br>/** @constructor */ function Element() {};<br>  Parent(SCRIPT): externs:1:0<br>/** @constructor */ function Element() {};<br>
+<br>	at com.google.javascript.jscomp.TightenTypes$CreateScope.visit(TightenTypes.java:645)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:505)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:277)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:456)<br>	at com.google.javascript.jscomp.TightenTypes$ConcreteScope.initForExternRoot(TightenTypes.java:252)<br>	at com.google.javascript.jscomp.TightenTypes.process(TightenTypes.java:133)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:804)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:447)<br>	at com.google.javascript.jscomp.CompilerTestCase.testSame(CompilerTestCase.java:644)<br>	at com.google.javascript.jscomp.CompilerTestCase.testSame(CompilerTestCase.java:608)<br>	at com.google.javascript.jscomp.TightenTypesTest.testImplicitCallFromProperty(TightenTypesTest.java:602)<br>Caused by: java.lang.NullPointerException<br>
+</code></td><td>0.000</td>
+</tr>
+<tr valign="top" class="Error">
+<td><a name="testImplicitCallFromPropertyOfUnion"></a>testImplicitCallFromPropertyOfUnion</td><td>Error</td><td>INTERNAL COMPILER ERROR.
+Please report this problem.
+null
+  Node(FUNCTION Element): externs:1:20
+/** @constructor */ function Element() {};
+  Parent(SCRIPT): externs:1:0
+/** @constructor */ function Element() {};
+<br>
+<br>
+<code>java.lang.RuntimeException: INTERNAL COMPILER ERROR.<br>Please report this problem.<br>null<br>  Node(FUNCTION Element): externs:1:20<br>/** @constructor */ function Element() {};<br>  Parent(SCRIPT): externs:1:0<br>/** @constructor */ function Element() {};<br>
+<br>	at com.google.javascript.jscomp.TightenTypes$CreateScope.visit(TightenTypes.java:645)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:505)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:277)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:456)<br>	at com.google.javascript.jscomp.TightenTypes$ConcreteScope.initForExternRoot(TightenTypes.java:252)<br>	at com.google.javascript.jscomp.TightenTypes.process(TightenTypes.java:133)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:804)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:447)<br>	at com.google.javascript.jscomp.CompilerTestCase.testSame(CompilerTestCase.java:644)<br>	at com.google.javascript.jscomp.CompilerTestCase.testSame(CompilerTestCase.java:608)<br>	at com.google.javascript.jscomp.TightenTypesTest.testImplicitCallFromPropertyOfUnion(TightenTypesTest.java:615)<br>Caused by: java.lang.NullPointerException<br>
+</code></td><td>0.001</td>
+</tr>
+<tr valign="top" class="Error">
+<td><a name="testImplicitCallFromPropertyOfAllType"></a>testImplicitCallFromPropertyOfAllType</td><td>Error</td><td>INTERNAL COMPILER ERROR.
+Please report this problem.
+null
+  Node(FUNCTION Element): externs:1:20
+/** @constructor */ function Element() {};
+  Parent(SCRIPT): externs:1:0
+/** @constructor */ function Element() {};
+<br>
+<br>
+<code>java.lang.RuntimeException: INTERNAL COMPILER ERROR.<br>Please report this problem.<br>null<br>  Node(FUNCTION Element): externs:1:20<br>/** @constructor */ function Element() {};<br>  Parent(SCRIPT): externs:1:0<br>/** @constructor */ function Element() {};<br>
+<br>	at com.google.javascript.jscomp.TightenTypes$CreateScope.visit(TightenTypes.java:645)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:505)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:277)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:456)<br>	at com.google.javascript.jscomp.TightenTypes$ConcreteScope.initForExternRoot(TightenTypes.java:252)<br>	at com.google.javascript.jscomp.TightenTypes.process(TightenTypes.java:133)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:804)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:447)<br>	at com.google.javascript.jscomp.CompilerTestCase.testSame(CompilerTestCase.java:644)<br>	at com.google.javascript.jscomp.CompilerTestCase.testSame(CompilerTestCase.java:608)<br>	at com.google.javascript.jscomp.TightenTypesTest.testImplicitCallFromPropertyOfAllType(TightenTypesTest.java:628)<br>Caused by: java.lang.NullPointerException<br>
+</code></td><td>0.001</td>
+</tr>
+<tr valign="top" class="Error">
+<td><a name="testRestrictToCast"></a>testRestrictToCast</td><td>Error</td><td>INTERNAL COMPILER ERROR.
+Please report this problem.
+null
+  Node(FUNCTION Foo): testcode:1:20
+/** @constructor */ function Foo() {};
+  Parent(SCRIPT): testcode:1:0
+/** @constructor */ function Foo() {};
+<br>
+<br>
+<code>java.lang.RuntimeException: INTERNAL COMPILER ERROR.<br>Please report this problem.<br>null<br>  Node(FUNCTION Foo): testcode:1:20<br>/** @constructor */ function Foo() {};<br>  Parent(SCRIPT): testcode:1:0<br>/** @constructor */ function Foo() {};<br>
+<br>	at com.google.javascript.jscomp.TightenTypes$CreateScope.visit(TightenTypes.java:645)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:505)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:277)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:456)<br>	at com.google.javascript.jscomp.TightenTypes$ConcreteScope.initForScopeRoot(TightenTypes.java:244)<br>	at com.google.javascript.jscomp.TightenTypes.process(TightenTypes.java:134)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:804)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:447)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:373)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:342)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:330)<br>	at com.google.javascript.jscomp.CompilerTestCase.testSame(CompilerTestCase.java:569)<br>	at com.google.javascript.jscomp.TightenTypesTest.testRestrictToCast(TightenTypesTest.java:643)<br>Caused by: java.lang.NullPointerException<br>
+</code></td><td>0.000</td>
+</tr>
+<tr valign="top" class="Error">
+<td><a name="testRestrictToInterfaceCast"></a>testRestrictToInterfaceCast</td><td>Error</td><td>INTERNAL COMPILER ERROR.
+Please report this problem.
+null
+  Node(FUNCTION Foo): testcode:2:20
+ @implements Int */ function Foo() {};
+  Parent(SCRIPT): testcode:1:0
+/** @constructor 
+<br>
+<br>
+<code>java.lang.RuntimeException: INTERNAL COMPILER ERROR.<br>Please report this problem.<br>null<br>  Node(FUNCTION Foo): testcode:2:20<br> @implements Int */ function Foo() {};<br>  Parent(SCRIPT): testcode:1:0<br>/** @constructor <br>
+<br>	at com.google.javascript.jscomp.TightenTypes$CreateScope.visit(TightenTypes.java:645)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:505)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:277)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:456)<br>	at com.google.javascript.jscomp.TightenTypes$ConcreteScope.initForScopeRoot(TightenTypes.java:244)<br>	at com.google.javascript.jscomp.TightenTypes.process(TightenTypes.java:134)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:804)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:447)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:373)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:342)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:330)<br>	at com.google.javascript.jscomp.CompilerTestCase.testSame(CompilerTestCase.java:569)<br>	at com.google.javascript.jscomp.TightenTypesTest.testRestrictToInterfaceCast(TightenTypesTest.java:654)<br>Caused by: java.lang.NullPointerException<br>
+</code></td><td>0.001</td>
+</tr>
+<tr valign="top" class="Error">
+<td><a name="testRestrictToCastWithNonInstantiatedTypes"></a>testRestrictToCastWithNonInstantiatedTypes</td><td>Error</td><td>INTERNAL COMPILER ERROR.
+Please report this problem.
+null
+  Node(FUNCTION Super): testcode:1:20
+/** @constructor */ function Super() {}
+  Parent(SCRIPT): testcode:1:0
+/** @constructor */ function Super() {}
+<br>
+<br>
+<code>java.lang.RuntimeException: INTERNAL COMPILER ERROR.<br>Please report this problem.<br>null<br>  Node(FUNCTION Super): testcode:1:20<br>/** @constructor */ function Super() {}<br>  Parent(SCRIPT): testcode:1:0<br>/** @constructor */ function Super() {}<br>
+<br>	at com.google.javascript.jscomp.TightenTypes$CreateScope.visit(TightenTypes.java:645)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:505)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:277)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:456)<br>	at com.google.javascript.jscomp.TightenTypes$ConcreteScope.initForScopeRoot(TightenTypes.java:244)<br>	at com.google.javascript.jscomp.TightenTypes.process(TightenTypes.java:134)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:804)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:447)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:373)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:342)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:330)<br>	at com.google.javascript.jscomp.CompilerTestCase.testSame(CompilerTestCase.java:569)<br>	at com.google.javascript.jscomp.TightenTypesTest.testRestrictToCastWithNonInstantiatedTypes(TightenTypesTest.java:664)<br>Caused by: java.lang.NullPointerException<br>
+</code></td><td>0.001</td>
+</tr>
+<tr valign="top" class="Error">
+<td><a name="testFunctionToString"></a>testFunctionToString</td><td>Error</td><td>INTERNAL COMPILER ERROR.
+Please report this problem.
+null
+  Node(FUNCTION Foo): testcode:1:20
+/** @constructor */ function Foo() {}
+  Parent(SCRIPT): testcode:1:0
+/** @constructor */ function Foo() {}
+<br>
+<br>
+<code>java.lang.RuntimeException: INTERNAL COMPILER ERROR.<br>Please report this problem.<br>null<br>  Node(FUNCTION Foo): testcode:1:20<br>/** @constructor */ function Foo() {}<br>  Parent(SCRIPT): testcode:1:0<br>/** @constructor */ function Foo() {}<br>
+<br>	at com.google.javascript.jscomp.TightenTypes$CreateScope.visit(TightenTypes.java:645)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:505)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:498)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:277)<br>	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:456)<br>	at com.google.javascript.jscomp.TightenTypes$ConcreteScope.initForScopeRoot(TightenTypes.java:244)<br>	at com.google.javascript.jscomp.TightenTypes.process(TightenTypes.java:134)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:804)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:447)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:373)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:342)<br>	at com.google.javascript.jscomp.CompilerTestCase.test(CompilerTestCase.java:330)<br>	at com.google.javascript.jscomp.CompilerTestCase.testSame(CompilerTestCase.java:569)<br>	at com.google.javascript.jscomp.TightenTypesTest.testFunctionToString(TightenTypesTest.java:683)<br>Caused by: java.lang.NullPointerException<br>
+</code></td><td>0.000</td>
+</tr>
+</table>
+<div class="Properties">
+<a href="javascript:displayProperties('com.google.javascript.jscomp.TightenTypesTest');">
+                    Properties &raquo;
+                </a>
+</div>
+</body>
+</html>

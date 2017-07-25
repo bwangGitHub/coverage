@@ -1,0 +1,16 @@
+<html xmlns:stringutils="xalan://org.apache.tools.ant.util.StringUtils" xmlns:lxslt="http://xml.apache.org/xslt">
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Standard Error from CheckRequiresForConstructorsTest</title>
+</head>
+<body>
+<pre>14-Feb-2013 10:57:02 PM com.google.javascript.jscomp.LoggerErrorManager println
+WARNING: foo.js:1: WARNING - 'foo.bar.goo' used but not goog.require'd
+var foo = {}; var bar = new foo.bar.goo();
+                        ^
+
+14-Feb-2013 10:57:02 PM com.google.javascript.jscomp.LoggerErrorManager printSummary
+WARNING: 0 error(s), 1 warning(s)
+</pre>
+</body>
+</html>

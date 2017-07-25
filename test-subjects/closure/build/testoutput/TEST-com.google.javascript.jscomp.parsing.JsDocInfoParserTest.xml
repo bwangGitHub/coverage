@@ -1,0 +1,511 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuite errors="0" failures="0" hostname="battower" name="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" tests="404" time="0.121" timestamp="2013-02-28T06:32:08">
+  <properties>
+    <property name="java.vendor" value="Sun Microsystems Inc." />
+    <property name="lib.dir" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/lib" />
+    <property name="sun.java.launcher" value="SUN_STANDARD" />
+    <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers" />
+    <property name="os.name" value="Linux" />
+    <property name="sun.boot.class.path" value="/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/resources.jar:/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/rt.jar:/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/sunrsasign.jar:/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/jsse.jar:/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/jce.jar:/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/charsets.jar:/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/modules/jdk.boot.jar:/usr/lib/jvm/java-6-sun-1.6.0.26/jre/classes" />
+    <property name="build.svnVersion" value="exported" />
+    <property name="maven-repository-id" value="sonatype-nexus-staging" />
+    <property name="java.vm.specification.vendor" value="Sun Microsystems Inc." />
+    <property name="ant.home" value="/usr/share/ant" />
+    <property name="jsonml-jarfile" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/build/secure_compiler.jar" />
+    <property name="java.runtime.version" value="1.6.0_26-b03" />
+    <property name="gen.dir" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/gen" />
+    <property name="user.name" value="laura" />
+    <property name="ant.file.compiler" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/build.xml" />
+    <property name="cc.src.dir" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/instSrc" />
+    <property name="build.dir" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/build" />
+    <property name="jsonml.dir" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/src/com/google/javascript/jscomp/jsonml" />
+    <property name="ant.build.javac.target" value="1.6" />
+    <property name="cc.lib.dir" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/instLib" />
+    <property name="user.language" value="en" />
+    <property name="sun.boot.library.path" value="/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/amd64" />
+    <property name="ant.project.default-target" value="jar" />
+    <property name="ant.project.name" value="compiler" />
+    <property name="cc.build.dir" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/instBuild" />
+    <property name="java.version" value="1.6.0_26" />
+    <property name="user.timezone" value="" />
+    <property name="sun.arch.data.model" value="64" />
+    <property name="cc.compiler-jarfile" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/instBuild/compiler.jar" />
+    <property name="java.endorsed.dirs" value="/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/endorsed" />
+    <property name="sun.cpu.isalist" value="" />
+    <property name="sun.jnu.encoding" value="UTF-8" />
+    <property name="file.encoding.pkg" value="sun.io" />
+    <property name="cc.gen.dir" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/instGen" />
+    <property name="file.separator" value="/" />
+    <property name="java.specification.name" value="Java Platform API Specification" />
+    <property name="protoc.executable" value="protoc" />
+    <property name="classes.dir" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/build/classes" />
+    <property name="java.class.version" value="50.0" />
+    <property name="testClasses.dir" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/build/test" />
+    <property name="user.country" value="CA" />
+    <property name="jsonml-classes.dir" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/build/jsonml-classes" />
+    <property name="java.home" value="/usr/lib/jvm/java-6-sun-1.6.0.26/jre" />
+    <property name="java.vm.info" value="mixed mode" />
+    <property name="externs.dir" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/externs" />
+    <property name="ant.file" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/build.xml" />
+    <property name="os.version" value="3.2.0-4-amd64" />
+    <property name="javac.debug" value="on" />
+    <property name="path.separator" value=":" />
+    <property name="java.vm.version" value="20.1-b02" />
+    <property name="num-fuzz-tests" value="10000" />
+    <property name="ant.library.dir" value="/usr/share/ant/lib" />
+    <property name="java.awt.printerjob" value="sun.print.PSPrinterJob" />
+    <property name="webservice-jarfile" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/build/webservice.jar" />
+    <property name="sun.io.unicode.encoding" value="UnicodeLittle" />
+    <property name="test.fork" value="true" />
+    <property name="webservice.dir" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/src/com/google/javascript/jscomp/webservice" />
+    <property name="buildlib.dir" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/build/lib" />
+    <property name="cc.closure.build.dir" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/instBuild" />
+    <property name="ant.build.javac.source" value="1.6" />
+    <property name="user.home" value="/home/laura" />
+    <property name="cc.buildlib.dir" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/instBuild/lib" />
+    <property name="java.specification.vendor" value="Sun Microsystems Inc." />
+    <property name="test.dir" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/test" />
+    <property name="java.library.path" value="/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/amd64/server:/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/amd64:/usr/lib/jvm/java-6-sun-1.6.0.26/jre/../lib/amd64:/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib" />
+    <property name="java.vendor.url" value="http://java.sun.com/" />
+    <property name="java.vm.vendor" value="Sun Microsystems Inc." />
+    <property name="java.runtime.name" value="Java(TM) SE Runtime Environment" />
+    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner testsfile=/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/junittestcases3948662715662201768.properties filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.SummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.BriefJUnitResultFormatter formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/build/testoutput/IGNORETHIS.xml crashfile=/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/junitvmwatcher984647660801049597.properties propsfile=/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/junit4306649417180714283.properties" />
+    <property name="java.class.path" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/build/classes:/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/lib/ant-launcher.jar:/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/lib/ant.jar:/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/lib/args4j.jar:/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/lib/caja-r4314.jar:/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/lib/codecover-ant.jar:/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/lib/codecover-batch.jar:/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/lib/codecover-core.jar:/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/lib/guava.jar:/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/lib/jarjar.jar:/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/lib/json.jar:/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/lib/jsr305.jar:/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/lib/junit.jar:/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/lib/org.codecover.instrumentation.java15-0.1.jar:/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/lib/protobuf-java.jar:/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/build/lib/rhino.jar:/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/build/test:/home/laura/.ant/lib/junit-4.8.1.jar:/usr/share/java/ant-launcher-1.8.2.jar:/usr/share/ant/lib/ant.jar:/usr/share/ant/lib/ant-junit.jar:/usr/share/ant/lib/ant-junit4.jar" />
+    <property name="ant.version" value="Apache Ant(TM) version 1.8.2 compiled on September 22 2011" />
+    <property name="test.class" value="*Test" />
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification" />
+    <property name="ant.file.type" value="file" />
+    <property name="java.vm.specification.version" value="1.0" />
+    <property name="sun.os.patch.level" value="unknown" />
+    <property name="sun.cpu.endian" value="little" />
+    <property name="java.io.tmpdir" value="/tmp" />
+    <property name="java.vendor.url.bug" value="http://java.sun.com/cgi-bin/bugreport.cgi" />
+    <property name="cc.classes.dir" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/instBuild/classes" />
+    <property name="java.awt.graphicsenv" value="sun.awt.X11GraphicsEnvironment" />
+    <property name="os.arch" value="amd64" />
+    <property name="maven-repository-url" value="https://oss.sonatype.org/service/local/staging/deploy/maven2/" />
+    <property name="webservice-classes.dir" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/build/webservice-classes" />
+    <property name="java.ext.dirs" value="/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/ext:/usr/java/packages/lib/ext" />
+    <property name="user.dir" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure" />
+    <property name="ant.file.type.compiler" value="file" />
+    <property name="line.separator" value="&#xa;" />
+    <property name="java.vm.name" value="Java HotSpot(TM) 64-Bit Server VM" />
+    <property name="basedir" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure" />
+    <property name="ant.java.version" value="1.6" />
+    <property name="ant.core.lib" value="/usr/share/ant/lib/ant.jar" />
+    <property name="file.encoding" value="UTF-8" />
+    <property name="closure.build.dir" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/build" />
+    <property name="compiler-jarfile" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/build/compiler.jar" />
+    <property name="java.specification.version" value="1.6" />
+    <property name="src.dir" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/src" />
+    <property name="javadoc.dir" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/build/javadoc" />
+    <property name="ant.project.invoked-targets" value="test" />
+    <property name="tools.dir" value="/home/laura/workspace/unified-test-analysis-toolkit/test-subjects/closure/tools" />
+  </properties>
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testInterfaceExtends" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testPrivateType" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseTypeViaStatic1" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseTypeViaStatic2" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseTypeViaStatic3" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseTypeViaStatic4" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseInvalidTypeViaStatic" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseInvalidTypeViaStatic2" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseNamedType1" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseNamedType2" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseNamedType3" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseNamedType4" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseNamedType5" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseNamedType6" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseNamedTypeError1" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseNamedTypeError2" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testTypedefType1" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testTypedefType2" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testTypedefType3" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseStringType1" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseStringType2" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseBooleanType1" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseBooleanType2" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseNumberType1" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseNumberType2" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseNullType1" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseNullType2" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseAllType1" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseAllType2" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseObjectType" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseDateType" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseFunctionType" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseRegExpType" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseErrorTypes" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseUndefinedType1" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseUndefinedType2" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseUndefinedType3" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseTemplatizedType1" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseTemplatizedType2" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseTemplatizedType3" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseTemplatizedType4" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseTemplatizedType5" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseTemplatizedType6" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseTemplatizedType7" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseTemplatizedType8" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseTemplatizedType9" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseTemplatizedType10" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseTemplatizedType11" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseTemplatizedType12" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseTemplatizedType13" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseUnionType1" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseUnionType2" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseUnionType3" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseUnionType4" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseUnionType5" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseUnionType6" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseUnionType7" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseUnionType8" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseUnionType9" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseUnionType10" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseUnionType11" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseUnionType12" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseUnionType13" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseUnionType14" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseUnionType15" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseUnionType16" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseUnionType17" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseUnionType18" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseUnionTypeError1" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseUnknownType1" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseUnknownType2" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseUnknownType3" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseFunctionalType1" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseFunctionalType2" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseFunctionalType3" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseFunctionalType4" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseFunctionalType5" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseFunctionalType6" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseFunctionalType7" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseFunctionalType8" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseFunctionalType9" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseFunctionalType10" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseFunctionalType11" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseFunctionalType12" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseFunctionalType13" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseFunctionalType14" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseFunctionalType15" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseFunctionalType16" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseFunctionalType17" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseFunctionalType18" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseFunctionalType19" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testStructuralConstructor" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testNominalConstructor" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testBug1419535" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testIssue477" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testMalformedThisAnnotation" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseFunctionalTypeError1" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseFunctionalTypeError2" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseFunctionalTypeError3" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseFunctionalTypeError4" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseFunctionalTypeError5" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseFunctionalTypeError6" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseFunctionalTypeError7" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseFunctionalTypeError8" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseFunctionalTypeError9" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseFunctionalTypeError10" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseFunctionalTypeError11" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseFunctionalTypeError12" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseArrayType1" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseArrayType2" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseArrayType3" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseArrayTypeError1" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseArrayTypeError2" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseArrayTypeError3" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseArrayTypeError4" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseNullableModifiers1" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseNullableModifiers2" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseNullableModifiers3" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseNullableModifiers4" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseNullableModifiers5" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseNullableModifiers6" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseNullableModifiers7" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseNullableModifiers8" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseNullableModifiers9" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseOptionalModifier" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseNewline1" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseNewline2" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseNewline3" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseNewline4" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseNewline5" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseReturnType1" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseReturnType2" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseReturnType3" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseThisType1" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseThisType2" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseThisType3" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseThisType4" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseThisType5" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseThisType6" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseParam1" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseParam2" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseParam3" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseParam4" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseParam5" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseParam6" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseParam7" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseParam8" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseParam9" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseParam10" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseParam11" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseParam12" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseParam13" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseParam14" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseParam15" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseParam16" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseParam17" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseParam18" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseParam19" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseParam20" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseParam21" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseThrows1" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseThrows2" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseRecordType1" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseRecordType2" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseRecordType3" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseRecordType4" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseRecordType5" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseRecordType6" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseRecordType7" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseRecordType8" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseRecordType9" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseRecordType10" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseRecordType11" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseRecordType12" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseRecordType13" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseRecordType14" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseRecordType15" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseRecordType16" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseRecordType17" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseRecordType18" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseRecordType19" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseRecordType20" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseRecordType21" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseRecordType22" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseRecordType23" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseParamError1" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseParamError2" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseParamError3" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseParamError4" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseParamError5" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseExtends1" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseExtends2" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseExtendsGenerics" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseImplementsGenerics" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseExtends4" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseExtends5" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseExtends6" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseExtendsInvalidName" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseExtendsNullable1" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseExtendsNullable2" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseEnum1" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseEnum2" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseEnum3" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseDesc1" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseDesc2" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseDesc3" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseDesc4" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseDesc5" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseDesc6" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseDesc7" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseDesc8" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseDesc9" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseDesc10" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseDesc11" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseDesc12" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseMeaning1" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseMeaning2" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseMeaning3" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseMeaning4" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseLends1" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseLends2" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseLends3" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseLends4" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseLends5" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseLends6" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseLends7" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParsePreserve" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseLicense" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseLicenseAscii" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseLicenseWithAnnotation" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseDefine1" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseDefine2" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseDefine3" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseDefine4" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseDefine5" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseDefineErrors1" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseDefineErrors2" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseDefineErrors3" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseDefineErrors4" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseDefineErrors5" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseDefineErrors7" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseDefineErrors8" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseNoCheck1" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseNoCheck2" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseOverride1" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseOverride2" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseInheritDoc1" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseInheritDoc2" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseInheritDoc3" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseNoAlias1" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseNoAlias2" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseDeprecated1" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseDeprecated2" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseExport1" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseExport2" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseExpose1" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseExpose2" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseExterns1" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseExterns2" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseExterns3" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseJavaDispatch1" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseJavaDispatch2" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseJavaDispatch3" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseNoCompile1" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseNoCompile2" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testBugAnnotation" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testDescriptionAnnotation" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testRegression1" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testRegression2" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testRegression3" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testRegression4" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testRegression5" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testRegression6" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testRegression7" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testRegression8" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testRegression9" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testRegression10" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testRegression11" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testRegression12" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testRegression13" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testRegression14" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testRegression15" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testRegression16" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testRegression17" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testFullRegression1" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testFullRegression2" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testFullRegression3" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testBug907488" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testBug907494" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testBug909468" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseInterface" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseImplicitCast1" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseImplicitCast2" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseDuplicateImplicitCast" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseInterfaceDoubled" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseImplements" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseImplementsTwo" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseImplementsSameTwice" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseImplementsNoName" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseImplementsMissingRC" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseImplementsNullable1" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseImplementsNullable2" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testInterfaceMultiExtends1" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testInterfaceMultiExtends2" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testBadClassMultiExtends" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testBadExtendsWithNullable" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testBadImplementsWithNullable" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testBadTypeDefInterfaceAndConstructor1" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testBadTypeDefInterfaceAndConstructor2" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testDocumentationParameter" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testMultilineDocumentationParameter" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testDocumentationMultipleParameter" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testDocumentationMultipleParameter2" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testAuthors" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testSuppress1" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testSuppress2" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testBadSuppress1" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testBadSuppress2" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testBadSuppress3" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testBadSuppress4" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testBadSuppress5" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testBadSuppress6" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testBadSuppress7" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testModifies1" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testModifies2" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testModifies3" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testModifies4" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testModifies5" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testModifies6" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testBadModifies1" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testBadModifies2" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testBadModifies3" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testBadModifies4" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testBadModifies5" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testBadModifies6" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testBadModifies7" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testBadModifies8" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testBadModifies9" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testFileOverviewSingleLine" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testFileOverviewMultiLine" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testFileOverviewDuplicate" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testReferences" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testSingleTags" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testSingleTagsReordered" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testVersionDuplication" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testVersionMissing" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testAuthorMissing" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testSeeMissing" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testSourceName" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseBlockComment" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseBlockComment2" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseBlockComment3" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseWithMarkers1" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseWithMarkers2" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseWithMarkers3" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseWithMarkers4" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseWithMarkers5" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseWithMarkers6" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseWithMarkerNames1" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseWithMarkerNames2" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseWithMarkerNames3" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseWithoutMarkerName" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseWithMarkerType" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseWithMarkerType2" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testTypeTagConflict1" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testTypeTagConflict2" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testTypeTagConflict3" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testTypeTagConflict4" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testTypeTagConflict5" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testTypeTagConflict6" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testTypeTagConflict7" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testTypeTagConflict8" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testTypeTagConflict9" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testTypeTagConflict10" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testTypeTagConflict11" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testTypeTagConflict12" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testTypeTagConflict13" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testTypeTagConflict14" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testTypeTagConflict15" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testTypeTagConflict16" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testTypeTagConflict17" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testTypeTagConflict18" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testTypeTagConflict19" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testTypeTagConflict20" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testTypeTagConflict21" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testTypeTagConflict22" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testTypeTagConflict23" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testTypeTagConflict24" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testProtectedType" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testPublicType" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testConstType" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testStableIdGeneratorConflict" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParserWithTemplateTypeNameMissing" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParserWithTemplateDuplicated" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParserWithTwoTemplates" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testWhitelistedNewAnnotations" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testWhitelistedConflictingAnnotation" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testNonIdentifierAnnotation" time="0.0010" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testUnsupportedJsDocSyntax1" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testUnsupportedJsDocSyntax2" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testWhitelistedAnnotations" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testGetOriginalCommentString" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseNgInject1" time="0.0" />
+  <testcase classname="com.google.javascript.jscomp.parsing.JsDocInfoParserTest" name="testParseNgInject2" time="0.0" />
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
